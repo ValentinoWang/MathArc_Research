@@ -4,6 +4,7 @@ import shutil
 import subprocess
 from dataclasses import dataclass
 from pathlib import Path
+import re
 
 
 @dataclass(frozen=True, slots=True)
@@ -35,7 +36,42 @@ def bibliography_errors(source_root: str | Path) -> list[str]:
     workflow = detect_bibliography_workflow(source_root)
     if workflow.mode == "missing":
         return ["LaTeX references are used but neither .bib nor .bbl is present"]
+    if workflow.mode == "bib":
+        return ["LaTeX references have .bib but no .bbl; arXiv does not run BibTeX"]
     return []
+
+
+_INCLUDE = re.compile(r"\\(?:input|include)\s*\{([^{}]+)\}")
+
+
+def collect_latex_sources(entrypoint: str | Path) -> tuple[Path, ...]:
+    """Return an entrypoint and its input/include tree, rejecting cycles/missing files."""
+    entry = Path(entrypoint).resolve()
+    visited: set[Path] = set()
+    active: set[Path] = set()
+    ordered: list[Path] = []
+
+    def visit(path: Path) -> None:
+        path = path.resolve()
+        if path in active:
+            raise ValueError(f"LaTeX include cycle detected at {path}")
+        if path in visited:
+            return
+        if not path.is_file():
+            raise ValueError(f"included LaTeX source is missing: {path}")
+        active.add(path)
+        visited.add(path)
+        ordered.append(path)
+        text = path.read_text(encoding="utf-8")
+        for match in _INCLUDE.finditer(text):
+            target = path.parent / match.group(1).strip()
+            if target.suffix == "":
+                target = target.with_suffix(".tex")
+            visit(target)
+        active.remove(path)
+
+    visit(entry)
+    return tuple(ordered)
 
 
 def available_compilers() -> tuple[str, ...]:
@@ -49,7 +85,7 @@ def compile_latex(source: str | Path, *, timeout_seconds: int = 120) -> tuple[bo
     if not main.is_file():
         return False, f"missing LaTeX entrypoint: {main}"
     workflow = detect_bibliography_workflow(root)
-    if workflow.mode == "missing":
+    if workflow.mode in {"missing", "bib"}:
         return False, "references are declared but no .bib/.bbl is available"
     if shutil.which("latexmk"):
         command = ["latexmk", "-pdf", "-interaction=nonstopmode", main.name]

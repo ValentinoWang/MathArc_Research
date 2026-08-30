@@ -7,6 +7,8 @@ from typing import Any
 
 _CLAIM = re.compile(r"\\claimid\s*\{([^{}]+)\}")
 _REVISION = re.compile(r"\\claimrevision\s*\{(\d+)\}")
+_COMBINED = re.compile(r"\\matharcclaim\s*\{([^{}]+)\}\s*\{(\d+)\}")
+_MACRO = re.compile(r"\\(?:matharcclaim|claimid|claimrevision)\b")
 
 
 def parse_claim_map(path: str | Path) -> dict[str, int]:
@@ -27,14 +29,48 @@ def parse_claim_map(path: str | Path) -> dict[str, int]:
     return result
 
 
-def parse_latex_claims(path: str | Path) -> dict[str, int]:
-    text = Path(path).read_text(encoding="utf-8")
-    ids = list(_CLAIM.finditer(text))
-    revisions = list(_REVISION.finditer(text))
-    if len(ids) != len(revisions):
-        raise ValueError("each LaTeX claimid must have exactly one claimrevision")
-    return {match.group(1).strip(): int(revisions[index].group(1))
-            for index, match in enumerate(ids)}
+def parse_latex_claims_text(text: str) -> dict[str, int]:
+    """Parse combined claims or strictly adjacent legacy claim macros."""
+    result: dict[str, int] = {}
+    covered: list[tuple[int, int]] = []
+    for match in _COMBINED.finditer(text):
+        claim_id = match.group(1).strip()
+        if claim_id in result:
+            raise ValueError(f"duplicate LaTeX claim id: {claim_id}")
+        result[claim_id] = int(match.group(2))
+        covered.append(match.span())
+    tokens = list(_MACRO.finditer(text))
+    for index, token in enumerate(tokens):
+        if any(start <= token.start() < end for start, end in covered):
+            continue
+        name = token.group(0)
+        if name == r"\matharcclaim":
+            raise ValueError("malformed matharcclaim macro; expected {id}{revision}")
+        if name == r"\claimid":
+            claim = _CLAIM.match(text, token.start())
+            if claim is None:
+                raise ValueError("malformed claimid macro")
+            next_token = tokens[index + 1] if index + 1 < len(tokens) else None
+            if next_token is None or next_token.group(0) != r"\claimrevision":
+                raise ValueError("claimid must be immediately followed by claimrevision")
+            if text[claim.end():next_token.start()].strip():
+                raise ValueError("claimid must be immediately followed by claimrevision")
+            revision = _REVISION.match(text, next_token.start())
+            if revision is None:
+                raise ValueError("malformed claimrevision macro")
+            claim_id = claim.group(1).strip()
+            if claim_id in result:
+                raise ValueError(f"duplicate LaTeX claim id: {claim_id}")
+            result[claim_id] = int(revision.group(1))
+        elif name == r"\claimrevision":
+            previous = tokens[index - 1] if index else None
+            if previous is None or previous.group(0) != r"\claimid":
+                raise ValueError("claimrevision must follow claimid")
+    return result
+
+
+def parse_latex_claims(path: str | Path, *, text: str | None = None) -> dict[str, int]:
+    return parse_latex_claims_text(Path(path).read_text(encoding="utf-8") if text is None else text)
 
 
 def check_bidirectional_claims(claim_map: dict[str, int], latex_claims: dict[str, int]) -> list[str]:

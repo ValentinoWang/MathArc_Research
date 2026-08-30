@@ -23,7 +23,7 @@ test-full:
 	$(PYTHON) scripts/run_unittest_suite.py --require-z3 --summary-path artifacts/ci/unittest-summary.json
 
 typecheck:
-	$(PYTHON) -m mypy --strict matharc/v02
+	$(PYTHON) -m mypy --strict matharc/v02 matharc/publication
 
 architecture:
 	$(PYTHON) -m unittest -v tests.test_claim_architecture tests.test_v02_research_director

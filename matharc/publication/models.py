@@ -66,7 +66,11 @@ class HumanSignoff:
         unknown = set(value) - required
         if unknown:
             raise ValueError(f"unknown human signoff fields: {sorted(unknown)}")
-        return cls(*(str(value.get(name, "")) for name in
+        fields = {name: str(value.get(name, "")).strip() for name in required}
+        for name in ("gate", "decision", "reviewer", "reviewed_at", "artifact_digest"):
+            if not fields[name]:
+                raise ValueError(f"human signoff field is empty: {name}")
+        return cls(*(fields[name] for name in
                      ("gate", "decision", "reviewer", "reviewed_at", "artifact_digest", "notes")))
 
 
@@ -148,10 +152,12 @@ class PublicationBundle:
             return "NOT_READY"
         if (
             self.scientific_closure is ScientificClosure.BLOCKED
-            or self.evidence_integrity is EvidenceIntegrity.INCOMPLETE
+            or self.evidence_integrity is not EvidenceIntegrity.INDEPENDENTLY_AUDITED
         ):
             return "DRAFT_READY"
         if self.human_signoff is HumanSignoffState.PENDING:
+            return "READY_FOR_HUMAN_SUBMISSION_REVIEW"
+        if not self.human_signoffs:
             return "READY_FOR_HUMAN_SUBMISSION_REVIEW"
         return "RELEASE_CANDIDATE"
 
