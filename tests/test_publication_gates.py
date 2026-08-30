@@ -5,9 +5,10 @@ import unittest
 from matharc.v02.trace import ResearchTrace, TraceValidationError
 from pathlib import Path
 
-from matharc.publication.claim_map import check_bidirectional_claims, parse_latex_claims
+from matharc.publication.claim_map import check_bidirectional_claims, parse_latex_claims, parse_latex_claims_text
 from matharc.publication.gates import audit_publication
-from matharc.publication.models import PublicationBundle
+from matharc.publication.latex import bibliography_errors, collect_latex_sources
+from matharc.publication.models import EvidenceIntegrity, HumanSignoff, HumanSignoffState, PublicationBundle, ScientificClosure, TechnicalPreflight
 from matharc.v02.workspace_demo import write_workspace_demo
 
 
@@ -43,3 +44,40 @@ class PublicationGateTests(unittest.TestCase):
             result = audit_publication(root, bundle)
             self.assertFalse(result.valid)
             self.assertIn("LaTeX source", " ".join(result.errors))
+
+    def test_claims_require_pairing_and_reject_duplicates(self) -> None:
+        self.assertEqual(parse_latex_claims_text(r"\matharcclaim{A}{3}"), {"A": 3})
+        with self.assertRaisesRegex(ValueError, "immediately followed"):
+            parse_latex_claims_text(r"\claimid{A} text \claimid{B}\claimrevision{5}")
+        with self.assertRaisesRegex(ValueError, "duplicate"):
+            parse_latex_claims_text(r"\claimid{A}\claimrevision{1} \claimid{A}\claimrevision{2}")
+
+    def test_bib_without_bbl_is_blocked(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "main.tex").write_text(r"\documentclass{article}\bibliography{refs}", encoding="utf-8")
+            (root / "refs.bib").write_text("@article{x}", encoding="utf-8")
+            self.assertTrue(any("no .bbl" in error for error in bibliography_errors(root)))
+
+    def test_latex_inputs_are_recursive_and_cycles_fail(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "main.tex").write_text(r"\input{sections/a}", encoding="utf-8")
+            (root / "sections").mkdir()
+            (root / "sections/a.tex").write_text("text", encoding="utf-8")
+            self.assertEqual(len(collect_latex_sources(root / "main.tex")), 2)
+            (root / "sections/a.tex").write_text(r"\input{../main}", encoding="utf-8")
+            with self.assertRaisesRegex(ValueError, "cycle"):
+                collect_latex_sources(root / "main.tex")
+
+    def test_readiness_requires_independent_audit_and_signoff(self) -> None:
+        bundle = PublicationBundle(
+            "paper", 1, {}, scientific_closure=ScientificClosure.CLOSED,
+            evidence_integrity=EvidenceIntegrity.REPLAYABLE,
+            technical_preflight=TechnicalPreflight.PASS,
+            human_signoff=HumanSignoffState.APPROVED,
+            human_signoffs=(HumanSignoff("gate", "approve", "reviewer", "2026-01-01", "digest"),),
+        )
+        self.assertEqual(bundle.readiness, "DRAFT_READY")
+        with self.assertRaisesRegex(ValueError, "reviewer"):
+            HumanSignoff.from_dict({"gate": "g", "decision": "d", "reviewer": "", "reviewed_at": "t", "artifact_digest": "h", "notes": ""})

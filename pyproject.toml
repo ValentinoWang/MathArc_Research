@@ -32,7 +32,7 @@ line-length = 100
 python_version = "3.10"
 strict = true
 warn_unused_ignores = true
-files = ["matharc/v02"]
+files = ["matharc/v02", "matharc/publication"]
 
 [[tool.mypy.overrides]]
 # z3-solver ships no type stubs and is an optional extra that may be absent

@@ -11,7 +11,7 @@ from ..v02.review_bundle import ReviewBundle, ReviewBundleError
 from ..v02.workspace import ResearchWorkspace
 from ..v02.schema import digest_json
 from .claim_map import check_bidirectional_claims, parse_claim_map, parse_latex_claims
-from .latex import bibliography_errors, compile_latex
+from .latex import bibliography_errors, collect_latex_sources, compile_latex
 from .models import PublicationBundle
 
 
@@ -42,7 +42,11 @@ def _latex_preflight(latex: Path, claim_map: Path | None, abstract: Path | None)
     errors: list[str] = []
     if not latex.is_file():
         return [f"LaTeX source is missing: {latex}"]
-    text = latex.read_text(encoding="utf-8")
+    try:
+        sources = collect_latex_sources(latex)
+    except (OSError, ValueError) as exc:
+        return [str(exc)]
+    text = "\n".join(path.read_text(encoding="utf-8") for path in sources)
     errors.extend(bibliography_errors(latex.parent))
     if re.search(r"(?:/Users/|/home/|[A-Za-z]:\\)", text):
         errors.append("LaTeX source contains an absolute local path")
@@ -52,7 +56,7 @@ def _latex_preflight(latex: Path, claim_map: Path | None, abstract: Path | None)
         errors.append("claim map is required for publication audit")
     else:
         try:
-            errors.extend(check_bidirectional_claims(parse_claim_map(claim_map), parse_latex_claims(latex)))
+            errors.extend(check_bidirectional_claims(parse_claim_map(claim_map), parse_latex_claims(latex, text=text)))
         except (OSError, ValueError, json.JSONDecodeError) as exc:
             errors.append(f"claim mapping cannot be loaded: {exc}")
     if abstract is not None:
