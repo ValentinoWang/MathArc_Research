@@ -31,14 +31,14 @@ class Gate0CapabilityContractTests(unittest.TestCase):
     def test_clean_checkout_includes_repository_registry_authority(self) -> None:
         self.assertEqual(
             self.clean_checkout._archive_paths(
-                "Projects/MathArc_Research",
+                ".",
                 (
                     ".github/workflows/matharc-research-ci.yml",
                     ".github/workflows/matharc-v02-bootstrap.yml",
                 ),
             ),
             (
-                "Projects/MathArc_Research",
+                ".",
                 "registry.yaml",
                 ".github/workflows/matharc-research-ci.yml",
                 ".github/workflows/matharc-v02-bootstrap.yml",

@@ -3,7 +3,7 @@
 - **Owning repository:** `Harness_Engineering`
 - **Canonical branch:** `main`
 - **Registry profile:** `project-matharc-research`（`extends: core`；活跃项目，不是仅档案命名空间）
-- **Namespace:** `Projects/MathArc_Research/`
+- **Namespace:** `./`
 - **Frozen engineering contract:** MathArc Research v0.1 — `100% COMPLETE`
 - **Current v0.3 implementation status:** `docs/V03_IMPLEMENTATION_STATUS.md`（此文件优先于计划文档中的历史“落地状态”文字，用于记录开发分支实际完成边界）
 - **Purpose:** research-grade mathematical discovery orchestration, evidence governance, public structured reasoning traces, Codex-powered interactive workers, and verifier-backed release gates.

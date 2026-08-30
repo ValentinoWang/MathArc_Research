@@ -137,7 +137,7 @@ class AuditFixTests(unittest.TestCase):
         repo_root = Path(__file__).resolve().parents[3]
         registry = (repo_root / "registry.yaml").read_text(encoding="utf-8")
         self.assertIn("project-matharc-research:", registry)
-        self.assertIn("project_namespace: Projects/MathArc_Research", registry)
+        self.assertIn("project_namespace: .", registry)
 
 
 if __name__ == "__main__":

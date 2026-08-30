@@ -20,7 +20,7 @@ v0.1 established proof-carrying claims, exact tools, deterministic demos, a brow
 ## Run the v0.2 demo
 
 ```bash
-cd Projects/MathArc_Research
+cd .
 python -m pip install -e ".[research]"
 python -m matharc.v02 demo --out-dir artifacts/v02-demo
 python -m matharc.v02 validate \

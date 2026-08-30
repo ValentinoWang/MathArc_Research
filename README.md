@@ -141,7 +141,7 @@ See `experiments/frankl_q6_round4/LATEST_Q6_AUDIT.md`.
 ### Local Python runtime
 
 ```bash
-cd Projects/MathArc_Research
+cd .
 python -m venv .venv
 source .venv/bin/activate
 pip install -e ".[dev,api,research]"

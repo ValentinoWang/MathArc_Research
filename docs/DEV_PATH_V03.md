@@ -40,7 +40,7 @@ make baseline
 
 ### G0-c — clean-check and versioned baseline
 
-- `make clean-ci` refuses dirty Gate 0 inputs, expands the committed `HEAD:Projects/MathArc_Research` tree plus the `HEAD:registry.yaml` authority into a temporary repository layout, creates a fresh venv, installs `.[research,dev,formal]`, then reruns `make ci-full`.
+- `make clean-ci` refuses dirty Gate 0 inputs, expands the committed `HEAD:.` tree plus the `HEAD:registry.yaml` authority into a temporary repository layout, creates a fresh venv, installs `.[research,dev,formal]`, then reruns `make ci-full`.
 - `make baseline` writes a dated baseline only after current-checkout `ci-full` and clean-checkout `clean-ci` both return zero.
 - Baseline content includes Python/z3/sympy versions, dynamic `matharc/v02/**/*.py` count, unit/skip/SMT counts, and SHA-256 digests for acceptance/certificate artifacts.
 - A large milestone is not “reproducibly green” without that committed baseline.

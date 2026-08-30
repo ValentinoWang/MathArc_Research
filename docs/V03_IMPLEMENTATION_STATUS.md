@@ -20,7 +20,7 @@ make ci-full
   - all-SMT-skipped is a hard failure
         ↓
 make clean-ci
-  - git archive of committed Projects/MathArc_Research
+  - git archive of committed .
   - fresh temporary venv
   - install .[research,dev,formal]
   - rerun make ci-full

@@ -2,7 +2,7 @@
 
 - commit: `5efbfba366cf640a59ee0de93e8b2be4c4d59e40`
 - authority: `make ci-full` + `make clean-ci`
-- clean-check source: committed `HEAD:Projects/MathArc_Research` tree + registry/workflow authorities
+- clean-check source: committed `HEAD:.` tree + registry/workflow authorities
 - clean-check bootstrap: fresh venv + `.[research,dev,formal]`
 - Python: `3.11.15`
 - z3: `5.1.0`

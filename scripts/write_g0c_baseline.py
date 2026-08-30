@@ -111,7 +111,7 @@ def main(argv: list[str] | None = None) -> int:
                 "",
                 f"- commit: `{head}`",
                 "- authority: `make ci-full` + `make clean-ci`",
-                "- clean-check source: committed `HEAD:Projects/MathArc_Research` tree + registry/workflow authorities",
+                "- clean-check source: committed `HEAD:.` tree + registry/workflow authorities",
                 "- clean-check bootstrap: fresh venv + `.[research,dev,formal]`",
                 f"- Python: `{capabilities.get('python')}`",
                 f"- z3: `{capabilities.get('z3_version')}`",

@@ -1,7 +1,7 @@
 # main 分支审计：MathArc_Research 现状、与计划文档的符合性、剩余改进空间
 
 日期：2026-08-27。
-审计对象：`main` 分支上的 `Projects/MathArc_Research`（提交
+审计对象：`main` 分支上的 `.`（提交
 `59e1964`）与开发分支 `feat/matharc-research-v0.2` 的关系。
 方法：分支拓扑核对、目录逐字节 diff、对计划文档宣称逐条 grep/读码
 复核、本地 `make ci` 全量复跑。所有结论都给出可复现的验证命令。
@@ -43,7 +43,7 @@ $ git log --oneline origin/feat/matharc-research-v0.2..origin/main
 ### 2.2 目录一致性：MathArc 树逐字节相同
 
 ```
-$ git diff origin/feat/matharc-research-v0.2 origin/main -- Projects/MathArc_Research
+$ git diff origin/feat/matharc-research-v0.2 origin/main -- .
 （空输出）
 ```
 
@@ -56,7 +56,7 @@ main 上看到的 MathArc_Research 与开发分支上的完全一致——不存
 **本地 `make ci` 是唯一权威门**），本次审计全量复跑：
 
 ```
-$ cd Projects/MathArc_Research && PATH="$PWD/.venv/bin:$PATH" make ci
+$ cd . && PATH="$PWD/.venv/bin:$PATH" make ci
 Ran 155 tests ... OK (skipped=2)      # 有 z3 的 venv 下仅跳过 2 个
 mypy --strict：0 错误 / 40 个源文件
 v0.1 / v0.2 验收脚本、Frankl 冷重放（逐字节比对）：通过
@@ -127,7 +127,7 @@ Engine 抽取为可复用包）的推迟逻辑同理。两份文档是各自独�
 
 ```
 $ grep -c matharc registry.yaml          → 0（没有注册 profile）
-$ grep -c 仅档案 Projects/MathArc_Research/PROJECT.md → 0（没有档案声明）
+$ grep -c 仅档案 ./PROJECT.md → 0（没有档案声明）
 ```
 
 MathArc 两头都没占——**自这条规则生效起就处于不合规状态**。且注意
@@ -152,7 +152,7 @@ Python 包）。当 BP 里「MathArc Engine 复用数学结构拆解」的第二
 ### 近期可执行（本次审计新发现，均为计划外）
 
 **5.1 registry §4 合规缺口**（见 §4）。推荐动作：在 `registry.yaml`
-注册 `project-matharc-research` profile（把 `Projects/MathArc_Research`
+注册 `project-matharc-research` profile（把 `.`
 作为整体单元），并在 `PROJECT.md` 记一行接线说明。工作量小时级；
 唯一需要所有者确认的是 profile 命名与是否随 core 分发。
 
@@ -222,7 +222,7 @@ F0 KillTestSpec schema（2 天）
 ### 附：本次审计的验证清单
 
 - `git log --oneline origin/feat/matharc-research-v0.2..origin/main`（拓扑）
-- `git diff origin/feat/matharc-research-v0.2 origin/main -- Projects/MathArc_Research`（逐字节一致）
+- `git diff origin/feat/matharc-research-v0.2 origin/main -- .`（逐字节一致）
 - `git show 59e1964 --stat`（治理提交内容）
 - `.github/workflows/matharc-v02-{bootstrap,materialize}.yml` 全文读取（G0-a 核实）
 - `grep -rn RouteEvaluationRecord`（0 命中）；`review.py` / `falsification.py` / `episode_distiller.py` 存在性检查（均不存在）
