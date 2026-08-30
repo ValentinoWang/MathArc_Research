@@ -10,7 +10,9 @@ HISTORICAL_MANUAL_WORKFLOWS = frozenset(
         "matharc-v02-materialize.yml",
     }
 )
-EXPECTED_WORKFLOWS = HISTORICAL_MANUAL_WORKFLOWS | {GENERIC_WORKFLOW}
+# The standalone repository owns only the generic CI workflow. Historical
+# workflows may exist in the former monorepo but are not required here.
+EXPECTED_WORKFLOWS = frozenset({GENERIC_WORKFLOW})
 AUTOMATIC_EVENTS = frozenset({"push", "pull_request"})
 
 
@@ -90,7 +92,7 @@ def evaluate_policy(workflows_dir: Path) -> tuple[str, ...]:
 
 def main() -> int:
     project_root = Path(__file__).resolve().parents[1]
-    workflows_dir = project_root.parents[1] / ".github" / "workflows"
+    workflows_dir = project_root / ".github" / "workflows"
     failures = evaluate_policy(workflows_dir)
     if failures:
         print("MATHARC WORKFLOW POLICY: FAIL")
@@ -99,7 +101,7 @@ def main() -> int:
         return 1
     print("MATHARC WORKFLOW POLICY: PASS")
     print("automatic: matharc-research-ci.yml -> make ci-full")
-    print("historical workflows: manual-only")
+    print("historical workflows: optional and manual-only when present")
     return 0
 
 
