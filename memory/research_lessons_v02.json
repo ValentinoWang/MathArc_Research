@@ -1,0 +1,103 @@
+{
+  "schema_version": "1.0",
+  "purpose": "Machine-readable seed lessons distilled from audited mathematical research conversations.",
+  "claim_boundary": "Examples identify recurring reasoning risks; they do not adjudicate the final mathematical status of any named project.",
+  "lessons": [
+    {
+      "lesson_id": "L-SCOPE-001",
+      "failure_class": "SCOPE_OVERREACH",
+      "trigger_pattern": "A local, bounded, finite-volume, truncated, or model-specific theorem is described as the full target theorem.",
+      "kill_test": "Compare every quantifier, object class, limit, and regularity assumption in the evidence with the theorem contract.",
+      "repair": "Create a separate local theorem node and an explicit bridge node for every omitted limit or universality step.",
+      "examples": ["bounded Wilson-network reconstruction versus full Yang-Mills existence", "an infinite gluing family versus every tree", "local repair exclusion versus a global no-three-in-line construction"]
+    },
+    {
+      "lesson_id": "L-FINITE-001",
+      "failure_class": "FINITE_TO_GLOBAL",
+      "trigger_pattern": "Finite enumeration or numerical agreement is used to carry a universal quantifier.",
+      "kill_test": "Construct a perturbation that vanishes on the tested range and differs immediately outside it.",
+      "repair": "Add induction, compactness, finite-basis, classification, or another explicit local-to-global theorem.",
+      "examples": ["checked grid neighborhoods", "small-order graceful certificates", "finite parameter sweeps"]
+    },
+    {
+      "lesson_id": "L-DEPENDENCY-001",
+      "failure_class": "DEPENDENCY_GAP",
+      "trigger_pattern": "The manuscript says 'standard', 'therefore', or 'technical details remain' at a load-bearing transition.",
+      "kill_test": "Turn the transition into a standalone quantified claim and attempt to state all inputs and outputs.",
+      "repair": "Insert the missing claim into the DAG and block all descendants until it is proved.",
+      "examples": ["corner equation after a quotient lifting", "infinite-volume bridge", "completion or regularity bridge"]
+    },
+    {
+      "lesson_id": "L-DEFINITION-001",
+      "failure_class": "DEFINITION_DRIFT",
+      "trigger_pattern": "Weak and strict definitions, or historical and current definitions, are mixed during a proof.",
+      "kill_test": "Version every definition and locate the first proof line using a property absent from the stated version.",
+      "repair": "Create a new claim under the stronger definition or prove the missing implication.",
+      "examples": ["initial versus strictly initial Lie subgroup", "weak versus strong solution", "CIA before and after completion"]
+    },
+    {
+      "lesson_id": "L-TYPE-001",
+      "failure_class": "TYPE_OR_DOMAIN_ERROR",
+      "trigger_pattern": "Operators, products, limits, or derivatives are composed without a common domain and topology contract.",
+      "kill_test": "Write the domain, codomain, topology, and regularity beside every arrow in the critical formula.",
+      "repair": "Restrict domains, change target spaces, or prove continuity/closability before composition.",
+      "examples": ["L2 differentiation landing in a dual space", "non-complete convolution products", "chartwise constructions without overlap compatibility"]
+    },
+    {
+      "lesson_id": "L-HIDDEN-001",
+      "failure_class": "HIDDEN_ASSUMPTION",
+      "trigger_pattern": "Symmetry, monotonicity, linearity, smoothness, or uniformity appears in the proof but not in the theorem statement.",
+      "kill_test": "Remove one property at a time and search the smallest counterexample.",
+      "repair": "Expose the property as an assumption or replace the proof mechanism.",
+      "examples": ["symmetric star layers used for arbitrary components", "linearity omitted from a transport theorem", "uncontrolled higher-order remainders"]
+    },
+    {
+      "lesson_id": "L-INDEPENDENCE-001",
+      "failure_class": "NON_INDEPENDENT_CHECKER",
+      "trigger_pattern": "The certificate generator and verifier share code, normalization, or assumptions.",
+      "kill_test": "Tamper with labels, hashes, edges, signs, ranks, and parameters; then rederive from the raw instance with a second implementation.",
+      "repair": "Assign distinct independence groups and require two groups for critical claims.",
+      "examples": ["SAT certificate and parser", "combinatorial construction and collinearity checker", "symbolic identity and coefficient audit"]
+    },
+    {
+      "lesson_id": "L-LITERATURE-001",
+      "failure_class": "LITERATURE_MISMATCH",
+      "trigger_pattern": "Novelty or open status is inferred from memory, abstracts, or a secondary source.",
+      "kill_test": "Inspect the primary source version, exact problem number, definition, and cited prior art.",
+      "repair": "Store source claims as evidence with version, section, quotation range, and access date.",
+      "examples": ["counterexample novelty", "historical age of an open problem", "definition used by a current monograph"]
+    },
+    {
+      "lesson_id": "L-ROUTE-001",
+      "failure_class": "ROUTE_DUPLICATION",
+      "trigger_pattern": "Multiple agents produce routes with different prose but the same invariant and proof calculus.",
+      "kill_test": "Normalize mechanism signatures and ask what outcome distinguishes one route from another.",
+      "repair": "Merge duplicates and open a route with a genuinely different obstruction, representation, or formalism.",
+      "examples": ["renamed induction routes", "equivalent component-gluing parameterizations", "same solver with different prompts"]
+    },
+    {
+      "lesson_id": "L-PROGRESS-001",
+      "failure_class": "SCOPE_OVERREACH",
+      "trigger_pattern": "A weighted proof-progress percentage is interpreted as success probability or completed theorem status.",
+      "kill_test": "Check target_logical_closure and the list of open critical obligations.",
+      "repair": "Display release state and metric semantics beside every percentage.",
+      "examples": ["graceful-tree harness progress", "no-three-in-line local proof-chain progress"]
+    },
+    {
+      "lesson_id": "L-ABSTRACTION-001",
+      "failure_class": "HIDDEN_ASSUMPTION",
+      "trigger_pattern": "A sophisticated structure is added because it is suggestive, without closing a proof obligation.",
+      "kill_test": "Delete the structure and identify the exact proof line that becomes impossible.",
+      "repair": "Keep it exploratory until it yields a typed construction, invariant, obstruction, or falsifiable consequence.",
+      "examples": ["category/topos language without a needed universal property", "Hopf structure unrelated to the main convolution application", "quantum-group UV intuition without reconstruction bridges"]
+    },
+    {
+      "lesson_id": "L-SUCCESS-001",
+      "failure_class": "UNKNOWN",
+      "trigger_pattern": "A broad problem can be compressed to one exact obstruction or finite certificate contract.",
+      "kill_test": "Verify that solving the compressed object really reconnects to every parent edge in the DAG.",
+      "repair": "Promote the compression as a standalone theorem and retain the reconnecting bridge as an explicit obligation.",
+      "examples": ["conflict-hypergraph transversal number", "Toeplitz displacement profile", "sigma-compact closure obstruction", "corner algebra equation"]
+    }
+  ]
+}

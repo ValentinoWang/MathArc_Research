@@ -1,0 +1,67 @@
+{
+  "schema_version": "1.0",
+  "claim_boundary": "Registry entries describe integration and evaluation targets. They are not benchmark results and do not establish superiority.",
+  "systems": [
+    {
+      "name": "Math Research Agent",
+      "repository": "https://github.com/Shengrong-Wu/Math-Research-Agent",
+      "role_in_matharc": "natural-language research baseline and proposal worker",
+      "adapter_status": "planned",
+      "measured": false,
+      "required_adapter_outputs": [
+        "structured public reasoning",
+        "claim proposals",
+        "tool requests",
+        "explicit claim boundary"
+      ]
+    },
+    {
+      "name": "LeanDojo",
+      "repository": "https://github.com/lean-dojo/LeanDojo",
+      "role_in_matharc": "formal proof environment, theorem retrieval, and reproducible Lean interaction",
+      "adapter_status": "planned",
+      "measured": false,
+      "required_adapter_outputs": [
+        "pinned Lean and mathlib revisions",
+        "proof-state transcript",
+        "kernel-checked artifact",
+        "cold-replay command"
+      ]
+    },
+    {
+      "name": "LeanStar",
+      "repository": "https://github.com/facebookresearch/LeanStar",
+      "role_in_matharc": "formal proof-search route worker",
+      "adapter_status": "planned",
+      "measured": false,
+      "required_adapter_outputs": [
+        "search-tree statistics",
+        "final proof term",
+        "budget accounting",
+        "cold-replay command"
+      ]
+    },
+    {
+      "name": "PutnamBench",
+      "repository": "https://github.com/trishullab/PutnamBench",
+      "role_in_matharc": "formal mathematics evaluation suite",
+      "adapter_status": "planned",
+      "measured": false,
+      "required_adapter_outputs": [
+        "pinned case manifest",
+        "paired seeds and budgets",
+        "formal verification result",
+        "artifact digest"
+      ]
+    }
+  ],
+  "qualification_policy": {
+    "minimum_paired_runs": 30,
+    "same_suite_version": true,
+    "equal_budget": true,
+    "cold_replay_required": true,
+    "candidate_false_promotions_allowed": 0,
+    "primary_metric_confidence_lower_bound_must_be_positive": true,
+    "universal_superiority_claim": "forbidden"
+  }
+}

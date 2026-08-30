@@ -1,0 +1,65 @@
+{
+  "schema_version": 2,
+  "contract_id": "MATHARC-RESEARCH-V0.1",
+  "status_date": "2026-08-23",
+  "status": "ACCEPTED",
+  "completion_target_percent": 100.0,
+  "accepted_completion_percent": 100.0,
+  "acceptance_command": "python scripts/v0_1_acceptance.py",
+  "acceptance_summary": {
+    "codex_web_targeted_tests": "9/9 PASS",
+    "frozen_contract_gates": "12/12 PASS",
+    "local_acceptance_state": "ACCEPT",
+    "temporary_transport_artifacts": "REMOVED",
+    "canonical_branch": "feat/matharc-research-v0.1"
+  },
+  "gates": [
+    {"id": "scope-trust-lattice", "required": true, "evidence": ["matharc/models.py", "matharc/engine.py", "tests/test_core.py"]},
+    {"id": "claim-dag-and-invalidation", "required": true, "evidence": ["matharc/engine.py", "tests/test_core.py"]},
+    {"id": "content-addressed-evidence-and-replay", "required": true, "evidence": ["matharc/hashing.py", "matharc/tools.py", "matharc/engine.py"]},
+    {"id": "independent-reconstruction", "required": true, "evidence": ["matharc/demo.py", "matharc/metrics.py", "tests/test_core.py"]},
+    {"id": "codex-official-cli-runtime", "required": true, "evidence": ["matharc/codex_runtime.py", "tests/test_codex_runtime.py"]},
+    {"id": "codex-proposal-only-boundary", "required": true, "evidence": ["matharc/codex_runtime.py", "matharc/agent_service.py", "tests/test_codex_runtime.py", "tests/test_codex_dashboard.py"]},
+    {"id": "streaming-web-agent-interaction", "required": true, "evidence": ["matharc/api.py", "matharc/dashboard.py", "tests/test_codex_api.py"]},
+    {"id": "research-console-product-surface", "required": true, "evidence": ["matharc/dashboard.py", "tests/test_codex_dashboard.py", "tests/test_codex_api.py"]},
+    {
+      "id": "frankl-q6-proof-process-lessons",
+      "required": true,
+      "evidence": [
+        "experiments/frankl_q6_round4/LATEST_Q6_AUDIT.md",
+        "docs/proof-process-lessons-2026-08-23.md",
+        "docs/v0.1-engineering-contract-acceptance.md",
+        "docs/codex-agent-runtime.md"
+      ]
+    },
+    {"id": "tests-demo-validation-and-zero-debt", "required": true, "evidence": ["tests/", "matharc/demo.py", "matharc/validator.py", "scripts/v0_1_acceptance.py"]},
+    {
+      "id": "docker-and-ci",
+      "required": true,
+      "evidence": ["Dockerfile", "docker-compose.yml", "../../.github/workflows/matharc-research-ci.yml"]
+    },
+    {
+      "id": "benchmark-and-superiority-claim-gate",
+      "required": true,
+      "evidence": [
+        "benchmarks/benchmark-plan.json",
+        "benchmarks/framework-capability-matrix.json",
+        "benchmarks/engineering-progress.json"
+      ]
+    }
+  ],
+  "claim_boundaries": {
+    "v0.1_engineering_contract": "ACCEPTED at 100% when every required engineering gate passes",
+    "demo_theorem": "binary theorem closure may be 1/1 after exact evidence and independent reconstruction",
+    "frankl_q6_special_case": "internally machine-checked candidate theorem for the frozen q6 contract",
+    "full_frankl_conjecture": "INCONCLUSIVE",
+    "external_prover_superiority": "BLOCKED_PENDING_MATCHED_EMPIRICAL_REPLAY",
+    "codex_output": "proposal evidence with no mathematical acceptance authority"
+  },
+  "non_goals": [
+    "prove every open conjecture",
+    "treat private chain-of-thought as proof",
+    "claim theorem priority for the nine-element Frankl special case",
+    "claim higher pass@k than every external prover without a matched protocol"
+  ]
+}

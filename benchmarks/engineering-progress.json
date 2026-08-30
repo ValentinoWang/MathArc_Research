@@ -1,0 +1,75 @@
+{
+  "schema_version": 2,
+  "status_date": "2026-08-23",
+  "contract": "MathArc Research v0.1 frozen engineering contract",
+  "metric_semantics": "completion of frozen v0.1 engineering deliverables; not theorem probability and not an external leaderboard score",
+  "weighted_completion_percent": 100.0,
+  "acceptance_command": "python scripts/v0_1_acceptance.py",
+  "stages": [
+    {"id": "audit", "name": "research audit and protocol", "weight": 15, "completion": 100},
+    {"id": "runtime", "name": "core proof and evidence runtime", "weight": 25, "completion": 100},
+    {"id": "tools", "name": "tools and proof-carrying research runs", "weight": 15, "completion": 100},
+    {"id": "product", "name": "interactive dashboard API and Codex agent surface", "weight": 15, "completion": 100},
+    {"id": "release", "name": "tests replay Docker CI and release engineering", "weight": 10, "completion": 100},
+    {"id": "benchmark", "name": "benchmark contract reliability fixtures and claim-safety gate", "weight": 20, "completion": 100}
+  ],
+  "binary_claims": {
+    "included_demo_theorem": "1/1 MACHINE_VERIFIED",
+    "frankl_q6_exactly_two_small_parts": "1/1",
+    "frankl_q6_exactly_three_small_parts": "1/1",
+    "frankl_q6_full_bridge": "1/1 for the frozen minimum-three-set six-outside-element contract",
+    "global_frankl_conjecture": "0/1 INCONCLUSIVE",
+    "external_all-prover_superiority": "0/1 not claimed"
+  },
+  "codex_runtime": {
+    "official_cli_adapter": "complete",
+    "structured_output_schema": "complete",
+    "jsonl_event_stream": "complete",
+    "thread_resume": "complete",
+    "public_reasoning_summary": "complete",
+    "command_file_mcp_and_usage_events": "complete",
+    "proposal_only_acceptance_boundary": "complete",
+    "session_ledger": "complete"
+  },
+  "web_product": {
+    "three_column_research_console": "complete",
+    "svg_claim_dag": "complete",
+    "evidence_tool_failure_and_trace_views": "complete",
+    "live_sse_agent_interaction": "complete",
+    "read_only_and_explicit_workspace_write_modes": "complete",
+    "structured_final_answer_cards": "complete",
+    "public_trace_export": "complete",
+    "responsive_layout": "complete"
+  },
+  "proof_process_lessons_absorbed": [
+    "compressed state-space closure requires an uncompressed audit or a proved compression map",
+    "special-case theorem closure and global conjecture closure remain separate binary states",
+    "byte-identical cold replay is a release artifact",
+    "generator and checker independence is visible in the evidence ledger",
+    "exceptional cases remain regression objects instead of being hidden by aggregate bounds",
+    "model output is proposal evidence until verifier and dependency gates accept it"
+  ],
+  "new_exact_results": [
+    {
+      "theorem_id": "FRANKL-Q6-MINIMUM-THREE-SET-COMPLETE-BRIDGE",
+      "scope": "minimum nonempty member size three and exactly six outside elements",
+      "internal_status": "MACHINE_CHECKED_CANDIDATE_THEOREM",
+      "full_frankl_status": "INCONCLUSIVE",
+      "trace_family_classes": 90,
+      "high_layer_geometries": 111820,
+      "restricted_l7_collections": 296010,
+      "dangerous_three_small_geometries": 15120,
+      "low_cost_positive_core_geometries": 11625,
+      "residual_trace_type_multisets": 244068,
+      "cold_replay_sha256": "f98e52d7ce76c131ae5b7db55114d25616b555887eae059591b67ae6ab5f2719"
+    }
+  ],
+  "external_superiority_claim": "BLOCKED_PENDING_MATCHED_EMPIRICAL_REPLAY",
+  "external_benchmark_note": "The benchmark harness, protocol, fixtures, reporting schema and dominance gate are complete for v0.1. Comparative empirical runs against external provers are a v0.2 campaign and are required before any market-leading pass@k claim.",
+  "next_version_frontier": [
+    "clean-room Frankl q6 verifier reimplementation and human combinatorics audit",
+    "matched-budget external prover leaderboard",
+    "minimum-three-set Frankl program for q>=7",
+    "multi-user authenticated remote execution isolation"
+  ]
+}

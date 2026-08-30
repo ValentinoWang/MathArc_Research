@@ -1,0 +1,5 @@
+{
+  "claim": "(n+1)^2 = n^2 + 1 for all natural n",
+  "counterexample": {"n": 1, "lhs": 4, "rhs": 2},
+  "classification": "FALSE_ALGEBRAIC_BRIDGE"
+}

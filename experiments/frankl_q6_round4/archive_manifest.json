@@ -1,0 +1,30 @@
+{
+  "aggregate_record": {
+    "path": "results/q6-round4-final.json",
+    "sha256": "cba7336cf06a86ba19db07b4d4926037000d4019f23698a1c35fca8b4f880890"
+  },
+  "claim_boundary": "The checked-in aggregate is a historical claim record, not current full-cold-replay evidence.",
+  "required_component_results": [
+    "results/q6-at-most-three-small.json",
+    "results/q6-exact4.json",
+    "results/q6-exact5.json",
+    "results/q6-exact6.json",
+    "results/q6-exact7-nonfull.json",
+    "results/q6-exact7-full.json",
+    "results/q6-positive-core-hmin.json",
+    "results/q6-many-small.json"
+  ],
+  "required_rebuild_sources": [
+    "verifier/verify_positive_core_hmin.cpp",
+    "verifier/verify_q6_at_most_three_small.py",
+    "verifier/verify_q6_exact4.cpp",
+    "verifier/verify_q6_exact5_card.cpp",
+    "verifier/verify_q6_exact6_card.cpp",
+    "verifier/verify_q6_exact7_pair.cpp",
+    "verifier/verify_q6_k7_full_cases.py",
+    "verifier/verify_q6_many_small.py",
+    "verifier/aggregate_q6.py"
+  ],
+  "schema": "matharc.frankl-q6-round4-archive.1",
+  "status": "HISTORICAL_ARCHIVE_ONLY"
+}

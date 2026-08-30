@@ -1,0 +1,111 @@
+name: MathArc Research CI
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - "**"
+      - ".github/workflows/**"
+      - ".pre-commit-config.yaml"
+  pull_request:
+    paths:
+      - "**"
+      - ".github/workflows/**"
+      - ".pre-commit-config.yaml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: matharc-research-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  quality_and_acceptance:
+    name: Python ${{ matrix.python-version }} quality and acceptance
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: ["3.10", "3.12"]
+    defaults:
+      run:
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+          cache: pip
+          cache-dependency-path: pyproject.toml
+
+      - name: Install MathArc Research with authoritative Gate 0 extras
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -e ".[research,dev,formal]"
+
+      - name: Lint GitHub Actions workflows
+        if: ${{ matrix.python-version == '3.12' }}
+        uses: docker://rhysd/actionlint:1.7.7
+
+      - name: Compile package, tests, scripts and examples
+        run: python -m compileall -q matharc tests scripts examples
+
+      - name: Run authoritative project Gate 0
+        run: make ci-full PYTHON=python
+
+      - name: Cold-replay every v0.2 exact demo check
+        if: ${{ matrix.python-version == '3.12' }}
+        run: |
+          python examples/research_trace_v02.py --check finite-leap
+          python examples/research_trace_v02.py --check base
+          python examples/research_trace_v02.py --check step-a
+          python examples/research_trace_v02.py --check step-b
+          python examples/research_trace_v02.py --check induction-certificate
+
+      - name: Rebuild Frankl q6 exactly-two C++ certificate
+        if: ${{ matrix.python-version == '3.12' }}
+        run: |
+          g++ -O3 -std=c++20 verifiers/q6_two_small_core_bound.cpp \
+            -o /tmp/q6_two_small_core_bound
+          /tmp/q6_two_small_core_bound \
+            > artifacts/frankl-q6-two-small-cpp.json
+          python -c "import json; assert json.load(open('artifacts/frankl-q6-two-small-cpp.json')) == json.load(open('benchmarks/certificates/frankl-q6-two-small-cpp.json'))"
+
+      - name: Rebuild Frankl q6 exactly-three NumPy certificate
+        if: ${{ matrix.python-version == '3.12' }}
+        run: |
+          python verifiers/q6_three_small_numpy.py \
+            --output artifacts/frankl-q6-three-small-python.json
+          python -c "import json; assert json.load(open('artifacts/frankl-q6-three-small-python.json')) == json.load(open('benchmarks/certificates/frankl-q6-three-small-python.json'))"
+
+      - name: Rebuild Frankl q6 exactly-three C++ certificate
+        if: ${{ matrix.python-version == '3.12' }}
+        run: |
+          g++ -O3 -std=c++20 verifiers/q6_three_small_core_bound.cpp \
+            -o /tmp/q6_three_small_core_bound
+          /tmp/q6_three_small_core_bound \
+            > artifacts/frankl-q6-three-small-cpp.json
+          python -c "import json; assert json.load(open('artifacts/frankl-q6-three-small-cpp.json')) == json.load(open('benchmarks/certificates/frankl-q6-three-small-cpp.json'))"
+
+      - name: Upload acceptance evidence and test capability summary
+        if: ${{ matrix.python-version == '3.12' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: matharc-gate0-acceptance
+          path: |
+            artifacts/ci/capabilities.json
+            artifacts/ci/unittest-summary.json
+            artifacts/v0.1-acceptance.json
+            artifacts/v0.2-acceptance.json
+            artifacts/demo/run.json
+            artifacts/v02-demo/research-trace.json
+            artifacts/frankl-q6-two-small-python.json
+            artifacts/frankl-q6-two-small-cpp.json
+            artifacts/frankl-q6-three-small-python.json
+            artifacts/frankl-q6-three-small-cpp.json
+          if-no-files-found: error

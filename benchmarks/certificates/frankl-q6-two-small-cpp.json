@@ -1,0 +1,52 @@
+{
+  "schema_version": 1,
+  "core_count": 42,
+  "selected_positive_cores": 7,
+  "results": [
+{
+  "geometry": "nested_singleton_pair",
+  "negative_below_threshold_found": false,
+  "threshold": 0,
+  "certified_lower_bound": 0,
+  "witness_margin": 0,
+  "witness_t": [3, 3],
+  "witness_cores": [7, 11, 13, 14, 15, 23, 31],
+  "nodes_by_depth": [1, 36, 666, 3393, 2877, 1411, 397, 54],
+  "pruned_by_depth": [0, 0, 461, 3098, 2647, 1329, 385, 54]
+},
+{
+  "geometry": "disjoint_singleton_pair",
+  "negative_below_threshold_found": false,
+  "threshold": 0,
+  "certified_lower_bound": 0,
+  "witness_margin": 0,
+  "witness_t": [3, 3],
+  "witness_cores": [7, 11, 13, 14, 15, 45, 47],
+  "nodes_by_depth": [1, 36, 661, 3364, 2635, 1152, 281, 30],
+  "pruned_by_depth": [0, 2, 465, 3120, 2493, 1107, 275, 30]
+},
+{
+  "geometry": "intersecting_pairs",
+  "negative_below_threshold_found": false,
+  "threshold": 6,
+  "certified_lower_bound": 6,
+  "witness_margin": 6,
+  "witness_t": [3, 3],
+  "witness_cores": [7, 11, 13, 14, 15, 23, 31],
+  "nodes_by_depth": [1, 36, 666, 3108, 2129, 959, 257, 30],
+  "pruned_by_depth": [0, 0, 482, 2901, 2018, 920, 251, 30]
+},
+{
+  "geometry": "disjoint_pairs",
+  "negative_below_threshold_found": false,
+  "threshold": 6,
+  "certified_lower_bound": 6,
+  "witness_margin": 6,
+  "witness_t": [3, 3],
+  "witness_cores": [7, 11, 13, 14, 15, 23, 31],
+  "nodes_by_depth": [1, 36, 666, 2962, 2541, 1083, 207, 11],
+  "pruned_by_depth": [0, 0, 500, 2777, 2442, 1060, 205, 11]
+}
+  ],
+  "status": "PASS"
+}

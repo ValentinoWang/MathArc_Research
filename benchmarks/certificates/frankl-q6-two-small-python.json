@@ -1,0 +1,102 @@
+{
+  "certified_global_lower_bound_for_subcase": 0,
+  "claim": "In the minimum-three-set q=6 trace-fiber setup, if exactly two small outside parts occur and all three elements of S are below half, then B_6 >= 0.",
+  "claim_boundary": "This closes exactly two small outside parts. It does not close three-or-more small parts, the full q=6 bridge, or Frankl's conjecture.",
+  "geometry_classification": {
+    "remaining_orbits": [
+      "nested_singleton_pair",
+      "disjoint_singleton_pair",
+      "intersecting_pairs",
+      "disjoint_pairs"
+    ],
+    "two_singletons": {
+      "possible_with_exactly_two_small_parts": false,
+      "reason": "The union of two distinct singleton outside parts is a pair, and cross-fiber union closure makes that pair a third small part."
+    }
+  },
+  "new_residual": "Any q=6 outside-balance counterexample must have at least three small outside parts.",
+  "positive_core_count": 42,
+  "positive_deficit_count": {
+    "derivation": "D>=3, singleton deficit<=-3, pair deficit<=-2",
+    "pair_pair_minimum": 7,
+    "selected_for_coarse_bound": 7,
+    "singleton_pair_minimum": 8
+  },
+  "results": [
+    {
+      "counterexample_below_minimum": null,
+      "exact_minimum": 0,
+      "geometry": "nested_singleton_pair",
+      "nodes_by_depth": [1, 36, 666, 3393, 2877, 1411, 397, 54],
+      "outside_parts": [1, 3],
+      "outside_sizes": [1, 2],
+      "pruned_by_depth": [0, 0, 461, 3098, 2647, 1329, 385, 54],
+      "status": "PASS",
+      "trace_size_ranges": [[1, 4], [1, 7]],
+      "witness_cores": [7, 11, 13, 14, 15, 23, 31],
+      "witness_margin": 0,
+      "witness_t": [3, 3]
+    },
+    {
+      "counterexample_below_minimum": null,
+      "exact_minimum": 0,
+      "geometry": "disjoint_singleton_pair",
+      "nodes_by_depth": [1, 36, 661, 3364, 2635, 1152, 281, 30],
+      "outside_parts": [1, 6],
+      "outside_sizes": [1, 2],
+      "pruned_by_depth": [0, 2, 465, 3120, 2493, 1107, 275, 30],
+      "status": "PASS",
+      "trace_size_ranges": [[1, 4], [1, 7]],
+      "witness_cores": [7, 11, 13, 14, 15, 45, 47],
+      "witness_margin": 0,
+      "witness_t": [3, 3]
+    },
+    {
+      "counterexample_below_minimum": null,
+      "exact_minimum": 6,
+      "geometry": "intersecting_pairs",
+      "nodes_by_depth": [1, 36, 666, 3108, 2129, 959, 257, 30],
+      "outside_parts": [3, 5],
+      "outside_sizes": [2, 2],
+      "pruned_by_depth": [0, 0, 482, 2901, 2018, 920, 251, 30],
+      "status": "PASS",
+      "trace_size_ranges": [[1, 7], [1, 7]],
+      "witness_cores": [7, 11, 13, 14, 15, 23, 31],
+      "witness_margin": 6,
+      "witness_t": [3, 3]
+    },
+    {
+      "counterexample_below_minimum": null,
+      "exact_minimum": 6,
+      "geometry": "disjoint_pairs",
+      "nodes_by_depth": [1, 36, 666, 2962, 2541, 1083, 207, 11],
+      "outside_parts": [3, 12],
+      "outside_sizes": [2, 2],
+      "pruned_by_depth": [0, 0, 500, 2777, 2442, 1060, 205, 11],
+      "status": "PASS",
+      "trace_size_ranges": [[1, 7], [1, 7]],
+      "witness_cores": [7, 11, 13, 14, 15, 23, 31],
+      "witness_margin": 6,
+      "witness_t": [3, 3]
+    }
+  ],
+  "schema_version": 1,
+  "status": "PASS",
+  "theorem_id": "FRANKL-Q6-EXACTLY-TWO-SMALL-OUTSIDE-PARTS",
+  "trace_profiles": {
+    "pair": {
+      "family_count": 45,
+      "maximum_deficit": -2,
+      "maximum_size": 7,
+      "outside_size": 2,
+      "profiles": [[1, -3], [2, -4], [2, -2], [3, -5], [3, -3], [4, -6], [4, -4], [4, -2], [5, -5], [5, -3], [6, -4], [7, -3]]
+    },
+    "singleton": {
+      "family_count": 8,
+      "maximum_deficit": -3,
+      "maximum_size": 4,
+      "outside_size": 1,
+      "profiles": [[1, -3], [2, -4], [3, -5], [4, -6]]
+    }
+  }
+}

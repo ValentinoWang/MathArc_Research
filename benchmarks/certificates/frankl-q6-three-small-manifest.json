@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "status_date": "2026-08-23",
+  "theorem_id": "FRANKL-Q6-EXACTLY-THREE-SMALL-OUTSIDE-PARTS",
+  "status": "PASS",
+  "claim_boundary": "Closes exactly three small outside parts only; the full q=6 bridge and global Frankl conjecture remain open.",
+  "artifacts": {
+    "numpy_verifier_source": {
+      "path": "../../verifiers/q6_three_small_numpy.py",
+      "sha256": "67b789330148d1075c116a2daaaeafc3ed255634021bfd3fa350ffaa6c3ebc9e"
+    },
+    "cpp_verifier_source": {
+      "path": "../../verifiers/q6_three_small_core_bound.cpp",
+      "sha256": "8c7419cda82f58486130583c444a630dd021a754710f361c8b060917bbf3fc6b"
+    },
+    "numpy_certificate": {
+      "path": "frankl-q6-three-small-python.json",
+      "sha256": "e5525a429c0f11d40c53868b562c34319889caac6882b9ea94c174672b5014ef"
+    },
+    "cpp_certificate": {
+      "path": "frankl-q6-three-small-cpp.json",
+      "sha256": "6ed2d50edee009b1b0432c74b4baf21b2b36e52f11af877d4cdfefd29d5ea23d"
+    }
+  },
+  "orbit_count": 11,
+  "exact_minima": [0, 6, 6, 6, 6, 6, 6, 6, 6, 6, 24],
+  "new_residual": "Any q=6 outside-balance counterexample must have at least four small outside parts."
+}

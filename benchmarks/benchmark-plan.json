@@ -1,0 +1,32 @@
+{
+  "schema_version": 1,
+  "status_date": "2026-08-23",
+  "claim_policy": "No superiority claim before controlled, independently replayed evaluation.",
+  "tiers": [
+    {
+      "id": "B0",
+      "name": "Harness integrity",
+      "targets": ["scope guard", "DAG invalidation", "evidence hashing", "replay metadata", "public trace completeness"],
+      "acceptance": "all repository tests pass"
+    },
+    {
+      "id": "B1",
+      "name": "Formal theorem proving",
+      "datasets": ["miniF2F", "selected Lean repository theorems"],
+      "metrics": ["kernel pass@1", "pass@k", "success per compute", "replay rate"]
+    },
+    {
+      "id": "B2",
+      "name": "Proof repair and falsification",
+      "datasets": ["mutated proofs", "hidden-assumption fixtures", "statement-drift fixtures"],
+      "metrics": ["false-accept rate", "counterexample yield", "invalidation completeness"]
+    },
+    {
+      "id": "B3",
+      "name": "Research programs",
+      "datasets": ["Frankl restricted classes", "graceful-tree expansion lemmas", "ES anchored subfamilies", "finite obstruction search"],
+      "metrics": ["new verified claims", "critical obligation closure", "certificate debt", "expert acceptance"]
+    }
+  ],
+  "controls": ["same theorem split", "same timeout", "same compute budget", "same Lean version", "same retrieval corpus", "same verifier"]
+}

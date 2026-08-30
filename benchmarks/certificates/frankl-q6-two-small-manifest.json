@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "status_date": "2026-08-23",
+  "theorem_id": "FRANKL-Q6-EXACTLY-TWO-SMALL-OUTSIDE-PARTS",
+  "status": "PASS",
+  "claim_boundary": "Closes exactly two small outside parts only; the full q=6 bridge and global Frankl conjecture remain open.",
+  "artifacts": {
+    "python_certificate": {
+      "path": "frankl-q6-two-small-python.json",
+      "sha256": "445c4743f45e71624a1c6e9b8b6484a77fa80b63c69f7aa771bdb3e38d6aadb4"
+    },
+    "cpp_source": {
+      "path": "../../verifiers/q6_two_small_core_bound.cpp",
+      "sha256": "db9ce4479cf2351c0f769486f56d974a81a15c1f7f220bc270c147a3c672650d"
+    },
+    "cpp_certificate": {
+      "path": "frankl-q6-two-small-cpp.json",
+      "sha256": "d679aa77ffdf6bc29c52f00b4ca05f3a0d85b9806d155fa3c0671c23b56b5a30"
+    }
+  },
+  "exact_minima": {
+    "nested_singleton_pair": 0,
+    "disjoint_singleton_pair": 0,
+    "intersecting_pairs": 6,
+    "disjoint_pairs": 6
+  },
+  "new_residual": "Any q=6 outside-balance counterexample must have at least three small outside parts."
+}

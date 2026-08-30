@@ -1,0 +1,1649 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MathArc 核验台</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;700&family=Noto+Serif+SC:wght@500;700&family=JetBrains+Mono:wght@400;600&display=swap">
+<style>
+/* ============ tokens: light is the base palette ============ */
+:root {
+  --ground: #F4F7F6;
+  --surface: #FFFFFF;
+  --surface-2: #EDF2F0;
+  --ink: #1C2B2D;
+  --muted: #5E7173;
+  --line: #D5DEDC;
+  --accent: #0F6B62;
+  --accent-strong: #0A544D;
+  --accent-soft: #E2EFEC;
+  --ok: #2E7D4F;       --ok-soft: #E3F0E8;
+  --gap: #B07818;      --gap-soft: #F6EDDA;
+  --err: #B3362E;      --err-soft: #F6E3E1;
+  --skip: #6B7280;     --skip-soft: #E9ECEF;
+  --hash: #46605D;
+  --focus: #0F6B62;
+  --scrim: rgba(16, 28, 28, .45);
+  --shadow: 0 1px 3px rgba(28,43,45,.08), 0 4px 16px rgba(28,43,45,.06);
+  --serif: "Noto Serif SC", "Songti SC", "SimSun", serif;
+  --sans: "Noto Sans SC", "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SF Mono", Consolas, monospace;
+  --topbar-h: 54px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ground: #10191A;
+    --surface: #172325;
+    --surface-2: #1D2C2E;
+    --ink: #E4ECEA;
+    --muted: #93A6A4;
+    --line: #2C3E40;
+    --accent: #4FB3A5;
+    --accent-strong: #6FCABB;
+    --accent-soft: #163A36;
+    --ok: #62B385;       --ok-soft: #17301F;
+    --gap: #D9A64A;      --gap-soft: #3A2E14;
+    --err: #E07A6F;      --err-soft: #3D1F1C;
+    --skip: #9AA3AD;     --skip-soft: #262B31;
+    --hash: #8FB4AE;
+    --focus: #4FB3A5;
+    --scrim: rgba(0, 0, 0, .6);
+    --shadow: 0 1px 3px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+  }
+}
+:root[data-theme="dark"] {
+  --ground: #10191A;
+  --surface: #172325;
+  --surface-2: #1D2C2E;
+  --ink: #E4ECEA;
+  --muted: #93A6A4;
+  --line: #2C3E40;
+  --accent: #4FB3A5;
+  --accent-strong: #6FCABB;
+  --accent-soft: #163A36;
+  --ok: #62B385;       --ok-soft: #17301F;
+  --gap: #D9A64A;      --gap-soft: #3A2E14;
+  --err: #E07A6F;      --err-soft: #3D1F1C;
+  --skip: #9AA3AD;     --skip-soft: #262B31;
+  --hash: #8FB4AE;
+  --focus: #4FB3A5;
+  --scrim: rgba(0, 0, 0, .6);
+  --shadow: 0 1px 3px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3);
+}
+
+* { box-sizing: border-box; }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0;
+  background: var(--ground);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 14.5px;
+  line-height: 1.65;
+}
+button { font-family: inherit; font-size: inherit; cursor: pointer; color: inherit; }
+button:focus-visible, a:focus-visible, input:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+  outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 3px;
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition: none !important; animation: none !important; }
+}
+
+/* ============ top bar ============ */
+.topbar {
+  display: flex; align-items: center; gap: 12px;
+  height: var(--topbar-h);
+  padding: 0 16px;
+  background: var(--surface);
+  border-bottom: 1px solid var(--line);
+  position: sticky; top: 0; z-index: 30;
+}
+.iconbtn {
+  border: 1px solid var(--line); background: var(--surface-2);
+  border-radius: 7px; padding: 4px 10px; font-size: 12.5px; color: var(--muted);
+  white-space: nowrap; flex: none;
+}
+.iconbtn:hover { color: var(--accent); border-color: var(--accent); }
+#btn-queue { display: none; }
+.brand { display: flex; align-items: baseline; gap: 8px; flex: none; }
+.brand .mark {
+  font-family: var(--serif); font-weight: 700; font-size: 16.5px;
+  color: var(--accent); letter-spacing: .02em; white-space: nowrap;
+}
+.brand .sub { font-size: 11px; color: var(--muted); letter-spacing: .12em; white-space: nowrap; }
+.nowtask {
+  min-width: 0; flex: 1;
+  font-size: 13px; color: var(--muted);
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.nowtask b { color: var(--ink); font-weight: 500; }
+.miniprog {
+  flex: none; font-family: var(--mono); font-size: 12px; color: var(--accent);
+  font-weight: 600; font-variant-numeric: tabular-nums; white-space: nowrap;
+}
+.draftstate { flex: none; font-size: 11.5px; color: var(--muted); white-space: nowrap; }
+.draftstate.saved { color: var(--ok); }
+
+/* ============ shell layout (desktop-first, breakpoint at 1280) ============ */
+.shell {
+  display: grid;
+  grid-template-columns: 232px minmax(0,1fr) 292px;
+  gap: 16px;
+  max-width: 1420px;
+  margin: 0 auto;
+  padding: 16px 18px 40px;
+  align-items: start;
+}
+
+/* left rail */
+.rail {
+  position: sticky; top: calc(var(--topbar-h) + 12px);
+  max-height: calc(100dvh - var(--topbar-h) - 24px);
+  overflow-y: auto; scrollbar-width: thin;
+  display: flex; flex-direction: column; gap: 12px;
+}
+.card {
+  background: var(--surface); border: 1px solid var(--line);
+  border-radius: 10px; box-shadow: var(--shadow);
+}
+.card > .card-h {
+  padding: 9px 13px 7px;
+  font-size: 11px; font-weight: 700; letter-spacing: .14em; color: var(--muted);
+  border-bottom: 1px solid var(--line);
+}
+.queue { list-style: none; margin: 0; padding: 6px; display: flex; flex-direction: column; gap: 4px; }
+.queue button {
+  width: 100%; text-align: left; background: none; border: 1px solid transparent;
+  border-radius: 8px; padding: 8px 10px;
+  display: flex; flex-direction: column; gap: 3px;
+  transition: background .12s;
+}
+.queue button:hover { background: var(--surface-2); }
+.queue button.active { background: var(--accent-soft); border-color: var(--accent); }
+.queue .q-title { font-size: 12.5px; font-weight: 500; line-height: 1.4; }
+.queue .q-meta { display: flex; gap: 5px; align-items: center; flex-wrap: wrap; }
+.pill {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 10.5px; font-weight: 500; padding: 1px 8px; border-radius: 20px;
+  background: var(--surface-2); color: var(--muted); border: 1px solid var(--line);
+  white-space: nowrap; font-variant-numeric: tabular-nums;
+}
+.pill.ok    { background: var(--ok-soft);  color: var(--ok);  border-color: transparent; }
+.pill.gap   { background: var(--gap-soft); color: var(--gap); border-color: transparent; }
+.pill.err   { background: var(--err-soft); color: var(--err); border-color: transparent; }
+.pill.acc   { background: var(--accent-soft); color: var(--accent); border-color: transparent; }
+.reviewer { padding: 11px 13px 13px; display: flex; flex-direction: column; gap: 7px; }
+.reviewer .rv-name { font-weight: 700; font-size: 13.5px; }
+.reviewer .rv-line { font-size: 11.5px; color: var(--muted); overflow-wrap: anywhere; }
+.conflictbox {
+  padding: 8px 10px; border-radius: 8px;
+  background: var(--surface-2); border: 1px dashed var(--line);
+  display: flex; gap: 8px; align-items: flex-start; font-size: 11.5px; color: var(--muted);
+  line-height: 1.55;
+}
+.conflictbox input { margin-top: 3px; accent-color: var(--accent); flex: none; }
+.conflictbox.done { border-style: solid; border-color: var(--ok); color: var(--ink); }
+
+/* ============ main column ============ */
+.main { display: flex; flex-direction: column; gap: 14px; min-width: 0; }
+.claimhead { padding: 16px 18px 15px; }
+.claimhead .eyebrow { display: flex; flex-wrap: wrap; gap: 7px; align-items: center; margin-bottom: 9px; }
+.claimhead .cid { font-family: var(--mono); font-size: 12px; color: var(--accent); font-weight: 600; }
+.claimhead h1 {
+  font-family: var(--serif); font-weight: 700;
+  font-size: 19.5px; line-height: 1.6; margin: 0 0 8px; text-wrap: balance;
+}
+.claimhead .scopeline { font-size: 12.5px; color: var(--muted); display: flex; flex-direction: column; gap: 2px; }
+.claimhead .scopeline b { color: var(--ink); font-weight: 500; }
+.assurance { display: flex; flex-wrap: wrap; gap: 5px; margin-top: 11px; }
+.assurance .av {
+  font-size: 11px; padding: 2px 9px; border-radius: 6px;
+  background: var(--surface-2); border: 1px solid var(--line);
+}
+.assurance .av b { color: var(--muted); font-weight: 500; margin-right: 4px; }
+.assurance .label {
+  font-size: 11px; padding: 2px 10px; border-radius: 6px;
+  background: var(--accent-soft); color: var(--accent); font-weight: 700;
+}
+
+.sect > .sect-h {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  padding: 11px 18px 9px; border-bottom: 1px solid var(--line);
+}
+.sect > .sect-h h2 { font-size: 14px; font-weight: 700; margin: 0; }
+.sect > .sect-h .hint { font-size: 11.5px; color: var(--muted); margin-left: auto; }
+.collapse-h { cursor: pointer; user-select: none; }
+.collapse-h .tri { color: var(--muted); font-size: 11px; transition: transform .15s; display: inline-block; }
+.sect.open .collapse-h .tri { transform: rotate(90deg); }
+.sect .sect-body { display: none; }
+.sect.open .sect-body { display: block; }
+.sect.always .sect-body { display: block; }
+
+/* statement correspondence highlight */
+.corr {
+  margin: 13px 18px 16px; padding: 13px 15px;
+  border: 1.5px solid var(--accent); border-radius: 10px;
+  background: var(--accent-soft);
+}
+.corr .corr-tag { font-size: 11px; font-weight: 700; letter-spacing: .1em; color: var(--accent); margin-bottom: 5px; }
+.corr p { margin: 0 0 6px; font-size: 13px; }
+.corr .stmt { font-family: var(--serif); font-size: 14px; line-height: 1.8; }
+.corr .subnote { margin: 0; font-size: 12px; color: var(--muted); }
+
+/* obligation toolbar */
+.obtools {
+  display: flex; flex-wrap: wrap; gap: 6px; align-items: center;
+  padding: 10px 14px 2px;
+}
+.filterchip {
+  border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+  border-radius: 20px; padding: 2px 11px; font-size: 11.5px;
+  font-variant-numeric: tabular-nums;
+}
+.filterchip.on { background: var(--accent-soft); color: var(--accent); border-color: var(--accent); font-weight: 600; }
+.nextbtn {
+  margin-left: auto;
+  border: 1px solid var(--accent); background: var(--surface); color: var(--accent);
+  border-radius: 7px; padding: 3px 12px; font-size: 12px; font-weight: 500;
+}
+.nextbtn:hover { background: var(--accent-soft); }
+.nextbtn .k { font-family: var(--mono); font-size: 10px; opacity: .7; margin-left: 4px; }
+
+/* obligations */
+.oblist { list-style: none; margin: 0; padding: 10px 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.ob {
+  border: 1px solid var(--line); border-radius: 10px; background: var(--surface);
+  padding: 11px 13px;
+  display: grid; grid-template-columns: auto minmax(0,1fr); gap: 4px 11px;
+  transition: border-color .12s, background .12s;
+}
+.ob.hiddenrow { display: none; }
+.ob.current { border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent) inset; }
+.ob.v-ok   { background: color-mix(in srgb, var(--ok-soft) 45%, var(--surface)); }
+.ob.v-gap  { background: color-mix(in srgb, var(--gap-soft) 45%, var(--surface)); }
+.ob.v-err  { background: color-mix(in srgb, var(--err-soft) 45%, var(--surface)); }
+.ob .ob-no {
+  font-family: var(--mono); font-size: 11.5px; font-weight: 600; color: var(--muted);
+  padding-top: 2px; grid-row: span 3;
+}
+.ob .ob-text { font-size: 13.5px; line-height: 1.7; overflow-wrap: anywhere;
+  display: flex; flex-direction: column; gap: 4px; min-width: 0; }
+.ob .ob-title { font-size: 14.5px; font-weight: 700; line-height: 1.5; }
+.ob .ob-ask { color: var(--ink); }
+.ob .ob-points { margin: 2px 0 0; padding-left: 18px; display: flex; flex-direction: column; gap: 3px; }
+.ob .ob-points li { font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+.ob .ob-ref { font-size: 11.5px; color: var(--muted); font-style: italic; }
+.ob .ob-text .req {
+  font-size: 10.5px; font-weight: 500; color: var(--muted); border: 1px solid var(--line);
+  border-radius: 5px; padding: 0 6px; margin-left: 7px; white-space: nowrap; vertical-align: 2px;
+}
+.ob .ob-ev { display: flex; flex-wrap: wrap; gap: 5px; align-items: center; font-size: 11.5px; color: var(--muted); }
+.evchip {
+  border: 1px solid var(--line); background: var(--surface-2); color: var(--accent);
+  border-radius: 20px; padding: 1px 10px; font-size: 11px;
+}
+.evchip:hover { border-color: var(--accent); }
+.ob .ob-actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; align-items: center; }
+.vbtn {
+  border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+  border-radius: 7px; padding: 4px 12px; font-size: 12.5px; font-weight: 500;
+  transition: all .1s;
+}
+.vbtn:hover { border-color: var(--muted); color: var(--ink); }
+.vbtn.on-ok   { background: var(--ok);   border-color: var(--ok);   color: #fff; }
+.vbtn.on-gap  { background: var(--gap);  border-color: var(--gap);  color: #fff; }
+.vbtn.on-err  { background: var(--err);  border-color: var(--err);  color: #fff; }
+.vbtn.on-skip { background: var(--skip); border-color: var(--skip); color: #fff; }
+.vbtn .k { font-family: var(--mono); font-size: 10px; opacity: .65; margin-left: 5px; }
+.ob textarea {
+  width: 100%; margin-top: 8px; min-height: 52px; resize: vertical;
+  border: 1px solid var(--line); border-radius: 7px; padding: 8px 10px;
+  background: var(--surface); color: var(--ink);
+  font-family: var(--sans); font-size: 13px; line-height: 1.6;
+}
+.ob .note-req { font-size: 11.5px; color: var(--err); margin-top: 4px; }
+
+/* ============ evidence cards (view-model rendered) ============ */
+.evlist { padding: 12px; display: grid; gap: 10px; }
+.ev {
+  border: 1px solid var(--line); border-radius: 10px; padding: 12px 14px;
+  display: flex; flex-direction: column; gap: 7px; min-width: 0;
+}
+.ev .ev-top { display: flex; flex-wrap: wrap; gap: 6px 8px; align-items: center; min-width: 0; }
+.ev .ev-title { font-weight: 700; font-size: 13.5px; overflow-wrap: anywhere; }
+.kind { font-size: 10.5px; font-weight: 700; letter-spacing: .04em; padding: 1px 8px; border-radius: 5px; white-space: nowrap; }
+.kind.exact  { background: var(--accent-soft); color: var(--accent); }
+.kind.human  { background: var(--gap-soft);    color: var(--gap); }
+.kind.lit    { background: var(--skip-soft);   color: var(--skip); }
+.ev .ev-proves { font-size: 13px; overflow-wrap: anywhere; }
+.ev .ev-lim { font-size: 12px; color: var(--muted); overflow-wrap: anywhere; }
+.ev .ev-lim b { color: var(--ink); font-weight: 500; }
+.ev .warnband {
+  font-size: 11.5px; color: var(--gap); background: var(--gap-soft);
+  border-radius: 6px; padding: 5px 10px;
+}
+.ev .ev-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+.smallbtn {
+  border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+  font-size: 11.5px; border-radius: 6px; padding: 3px 11px; white-space: nowrap;
+}
+.smallbtn:hover { color: var(--accent); border-color: var(--accent); }
+.techgrid {
+  display: none;
+  grid-template-columns: auto minmax(0,1fr); gap: 4px 14px;
+  margin-top: 4px; padding: 10px 12px;
+  background: var(--surface-2); border: 1px solid var(--line); border-radius: 8px;
+  font-size: 11.5px;
+}
+.ev.tech-open .techgrid { display: grid; }
+.techgrid .tk { color: var(--muted); white-space: nowrap; }
+.techgrid .tv { font-family: var(--mono); font-size: 11px; color: var(--hash);
+  overflow-wrap: anywhere; min-width: 0; }
+.techgrid .tv .copybtn { margin-left: 6px; }
+.copybtn {
+  border: 1px solid var(--line); background: var(--surface); color: var(--muted);
+  font-size: 10.5px; border-radius: 5px; padding: 1px 8px; white-space: nowrap;
+}
+.copybtn:hover { color: var(--accent); border-color: var(--accent); }
+
+/* deps + attacks */
+.depwrap { padding: 13px 18px 4px; overflow-x: auto; }
+.attacks { list-style: none; margin: 0; padding: 8px 18px 15px; display: flex; flex-direction: column; gap: 8px; }
+.attack {
+  border-left: 3px solid var(--err); border-radius: 4px;
+  background: var(--surface-2); padding: 9px 12px; font-size: 12.5px; min-width: 0;
+}
+.attack.routelevel { border-left-color: var(--gap); }
+.attack.passed { border-left-color: var(--ok); }
+.attack .a-h { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 3px; }
+.attack .a-name { font-weight: 600; font-size: 12px; }
+.attack .a-class {
+  font-size: 10.5px; font-weight: 600; padding: 0 7px; border-radius: 4px;
+  color: var(--err); background: var(--err-soft);
+}
+.attack.routelevel .a-class { color: var(--gap); background: var(--gap-soft); }
+.attack.passed .a-class { color: var(--ok); background: var(--ok-soft); }
+.attack .a-body { color: var(--muted); overflow-wrap: anywhere; }
+.attack .a-body b { color: var(--ink); font-weight: 600; }
+
+/* ============ verdict panel ============ */
+.verdictpanel {
+  position: sticky; top: calc(var(--topbar-h) + 12px);
+  max-height: calc(100dvh - var(--topbar-h) - 24px);
+  overflow-y: auto; scrollbar-width: thin;
+  background: var(--surface);
+  border: 1px solid var(--line); border-radius: 10px; box-shadow: var(--shadow);
+}
+.vbar { display: none; }
+.vp-scroll { padding: 13px 15px 15px; display: flex; flex-direction: column; gap: 12px; }
+.progress { display: flex; align-items: center; gap: 12px; }
+.ring { width: 54px; height: 54px; flex: none; }
+.ring .bg { stroke: var(--line); }
+.ring .fg { stroke: var(--accent); transition: stroke-dashoffset .3s; }
+.ring text { fill: var(--ink); font-family: var(--mono); font-size: 13px; font-weight: 600; }
+.progress .p-lines { font-size: 12px; color: var(--muted); line-height: 1.5; min-width: 0; }
+.progress .p-lines b { color: var(--ink); font-variant-numeric: tabular-nums; }
+.dist { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 3px; }
+
+.verdicts { display: flex; flex-direction: column; gap: 7px; }
+.bigv {
+  width: 100%; text-align: left; border-radius: 9px; padding: 8px 12px;
+  border: 1.5px solid var(--line); background: var(--surface);
+  display: flex; flex-direction: column; gap: 1px;
+  transition: all .12s;
+}
+.bigv .t { font-weight: 700; font-size: 13px; }
+.bigv .d { font-size: 10.5px; color: var(--muted); line-height: 1.45; }
+.bigv:not(:disabled):hover { border-color: var(--muted); }
+.bigv.sel-approve { border-color: var(--ok);  background: var(--ok-soft); }
+.bigv.sel-changes { border-color: var(--gap); background: var(--gap-soft); }
+.bigv.sel-reject  { border-color: var(--err); background: var(--err-soft); }
+.bigv:disabled { opacity: .45; cursor: not-allowed; }
+.blockers { font-size: 11.5px; color: var(--muted); line-height: 1.6; margin: 0; padding: 0 0 0 16px; }
+.blockers .allclear { color: var(--ok); list-style: none; margin-left: -16px; }
+
+.channels {
+  border: 1.5px solid var(--err); border-radius: 9px; padding: 10px 12px;
+  display: flex; flex-direction: column; gap: 8px; background: var(--surface);
+}
+.channels .ch-h { font-size: 12px; font-weight: 700; color: var(--err); }
+.channels label { display: flex; gap: 8px; align-items: flex-start; font-size: 12px; cursor: pointer; line-height: 1.5; }
+.channels input[type=radio] { margin-top: 3px; accent-color: var(--err); flex: none; }
+.channels .ch-name { font-weight: 700; }
+.channels .ch-desc { color: var(--muted); }
+.channels input[type=text] {
+  width: 100%; border: 1px solid var(--line); border-radius: 6px; padding: 6px 9px;
+  font-family: var(--mono); font-size: 11.5px; background: var(--surface); color: var(--ink);
+}
+.channels .ch-warn { font-size: 11px; color: var(--err); }
+
+.submitbtn {
+  width: 100%; border: none; border-radius: 9px; padding: 11px;
+  background: var(--accent); color: #fff; font-weight: 700; font-size: 13.5px;
+  transition: background .12s;
+}
+.submitbtn:not(:disabled):hover { background: var(--accent-strong); }
+.submitbtn:disabled { background: var(--line); color: var(--muted); cursor: not-allowed; }
+.vp-foot { display: flex; justify-content: space-between; gap: 8px; }
+.linkbtn { background: none; border: none; color: var(--muted); font-size: 11.5px; text-decoration: underline; padding: 0; }
+.linkbtn:hover { color: var(--accent); }
+
+/* submitted (read-only) view */
+.submitted-banner {
+  margin: 13px 18px; padding: 12px 15px; border-radius: 10px;
+  background: var(--ok-soft); border: 1px solid var(--ok); font-size: 13px;
+}
+.submitted-banner b { color: var(--ok); }
+
+/* ============ evidence drawer ============ */
+.drawer {
+  position: fixed; top: 0; right: 0; bottom: 0; z-index: 70;
+  width: min(430px, 100%);
+  background: var(--surface); border-left: 1px solid var(--line);
+  box-shadow: -8px 0 30px rgba(0,0,0,.18);
+  display: flex; flex-direction: column;
+  transform: translateX(100%); transition: transform .18s ease-out;
+}
+.drawer.open { transform: translateX(0); }
+.drawer .d-h {
+  padding: 12px 16px; border-bottom: 1px solid var(--line);
+  display: flex; align-items: center; gap: 10px;
+}
+.drawer .d-h h3 { margin: 0; font-size: 13.5px; flex: 1; min-width: 0; }
+.drawer .d-h .x { margin-left: auto; background: none; border: none; color: var(--muted); font-size: 17px; flex: none; }
+.drawer .d-b { padding: 14px 16px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.drawer .d-ctx { font-size: 11.5px; color: var(--muted); }
+
+/* rail drawer (tablet/mobile) reuses .rail with off-canvas transform */
+.scrim {
+  position: fixed; inset: 0; z-index: 60; background: var(--scrim);
+  opacity: 0; pointer-events: none; transition: opacity .15s;
+}
+.scrim.show { opacity: 1; pointer-events: auto; }
+
+/* ============ modal ============ */
+.overlay {
+  position: fixed; inset: 0; background: var(--scrim); z-index: 80;
+  display: flex; align-items: center; justify-content: center; padding: 18px;
+}
+.modal {
+  background: var(--surface); color: var(--ink);
+  border: 1px solid var(--line); border-radius: 12px; box-shadow: var(--shadow);
+  width: min(720px, 100%); max-height: 88dvh; display: flex; flex-direction: column;
+}
+.modal .m-h { padding: 13px 17px; border-bottom: 1px solid var(--line); display: flex; align-items: center; gap: 10px; }
+.modal .m-h h3 { margin: 0; font-size: 14.5px; }
+.modal .m-h .x { margin-left: auto; background: none; border: none; color: var(--muted); font-size: 17px; }
+.modal .m-b { padding: 13px 17px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
+.modal pre {
+  margin: 0; background: var(--surface-2); border: 1px solid var(--line);
+  border-radius: 8px; padding: 12px; overflow-x: auto;
+  font-family: var(--mono); font-size: 10.5px; line-height: 1.6;
+}
+.chainviz { display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+  font-family: var(--mono); font-size: 11px; color: var(--hash); }
+.chainviz .node { border: 1px solid var(--line); background: var(--surface-2); border-radius: 6px; padding: 4px 9px; }
+.chainviz .node.new { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+.chainviz .arrow { color: var(--muted); }
+.m-note { font-size: 12px; color: var(--muted); line-height: 1.6; overflow-wrap: anywhere; }
+.m-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.ghostbtn {
+  border: 1px solid var(--line); background: var(--surface); color: var(--ink);
+  border-radius: 7px; padding: 6px 14px; font-size: 13px;
+}
+.ghostbtn:hover { border-color: var(--accent); color: var(--accent); }
+.infogrid { display: grid; grid-template-columns: auto minmax(0,1fr); gap: 6px 14px; font-size: 12.5px; }
+.infogrid .tk { color: var(--muted); white-space: nowrap; }
+.infogrid .tv { font-family: var(--mono); font-size: 11px; color: var(--hash); overflow-wrap: anywhere; }
+.helpgrid { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 13px; }
+.helpgrid kbd {
+  font-family: var(--mono); font-size: 11.5px; background: var(--surface-2);
+  border: 1px solid var(--line); border-bottom-width: 2px; border-radius: 5px; padding: 1px 7px;
+}
+.toast {
+  position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+  background: var(--ink); color: var(--ground); font-size: 13px;
+  border-radius: 8px; padding: 8px 16px; z-index: 90; box-shadow: var(--shadow);
+  max-width: 90vw;
+}
+.serifstmt { font-family: var(--serif); }
+.hidden { display: none !important; }
+
+/* ============ tablet: <1280px ============ */
+@media (max-width: 1279px) {
+  .shell {
+    grid-template-columns: minmax(0,1fr);
+    padding-bottom: 108px;
+  }
+  /* queue rail becomes an off-canvas drawer */
+  #btn-queue { display: inline-block; }
+  .rail {
+    position: fixed; top: 0; left: 0; bottom: 0; z-index: 70;
+    width: min(300px, 88vw); max-height: none;
+    background: var(--ground);
+    padding: 14px; margin: 0;
+    border-right: 1px solid var(--line);
+    transform: translateX(-100%); transition: transform .18s ease-out;
+  }
+  .rail.open { transform: translateX(0); }
+  /* verdict panel: collapsed bottom bar -> expandable drawer */
+  .verdictpanel {
+    position: fixed; left: 0; right: 0; bottom: 0; top: auto; z-index: 50;
+    max-height: none; overflow: visible;
+    border-radius: 14px 14px 0 0;
+    box-shadow: 0 -6px 24px rgba(0,0,0,.18);
+  }
+  .vbar {
+    display: flex; align-items: center; gap: 10px;
+    height: 60px; padding: 0 16px; cursor: pointer;
+  }
+  .vbar .vb-prog { font-family: var(--mono); font-size: 13px; font-weight: 600; color: var(--accent);
+    font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .vbar .vb-sum { flex: 1; min-width: 0; font-size: 12px; color: var(--muted);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .vbar .vb-open {
+    border: 1px solid var(--accent); color: var(--accent); background: var(--surface);
+    border-radius: 7px; padding: 4px 13px; font-size: 12.5px; font-weight: 500; flex: none;
+  }
+  .vp-scroll { display: none; }
+  .verdictpanel[data-expanded="true"] .vp-scroll {
+    display: flex; max-height: min(70dvh, 640px); overflow-y: auto;
+  }
+}
+
+/* ============ mobile: <760px ============ */
+@media (max-width: 760px) {
+  .brand .sub, .draftstate, #btn-help { display: none; }
+  .topbar { gap: 9px; padding: 0 12px; }
+  .nowtask { font-size: 12px; }
+  .ob { grid-template-columns: minmax(0,1fr); }
+  .ob .ob-no { grid-row: auto; }
+  .ob .ob-actions { display: grid; grid-template-columns: 1fr 1fr; }
+  .vbtn { min-height: 44px; }
+  .drawer { width: 100%; }
+  .obtools .nextbtn { margin-left: 0; width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <button class="iconbtn" id="btn-queue" aria-label="打开核验队列">☰ 队列</button>
+  <div class="brand">
+    <span class="mark">MathArc 核验台</span>
+    <span class="sub">EXPERT REVIEW · 原型</span>
+  </div>
+  <div class="nowtask" id="nowtask"></div>
+  <span class="miniprog" id="miniprog"></span>
+  <button class="iconbtn" id="btn-bundleinfo">包信息</button>
+  <span class="draftstate" id="draftstate">尚无草稿</span>
+  <button class="iconbtn" id="btn-help" title="键盘快捷键">?</button>
+</header>
+
+<div class="shell">
+
+  <!-- ============ left rail / queue drawer ============ -->
+  <aside class="rail" id="rail">
+    <div class="card">
+      <div class="card-h">核验队列</div>
+      <ul class="queue" id="queue"></ul>
+    </div>
+    <div class="card">
+      <div class="card-h">评审人</div>
+      <div class="reviewer">
+        <div class="rv-name">L. Chen<span class="pill acc" style="margin-left:8px">独立组 IND-B</span></div>
+        <div class="rv-line">（示例身份）某大学数学系 · 非本项目成员</div>
+        <div class="conflictbox" id="conflictbox">
+          <input type="checkbox" id="conflict-check" aria-describedby="conflict-text">
+          <span id="conflict-text">我确认：这份材料的证明思路不是我提出的，其中的证据也不是我做的，我与提交人没有利益关联。<em>（每份材料单独确认。系统另有一道自动检查，勾选不能替代它。）</em></span>
+        </div>
+      </div>
+    </div>
+  </aside>
+
+  <!-- ============ main column ============ -->
+  <main class="main" id="main"></main>
+
+  <!-- ============ verdict panel ============ -->
+  <aside class="verdictpanel" id="verdictpanel">
+    <div class="vbar" id="vbar" role="button" tabindex="0" aria-label="展开裁决区">
+      <span class="vb-prog" id="vb-prog">0/0</span>
+      <span class="vb-sum" id="vb-sum"></span>
+      <button class="vb-open" id="vb-open">查看裁决</button>
+    </div>
+    <div class="vp-scroll">
+      <div class="progress">
+        <svg class="ring" viewBox="0 0 54 54" aria-hidden="true">
+          <circle class="bg" cx="27" cy="27" r="22" fill="none" stroke-width="5"></circle>
+          <circle class="fg" id="ring-fg" cx="27" cy="27" r="22" fill="none" stroke-width="5"
+                  stroke-linecap="round" stroke-dasharray="138.2" stroke-dashoffset="138.2"
+                  transform="rotate(-90 27 27)"></circle>
+          <text id="ring-text" x="27" y="31" text-anchor="middle">0/0</text>
+        </svg>
+        <div class="p-lines">
+          <div><b id="p-done">0</b> / <b id="p-total">0</b> 条义务已核验</div>
+          <div class="dist" id="dist"></div>
+        </div>
+      </div>
+
+      <div class="verdicts">
+        <button class="bigv" id="v-approve">
+          <span class="t">通过</span>
+          <span class="d">全部义务都判「通过」时可用。提交后生成一份以你名义的专家核验证据。</span>
+        </button>
+        <button class="bigv" id="v-changes">
+          <span class="t">要求修改</span>
+          <span class="d">你标记的缺口会成为下一轮的必查项。结论本身的真假不受影响。</span>
+        </button>
+        <button class="bigv" id="v-reject">
+          <span class="t">拒绝</span>
+          <span class="d">需选择拒绝的性质——专家说「不通过」，不等于这个命题是错的。</span>
+        </button>
+      </div>
+
+      <div class="channels hidden" id="channels">
+        <div class="ch-h">这是哪一种「不通过」？（三选一，后果完全不同）</div>
+        <label><input type="radio" name="ch" value="review_gap">
+          <span><span class="ch-name">① 证明有缺口</span> —
+          <span class="ch-desc">缺了步骤，或者表述不清。结论真假不变，缺口进入下一轮必查项。</span></span></label>
+        <label><input type="radio" name="ch" value="route_failure">
+          <span><span class="ch-name">② 这条思路不成立</span> —
+          <span class="ch-desc">只有这条证明思路被判为走不通，结论保留，可以换别的思路继续证。</span></span></label>
+        <label><input type="radio" name="ch" value="claim_counterexample">
+          <span><span class="ch-name">③ 结论本身是错的</span> —
+          <span class="ch-desc">需要引用一份<b>已被独立核验</b>的反例。系统会据此否证结论，并连带阻断依赖它的后续结论。</span></span></label>
+        <input type="text" id="witness-input" class="hidden" placeholder="反例的编号（如 E-CEX-021）— 必填">
+        <div class="ch-warn hidden" id="ch-warn"></div>
+      </div>
+
+      <ul class="blockers" id="blockers"></ul>
+
+      <button class="submitbtn" id="submitbtn" disabled>提交核验记录</button>
+      <div class="vp-foot">
+        <button class="linkbtn" id="btn-clear">清空本包草稿</button>
+        <button class="linkbtn" id="btn-preview">预览 ReviewRecord</button>
+      </div>
+    </div>
+  </aside>
+</div>
+
+<div class="scrim" id="scrim"></div>
+<div id="drawer-root"></div>
+<div id="modal-root"></div>
+
+<script>
+"use strict";
+/* =====================================================================
+   MathArc 核验台 · 交互原型 v2
+   分层：Domain（后端字段草案）→ View Model（中文标签 + 人类信息层级）
+        → UI。后端枚举名与摘要只出现在「技术详情」层，默认不展示。
+   注意：本页展示的 RouteEvaluationRecord / can_review / 自动失效等对象
+   是 DEV_PATH_V03 的目标模型（原型承诺），后端尚未全部落地。
+   ===================================================================== */
+
+/* ---------- Domain data（字段名 = 未来 API 草案；digest 一律全长） ---------- */
+const ROSTER = {
+  version: "roster-v3",
+  digest: "41c97b2ce1a04f66a9d1b3f2ce88d02e41c97b2ce1a04f66a9d1b3f2ce88d02e",
+  reviewer: { id: "rev-lchen", name: "L. Chen", group: "IND-B" },
+};
+const POLICY_VERSION = "review-policy-0.3.0";
+const PREV_HEAD = "9d41c07ab2551f8ce6a04d73b98e21c59d41c07ab2551f8ce6a04d73b98e21c5";
+
+const BUNDLES = {
+  "RB-LIE-001": {
+    id: "RB-LIE-001",
+    claimId: "L-C1",
+    claimRevision: 3,
+    statementDigestFull: "b7e2f4a19c30d8e5f6a217c94b0d3e8ab7e2f4a19c30d8e5f6a217c94b0d3e8a",
+    bundleDigestFull: "5fa8d1c9e442b370c6d95e18a2f4b7015fa8d1c9e442b370c6d95e18a2f4b701",
+    queueTitle: "指数映射全局同胚 · 不具 C⁰-半正则性",
+    kindPill: "结构数学 · 人审为主",
+    statement:
+      "设 E 为完备 Silva 空间，G 为其上可缩的复解析 BCH 李群。则 G 的指数映射 exp: 𝔤 → G 是全局同胚；然而 G 不具 C⁰-半正则性。",
+    scope: "对每个满足前提的 (E, G)（全称）。",
+    boundary: "不主张对一般 Fréchet 空间成立；不主张 C¹-半正则性的否定。",
+    source: "arXiv:2607.28557v2 · 定理 A（第 3 节）",
+    informal:
+      "完备 Silva 空间上的可缩复解析 BCH 李群，其指数映射为全局同胚，但该群不具 C⁰-半正则性。",
+    assurance: [
+      ["适用范围", "无限多情形"], ["证据来源", "专家 + 机器精确计算"], ["独立核验", "1 组"],
+      ["可重跑", "部分"], ["白话转述", "待核"], ["形式化", "未做"], ["专家核验", "进行中"],
+    ],
+    assuranceLabel: "目标档：专家审计级",
+    obligations: [
+      { id: "OB-0", corr: true, req: "human/checked",
+        title: "白话与正式命题说的是同一件事吗",
+        ask: "请把上面那句白话，和系统里冻结的正式命题逐句对读，确认转述没有走样。",
+        points: [
+          "两边的条件顺序一致：都是「先任取一个满足前提的群，再断言结论」，没有把「存在某个群」和「对每个群」说反。",
+          "「不具半正则性」否定的是半正则性本身，不是否定「指数映射存在」。",
+          "结论的两半（是全局同胚、不具半正则性）都在，没有丢也没有多。",
+        ],
+        ref: "对照对象：本结论第 3 版正式语句",
+        ev: ["SRC-NEEB-2006"] },
+      { id: "OB-1", req: "human",
+        title: "半正则性的定义有没有被中途换掉",
+        ask: "本文用的「C⁰-半正则性」必须和文献里的原定义指同一件事，请确认没有改口径。",
+        points: [
+          "本文的说法是：对每条连续曲线，都存在一条以它为左对数导数的可微演化。",
+          "与 Neeb (2006) 第二章的定义逐条对应——措辞可以不同，涵盖的对象必须相同。",
+        ],
+        ref: "定义来源：Neeb (2006) 定义 II.5.1",
+        ev: ["SRC-NEEB-2006"] },
+      { id: "OB-2", req: "human",
+        title: "全局同胚的论证是否完整",
+        ask: "第 2.1 至 2.7 步要证明指数映射是全局同胚，请确认每一步都站得住。",
+        points: [
+          "单射与满射两个方向都有论证，不能只证一半。",
+          "映射本身与它的逆映射，连续性都有交代。",
+          "第 2.5 步引用了别人的开映射定理——请确认那条定理的适用条件在这里确实满足。",
+        ],
+        ref: "论证位置：论文第 3 节步骤 2.1–2.7",
+        ev: ["SRC-GLO-2012"] },
+      { id: "OB-3", req: "exact",
+        title: "手算的系数与机器算的是否一致",
+        ask: "引理 3.2 里手工推出的前三阶系数，应当与脚本算出的结果完全相同。这一条必须有机器精确计算的证据支撑。",
+        points: [
+          "三阶及以内的每个系数逐项比对，必须完全相等，不是近似相等。",
+          "更高阶的项不归这一条管，由第 2.1–2.7 步的解析论证承担。",
+        ],
+        ref: "对应证据：BCH 系数核验",
+        ev: ["E-SYM-330"] },
+      { id: "OB-4", req: "human",
+        title: "反例构造是否真的走不到终点",
+        ask: "第 4.1 至 4.4 步构造了一族「逃逸」曲线，用来说明演化无法延伸到端点。请确认这个构造成立。",
+        points: [
+          "在固定的有限维方向里，光滑演化确实到不了终点，而不只是「很难到达」。",
+          "参数趋近 1 时用到的估计常数，请复核它的取值与推导过程。",
+        ],
+        ref: "论证位置：论文第 4 节步骤 4.1–4.4",
+        ev: [] },
+      { id: "OB-5", req: "human",
+        title: "引用的外部定理有没有用在它管得着的范围内",
+        ask: "本文两处用到了 Glöckner–Neeb 的乘法增长条件。请确认这两处都落在原文声明的适用条件内。",
+        points: [
+          "第 2.3 步与第 4.2 步各自的使用场景，是否都满足原定理要求的前提。",
+          "引用的版本已被系统固定下来，页码与内容指纹可在证据区核对。",
+        ],
+        ref: "引用来源：Glöckner (2012) 定理 4.2",
+        ev: ["SRC-GLO-2012"] },
+      { id: "OB-6", req: "human",
+        title: "结论有没有被说得比实际更强",
+        ask: "本结论只对完备 Silva 空间上的这类群成立。请确认全文没有把它说成更一般的情形。",
+        points: [
+          "正文、摘要、结论段都没有暗示对一般 Fréchet 空间也成立。",
+          "没有把「某些情形成立」写成「所有情形成立」。",
+        ],
+        ref: "对照对象：本结论声明的「不主张」列表",
+        ev: [] },
+    ],
+    evidence: [
+      { id: "E-SYM-330", kind: "EXACT_COMPUTATION", status: "ACCEPTED",
+        title: "BCH 系数核验",
+        proves: "BCH 级数前三阶的每个系数，都由两种彼此独立的算法各算一遍并核对一致，支撑引理 3.2 的验算。",
+        coverage: "只覆盖前三阶。更高阶的项不在这份证据的范围内，由论文的解析论证承担。",
+        producer: "sympy-bch-check", verifier: "independent-fraction-eval",
+        group: "exact:bch-coeff",
+        digestFull: "3e51a2c88f07b3d1a97c4e60d2b5f8193e51a2c88f07b3d1a97c4e60d2b5f819",
+        replay: "python verifiers/bch_first_three_orders.py --order 3" },
+      { id: "E-AUD-201", kind: "HUMAN_AUDIT", status: "ACCEPTED",
+        title: "作者本人的逐步核验",
+        proves: "作者对全文逐步核验的记录，随稿一同提交。",
+        coverage: "覆盖全部步骤，但核验的人就是写这份材料的人。",
+        producer: "author:HZJ", verifier: "author:HZJ",
+        group: "human:authors",
+        digestFull: "77c40d91b2e6f8a3c515d0a9e4b1c72877c40d91b2e6f8a3c515d0a9e4b1c728",
+        replay: "",
+        selfVerified: true,
+        selfVerifiedNote: "因此它不能算作独立的第二方核验。" },
+      { id: "SRC-NEEB-2006", kind: "LITERATURE_RESULT", status: "ACCEPTED",
+        title: "Neeb (2006) 半正则性定义",
+        proves: "提供「半正则性」的原始定义和基本性质（定义 II.5.1、定理 II.5.7），本文的定义须与之逐条对应。",
+        coverage: "只作为定义与前提的来源，本身不承担任何新结论。",
+        producer: "literature-pin", verifier: "literature-auditor",
+        group: "lit:neeb-2006",
+        digestFull: "a1b9e3d05c2477f0d8e26b41c9f3a805a1b9e3d05c2477f0d8e26b41c9f3a805",
+        replay: "matharc.v02 source verify SRC-NEEB-2006" },
+      { id: "SRC-GLO-2012", kind: "LITERATURE_RESULT", status: "ACCEPTED",
+        title: "Glöckner (2012) 增长条件",
+        proves: "提供第 2.3 步与第 4.2 步引用的开映射定理与增长条件。",
+        coverage: "引用时必须落在原定理声明的适用条件内——这一点由「引用的外部定理有没有用在它管得着的范围内」那条义务核验。",
+        producer: "literature-pin", verifier: "literature-auditor",
+        group: "lit:glockner-2012",
+        digestFull: "c8d21f60b4a3990e17b5f42da680c319c8d21f60b4a3990e17b5f42da680c319",
+        replay: "matharc.v02 source verify SRC-GLO-2012" },
+    ],
+    deps: {
+      nodes: [
+        { id: "OBJ-SEMIREG", label: "定义 rev.2", x: 60,  y: 76, state: "verified" },
+        { id: "L-B2", label: "L-B2 双射", x: 190, y: 30, state: "proved" },
+        { id: "L-B3", label: "L-B3 逃逸", x: 190, y: 120, state: "candidate" },
+        { id: "L-C1", label: "L-C1（本包）", x: 330, y: 76, state: "review" },
+        { id: "T-MAIN", label: "定理 A", x: 470, y: 76, state: "open" },
+      ],
+      edges: [["OBJ-SEMIREG","L-B2"],["OBJ-SEMIREG","L-B3"],["L-B2","L-C1"],["L-B3","L-C1"],["L-C1","T-MAIN"]],
+    },
+    attacks: [
+      { id: "F-017", name: "一条思路已被廉价测试否定", cls: "结论被说得过强", level: "route",
+        summary: "曾经试过用 Banach 极限逼近来证。廉价测试发现：把维数固定为 2 的那一族在参数 0.83 处就发散了，这条路走不通。系统只把这条思路标为失败，结论本身没有受影响——换一条思路仍可继续证。",
+        emphasis: ["把维数固定为 2 的那一族在参数 0.83 处就发散了"] },
+      { id: "REV-R-GRADED-04", name: "现行思路的廉价测试已跑过", cls: "有限范围内通过", level: "pass",
+        summary: "现行思路的廉价测试已经执行：在阶数不超过 5 的范围里没有找到反例。注意这只说明「在这个有限范围里没找到」，不能推广成「任何阶数都没有反例」。",
+        emphasis: ["在阶数不超过 5 的范围里没有找到反例"] },
+    ],
+  },
+
+  "RB-FR-014": {
+    id: "RB-FR-014",
+    claimId: "F-R3",
+    claimRevision: 1,
+    statementDigestFull: "e09c55ab7d183f42c6b091d5a8e27f34e09c55ab7d183f42c6b091d5a8e27f34",
+    bundleDigestFull: "20cf7719ab6d45e8b3c2d90f16a5e78220cf7719ab6d45e8b3c2d90f16a5e782",
+    queueTitle: "Frankl q=6：反例至少三个小外部部件",
+    kindPill: "组合枚举 · 机器为主",
+    statement: "任何 q = 6 的外部平衡反例族，其小外部部件个数至少为 3。",
+    scope: "q = 6，9 元全集内的全部并闭迹族（有限、已穷举）。",
+    boundary: "不主张对 q ≥ 7 成立；不主张 Frankl 全猜想的任何进展。",
+    source: "experiments/frankl_q6_round4 · 残差收缩第 2 层",
+    informal: "在 q=6 的设定下，外部平衡反例必然含有至少三个小外部部件。",
+    assurance: [
+      ["适用范围", "有限情形已穷举"], ["证据来源", "机器精确计算"], ["独立核验", "2 组"],
+      ["可重跑", "是"], ["白话转述", "待核"], ["形式化", "未做"], ["专家核验", "进行中"],
+    ],
+    assuranceLabel: "目标档：双重认证级",
+    obligations: [
+      { id: "OB-0", corr: true, req: "human/checked",
+        title: "白话与机器结论说的是同一件事吗",
+        ask: "上面那句白话，应当和机器算出的结论指同一件事。请确认转述方向没有说反。",
+        points: [
+          "机器给出的结论是：「小外部部件为 0、1、2 个的所有情形都已被排除」。白话说的「至少三个」与它等价——请确认这一步换算方向正确。",
+          "机器只处理了 q=6 的情形，白话也必须限定在 q=6。",
+        ],
+        ref: "对照对象：证书的结论字段（原文为英文，可在证据区查看）",
+        ev: ["E-PY-2SM"] },
+      { id: "OB-1", req: "exact",
+        title: "穷举有没有漏掉情形",
+        ask: "这条结论靠穷举得到，所以「是否真的穷尽」本身就是要核验的东西。",
+        points: [
+          "90 个三点最小集的族全部覆盖，没有跳过任何一类。",
+          "中途做过压缩处理的部分，另有一份不压缩的完整复核（244,068 个情形逐一检查）——本项目的硬规矩是：压缩不能自己证明自己。",
+        ],
+        ref: "对应证据：Python 精确证书",
+        ev: ["E-PY-2SM"] },
+      { id: "OB-2", req: "exact",
+        title: "两个独立写成的程序是否给出同样结果",
+        ask: "同一件事由 Python 和 C++ 两套独立写成的程序各算一遍，结果必须一致。",
+        points: [
+          "两份结果在全部输入上比对一致（比的是整理成同一格式后的内容，不要求文件逐字节相同）。",
+          "两个程序由不同作者、用不同语言完成，因此算作两组彼此独立的证据。",
+        ],
+        ref: "对应证据：Python 精确证书、C++ 独立实现证书",
+        ev: ["E-PY-2SM", "E-CPP-2SM"] },
+      { id: "OB-3", req: "human",
+        title: "结论有没有被外推到 q≥7",
+        ask: "这条结论只覆盖 q=6。请确认没有任何地方暗示它对更大的 q、或对整个 Frankl 猜想也成立。",
+        points: [
+          "证书文本、实验记录、文档措辞都限定在 q=6。",
+          "没有出现「该方法可直接推广」这类未经证明的说法。",
+        ],
+        ref: "对照对象：本结论声明的「不主张」列表",
+        ev: [] },
+    ],
+    evidence: [
+      { id: "E-PY-2SM", kind: "EXACT_CERTIFICATE", status: "ACCEPTED",
+        title: "Python 精确证书",
+        proves: "用穷举法排除了小外部部件只有 0、1、2 个的全部情形。重跑一次可得到逐字节相同的结果。",
+        coverage: "覆盖 q=6 的全部族，是完整穷举，不是抽样。",
+        producer: "frankl-q6-python", verifier: "cold-replay",
+        group: "impl:python-stdlib",
+        digestFull: "f98e52d7ce76c131ae5b7db55114d25616b555887eae059591b67ae6ab5f2719",
+        replay: "python examples/frankl_q6_two_small.py --output artifacts/frankl-q6-two-small-python.json" },
+      { id: "E-CPP-2SM", kind: "EXACT_CERTIFICATE", status: "ACCEPTED",
+        title: "C++ 独立实现证书",
+        proves: "用另一种语言独立重写的程序，算出与 Python 版一致的结果，构成第二组独立证据。",
+        coverage: "输入范围与 Python 版完全相同，程序的作者与语言彼此独立。",
+        producer: "frankl-q6-cpp", verifier: "cross-check",
+        group: "impl:cpp-core-bound",
+        digestFull: "2b2758ea90cd44f1b6e3a75c08d19f242b2758ea90cd44f1b6e3a75c08d19f24",
+        replay: "g++ -O2 verifiers/q6_two_small_core_bound.cpp && ./a.out" },
+    ],
+    deps: {
+      nodes: [
+        { id: "F-R1", label: "≥1 层", x: 60,  y: 76, state: "proved" },
+        { id: "F-R2", label: "≥2 层", x: 190, y: 76, state: "proved" },
+        { id: "F-R3", label: "≥3（本包）", x: 330, y: 76, state: "review" },
+        { id: "F-R4", label: "≥4 残差", x: 470, y: 76, state: "open" },
+      ],
+      edges: [["F-R1","F-R2"],["F-R2","F-R3"],["F-R3","F-R4"]],
+    },
+    attacks: [
+      { id: "REV-R-ENUM-11", name: "穷举思路的廉价测试已跑过", cls: "有限范围内通过", level: "pass",
+        summary: "全部 15,120 个需要小心的构型逐一核对，没有发现遗漏的分支。这里的检查范围本身就是全部情形，所以「有限范围内通过」在这条上等同于完全覆盖。",
+        emphasis: ["全部 15,120 个需要小心的构型逐一核对"] },
+    ],
+  },
+};
+
+const SUBMITTED = {
+  "RB-ES-007": {
+    id: "RB-ES-007",
+    queueTitle: "ES(7) CNF 生成器语句对应",
+    verdict: "APPROVE",
+    at: "2026-08-25 14:02 UTC",
+    head: "3fb0aa17c4e9d25b81f60c7a94e3d0183fb0aa17c4e9d25b81f60c7a94e3d018",
+    summary:
+      "6 条义务全部判为「通过」，其中白话转述一条已单独核验：生成器写出的公式与 ES(7)=33 这个命题一一对应。系统已据此生成一份以评审人名义的专家核验证据。这条记录目前有效——如果结论语句被修订，或评审人撤回意见，它会自动失效。",
+  },
+};
+
+/* ---------- View Model layer：后端枚举名 → 人类语言 ---------- */
+const EVIDENCE_KIND_VM = {
+  EXACT_COMPUTATION: { label: "精确计算", cls: "exact" },
+  EXACT_CERTIFICATE: { label: "精确证书", cls: "exact" },
+  HUMAN_AUDIT:       { label: "专家核验", cls: "human" },
+  LITERATURE_RESULT: { label: "文献依据", cls: "lit" },
+};
+const EVIDENCE_STATUS_VM = {
+  ACCEPTED: { label: "已核验", cls: "ok" },
+  PROPOSED: { label: "待核验", cls: "" },
+  REJECTED: { label: "未通过", cls: "err" },
+  STALE:    { label: "已失效", cls: "err" },
+};
+const REQ_LABELS = {
+  "exact": "须有机器精确证据",
+  "human/checked": "必核项",
+  "human": "人工判断",
+};
+const PRODUCER_VM = {
+  "sympy-bch-check": "SymPy 符号计算",
+  "independent-fraction-eval": "独立分数计算器",
+  "author:HZJ": "作者组",
+  "literature-pin": "文献钉定",
+  "literature-auditor": "文献审核员",
+  "frankl-q6-python": "Python 枚举器",
+  "frankl-q6-cpp": "C++ 枚举器",
+  "cold-replay": "冷重放",
+  "cross-check": "交叉核对",
+};
+function humanActor(raw) { return PRODUCER_VM[raw] || raw; }
+function evidenceVM(ev) {
+  const kind = EVIDENCE_KIND_VM[ev.kind] || { label: ev.kind, cls: "" };
+  const status = EVIDENCE_STATUS_VM[ev.status] || { label: ev.status, cls: "" };
+  return { ...ev, kindLabel: kind.label, kindCls: kind.cls, statusLabel: status.label, statusCls: status.cls,
+    producerLabel: humanActor(ev.producer), verifierLabel: humanActor(ev.verifier),
+    independent: ev.producer !== ev.verifier };
+}
+function short(digest) { return digest.slice(0, 12) + "…"; }
+
+/* ---------- state ---------- */
+const state = { current: "RB-LIE-001", perBundle: {}, cursor: 0, filter: "all" };
+function bstate(id) {
+  if (!state.perBundle[id]) state.perBundle[id] = { verdicts: {}, notes: {}, verdict: null, channel: null, witness: "", conflict: false };
+  return state.perBundle[id];
+}
+
+/* ---------- draft persistence ----------
+   仅为单机浏览器便利。生产环境：草稿存服务端并绑定
+   reviewer + tenant + bundle 权限，登出即清，绝不放 token。 */
+const LS_KEY = "matharc-review-draft:" + ROSTER.reviewer.id;
+const DRAFT_TTL_MS = 7 * 24 * 3600 * 1000;
+function saveDraft() {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({ savedAt: Date.now(), perBundle: state.perBundle }));
+    const el = $("draftstate");
+    const t = new Date();
+    el.textContent = "草稿已保存 " + String(t.getHours()).padStart(2,"0") + ":" + String(t.getMinutes()).padStart(2,"0");
+    el.classList.add("saved");
+  } catch (e) { /* storage unavailable: page still fully works */ }
+}
+function loadDraft() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const parsed = JSON.parse(raw);
+    if (parsed && parsed.savedAt && Date.now() - parsed.savedAt < DRAFT_TTL_MS) {
+      state.perBundle = parsed.perBundle || {};
+    } else { localStorage.removeItem(LS_KEY); }
+  } catch (e) { state.perBundle = {}; }
+}
+
+/* ---------- helpers ---------- */
+const $ = (id) => document.getElementById(id);
+function esc(s) { return String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c])); }
+/* attacks: structured {summary, emphasis[]} -> escaped html with <b> wraps; never trusts raw HTML */
+function emphasize(summary, emphasis) {
+  let html = esc(summary);
+  for (const item of emphasis || []) {
+    const needle = esc(item);
+    html = html.split(needle).join("<b>" + needle + "</b>");
+  }
+  return html;
+}
+
+/* ---------- queue ---------- */
+function renderQueue() {
+  const ul = $("queue");
+  ul.innerHTML = "";
+  for (const b of Object.values(BUNDLES)) {
+    const st = bstate(b.id);
+    const done = Object.keys(st.verdicts).length;
+    const total = b.obligations.length;
+    const li = document.createElement("li");
+    li.innerHTML = `<button class="${state.current===b.id?"active":""}">
+        <span class="q-title">${esc(b.queueTitle)}</span>
+        <span class="q-meta"><span class="pill">${esc(b.kindPill)}</span>
+          <span class="pill ${done===total?"ok":""}">${done}/${total}</span></span>
+      </button>`;
+    li.querySelector("button").addEventListener("click", () => { selectBundle(b.id); closeRail(); });
+    ul.appendChild(li);
+  }
+  for (const s of Object.values(SUBMITTED)) {
+    const li = document.createElement("li");
+    li.innerHTML = `<button class="${state.current===s.id?"active":""}">
+        <span class="q-title">${esc(s.queueTitle)}</span>
+        <span class="q-meta"><span class="pill ok">✓ 已提交 · 通过</span></span>
+      </button>`;
+    li.querySelector("button").addEventListener("click", () => { selectBundle(s.id); closeRail(); });
+    ul.appendChild(li);
+  }
+}
+
+/* ---------- dependency SVG ---------- */
+function depSVG(deps) {
+  const W = 540, H = 152, stateColor = {
+    proved: "var(--ok)", verified: "var(--ok)", candidate: "var(--gap)",
+    review: "var(--accent)", open: "var(--muted)",
+  };
+  let lines = "";
+  for (const [a, b] of deps.edges) {
+    const na = deps.nodes.find(n => n.id === a), nb = deps.nodes.find(n => n.id === b);
+    lines += `<line x1="${na.x+52}" y1="${na.y}" x2="${nb.x-52}" y2="${nb.y}"
+      stroke="var(--line)" stroke-width="1.5" marker-end="url(#arr)"></line>`;
+  }
+  let nodes = "";
+  for (const n of deps.nodes) {
+    const c = stateColor[n.state] || "var(--muted)";
+    const strong = n.state === "review";
+    nodes += `<g>
+      <rect x="${n.x-52}" y="${n.y-17}" width="104" height="34" rx="8"
+        fill="var(--surface)" stroke="${c}" stroke-width="${strong?2:1.2}"></rect>
+      <text x="${n.x}" y="${n.y+4}" text-anchor="middle"
+        font-size="11" fill="${strong?c:"var(--ink)"}" font-weight="${strong?"700":"400"}">${esc(n.label)}</text></g>`;
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" width="${W}" style="max-width:100%" role="img" aria-label="依赖关系图">
+    <defs><marker id="arr" viewBox="0 0 8 8" refX="7" refY="4" markerWidth="7" markerHeight="7" orient="auto">
+      <path d="M0,0.5 L7.5,4 L0,7.5 Z" fill="var(--muted)"></path></marker></defs>
+    ${lines}${nodes}</svg>`;
+}
+
+/* ---------- evidence card (progressive disclosure) ---------- */
+function evidenceCard(evRaw, { inDrawer } = {}) {
+  const ev = evidenceVM(evRaw);
+  return `<div class="ev" data-evid="${ev.id}">
+    <div class="ev-top">
+      <span class="ev-title">${esc(ev.title)}</span>
+      <span class="kind ${ev.kindCls}">${ev.kindLabel}</span>
+      <span class="pill ${ev.statusCls}">${ev.statusLabel}</span>
+    </div>
+    <div class="ev-proves">${esc(ev.proves)}</div>
+    <div class="ev-lim"><b>覆盖范围：</b>${esc(ev.coverage)}</div>
+    ${ev.independent
+      ? `<div class="ev-lim"><b>独立核验：</b>由「${esc(ev.verifierLabel)}」独立于生成方「${esc(ev.producerLabel)}」核验。</div>`
+      : `<div class="warnband">⚠ 自验证：生成与核验同源（${esc(ev.producerLabel)}）。${esc(ev.selfVerifiedNote || "")}</div>`}
+    <div class="ev-actions">
+      ${ev.replay ? `<button class="smallbtn" data-copy="${esc(ev.replay)}">复制重放命令</button>` : ""}
+      <button class="smallbtn" data-tech="${ev.id}">技术详情</button>
+    </div>
+    <div class="techgrid">
+      <span class="tk">证据编号</span><span class="tv">${ev.id}</span>
+      <span class="tk">证据类型</span><span class="tv">${ev.kind}</span>
+      <span class="tk">状态</span><span class="tv">${ev.status}</span>
+      <span class="tk">生成方式</span><span class="tv">${esc(ev.producer)}</span>
+      <span class="tk">核验方式</span><span class="tv">${esc(ev.verifier)}</span>
+      <span class="tk">独立性标识</span><span class="tv">${esc(ev.group)}</span>
+      <span class="tk">内容指纹</span><span class="tv">${short(ev.digestFull)}<button class="copybtn" data-copy="${ev.digestFull}">复制全长</button></span>
+      ${ev.replay ? `<span class="tk">重放命令</span><span class="tv">${esc(ev.replay)}</span>` : ""}
+    </div>
+  </div>`;
+}
+function wireEvidenceCard(rootEl) {
+  rootEl.querySelectorAll("[data-copy]").forEach(el =>
+    el.addEventListener("click", () => copyText(el.dataset.copy)));
+  rootEl.querySelectorAll("[data-tech]").forEach(el =>
+    el.addEventListener("click", () => {
+      el.closest(".ev").classList.toggle("tech-open");
+    }));
+}
+
+/* ---------- verdict buttons ---------- */
+function verdictBtn(obId, v, label, key, on) {
+  return `<button class="vbtn ${on===v?("on-"+v):""}" data-ob="${obId}" data-v="${v}">
+    ${label}<span class="k">${key}</span></button>`;
+}
+
+/* ---------- main render ---------- */
+function renderMain() {
+  const main = $("main");
+  const sub = SUBMITTED[state.current];
+  if (sub) {
+    $("verdictpanel").classList.add("hidden");
+    $("nowtask").innerHTML = `<b>${esc(sub.queueTitle)}</b>`;
+    $("miniprog").textContent = "已提交";
+    main.innerHTML = `
+      <div class="card claimhead">
+        <div class="eyebrow"><span class="cid">${sub.id}</span><span class="pill ok">已提交 · 通过</span></div>
+        <h1>${esc(sub.queueTitle)}</h1>
+        <div class="submitted-banner"><b>记录已入链。</b>${esc(sub.summary)}</div>
+        <div class="scopeline" style="margin-top:10px">
+          <span><b>提交时间</b>　${sub.at}</span>
+          <span><b>事件链头</b>　<span class="tv" style="font-family:var(--mono);font-size:11px">${short(sub.head)}</span></span>
+        </div>
+      </div>`;
+    return;
+  }
+  $("verdictpanel").classList.remove("hidden");
+  const b = BUNDLES[state.current];
+  const st = bstate(b.id);
+  const evById = Object.fromEntries(b.evidence.map(e => [e.id, e]));
+
+  $("nowtask").innerHTML = `<b>${esc(b.queueTitle)}</b>`;
+
+  const av = b.assurance.map(([k, v]) => `<span class="av"><b>${k}</b>${esc(v)}</span>`).join("")
+    + `<span class="label">${esc(b.assuranceLabel)}</span>`;
+
+  const c = counts();
+  const filterDefs = [
+    ["all", "全部", b.obligations.length],
+    ["pending", "未核验", b.obligations.length - c.done],
+    ["gap", "缺口", c.gap],
+    ["err", "错误", c.err],
+  ];
+  const filters = filterDefs.map(([key, label, n]) =>
+    `<button class="filterchip ${state.filter===key?"on":""}" data-filter="${key}">${label} ${n}</button>`).join("");
+
+  const obs = b.obligations.map((ob, i) => {
+    const v = st.verdicts[ob.id];
+    const needNote = (v === "gap" || v === "err");
+    const visible =
+      state.filter === "all" ? true :
+      state.filter === "pending" ? !v :
+      state.filter === "gap" ? v === "gap" :
+      v === "err";
+    const evChips = ob.ev.length
+      ? ob.ev.map(id => `<button class="evchip" data-ev="${id}">${esc((evById[id] || {title:id}).title)}</button>`).join("")
+      : `<span>无直接证据引用（论证性义务）</span>`;
+    return `<li class="ob ${v ? "v-"+v : ""} ${i===state.cursor ? "current" : ""} ${visible?"":"hiddenrow"}"
+        data-obi="${i}" id="obrow-${i}" tabindex="-1">
+      <span class="ob-no">${ob.id}</span>
+      <span class="ob-text">
+        <span class="ob-title">${esc(ob.title)}
+          <span class="req">${REQ_LABELS[ob.req] || ob.req}</span></span>
+        <span class="ob-ask">${esc(ob.ask)}</span>
+        ${ob.points && ob.points.length
+          ? `<ul class="ob-points">${ob.points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>` : ""}
+        ${ob.ref ? `<span class="ob-ref">${esc(ob.ref)}</span>` : ""}
+      </span>
+      <span class="ob-ev">${ob.ev.length ? "可查证据：" : ""}${evChips}</span>
+      <span class="ob-actions">
+        ${verdictBtn(ob.id, "ok", "通过", "1", v)}
+        ${verdictBtn(ob.id, "gap", "缺口", "2", v)}
+        ${verdictBtn(ob.id, "err", "错误", "3", v)}
+        ${verdictBtn(ob.id, "skip", "无法判断", "4", v)}
+      </span>
+      ${needNote ? `<span style="grid-column:2">
+          <textarea data-note="${ob.id}" placeholder="必填：请具体说明缺口/错误的位置与内容（将回流为下一轮强制攻击项）">${esc(st.notes[ob.id] || "")}</textarea>
+          ${!(st.notes[ob.id]||"").trim() ? `<div class="note-req">「${v==="gap"?"缺口":"错误"}」必须附说明才能提交</div>` : ""}
+        </span>` : ""}
+    </li>`;
+  }).join("");
+
+  const evCards = b.evidence.map(ev => evidenceCard(ev)).join("");
+  const attacks = b.attacks.map(a => `
+    <li class="attack ${a.level==="route"?"routelevel":a.level==="pass"?"passed":""}">
+      <div class="a-h"><span class="a-name">${esc(a.name)}</span><span class="a-class">${esc(a.cls)}</span></div>
+      <div class="a-body">${emphasize(a.summary, a.emphasis)}</div>
+    </li>`).join("");
+
+  main.innerHTML = `
+    <div class="card claimhead">
+      <div class="eyebrow">
+        <span class="cid">${b.claimId} · rev.${b.claimRevision}</span>
+        <span class="pill acc">${esc(b.kindPill)}</span>
+        <span class="pill">${esc(b.source)}</span>
+      </div>
+      <h1 class="serifstmt">${esc(b.statement)}</h1>
+      <div class="scopeline">
+        <span><b>适用范围</b>　${esc(b.scope)}</span>
+        <span><b>不主张</b>　${esc(b.boundary)}</span>
+      </div>
+      <div class="assurance">${av}</div>
+    </div>
+
+    <div class="card sect always">
+      <div class="sect-h"><h2>先核对：白话说的是不是同一件事</h2>
+        <span class="hint">这一步最容易被含糊带过，因此单列一节</span></div>
+      <div class="sect-body">
+        <div class="corr">
+          <div class="corr-tag">上面那句正式命题的白话转述</div>
+          <p><span class="stmt">${esc(b.informal)}</span></p>
+          <p class="subnote">这一条的裁决在下面第一条义务里给出。只有它判为「通过」，整份结论才可能整体通过。</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="card sect always">
+      <div class="sect-h"><h2>义务清单</h2><span class="hint">j/k 移动 · 1–4 裁决 · n 下一条未核验</span></div>
+      <div class="sect-body">
+        <div class="obtools">${filters}
+          <button class="nextbtn" id="btn-next">下一条未核验<span class="k">n</span></button></div>
+        <ul class="oblist" id="oblist">${obs}</ul>
+      </div>
+    </div>
+
+    <div class="card sect" id="sect-evidence">
+      <div class="sect-h collapse-h" data-toggle="sect-evidence"><span class="tri">▶</span>
+        <h2>全部证据（${b.evidence.length}）</h2>
+        <span class="hint">核验时通常不必展开——义务行内可直接打开对应证据</span></div>
+      <div class="sect-body"><div class="evlist">${evCards}</div></div>
+    </div>
+
+    <div class="card sect" id="sect-deps">
+      <div class="sect-h collapse-h" data-toggle="sect-deps"><span class="tri">▶</span>
+        <h2>这条结论依赖什么、被怎么攻击过</h2>
+        <span class="hint">需要背景时再展开</span></div>
+      <div class="sect-body">
+        <div class="depwrap">${depSVG(b.deps)}</div>
+        <ul class="attacks">${attacks}</ul>
+      </div>
+    </div>`;
+
+  // wire up
+  main.querySelectorAll(".vbtn").forEach(btn => btn.addEventListener("click", () =>
+    setVerdict(btn.dataset.ob, btn.dataset.v)));
+  main.querySelectorAll("textarea[data-note]").forEach(t => {
+    t.addEventListener("input", () => {
+      bstate(b.id).notes[t.dataset.note] = t.value;
+      saveDraft(); updatePanel();
+      const warn = t.closest(".ob").querySelector(".note-req");
+      if (warn) warn.style.display = t.value.trim() ? "none" : "";
+    });
+  });
+  main.querySelectorAll(".evchip[data-ev]").forEach(chip =>
+    chip.addEventListener("click", (e) => {
+      e.stopPropagation();
+      const obIndex = Number(chip.closest(".ob").dataset.obi);
+      openEvidenceDrawer(chip.dataset.ev, (b.obligations[obIndex] || {}).title);
+    }));
+  main.querySelectorAll(".filterchip").forEach(chip =>
+    chip.addEventListener("click", () => { state.filter = chip.dataset.filter; renderMain(); }));
+  const nextBtn = $("btn-next");
+  if (nextBtn) nextBtn.addEventListener("click", gotoNextPending);
+  main.querySelectorAll(".collapse-h").forEach(h =>
+    h.addEventListener("click", () => $(h.dataset.toggle).classList.toggle("open")));
+  main.querySelectorAll(".ob").forEach(row => row.addEventListener("click", (e) => {
+    if (e.target.closest("button, textarea, a")) return;
+    state.cursor = Number(row.dataset.obi); highlightCursor();
+  }));
+  wireEvidenceCard(main);
+}
+
+function setVerdict(obId, v) {
+  const st = bstate(state.current);
+  st.verdicts[obId] = (st.verdicts[obId] === v) ? undefined : v;
+  if (st.verdicts[obId] === undefined) delete st.verdicts[obId];
+  saveDraft(); renderMain(); renderQueue(); updatePanel();
+}
+function highlightCursor() {
+  document.querySelectorAll(".ob").forEach(el =>
+    el.classList.toggle("current", Number(el.dataset.obi) === state.cursor));
+  const row = $("obrow-" + state.cursor);
+  if (row) row.scrollIntoView({ behavior: "smooth", block: "nearest" });
+}
+function gotoNextPending() {
+  const b = BUNDLES[state.current]; if (!b) return;
+  const st = bstate(b.id);
+  const n = b.obligations.length;
+  for (let step = 1; step <= n; step++) {
+    const i = (state.cursor + step) % n;
+    if (!st.verdicts[b.obligations[i].id]) { state.cursor = i; highlightCursor(); return; }
+  }
+  toast("没有未核验的义务了");
+}
+
+/* ---------- evidence drawer (opens beside the current obligation) ---------- */
+function openEvidenceDrawer(evId, obLabel) {
+  const b = BUNDLES[state.current]; if (!b) return;
+  const ev = b.evidence.find(e => e.id === evId); if (!ev) return;
+  const root = $("drawer-root");
+  root.innerHTML = `
+    <div class="drawer" id="evdrawer" role="dialog" aria-label="证据详情">
+      <div class="d-h">
+        <h3>证据 · ${esc(evidenceVM(ev).title)}</h3>
+        <button class="x" id="d-close" aria-label="关闭">✕</button>
+      </div>
+      <div class="d-b">
+        <div class="d-ctx">${obLabel ? "从「" + esc(obLabel) + "」打开——" : ""}关闭后回到原来的位置，不必来回翻页。</div>
+        ${evidenceCard(ev, { inDrawer: true })}
+      </div>
+    </div>`;
+  wireEvidenceCard(root);
+  requestAnimationFrame(() => { $("evdrawer").classList.add("open"); $("scrim").classList.add("show"); });
+  $("d-close").addEventListener("click", closeDrawer);
+}
+function closeDrawer() {
+  const d = $("evdrawer");
+  if (d) { d.classList.remove("open"); setTimeout(() => { $("drawer-root").innerHTML = ""; }, 180); }
+  if (!$("rail").classList.contains("open")) $("scrim").classList.remove("show");
+}
+function openRail() { $("rail").classList.add("open"); $("scrim").classList.add("show"); }
+function closeRail() {
+  $("rail").classList.remove("open");
+  if (!$("evdrawer")) $("scrim").classList.remove("show");
+}
+
+/* ---------- verdict panel logic ---------- */
+function counts() {
+  const b = BUNDLES[state.current];
+  if (!b) return { ok:0, gap:0, err:0, skip:0, total:0, done:0, missingNotes:[], corrOk:false };
+  const st = bstate(b.id);
+  const c = { ok: 0, gap: 0, err: 0, skip: 0, total: b.obligations.length, done: 0, missingNotes: [] };
+  for (const ob of b.obligations) {
+    const v = st.verdicts[ob.id];
+    if (v) { c[v]++; c.done++; }
+    if ((v === "gap" || v === "err") && !(st.notes[ob.id] || "").trim()) c.missingNotes.push(ob.id);
+  }
+  c.corrOk = st.verdicts["OB-0"] === "ok";
+  return c;
+}
+
+function updatePanel() {
+  const sub = SUBMITTED[state.current];
+  if (sub) return; // topbar handled in renderMain for submitted view
+  const b = BUNDLES[state.current]; if (!b) return;
+  const st = bstate(b.id);
+  const c = counts();
+
+  $("miniprog").textContent = c.done + "/" + c.total;
+  $("p-done").textContent = c.done; $("p-total").textContent = c.total;
+  $("ring-text").textContent = c.done + "/" + c.total;
+  const C = 138.2;
+  $("ring-fg").style.strokeDashoffset = String(C * (1 - (c.total ? c.done / c.total : 0)));
+  $("dist").innerHTML =
+    `<span class="pill ok">通过 ${c.ok}</span><span class="pill gap">缺口 ${c.gap}</span>` +
+    `<span class="pill err">错误 ${c.err}</span><span class="pill">无法判断 ${c.skip}</span>`;
+  $("vb-prog").textContent = c.done + "/" + c.total + " 已核验";
+  $("vb-sum").textContent =
+    (c.gap ? `${c.gap} 个缺口` : "") + (c.err ? `　${c.err} 个错误` : "") ||
+    (c.done === c.total ? "全部义务已核验" : "继续逐条核验");
+
+  // one-way: state -> checkbox (listener writes the other direction)
+  $("conflict-check").checked = !!st.conflict;
+  $("conflictbox").classList.toggle("done", !!st.conflict);
+
+  const allJudged = c.done === c.total;
+  const allOk = allJudged && c.ok === c.total;
+  const canApprove = allOk && st.conflict;
+  const canChanges = c.gap >= 1 && c.missingNotes.length === 0 && st.conflict && allJudged;
+  const canReject = allJudged && st.conflict && (c.err >= 1 || c.gap >= 1 || c.skip >= 1);
+
+  const bA = $("v-approve"), bC = $("v-changes"), bR = $("v-reject");
+  bA.disabled = !canApprove; bC.disabled = !canChanges; bR.disabled = !canReject;
+  bA.classList.toggle("sel-approve", st.verdict === "APPROVE");
+  bC.classList.toggle("sel-changes", st.verdict === "REQUEST_CHANGES");
+  bR.classList.toggle("sel-reject", st.verdict === "REJECT");
+  if ((st.verdict === "APPROVE" && !canApprove) || (st.verdict === "REQUEST_CHANGES" && !canChanges) ||
+      (st.verdict === "REJECT" && !canReject)) st.verdict = null;
+
+  $("channels").classList.toggle("hidden", st.verdict !== "REJECT");
+  const wi = $("witness-input");
+  wi.classList.toggle("hidden", st.channel !== "claim_counterexample");
+  document.querySelectorAll('input[name=ch]').forEach(r => { r.checked = (r.value === st.channel); });
+  if (wi.value !== st.witness) wi.value = st.witness;
+  const chWarn = $("ch-warn");
+  if (st.verdict === "REJECT" && st.channel === "claim_counterexample" && !st.witness.trim()) {
+    chWarn.textContent = "选择「结论本身是错的」必须填写一份已被独立核验的反例编号，否则不能提交——这样专家意见才不会被当成数学否证。";
+    chWarn.classList.remove("hidden");
+  } else chWarn.classList.add("hidden");
+
+  // contextual blockers: only show what is still unmet
+  const unmet = [];
+  if (!allJudged) unmet.push(`还有 ${c.total - c.done} 条义务未裁决`);
+  if (c.missingNotes.length) unmet.push(`缺口/错误缺少说明：${c.missingNotes.join("、")}`);
+  if (!st.conflict) unmet.push("利益冲突声明未勾选");
+  if (st.verdict === "APPROVE" && !c.corrOk) unmet.push("白话转述那一条尚未判为「通过」");
+  if (st.verdict === "REJECT" && !st.channel) unmet.push("未选择这是哪一种「不通过」");
+  if (st.verdict === "REJECT" && st.channel === "claim_counterexample" && !st.witness.trim())
+    unmet.push("未填写反例的编号");
+  $("blockers").innerHTML = unmet.length
+    ? unmet.map(t => `<li>${esc(t)}</li>`).join("")
+    : `<li class="allclear">✓ 所有前置条件已满足${st.verdict ? "" : "——请选择整体裁决"}</li>`;
+
+  const submittable = !!st.verdict &&
+    (st.verdict !== "REJECT" || (!!st.channel && (st.channel !== "claim_counterexample" || !!st.witness.trim())));
+  const VERDICT_CN = { APPROVE: "通过", REQUEST_CHANGES: "要求修改", REJECT: "拒绝" };
+  $("submitbtn").disabled = !submittable;
+  $("submitbtn").textContent = st.verdict ? `提交核验记录：${VERDICT_CN[st.verdict]}` : "提交核验记录";
+}
+
+/* ---------- ReviewRecord assembly (full digests, never display strings) ---------- */
+function buildRecord() {
+  const b = BUNDLES[state.current];
+  const st = bstate(b.id);
+  const vMap = { ok: "OK", gap: "GAP", err: "ERROR", skip: "CANNOT_JUDGE" };
+  return {
+    schema_version: "matharc.v02.review-record.1",
+    review_id: "REV-" + b.id + "-" + ROSTER.reviewer.id,
+    claim_id: b.claimId,
+    claim_revision: b.claimRevision,
+    statement_digest_sha256: b.statementDigestFull,
+    bundle_digest_sha256: b.bundleDigestFull,
+    reviewer: {
+      reviewer_id: ROSTER.reviewer.id,
+      independence_group: ROSTER.reviewer.group,
+      roster_version: ROSTER.version,
+      roster_digest_sha256: ROSTER.digest,
+      conflict_declaration: st.conflict,
+    },
+    review_policy_version: POLICY_VERSION,
+    obligation_verdicts: b.obligations.map(ob => ({
+      obligation_id: ob.id,
+      required_assurance: ob.req,
+      verdict: vMap[st.verdicts[ob.id]] || "PENDING",
+      note: (st.notes[ob.id] || "").trim() || undefined,
+    })),
+    statement_correspondence_checked: st.verdicts["OB-0"] === "ok",
+    verdict: st.verdict,
+    reject_channel: st.verdict === "REJECT" ? st.channel : undefined,
+    counterexample_artifact_id:
+      st.channel === "claim_counterexample" ? st.witness.trim() : undefined,
+    lifecycle: "ACTIVE",
+    review_signature: "ed25519:PROTOTYPE-PLACEHOLDER",
+    created_at: new Date().toISOString(),
+  };
+}
+async function chainDigest(json) {
+  try {
+    const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(PREV_HEAD + json));
+    return Array.from(new Uint8Array(buf)).map(x => x.toString(16).padStart(2, "0")).join("");
+  } catch (e) { return null; }
+}
+
+async function openRecordModal(final) {
+  const b = BUNDLES[state.current]; if (!b) return;
+  const rec = buildRecord();
+  const json = JSON.stringify(rec, null, 2);
+  const newHead = await chainDigest(json);
+  openModal(`
+    <div class="m-h"><h3>${final ? "核验记录已生成（原型演示）" : "ReviewRecord 预览"}</h3>
+      <button class="x" data-close aria-label="关闭">✕</button></div>
+    <div class="m-b">
+      ${final && newHead ? `<div class="chainviz">
+          <span class="node">…${PREV_HEAD.slice(0,12)}</span><span class="arrow">→</span>
+          <span class="node new">${newHead.slice(0,12)}…（本记录）</span>
+        </div>` : ""}
+      <pre>${esc(json)}</pre>
+      <div class="m-note">这是提交后写入系统的原始记录（开发者视角）。真实提交时，系统会先自动检查你是否有资格评审这份材料，
+        再把记录追加进不可篡改的日志；判为「通过」时同时生成一份以你名义的专家核验证据。
+        记录锁定在结论的第 ${b.claimRevision} 版——语句一旦修订或你撤回意见，它会自动失效。
+        文件里的指纹字段一律是完整长度，界面上显示的缩略形式只用于阅读。</div>
+      <div class="m-actions">
+        <button class="ghostbtn" data-copyjson>复制 JSON</button>
+        ${final ? `<button class="ghostbtn" data-close>完成</button>` : ""}
+      </div>
+    </div>`);
+  document.querySelector("[data-copyjson]").addEventListener("click", () => copyText(json));
+}
+
+function openBundleInfo() {
+  const sub = SUBMITTED[state.current];
+  const b = BUNDLES[state.current];
+  const rows = sub
+    ? [["记录编号", sub.id], ["裁决", "通过"], ["提交时间", sub.at], ["日志位置", sub.head]]
+    : [["材料编号", b.id],
+       ["锁定的结论版本", `${b.claimId} · 第 ${b.claimRevision} 版`],
+       ["结论语句指纹", b.statementDigestFull],
+       ["材料指纹", b.bundleDigestFull],
+       ["日志当前位置", PREV_HEAD],
+       ["评审人名册版本", `${ROSTER.version}`],
+       ["名册指纹", ROSTER.digest],
+       ["评审规则版本", POLICY_VERSION]];
+  openModal(`
+    <div class="m-h"><h3>包信息与审计标识</h3><button class="x" data-close aria-label="关闭">✕</button></div>
+    <div class="m-b">
+      <div class="infogrid">${rows.map(([k, v]) =>
+        `<span class="tk">${k}</span><span class="tv">${esc(v)}<button class="copybtn" data-copy="${esc(v)}">复制</button></span>`).join("")}</div>
+      ${b ? `<div class="m-actions">
+        <button class="ghostbtn" data-rawbundle>查看送审包原始 JSON</button>
+        <button class="ghostbtn" data-rawrecord>预览 ReviewRecord</button></div>` : ""}
+      <div class="m-note">这些用于追溯与防篡改的标识默认收在这里，不占用核验版面。每份证据自己的技术字段，在证据卡上单独展开。</div>
+    </div>`);
+  document.querySelectorAll(".modal [data-copy]").forEach(el =>
+    el.addEventListener("click", () => copyText(el.dataset.copy)));
+  const rb = document.querySelector("[data-rawbundle]");
+  if (rb) rb.addEventListener("click", () => {
+    openModal(`
+      <div class="m-h"><h3>送审包原始 JSON（开发者层）</h3><button class="x" data-close aria-label="关闭">✕</button></div>
+      <div class="m-b"><pre>${esc(JSON.stringify(b, null, 2))}</pre></div>`);
+  });
+  const rr = document.querySelector("[data-rawrecord]");
+  if (rr) rr.addEventListener("click", () => openRecordModal(false));
+}
+
+function openModal(inner) {
+  const root = $("modal-root");
+  root.innerHTML = `<div class="overlay" id="ov"><div class="modal" role="dialog" aria-modal="true">${inner}</div></div>`;
+  root.querySelectorAll("[data-close]").forEach(el =>
+    el.addEventListener("click", () => { root.innerHTML = ""; }));
+  $("ov").addEventListener("click", (e) => { if (e.target.id === "ov") root.innerHTML = ""; });
+}
+
+/* ---------- misc ---------- */
+function copyText(text) {
+  const done = () => toast("已复制到剪贴板");
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, () => fallbackCopy(text, done));
+    } else fallbackCopy(text, done);
+  } catch (e) { fallbackCopy(text, done); }
+}
+function fallbackCopy(text, done) {
+  const ta = document.createElement("textarea");
+  ta.value = text; ta.style.position = "fixed"; ta.style.opacity = "0";
+  document.body.appendChild(ta); ta.select();
+  try { document.execCommand("copy"); done(); } catch (e) { toast("复制失败，请手动选择"); }
+  document.body.removeChild(ta);
+}
+let toastTimer = null;
+function toast(msg) {
+  let el = document.querySelector(".toast");
+  if (!el) { el = document.createElement("div"); el.className = "toast"; document.body.appendChild(el); }
+  el.textContent = msg;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => el.remove(), 1800);
+}
+
+/* selectBundle: restore the NEW bundle's own state before any panel update,
+   so conflict declarations and drafts never bleed across bundles. */
+function selectBundle(id) {
+  state.current = id; state.cursor = 0; state.filter = "all";
+  closeDrawer();
+  const sub = SUBMITTED[id];
+  if (!sub) $("conflict-check").checked = !!bstate(id).conflict;
+  renderQueue(); renderMain(); updatePanel();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function openHelp() {
+  openModal(`
+    <div class="m-h"><h3>键盘快捷键</h3><button class="x" data-close aria-label="关闭">✕</button></div>
+    <div class="m-b"><div class="helpgrid">
+      <kbd>j</kbd><span>下一条义务</span>
+      <kbd>k</kbd><span>上一条义务</span>
+      <kbd>n</kbd><span>跳到下一条未核验</span>
+      <kbd>1</kbd><span>当前义务 → 通过</span>
+      <kbd>2</kbd><span>当前义务 → 缺口（需附说明）</span>
+      <kbd>3</kbd><span>当前义务 → 错误（需附说明）</span>
+      <kbd>4</kbd><span>当前义务 → 无法判断</span>
+      <kbd>?</kbd><span>本帮助</span>
+      <kbd>Esc</kbd><span>关闭抽屉/弹层</span>
+    </div></div>`);
+}
+
+/* ---------- events ---------- */
+document.addEventListener("keydown", (e) => {
+  if (e.target.matches("textarea, input")) { if (e.key === "Escape") e.target.blur(); return; }
+  if (e.key === "Escape") { $("modal-root").innerHTML = ""; closeDrawer(); closeRail(); return; }
+  if (e.key === "?") { openHelp(); return; }
+  const b = BUNDLES[state.current]; if (!b) return;
+  if (e.key === "j") { state.cursor = Math.min(state.cursor + 1, b.obligations.length - 1); highlightCursor(); }
+  if (e.key === "k") { state.cursor = Math.max(state.cursor - 1, 0); highlightCursor(); }
+  if (e.key === "n") gotoNextPending();
+  const map = { "1": "ok", "2": "gap", "3": "err", "4": "skip" };
+  if (map[e.key]) setVerdict(b.obligations[state.cursor].id, map[e.key]);
+});
+$("conflict-check").addEventListener("change", () => {
+  bstate(state.current).conflict = $("conflict-check").checked; saveDraft(); updatePanel();
+});
+$("v-approve").addEventListener("click", () => { const st = bstate(state.current); st.verdict = st.verdict === "APPROVE" ? null : "APPROVE"; st.channel = null; saveDraft(); updatePanel(); });
+$("v-changes").addEventListener("click", () => { const st = bstate(state.current); st.verdict = st.verdict === "REQUEST_CHANGES" ? null : "REQUEST_CHANGES"; st.channel = null; saveDraft(); updatePanel(); });
+$("v-reject").addEventListener("click", () => { const st = bstate(state.current); st.verdict = st.verdict === "REJECT" ? null : "REJECT"; saveDraft(); updatePanel(); });
+document.querySelectorAll('input[name=ch]').forEach(r => r.addEventListener("change", () => {
+  const st = bstate(state.current); st.channel = r.value; saveDraft(); updatePanel();
+}));
+$("witness-input").addEventListener("input", (e) => { bstate(state.current).witness = e.target.value; saveDraft(); updatePanel(); });
+$("submitbtn").addEventListener("click", () => openRecordModal(true));
+$("btn-preview").addEventListener("click", () => openRecordModal(false));
+$("btn-bundleinfo").addEventListener("click", openBundleInfo);
+$("btn-help").addEventListener("click", openHelp);
+$("btn-queue").addEventListener("click", openRail);
+$("scrim").addEventListener("click", () => { closeDrawer(); closeRail(); });
+$("btn-clear").addEventListener("click", () => {
+  delete state.perBundle[state.current];
+  saveDraft();
+  $("conflict-check").checked = false;
+  renderQueue(); renderMain(); updatePanel(); toast("已清空本包草稿");
+});
+const vp = $("verdictpanel");
+function toggleVerdictDrawer(force) {
+  const now = vp.dataset.expanded === "true";
+  vp.dataset.expanded = String(force !== undefined ? force : !now);
+  $("vb-open").textContent = vp.dataset.expanded === "true" ? "收起" : "查看裁决";
+}
+$("vbar").addEventListener("click", (e) => { if (!e.target.closest("#vb-open")) toggleVerdictDrawer(); });
+$("vb-open").addEventListener("click", () => toggleVerdictDrawer());
+$("vbar").addEventListener("keydown", (e) => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); toggleVerdictDrawer(); } });
+window.addEventListener("beforeunload", (e) => {
+  const st = state.perBundle[state.current];
+  if (st && Object.keys(st.verdicts || {}).length && !st.submitted) {
+    e.preventDefault(); e.returnValue = "";
+  }
+});
+
+/* ---------- boot ---------- */
+loadDraft();
+$("conflict-check").checked = !!bstate(state.current).conflict;
+renderQueue(); renderMain(); updatePanel();
+</script>
+</body>
+</html>

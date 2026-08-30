@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "status_date": "2026-08-23",
+  "legend": ["native", "partial_or_external", "unknown"],
+  "systems": {
+    "MathArc Research": {
+      "formal_proof_backend": "partial_or_external",
+      "open_research_orchestration": "native",
+      "scope_quantifier_guard": "native",
+      "proof_obligation_dag": "native",
+      "failure_invalidation_memory": "native",
+      "independent_reconstruction_gate": "native",
+      "public_structured_trace": "native",
+      "tool_call_ledger": "native",
+      "route_diversity_metrics": "native",
+      "content_addressed_evidence": "native"
+    },
+    "LeanDojo": {
+      "formal_proof_backend": "native",
+      "open_research_orchestration": "partial_or_external",
+      "scope_quantifier_guard": "unknown",
+      "proof_obligation_dag": "partial_or_external",
+      "failure_invalidation_memory": "unknown",
+      "independent_reconstruction_gate": "unknown",
+      "public_structured_trace": "partial_or_external",
+      "tool_call_ledger": "partial_or_external",
+      "route_diversity_metrics": "unknown",
+      "content_addressed_evidence": "partial_or_external"
+    },
+    "LeanAgent": {
+      "formal_proof_backend": "native",
+      "open_research_orchestration": "partial_or_external",
+      "scope_quantifier_guard": "unknown",
+      "proof_obligation_dag": "partial_or_external",
+      "failure_invalidation_memory": "partial_or_external",
+      "independent_reconstruction_gate": "unknown",
+      "public_structured_trace": "partial_or_external",
+      "tool_call_ledger": "partial_or_external",
+      "route_diversity_metrics": "unknown",
+      "content_addressed_evidence": "unknown"
+    },
+    "DeepSeek-Prover-V2": {
+      "formal_proof_backend": "native",
+      "open_research_orchestration": "partial_or_external",
+      "scope_quantifier_guard": "unknown",
+      "proof_obligation_dag": "partial_or_external",
+      "failure_invalidation_memory": "unknown",
+      "independent_reconstruction_gate": "unknown",
+      "public_structured_trace": "partial_or_external",
+      "tool_call_ledger": "partial_or_external",
+      "route_diversity_metrics": "unknown",
+      "content_addressed_evidence": "unknown"
+    },
+    "Goedel-Prover-V2": {
+      "formal_proof_backend": "native",
+      "open_research_orchestration": "partial_or_external",
+      "scope_quantifier_guard": "unknown",
+      "proof_obligation_dag": "partial_or_external",
+      "failure_invalidation_memory": "unknown",
+      "independent_reconstruction_gate": "unknown",
+      "public_structured_trace": "partial_or_external",
+      "tool_call_ledger": "partial_or_external",
+      "route_diversity_metrics": "unknown",
+      "content_addressed_evidence": "unknown"
+    }
+  },
+  "warning": "Unknown is not no. Every external-system field must be confirmed by reproducible audit before public comparison."
+}

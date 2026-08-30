@@ -1,0 +1,28 @@
+services:
+  matharc:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      MATHARC_HOST: 0.0.0.0
+      MATHARC_PORT: 8000
+      MATHARC_CODEX_WORKSPACE: /app
+      MATHARC_CODEX_SESSION_DIR: /app/.matharc/codex-sessions
+      MATHARC_CODEX_MODEL: ${MATHARC_CODEX_MODEL:-}
+      MATHARC_CODEX_SANDBOX: ${MATHARC_CODEX_SANDBOX:-read-only}
+      MATHARC_CODEX_TIMEOUT: ${MATHARC_CODEX_TIMEOUT:-900}
+      MATHARC_CODEX_NETWORK: ${MATHARC_CODEX_NETWORK:-0}
+      MATHARC_CODEX_WEB_SEARCH: ${MATHARC_CODEX_WEB_SEARCH:-disabled}
+      CODEX_API_KEY: ${CODEX_API_KEY:-}
+    volumes:
+      - matharc-sessions:/app/.matharc
+      - matharc-artifacts:/app/artifacts
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8000/api/health', timeout=2)"]
+      interval: 10s
+      timeout: 3s
+      retries: 5
+
+volumes:
+  matharc-sessions:
+  matharc-artifacts:

@@ -1,0 +1,33 @@
+{
+  "all_checks_passed": true,
+  "checks": {
+    "k_4": {"all_checks_passed": true, "file": "q6-exact4.json"},
+    "k_5": {"all_checks_passed": true, "file": "q6-exact5.json"},
+    "k_6": {"all_checks_passed": true, "file": "q6-exact6.json"},
+    "k_7_full": {"all_checks_passed": true, "file": "q6-exact7-full.json"},
+    "k_7_nonfull": {"all_checks_passed": true, "file": "q6-exact7-nonfull.json"},
+    "k_ge_8": {"all_checks_passed": true, "file": "q6-many-small.json"},
+    "k_le_3": {"all_checks_passed": true, "file": "q6-at-most-three-small.json"},
+    "positive_core_hmin": {"all_checks_passed": true, "file": "q6-positive-core-hmin.json"}
+  },
+  "claim": "Let F be a finite union-closed family with empty set adjoined, let S be a minimum nonempty member of size three, and let Omega=(union F)\\S have size six. If all three elements of S occur in strictly fewer than half the members of F, then B_6>=0 and therefore some element of Omega occurs in at least half the members.",
+  "claim_status": "machine-checked candidate q=6 special-case theorem; not externally peer reviewed",
+  "conclusion": {
+    "full_frankl_conjecture": "INCONCLUSIVE",
+    "minimum_three_set_q_ge_7": "OPEN",
+    "minimum_three_set_q_le_6": "CLOSED_INTERNAL_EXACT",
+    "q6_bridge": "CLOSED_INTERNAL_EXACT"
+  },
+  "coverage": {
+    "small_parts_0_or_1": "previous cross-fiber proof",
+    "small_parts_19_to_21": "infeasible: more than 42 positive cores required",
+    "small_parts_2_or_3": "exact trace and charge verifier",
+    "small_parts_4": "24 support orbits plus trace propagation",
+    "small_parts_5": "51 support orbits plus cardinal propagation",
+    "small_parts_6": "92 support orbits plus relaxed cardinal propagation",
+    "small_parts_7": "24 seven-pair orbits plus full-trace exclusions",
+    "small_parts_8_to_18": "complete H_min table plus exact deficit-cost dynamic program"
+  },
+  "schema_version": 1,
+  "status_date": "2026-08-23"
+}

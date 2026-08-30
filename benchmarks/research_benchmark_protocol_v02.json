@@ -1,0 +1,87 @@
+{
+  "schema_version": "1.0",
+  "suite_id": "MATHARC-RESEARCH-EVAL",
+  "suite_version": "0.2-draft",
+  "status": "PREREGISTERED_NOT_RUN",
+  "claim_boundary": "This manifest defines evaluation rules. It contains no performance result.",
+  "families": [
+    {
+      "family_id": "FORMAL-COMPLETION",
+      "purpose": "Kernel-checked theorem completion in pinned Lean environments.",
+      "minimum_cases": 30,
+      "required_outputs": ["proof term", "kernel result", "search budget", "cold replay"]
+    },
+    {
+      "family_id": "EXACT-CONSTRUCTION",
+      "purpose": "Integer or finite constructions with independently checked certificates.",
+      "minimum_cases": 30,
+      "required_outputs": ["certificate", "independent verifier", "tamper rejection", "cold replay"]
+    },
+    {
+      "family_id": "COUNTEREXAMPLE-DISCOVERY",
+      "purpose": "Find minimal witnesses against false universal statements and definition extensions.",
+      "minimum_cases": 30,
+      "required_outputs": ["witness", "direct checker", "minimality status", "scope repair"]
+    },
+    {
+      "family_id": "FLAWED-PROOF-REPAIR",
+      "purpose": "Detect quantifier, dependency, type, regularity and definition errors.",
+      "minimum_cases": 30,
+      "required_outputs": ["first invalid step", "failure class", "countermodel or missing premise", "repaired theorem"]
+    },
+    {
+      "family_id": "LONG-HORIZON-RESEARCH-SLICE",
+      "purpose": "Manage multiple routes and reusable failures when the full target may remain open.",
+      "minimum_cases": 30,
+      "required_outputs": ["claim DAG", "route ledger", "failure memory", "strongest strict result", "open obligations"]
+    },
+    {
+      "family_id": "LITERATURE-GROUNDED-AUDIT",
+      "purpose": "Match theorem statements, definitions and novelty claims to primary sources.",
+      "minimum_cases": 30,
+      "required_outputs": ["pinned source", "statement correspondence", "definition version", "novelty boundary"]
+    }
+  ],
+  "budget_contract": {
+    "paired_case_seed": true,
+    "same_wall_time_limit": true,
+    "same_model_call_budget": true,
+    "same_tool_cpu_budget": true,
+    "same_external_retrieval_budget": true,
+    "budget_units_must_be_recorded": true
+  },
+  "primary_metrics": [
+    {"name": "audited_target_closure", "direction": "maximize"},
+    {"name": "false_promotion_rate", "direction": "minimize"},
+    {"name": "cold_replay_rate", "direction": "maximize"},
+    {"name": "critical_obligation_reduction", "direction": "maximize"}
+  ],
+  "secondary_metrics": [
+    {"name": "critical_path_closure", "direction": "maximize"},
+    {"name": "independent_audit_coverage", "direction": "maximize"},
+    {"name": "falsification_coverage", "direction": "maximize"},
+    {"name": "useful_failure_rate", "direction": "maximize"},
+    {"name": "failure_reuse_rate", "direction": "maximize"},
+    {"name": "route_mechanism_diversity", "direction": "maximize"},
+    {"name": "tokens_per_closed_critical_weight", "direction": "minimize"},
+    {"name": "tool_cpu_seconds_per_closed_critical_weight", "direction": "minimize"}
+  ],
+  "qualification": {
+    "minimum_paired_runs": 30,
+    "confidence": 0.95,
+    "bootstrap_samples": 5000,
+    "all_primary_lower_bounds_strictly_positive": true,
+    "candidate_false_promotions": 0,
+    "all_artifacts_cold_replay": true,
+    "same_suite_and_version": true,
+    "equal_budget": true
+  },
+  "reporting": {
+    "publish_all_failed_cases": true,
+    "publish_abstentions": true,
+    "publish_case_level_artifact_hashes": true,
+    "publish_adapter_commits": true,
+    "publish_environment_locks": true,
+    "forbid_unscoped_universal_superiority_claim": true
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "claim": "The round-4 q=6 proof's residual k=4..7 trace-type space is exhaustively audited: all 244,068 multisets are either closed by H_p/top corrections or fall into eight finite categories whose trace-superfamily/support-union repairs cover every remaining shortfall.",
+  "claim_boundary": "This is an independent residual-type audit of the existing round-4 machine-checked q=6 special-case proof. It is not an independent reimplementation of the entire proof pipeline and does not prove Frankl's full conjecture.",
+  "counts": {
+    "coarse_residual_multisets": 82,
+    "exception_categories": 8,
+    "low_positive_geometries": 11625,
+    "pair_trace_types": 45,
+    "positive_trace_types": 6,
+    "repaired_rows": 38,
+    "singleton_trace_types": 8,
+    "trace_families": 90,
+    "trace_type_multisets": 244068,
+    "unresolved_rows_before_exception_repair": 38
+  },
+  "exception_categories": [
+    {"k":5,"low_geometry_charge":48,"maximum_shortfall":4,"p_actual":16,"repair_lower_bound":4,"rows":1,"top_present":false,"types":[[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2]]},
+    {"k":6,"low_geometry_charge":48,"maximum_shortfall":2,"p_actual":16,"repair_lower_bound":10,"rows":1,"top_present":false,"types":[[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,5,-3]]},
+    {"k":6,"low_geometry_charge":60,"maximum_shortfall":2,"p_actual":16,"repair_lower_bound":6,"rows":6,"top_present":true,"types":[[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,5,-3]]},
+    {"k":6,"low_geometry_charge":60,"maximum_shortfall":2,"p_actual":17,"repair_lower_bound":6,"rows":6,"top_present":true,"types":[[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,5,-3]]},
+    {"k":6,"low_geometry_charge":60,"maximum_shortfall":4,"p_actual":17,"repair_lower_bound":10,"rows":6,"top_present":true,"types":[[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,6,-4]]},
+    {"k":6,"low_geometry_charge":60,"maximum_shortfall":4,"p_actual":17,"repair_lower_bound":6,"rows":6,"top_present":true,"types":[[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,5,-3],[2,5,-3]]},
+    {"k":7,"low_geometry_charge":60,"maximum_shortfall":4,"p_actual":17,"repair_lower_bound":8,"rows":6,"top_present":true,"types":[[2,2,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2]]},
+    {"k":7,"low_geometry_charge":60,"maximum_shortfall":8,"p_actual":17,"repair_lower_bound":8,"rows":6,"top_present":true,"types":[[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2],[2,4,-2]]}
+  ],
+  "minimum_union_sizes_for_distinct_pairs": {"5":4,"6":4,"7":5},
+  "schema_version": 1,
+  "scope": {
+    "full_frankl_conjecture": "NOT_CLAIMED",
+    "minimum_nonempty_member_size": 3,
+    "outside_ground_set_size_q": 6,
+    "small_part_counts": [4,5,6,7]
+  },
+  "status": "ACCEPT",
+  "trace_superfamily_facts": {
+    "p2_types":3,
+    "p4_types":3,
+    "p5_min_zero_superfamily_size":6,
+    "p5_positive_superfamily_exists":false,
+    "p5_types":6,
+    "p6_min_zero_superfamily_size":8,
+    "p6_positive_superfamily_exists":false,
+    "p6_types":3
+  }
+}

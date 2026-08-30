@@ -1,0 +1,41 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "matharc-research"
+version = "0.1.0"
+description = "Proof-carrying orchestration and evidence governance for mathematical research agents"
+readme = "README.md"
+requires-python = ">=3.10"
+license = {text = "Apache-2.0"}
+authors = [{name = "MathArc"}]
+dependencies = []
+
+[project.optional-dependencies]
+formal = ["sympy>=1.12", "z3-solver>=4.12"]
+research = ["numpy>=1.26"]
+api = ["fastapi>=0.115", "uvicorn>=0.30"]
+dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.11", "pre-commit>=3.8"]
+
+[project.scripts]
+matharc = "matharc.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["matharc*"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.mypy]
+python_version = "3.10"
+strict = true
+warn_unused_ignores = true
+files = ["matharc/v02"]
+
+[[tool.mypy.overrides]]
+# z3-solver ships no type stubs and is an optional extra that may be absent
+# from the checking environment; smt_tools loads it dynamically either way.
+module = ["z3", "z3.*"]
+ignore_missing_imports = true
