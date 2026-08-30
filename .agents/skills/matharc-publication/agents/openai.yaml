@@ -1,0 +1,5 @@
+interface:
+  display_name: MathArc Publication
+  short_description: Fail-closed publication readiness audit
+policy:
+  allow_implicit_invocation: false
