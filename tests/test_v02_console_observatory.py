@@ -8,6 +8,7 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
+from matharc.v02.console_export import build_console_export, campaign_report_envelope
 from matharc.v02.workspace_bundle import write_full_workspace_bundle
 from matharc.v02.workspace_server import make_server
 
@@ -38,7 +39,8 @@ class ConsoleObservatoryTests(unittest.TestCase):
 
     def test_campaign_schema_and_console_dashboard_are_served(self) -> None:
         report = {"rounds": [], "stop_reason": "done", "final_metrics": {}, "budget": None, "creation_log": []}
-        (self.root / "campaign.json").write_text(json.dumps(report), encoding="utf-8")
+        envelope = campaign_report_envelope(report, build_console_export(self.root)["provenance"])
+        (self.root / "campaign.json").write_text(json.dumps(envelope), encoding="utf-8")
         with urlopen(self.base + "/api/campaign") as response:
             payload = json.loads(response.read().decode())
         self.assertTrue(payload["available"])

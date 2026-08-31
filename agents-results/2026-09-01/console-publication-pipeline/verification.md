@@ -37,3 +37,16 @@ Two independent AI review lanes examined the API/ledger and prototype/security s
 The reviewers were stopped after these source changes and did not emit final-version PASS reports. Therefore this record treats the final result as automated-gate evidence, not as completed independent-AI acceptance.
 
 Browser automation was not run because the installed browser-control plugin lacks its required `scripts/browser-client.mjs` runtime. This is an environment limitation; it was not bypassed.
+
+## Post-review hardening
+
+Two subsequent fixed-commit AI reviews found a P0 export overwrite path and several P1/P2 integrity and presentation gaps. The hardening change closes them before final delivery:
+
+1. `export` resolves its target and rejects every path inside the workspace root, so it cannot overwrite `workspace.json` or another audited workspace file.
+2. Campaign reports now use a typed envelope whose report digest and three provenance values (`run_id`, state digest, and event head) must match the current workspace.
+3. The operations ledger now validates an exact signed-record schema, serializes appenders with an exclusive lock and fresh state reload, and updates memory only after the atomic replace succeeds.
+4. The browser bridge consumes only declared live-view contracts, verifies the fixed event genesis and unique IDs, hashes backend-provided canonical unsigned event bytes, coalesces SSE refreshes, clears stale snapshots on failure, preserves focus across a refresh, and restricts review tokens to same-origin `/api/review`.
+
+New negative coverage rejects workspace-output overwrite, forged/malformed campaign envelopes, ledger field injection, two-instance lost writes, and persistence-failure memory contamination.
+
+The final authoritative Gate 0 rerun after this hardening passed strict mypy for 70 modules, 428 unit tests with zero failures/errors (two declared historical skips), 20 SMT tests with zero skips, v0.1 and v0.2 acceptance, and Frankl replay. The focused console/observatory/ledger/workspace suite passed 27 tests; prototype JavaScript parsing passed.

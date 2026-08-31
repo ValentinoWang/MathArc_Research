@@ -104,6 +104,7 @@ td{font-variant-numeric:tabular-nums;}
 .chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:500;
   padding:1px 8px;border-radius:4px;white-space:nowrap;}
 .c-wire{background:var(--ok-soft);color:var(--ok);}
+.c-done{background:var(--ok-soft);color:var(--ok);}
 .c-part{background:var(--accent-soft);color:var(--accent);}
 .c-new{background:var(--gap-soft);color:var(--gap);}
 .c-defer{background:var(--skip-soft);color:var(--skip);}
@@ -163,7 +164,7 @@ html{scroll-behavior:smooth;}
   <p>这份文档服务一个具体动作：让开发者拿着原型和仓库，直接开工。三条纪律贯穿全文，也贯穿实现：</p>
   <ul>
     <li><strong>后端是唯一事实源。</strong>界面上任何计数、枚举、阈值，都必须能指回 <code>matharc/v02</code> 的具体文件；本文每个数字都带出处。原型开发期间共修掉四类与仓库不符的虚构（检索路线条数、扇出治理、停止条件计数、工具白名单成员），此类错误在实现期按缺陷处理。</li>
-    <li><strong>能力主张四态标注。</strong>每个视图属于且只属于一种建设状态：<span class="chip c-wire">待接线</span>（后端已有，换真数据即可）、<span class="chip c-part">部分待建</span>（后端有骨架，缺一截）、<span class="chip c-new">需新建</span>（后端没有）、<span class="chip c-defer">已推迟</span>（设计文档明确推迟）。没有第五种含糊状态。</li>
+    <li><strong>能力主张五态标注。</strong>每个视图属于且只属于一种建设状态：<span class="chip c-done">已落地</span>（已有自动化证据）、<span class="chip c-wire">待接线</span>（后端已有，换真数据即可）、<span class="chip c-part">部分待建</span>（后端有骨架，缺一截）、<span class="chip c-new">需新建</span>（后端没有）、<span class="chip c-defer">已推迟</span>（设计文档明确推迟）。</li>
     <li><strong>演示数据与真数据永不混排。</strong>接线一个视图的验收动作之一，就是删掉它的演示标注；未接线的视图保留标注。任何一屏出现无标注的编造数字，即为验收失败。</li>
   </ul>
   <div class="callout stop" style="margin-top:16px">
@@ -306,7 +307,7 @@ html{scroll-behavior:smooth;}
         <td class="mut">全系统<b>唯一</b>写端点</td></tr>
       <tr><td>CLI<br><span class="mono">cli.py</span></td>
         <td><code>demo / validate / metrics / plan / run / review …</code></td>
-        <td class="mut">离线入口；M0 需补一个 <code>export</code> 子命令（§7）</td></tr>
+        <td class="mut">离线入口；<code>export</code> 已生成受版本控制的只读控制台投影，输出路径不得位于工作区内</td></tr>
     </tbody>
   </table></div>
 </section>
@@ -315,14 +316,14 @@ html{scroll-behavior:smooth;}
   <h2><span class="no">§5</span>视图与后端映射</h2>
   <p>逐视图给出数据来源与建设状态。「接线动作」指把该视图的演示常量换成真数据要做的事。</p>
 
-  <h3><span class="no">5.1</span>平面③ 验证发布 —— 全部待接线，最先做</h3>
+  <h3><span class="no">5.1</span>平面③ 验证发布 —— 已完成只读接线</h3>
   <div class="tw"><table>
     <thead><tr><th>视图</th><th>数据来源</th><th>接线动作</th><th>状态</th></tr></thead>
     <tbody>
-      <tr><td>证明结构</td><td><code>trace</code> 的命题/依赖/证据</td><td>读 <code>/api/workspace</code>；布局改为按依赖分层自动排（现为手排坐标）</td><td><span class="chip c-wire">待接线</span></td></tr>
-      <tr><td>证明过程链</td><td><code>EventLedger.to_dict()</code> + SSE</td><td>读账本 JSON；复算逻辑已对齐，仅换数据源；轮次归属需事件携带或旁表提供</td><td><span class="chip c-wire">待接线</span></td></tr>
-      <tr><td>工具调用台账</td><td><code>ToolCallRecord[]</code></td><td>字段已一一对应（含 <code>replayable</code> 四要素与 PASS 不可重放告警）；直接映射</td><td><span class="chip c-wire">待接线</span></td></tr>
-      <tr><td>决策记录</td><td>公开推理六字段</td><td>直接映射；拒收键校验留在后端</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>证明结构</td><td><code>trace</code> 的命题/依赖/证据</td><td>由 <code>console.json</code> 或 <code>GET /api/console</code> 读取经审计工作区投影；仍不提供编辑或晋升写口</td><td><span class="chip c-done">已落地</span></td></tr>
+      <tr><td>证明过程链</td><td><code>EventLedger.to_dict()</code> + SSE</td><td>浏览器核验固定创世哈希、序号、唯一事件 ID 和后端提供的规范化无符号字节；SSE 从已见游标继续</td><td><span class="chip c-done">已落地</span></td></tr>
+      <tr><td>工具调用台账</td><td><code>ToolCallRecord[]</code></td><td>字段映射已落地（含 <code>replayable</code> 四要素与 PASS 不可重放告警）</td><td><span class="chip c-done">已落地</span></td></tr>
+      <tr><td>决策记录</td><td>公开推理六字段</td><td>只读映射已落地；拒收键校验仍留在后端</td><td><span class="chip c-done">已落地</span></td></tr>
       <tr><td>是否算新结果</td><td>—</td><td>依赖文献适配器（§6）；此前保持「检索协议 + 计划中」形态，不显示检索统计</td><td><span class="chip c-new">需新建</span></td></tr>
       <tr><td>能对外说什么</td><td>晋升/评审状态可推导分级</td><td>四级门由真状态推导；措辞检查器可先留前端正则，后续服务化</td><td><span class="chip c-part">部分待建</span></td></tr>
     </tbody>
@@ -332,7 +333,7 @@ html{scroll-behavior:smooth;}
   <div class="tw"><table>
     <thead><tr><th>视图</th><th>数据来源</th><th>接线动作</th><th>状态</th></tr></thead>
     <tbody>
-      <tr><td>攻克进程（轮次）</td><td><code>CampaignRunner</code> 的 rounds/stop_reason/budget</td><td>新增 <code>/api/campaign</code>（§7）；轮次→封存事件的对照由事件序号区间给出</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>攻克进程（轮次）</td><td><code>CampaignRunner</code> 的 rounds/stop_reason/budget</td><td><code>GET /api/campaign</code> 已落地；报告必须以运行 ID、状态摘要、事件链头和报告摘要绑定到当前工作区</td><td><span class="chip c-done">已落地</span></td></tr>
       <tr><td>攻克路线</td><td><code>ResearchRoute</code> + <code>KillTestSpec</code> + 阻断器</td><td>并行/串行两轴视图已按真语义实现；映射即可</td><td><span class="chip c-wire">待接线</span></td></tr>
       <tr><td>攻克进程列表</td><td>单工作区已有；多进程需索引</td><td>新建工作区索引（目录扫描即可起步）</td><td><span class="chip c-part">部分待建</span></td></tr>
       <tr><td>猜想队列 / 实验记录</td><td>探索产物档位规则已有；会话记录对象没有</td><td>新建探索会话记录（脚本已可内容寻址入 <code>artifact_store</code>）</td><td><span class="chip c-part">部分待建</span></td></tr>
@@ -343,7 +344,7 @@ html{scroll-behavior:smooth;}
   <div class="tw"><table>
     <thead><tr><th>视图</th><th>后端现状</th><th>状态</th></tr></thead>
     <tbody>
-      <tr><td>资料核验</td><td><code>SourceRegistry</code>、<code>SourceObservation</code>、<code>LiteratureBase</code> 与单主题游标/人工队列已存在；控制台只读投影待接线，录入界面仍未授权</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>资料核验</td><td><code>SourceRegistry</code>、<code>SourceObservation</code>、<code>LiteratureBase</code> 与单主题游标/人工队列已存在；控制台只读投影已接线，录入界面仍未授权</td><td><span class="chip c-done">已落地</span></td></tr>
       <tr><td>每日新论文 / 开放状态核查 / 是否算新结果的检索侧</td><td>本地文献存储与可重放观察已存在；真实外部检索适配器、实时统计与状态推断均不存在，不能由界面补造</td><td><span class="chip c-part">部分待建</span></td></tr>
       <tr><td>方向信息流 / 候选主题</td><td>单主题游标、预算与人工复核队列已有；领域聚类、五条标准和席位规则仍无后端</td><td><span class="chip c-part">部分待建</span></td></tr>
       <tr><td>候选问题（九道门）</td><td>门控引擎无后端；<code>PAPER_READINESS.md</code> 是人工先例，引擎化时以它为验收样本</td><td><span class="chip c-new">需新建</span></td></tr>
@@ -356,7 +357,7 @@ html{scroll-behavior:smooth;}
   <div class="tw"><table>
     <thead><tr><th>视图</th><th>后端现状</th><th>状态</th></tr></thead>
     <tbody>
-      <tr><td>角色与权限</td><td><code>authorization.py</code> 直读即可，矩阵已逐项核对属实</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>角色与权限</td><td><code>authorization.py</code> 的策略投影已由控制台读取，矩阵逐项展示；不含身份令牌</td><td><span class="chip c-done">已落地</span></td></tr>
       <tr><td>评审名册 / 评审队列</td><td><code>review.py</code> + 评审服务已有；控制台补评审提交界面走唯一写口</td><td><span class="chip c-wire">待接线</span></td></tr>
       <tr><td>积分 / 充值 / 席位 / 上游 / 用户 / 登录</td><td>运营域整体无后端；<code>BudgetLedger</code> 只管研究预算，不是计费。与研究内核物理隔离地新建，接线前全部保留演示标注</td><td><span class="chip c-new">需新建</span></td></tr>
     </tbody>
@@ -384,15 +385,15 @@ html{scroll-behavior:smooth;}
   <p>原则照抄现有两个服务的纪律：<strong>读多写少，写口只有一个</strong>；观察站永远 GET-only，未识别路径一律 405/404 显式 JSON；令牌只用于唯一写口，不落存储。</p>
   <h3><span class="no">7.1</span>两种接线形态</h3>
   <ul>
-    <li><strong>静态导出（M0 起步）：</strong>为 <code>cli.py</code> 增加 <code>export</code> 子命令，把工作区打成一份 <code>console.json</code>（trace + 账本 <code>to_dict</code> + 攻克轮次 + 角色矩阵）。控制台数据层从常量切到 <code>fetch("console.json")</code>，失败则回落演示数据并顶栏亮明数据源。零服务依赖，先让真数据上屏。</li>
-    <li><strong>观察站直连（M1）：</strong>复用既有 <code>GET /api/*</code> 与 <code>/events</code> SSE；新增一个只读端点 <code>GET /api/campaign</code>（rounds / stop_reason / budget 快照）。控制台可直接作为观察站的 dashboard 交付物。</li>
+    <li><strong>静态导出（M0，已落地）：</strong><code>cli.py export</code> 将经审计工作区写为版本化 <code>console.json</code>，且拒绝写入工作区本身。控制台优先 <code>fetch("console.json")</code>，失败时清空陈旧快照、回落演示数据并顶栏披露来源。</li>
+    <li><strong>观察站直连（M1，已落地）：</strong>复用只读 <code>GET /api/*</code> 与 <code>/events</code> SSE；<code>GET /api/campaign</code> 仅返回绑定到当前工作区状态的报告。控制台作为观察站 dashboard 交付，事件触发合并为单次刷新。</li>
   </ul>
   <h3><span class="no">7.2</span>端点总表</h3>
   <div class="tw"><table>
     <thead><tr><th>端点</th><th>来源</th><th>里程碑</th></tr></thead>
     <tbody>
       <tr><td><code>GET /api/workspace · /api/audit · /api/events · /api/artifacts · /api/health · /events(SSE)</code></td><td class="mut">已有（观察站）</td><td>M1</td></tr>
-      <tr><td><code>GET /api/campaign</code></td><td class="mut">新增，只读</td><td>M1</td></tr>
+      <tr><td><code>GET /api/console · /api/campaign</code></td><td class="mut">已落地，只读；campaign 严格绑定工作区 provenance</td><td>M0/M1</td></tr>
       <tr><td><code>GET /api/review-queue · /api/review-bundle/{命题}</code></td><td class="mut">已有（评审服务）</td><td>M2</td></tr>
       <tr><td><code>POST /api/review</code>（名册令牌）</td><td class="mut">已有；全系统唯一写口</td><td>M2</td></tr>
       <tr><td>选题/运营域 API</td><td class="mut">随 §6 各项新建，另立服务</td><td>M3/M4</td></tr>
@@ -408,9 +409,9 @@ html{scroll-behavior:smooth;}
   <div class="tw"><table>
     <thead><tr><th>档</th><th>内容</th><th>验收</th></tr></thead>
     <tbody>
-      <tr><td>M0 只读真数据</td><td><code>cli export</code> + 数据层切换；平面③四个待接线视图 + 角色矩阵吃真数据</td>
+      <tr><td>M0 只读真数据（已落地）</td><td><code>cli export</code> + 数据层切换；平面③四个视图 + 角色矩阵已吃真数据</td>
         <td class="mut">同一工作区：前端复算链头 = 后端 <code>validate()</code> 链头；工具台账逐字段与 <code>to_dict</code> 相等；相关视图演示标注删除</td></tr>
-      <tr><td>M1 live 观察站</td><td>SSE 接证明链与轮次；<code>/api/campaign</code>；攻克中实时更新</td>
+      <tr><td>M1 live 观察站（已落地）</td><td>SSE 接证明链与轮次；<code>/api/campaign</code>；攻克中合并刷新</td>
         <td class="mut">跑一次 <code>cli run</code>，控制台不刷新即见新事件；断线重连按 <code>after</code> 游标续传无缺口</td></tr>
       <tr><td>M2 评审闭环</td><td>评审队列/送审包接真服务；义务逐条判定 + 整体决定提交 <code>POST /api/review</code></td>
         <td class="mut">APPROVE 含非 OK 义务被后端拒绝并在界面如实呈现；令牌仅存内存</td></tr>

@@ -2,11 +2,14 @@
 
 from __future__ import annotations
 
+from contextlib import contextmanager
+from collections.abc import Iterator
+import fcntl
 import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any, Mapping, cast
 
 
 class OperationsLedgerError(ValueError):
@@ -14,6 +17,9 @@ class OperationsLedgerError(ValueError):
 
 
 _KINDS = frozenset({"ACCOUNT_CREATED", "BALANCE_CREDITED", "SEAT_SET", "UPSTREAM_CONFIGURED", "USAGE_RECORDED"})
+_RECORD_KEYS = frozenset(
+    {"record_id", "kind", "payload", "previous_digest_sha256", "record_digest_sha256"}
+)
 
 
 def _canonical(value: object) -> str:
@@ -51,27 +57,36 @@ class OperationsLedger:
             raise OperationsLedgerError("operations ledger belongs to another research replay")
         if not isinstance(state["records"], list):
             raise OperationsLedgerError("operations ledger records are invalid")
-        identifiers = [item.get("record_id") for item in state["records"] if isinstance(item, dict)]
-        if len(identifiers) != len(state["records"]) or len(set(identifiers)) != len(identifiers):
-            raise OperationsLedgerError("operations ledger has invalid or duplicate record ids")
         prior_records: list[dict[str, Any]] = []
         previous = _digest(prior_records)
         for item in state["records"]:
-            unsigned = {
-                "record_id": item.get("record_id"),
-                "kind": item.get("kind"),
-                "payload": item.get("payload"),
-                "previous_digest_sha256": item.get("previous_digest_sha256"),
-            }
-            if (
-                item.get("kind") not in _KINDS
-                or item.get("previous_digest_sha256") != previous
-                or item.get("record_digest_sha256") != _digest(unsigned)
-            ):
-                raise OperationsLedgerError("operations ledger history integrity check failed")
+            self._validate_record(item, previous)
             prior_records.append(item)
             previous = _digest(prior_records)
+        identifiers = [item["record_id"] for item in prior_records]
+        if len(set(identifiers)) != len(identifiers):
+            raise OperationsLedgerError("operations ledger has duplicate record ids")
         return state
+
+    @staticmethod
+    def _validate_record(item: object, previous: str) -> None:
+        if not isinstance(item, dict) or set(item) != _RECORD_KEYS:
+            raise OperationsLedgerError("operations ledger record schema is invalid")
+        if not isinstance(item["record_id"], str) or not item["record_id"].strip():
+            raise OperationsLedgerError("operations ledger record id is invalid")
+        if item["kind"] not in _KINDS or not isinstance(item["payload"], dict):
+            raise OperationsLedgerError("operations ledger record content is invalid")
+        unsigned = {
+            "record_id": item["record_id"],
+            "kind": item["kind"],
+            "payload": item["payload"],
+            "previous_digest_sha256": item["previous_digest_sha256"],
+        }
+        if (
+            item["previous_digest_sha256"] != previous
+            or item["record_digest_sha256"] != _digest(unsigned)
+        ):
+            raise OperationsLedgerError("operations ledger history integrity check failed")
 
     @property
     def records(self) -> tuple[dict[str, Any], ...]:
@@ -84,8 +99,6 @@ class OperationsLedger:
             raise OperationsLedgerError("record_id must be non-empty")
         if kind not in _KINDS:
             raise OperationsLedgerError("unsupported operations record kind")
-        if any(item["record_id"] == record_id for item in self._state["records"]):
-            raise OperationsLedgerError("duplicate operations record id")
         if not isinstance(payload, Mapping):
             raise OperationsLedgerError("operations payload must be an object")
         try:
@@ -95,16 +108,22 @@ class OperationsLedger:
         for name, value in canonical_payload.items():
             if name.endswith(("amount", "seats", "tokens")) and (not isinstance(value, int) or isinstance(value, bool) or value < 0):
                 raise OperationsLedgerError(f"{name} must be a non-negative integer")
-        record = {
-            "record_id": record_id,
-            "kind": kind,
-            "payload": canonical_payload,
-            "previous_digest_sha256": self.head_digest,
-        }
-        record["record_digest_sha256"] = _digest(record)
-        self._state["records"].append(record)
-        self._persist()
-        return json.loads(_canonical(record))
+        with self._exclusive_lock():
+            current = self._load_or_create()
+            if any(item["record_id"] == record_id for item in current["records"]):
+                raise OperationsLedgerError("duplicate operations record id")
+            candidate = cast(dict[str, Any], json.loads(_canonical(current)))
+            record = {
+                "record_id": record_id,
+                "kind": kind,
+                "payload": canonical_payload,
+                "previous_digest_sha256": _digest(candidate["records"]),
+            }
+            record["record_digest_sha256"] = _digest(record)
+            candidate["records"].append(record)
+            self._persist(candidate)
+            self._state = candidate
+        return cast(dict[str, Any], json.loads(_canonical(record)))
 
     @property
     def head_digest(self) -> str:
@@ -120,8 +139,20 @@ class OperationsLedger:
             "external_identity": "not_configured",
         }
 
-    def _persist(self) -> None:
+    @contextmanager
+    def _exclusive_lock(self) -> Iterator[None]:
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+        lock_path = self.path.parent / f".{self.path.name}.lock"
+        descriptor = os.open(lock_path, os.O_CREAT | os.O_RDWR, 0o600)
+        try:
+            fcntl.flock(descriptor, fcntl.LOCK_EX)
+            yield
+        finally:
+            fcntl.flock(descriptor, fcntl.LOCK_UN)
+            os.close(descriptor)
+
+    def _persist(self, state: Mapping[str, Any]) -> None:
         self.path.parent.mkdir(parents=True, exist_ok=True)
         temporary = self.path.with_suffix(self.path.suffix + ".tmp")
-        temporary.write_text(_canonical(self._state) + "\n", encoding="utf-8")
+        temporary.write_text(_canonical(state) + "\n", encoding="utf-8")
         os.replace(temporary, self.path)
