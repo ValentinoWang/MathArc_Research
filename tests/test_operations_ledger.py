@@ -5,6 +5,7 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+from unittest.mock import patch
 
 from matharc.operations import OperationsLedger, OperationsLedgerError
 
@@ -61,6 +62,39 @@ class OperationsLedgerTests(unittest.TestCase):
             ledger.append(record_id="B", kind="SEAT_SET", payload={"seats": 2})
             reopened = OperationsLedger(path, "a" * 64)
             self.assertEqual(reopened.records[0]["payload"]["account"], "u")
+
+    def test_extra_unsigned_record_field_is_rejected_when_reopened(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "operations.json"
+            ledger = OperationsLedger(path, "a" * 64)
+            ledger.append(record_id="A", kind="ACCOUNT_CREATED", payload={"account": "u"})
+            state = json.loads(path.read_text(encoding="utf-8"))
+            state["records"][0]["unverified_amount"] = 999
+            path.write_text(json.dumps(state), encoding="utf-8")
+            with self.assertRaises(OperationsLedgerError):
+                OperationsLedger(path, "a" * 64)
+
+    def test_second_instance_reloads_inside_append_lock(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "operations.json"
+            first = OperationsLedger(path, "a" * 64)
+            second = OperationsLedger(path, "a" * 64)
+            first.append(record_id="A", kind="ACCOUNT_CREATED", payload={"account": "u"})
+            second.append(record_id="B", kind="BALANCE_CREDITED", payload={"amount": 1})
+            reopened = OperationsLedger(path, "a" * 64)
+            self.assertEqual([item["record_id"] for item in reopened.records], ["A", "B"])
+
+    def test_persistence_failure_does_not_change_memory_or_later_history(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "operations.json"
+            ledger = OperationsLedger(path, "a" * 64)
+            with patch("matharc.operations.ledger.os.replace", side_effect=OSError("disk full")):
+                with self.assertRaises(OSError):
+                    ledger.append(record_id="A", kind="ACCOUNT_CREATED", payload={"account": "u"})
+            self.assertEqual(ledger.records, ())
+            ledger.append(record_id="B", kind="SEAT_SET", payload={"seats": 2})
+            reopened = OperationsLedger(path, "a" * 64)
+            self.assertEqual([item["record_id"] for item in reopened.records], ["B"])
 
 
 if __name__ == "__main__":

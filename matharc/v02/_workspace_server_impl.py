@@ -209,7 +209,15 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
         self.wfile.write(content)
 
     def _campaign_payload(self) -> dict[str, Any]:
-        return campaign_snapshot(self.server.campaign_report_path)
+        workspace = self.server.repository.load()
+        return campaign_snapshot(
+            self.server.campaign_report_path,
+            workspace_provenance={
+                "run_id": workspace.trace.run_id,
+                "state_digest_sha256": workspace.state_digest(),
+                "event_head_hash": workspace.events.head_hash,
+            },
+        )
 
     def _sse(self, after: int) -> None:
         self.send_response(HTTPStatus.OK)

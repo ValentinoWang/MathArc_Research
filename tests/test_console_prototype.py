@@ -23,6 +23,10 @@ class ConsolePrototypeTests(unittest.TestCase):
             self.assertIn(view, page)
         self.assertIn("payload.view_contract", page)
         self.assertIn('"/api/console"', page)
+        self.assertIn("canonical_unsigned_json", page)
+        self.assertIn("S.consolePayload = null", page)
+        self.assertIn("latestLoad", page)
+        self.assertIn("same-origin /api/review service", page)
 
     def test_source_links_allow_only_web_schemes(self) -> None:
         page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
@@ -35,6 +39,7 @@ class ConsolePrototypeTests(unittest.TestCase):
         page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
         self.assertIn("#console-provenance{order:2", page)
         self.assertIn(".topbar{height:auto", page)
+        self.assertIn('setAttribute("aria-live", "polite")', page)
 
 
 if __name__ == "__main__":

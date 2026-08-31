@@ -4193,7 +4193,17 @@ function syncThemeBtn(){
    retains its visible demonstration boundary until a matching backend model
    exists. */
 const DEMO_VIEWS = Object.fromEntries(["source","dag","proofchain","tools","reasoning","admin_roles","campaign"].map(id=>[id,V[id]]));
-const liveWorkspace = () => S.consolePayload && S.consolePayload.workspace;
+const LIVE_VIEW_CONTRACTS = {
+  source:["source_registry_projection","live"], dag:["verification_publication","live"],
+  proofchain:["verification_publication","live"], tools:["verification_publication","live"],
+  reasoning:["verification_publication","live"], admin_roles:["verification_publication","live"],
+  campaign:["campaign_observatory","live_if_campaign_report_supplied"]
+};
+const livePayloadFor = view => {
+  const payload = S.consolePayload, contract = LIVE_VIEW_CONTRACTS[view];
+  return payload && contract && payload.view_contract && payload.view_contract[contract[0]] === contract[1] ? payload : null;
+};
+const liveWorkspace = view => { const payload = livePayloadFor(view); return payload && payload.workspace; };
 const liveEsc = value => esc(value == null ? "—" : String(value));
 const safeExternalHref = value => {
   try {
@@ -4209,26 +4219,34 @@ const livePill = value => {
   return `<span class="pill ${kind}">${text}</span>`;
 };
 const liveChain = events => {
-  const genesis = events.length ? String(events[0].previous_hash || "") : "0".repeat(64);
+  const genesis = "0".repeat(64);
   let previous = genesis, valid = true;
+  const eventIds = new Set();
   const rows = events.map((event, index) => {
     const unsigned = { sequence:event.sequence, event_id:event.event_id, event_type:event.event_type,
       actor:event.actor, subject_ids:event.subject_ids, payload:event.payload,
       previous_hash:event.previous_hash, timestamp:event.timestamp };
     const sequenceOk = event.sequence === index;
     const previousOk = event.previous_hash === previous;
-    const hashOk = event.event_hash === sha256(canon(unsigned));
-    const rowOk = sequenceOk && previousOk && hashOk;
+    let canonicalOk = false;
+    try {
+      canonicalOk = typeof event.canonical_unsigned_json === "string"
+        && canon(JSON.parse(event.canonical_unsigned_json)) === canon(unsigned);
+    } catch (_) { canonicalOk = false; }
+    const hashOk = canonicalOk && event.event_hash === sha256(event.canonical_unsigned_json);
+    const eventIdOk = typeof event.event_id === "string" && event.event_id.length > 0 && !eventIds.has(event.event_id);
+    eventIds.add(event.event_id);
+    const rowOk = sequenceOk && previousOk && hashOk && eventIdOk;
     valid = valid && rowOk;
     previous = event.event_hash;
-    return { event, sequenceOk, previousOk, hashOk, rowOk };
+    return { event, sequenceOk, previousOk, hashOk, eventIdOk, rowOk };
   });
   return { rows, valid, head:previous, genesis };
 };
 const liveCard = (title, subtitle, body) => card(title, subtitle, `<div class="body">${body}</div>`);
 
 V.source = () => {
-  const workspace = liveWorkspace(), sourceTopic = S.consolePayload && S.consolePayload.source_topic;
+  const payload = livePayloadFor("source"), workspace = liveWorkspace("source"), sourceTopic = payload && payload.source_topic;
   if(!workspace || !sourceTopic) return DEMO_VIEWS.source();
   const claims = sourceTopic.source_claims || [], observations = sourceTopic.topic_observations || {};
   const sourceCell = item => {
@@ -4243,7 +4261,7 @@ V.source = () => {
 };
 
 V.dag = () => {
-  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.dag();
+  const workspace = liveWorkspace("dag"); if(!workspace) return DEMO_VIEWS.dag();
   const trace = workspace.trace, claims = trace.claims || [], evidence = trace.evidence || [];
   const rows = claims.map(claim => `<tr><td class="mono">${liveEsc(claim.claim_id)}</td><td>${liveEsc(claim.statement)}</td>
     <td>${livePill(claim.status)}</td><td class="mono">${(claim.dependencies||[]).map(liveEsc).join(" · ") || "—"}</td>
@@ -4257,7 +4275,7 @@ V.dag = () => {
 };
 
 V.proofchain = () => {
-  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.proofchain();
+  const workspace = liveWorkspace("proofchain"); if(!workspace) return DEMO_VIEWS.proofchain();
   const chain = liveChain(workspace.events.events || []), declaredHead = String(workspace.events.head_hash || "");
   return { task:`证明过程链 · <b>真实事件账本</b> · ${(workspace.events.events||[]).length} 条`,
     rail: liveCard("浏览器复算","与 EventLedger 相同的无符号字段", `<p class="note">每条事件在浏览器内重算 SHA-256，并检查顺序、前哈希和声明哈希。此页的复算用于现场核验，不替代后端审计。</p>`),
@@ -4266,7 +4284,7 @@ V.proofchain = () => {
 };
 
 V.tools = () => {
-  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.tools();
+  const workspace = liveWorkspace("tools"); if(!workspace) return DEMO_VIEWS.tools();
   const tools = workspace.trace.tool_calls || [];
   const replayable = tools.filter(item=>item.replay_command && item.input_digest_sha256 && item.output_digest_sha256 && item.environment_digest_sha256).length;
   return { task:`工具调用台账 · <b>真实记录</b> · ${tools.length} 次调用`,
@@ -4276,7 +4294,7 @@ V.tools = () => {
 };
 
 V.reasoning = () => {
-  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.reasoning();
+  const workspace = liveWorkspace("reasoning"); if(!workspace) return DEMO_VIEWS.reasoning();
   const reasoning = workspace.trace.public_reasoning || [];
   return { task:`公开推理 · <b>真实结构化记录</b> · ${reasoning.length} 条`,
     rail: liveCard("公开字段","不含私有思维链", `<p class="note">导出只包含目标、前提、动作、观察、证伪测试和决定等可审计字段。不存在的字段不由前端补造。</p>`),
@@ -4285,18 +4303,19 @@ V.reasoning = () => {
 };
 
 V.admin_roles = () => {
-  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.admin_roles();
-  const grants = workspace.role_policy.grants || {}, roles = Object.keys(grants).sort();
+  const payload = livePayloadFor("admin_roles"), workspace = liveWorkspace("admin_roles"), policy = payload && payload.role_policy;
+  if(!workspace || !policy || !policy.grants) return DEMO_VIEWS.admin_roles();
+  const grants = policy.grants, roles = Object.keys(grants).sort();
   const capabilities = [...new Set(roles.flatMap(role=>grants[role]||[]))].sort();
   return { task:`管理端 · 角色与权限 · <b>真实策略</b> · ${roles.length} 个角色`,
-    rail: liveCard("角色策略","应用内权限，不是身份提供方", `<p class="note">${liveEsc(workspace.role_policy.boundary)}</p>`),
+    rail: liveCard("角色策略","应用内权限，不是身份提供方", `<p class="note">${liveEsc(policy.boundary)}</p>`),
     main: liveCard("能力矩阵",`${capabilities.length} 项能力 × ${roles.length} 个角色`, `<div class="tw"><table><thead><tr><th>能力</th>${roles.map(role=>`<th>${liveEsc(role)}</th>`).join("")}</tr></thead><tbody>${capabilities.map(capability=>`<tr><td class="mono">${liveEsc(capability)}</td>${roles.map(role=>`<td>${(grants[role]||[]).includes(capability)?"是":"—"}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`),
     side: liveCard("写口边界","控制台不扩大权限", `<p class="note">唯一评审写口仍属于独立评审服务。此导出不携带身份令牌、支付配置或上游凭据。</p>`)};
 };
 
 V.campaign = () => {
-  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.campaign();
-  const campaign = S.consolePayload.campaign;
+  const payload = livePayloadFor("campaign"), workspace = liveWorkspace("campaign"); if(!workspace || !payload) return DEMO_VIEWS.campaign();
+  const campaign = payload.campaign;
   if(!campaign.available) return { task:"攻克进程 · <b>未提供报告</b>", rail:liveCard("观察站状态","明确不可用",`<p class="note">${liveEsc(campaign.reason)}</p>`), main:liveCard("轮次记录","无报告",`<div class="banner gap"><div>当前工作区未附带 campaign report，控制台不会用演示轮次替代。</div></div>`), side:null };
   const report = campaign.report, rounds = report.rounds || [];
   return { task:`攻克进程 · <b>真实报告</b> · ${rounds.length} 轮`, rail:liveCard("报告边界","只读快照", `<p class="note">报告由受治理的 campaign 运行时产生。此页面不启动、停止或修改攻克进程。</p>`), main:liveCard("轮次记录",`停止原因：${liveEsc(report.stop_reason)}`, `<div class="chain plain">${rounds.map((round,index)=>`<div class="cev open"><div class="cev-h"><span class="seq">${String(index+1).padStart(2,"0")}</span><span class="subj">${liveEsc(round.summary || round.role || "轮次记录")}</span></div><div class="cev-b"><pre class="hash">${liveEsc(JSON.stringify(round, null, 2))}</pre></div></div>`).join("") || `<p class="note">报告没有轮次条目。</p>`}</div>`), side:liveCard("预算","报告快照", `<pre class="hash">${liveEsc(JSON.stringify(report.budget, null, 2))}</pre>`)};
@@ -4307,32 +4326,62 @@ V.campaign = () => {
 const ConsoleBridge = (() => {
   let cursor = -1;
   let eventStream = null;
+  let latestLoad = 0;
+  let refreshScheduled = false;
   const provenance = document.createElement("span");
   provenance.id = "console-provenance";
   provenance.className = "miniprog";
+  provenance.setAttribute("role", "status");
+  provenance.setAttribute("aria-live", "polite");
+  provenance.setAttribute("aria-atomic", "true");
   provenance.textContent = "演示数据";
   document.querySelector(".topbar").insertBefore(provenance, document.getElementById("budget"));
   const label = (text, state) => {
     provenance.textContent = text;
     provenance.dataset.source = state;
   };
+  const focusedControl = () => {
+    const active = document.activeElement;
+    if (!(active instanceof HTMLElement)) return null;
+    if (active.id) return { id: active.id };
+    if (active.dataset.act) return { act: active.dataset.act, view: active.dataset.v || "" };
+    return null;
+  };
+  const renderPreservingFocus = () => {
+    const focus = focusedControl();
+    render();
+    if (!focus) return;
+    const target = focus.id ? document.getElementById(focus.id)
+      : [...document.querySelectorAll("[data-act]")].find(item => item instanceof HTMLElement && item.dataset.act === focus.act && (item.dataset.v || "") === focus.view);
+    if (target instanceof HTMLElement) target.focus();
+  };
   const applyExport = payload => {
-    if (!payload || payload.schema_version !== "1.0" || !payload.provenance || !payload.workspace || !payload.view_contract) return false;
+    if (!payload || payload.schema_version !== "1.0" || !payload.provenance || !payload.workspace || !payload.view_contract || !payload.role_policy || !payload.campaign) return false;
     S.consolePayload = payload;
+    const events = payload.workspace.events && payload.workspace.events.events;
+    if (Array.isArray(events) && events.length) cursor = Math.max(cursor, Number(events[events.length - 1].sequence));
     const p = payload.provenance;
     label(`已接入工作区 ${p.run_id || "未知"} · ${String(p.state_digest_sha256 || "").slice(0,12)}`, "export");
     return true;
   };
   const loadExport = async url => {
+    const loadId = ++latestLoad;
     try {
       const endpoints = url ? [url] : ["console.json", "/api/console"];
       for (const endpoint of endpoints) {
         const response = await fetch(endpoint, { cache:"no-store", credentials:"same-origin" });
-        if (response.ok && applyExport(await response.json())) { render(); return true; }
+        if (response.ok && applyExport(await response.json())) {
+          if (loadId === latestLoad) renderPreservingFocus();
+          return true;
+        }
       }
       throw new Error("incompatible console export");
     } catch (_) {
-      label("演示数据（console.json 不可用）", "fallback");
+      if (loadId === latestLoad) {
+        S.consolePayload = null;
+        label("演示数据（console.json 不可用）", "fallback");
+        renderPreservingFocus();
+      }
       return false;
     }
   };
@@ -4346,7 +4395,10 @@ const ConsoleBridge = (() => {
       cursor = Number(event.lastEventId);
       if (!Number.isInteger(cursor) || cursor < 0) return;
       label(`实时观察 · 事件 ${cursor}`, "live");
-      window.setTimeout(() => { loadExport("/api/console"); }, 0);
+      if (!refreshScheduled) {
+        refreshScheduled = true;
+        window.setTimeout(() => { refreshScheduled = false; loadExport("/api/console"); }, 100);
+      }
     });
     eventStream.onerror = () => {
       if (eventStream) eventStream.close();
@@ -4356,6 +4408,8 @@ const ConsoleBridge = (() => {
   };
   const submitReview = async (endpoint, record, tokenInput) => {
     if (!(tokenInput instanceof HTMLInputElement) || tokenInput.type !== "password") throw new Error("review token must come from a password input");
+    const target = new URL(endpoint, window.location.href);
+    if (target.origin !== window.location.origin || target.pathname !== "/api/review" || target.search || target.hash) throw new Error("review endpoint must be the same-origin /api/review service");
     const token = tokenInput.value;
     tokenInput.value = "";
     if (!token) throw new Error("review token is required");
