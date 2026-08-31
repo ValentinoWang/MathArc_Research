@@ -482,7 +482,7 @@ class TopicObservationRunner:
 
     @property
     def next_cursor(self) -> str:
-        return self._load_state()["next_cursor"]
+        return _require_nonempty(self._load_state()["next_cursor"], "next_cursor")
 
     def run(self, batch: TopicObservationBatch) -> TopicBatchResult:
         if not isinstance(batch, TopicObservationBatch):
@@ -528,20 +528,22 @@ class TopicObservationRunner:
             results: list[TopicItemResult] = []
             disposition_evidence: dict[str, dict[str, Any]] = {}
             for item in batch.inputs:
-                result, evidence = self._process_input(state, batch, item)
-                results.append(result)
+                item_result, evidence = self._process_input(state, batch, item)
+                results.append(item_result)
                 disposition_evidence[item.input_id] = evidence
             status = TopicRunStatus.MANUAL_REVIEW if any(
                 item.status is TopicItemStatus.MANUAL_REVIEW for item in results
             ) else TopicRunStatus.APPLIED
-            result = TopicBatchResult(self.topic_id, batch.cursor, batch.next_cursor, status, tuple(results))
+            batch_result = TopicBatchResult(
+                self.topic_id, batch.cursor, batch.next_cursor, status, tuple(results)
+            )
             input_projections = {
                 item.input_id: item.input_projection for item in batch.inputs
             }
             batch_digest_sha256 = batch.batch_digest_sha256
             batches[batch.cursor] = {
                 "batch_digest_sha256": batch_digest_sha256,
-                "result_digest_sha256": digest_json(result.to_dict()),
+                "result_digest_sha256": digest_json(batch_result.to_dict()),
                 "input_fingerprints": {
                     item.input_id: item.fingerprint_sha256 for item in batch.inputs
                 },
@@ -557,11 +559,11 @@ class TopicObservationRunner:
                     item.input_id: item.observation_id for item in results
                 },
                 "disposition_evidence": disposition_evidence,
-                "result": result.to_dict(),
+                "result": batch_result.to_dict(),
             }
             state["next_cursor"] = batch.next_cursor
             self._save_state(state)
-            return result
+            return batch_result
 
     def _process_input(
         self,

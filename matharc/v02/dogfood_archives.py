@@ -63,7 +63,8 @@ class DogfoodArchiveRunner:
         self.root.mkdir(parents=True, exist_ok=True)
         self.contract_path = self.fixture_root / "three-real-archives.json"
         if not self.contract_path.exists(): self.contract_path = self.fixture_root.parent / "t2-fixtures" / "three-real-archives.json"
-        self.result_path, self.contract = self.root / "dogfood-archives.json", {}
+        self.result_path = self.root / "dogfood-archives.json"
+        self.contract: dict[str, Any] = {}
 
     def run(self) -> dict[str, Any]:
         self.contract = self._load_contract()
@@ -152,7 +153,8 @@ class DogfoodArchiveRunner:
         return {key: values[key] for key in _CASE_ORDER}
 
     def _load_source_specs(self) -> dict[str, list[dict[str, str]]]:
-        raw, specs = self.contract["source_artifacts"], {}
+        raw = self.contract["source_artifacts"]
+        specs: dict[str, list[dict[str, str]]] = {}
         required = {"path", "sha256", "canonical_uri", "pinned_version", "locator"}
         for problem_id in _CASE_ORDER:
             if problem_id not in raw: raise DogfoodArchiveError(f"missing source_artifacts for {problem_id}")
@@ -210,7 +212,13 @@ class DogfoodArchiveRunner:
         self._assert_contract_results(result)
         self._save(result); return result
 
-    def _reported_status(self, fixture, provenance, observations, runner):
+    def _reported_status(
+        self,
+        fixture: Mapping[str, Any],
+        provenance: list[dict[str, str]],
+        observations: Mapping[str, SourceObservation],
+        runner: TopicObservationRunner,
+    ) -> dict[str, Any]:
         statement = StatementVersion(fixture["problem_id"], fixture["statement_version"], fixture["statement"])
         cert = OpenStatusCertificate(f"status-{fixture['problem_id']}", fixture["problem_id"], fixture["statement_version"], statement.statement_version_id, statement.statement_digest_sha256, tuple(ObservationDigestRef.from_observation(observations[key]) for key in sorted({p["source_id"] for p in provenance})), ProblemStatus(fixture["expected_report_status"]), tuple(fixture["limitations"]), "dogfood-status-reporter", "2026-08-31T11:15:00+00:00", "2026-09-30T00:00:00+00:00")
         dossier = ProblemDossierSnapshot(f"dossier-{fixture['problem_id']}", fixture["problem_id"], fixture["statement_version"], statement, cert, "2026-08-31T11:20:00+00:00")
@@ -218,7 +226,12 @@ class DogfoodArchiveRunner:
         if validation.status is not cert.status: raise DogfoodArchiveError("source readback status mismatch")
         return {"reported_status": cert.status.value, "validated_status": validation.status.value, "invalidations": [x.value for x in validation.invalidations], "dossier": dossier.to_dict()}
 
-    def _insufficient_status(self, fixture, observation, runner):
+    def _insufficient_status(
+        self,
+        fixture: Mapping[str, Any],
+        observation: SourceObservation,
+        runner: TopicObservationRunner,
+    ) -> dict[str, Any]:
         statement = StatementVersion(fixture["problem_id"], fixture["statement_version"], fixture["statement"])
         cert = OpenStatusCertificate(f"status-{fixture['problem_id']}-budget", fixture["problem_id"], fixture["statement_version"], statement.statement_version_id, statement.statement_digest_sha256, (ObservationDigestRef.from_observation(observation),), ProblemStatus(fixture["expected_report_status"]), tuple(fixture["limitations"]), "dogfood-status-reporter", "2026-08-31T11:15:00+00:00", "2026-09-30T00:00:00+00:00")
         dossier = ProblemDossierSnapshot(f"dossier-{fixture['problem_id']}-budget", fixture["problem_id"], fixture["statement_version"], statement, cert, "2026-08-31T11:20:00+00:00")
@@ -226,7 +239,13 @@ class DogfoodArchiveRunner:
         if validation.status is not ProblemStatus.STALE: raise DogfoodArchiveError("budget exhaustion did not preserve evidence insufficiency")
         return {"reported_status": cert.status.value, "validated_status": validation.status.value, "invalidations": [x.value for x in validation.invalidations], "dossier": dossier.to_dict()}
 
-    def _collision_audit(self, fixture, provenance, observations, runner):
+    def _collision_audit(
+        self,
+        fixture: Mapping[str, Any],
+        provenance: list[dict[str, str]],
+        observations: Mapping[str, SourceObservation],
+        runner: TopicObservationRunner,
+    ) -> dict[str, Any]:
         p = next(item for item in provenance if item["source_kind"] == "arxiv-source")
         support = SourceSupport(p["source_id"], p["canonical_uri"], p["pinned_version"], p["locator"], p["content_sha256"])
         routes = tuple(SearchRouteResult(route, f"Dogfood {route.value} scope.", (f"dogfood {route.value}",), (), (), "2026-08-31T12:00:00+00:00", True) for route in SearchRoute)
@@ -234,11 +253,27 @@ class DogfoodArchiveRunner:
         auth = record.authorization(observations=observations, artifacts=runner.literature.artifacts)
         return {"record": record.to_dict(), "authorization_status": auth.status.value, "complete_research_budget": auth.allows_complete_budget, "public_qualitative_conclusion": auth.allows_public_qualitative_conclusion, "invalidations": [x.value for x in auth.invalidations]}
 
-    def _case(self, fixture, provenance, topic_status, replay_status, status, boundary, manual_reason=None, novelty=None):
+    def _case(
+        self,
+        fixture: Mapping[str, Any],
+        provenance: list[dict[str, str]],
+        topic_status: str,
+        replay_status: str,
+        status: Mapping[str, Any],
+        boundary: str,
+        manual_reason: str | None = None,
+        novelty: Mapping[str, Any] | None = None,
+    ) -> dict[str, Any]:
         return {"problem_id": fixture["problem_id"], "case_role": fixture["case_role"], "topic_status": topic_status, "replay_status": replay_status, "manual_reason": manual_reason, "review_boundary": boundary, "provenance": provenance, "status": dict(status), "novelty": dict(novelty) if novelty else None, "promotion_allowed": False, "claim_created": False, "trace_created": False}
 
-    def _contract_digest(self): return hashlib.sha256(self.contract_path.read_bytes()).hexdigest()
-    def _no_claim_or_trace_created(self): return not any(path.name in {"claims.json", "research-trace.json", "trace.json"} for path in self.root.rglob("*.json"))
+    def _contract_digest(self) -> str:
+        return hashlib.sha256(self.contract_path.read_bytes()).hexdigest()
+
+    def _no_claim_or_trace_created(self) -> bool:
+        return not any(
+            path.name in {"claims.json", "research-trace.json", "trace.json"}
+            for path in self.root.rglob("*.json")
+        )
 
     @staticmethod
     def _manual_queue_entries(*runners: TopicObservationRunner) -> list[dict[str, str]]:
@@ -409,7 +444,7 @@ class DogfoodArchiveRunner:
                 "persisted archive does not match canonical dogfood execution"
             )
 
-    def _replay(self, specs):
+    def _replay(self, specs: Mapping[str, list[dict[str, str]]]) -> dict[str, Any]:
         payload = self._load_result()
         if payload["contract_digest_sha256"] != self._contract_digest() or payload["fixture_identity_digest_sha256"] != digest_json(self.contract["fixture_sha256"]) or payload["source_identity_digest_sha256"] != digest_json(specs): raise DogfoodArchiveError("contract or source identity drift on replay")
         main = TopicObservationRunner(self.root / "topic-observation", topic_id=_TOPIC_ID, initial_cursor="dogfood-c0")
@@ -480,7 +515,7 @@ class DogfoodArchiveRunner:
             if novelty_status != expected["expected_novelty_status"]:
                 raise DogfoodArchiveError("contract expected novelty status drift")
 
-    def _load_result(self):
+    def _load_result(self) -> dict[str, Any]:
         try: payload = json.loads(self.result_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc: raise DogfoodArchiveError("persisted archive is unreadable") from exc
         if not isinstance(payload, dict): raise DogfoodArchiveError("persisted archive must be an object")
@@ -517,6 +552,6 @@ class DogfoodArchiveRunner:
         if payload["archive_digest_sha256"] != digest_json(digest_payload): raise DogfoodArchiveError("persisted archive digest mismatch")
         return payload
 
-    def _save(self, result):
+    def _save(self, result: Mapping[str, Any]) -> None:
         payload = dict(result); payload.pop("archive_digest_sha256", None); payload["archive_digest_sha256"] = digest_json({k: v for k, v in payload.items() if k != "replayed"})
         temporary = self.result_path.with_suffix(".tmp"); temporary.write_text(canonical_json(payload) + "\n", encoding="utf-8"); os.replace(temporary, self.result_path)

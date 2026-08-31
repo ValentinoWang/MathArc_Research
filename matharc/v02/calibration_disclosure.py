@@ -5,7 +5,7 @@ from __future__ import annotations
 import re
 from dataclasses import dataclass
 from enum import Enum
-from typing import Any, Mapping
+from typing import Any, Mapping, TypeVar
 
 from .schema import digest_json
 
@@ -56,6 +56,7 @@ class DisclosureLimit(str, Enum):
 
 
 _REQUIRED_LIMITS = tuple(sorted(item.value for item in DisclosureLimit))
+_EnumValue = TypeVar("_EnumValue", bound=Enum)
 
 
 def _fields(value: Mapping[str, Any], expected: set[str], label: str) -> None:
@@ -88,7 +89,7 @@ def _string_list(value: object, label: str) -> tuple[str, ...]:
     return result
 
 
-def _enum(value: object, enum_type: type[Enum], label: str) -> Enum:
+def _enum(value: object, enum_type: type[_EnumValue], label: str) -> _EnumValue:
     try:
         return enum_type(value)
     except (TypeError, ValueError) as exc:

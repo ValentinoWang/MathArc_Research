@@ -1,0 +1,497 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MathArc 控制台开发蓝图</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&family=STIX+Two+Text:ital,wght@0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap">
+<style>
+:root{
+  --ground:#F4F7F6; --surface:#FFFFFF; --surface-2:#EDF2F0;
+  --ink:#1C2B2D; --muted:#5E7173; --line:#D5DEDC;
+  --accent:#0F6B62; --accent-strong:#0A544D; --accent-soft:#E2EFEC;
+  --ok:#2E7D4F; --ok-soft:#E3F0E8;
+  --gap:#B07818; --gap-soft:#F6EDDA;
+  --err:#B3362E; --err-soft:#F6E3E1;
+  --skip:#6B7280; --skip-soft:#E9ECEF;
+  --hash:#46605D;
+  --serif:"STIX Two Text","Noto Serif SC",Georgia,serif;
+  --sans:"Noto Sans SC","PingFang SC",-apple-system,BlinkMacSystemFont,sans-serif;
+  --mono:"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#10191A; --surface:#172325; --surface-2:#1D2C2E;
+    --ink:#E4ECEA; --muted:#93A6A4; --line:#2C3E40;
+    --accent:#4FB3A5; --accent-strong:#6FCABB; --accent-soft:#163A36;
+    --ok:#62B385; --ok-soft:#17301F;
+    --gap:#D9A64A; --gap-soft:#3A2E14;
+    --err:#E07A6F; --err-soft:#3D1F1C;
+    --skip:#9AA3AD; --skip-soft:#262B31;
+    --hash:#8FB4AE;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#10191A; --surface:#172325; --surface-2:#1D2C2E;
+  --ink:#E4ECEA; --muted:#93A6A4; --line:#2C3E40;
+  --accent:#4FB3A5; --accent-strong:#6FCABB; --accent-soft:#163A36;
+  --ok:#62B385; --ok-soft:#17301F;
+  --gap:#D9A64A; --gap-soft:#3A2E14;
+  --err:#E07A6F; --err-soft:#3D1F1C;
+  --skip:#9AA3AD; --skip-soft:#262B31;
+  --hash:#8FB4AE;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+  font-size:14px;line-height:1.85;-webkit-font-smoothing:antialiased;}
+a{color:var(--accent);text-decoration:none;border-bottom:1px dotted var(--accent);}
+a:hover{color:var(--accent-strong);border-bottom-style:solid;}
+code,.mono{font-family:var(--mono);font-size:.92em;color:var(--hash);}
+code{background:var(--surface-2);padding:1px 6px;border-radius:4px;overflow-wrap:anywhere;}
+pre{background:var(--surface-2);border:1px solid var(--line);border-radius:8px;
+  padding:12px 14px;overflow-x:auto;font-family:var(--mono);font-size:12px;
+  line-height:1.7;color:var(--hash);}
+pre code{background:none;padding:0;white-space:pre;}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:600;line-height:1.4;text-wrap:balance;margin:0;}
+p,ul,ol,dl{margin:0;}
+ul,ol{padding-left:1.4em;}
+li{margin:4px 0;}
+li::marker{color:var(--muted);}
+strong{font-weight:600;}
+
+.wrap{display:grid;grid-template-columns:236px minmax(0,1fr);gap:40px;
+  max-width:1180px;margin:0 auto;padding:0 28px 120px;}
+@media (max-width:1000px){.wrap{grid-template-columns:minmax(0,1fr);} nav.toc{display:none;}}
+
+nav.toc{position:sticky;top:0;align-self:start;max-height:100vh;overflow-y:auto;
+  padding:44px 0 40px;font-size:12px;}
+nav.toc .brand{font-family:var(--serif);font-weight:600;font-size:15px;color:var(--accent);margin-bottom:2px;}
+nav.toc .sub{font-size:10.5px;letter-spacing:.12em;color:var(--muted);margin-bottom:20px;}
+nav.toc a{display:block;padding:4px 0;color:var(--muted);border:0;line-height:1.5;}
+nav.toc a:hover{color:var(--accent);}
+nav.toc a .no{font-family:var(--mono);font-size:10px;color:var(--hash);margin-right:7px;}
+nav.toc .app{margin-top:14px;padding-top:12px;border-top:1px solid var(--line);}
+
+main{padding-top:44px;min-width:0;}
+main > header h1{font-size:31px;letter-spacing:-.01em;}
+main > header .lede{font-size:15px;color:var(--muted);line-height:1.9;max-width:44em;margin-top:14px;}
+.meta{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:18px;padding:13px 16px;
+  background:var(--surface);border:1px solid var(--line);border-radius:9px;font-size:12px;}
+.meta b{font-weight:500;color:var(--muted);margin-right:6px;}
+.meta span{overflow-wrap:anywhere;}
+
+section{margin-top:52px;scroll-margin-top:24px;}
+section > h2{font-size:22px;padding-bottom:10px;border-bottom:1px solid var(--line);}
+section > h2 .no{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--accent);
+  letter-spacing:.08em;margin-right:12px;vertical-align:2px;}
+h3{font-size:16px;margin-top:30px;}
+h3 .no{font-family:var(--mono);font-size:11px;font-weight:500;color:var(--muted);margin-right:9px;}
+section > p, section li, section dd{max-width:70ch;}
+section > h2 + p, h3 + p, p + p, h3 + ul, p + ul, ul + p, h3 + table, h3 + .tw{margin-top:12px;}
+p + .tw, ul + .tw, p + pre, .tw + p, pre + p, .callout + p, p + .callout, .tw + h3{margin-top:16px;}
+
+.tw{overflow-x:auto;border:1px solid var(--line);border-radius:9px;background:var(--surface);}
+table{border-collapse:collapse;width:100%;font-size:12.5px;line-height:1.65;}
+th{font-size:10.5px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);
+  text-align:left;padding:9px 13px;border-bottom:1px solid var(--line);white-space:nowrap;
+  background:var(--surface-2);}
+td{padding:9px 13px;border-bottom:1px solid var(--line);vertical-align:top;}
+tbody tr:last-child td{border-bottom:none;}
+td.mut{color:var(--muted);}
+td .mono, th .mono{font-size:11px;}
+td{font-variant-numeric:tabular-nums;}
+
+.chip{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:500;
+  padding:1px 8px;border-radius:4px;white-space:nowrap;}
+.c-wire{background:var(--ok-soft);color:var(--ok);}
+.c-part{background:var(--accent-soft);color:var(--accent);}
+.c-new{background:var(--gap-soft);color:var(--gap);}
+.c-defer{background:var(--skip-soft);color:var(--skip);}
+.c-no{background:var(--err-soft);color:var(--err);}
+
+.callout{border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:0 9px 9px 0;
+  background:var(--surface);padding:13px 16px;font-size:13px;max-width:70ch;}
+.callout.warn{border-left-color:var(--gap);}
+.callout.stop{border-left-color:var(--err);}
+.callout b{color:var(--ink);}
+.callout .t{display:block;font-size:10.5px;font-weight:600;letter-spacing:.1em;
+  color:var(--muted);text-transform:uppercase;margin-bottom:5px;}
+
+dl.kv{display:grid;grid-template-columns:max-content minmax(0,1fr);gap:7px 20px;font-size:13px;}
+dl.kv dt{color:var(--muted);white-space:nowrap;}
+.footer{margin-top:64px;padding-top:20px;border-top:1px solid var(--line);
+  font-size:12px;color:var(--muted);line-height:1.8;}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:3px;}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;}}
+html{scroll-behavior:smooth;}
+</style>
+</head>
+<body>
+<div class="wrap">
+<nav class="toc" aria-label="目录">
+  <div class="brand">MathArc</div>
+  <div class="sub">控制台开发蓝图</div>
+  <a href="#s1"><span class="no">§1</span>定位与围栏</a>
+  <a href="#s2"><span class="no">§2</span>产品结构总览</a>
+  <a href="#s3"><span class="no">§3</span>原型技术架构</a>
+  <a href="#s4"><span class="no">§4</span>后端契约摘要</a>
+  <a href="#s5"><span class="no">§5</span>视图与后端映射</a>
+  <a href="#s6"><span class="no">§6</span>差距清单</a>
+  <a href="#s7"><span class="no">§7</span>接口设计草案</a>
+  <a href="#s8"><span class="no">§8</span>里程碑与验收</a>
+  <a href="#s9"><span class="no">§9</span>质量与回归</a>
+  <div class="app">
+    <a href="#a1"><span class="no">附A</span>术语对照</a>
+    <a href="#a2"><span class="no">附B</span>枚举映射</a>
+    <a href="#a3"><span class="no">附C</span>设计红线</a>
+  </div>
+</nav>
+
+<main>
+<header>
+  <h1>MathArc 控制台开发蓝图</h1>
+  <p class="lede">把「问题情报平面控制台」原型逐视图映射到 <code>matharc/v02</code> 后端的实施文档：哪些界面接线即活、哪些要新建、哪些被明确推迟，以及每一步的验收标准。原型本身是唯一的界面规范；本文不复述界面长什么样，只回答「怎么把它变成真的」。</p>
+  <div class="meta">
+    <span><b>界面规范</b><a href="https://claude.ai/code/artifact/2db2e6b0-2089-4a11-9eee-0ef402e4f0c2">问题情报平面控制台</a></span>
+    <span><b>后端</b><code>ValentinoWang/MathArc_Research · matharc/v02</code></span>
+    <span><b>状态基线</b>2026-08-31 检出 · 原型 4 179 行 · 32 视图</span>
+  </div>
+</header>
+
+<section id="s1">
+  <h2><span class="no">§1</span>定位与围栏</h2>
+  <p>这份文档服务一个具体动作：让开发者拿着原型和仓库，直接开工。三条纪律贯穿全文，也贯穿实现：</p>
+  <ul>
+    <li><strong>后端是唯一事实源。</strong>界面上任何计数、枚举、阈值，都必须能指回 <code>matharc/v02</code> 的具体文件；本文每个数字都带出处。原型开发期间共修掉四类与仓库不符的虚构（检索路线条数、扇出治理、停止条件计数、工具白名单成员），此类错误在实现期按缺陷处理。</li>
+    <li><strong>能力主张四态标注。</strong>每个视图属于且只属于一种建设状态：<span class="chip c-wire">待接线</span>（后端已有，换真数据即可）、<span class="chip c-part">部分待建</span>（后端有骨架，缺一截）、<span class="chip c-new">需新建</span>（后端没有）、<span class="chip c-defer">已推迟</span>（设计文档明确推迟）。没有第五种含糊状态。</li>
+    <li><strong>演示数据与真数据永不混排。</strong>接线一个视图的验收动作之一，就是删掉它的演示标注；未接线的视图保留标注。任何一屏出现无标注的编造数字，即为验收失败。</li>
+  </ul>
+  <div class="callout stop" style="margin-top:16px">
+    <span class="t">不在本文范围</span>
+    数学内核本身（晋升门、精确工具、证伪通道的正确性）不归控制台改。控制台是这些机制的<b>观察面与少数受控写口</b>，永远不实现第二套判定逻辑；前端凡有复算（如证明链哈希），只为演示可核验性，判定仍以后端为准。
+  </div>
+</section>
+
+<section id="s2">
+  <h2><span class="no">§2</span>产品结构总览</h2>
+  <p>控制台按研究的三个问题分三个平面，外加账户与管理端。三平面共 21 个视图，账户 4 个，管理端 6 个，落地页与登录 2 个全屏页。</p>
+  <div class="tw"><table>
+    <thead><tr><th>区域</th><th>回答的问题</th><th>视图</th></tr></thead>
+    <tbody>
+      <tr><td>① 选题情报</td><td class="mut">往哪个方向监测？哪道题今天仍开放、值得投入？</td>
+        <td>方向信息流 · 候选主题 · 每日新论文 · 资料核验 · 候选问题 · 问题详情 · 开放状态核查 · 已知结果与缺口 · 难度评估</td></tr>
+      <tr><td>② 攻克过程</td><td class="mut">每一轮做了什么、为什么停下？</td>
+        <td>攻克进程列表 · 攻克进程（轮次） · 攻克路线 · 猜想队列 · 实验记录</td></tr>
+      <tr><td>③ 验证发布</td><td class="mut">结论真的成立吗？是新的吗？能对外说到哪一级？</td>
+        <td>证明结构 · 证明过程链 · 工具调用台账 · 决策记录 · 是否算新结果 · 能对外说什么</td></tr>
+      <tr><td>账户</td><td class="mut">积分、充值、限额</td><td>总览 · 积分明细 · 充值与套餐 · 预算与限额</td></tr>
+      <tr><td>管理端</td><td class="mut">谁的判定算数；钱怎么花</td><td>角色与权限 · 评审名册 · 评审队列 · 成本与模型用量 · 上游接入 · 用户与席位</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:14px">三平面之间的主线：已知结果图上的<strong>残余缺口</strong>被编译成待证根命题（①→②），攻克进程逐轮留下封存事件与工具调用（②→③），证据决定结论能被说成什么（③）。攻克进程是一等对象：平面②③的全部内容跟随「当前选中的进程」，无逐轮记录或无产出结果的进程显示诚实空态，不借用其他进程的数据。</p>
+</section>
+
+<section id="s3">
+  <h2><span class="no">§3</span>原型技术架构</h2>
+  <p>原型是单文件、零构建的静态页（约四千行）：一段 <code>&lt;style&gt;</code>、一段 <code>&lt;script&gt;</code>，无框架、无打包器，外部依赖仅 Google Fonts。这不是临时省事——在 M1 之前它就是交付形态，改一行刷新即见。</p>
+
+  <h3><span class="no">3.1</span>运行模型</h3>
+  <dl class="kv">
+    <dt>状态</dt><dd>单一 <code>const S</code> 对象：当前平面/视图、选中的进程与命题、各折叠态、篡改演示态等。</dd>
+    <dt>视图</dt><dd><code>V</code> 注册表：每个视图一个纯函数，返回 <code>{task, rail, main, side}</code> 或 <code>{page}</code>（全屏页）。</dd>
+    <dt>渲染</dt><dd><code>render()</code> 整页重渲染；输入框在渲染后按 id 找回焦点与光标位置。</dd>
+    <dt>事件</dt><dd>全局委托：<code>data-act</code> 分发点击；带 <code>tabindex</code> 的自绘控件响应回车/空格；<code>data-cn</code> 支持跳转视图时预选命题节点。</dd>
+    <dt>持久化</dt><dd>仅 <code>localStorage</code> 三个键：<code>ma-theme</code>（主题三态）、<code>ma-view</code>、<code>ma-fold2</code>（目录折叠），全部包 try/catch。</dd>
+    <dt>导航</dt><dd>每个平面一棵目录树（叶子 <code>{v}</code>／分组 <code>{g,ctx,dim,kids}</code>），路径式折叠键；面包屑只在祖先被收起时出现。</dd>
+    <dt>数据层</dt><dd>顶部一组 <code>const</code> 表（问题、命题图、路线、事件、评审队列……）。<b>接线 = 用同构 JSON 替换这些常量</b>，视图函数不动。</dd>
+  </dl>
+
+  <h3><span class="no">3.2</span>组件清单</h3>
+  <p>全部组件为模板函数 + 类名，无运行时抽象：<code>card / pill / ev1–ev5 / banner / stat / kv / meter / gates / seg / chip</code>，以及三件本项目特有的：<strong>链式手风琴</strong>（<code>.cev</code>，证明链、轮次、工具台账、观察队列、实验、推理共用；<code>.chain.plain</code> 变体去掉哈希咬合线）、<strong>难度画像标尺</strong>（<code>.dprof</code>，四条独立序数标尺，刻意不做雷达图）、<strong>翻译映射表</strong>（<code>ETYPE / TSTATUS / ACTORROLE / STW / CST / TST …</code>，后端枚举进 UI 的唯一通道）。</p>
+
+  <h3><span class="no">3.3</span>代码地图</h3>
+  <p>单文件按区段组织，行号对应 2026-08-31 版本（改动后以搜索锚点为准，锚点即下表「起点」列的声明名）：</p>
+  <div class="tw"><table>
+    <thead><tr><th>行段</th><th>内容</th><th>起点锚</th></tr></thead>
+    <tbody>
+      <tr><td class="mut">3 – 661</td><td>样式：设计令牌三态（<code>:root</code> / 系统深色 / 显式深色）+ 全部组件类</td><td><code>&lt;style&gt;</code></td></tr>
+      <tr><td class="mut">663 – 682</td><td>应用骨架：顶栏 / 平面切换 / 三栏容器</td><td><code>&lt;div id="chrome"&gt;</code></td></tr>
+      <tr><td class="mut">687 – 1002</td><td>平面①演示数据：问题、前沿图、命题图、证据、检索协议、雷达、观察队列、量表、披露</td><td><code>const PROBLEMS</code></td></tr>
+      <tr><td class="mut">1032 – 1160</td><td>攻克进程一等对象 + 三平面目录树 + 视图元表</td><td><code>const CAMPAIGNS / PLANES / VMETA</code></td></tr>
+      <tr><td class="mut">1160 – 1990</td><td>平面①视图函数（九个）与诚实空态 <code>noProblem</code></td><td><code>V.portfolio</code></td></tr>
+      <tr><td class="mut">2000 – 2140</td><td>平面②③演示数据：角色、轮次、实验、猜想、路线、工具台账、证伪类型、状态翻译表</td><td><code>const WORKER_ROLES … TSTATUS</code></td></tr>
+      <tr><td class="mut">2140 – 2630</td><td>平面②③视图函数与空态 <code>noDetail / noResult</code></td><td><code>V.campaigns</code></td></tr>
+      <tr><td class="mut">2635 – 2812</td><td>能力四态芯片、落地页、登录、账户运营演示数据</td><td><code>const CHIP</code></td></tr>
+      <tr><td class="mut">2815 – 3210</td><td>管理端树、账户视图、<code>MAXNEW / STOPS</code>、方向与主题数据</td><td><code>const ADMIN_TREE</code></td></tr>
+      <tr><td class="mut">3415 – 3456</td><td>治理数据：能力矩阵、名册、保证等级、判定/决定、评审队列、端点契约</td><td><code>const CAPS</code></td></tr>
+      <tr><td class="mut">3568 – 3930</td><td>页内 SHA-256、账本构建（<code>RAW→EVENTS→SEALED→链头/账本摘要</code>）、五种篡改、证明链视图</td><td><code>const sha256</code></td></tr>
+      <tr><td class="mut">3933 – 4178</td><td>渲染器、点击委托（<code>data-act</code>）、键盘、输入焦点找回、主题切换</td><td><code>function render()</code></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="no">3.4</span>三个高频改动怎么做</h3>
+  <p><strong>新增一个视图。</strong>四步：在 <code>VMETA</code> 注册名称与角标 → 挂进某平面的目录树（叶子 <code>{v:"名"}</code>，或带 <code>ctx/dim</code> 的分组）→ 写 <code>V.名 = () =&gt; ({task, rail, main, side})</code>（进程/问题作用域的视图先走 <code>noDetail / noResult / noProblem</code> 空态守卫）→ 交互用 <code>data-act</code> 挂进点击委托。约束即附C红线：枚举过翻译表、并排两栏过均衡阈值、主从用手风琴。</p>
+  <p><strong>接线数据层。</strong>演示常量全部集中在上表数据区段，视图函数只读它们。M0 做法：启动时 <code>fetch("console.json")</code>，成功则以同构 JSON 覆盖这些常量、删除对应视图的演示标注，失败回落演示数据并在顶栏亮明数据源。逐视图接线，不整页切换。</p>
+  <p><strong>本地预览与回归。</strong>预览零依赖：浏览器直接打开文件即可（字体走 Google Fonts，离线时回落系统字族）。回归六件套用 <code>playwright-core</code> 驱动本机 Chromium：全视图扫描、多宽度两栏均衡、篡改五模式、手风琴开合、开工流程、中英夹杂扫描——断言与阈值见 §9，任何一件红即不合并。</p>
+
+  <h3><span class="no">3.5</span>与后端对齐的前端复算</h3>
+  <p>证明链视图在浏览器内真实复算哈希：<code>canon()</code> 与后端 <code>canonical_json</code> 同口径（键排序、无空格、非 ASCII 不转义），事件字段与顺序照搬 <code>ResearchEvent.unsigned_dict()</code>，逐条校验照搬 <code>EventLedger.validate()</code> 的四项检查（含关键细节：<code>previous</code> 按事件<b>声明的</b>哈希前进）。五种篡改演示（改载荷/删除/对调/插入/整链重写）的错误签名各不相同，最后一种由链外发布的链头拦下。接线后此复算保留——它是「可核验」的现场证明，不是判定来源。</p>
+</section>
+
+<section id="s4">
+  <h2><span class="no">§4</span>后端契约摘要</h2>
+  <p>以下是控制台会触碰的全部后端事实，逐条给出处。实现时以代码为准；本节若与代码冲突，改本节。</p>
+
+  <h3><span class="no">4.1</span>核心对象（<code>schema.py</code>）</h3>
+  <div class="tw"><table>
+    <thead><tr><th>对象</th><th>关键字段</th><th>控制台落点</th></tr></thead>
+    <tbody>
+      <tr><td><code>ClaimRecord</code></td>
+        <td><code>dependencies</code>（命题依赖命题＝<b>串行门</b>）、<code>route_ids</code>（同命题多路线＝<b>并行面</b>）、<code>critical</code>、<code>revision</code>、<code>weight</code></td>
+        <td>证明结构、路线视图的并行/串行两轴</td></tr>
+      <tr><td><code>ResearchRoute</code></td>
+        <td><code>mechanism_signature</code>、<code>kill_test</code>、<code>expected_discriminator</code>、<code>created_by</code>、<code>parent_route_id</code>（仅引用完整性校验，<b>无消费者</b>）</td>
+        <td>攻克路线；父子路线不画（§6）</td></tr>
+      <tr><td><code>EvidenceKind</code></td>
+        <td>九值：<code>FORMAL_PROOF / CHECKED_DERIVATION / EXACT_CERTIFICATE / EXACT_COMPUTATION / COUNTEREXAMPLE / LITERATURE_RESULT / HUMAN_AUDIT / NUMERICAL_EXPERIMENT / HEURISTIC</code>；后三者不具证明资格</td>
+        <td>证据台账、探索层档位上限</td></tr>
+      <tr><td><code>ToolCallRecord</code></td>
+        <td><code>call_id / purpose / status / input·output·environment_digest_sha256 / independence_group / replay_command / expected_discriminator</code>；<code>replayable</code> 是属性：<b>四样齐全才为真</b></td>
+        <td>工具调用台账（逐字段呈现）</td></tr>
+      <tr><td><code>SourceClaim</code></td>
+        <td><code>pinned_version / locator / applicability_conditions / source_digest_sha256 / statement_correspondence</code> —— 与「五项核对」一一对应；状态 <code>PENDING → VERIFIED / REJECTED / SUPERSEDED</code></td>
+        <td>资料核验</td></tr>
+      <tr><td>公开推理</td>
+        <td>六字段结构；<code>_FORBIDDEN_REASONING_KEYS</code> 显式拒收 chain_of_thought 等私有推理键</td>
+        <td>决策记录</td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="no">4.2</span>门与不变量（<code>trace.py</code> / <code>falsification.py</code> / <code>review.py</code>）</h3>
+  <ul>
+    <li><code>promote_claim</code> 失败关闭：依赖未证全部报错（unproved dependencies）；关键命题要求两组<b>来源独立</b>的证明级证据（按 <code>independence_group</code> 计组）。</li>
+    <li>被接受的证据必须可冷重放，否则报错；<code>status=PASS</code> 的工具调用不可重放会产生导出告警；关键命题携带不可重放证据直接报错。</li>
+    <li><code>promotion_route_blockers</code>：命题的每条 ACTIVE 结构化路线（带 <code>KillTestSpec</code>）都必须有当前的 <code>PASS_BOUNDED</code> 记录，缺一即阻断——并行路线看集合的交。随机测试没找到反例永远记 <code>INCONCLUSIVE</code>，不记通过。</li>
+    <li>评审：APPROVE 要求全部义务判定为 OK；评审记录版本绑定（命题修订即失配转 <code>SUPERSEDED</code>）；对象级回避规则 <code>can_review</code> 独立于角色权限。</li>
+  </ul>
+
+  <h3><span class="no">4.3</span>事件账本（<code>event_log.py</code>）</h3>
+  <p>只可追加、哈希链式：<code>validate()</code> 四项检查（序号连续、前哈希咬合、事件哈希相符、事件编号唯一），<code>previous</code> 按声明值前进；<code>to_dict()</code> 携带 <code>schema_version:"1.0"</code> 与链头；<code>public_summary()</code> 导出时把载荷换成其摘要。文档串自我定位：<b>不是区块链</b>，只为检出删除、重排、插入、篡改。事件类型共 18 个，全部由工作区 <code>_seal_transition</code> 封存，载荷形如 <code>{details, state_digest_after}</code>。</p>
+
+  <h3><span class="no">4.4</span>工具与证伪（<code>exact_tools.py</code> / <code>smt_tools.py</code> / <code>lrat_tools.py</code> / <code>falsification.py</code>）</h3>
+  <p>精确工具白名单由注册表决定，<code>default_exact_tool_registry()</code> 当前恰五个模板：<code>polynomial_identity / induction_certificate / smt_universal_no_counterexample / smt_existential_witness / cnf_lrat_unsat</code>。信任语义非对称：<code>unknown</code>（含超时）记 <code>ToolStatus.ERROR</code> 永不产证据；sat 模型须过模块内独立纯 Python 求值器，二检不一致记错误；unsat 记求解器信任的精确计算并附局限声明。证伪测试是另一套注册表：<code>KillTestKind</code> 四类（enumeration / property_random / sat_search / instance_eval），只走负向通道——<b>有限枚举不在精确工具白名单里</b>。</p>
+
+  <h3><span class="no">4.5</span>攻克运行时（<code>campaign.py</code> / <code>orchestrator.py</code> / <code>prompting.py</code> / <code>budget.py</code>）</h3>
+  <ul>
+    <li>停止条件四分支：<code>budget_exhausted / no_gain_rounds_exhausted / max_rounds_reached / release_state_terminal</code>；默认 <code>max_rounds=20</code>、<code>max_rounds_without_gain=5</code>（每次攻克可另配）。</li>
+    <li>单次提案扩张上限：5 命题 + 5 路线（<code>orchestrator.py</code> 常量）；<b>无任何 spawn/子会话派生通道</b>。</li>
+    <li>五个工作者角色（<code>prompting.py</code>）：strategist / prover / falsifier / verifier / synthesizer，全部只能提案。</li>
+    <li><code>BudgetLedger</code>：按工具调用与模型用量逐笔记账，<code>exhausted()</code> 判停。</li>
+  </ul>
+
+  <h3><span class="no">4.6</span>权限与评审面（<code>authorization.py</code> / <code>review*.py</code>）</h3>
+  <p>15 项能力 × 8 个角色；整张矩阵里唯有「晋升门」持有 <code>PROMOTE_CLAIM</code>。评审对象：义务判定四值 <code>OK / GAP / ERROR / CANNOT_JUDGE</code>、整体决定三值 <code>APPROVE / REQUEST_CHANGES / REJECT</code>、生命周期三值 <code>ACTIVE / SUPERSEDED / REVOKED</code>、保证等级三档 <code>MACHINE_SUFFICIENT / HUMAN_SINGLE / HUMAN_DOUBLE</code>（同组不计独立）。此策略只管应用内权限，不认证人类身份、不替代系统隔离。</p>
+
+  <h3><span class="no">4.7</span>已存在的服务面 —— 接线的起点</h3>
+  <div class="tw"><table>
+    <thead><tr><th>服务</th><th>端点</th><th>性质</th></tr></thead>
+    <tbody>
+      <tr><td rowspan="3">工作区观察站<br><span class="mono">_workspace_server_impl.py</span></td>
+        <td><code>GET /api/workspace · /api/audit · /api/events?after= · /api/artifacts · /api/health</code></td>
+        <td class="mut">只读 JSON（无缓存、nosniff）</td></tr>
+      <tr><td><code>GET /events</code></td><td class="mut">SSE，逐条推送 <code>research_event</code>，带序号游标</td></tr>
+      <tr><td><code>POST *</code></td><td class="mut">一律 405：「观察站不暴露写端点」——这是纪律，不是缺口</td></tr>
+      <tr><td>评审服务<br><span class="mono">review_server.py</span></td>
+        <td><code>POST /api/review</code>（名册令牌）；<code>GET /api/review-queue · /api/review-bundle/{命题}</code>；其余 405</td>
+        <td class="mut">全系统<b>唯一</b>写端点</td></tr>
+      <tr><td>CLI<br><span class="mono">cli.py</span></td>
+        <td><code>demo / validate / metrics / plan / run / review …</code></td>
+        <td class="mut">离线入口；M0 需补一个 <code>export</code> 子命令（§7）</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s5">
+  <h2><span class="no">§5</span>视图与后端映射</h2>
+  <p>逐视图给出数据来源与建设状态。「接线动作」指把该视图的演示常量换成真数据要做的事。</p>
+
+  <h3><span class="no">5.1</span>平面③ 验证发布 —— 全部待接线，最先做</h3>
+  <div class="tw"><table>
+    <thead><tr><th>视图</th><th>数据来源</th><th>接线动作</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td>证明结构</td><td><code>trace</code> 的命题/依赖/证据</td><td>读 <code>/api/workspace</code>；布局改为按依赖分层自动排（现为手排坐标）</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>证明过程链</td><td><code>EventLedger.to_dict()</code> + SSE</td><td>读账本 JSON；复算逻辑已对齐，仅换数据源；轮次归属需事件携带或旁表提供</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>工具调用台账</td><td><code>ToolCallRecord[]</code></td><td>字段已一一对应（含 <code>replayable</code> 四要素与 PASS 不可重放告警）；直接映射</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>决策记录</td><td>公开推理六字段</td><td>直接映射；拒收键校验留在后端</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>是否算新结果</td><td>—</td><td>依赖文献适配器（§6）；此前保持「检索协议 + 计划中」形态，不显示检索统计</td><td><span class="chip c-new">需新建</span></td></tr>
+      <tr><td>能对外说什么</td><td>晋升/评审状态可推导分级</td><td>四级门由真状态推导；措辞检查器可先留前端正则，后续服务化</td><td><span class="chip c-part">部分待建</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="no">5.2</span>平面② 攻克过程</h3>
+  <div class="tw"><table>
+    <thead><tr><th>视图</th><th>数据来源</th><th>接线动作</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td>攻克进程（轮次）</td><td><code>CampaignRunner</code> 的 rounds/stop_reason/budget</td><td>新增 <code>/api/campaign</code>（§7）；轮次→封存事件的对照由事件序号区间给出</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>攻克路线</td><td><code>ResearchRoute</code> + <code>KillTestSpec</code> + 阻断器</td><td>并行/串行两轴视图已按真语义实现；映射即可</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>攻克进程列表</td><td>单工作区已有；多进程需索引</td><td>新建工作区索引（目录扫描即可起步）</td><td><span class="chip c-part">部分待建</span></td></tr>
+      <tr><td>猜想队列 / 实验记录</td><td>探索产物档位规则已有；会话记录对象没有</td><td>新建探索会话记录（脚本已可内容寻址入 <code>artifact_store</code>）</td><td><span class="chip c-part">部分待建</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="no">5.3</span>平面① 选题情报 —— 大半是新建，别装成接线</h3>
+  <div class="tw"><table>
+    <thead><tr><th>视图</th><th>后端现状</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td>资料核验</td><td><code>SourceRegistry</code>、<code>SourceObservation</code>、<code>LiteratureBase</code> 与单主题游标/人工队列已存在；控制台只读投影待接线，录入界面仍未授权</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>每日新论文 / 开放状态核查 / 是否算新结果的检索侧</td><td>本地文献存储与可重放观察已存在；真实外部检索适配器、实时统计与状态推断均不存在，不能由界面补造</td><td><span class="chip c-part">部分待建</span></td></tr>
+      <tr><td>方向信息流 / 候选主题</td><td>单主题游标、预算与人工复核队列已有；领域聚类、五条标准和席位规则仍无后端</td><td><span class="chip c-part">部分待建</span></td></tr>
+      <tr><td>候选问题（九道门）</td><td>门控引擎无后端；<code>PAPER_READINESS.md</code> 是人工先例，引擎化时以它为验收样本</td><td><span class="chip c-new">需新建</span></td></tr>
+      <tr><td>问题详情 / 已知结果与缺口</td><td>陈述版本关系与结果图无存储；「编译缺口→根命题」入口已有雏形（<code>cli plan</code>）</td><td><span class="chip c-part">部分待建</span></td></tr>
+      <tr><td>难度评估</td><td>量表与预测台账无存储；校准规则已定（样本不足二十条一律标未校准，禁总分）</td><td><span class="chip c-new">需新建</span></td></tr>
+    </tbody>
+  </table></div>
+
+  <h3><span class="no">5.4</span>账户与管理端</h3>
+  <div class="tw"><table>
+    <thead><tr><th>视图</th><th>后端现状</th><th>状态</th></tr></thead>
+    <tbody>
+      <tr><td>角色与权限</td><td><code>authorization.py</code> 直读即可，矩阵已逐项核对属实</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>评审名册 / 评审队列</td><td><code>review.py</code> + 评审服务已有；控制台补评审提交界面走唯一写口</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>积分 / 充值 / 席位 / 上游 / 用户 / 登录</td><td>运营域整体无后端；<code>BudgetLedger</code> 只管研究预算，不是计费。与研究内核物理隔离地新建，接线前全部保留演示标注</td><td><span class="chip c-new">需新建</span></td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s6">
+  <h2><span class="no">§6</span>差距清单</h2>
+  <p>按对产品主线的阻塞程度排序。每项写明「现在没有什么」，避免把计划当现状。</p>
+  <div class="tw"><table>
+    <thead><tr><th>项</th><th>现状</th><th>备注</th></tr></thead>
+    <tbody>
+      <tr><td>外部文献适配器（W2-6）</td><td>本地 <code>literature_base.py</code> 与 <code>topic_observation.py</code> 已支持可重放导入；真实外部提供方适配器不存在</td><td class="mut">平面①检索侧与新颖性审计的硬前提；落地前相关界面保持协议展示，<b>零外部检索统计数字</b></td></tr>
+      <tr><td>选题门控引擎（九道门）</td><td>无</td><td class="mut">门的定义已在原型固化；引擎化后以既有人工审读为回归样本</td></tr>
+      <tr><td>难度量表 + 预测台账存储</td><td>无</td><td class="mut">布赖尔校准逻辑随台账一起做；界面已禁一切总分呈现</td></tr>
+      <tr><td>运营域（积分/席位/计费/上游路由）</td><td>无</td><td class="mut">独立服务，不进研究内核进程；换模型不得影响证据可重放性</td></tr>
+      <tr><td>受治理扇出（D4）</td><td><span class="chip c-defer">已推迟</span>（<code>DISCOVERY_PLANE_V04.md</code> 整篇推迟）</td><td class="mut">现状更硬：提案 schema 无 <code>spawn</code> 字段。界面如实展示「现状/计划」，不显示任何扇出配额数字</td></tr>
+      <tr><td>转化派生路线（X1）</td><td><span class="chip c-defer">已推迟</span>；<code>derived_from_failure / transformation_id</code> 代码中零出现</td><td class="mut"><code>parent_route_id</code> 是空悬字段：写入校验存在、无任何消费者。<b>不画父子路线</b>——画了等于宣称它在起作用。机制要再拆，拆成新命题带依赖边</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s7">
+  <h2><span class="no">§7</span>接口设计草案</h2>
+  <p>原则照抄现有两个服务的纪律：<strong>读多写少，写口只有一个</strong>；观察站永远 GET-only，未识别路径一律 405/404 显式 JSON；令牌只用于唯一写口，不落存储。</p>
+  <h3><span class="no">7.1</span>两种接线形态</h3>
+  <ul>
+    <li><strong>静态导出（M0 起步）：</strong>为 <code>cli.py</code> 增加 <code>export</code> 子命令，把工作区打成一份 <code>console.json</code>（trace + 账本 <code>to_dict</code> + 攻克轮次 + 角色矩阵）。控制台数据层从常量切到 <code>fetch("console.json")</code>，失败则回落演示数据并顶栏亮明数据源。零服务依赖，先让真数据上屏。</li>
+    <li><strong>观察站直连（M1）：</strong>复用既有 <code>GET /api/*</code> 与 <code>/events</code> SSE；新增一个只读端点 <code>GET /api/campaign</code>（rounds / stop_reason / budget 快照）。控制台可直接作为观察站的 dashboard 交付物。</li>
+  </ul>
+  <h3><span class="no">7.2</span>端点总表</h3>
+  <div class="tw"><table>
+    <thead><tr><th>端点</th><th>来源</th><th>里程碑</th></tr></thead>
+    <tbody>
+      <tr><td><code>GET /api/workspace · /api/audit · /api/events · /api/artifacts · /api/health · /events(SSE)</code></td><td class="mut">已有（观察站）</td><td>M1</td></tr>
+      <tr><td><code>GET /api/campaign</code></td><td class="mut">新增，只读</td><td>M1</td></tr>
+      <tr><td><code>GET /api/review-queue · /api/review-bundle/{命题}</code></td><td class="mut">已有（评审服务）</td><td>M2</td></tr>
+      <tr><td><code>POST /api/review</code>（名册令牌）</td><td class="mut">已有；全系统唯一写口</td><td>M2</td></tr>
+      <tr><td>选题/运营域 API</td><td class="mut">随 §6 各项新建，另立服务</td><td>M3/M4</td></tr>
+    </tbody>
+  </table></div>
+  <div class="callout warn" style="margin-top:16px"><span class="t">刻意不提供</span>
+    晋升、命题增删、路线增删的 HTTP 写口。这些动作只发生在受治理的进程内（编排器/CLI），控制台永远只能<b>看到</b>它们的结果。评审提交是唯一例外，且已有独立服务与令牌模型。</div>
+</section>
+
+<section id="s8">
+  <h2><span class="no">§8</span>里程碑与验收</h2>
+  <p>五档，每档都以「删掉对应演示标注」为完成标志。前置杂务：修复 CI（现行 workflow 因 <code>defaults</code> 段空 <code>run</code> 无效，主分支多次 0-job 失败）——回归套件（§9）入 CI 是 M0 验收的一部分。</p>
+  <div class="tw"><table>
+    <thead><tr><th>档</th><th>内容</th><th>验收</th></tr></thead>
+    <tbody>
+      <tr><td>M0 只读真数据</td><td><code>cli export</code> + 数据层切换；平面③四个待接线视图 + 角色矩阵吃真数据</td>
+        <td class="mut">同一工作区：前端复算链头 = 后端 <code>validate()</code> 链头；工具台账逐字段与 <code>to_dict</code> 相等；相关视图演示标注删除</td></tr>
+      <tr><td>M1 live 观察站</td><td>SSE 接证明链与轮次；<code>/api/campaign</code>；攻克中实时更新</td>
+        <td class="mut">跑一次 <code>cli run</code>，控制台不刷新即见新事件；断线重连按 <code>after</code> 游标续传无缺口</td></tr>
+      <tr><td>M2 评审闭环</td><td>评审队列/送审包接真服务；义务逐条判定 + 整体决定提交 <code>POST /api/review</code></td>
+        <td class="mut">APPROVE 含非 OK 义务被后端拒绝并在界面如实呈现；令牌仅存内存</td></tr>
+      <tr><td>M3 选题最小闭环</td><td>资料核验读模型接 <code>SourceRegistry</code> 与单主题观察存储；主题/标准存储；外部适配器落地后才开检索侧</td>
+        <td class="mut">五项核对状态机与后端一致；外部适配器未落地的视图仍无统计数字，且不推断开放/已解决/新颖性状态</td></tr>
+      <tr><td>M4 运营域</td><td>积分/席位/计费/上游独立服务</td>
+        <td class="mut">换模型/换上游后，历史结论重放逐字节不变（这是硬验收，不是口号）</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="s9">
+  <h2><span class="no">§9</span>质量与回归</h2>
+  <p>原型期沉淀了一套 Playwright 脚本，接线后原样保留并入 CI，任何一项红即不合并：</p>
+  <div class="tw"><table>
+    <thead><tr><th>套件</th><th>断言</th></tr></thead>
+    <tbody>
+      <tr><td>全视图扫描</td><td class="mut">52 个视图 × 两个攻克进程逐一渲染：零页面错误、零 <code>undefined/NaN/[object Object]</code> 文案</td></tr>
+      <tr><td>两栏均衡</td><td class="mut">1240–1920 六档宽度下，任何并排两栏自然内容高差 ≤140px 且比 ≥0.62（临时解除拉伸与内滚再量）</td></tr>
+      <tr><td>篡改五模式</td><td class="mut">改载荷=1 错、删除/对调/插入=各自签名、整链重写=逐条全过但链头不一致——与 <code>validate()</code> 语义逐项一致</td></tr>
+      <tr><td>手风琴与流程</td><td class="mut">全部就地展开可开合；九门未过时开工按钮禁用，缺口表恰一条可编译，编译落在攻克进程</td></tr>
+      <tr><td>中英夹杂扫描</td><td class="mut">剔除 <code>.mono/.hash</code> 刻意引用后，渲染文案中中文紧贴裸英文标识符 = 0 处</td></tr>
+    </tbody>
+  </table></div>
+  <p style="margin-top:14px">接线期新增两类断言：<strong>数字溯源</strong>（页面任何计数可在响应 JSON 中找到同值或可推导来源）；<strong>标注守恒</strong>（未接线视图的演示标注存在，已接线视图不存在）。</p>
+</section>
+
+<section id="a1">
+  <h2><span class="no">附A</span>术语对照</h2>
+  <div class="tw"><table>
+    <thead><tr><th>界面用语</th><th>后端标识</th><th>界面用语</th><th>后端标识</th></tr></thead>
+    <tbody>
+      <tr><td>命题</td><td><code>ClaimRecord</code></td><td>晋升</td><td><code>promote_claim</code></td></tr>
+      <tr><td>路线</td><td><code>ResearchRoute</code></td><td>证伪测试</td><td><code>KillTestSpec / KillTestKind</code></td></tr>
+      <tr><td>证据档位</td><td><code>EvidenceKind</code></td><td>可冷重放</td><td><code>ToolCallRecord.replayable</code></td></tr>
+      <tr><td>封存事件</td><td><code>ResearchEvent</code></td><td>账本 / 链头</td><td><code>EventLedger / head_hash</code></td></tr>
+      <tr><td>独立性分组</td><td><code>independence_group</code></td><td>预先声明的成功判据</td><td><code>expected_discriminator</code></td></tr>
+      <tr><td>五项核对</td><td><code>SourceClaim</code> 五字段</td><td>语句对应</td><td><code>statement_correspondence</code></td></tr>
+      <tr><td>保证等级</td><td><code>RequiredAssurance</code></td><td>名册</td><td><code>ReviewerRoster</code></td></tr>
+      <tr><td>停止原因</td><td><code>stop_reason</code> 四分支</td><td>语义增益</td><td class="mut">四类事件（新增可采信证据/状态改变/路线排除/障碍确认）</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="a2">
+  <h2><span class="no">附B</span>枚举映射</h2>
+  <p>后端枚举进 UI 必须经翻译映射表；映射表键集与后端枚举值集<strong>相等或为其子集</strong>，接线时以断言校验（多一键少一键都算失败）。</p>
+  <div class="tw"><table>
+    <thead><tr><th>前端表</th><th>后端枚举</th><th>基数</th></tr></thead>
+    <tbody>
+      <tr><td><code>ETYPE</code></td><td><code>event_type</code>（封存于 <code>_seal_transition</code>）</td><td>18（演示链用其 14）</td></tr>
+      <tr><td><code>TSTATUS</code></td><td><code>ToolStatus</code></td><td>5</td></tr>
+      <tr><td><code>VERDICTS / DECISIONS</code></td><td><code>ObligationVerdictKind / ReviewDecision</code></td><td>4 / 3</td></tr>
+      <tr><td><code>ASSURE</code></td><td><code>RequiredAssurance</code></td><td>3</td></tr>
+      <tr><td><code>KILLKINDS</code></td><td><code>KillTestKind</code></td><td>4</td></tr>
+      <tr><td><code>ACTORROLE</code></td><td>角色策略 8 角色</td><td>8（能力 15 项）</td></tr>
+      <tr><td class="mut">ev1–ev5 视觉阶</td><td class="mut">不是枚举——是证据强度的视觉色阶，与 <code>EvidenceKind</code>（9 值）非一一对应，禁止当映射用</td><td class="mut">—</td></tr>
+    </tbody>
+  </table></div>
+</section>
+
+<section id="a3">
+  <h2><span class="no">附C</span>设计红线</h2>
+  <p>原型期逐条踩实的规则，实现期同权重于功能验收：</p>
+  <ul>
+    <li><strong>禁发明数字。</strong>计数一律派生；协议参数（如检索路线条数）标注来源版本；「难度 87/100」式伪精度全站禁绝。</li>
+    <li><strong>禁雷达图</strong>于不同尺序数维度（各维五级名称互不相同）；四条独立标尺代替，面积是凭空造出来的量。</li>
+    <li><strong>禁总分。</strong>四个难度维度各自否决、各自补救，任何合成单值都落在禁令里。</li>
+    <li><strong>主从列表一律就地展开手风琴</strong>，不做左右分栏、不做弹窗——链的邻接关系必须同屏可比。</li>
+    <li><strong>并排两栏内容量必须相当</strong>（§9 阈值），做不到就重分内容或不并排；用对齐方式掩盖失衡视为缺陷。</li>
+    <li><strong>标识符必须以代码样式引用</strong>（<code>.mono/.hash</code>），后端枚举必须过翻译表；裸英文进中文文案按缺陷处理。</li>
+    <li><strong>空态诚实。</strong>无记录进程不借数据；被拒的晋升不产生事件——<b>缺席本身是证据</b>，界面不得补画。</li>
+    <li><strong>能力主张必须挂四态芯片</strong>；把计划说成现状（如扇出治理）是本项目定义的最高级缺陷。</li>
+  </ul>
+</section>
+
+<div class="footer">
+  MathArc 控制台开发蓝图 · 基线 2026-08-31 · 界面规范见<a href="https://claude.ai/code/artifact/2db2e6b0-2089-4a11-9eee-0ef402e4f0c2">问题情报平面控制台</a>原型。<br>
+  本文所有计数与枚举均核对自 <code>matharc/v02</code> 当日检出；与代码冲突时，改本文。
+</div>
+</main>
+</div>
+</body>
+</html>

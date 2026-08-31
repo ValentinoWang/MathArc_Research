@@ -38,11 +38,15 @@ class WorkspaceHTTPServer(_WorkspaceHTTPServerImpl):
         repository: WorkspaceRepository,
         *,
         dashboard_path: str | Path,
+        campaign_report_path: str | Path | None = None,
         sse_poll_seconds: float = 0.5,
         sse_lifetime_seconds: float = 30.0,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
+        self.campaign_report_path = (
+            Path(campaign_report_path).resolve() if campaign_report_path is not None else None
+        )
         self.sse_poll_seconds = sse_poll_seconds
         self.sse_lifetime_seconds = sse_lifetime_seconds
         ThreadingHTTPServer.__init__(
@@ -58,6 +62,7 @@ def make_server(
     host: str = "127.0.0.1",
     port: int = 8000,
     dashboard_path: str | Path | None = None,
+    campaign_report_path: str | Path | None = None,
     sse_poll_seconds: float = 0.5,
     sse_lifetime_seconds: float = 30.0,
 ) -> WorkspaceHTTPServer:
@@ -73,6 +78,7 @@ def make_server(
         (host, port),
         repository,
         dashboard_path=dashboard,
+        campaign_report_path=campaign_report_path,
         sse_poll_seconds=sse_poll_seconds,
         sse_lifetime_seconds=sse_lifetime_seconds,
     )

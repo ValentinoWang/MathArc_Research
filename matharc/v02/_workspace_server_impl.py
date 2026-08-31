@@ -11,11 +11,9 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
+from .console_export import campaign_snapshot, build_console_export
 from .workspace import ResearchWorkspace
-from .workspace_visualization import (
-    render_workspace_dashboard,
-    workspace_dashboard_payload,
-)
+from .workspace_visualization import workspace_dashboard_payload
 
 
 @dataclass(slots=True)
@@ -65,11 +63,15 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         repository: WorkspaceRepository,
         *,
         dashboard_path: str | Path,
+        campaign_report_path: str | Path | None = None,
         sse_poll_seconds: float = 0.5,
         sse_lifetime_seconds: float = 30.0,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
+        self.campaign_report_path = (
+            Path(campaign_report_path).resolve() if campaign_report_path is not None else None
+        )
         self.sse_poll_seconds = sse_poll_seconds
         self.sse_lifetime_seconds = sse_lifetime_seconds
         super().__init__(server_address, WorkspaceRequestHandler)
@@ -101,6 +103,18 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
                 return
             if parsed.path == "/api/workspace":
                 self._json(HTTPStatus.OK, self.server.repository.payload())
+                return
+            if parsed.path == "/api/campaign":
+                self._json(HTTPStatus.OK, self._campaign_payload())
+                return
+            if parsed.path == "/api/console":
+                self._json(
+                    HTTPStatus.OK,
+                    build_console_export(
+                        self.server.repository.root,
+                        campaign_report_path=self.server.campaign_report_path,
+                    ),
+                )
                 return
             if parsed.path == "/api/audit":
                 workspace = self.server.repository.load()
@@ -166,12 +180,14 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
 
     def _serve_dashboard(self) -> None:
         if not self.server.dashboard_path.is_file():
-            workspace = self.server.repository.load()
-            render_workspace_dashboard(
-                workspace,
-                self.server.dashboard_path,
-                title="MathArc Research v0.2 · Live Observatory",
+            self._json(
+                HTTPStatus.NOT_FOUND,
+                {
+                    "error": "dashboard_not_found",
+                    "message": "Generate or supply a dashboard before serving it.",
+                },
             )
+            return
         content = self.server.dashboard_path.read_bytes()
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-Type", "text/html; charset=utf-8")
@@ -191,6 +207,9 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
         self.send_header("X-Content-Type-Options", "nosniff")
         self.end_headers()
         self.wfile.write(content)
+
+    def _campaign_payload(self) -> dict[str, Any]:
+        return campaign_snapshot(self.server.campaign_report_path)
 
     def _sse(self, after: int) -> None:
         self.send_response(HTTPStatus.OK)
@@ -236,6 +255,7 @@ def make_server(
     host: str = "127.0.0.1",
     port: int = 8000,
     dashboard_path: str | Path | None = None,
+    campaign_report_path: str | Path | None = None,
     sse_poll_seconds: float = 0.5,
     sse_lifetime_seconds: float = 30.0,
 ) -> WorkspaceHTTPServer:
@@ -251,6 +271,7 @@ def make_server(
         (host, port),
         repository,
         dashboard_path=dashboard,
+        campaign_report_path=campaign_report_path,
         sse_poll_seconds=sse_poll_seconds,
         sse_lifetime_seconds=sse_lifetime_seconds,
     )
