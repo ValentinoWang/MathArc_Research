@@ -1,0 +1,76 @@
+test_allows_descriptive_open_word_without_status_assertion (tests.test_v02_source_observation.SourceObservationTests.test_allows_descriptive_open_word_without_status_assertion) ... ok
+test_observation_is_not_a_source_claim (tests.test_v02_source_observation.SourceObservationTests.test_observation_is_not_a_source_claim) ... ok
+test_rejects_invalid_timestamp_and_bare_status_strings (tests.test_v02_source_observation.SourceObservationTests.test_rejects_invalid_timestamp_and_bare_status_strings) ... ok
+test_rejects_latest_version_and_unsupported_media (tests.test_v02_source_observation.SourceObservationTests.test_rejects_latest_version_and_unsupported_media) ... ok
+test_rejects_proof_language_in_summary (tests.test_v02_source_observation.SourceObservationTests.test_rejects_proof_language_in_summary) ... ok
+test_rejects_unknown_fields_and_bad_digest (tests.test_v02_source_observation.SourceObservationTests.test_rejects_unknown_fields_and_bad_digest) ... ok
+test_round_trip_and_deterministic_key (tests.test_v02_source_observation.SourceObservationTests.test_round_trip_and_deterministic_key) ... ok
+test_same_identity_different_digest_is_conflict (tests.test_v02_source_observation.SourceObservationTests.test_same_identity_different_digest_is_conflict) ... ok
+test_unknown_license_is_pending_only (tests.test_v02_source_observation.SourceObservationTests.test_unknown_license_is_pending_only) ... ok
+test_budget_blocks_before_write_and_does_not_create_claims (tests.test_v02_literature_base.LiteratureBaseTests.test_budget_blocks_before_write_and_does_not_create_claims) ... ok
+test_digest_errors_and_missing_digest_remain_pending (tests.test_v02_literature_base.LiteratureBaseTests.test_digest_errors_and_missing_digest_remain_pending) ... ok
+test_duplicate_observation_id_cannot_overwrite_another_identity (tests.test_v02_literature_base.LiteratureBaseTests.test_duplicate_observation_id_cannot_overwrite_another_identity) ... ok
+test_failures_remain_pending_without_artifacts (tests.test_v02_literature_base.LiteratureBaseTests.test_failures_remain_pending_without_artifacts) ... ok
+test_import_idempotency_conflict_and_reload (tests.test_v02_literature_base.LiteratureBaseTests.test_import_idempotency_conflict_and_reload) ... ok
+test_pending_license_can_be_retried_after_license_confirmation (tests.test_v02_literature_base.LiteratureBaseTests.test_pending_license_can_be_retried_after_license_confirmation) ... ok
+test_registry_is_not_created_or_mutated (tests.test_v02_literature_base.LiteratureBaseTests.test_registry_is_not_created_or_mutated) ... ok
+test_unsupported_media_is_rejected_by_observation_contract (tests.test_v02_literature_base.LiteratureBaseTests.test_unsupported_media_is_rejected_by_observation_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.015s
+
+OK
+s..s...../Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/matharc/agent_service.py:117: ResourceWarning: unclosed file <_io.TextIOWrapper name=5 encoding='utf-8'>
+  for event in self.runner.stream_turn(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/matharc/agent_service.py:117: ResourceWarning: unclosed file <_io.TextIOWrapper name=7 encoding='utf-8'>
+  for event in self.runner.stream_turn(
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+./Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/tests/test_codex_runtime.py:108: ResourceWarning: unclosed file <_io.TextIOWrapper name=5 encoding='utf-8'>
+  events = list(runner.stream_turn("prompt", role="falsifier"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/tests/test_codex_runtime.py:108: ResourceWarning: unclosed file <_io.TextIOWrapper name=7 encoding='utf-8'>
+  events = list(runner.stream_turn("prompt", role="falsifier"))
+ResourceWarning: Enable tracemalloc to get the object allocation traceback
+...................................................................................................................................................s..sssssss...............................................................................................................................................
+----------------------------------------------------------------------
+Ran 310 tests in 15.731s
+
+OK (skipped=10)
+{
+  "claim_id": "C",
+  "claim_revision": 0,
+  "created_at": "2026-08-31T08:28:03.158351+00:00",
+  "nominated": true,
+  "nomination_id": "NOM-C-r0-0",
+  "route_ids": [
+    "R"
+  ]
+}
+{
+  "nominated": false,
+  "reasons": [
+    "claim C status is OPEN, not CANDIDATE"
+  ]
+}
+{
+  "claim_id": "C",
+  "claim_revision": 0,
+  "created_at": "2026-08-31T08:28:03.167130+00:00",
+  "nominated": true,
+  "nomination_id": "NOM-C-r0-0",
+  "route_ids": [
+    "R"
+  ]
+}
+{
+  "attacks.json": "/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpjvm6z97i/bundle/attacks.json",
+  "bundle_digest_sha256": "d98662b1c8906ac9ae68c9a6e4381e8fc173e05596d25f3835bca4ec684c38a0",
+  "definitions.json": "/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpjvm6z97i/bundle/definitions.json",
+  "dependencies.json": "/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpjvm6z97i/bundle/dependencies.json",
+  "evidence.json": "/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpjvm6z97i/bundle/evidence.json",
+  "html": "/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpjvm6z97i/bundle/review.html",
+  "manifest.json": "/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpjvm6z97i/bundle/manifest.json",
+  "obligations.json": "/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpjvm6z97i/bundle/obligations.json",
+  "statement.json": "/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpjvm6z97i/bundle/statement.json"
+}

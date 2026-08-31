@@ -125,6 +125,59 @@ class LiteratureBaseTests(unittest.TestCase):
             self.assertEqual(len(base.artifacts.records), 0)
             self.assertIsNone(result.observation.artifact_id)
 
+    def test_observed_record_cannot_be_downgraded_by_incomplete_retry(self) -> None:
+        content = b"immutable observed"
+        digest = hashlib.sha256(content).hexdigest()
+        complete = obs(uri="https://example.test/immutable", digest=digest)
+        incomplete = new_observation(
+            observation_id=complete.observation_id,
+            canonical_uri=complete.canonical_uri,
+            pinned_version=complete.pinned_version,
+            license_status=LicenseStatus.OPEN,
+            license_basis="publisher license page",
+            content_summary="metadata",
+            summary_basis="abstract",
+            media_type="application/pdf",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            base = LiteratureBase(directory)
+            first = base.import_bytes(complete, content)
+            result = base.import_bytes(incomplete, content)
+            self.assertEqual(first.observation.status, ObservationStatus.OBSERVED)
+            self.assertEqual(result.disposition, ImportDisposition.REJECTED)
+            self.assertEqual(base.observations[0].status, ObservationStatus.OBSERVED)
+            self.assertEqual(base.observations[0].artifact_id, first.observation.artifact_id)
+
+    def test_idempotent_replay_fails_closed_when_blob_is_corrupted(self) -> None:
+        content = b"integrity checked"
+        digest = hashlib.sha256(content).hexdigest()
+        observation = obs(uri="https://example.test/corrupt", digest=digest)
+        with tempfile.TemporaryDirectory() as directory:
+            base = LiteratureBase(directory)
+            first = base.import_bytes(observation, content)
+            assert first.artifact is not None
+            base.artifacts.path_for(first.artifact.artifact_id).write_bytes(b"tampered")
+            result = base.import_bytes(observation, content)
+            self.assertEqual(result.disposition, ImportDisposition.REJECTED)
+            self.assertEqual(base.observations[0].status, ObservationStatus.OBSERVED)
+            with self.assertRaises(ValueError):
+                LiteratureBase(directory)
+
+    def test_replay_recovers_artifact_written_before_observation_manifest(self) -> None:
+        content = b"recoverable artifact"
+        digest = hashlib.sha256(content).hexdigest()
+        observation = obs(uri="https://example.test/recover", digest=digest)
+        with tempfile.TemporaryDirectory() as directory:
+            base = LiteratureBase(directory)
+            first = base.import_bytes(observation, content)
+            self.assertEqual(first.disposition, ImportDisposition.IMPORTED)
+            (Path(directory) / "observations.json").unlink()
+            restored = LiteratureBase(directory)
+            result = restored.import_bytes(observation, content)
+            self.assertEqual(result.disposition, ImportDisposition.IMPORTED)
+            self.assertEqual(len(restored.artifacts.records), 1)
+            self.assertEqual(len(restored.observations), 1)
+
 
 if __name__ == "__main__":
     unittest.main()

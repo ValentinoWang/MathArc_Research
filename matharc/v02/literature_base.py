@@ -52,6 +52,7 @@ class LiteratureBase:
                 if observation.observation_id in self._observations:
                     raise ValueError("duplicate observation id")
                 self._observations[observation.observation_id] = observation
+            self._validate_observed_artifacts()
 
     @property
     def observations(self) -> tuple[SourceObservation, ...]:
@@ -68,6 +69,7 @@ class LiteratureBase:
         *,
         source_filename: str = "",
     ) -> ImportResult:
+        actual_digest = hashlib.sha256(content).hexdigest()
         existing_id = self._observations.get(observation.observation_id)
         if existing_id is not None and existing_id.logical_identity != observation.logical_identity:
             rejected = self._rejected(observation)
@@ -75,21 +77,50 @@ class LiteratureBase:
         existing_identity = [item for item in self.observations if item.logical_identity == observation.logical_identity]
         if existing_identity:
             for item in existing_identity:
+                if item.status is ObservationStatus.OBSERVED:
+                    if (
+                        item.content_digest_sha256 == observation.content_digest_sha256
+                        and item.content_digest_sha256
+                        and item.artifact_id is not None
+                    ):
+                        if actual_digest != observation.content_digest_sha256:
+                            return ImportResult(
+                                ImportDisposition.REJECTED,
+                                item,
+                                reason="imported bytes do not match the declared digest",
+                            )
+                        try:
+                            artifact = self._verified_artifact(item.artifact_id, item.content_digest_sha256)
+                        except (KeyError, ValueError) as exc:
+                            rejected = self._rejected(observation)
+                            return ImportResult(ImportDisposition.REJECTED, rejected, reason=f"artifact integrity failure: {exc}")
+                        return ImportResult(ImportDisposition.IDEMPOTENT, item, artifact, "same identity and digest")
+                    if (
+                        item.content_digest_sha256
+                        and observation.content_digest_sha256
+                        and item.content_digest_sha256 != observation.content_digest_sha256
+                    ):
+                        conflict_id = observation.observation_id
+                        if conflict_id in self._observations:
+                            conflict_id = f"{conflict_id}-conflict-{observation.content_digest_sha256[:8]}"
+                        conflict = SourceObservation.from_dict(
+                            {**observation.to_dict(), "observation_id": conflict_id, "status": ObservationStatus.CONFLICT.value, "artifact_id": None}
+                        )
+                        self._record(conflict)
+                        return ImportResult(ImportDisposition.CONFLICT, conflict, reason="same identity has a different digest")
+                    return ImportResult(
+                        ImportDisposition.REJECTED,
+                        item,
+                        reason="observed record cannot be downgraded or replaced by an incomplete retry",
+                    )
                 if (
-                    item.content_digest_sha256 == observation.content_digest_sha256
-                    and item.content_digest_sha256
-                    and item.status is ObservationStatus.OBSERVED
-                    and item.artifact_id is not None
+                    item.content_digest_sha256
+                    and observation.content_digest_sha256
+                    and item.content_digest_sha256 == observation.content_digest_sha256
                 ):
-                    try:
-                        artifact = self.artifacts.get(item.artifact_id)
-                        artifact_path = self.artifacts.path_for(item.artifact_id)
-                        if artifact.sha256 != item.content_digest_sha256 or not artifact_path.is_file():
-                            raise ValueError("artifact reference is not intact")
-                    except (KeyError, ValueError) as exc:
-                        rejected = self._rejected(observation)
-                        return ImportResult(ImportDisposition.REJECTED, rejected, reason=f"artifact integrity failure: {exc}")
-                    return ImportResult(ImportDisposition.IDEMPOTENT, item, artifact, "same identity and digest")
+                    # A pending record is intentionally revalidated below so a
+                    # later license/digest confirmation can complete import.
+                    continue
                 if (
                     item.content_digest_sha256
                     and observation.content_digest_sha256
@@ -116,7 +147,6 @@ class LiteratureBase:
             pending = self._pending(observation)
             self._record(pending)
             return ImportResult(ImportDisposition.PENDING, pending, reason="content digest is missing")
-        actual_digest = hashlib.sha256(content).hexdigest()
         if actual_digest != observation.content_digest_sha256:
             pending = self._pending(observation)
             self._record(pending)
@@ -125,14 +155,17 @@ class LiteratureBase:
         artifact_id = "lit-" + hashlib.sha256(
             f"{observation.logical_identity}|{actual_digest}".encode("utf-8")
         ).hexdigest()[:32]
-        artifact = self.artifacts.put_bytes(
-            artifact_id,
-            content,
-            logical_role="literature-observation",
-            producer="matharc-literature-base",
-            media_type=observation.media_type,
-            source_filename=source_filename,
-        )
+        try:
+            artifact = self._reuse_or_put_artifact(
+                artifact_id,
+                content,
+                observation,
+                source_filename,
+            )
+        except (KeyError, ValueError) as exc:
+            pending = self._pending(observation)
+            self._record(pending)
+            return ImportResult(ImportDisposition.PENDING, pending, reason=f"artifact persistence failed: {exc}")
         observed = SourceObservation.from_dict(
             {**observation.to_dict(), "status": ObservationStatus.OBSERVED.value, "artifact_id": artifact.artifact_id}
         )
@@ -158,3 +191,52 @@ class LiteratureBase:
         temporary = self.manifest_path.with_suffix(".tmp")
         temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         os.replace(temporary, self.manifest_path)
+
+    def _verified_artifact(self, artifact_id: str, expected_digest: str) -> ArtifactRecord:
+        artifact = self.artifacts.get(artifact_id)
+        path = self.artifacts.path_for(artifact_id)
+        if artifact.sha256 != expected_digest or not path.is_file():
+            raise ValueError("artifact reference is not intact")
+        content = path.read_bytes()
+        if hashlib.sha256(content).hexdigest() != artifact.sha256:
+            raise ValueError("artifact blob digest mismatch")
+        if len(content) != artifact.size_bytes:
+            raise ValueError("artifact blob size mismatch")
+        return artifact
+
+    def _validate_observed_artifacts(self) -> None:
+        for observation in self._observations.values():
+            if observation.status is not ObservationStatus.OBSERVED:
+                continue
+            if not observation.artifact_id or not observation.content_digest_sha256:
+                raise ValueError(f"observed record has incomplete artifact reference: {observation.observation_id}")
+            try:
+                self._verified_artifact(observation.artifact_id, observation.content_digest_sha256)
+            except (KeyError, ValueError) as exc:
+                raise ValueError(f"invalid artifact for observed record {observation.observation_id}: {exc}") from exc
+
+    def _reuse_or_put_artifact(
+        self,
+        artifact_id: str,
+        content: bytes,
+        observation: SourceObservation,
+        source_filename: str,
+    ) -> ArtifactRecord:
+        try:
+            existing = self.artifacts.get(artifact_id)
+        except KeyError:
+            existing = None
+        actual_digest = hashlib.sha256(content).hexdigest()
+        if existing is not None:
+            if existing.sha256 != actual_digest or existing.size_bytes != len(content):
+                raise ValueError("existing artifact metadata conflicts with imported content")
+            self._verified_artifact(artifact_id, actual_digest)
+            return existing
+        return self.artifacts.put_bytes(
+            artifact_id,
+            content,
+            logical_role="literature-observation",
+            producer="matharc-literature-base",
+            media_type=observation.media_type,
+            source_filename=source_filename,
+        )

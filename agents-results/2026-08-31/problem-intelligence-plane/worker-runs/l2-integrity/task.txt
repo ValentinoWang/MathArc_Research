@@ -1,0 +1,27 @@
+Task ID: L2-integrity-repair
+Direct parent: L2 / A2 acceptance remediation
+Pinned source: bf7739a5b79099f5136aecd82efd840f8153e33a, except the coordinator's reverted uncommitted SSOT status edits.
+Decision: decision.problem-intelligence.amendment@2.
+Invalidation keys: implementation.problem-intelligence.literature-base, acceptance.problem-intelligence.literature-base.
+
+Objective: repair the review-confirmed LiteratureBase integrity defects and add focused regression tests.
+
+Allowed read scope: matharc/v02/literature_base.py, matharc/v02/artifact_store.py, matharc/v02/source_observation.py, tests/test_v02_literature_base.py, relevant existing v02 tests.
+Allowed write scope: only matharc/v02/literature_base.py and tests/test_v02_literature_base.py. Do not edit any other source, test, SSOT, evidence, progress, manifest, lock, or generated file.
+Forbidden: changes to ResearchTrace, SourceRegistry, budget accounting, claim promotion, protected unrelated tests, external networking, commits, pushes, and any agent-result file other than the required structured return path.
+Runtime isolation: use only tempfile-created test roots; do not reuse a repository path.
+
+Required behavior:
+1. An existing OBSERVED record must never be overwritten or downgraded by a retry with missing/invalid digest, restricted license, budget exhaustion, mismatched content, or the same observation ID. Preserve its artifact linkage. Return an auditable non-success disposition.
+2. Before returning IDEMPOTENT, verify the referenced artifact's current blob digest and size, not just manifest metadata; corruption must fail closed without replacing the OBSERVED record.
+3. Make same-identity import recoverable when the content-addressed artifact blob/manifest was written but the observation manifest was not. Reuse an existing matching artifact record rather than raising duplicate artifact ID. Do not silently accept mismatching artifact metadata.
+4. Loading a persisted OBSERVED observation must validate its artifact reference and actual blob integrity; fail closed on missing/damaged artifact.
+5. Preserve all existing required behavior and the hard boundary that LiteratureBase never creates SourceRegistry or mathematical claims.
+6. Add narrow tests for each behavior above, including reload behavior. Treat SourceObservation's media whitelist rejection as L1 contract behavior; do not widen its type acceptance in this task.
+
+Acceptance commands:
+python3 -m unittest -v tests.test_v02_source_observation tests.test_v02_literature_base
+python3 -m unittest discover -s tests
+git diff --check
+
+Stop condition: tests pass, no paths outside allowed write scope changed, and structured return is written exactly to $STRUCTURED_RETURN_PATH as JSON with task_id, version tuple, actual read/write scope, command results, changed_files, evidence identities, unverified_items, failure_class, failure_origin, risks, shared_resource_impact, and proposed_state IMPLEMENTED or VERIFIED. Do not set ACCEPTED.

@@ -1,0 +1,2361 @@
+Reading additional input from stdin...
+2026-08-31T08:21:29.168449Z  WARN codex_core_plugins::manager: remote installed plugin bundle sync failed error=chatgpt authentication required for remote plugin catalog; api key auth is not supported
+2026-08-31T08:21:29.284874Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-31T08:21:29.284907Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+OpenAI Codex v0.151.0
+--------
+workdir: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+model: gpt-5.6-luna
+provider: sub2api
+approval: never
+sandbox: danger-full-access
+reasoning effort: max
+reasoning summaries: none
+session id: 01a056e8-c000-70f2-aea4-c1dc05b4094f
+--------
+user
+TASK_ID=L2-integrity-repair
+ATTEMPT_ROLE=primary
+PRIMARY_EXECUTOR=lw-luna
+PRIMARY_WRAPPER=/Users/vsiyo/.codex/workers/run-lw-luna.sh
+ATTEMPT_EXECUTOR=lw-luna
+ATTEMPT_WRAPPER=/Users/vsiyo/.codex/workers/run-lw-luna.sh
+PROJECT_ROOT=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+TASK_SOURCE_SHA256=968f3662a6dec7e4f97504c0d2f1979506b5e18c8a55e04f15be966af5146560
+STRUCTURED_RETURN_PATH=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/returns/L2-integrity-repair-primary.json
+VALIDATION_COMMAND_FILE=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/validation.sh
+VALIDATION_COMMAND_SHA256=a0db7bc122b3183aaa5b0a66a6eabd5c552d5ec91c8b6d1ce5b47db321f1eb5b
+
+Execute exactly the bounded task below. Preserve its frozen inputs, write scope, forbidden scope, and acceptance commands. Full filesystem access is process capability only and does not expand task authority.
+
+Write one JSON object to STRUCTURED_RETURN_PATH before exit. It must include proposed_state, acceptance_self_check, failure_class, and failure_origin. proposed_state must be IMPLEMENTED, VERIFIED, FAILED, or BLOCKED; acceptance_self_check must be pass, fail, or partial. failure_class must be none, implementation, runtime, verification, transport, architecture-conflict, authority-conflict, interface-freeze, permission, product-decision, or scope-conflict. failure_origin must identify one of: none, environment, app-server, browser, database, test-infrastructure, provider-network, provider-transport, worker-transport, product-behavior, implementation, architecture-complexity, control-plane, test-oracle, authority, scope, or unknown-origin. Use none only for a successful attempt.
+
+BOUNDED_TASK_BEGIN
+Task ID: L2-integrity-repair
+Direct parent: L2 / A2 acceptance remediation
+Pinned source: bf7739a5b79099f5136aecd82efd840f8153e33a, except the coordinator's reverted uncommitted SSOT status edits.
+Decision: decision.problem-intelligence.amendment@2.
+Invalidation keys: implementation.problem-intelligence.literature-base, acceptance.problem-intelligence.literature-base.
+
+Objective: repair the review-confirmed LiteratureBase integrity defects and add focused regression tests.
+
+Allowed read scope: matharc/v02/literature_base.py, matharc/v02/artifact_store.py, matharc/v02/source_observation.py, tests/test_v02_literature_base.py, relevant existing v02 tests.
+Allowed write scope: only matharc/v02/literature_base.py and tests/test_v02_literature_base.py. Do not edit any other source, test, SSOT, evidence, progress, manifest, lock, or generated file.
+Forbidden: changes to ResearchTrace, SourceRegistry, budget accounting, claim promotion, protected unrelated tests, external networking, commits, pushes, and any agent-result file other than the required structured return path.
+Runtime isolation: use only tempfile-created test roots; do not reuse a repository path.
+
+Required behavior:
+1. An existing OBSERVED record must never be overwritten or downgraded by a retry with missing/invalid digest, restricted license, budget exhaustion, mismatched content, or the same observation ID. Preserve its artifact linkage. Return an auditable non-success disposition.
+2. Before returning IDEMPOTENT, verify the referenced artifact's current blob digest and size, not just manifest metadata; corruption must fail closed without replacing the OBSERVED record.
+3. Make same-identity import recoverable when the content-addressed artifact blob/manifest was written but the observation manifest was not. Reuse an existing matching artifact record rather than raising duplicate artifact ID. Do not silently accept mismatching artifact metadata.
+4. Loading a persisted OBSERVED observation must validate its artifact reference and actual blob integrity; fail closed on missing/damaged artifact.
+5. Preserve all existing required behavior and the hard boundary that LiteratureBase never creates SourceRegistry or mathematical claims.
+6. Add narrow tests for each behavior above, including reload behavior. Treat SourceObservation's media whitelist rejection as L1 contract behavior; do not widen its type acceptance in this task.
+
+Acceptance commands:
+python3 -m unittest -v tests.test_v02_source_observation tests.test_v02_literature_base
+python3 -m unittest discover -s tests
+git diff --check
+
+Stop condition: tests pass, no paths outside allowed write scope changed, and structured return is written exactly to $STRUCTURED_RETURN_PATH as JSON with task_id, version tuple, actual read/write scope, command results, changed_files, evidence identities, unverified_items, failure_class, failure_origin, risks, shared_resource_impact, and proposed_state IMPLEMENTED or VERIFIED. Do not set ACCEPTED.
+BOUNDED_TASK_END
+
+2026-08-31T08:21:30.439201Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-08-31T08:21:30.444575Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+warning: Skill descriptions were shortened to fit the skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.
+2026-08-31T08:21:39.172050Z  WARN codex_core_plugins::manager: failed to warm featured plugin ids cache error=failed to send remote featured plugin request to https://chatgpt.com/backend-api/plugins/featured?platform=codex: route-aware request timed out
+codex
+我会先核对项目与 Harness 约束、当前工作树和任务输入哈希，再只读取允许范围内的实现与测试。随后我会按五条行为逐项补丁和回归测试，使用临时测试根目录运行指定门禁，并在退出前写入唯一的结构化 JSON 返回文件。此次会使用 `implement-acceptance-locked-change` 和 `code-quality` 技能；前者用于锁定验收边界，后者用于保持实现与测试的最小正确改动。
+exec
+/bin/zsh -lc "sed -n '1,280p' .harness/overlays/project-harness-adapter.yaml" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "sed -n '1,240p' /Users/vsiyo/.codex/skills/implement-acceptance-locked-change/SKILL.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+---
+name: implement-acceptance-locked-change
+description: Implement a feature, bug fix, migration, or integration against approved decision-scoped acceptance fragments with the maximum safe number of independent implementation lanes while preserving protected tests, local invalidation, and requirements traceability. Use when coding should begin as soon as its exact behavior fragment is approved and locked without waiting for unrelated SSOT decisions, when a Coding Agent must make the smallest compliant change, or when failed protected tests must lead to implementation repair rather than weakened assertions.
+---
+
+# Implement Acceptance-Locked Change
+
+## Goal
+
+Make approved acceptance behavior pass with the smallest maintainable change while preventing the implementation role from rewriting its own definition of success.
+
+## Preconditions
+
+1. Locate every acceptance fragment that directly covers the requested implementation scope, its project-level `acceptance/human/<task-id>/binding.md` and `checklist.md`, and its exact SSOT node when applicable. Do not require sibling fragments that the implementation does not consume.
+2. Verify each selected fragment's `Contract status: APPROVED`, approval owner/evidence, contract version, source/baseline identity, decision semantic key, accepted version, and invalidation keys. Validate those refs against the current `.ssot` machine source and explicit incoming edges. A Coding Agent cannot approve its own contract or infer readiness from A/AA/AC labels.
+3. Do not wait for unrelated SSOT decisions or a whole-stage gate. Start a fragment when its own formal acceptance-design node and protected-test lock are current. If any selected fragment is absent, stale, conditionally drafted, or invalidated, use `$design-acceptance-contract` and stop only that implementation path.
+4. Run the acceptance-contract validator from `$design-acceptance-contract` for every selected fragment with the explicit task artifact root and project root. Do not infer the human workspace relative to the contract directory.
+5. Record the preflight diff and hashes of every protected acceptance test. Refuse only the affected path if a declared path or hash does not match.
+6. Interpret `Test baseline` strictly:
+   - `PLANNED`: modify only the minimum public contract or interface skeleton needed for an independent test designer to bind executable tests. Do not complete or claim the associated user behavior.
+   - `LOCKED`: run the protected tests and capture red proof before implementation when the change is expected to make them pass.
+
+## Decision-Scoped Readiness And Invalidation
+
+Create at least one implementation lane per accepted and locked behavior fragment, then split it further for independently implementable deliverables. Each lane records the fragment ID/hash, decision semantic key, accepted version, and invalidation keys. A `CONDITIONAL` acceptance draft cannot unlock behavior implementation; it may authorize only the isolated contract/interface skeleton already permitted by its SSOT assumption and must never be merged or claimed as implemented behavior.
+
+When a decision, assumption, interface, or protected baseline changes, match the changed invalidation keys against active lanes and evidence. Cancel or stop only affected implementation lanes, reject their stale returns, version and re-lock their acceptance fragments through the design role, and recompute the ready frontier. Do not rerun or invalidate an entire SSOT stage, unrelated fragment, or unchanged protected baseline.
+
+## Maximum-Safe Parallel Implementation
+
+After preflight freezes the selected approved fragment hashes, decision refs, protected-test hashes, consumed public interfaces, dirty-worktree baseline, and shared-resource integration owners, inventory every minimum implementation deliverable and calculate:
+
+```text
+LOGICAL_LANE_TARGET = READY_INDEPENDENT_DELIVERABLES
+ACTUAL_CONCURRENCY = min(LOGICAL_LANE_TARGET, AVAILABLE_WRITABLE_L2_SLOTS)
+WAVE_COUNT = ceil(LOGICAL_LANE_TARGET / AVAILABLE_WRITABLE_L2_SLOTS)
+```
+
+If `AVAILABLE_WRITABLE_L2_SLOTS` is zero, mark dispatch `BLOCKED`; do not divide by zero, silently downgrade the sandbox, or serialize the work through an unregistered executor.
+
+Create one logical lane for every independently implementable and independently acceptable route, page, component, service unit, repository unit, adapter, migration partition, test fixture partition, or other deliverable whose dependencies are accepted and whose mutable resources can be isolated. There is no preferred or maximum lane count. Twenty isolated deliverables remain twenty logical lanes even when only five workers are available; run four waves instead of collapsing them.
+
+Worker capacity, shared product area, frontend/backend label, role, page family, technology, deadline, reviewer convenience, and apparent smallness are not dependencies. Combine deliverables only for a proven `write-write`, `mutable-read-write`, `single-migration`, `single-generated-artifact`, or `inseparable-transaction` conflict. Record the exact resource and why freezing, partitioning, separate source fragments, isolated databases/ports/devices/build directories, or a later integrator cannot remove it.
+
+Assign exclusive write scopes and unique runtime/evidence isolation keys to every lane. Parallel workers consume frozen contracts read-only and must not touch protected tests, the acceptance contract, project-level human acceptance, SSOT ledgers, shared route/schema manifests, migration heads, generated clients, lockfiles, or final indexes unless that exact resource is their sole declared ownership. Prefer a serial foundation owner for shared inputs and one serial integration owner for shared outputs. Run independent test commands in parallel only with isolated mutable runtimes and output directories.
+
+When an SSOT implementation node contains multiple independent deliverables, split it through the SSOT machine authority into explicit numbered siblings. Add a serial foundation only for a proven shared mutable input and a convergence successor only for contributors to the same shared output or atomic acceptance scope. Worker-slot scarcity changes waves, not the DAG. Each integration owner waits only for its declared contributors, rejects stale or out-of-scope returns, reconciles its shared artifacts once, runs cross-lane checks, and alone updates shared progress/evidence references; it cannot self-mark the parent `ACCEPTED`.
+
+Use `$codex-explicit-worker-orchestration` for every dispatched implementation
+lane. Resolve and inspect the project-approved L2 wrapper first, then launch one
+bounded task per wrapper invocation:
+
+If the user or project adapter prioritizes an absolute `run-lw-luna.sh`, use it
+for eligible writable lanes and do not remap it to `run-l2.sh` or another model.
+
+```bash
+/absolute/path/run-l2.sh "<bounded implementation lane packet>"
+```
+
+The inspected wrapper must end in `exec codex exec`, and its durable registration
+must preserve:
+
+```text
+codex exec -C /absolute/project/root --skip-git-repo-check --sandbox danger-full-access
+```
+
+Record `writable sandbox` on every lane. A relative root, `.`, `$PWD`, unresolved
+variable, missing flag, read-only sandbox, or unrecorded wrapper invocation fails
+preflight. Never use `spawn_agent`, a chat-internal subagent, or a same-process
+collaboration API as a substitute or fallback. Full access changes capability,
+not scope or authority. Each bounded packet must include task/node ID, direct
+parent, contract and DAG versions, decision refs and invalidation keys, exact
+read/write/forbidden scopes, accepted dependency and protected-test hashes,
+isolated runtime/evidence keys, commands, stop condition, and return schema. The
+outer coordinator records the command, PID, Codex session, log, return path,
+timestamps, and exit code for each independent worker process.
+
+## Implementation Workflow
+
+1. Read only the selected approved fragments, their exact decision refs, test matrices, repository rules, architecture authorities, relevant source, and failing evidence. Build and dispatch the maximum conflict-free ready frontier across all SSOT reporting layers.
+2. Trace each planned source change to one or more `AC-*` items. Leave unrelated cleanup and refactoring out of scope.
+3. Reuse existing modules, contracts, transaction boundaries, error types, and helpers before adding abstractions.
+4. Implement the normal path, exception paths, and invariants together. Do not defer permission, idempotency, rollback, timeout, retry, or partial-failure behavior when the contract marks them blocking.
+5. Add implementation-owned unit tests only where they improve local correctness. Do not present them as substitutes for protected acceptance tests.
+6. Run checks in each affected fragment's cheapest useful order: static, unit, integration/contract, critical E2E, then applicable non-functional checks. Run independent fragments concurrently only with isolated resources. Create a new run directory for each actual execution under the matching task-local `acceptance/machine/<layer>/runs/` lane, passing both roots to the artifact manager; never overwrite a previous run.
+7. Recalculate protected-test hashes after testing and confirm they are unchanged.
+8. Record commands, environment/identity, decision refs, invalidation keys, results, changed files, unverified items, AC coverage, and an evidence manifest in each run's `result.md`. Rebuild each affected task index and the project human index, then validate both. Treat the project-level human tree as read-only: do not fill, accept, move, or forge human checklist results. In an existing SSOT, update only selected run IDs/hashes and the affected node evidence/status permitted by its authority model; do not self-mark the node `ACCEPTED`.
+
+## Protected-Test Rule
+
+Do not modify, delete, rename, skip, quarantine, loosen, snapshot-update, fixture-bypass, or conditionally disable a protected acceptance test. Do not hard-code production behavior solely to satisfy a fixture.
+
+If the approved test or requirement is genuinely wrong:
+
+1. Stop the affected implementation path.
+2. Create a separate request using [`references/test-change-request-template.md`](references/test-change-request-template.md).
+3. Explain the original rule, proposed rule, reason, product/data/architecture impact, affected ACs, and required approver.
+4. Wait for explicit approval from the acceptance owner or the authority named by the SSOT.
+5. Require the acceptance-design role, in a separate context, to version the contract and re-lock affected tests before resuming.
+
+## Completion Boundary
+
+Report `IMPLEMENTED` only when the scoped code and required automated evidence pass without changing the approved contract or protected tests. Never report release acceptance: hand the contract, diff identity, evidence, and remaining human items to `$verify-acceptance-release`.
+
+ succeeded in 0ms:
+project:
+  name: matharc-research
+  profile: core
+design:
+  token_sources: []
+  theme_sources: []
+  page_shell_sources: []
+  component_sources: []
+quality:
+  static_guards: []
+  formatting: []
+qa:
+  screenshot: []
+  integration: []
+  evidence_root: agents-results
+skills:
+  enabled: []
+
+exec
+/bin/zsh -lc "sed -n '1,240p' /Users/vsiyo/.agents/skills/code-quality/SKILL.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+---
+name: code-quality
+description: General Correctness rules, Rust patterns, comments, avoiding over-engineering. When writing code always take these into account
+---
+# Code Quality Guide
+
+## Core Principle
+
+Production database. Correctness paramount. Crash > corrupt.
+
+## Correctness Rules
+
+1. **No workarounds or quick hacks.** Handle all errors, check invariants
+2. **Assert often.** Never silently fail or swallow edge cases
+3. **Crash on invalid state** if it risks data integrity. Don't continue in undefined state
+4. **Consider edge cases.** On long enough timeline, all possible bugs will happen
+
+## Rust Patterns
+
+- Make illegal states unrepresentable
+- Exhaustive pattern matching
+- Prefer enums over strings/sentinels
+- Minimize heap allocations
+- Write CPU-friendly code (microsecond = long time)
+
+## If-Statements
+
+Wrong:
+```rust
+if condition {
+    // happy path
+} else {
+    // "shouldn't happen" - silently ignored
+}
+```
+
+Right:
+```rust
+// If only one branch should ever be hit:
+assert!(condition, "invariant violated: ...");
+// OR
+return Err(LimboError::InternalError("unexpected state".into()));
+// OR
+unreachable!("impossible state: ...");
+```
+
+Use if-statements only when both branches are expected paths.
+
+## Comments
+
+**Do:**
+- Document WHY, not what
+- Document functions, structs, enums, variants
+- Focus on why something is necessary
+
+**Don't:**
+- Comments that repeat code
+- References to AI conversations ("This test should trigger the bug")
+- Temporal markers ("added", "existing code", "Phase 1")
+
+## Avoid Over-Engineering
+
+- Only changes directly requested or clearly necessary
+- Don't add features beyond what's asked
+- Don't add docstrings/comments to unchanged code
+- Don't add error handling for impossible scenarios
+- Don't create abstractions for one-time operations
+- Three similar lines > premature abstraction
+
+## Semantic Ownership
+
+When an LLM or Skill is the declared owner of an open-ended semantic judgment:
+
+- Put project-specific rubrics, examples, labels, evidence standards, and model instructions in the owning project Skill first. Do not place domain rules in a global Skill merely to avoid writing them in production code; global Skills should retain only rules that are valid across projects.
+- Do not implement that judgment in production code with regexes, keyword lists, substring checks, text length, punctuation, color alone, or hand-tuned scores.
+- Do not patch a false positive by adding another phrase exception. Remove the misplaced classifier and keep the value `null` or `unknown` until the semantic owner supplies it.
+- Keep source facts and semantic annotations in separate provenance layers. Deterministic code may parse exact syntax, preserve evidence, validate schemas and references, and recompute metrics from accepted annotations.
+- A heuristic may only create an explicitly labeled review candidate that cannot enter production metrics or conclusions before confirmation.
+- Test that semantic outputs cannot overwrite source text, identity, coordinates, time, order, or deduplication facts.
+
+## Ensure understanding of IO model
+
+- [Async IO model](../async-io-model/SKILL.md)
+
+## Cleanup
+
+- Delete unused code completely
+- No backwards-compat hacks (renamed `_vars`, re-exports, `// removed` comments)
+
+exec
+/bin/zsh -lc "sed -n '1,260p' develop/Harness/fullstack-ai-harness.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+# Fullstack AI Harness
+
+Use this entry before non-trivial implementation. Classify the task by impact layer, read the matching harness, identify the authority source, implement narrowly, and finish with evidence.
+
+## Routing
+
+- Frontend UI, interaction, design system, responsiveness: frontend or app profile harness.
+- Backend route, service, domain logic, jobs: backend harness.
+- Database schema, migration, seed, indexes: database harness.
+- API contracts, OpenAPI, generated SDK: API contract harness.
+- CI, static guards, flaky tests, regression triage: quality harness.
+- Cross-project process or skill improvement: governance harness.
+
+## Closeout
+
+Every task should report business project changes, Harness SSOT changes, verification commands, evidence location, and any reusable guard or QA harness candidate.
+
+
+exec
+/bin/zsh -lc 'sha256sum agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/validation.sh && git show --no-ext-diff --format=fuller --stat bf7739a5b79099f5136aecd82efd840f8153e33a -- matharc/v02/literature_base.py tests/test_v02_literature_base.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+a0db7bc122b3183aaa5b0a66a6eabd5c552d5ec91c8b6d1ce5b47db321f1eb5b  agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/validation.sh
+
+exec
+/bin/zsh -lc 'rg -n -i "L2-integrity|problem-intelligence|LiteratureBase|literature base|integrity repair" /Users/vsiyo/.codex/memories/MEMORY.md' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+38:- `codex/publication-gates-hardening-20260831` was merged via PR #1; local and remote `main` matched `836dc6860f8f997e4e128bcd745c96b98c6b9b29`, and the remote feature branch was deleted. Untracked `agents-results/2026-08-31/problem-intelligence-plane/.ssot/` was preserved. [Task 2]
+
+exec
+/bin/zsh -lc 'git status --short && git rev-parse HEAD && git diff --stat && git diff -- matharc/v02/literature_base.py tests/test_v02_literature_base.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+?? agents-results/2026-08-31/problem-intelligence-plane/worker-runs/
+bf7739a5b79099f5136aecd82efd840f8153e33a
+
+2026-08-31T08:22:00.478066Z  WARN codex_exec_server::client::http_client::route_aware_http_client: http/request send failed http_method="GET" error_is_timeout=true error_is_connect=false error=error sending request
+codex
+预检结果：当前 `HEAD` 正是任务锁定的 `bf7739a...`，业务源文件和目标测试文件没有既有改动；工作树仅有任务运行目录的未跟踪内容，我会保留它。Harness 将此归类为后端领域逻辑/质量验证任务，项目适配层没有额外静态或集成门禁。
+按任务锁定的 LiteratureBase 行为和严格写入范围执行实现、回归验证与结构化返回。
+  → 读取 LiteratureBase、artifact 存储、SourceObservation 及现有 v02 测试，定位完整性缺陷与可复用契约
+  • 仅修改 literature_base.py 与 test_v02_literature_base.py，补齐五类行为及窄回归测试
+  • 运行任务指定验收命令并核对写入范围、diff 与结构化返回
+exec
+/bin/zsh -lc "nl -ba matharc/v02/literature_base.py | sed -n '1,360p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "nl -ba matharc/v02/artifact_store.py | sed -n '1,420p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	"""Persistent, reviewable storage for imported literature observations."""
+     2	
+     3	from __future__ import annotations
+     4	
+     5	import hashlib
+     6	import json
+     7	import os
+     8	from dataclasses import dataclass
+     9	from enum import Enum
+    10	from pathlib import Path
+    11	from typing import Any
+    12	
+    13	from .artifact_store import ArtifactRecord, ArtifactStore
+    14	from .budget import BudgetLedger
+    15	from .source_observation import LicenseStatus, ObservationStatus, SourceObservation
+    16	
+    17	
+    18	class ImportDisposition(str, Enum):
+    19	    IMPORTED = "IMPORTED"
+    20	    IDEMPOTENT = "IDEMPOTENT"
+    21	    PENDING = "PENDING"
+    22	    CONFLICT = "CONFLICT"
+    23	    REJECTED = "REJECTED"
+    24	
+    25	
+    26	@dataclass(frozen=True, slots=True)
+    27	class ImportResult:
+    28	    disposition: ImportDisposition
+    29	    observation: SourceObservation
+    30	    artifact: ArtifactRecord | None = None
+    31	    reason: str = ""
+    32	
+    33	
+    34	class LiteratureBase:
+    35	    """Keep literature observations separate from verified mathematical claims."""
+    36	
+    37	    def __init__(self, root: str | Path, budget: BudgetLedger | None = None) -> None:
+    38	        self.root = Path(root)
+    39	        self.root.mkdir(parents=True, exist_ok=True)
+    40	        self.artifacts = ArtifactStore.load(self.root / "artifacts")
+    41	        self.manifest_path = self.root / "observations.json"
+    42	        self.budget = budget
+    43	        self._observations: dict[str, SourceObservation] = {}
+    44	        if self.manifest_path.is_file():
+    45	            payload = json.loads(self.manifest_path.read_text(encoding="utf-8"))
+    46	            if not isinstance(payload, dict) or set(payload) != {"schema_version", "observations"}:
+    47	                raise ValueError("invalid literature observation manifest")
+    48	            if payload["schema_version"] != "1.0":
+    49	                raise ValueError("unsupported literature observation schema")
+    50	            for item in payload["observations"]:
+    51	                observation = SourceObservation.from_dict(item)
+    52	                if observation.observation_id in self._observations:
+    53	                    raise ValueError("duplicate observation id")
+    54	                self._observations[observation.observation_id] = observation
+    55	
+    56	    @property
+    57	    def observations(self) -> tuple[SourceObservation, ...]:
+    58	        return tuple(self._observations[key] for key in sorted(self._observations))
+    59	
+    60	    def import_file(self, observation: SourceObservation, source: str | Path) -> ImportResult:
+    61	        path = Path(source)
+    62	        return self.import_bytes(observation, path.read_bytes(), source_filename=path.name)
+    63	
+    64	    def import_bytes(
+    65	        self,
+    66	        observation: SourceObservation,
+    67	        content: bytes,
+    68	        *,
+    69	        source_filename: str = "",
+    70	    ) -> ImportResult:
+    71	        existing_id = self._observations.get(observation.observation_id)
+    72	        if existing_id is not None and existing_id.logical_identity != observation.logical_identity:
+    73	            rejected = self._rejected(observation)
+    74	            return ImportResult(ImportDisposition.REJECTED, rejected, reason="observation_id already names another logical identity")
+    75	        existing_identity = [item for item in self.observations if item.logical_identity == observation.logical_identity]
+    76	        if existing_identity:
+    77	            for item in existing_identity:
+    78	                if (
+    79	                    item.content_digest_sha256 == observation.content_digest_sha256
+    80	                    and item.content_digest_sha256
+    81	                    and item.status is ObservationStatus.OBSERVED
+    82	                    and item.artifact_id is not None
+    83	                ):
+    84	                    try:
+    85	                        artifact = self.artifacts.get(item.artifact_id)
+    86	                        artifact_path = self.artifacts.path_for(item.artifact_id)
+    87	                        if artifact.sha256 != item.content_digest_sha256 or not artifact_path.is_file():
+    88	                            raise ValueError("artifact reference is not intact")
+    89	                    except (KeyError, ValueError) as exc:
+    90	                        rejected = self._rejected(observation)
+    91	                        return ImportResult(ImportDisposition.REJECTED, rejected, reason=f"artifact integrity failure: {exc}")
+    92	                    return ImportResult(ImportDisposition.IDEMPOTENT, item, artifact, "same identity and digest")
+    93	                if (
+    94	                    item.content_digest_sha256
+    95	                    and observation.content_digest_sha256
+    96	                    and item.content_digest_sha256 != observation.content_digest_sha256
+    97	                ):
+    98	                    conflict_id = observation.observation_id
+    99	                    if conflict_id in self._observations:
+   100	                        conflict_id = f"{conflict_id}-conflict-{observation.content_digest_sha256[:8]}"
+   101	                    conflict = SourceObservation.from_dict(
+   102	                        {**observation.to_dict(), "observation_id": conflict_id, "status": ObservationStatus.CONFLICT.value, "artifact_id": None}
+   103	                    )
+   104	                    self._record(conflict)
+   105	                    return ImportResult(ImportDisposition.CONFLICT, conflict, reason="same identity has a different digest")
+   106	
+   107	        if self.budget is not None and self.budget.exhausted():
+   108	            pending = self._pending(observation)
+   109	            self._record(pending)
+   110	            return ImportResult(ImportDisposition.PENDING, pending, reason="budget exhausted")
+   111	        if observation.license_status is not LicenseStatus.OPEN:
+   112	            pending = self._pending(observation)
+   113	            self._record(pending)
+   114	            return ImportResult(ImportDisposition.PENDING, pending, reason="license is not confirmed open")
+   115	        if not observation.content_digest_sha256:
+   116	            pending = self._pending(observation)
+   117	            self._record(pending)
+   118	            return ImportResult(ImportDisposition.PENDING, pending, reason="content digest is missing")
+   119	        actual_digest = hashlib.sha256(content).hexdigest()
+   120	        if actual_digest != observation.content_digest_sha256:
+   121	            pending = self._pending(observation)
+   122	            self._record(pending)
+   123	            return ImportResult(ImportDisposition.PENDING, pending, reason="content digest mismatch")
+   124	
+   125	        artifact_id = "lit-" + hashlib.sha256(
+   126	            f"{observation.logical_identity}|{actual_digest}".encode("utf-8")
+   127	        ).hexdigest()[:32]
+   128	        artifact = self.artifacts.put_bytes(
+   129	            artifact_id,
+   130	            content,
+   131	            logical_role="literature-observation",
+   132	            producer="matharc-literature-base",
+   133	            media_type=observation.media_type,
+   134	            source_filename=source_filename,
+   135	        )
+   136	        observed = SourceObservation.from_dict(
+   137	            {**observation.to_dict(), "status": ObservationStatus.OBSERVED.value, "artifact_id": artifact.artifact_id}
+   138	        )
+   139	        self._record(observed)
+   140	        return ImportResult(ImportDisposition.IMPORTED, observed, artifact)
+   141	
+   142	    def _pending(self, observation: SourceObservation) -> SourceObservation:
+   143	        return SourceObservation.from_dict(
+   144	            {**observation.to_dict(), "status": ObservationStatus.PENDING.value, "artifact_id": None}
+   145	        )
+   146	
+   147	    def _rejected(self, observation: SourceObservation) -> SourceObservation:
+   148	        return SourceObservation.from_dict(
+   149	            {**observation.to_dict(), "status": ObservationStatus.REJECTED.value, "artifact_id": None}
+   150	        )
+   151	
+   152	    def _record(self, observation: SourceObservation) -> None:
+   153	        self._observations[observation.observation_id] = observation
+   154	        payload = {
+   155	            "schema_version": "1.0",
+   156	            "observations": [item.to_dict() for item in self.observations],
+   157	        }
+   158	        temporary = self.manifest_path.with_suffix(".tmp")
+   159	        temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+   160	        os.replace(temporary, self.manifest_path)
+
+ succeeded in 0ms:
+     1	from __future__ import annotations
+     2	
+     3	import hashlib
+     4	import json
+     5	import mimetypes
+     6	import os
+     7	from dataclasses import dataclass, field
+     8	from pathlib import Path
+     9	from typing import Any, Iterable, Mapping
+    10	
+    11	from .schema import canonical_json, digest_json, utc_now
+    12	
+    13	
+    14	@dataclass(slots=True)
+    15	class ArtifactRecord:
+    16	    artifact_id: str
+    17	    sha256: str
+    18	    size_bytes: int
+    19	    media_type: str
+    20	    relative_path: str
+    21	    logical_role: str
+    22	    producer: str
+    23	    linked_claim_ids: tuple[str, ...] = ()
+    24	    linked_tool_call_ids: tuple[str, ...] = ()
+    25	    source_filename: str = ""
+    26	    created_at: str = field(default_factory=utc_now)
+    27	
+    28	    def to_dict(self) -> dict[str, Any]:
+    29	        return {
+    30	            "artifact_id": self.artifact_id,
+    31	            "sha256": self.sha256,
+    32	            "size_bytes": self.size_bytes,
+    33	            "media_type": self.media_type,
+    34	            "relative_path": self.relative_path,
+    35	            "logical_role": self.logical_role,
+    36	            "producer": self.producer,
+    37	            "linked_claim_ids": list(self.linked_claim_ids),
+    38	            "linked_tool_call_ids": list(self.linked_tool_call_ids),
+    39	            "source_filename": self.source_filename,
+    40	            "created_at": self.created_at,
+    41	        }
+    42	
+    43	    @classmethod
+    44	    def from_dict(cls, payload: Mapping[str, Any]) -> "ArtifactRecord":
+    45	        allowed = {
+    46	            "artifact_id",
+    47	            "sha256",
+    48	            "size_bytes",
+    49	            "media_type",
+    50	            "relative_path",
+    51	            "logical_role",
+    52	            "producer",
+    53	            "linked_claim_ids",
+    54	            "linked_tool_call_ids",
+    55	            "source_filename",
+    56	            "created_at",
+    57	        }
+    58	        unknown = set(payload) - allowed
+    59	        if unknown:
+    60	            raise ValueError(f"unknown artifact-record fields: {sorted(unknown)}")
+    61	        return cls(
+    62	            artifact_id=str(payload["artifact_id"]),
+    63	            sha256=str(payload["sha256"]),
+    64	            size_bytes=int(payload["size_bytes"]),
+    65	            media_type=str(payload["media_type"]),
+    66	            relative_path=str(payload["relative_path"]),
+    67	            logical_role=str(payload["logical_role"]),
+    68	            producer=str(payload["producer"]),
+    69	            linked_claim_ids=tuple(
+    70	                str(item) for item in payload.get("linked_claim_ids", [])
+    71	            ),
+    72	            linked_tool_call_ids=tuple(
+    73	                str(item) for item in payload.get("linked_tool_call_ids", [])
+    74	            ),
+    75	            source_filename=str(payload.get("source_filename", "")),
+    76	            created_at=str(payload.get("created_at") or utc_now()),
+    77	        )
+    78	
+    79	
+    80	class ArtifactStore:
+    81	    """Content-addressed storage for certificates, logs, sources and reports."""
+    82	
+    83	    def __init__(
+    84	        self,
+    85	        root: str | Path,
+    86	        records: Iterable[ArtifactRecord] = (),
+    87	    ) -> None:
+    88	        self.root = Path(root)
+    89	        self.blob_root = self.root / "sha256"
+    90	        self.manifest_path = self.root / "manifest.json"
+    91	        self.blob_root.mkdir(parents=True, exist_ok=True)
+    92	        self._records: dict[str, ArtifactRecord] = {}
+    93	        for record in records:
+    94	            self._add_record(record)
+    95	
+    96	    @property
+    97	    def records(self) -> tuple[ArtifactRecord, ...]:
+    98	        return tuple(self._records[key] for key in sorted(self._records))
+    99	
+   100	    def get(self, artifact_id: str) -> ArtifactRecord:
+   101	        try:
+   102	            return self._records[artifact_id]
+   103	        except KeyError as exc:
+   104	            raise KeyError(f"unknown artifact: {artifact_id}") from exc
+   105	
+   106	    def path_for(self, artifact_id: str) -> Path:
+   107	        record = self.get(artifact_id)
+   108	        path = (self.root / record.relative_path).resolve()
+   109	        if self.root.resolve() not in path.parents:
+   110	            raise ValueError(f"artifact path escapes store root: {record.relative_path}")
+   111	        return path
+   112	
+   113	    def put_bytes(
+   114	        self,
+   115	        artifact_id: str,
+   116	        content: bytes,
+   117	        *,
+   118	        logical_role: str,
+   119	        producer: str,
+   120	        media_type: str = "application/octet-stream",
+   121	        linked_claim_ids: Iterable[str] = (),
+   122	        linked_tool_call_ids: Iterable[str] = (),
+   123	        source_filename: str = "",
+   124	    ) -> ArtifactRecord:
+   125	        if artifact_id in self._records:
+   126	            raise ValueError(f"duplicate artifact id: {artifact_id}")
+   127	        sha256 = hashlib.sha256(content).hexdigest()
+   128	        relative_path = Path("sha256") / sha256[:2] / sha256
+   129	        target = self.root / relative_path
+   130	        target.parent.mkdir(parents=True, exist_ok=True)
+   131	        if target.exists():
+   132	            existing = target.read_bytes()
+   133	            if existing != content:
+   134	                raise ValueError(f"content-address collision at {target}")
+   135	        else:
+   136	            temporary = target.with_suffix(".tmp")
+   137	            temporary.write_bytes(content)
+   138	            os.replace(temporary, target)
+   139	        record = ArtifactRecord(
+   140	            artifact_id=artifact_id,
+   141	            sha256=sha256,
+   142	            size_bytes=len(content),
+   143	            media_type=media_type,
+   144	            relative_path=relative_path.as_posix(),
+   145	            logical_role=logical_role,
+   146	            producer=producer,
+   147	            linked_claim_ids=tuple(str(item) for item in linked_claim_ids),
+   148	            linked_tool_call_ids=tuple(str(item) for item in linked_tool_call_ids),
+   149	            source_filename=source_filename,
+   150	        )
+   151	        self._add_record(record)
+   152	        self.save_manifest()
+   153	        return record
+   154	
+   155	    def put_text(
+   156	        self,
+   157	        artifact_id: str,
+   158	        text: str,
+   159	        *,
+   160	        logical_role: str,
+   161	        producer: str,
+   162	        media_type: str = "text/plain; charset=utf-8",
+   163	        linked_claim_ids: Iterable[str] = (),
+   164	        linked_tool_call_ids: Iterable[str] = (),
+   165	        source_filename: str = "",
+   166	    ) -> ArtifactRecord:
+   167	        return self.put_bytes(
+   168	            artifact_id,
+   169	            text.encode("utf-8"),
+   170	            logical_role=logical_role,
+   171	            producer=producer,
+   172	            media_type=media_type,
+   173	            linked_claim_ids=linked_claim_ids,
+   174	            linked_tool_call_ids=linked_tool_call_ids,
+   175	            source_filename=source_filename,
+   176	        )
+   177	
+   178	    def put_json(
+   179	        self,
+   180	        artifact_id: str,
+   181	        value: Any,
+   182	        *,
+   183	        logical_role: str,
+   184	        producer: str,
+   185	        linked_claim_ids: Iterable[str] = (),
+   186	        linked_tool_call_ids: Iterable[str] = (),
+   187	        source_filename: str = "",
+   188	    ) -> ArtifactRecord:
+   189	        text = json.dumps(value, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+   190	        return self.put_text(
+   191	            artifact_id,
+   192	            text,
+   193	            logical_role=logical_role,
+   194	            producer=producer,
+   195	            media_type="application/json; charset=utf-8",
+   196	            linked_claim_ids=linked_claim_ids,
+   197	            linked_tool_call_ids=linked_tool_call_ids,
+   198	            source_filename=source_filename,
+   199	        )
+   200	
+   201	    def import_file(
+   202	        self,
+   203	        artifact_id: str,
+   204	        source: str | Path,
+   205	        *,
+   206	        logical_role: str,
+   207	        producer: str,
+   208	        media_type: str | None = None,
+   209	        linked_claim_ids: Iterable[str] = (),
+   210	        linked_tool_call_ids: Iterable[str] = (),
+   211	    ) -> ArtifactRecord:
+   212	        path = Path(source)
+   213	        guessed = mimetypes.guess_type(path.name)[0] or "application/octet-stream"
+   214	        return self.put_bytes(
+   215	            artifact_id,
+   216	            path.read_bytes(),
+   217	            logical_role=logical_role,
+   218	            producer=producer,
+   219	            media_type=media_type or guessed,
+   220	            linked_claim_ids=linked_claim_ids,
+   221	            linked_tool_call_ids=linked_tool_call_ids,
+   222	            source_filename=path.name,
+   223	        )
+   224	
+   225	    def verify(self) -> dict[str, Any]:
+   226	        errors: list[str] = []
+   227	        verified = 0
+   228	        for record in self._records.values():
+   229	            try:
+   230	                path = self.path_for(record.artifact_id)
+   231	            except ValueError as exc:
+   232	                errors.append(str(exc))
+   233	                continue
+   234	            if not path.is_file():
+   235	                errors.append(f"artifact file is missing: {record.artifact_id}")
+   236	                continue
+   237	            content = path.read_bytes()
+   238	            actual = hashlib.sha256(content).hexdigest()
+   239	            if actual != record.sha256:
+   240	                errors.append(f"artifact digest mismatch: {record.artifact_id}")
+   241	                continue
+   242	            if len(content) != record.size_bytes:
+   243	                errors.append(f"artifact size mismatch: {record.artifact_id}")
+   244	                continue
+   245	            verified += 1
+   246	        return {
+   247	            "valid": not errors,
+   248	            "errors": errors,
+   249	            "artifact_count": len(self._records),
+   250	            "verified_count": verified,
+   251	            "manifest_digest_sha256": digest_json(self.to_dict()),
+   252	        }
+   253	
+   254	    def to_dict(self) -> dict[str, Any]:
+   255	        return {
+   256	            "schema_version": "1.0",
+   257	            "content_addressing": "sha256",
+   258	            "records": [record.to_dict() for record in self.records],
+   259	        }
+   260	
+   261	    def save_manifest(self) -> Path:
+   262	        self.root.mkdir(parents=True, exist_ok=True)
+   263	        temporary = self.manifest_path.with_suffix(".tmp")
+   264	        temporary.write_text(
+   265	            json.dumps(self.to_dict(), ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+   266	            encoding="utf-8",
+   267	        )
+   268	        os.replace(temporary, self.manifest_path)
+   269	        return self.manifest_path
+   270	
+   271	    @classmethod
+   272	    def load(cls, root: str | Path) -> "ArtifactStore":
+   273	        root_path = Path(root)
+   274	        manifest = root_path / "manifest.json"
+   275	        if not manifest.is_file():
+   276	            return cls(root_path)
+   277	        payload = json.loads(manifest.read_text(encoding="utf-8"))
+   278	        if not isinstance(payload, dict):
+   279	            raise ValueError("artifact manifest root must be an object")
+   280	        if set(payload) - {"schema_version", "content_addressing", "records"}:
+   281	            raise ValueError("unknown artifact-manifest fields")
+   282	        if str(payload.get("schema_version")) != "1.0":
+   283	            raise ValueError("unsupported artifact-manifest schema")
+   284	        if str(payload.get("content_addressing")) != "sha256":
+   285	            raise ValueError("unsupported artifact addressing scheme")
+   286	        store = cls(
+   287	            root_path,
+   288	            (ArtifactRecord.from_dict(item) for item in payload.get("records", [])),
+   289	        )
+   290	        verification = store.verify()
+   291	        if not verification["valid"]:
+   292	            raise ValueError("; ".join(verification["errors"]))
+   293	        return store
+   294	
+   295	    def _add_record(self, record: ArtifactRecord) -> None:
+   296	        if record.artifact_id in self._records:
+   297	            existing = self._records[record.artifact_id]
+   298	            if existing.to_dict() != record.to_dict():
+   299	                raise ValueError(f"conflicting artifact id: {record.artifact_id}")
+   300	            return
+   301	        if len(record.sha256) != 64:
+   302	            raise ValueError(f"artifact {record.artifact_id} has invalid SHA-256")
+   303	        self._records[record.artifact_id] = record
+
+exec
+/bin/zsh -lc "nl -ba matharc/v02/source_observation.py | sed -n '1,420p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	"""Fail-closed records for observing external source material.
+     2	
+     3	Observations are deliberately separate from :mod:`source_registry`: a
+     4	downloaded or summarized source is not a verified mathematical premise.
+     5	"""
+     6	
+     7	from __future__ import annotations
+     8	
+     9	import hashlib
+    10	import re
+    11	from dataclasses import dataclass
+    12	from datetime import datetime
+    13	from enum import Enum
+    14	from typing import Any, Mapping
+    15	
+    16	from .schema import utc_now
+    17	
+    18	
+    19	class ObservationStatus(str, Enum):
+    20	    PENDING = "PENDING"
+    21	    OBSERVED = "OBSERVED"
+    22	    REJECTED = "REJECTED"
+    23	    CONFLICT = "CONFLICT"
+    24	
+    25	
+    26	class LicenseStatus(str, Enum):
+    27	    OPEN = "OPEN"
+    28	    RESTRICTED = "RESTRICTED"
+    29	    UNKNOWN = "UNKNOWN"
+    30	
+    31	
+    32	_DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
+    33	_STATUS_ASSERTION_LANGUAGE = re.compile(
+    34	    r"\b(?:proved|proof|solved|novel)\b|"
+    35	    r"\b(?:open|closed)\s+(?:problem|question|conjecture)\b|"
+    36	    r"\b(?:remains?|is|was)\s+(?:provably\s+)?open\b",
+    37	    re.I,
+    38	)
+    39	_MEDIA_TYPES = frozenset(
+    40	    {
+    41	        "application/json",
+    42	        "application/pdf",
+    43	        "application/octet-stream",
+    44	        "text/html",
+    45	        "text/plain",
+    46	    }
+    47	)
+    48	
+    49	
+    50	@dataclass(frozen=True, slots=True)
+    51	class SourceObservation:
+    52	    """A versioned, content-addressed observation of source material."""
+    53	
+    54	    observation_id: str
+    55	    canonical_uri: str
+    56	    pinned_version: str
+    57	    observed_at: str
+    58	    license_status: LicenseStatus
+    59	    license_basis: str
+    60	    content_summary: str
+    61	    summary_basis: str
+    62	    media_type: str
+    63	    content_digest_sha256: str = ""
+    64	    artifact_id: str | None = None
+    65	    status: ObservationStatus = ObservationStatus.PENDING
+    66	
+    67	    schema_version: str = "1.0"
+    68	
+    69	    def __post_init__(self) -> None:
+    70	        if not isinstance(self.license_status, LicenseStatus):
+    71	            raise TypeError("license_status must be a LicenseStatus")
+    72	        if not isinstance(self.status, ObservationStatus):
+    73	            raise TypeError("status must be an ObservationStatus")
+    74	        if not self.observation_id.strip():
+    75	            raise ValueError("observation_id must be non-empty")
+    76	        if not self.canonical_uri.strip() or "://" not in self.canonical_uri and not self.canonical_uri.startswith("urn:"):
+    77	            raise ValueError("canonical_uri must be an absolute URI or urn")
+    78	        if not self.pinned_version.strip() or self.pinned_version.strip().lower() == "latest":
+    79	            raise ValueError("pinned_version must be concrete, not latest")
+    80	        if not self.observed_at.strip():
+    81	            raise ValueError("observed_at must be non-empty")
+    82	        try:
+    83	            datetime.fromisoformat(self.observed_at)
+    84	        except ValueError as exc:
+    85	            raise ValueError("observed_at must be an ISO-8601 timestamp") from exc
+    86	        if not self.license_basis.strip():
+    87	            raise ValueError("license_basis must be non-empty")
+    88	        if not self.content_summary.strip() or not self.summary_basis.strip():
+    89	            raise ValueError("content summary and summary basis must be non-empty")
+    90	        if self.media_type not in _MEDIA_TYPES:
+    91	            raise ValueError(f"unsupported media_type: {self.media_type}")
+    92	        if self.content_digest_sha256 and not _DIGEST_RE.fullmatch(self.content_digest_sha256):
+    93	            raise ValueError("content_digest_sha256 must be a lowercase SHA-256 digest")
+    94	        if self.status is ObservationStatus.OBSERVED and self.license_status is LicenseStatus.UNKNOWN:
+    95	            raise ValueError("unknown license cannot produce an OBSERVED record")
+    96	        if _STATUS_ASSERTION_LANGUAGE.search(self.content_summary):
+    97	            raise ValueError("content_summary must remain descriptive, not proof/status language")
+    98	
+    99	    @property
+   100	    def logical_identity(self) -> str:
+   101	        normalized_uri = self.canonical_uri.strip().rstrip("/").lower()
+   102	        return f"{normalized_uri}|{self.pinned_version.strip()}"
+   103	
+   104	    @property
+   105	    def idempotency_key(self) -> str:
+   106	        payload = f"{self.logical_identity}|{self.content_digest_sha256}"
+   107	        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+   108	
+   109	    def conflicts_with(self, other: "SourceObservation") -> bool:
+   110	        return self.logical_identity == other.logical_identity and (
+   111	            bool(self.content_digest_sha256)
+   112	            and bool(other.content_digest_sha256)
+   113	            and self.content_digest_sha256 != other.content_digest_sha256
+   114	        )
+   115	
+   116	    def to_dict(self) -> dict[str, Any]:
+   117	        return {
+   118	            "schema_version": self.schema_version,
+   119	            "observation_id": self.observation_id,
+   120	            "canonical_uri": self.canonical_uri,
+   121	            "pinned_version": self.pinned_version,
+   122	            "observed_at": self.observed_at,
+   123	            "license_status": self.license_status.value,
+   124	            "license_basis": self.license_basis,
+   125	            "content_summary": self.content_summary,
+   126	            "summary_basis": self.summary_basis,
+   127	            "media_type": self.media_type,
+   128	            "content_digest_sha256": self.content_digest_sha256,
+   129	            "artifact_id": self.artifact_id,
+   130	            "status": self.status.value,
+   131	        }
+   132	
+   133	    @classmethod
+   134	    def from_dict(cls, payload: Mapping[str, Any]) -> "SourceObservation":
+   135	        allowed = {
+   136	            "schema_version", "observation_id", "canonical_uri", "pinned_version",
+   137	            "observed_at", "license_status", "license_basis", "content_summary",
+   138	            "summary_basis", "media_type", "content_digest_sha256", "artifact_id", "status",
+   139	        }
+   140	        unknown = set(payload) - allowed
+   141	        if unknown:
+   142	            raise ValueError(f"unknown source-observation fields: {sorted(unknown)}")
+   143	        if str(payload.get("schema_version", "1.0")) != "1.0":
+   144	            raise ValueError("unsupported source-observation schema_version")
+   145	        return cls(
+   146	            observation_id=str(payload["observation_id"]),
+   147	            canonical_uri=str(payload["canonical_uri"]),
+   148	            pinned_version=str(payload["pinned_version"]),
+   149	            observed_at=str(payload["observed_at"]),
+   150	            license_status=LicenseStatus(str(payload["license_status"])),
+   151	            license_basis=str(payload["license_basis"]),
+   152	            content_summary=str(payload["content_summary"]),
+   153	            summary_basis=str(payload["summary_basis"]),
+   154	            media_type=str(payload["media_type"]),
+   155	            content_digest_sha256=str(payload.get("content_digest_sha256", "")),
+   156	            artifact_id=(str(payload["artifact_id"]) if payload.get("artifact_id") is not None else None),
+   157	            status=ObservationStatus(str(payload.get("status", ObservationStatus.PENDING.value))),
+   158	            schema_version="1.0",
+   159	        )
+   160	
+   161	
+   162	def new_observation(**kwargs: Any) -> SourceObservation:
+   163	    """Create an observation with the current UTC timestamp by default."""
+   164	
+   165	    kwargs.setdefault("observed_at", utc_now())
+   166	    return SourceObservation(**kwargs)
+
+exec
+/bin/zsh -lc "nl -ba tests/test_v02_literature_base.py | sed -n '1,520p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	from __future__ import annotations
+     2	
+     3	import hashlib
+     4	import tempfile
+     5	import unittest
+     6	from pathlib import Path
+     7	
+     8	from matharc.v02.budget import BudgetLedger
+     9	from matharc.v02.literature_base import ImportDisposition, LiteratureBase
+    10	from matharc.v02.source_observation import LicenseStatus, ObservationStatus, new_observation
+    11	
+    12	
+    13	def obs(uri: str = "https://example.test/paper.pdf", digest: str = ""):
+    14	    return new_observation(
+    15	        observation_id=uri + digest[:4], canonical_uri=uri, pinned_version="v1",
+    16	        license_status=LicenseStatus.OPEN, license_basis="publisher license page",
+    17	        content_summary="descriptive bibliographic metadata", summary_basis="abstract",
+    18	        media_type="application/pdf", content_digest_sha256=digest,
+    19	    )
+    20	
+    21	
+    22	class LiteratureBaseTests(unittest.TestCase):
+    23	    def test_pending_license_can_be_retried_after_license_confirmation(self) -> None:
+    24	        content = b"<html>abstract</html>"
+    25	        digest = hashlib.sha256(content).hexdigest()
+    26	        restricted = new_observation(
+    27	            observation_id="retry", canonical_uri="https://example.test/retry", pinned_version="v1",
+    28	            license_status=LicenseStatus.RESTRICTED, license_basis="terms", content_summary="metadata",
+    29	            summary_basis="abstract", media_type="text/html", content_digest_sha256=digest,
+    30	        )
+    31	        opened = new_observation(
+    32	            observation_id="retry", canonical_uri="https://example.test/retry", pinned_version="v1",
+    33	            license_status=LicenseStatus.OPEN, license_basis="publisher license page", content_summary="metadata",
+    34	            summary_basis="abstract", media_type="text/html", content_digest_sha256=digest,
+    35	        )
+    36	        with tempfile.TemporaryDirectory() as directory:
+    37	            base = LiteratureBase(directory)
+    38	            self.assertEqual(base.import_bytes(restricted, content).disposition, ImportDisposition.PENDING)
+    39	            result = base.import_bytes(opened, content, source_filename="abstract.html")
+    40	            self.assertEqual(result.disposition, ImportDisposition.IMPORTED)
+    41	            self.assertEqual(result.observation.status, ObservationStatus.OBSERVED)
+    42	            self.assertEqual(result.artifact.size_bytes if result.artifact else None, len(content))
+    43	
+    44	    def test_import_idempotency_conflict_and_reload(self) -> None:
+    45	        content = b"%PDF-1.7 sample"
+    46	        digest = hashlib.sha256(content).hexdigest()
+    47	        with tempfile.TemporaryDirectory() as directory:
+    48	            base = LiteratureBase(directory)
+    49	            first = base.import_bytes(obs(digest=digest), content, source_filename="paper.pdf")
+    50	            self.assertEqual(first.disposition, ImportDisposition.IMPORTED)
+    51	            replay = base.import_bytes(obs(uri="https://example.test/paper.pdf", digest=digest), content)
+    52	            self.assertEqual(replay.disposition, ImportDisposition.IDEMPOTENT)
+    53	            conflict = base.import_bytes(obs(uri="https://example.test/paper.pdf", digest="a" * 64), b"other")
+    54	            self.assertEqual(conflict.disposition, ImportDisposition.CONFLICT)
+    55	            restored = LiteratureBase(directory)
+    56	            self.assertEqual(len(restored.observations), 2)
+    57	            self.assertEqual(len(restored.artifacts.records), 1)
+    58	
+    59	    def test_failures_remain_pending_without_artifacts(self) -> None:
+    60	        content = b"%PDF"
+    61	        digest = hashlib.sha256(content).hexdigest()
+    62	        with tempfile.TemporaryDirectory() as directory:
+    63	            restricted = new_observation(
+    64	                observation_id="restricted", canonical_uri="https://example.test/r", pinned_version="v1",
+    65	                license_status=LicenseStatus.RESTRICTED, license_basis="terms", content_summary="metadata",
+    66	                summary_basis="abstract", media_type="application/pdf", content_digest_sha256=digest,
+    67	            )
+    68	            base = LiteratureBase(directory)
+    69	            result = base.import_bytes(restricted, content)
+    70	            self.assertEqual(result.disposition, ImportDisposition.PENDING)
+    71	            self.assertEqual(result.observation.status, ObservationStatus.PENDING)
+    72	            self.assertEqual(len(base.artifacts.records), 0)
+    73	
+    74	    def test_digest_errors_and_missing_digest_remain_pending(self) -> None:
+    75	        content = b"%PDF"
+    76	        with tempfile.TemporaryDirectory() as directory:
+    77	            base = LiteratureBase(directory)
+    78	            missing = obs(uri="https://example.test/missing")
+    79	            self.assertEqual(base.import_bytes(missing, content).disposition, ImportDisposition.PENDING)
+    80	            mismatch = obs(uri="https://example.test/mismatch", digest="a" * 64)
+    81	            self.assertEqual(base.import_bytes(mismatch, content).disposition, ImportDisposition.PENDING)
+    82	            self.assertEqual(len(base.artifacts.records), 0)
+    83	
+    84	    def test_registry_is_not_created_or_mutated(self) -> None:
+    85	        content = b"%PDF registry boundary"
+    86	        digest = hashlib.sha256(content).hexdigest()
+    87	        with tempfile.TemporaryDirectory() as directory:
+    88	            base = LiteratureBase(directory)
+    89	            base.import_bytes(obs(digest=digest), content)
+    90	            self.assertFalse((Path(directory) / "source-registry.json").exists())
+    91	            self.assertFalse((Path(directory) / "claims.json").exists())
+    92	
+    93	    def test_unsupported_media_is_rejected_by_observation_contract(self) -> None:
+    94	        with self.assertRaises(ValueError):
+    95	            new_observation(
+    96	                observation_id="image", canonical_uri="https://example.test/image", pinned_version="v1",
+    97	                license_status=LicenseStatus.OPEN, license_basis="license", content_summary="metadata",
+    98	                summary_basis="abstract", media_type="image/png", content_digest_sha256="a" * 64,
+    99	            )
+   100	
+   101	    def test_duplicate_observation_id_cannot_overwrite_another_identity(self) -> None:
+   102	        content = b"same id"
+   103	        digest = hashlib.sha256(content).hexdigest()
+   104	        first = obs(uri="https://example.test/one", digest=digest)
+   105	        second = obs(uri="https://example.test/two", digest=digest)
+   106	        second = new_observation(
+   107	            observation_id=first.observation_id, canonical_uri=second.canonical_uri, pinned_version="v1",
+   108	            license_status=LicenseStatus.OPEN, license_basis="publisher license page", content_summary="metadata",
+   109	            summary_basis="abstract", media_type="application/pdf", content_digest_sha256=digest,
+   110	        )
+   111	        with tempfile.TemporaryDirectory() as directory:
+   112	            base = LiteratureBase(directory)
+   113	            self.assertEqual(base.import_bytes(first, content).disposition, ImportDisposition.IMPORTED)
+   114	            result = base.import_bytes(second, content)
+   115	            self.assertEqual(result.disposition, ImportDisposition.REJECTED)
+   116	            self.assertEqual(len(base.observations), 1)
+   117	
+   118	    def test_budget_blocks_before_write_and_does_not_create_claims(self) -> None:
+   119	        content = b"%PDF"
+   120	        digest = hashlib.sha256(content).hexdigest()
+   121	        with tempfile.TemporaryDirectory() as directory:
+   122	            base = LiteratureBase(directory, BudgetLedger(cost_usd_limit=0.0, spent_cost_usd=0.0))
+   123	            result = base.import_bytes(obs(digest=digest), content)
+   124	            self.assertEqual(result.disposition, ImportDisposition.PENDING)
+   125	            self.assertEqual(len(base.artifacts.records), 0)
+   126	            self.assertIsNone(result.observation.artifact_id)
+   127	
+   128	
+   129	if __name__ == "__main__":
+   130	    unittest.main()
+
+exec
+/bin/zsh -lc "sed -n '1,260p' agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/validation.sh && find agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity -maxdepth 3 -type f -print" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+#!/usr/bin/env bash
+set -euo pipefail
+python3 -m unittest -v tests.test_v02_source_observation tests.test_v02_literature_base
+python3 -m unittest discover -s tests
+git diff --check
+agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/ledger/L2-integrity-repair.json
+agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/task.txt
+agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/validation.sh
+agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/logs/L2-integrity-repair-primary.log
+agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/prompts/L2-integrity-repair-primary.txt
+
+exec
+/bin/zsh -lc "rg -n \"ArtifactStore|artifact|LiteratureBase|OBSERVED|IDEMPOTENT|same_identity|observation\" tests matharc/v02 -g '*.py'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+matharc/v02/workspace_demo.py:8:from .artifact_store import ArtifactStore
+matharc/v02/workspace_demo.py:111:    store = ArtifactStore(target / "artifacts")
+matharc/v02/workspace_demo.py:112:    artifact_content = {
+matharc/v02/workspace_demo.py:121:    for evidence_id, content in artifact_content.items():
+matharc/v02/workspace_demo.py:130:            raise AssertionError(f"demo artifact digest mismatch: {evidence_id}")
+matharc/v02/workspace_demo.py:131:        evidence_links[evidence_id] = record.artifact_id
+matharc/v02/workspace_demo.py:138:        artifacts=store,
+matharc/v02/workspace_demo.py:146:        evidence_artifact_links=evidence_links,
+matharc/v02/workspace_demo.py:147:        strict_artifacts=True,
+matharc/v02/workspace_demo.py:175:                "artifact_count": len(workspace.artifacts.records),
+matharc/v02/workspace_demo.py:193:        "artifact_manifest": target / "artifacts" / "manifest.json",
+matharc/v02/exact_tools.py:119:            artifact_uri="",
+matharc/v02/exact_tools.py:204:            artifact_uri="",
+matharc/v02/authorization.py:241:        artifact_content: bytes | str | Mapping[str, Any] | None = None,
+matharc/v02/authorization.py:242:        artifact_id: str | None = None,
+matharc/v02/authorization.py:247:            artifact_content=artifact_content,
+matharc/v02/authorization.py:248:            artifact_id=artifact_id,
+matharc/v02/legacy_harness.py:94:    if not record.get("artifact_sha256"):
+matharc/v02/legacy_harness.py:95:        blockers.append("missing artifact_sha256")
+matharc/v02/legacy_harness.py:420:            artifact_uri=f"legacy-artifact:{record.get('artifact_sha256')}",
+matharc/v02/legacy_harness.py:421:            digest_sha256=str(record.get("artifact_sha256")),
+matharc/v02/cli.py:180:                artifact_uri=f"review-record:{record.review_id}",
+matharc/v02/cli.py:219:    demo.add_argument("--out-dir", default="artifacts/v02-demo")
+matharc/v02/source_observation.py:21:    OBSERVED = "OBSERVED"
+matharc/v02/source_observation.py:52:    """A versioned, content-addressed observation of source material."""
+matharc/v02/source_observation.py:54:    observation_id: str
+matharc/v02/source_observation.py:64:    artifact_id: str | None = None
+matharc/v02/source_observation.py:74:        if not self.observation_id.strip():
+matharc/v02/source_observation.py:75:            raise ValueError("observation_id must be non-empty")
+matharc/v02/source_observation.py:94:        if self.status is ObservationStatus.OBSERVED and self.license_status is LicenseStatus.UNKNOWN:
+matharc/v02/source_observation.py:95:            raise ValueError("unknown license cannot produce an OBSERVED record")
+matharc/v02/source_observation.py:119:            "observation_id": self.observation_id,
+matharc/v02/source_observation.py:129:            "artifact_id": self.artifact_id,
+matharc/v02/source_observation.py:136:            "schema_version", "observation_id", "canonical_uri", "pinned_version",
+matharc/v02/source_observation.py:138:            "summary_basis", "media_type", "content_digest_sha256", "artifact_id", "status",
+matharc/v02/source_observation.py:142:            raise ValueError(f"unknown source-observation fields: {sorted(unknown)}")
+matharc/v02/source_observation.py:144:            raise ValueError("unsupported source-observation schema_version")
+matharc/v02/source_observation.py:146:            observation_id=str(payload["observation_id"]),
+matharc/v02/source_observation.py:156:            artifact_id=(str(payload["artifact_id"]) if payload.get("artifact_id") is not None else None),
+matharc/v02/source_observation.py:162:def new_observation(**kwargs: Any) -> SourceObservation:
+matharc/v02/source_observation.py:163:    """Create an observation with the current UTC timestamp by default."""
+matharc/v02/schema.py:291:    artifact_uri: str
+matharc/v02/schema.py:319:            "artifact_uri": self.artifact_uri,
+matharc/v02/schema.py:340:            artifact_uri=str(payload["artifact_uri"]),
+matharc/v02/schema.py:367:    stdout_artifact_uri: str = ""
+matharc/v02/schema.py:368:    stderr_artifact_uri: str = ""
+matharc/v02/schema.py:395:            "stdout_artifact_uri": self.stdout_artifact_uri,
+matharc/v02/schema.py:396:            "stderr_artifact_uri": self.stderr_artifact_uri,
+matharc/v02/schema.py:417:            stdout_artifact_uri=str(payload.get("stdout_artifact_uri", "")),
+matharc/v02/schema.py:418:            stderr_artifact_uri=str(payload.get("stderr_artifact_uri", "")),
+matharc/v02/schema.py:431:    observation: str
+matharc/v02/schema.py:447:            "observation": self.observation,
+matharc/v02/schema.py:471:            observation=str(payload["observation"]),
+matharc/v02/demo.py:137:            artifact_uri="artifacts/v02-demo/finite-leap.json",
+matharc/v02/demo.py:153:            observation="The perturbation vanishes on 0..100 but not at 101.",
+matharc/v02/demo.py:203:            artifact_uri="artifacts/v02-demo/base.json",
+matharc/v02/demo.py:273:                artifact_uri=f"artifacts/v02-demo/{evidence_id.lower()}.json",
+matharc/v02/demo.py:290:            observation="Both independent normalizers return the zero residual.",
+matharc/v02/demo.py:326:                artifact_uri=f"artifacts/v02-demo/{evidence_id.lower()}.json",
+matharc/v02/demo.py:343:            observation="Both target evidence groups match the same universal statement.",
+matharc/v02/demo.py:357:                "Expose concise premises, moves, observations, falsifiers, and decisions; "
+matharc/v02/demo.py:382:                artifact_digest_sha256=_sha(f"candidate-{seed}"),
+matharc/v02/demo.py:398:                artifact_digest_sha256=_sha(f"baseline-{seed}"),
+matharc/v02/falsification.py:12:- COUNTEREXAMPLE requires an independently verified witness artifact;
+matharc/v02/falsification.py:142:    witness_artifact_id: str = ""
+matharc/v02/falsification.py:156:            if not self.witness_artifact_id.strip() or not self.witness_verified:
+matharc/v02/falsification.py:158:                    "COUNTEREXAMPLE requires an independently verified witness artifact"
+matharc/v02/falsification.py:178:            "witness_artifact_id": self.witness_artifact_id,
+matharc/v02/falsification.py:198:            witness_artifact_id=str(payload.get("witness_artifact_id", "")),
+matharc/v02/falsification.py:291:    verified_counterexample_artifact_id: str = "",
+matharc/v02/falsification.py:298:    counterexample = bool(verified_counterexample_artifact_id)
+matharc/v02/falsification.py:310:        # it needs an independently checked witness artifact first.
+matharc/v02/falsification.py:324:        witness_artifact_id=verified_counterexample_artifact_id,
+matharc/v02/framework_adapters.py:221:        proof_artifact_digest = _sha_bytes(
+matharc/v02/framework_adapters.py:232:            purpose=f"Kernel-check formal proof artifact for {claim_id}.",
+matharc/v02/framework_adapters.py:259:            artifact_uri=str(file_path),
+matharc/v02/framework_adapters.py:260:            digest_sha256=proof_artifact_digest,
+matharc/v02/workers.py:113:                    "observation",
+matharc/v02/benchmark_runner.py:126:    artifact_directory: str
+matharc/v02/benchmark_runner.py:137:            "artifact_directory": self.artifact_directory,
+matharc/v02/benchmark_runner.py:258:        artifact_directory = (
+matharc/v02/benchmark_runner.py:265:        artifact_directory.mkdir(parents=True, exist_ok=True)
+matharc/v02/benchmark_runner.py:284:                "artifact_directory": str(artifact_directory.resolve()),
+matharc/v02/benchmark_runner.py:289:        request_path = artifact_directory / "request.json"
+matharc/v02/benchmark_runner.py:299:                "MATHARC_ARTIFACT_DIRECTORY": str(artifact_directory.resolve()),
+matharc/v02/benchmark_runner.py:345:        (artifact_directory / "stdout.txt").write_text(stdout, encoding="utf-8")
+matharc/v02/benchmark_runner.py:346:        (artifact_directory / "stderr.txt").write_text(stderr, encoding="utf-8")
+matharc/v02/benchmark_runner.py:377:            artifact_digest_sha256=output_digest,
+matharc/v02/benchmark_runner.py:394:            artifact_directory=str(artifact_directory),
+matharc/v02/benchmark_runner.py:396:        (artifact_directory / "execution.json").write_text(
+matharc/v02/orchestrator.py:134:            "at least one proof-capable evidence artifact has exact statement correspondence",
+matharc/v02/orchestrator.py:136:            "exact or formal artifacts have a cold-replay command and SHA-256 digest",
+matharc/v02/orchestrator.py:176:                "objective/premises/move/observation/falsification/decision record"
+matharc/v02/orchestrator.py:185:            "observation",
+matharc/v02/orchestrator.py:205:            observation=str(reasoning["observation"]),
+matharc/v02/literature_base.py:1:"""Persistent, reviewable storage for imported literature observations."""
+matharc/v02/literature_base.py:13:from .artifact_store import ArtifactRecord, ArtifactStore
+matharc/v02/literature_base.py:15:from .source_observation import LicenseStatus, ObservationStatus, SourceObservation
+matharc/v02/literature_base.py:20:    IDEMPOTENT = "IDEMPOTENT"
+matharc/v02/literature_base.py:29:    observation: SourceObservation
+matharc/v02/literature_base.py:30:    artifact: ArtifactRecord | None = None
+matharc/v02/literature_base.py:34:class LiteratureBase:
+matharc/v02/literature_base.py:35:    """Keep literature observations separate from verified mathematical claims."""
+matharc/v02/literature_base.py:40:        self.artifacts = ArtifactStore.load(self.root / "artifacts")
+matharc/v02/literature_base.py:41:        self.manifest_path = self.root / "observations.json"
+matharc/v02/literature_base.py:43:        self._observations: dict[str, SourceObservation] = {}
+matharc/v02/literature_base.py:46:            if not isinstance(payload, dict) or set(payload) != {"schema_version", "observations"}:
+matharc/v02/literature_base.py:47:                raise ValueError("invalid literature observation manifest")
+matharc/v02/literature_base.py:49:                raise ValueError("unsupported literature observation schema")
+matharc/v02/literature_base.py:50:            for item in payload["observations"]:
+matharc/v02/literature_base.py:51:                observation = SourceObservation.from_dict(item)
+matharc/v02/literature_base.py:52:                if observation.observation_id in self._observations:
+matharc/v02/literature_base.py:53:                    raise ValueError("duplicate observation id")
+matharc/v02/literature_base.py:54:                self._observations[observation.observation_id] = observation
+matharc/v02/literature_base.py:57:    def observations(self) -> tuple[SourceObservation, ...]:
+matharc/v02/literature_base.py:58:        return tuple(self._observations[key] for key in sorted(self._observations))
+matharc/v02/literature_base.py:60:    def import_file(self, observation: SourceObservation, source: str | Path) -> ImportResult:
+matharc/v02/literature_base.py:62:        return self.import_bytes(observation, path.read_bytes(), source_filename=path.name)
+matharc/v02/literature_base.py:66:        observation: SourceObservation,
+matharc/v02/literature_base.py:71:        existing_id = self._observations.get(observation.observation_id)
+matharc/v02/literature_base.py:72:        if existing_id is not None and existing_id.logical_identity != observation.logical_identity:
+matharc/v02/literature_base.py:73:            rejected = self._rejected(observation)
+matharc/v02/literature_base.py:74:            return ImportResult(ImportDisposition.REJECTED, rejected, reason="observation_id already names another logical identity")
+matharc/v02/literature_base.py:75:        existing_identity = [item for item in self.observations if item.logical_identity == observation.logical_identity]
+matharc/v02/literature_base.py:79:                    item.content_digest_sha256 == observation.content_digest_sha256
+matharc/v02/literature_base.py:81:                    and item.status is ObservationStatus.OBSERVED
+matharc/v02/literature_base.py:82:                    and item.artifact_id is not None
+matharc/v02/literature_base.py:85:                        artifact = self.artifacts.get(item.artifact_id)
+matharc/v02/literature_base.py:86:                        artifact_path = self.artifacts.path_for(item.artifact_id)
+matharc/v02/literature_base.py:87:                        if artifact.sha256 != item.content_digest_sha256 or not artifact_path.is_file():
+matharc/v02/literature_base.py:88:                            raise ValueError("artifact reference is not intact")
+matharc/v02/literature_base.py:90:                        rejected = self._rejected(observation)
+matharc/v02/literature_base.py:91:                        return ImportResult(ImportDisposition.REJECTED, rejected, reason=f"artifact integrity failure: {exc}")
+matharc/v02/literature_base.py:92:                    return ImportResult(ImportDisposition.IDEMPOTENT, item, artifact, "same identity and digest")
+matharc/v02/literature_base.py:95:                    and observation.content_digest_sha256
+matharc/v02/literature_base.py:96:                    and item.content_digest_sha256 != observation.content_digest_sha256
+matharc/v02/literature_base.py:98:                    conflict_id = observation.observation_id
+matharc/v02/literature_base.py:99:                    if conflict_id in self._observations:
+matharc/v02/literature_base.py:100:                        conflict_id = f"{conflict_id}-conflict-{observation.content_digest_sha256[:8]}"
+matharc/v02/literature_base.py:102:                        {**observation.to_dict(), "observation_id": conflict_id, "status": ObservationStatus.CONFLICT.value, "artifact_id": None}
+matharc/v02/literature_base.py:108:            pending = self._pending(observation)
+matharc/v02/literature_base.py:111:        if observation.license_status is not LicenseStatus.OPEN:
+matharc/v02/literature_base.py:112:            pending = self._pending(observation)
+matharc/v02/literature_base.py:115:        if not observation.content_digest_sha256:
+matharc/v02/literature_base.py:116:            pending = self._pending(observation)
+matharc/v02/literature_base.py:120:        if actual_digest != observation.content_digest_sha256:
+matharc/v02/literature_base.py:121:            pending = self._pending(observation)
+matharc/v02/literature_base.py:125:        artifact_id = "lit-" + hashlib.sha256(
+matharc/v02/literature_base.py:126:            f"{observation.logical_identity}|{actual_digest}".encode("utf-8")
+matharc/v02/literature_base.py:128:        artifact = self.artifacts.put_bytes(
+matharc/v02/literature_base.py:129:            artifact_id,
+matharc/v02/literature_base.py:131:            logical_role="literature-observation",
+matharc/v02/literature_base.py:133:            media_type=observation.media_type,
+matharc/v02/literature_base.py:137:            {**observation.to_dict(), "status": ObservationStatus.OBSERVED.value, "artifact_id": artifact.artifact_id}
+matharc/v02/literature_base.py:140:        return ImportResult(ImportDisposition.IMPORTED, observed, artifact)
+matharc/v02/literature_base.py:142:    def _pending(self, observation: SourceObservation) -> SourceObservation:
+matharc/v02/literature_base.py:144:            {**observation.to_dict(), "status": ObservationStatus.PENDING.value, "artifact_id": None}
+matharc/v02/literature_base.py:147:    def _rejected(self, observation: SourceObservation) -> SourceObservation:
+matharc/v02/literature_base.py:149:            {**observation.to_dict(), "status": ObservationStatus.REJECTED.value, "artifact_id": None}
+matharc/v02/literature_base.py:152:    def _record(self, observation: SourceObservation) -> None:
+matharc/v02/literature_base.py:153:        self._observations[observation.observation_id] = observation
+matharc/v02/literature_base.py:156:            "observations": [item.to_dict() for item in self.observations],
+matharc/v02/lrat_tools.py:190:def build_cnf_lrat_artifact(arguments: Mapping[str, Any]) -> dict[str, Any]:
+matharc/v02/lrat_tools.py:191:    """Build and independently check a bounded CNF/LRAT evidence artifact."""
+matharc/v02/lrat_tools.py:250:    artifact = build_cnf_lrat_artifact(arguments)
+matharc/v02/lrat_tools.py:252:    artifact_json = canonical_json(artifact)
+matharc/v02/lrat_tools.py:253:    artifact_digest = digest_json(artifact)
+matharc/v02/lrat_tools.py:254:    producer_status = str(artifact["producer"]["status"])
+matharc/v02/lrat_tools.py:255:    checker_valid = bool(artifact["checker"].get("valid"))
+matharc/v02/lrat_tools.py:274:        output_digest_sha256=artifact_digest,
+matharc/v02/lrat_tools.py:295:    artifact_uri = "data:application/vnd.matharc.cnf-lrat+json;base64," + base64.b64encode(
+matharc/v02/lrat_tools.py:296:        artifact_json.encode("utf-8")
+matharc/v02/lrat_tools.py:304:        artifact_uri=artifact_uri,
+matharc/v02/lrat_tools.py:305:        digest_sha256=artifact_digest,
+matharc/v02/lrat_tools.py:312:            "in the content-addressed artifact."
+matharc/v02/lrat_tools.py:335:    artifact = build_cnf_lrat_artifact(raw)
+matharc/v02/lrat_tools.py:336:    print(json.dumps(artifact, indent=2, sort_keys=True))
+matharc/v02/lrat_tools.py:337:    return 0 if artifact["checker"].get("valid") is True else 1
+matharc/v02/review.py:566:    artifact_uri: str,
+matharc/v02/review.py:594:        artifact_uri=artifact_uri,
+matharc/v02/artifact_store.py:16:    artifact_id: str
+matharc/v02/artifact_store.py:30:            "artifact_id": self.artifact_id,
+matharc/v02/artifact_store.py:46:            "artifact_id",
+matharc/v02/artifact_store.py:60:            raise ValueError(f"unknown artifact-record fields: {sorted(unknown)}")
+matharc/v02/artifact_store.py:62:            artifact_id=str(payload["artifact_id"]),
+matharc/v02/artifact_store.py:80:class ArtifactStore:
+matharc/v02/artifact_store.py:100:    def get(self, artifact_id: str) -> ArtifactRecord:
+matharc/v02/artifact_store.py:102:            return self._records[artifact_id]
+matharc/v02/artifact_store.py:104:            raise KeyError(f"unknown artifact: {artifact_id}") from exc
+matharc/v02/artifact_store.py:106:    def path_for(self, artifact_id: str) -> Path:
+matharc/v02/artifact_store.py:107:        record = self.get(artifact_id)
+matharc/v02/artifact_store.py:110:            raise ValueError(f"artifact path escapes store root: {record.relative_path}")
+matharc/v02/artifact_store.py:115:        artifact_id: str,
+matharc/v02/artifact_store.py:125:        if artifact_id in self._records:
+matharc/v02/artifact_store.py:126:            raise ValueError(f"duplicate artifact id: {artifact_id}")
+matharc/v02/artifact_store.py:140:            artifact_id=artifact_id,
+matharc/v02/artifact_store.py:157:        artifact_id: str,
+matharc/v02/artifact_store.py:168:            artifact_id,
+matharc/v02/artifact_store.py:180:        artifact_id: str,
+matharc/v02/artifact_store.py:191:            artifact_id,
+matharc/v02/artifact_store.py:203:        artifact_id: str,
+matharc/v02/artifact_store.py:215:            artifact_id,
+matharc/v02/artifact_store.py:230:                path = self.path_for(record.artifact_id)
+matharc/v02/artifact_store.py:235:                errors.append(f"artifact file is missing: {record.artifact_id}")
+matharc/v02/artifact_store.py:240:                errors.append(f"artifact digest mismatch: {record.artifact_id}")
+matharc/v02/artifact_store.py:243:                errors.append(f"artifact size mismatch: {record.artifact_id}")
+matharc/v02/artifact_store.py:249:            "artifact_count": len(self._records),
+matharc/v02/artifact_store.py:272:    def load(cls, root: str | Path) -> "ArtifactStore":
+matharc/v02/artifact_store.py:279:            raise ValueError("artifact manifest root must be an object")
+matharc/v02/artifact_store.py:281:            raise ValueError("unknown artifact-manifest fields")
+matharc/v02/artifact_store.py:283:            raise ValueError("unsupported artifact-manifest schema")
+matharc/v02/artifact_store.py:285:            raise ValueError("unsupported artifact addressing scheme")
+matharc/v02/artifact_store.py:296:        if record.artifact_id in self._records:
+matharc/v02/artifact_store.py:297:            existing = self._records[record.artifact_id]
+matharc/v02/artifact_store.py:299:                raise ValueError(f"conflicting artifact id: {record.artifact_id}")
+matharc/v02/artifact_store.py:302:            raise ValueError(f"artifact {record.artifact_id} has invalid SHA-256")
+matharc/v02/artifact_store.py:303:        self._records[record.artifact_id] = record
+tests/test_v02_campaign.py:84:            "observation": "a certificate is available",
+tests/test_v02_campaign.py:165:                "observation": "structure identified",
+tests/test_v02_literature_base.py:9:from matharc.v02.literature_base import ImportDisposition, LiteratureBase
+tests/test_v02_literature_base.py:10:from matharc.v02.source_observation import LicenseStatus, ObservationStatus, new_observation
+tests/test_v02_literature_base.py:14:    return new_observation(
+tests/test_v02_literature_base.py:15:        observation_id=uri + digest[:4], canonical_uri=uri, pinned_version="v1",
+tests/test_v02_literature_base.py:22:class LiteratureBaseTests(unittest.TestCase):
+tests/test_v02_literature_base.py:26:        restricted = new_observation(
+tests/test_v02_literature_base.py:27:            observation_id="retry", canonical_uri="https://example.test/retry", pinned_version="v1",
+tests/test_v02_literature_base.py:31:        opened = new_observation(
+tests/test_v02_literature_base.py:32:            observation_id="retry", canonical_uri="https://example.test/retry", pinned_version="v1",
+tests/test_v02_literature_base.py:37:            base = LiteratureBase(directory)
+tests/test_v02_literature_base.py:41:            self.assertEqual(result.observation.status, ObservationStatus.OBSERVED)
+tests/test_v02_literature_base.py:42:            self.assertEqual(result.artifact.size_bytes if result.artifact else None, len(content))
+tests/test_v02_literature_base.py:48:            base = LiteratureBase(directory)
+tests/test_v02_literature_base.py:52:            self.assertEqual(replay.disposition, ImportDisposition.IDEMPOTENT)
+tests/test_v02_literature_base.py:55:            restored = LiteratureBase(directory)
+tests/test_v02_literature_base.py:56:            self.assertEqual(len(restored.observations), 2)
+tests/test_v02_literature_base.py:57:            self.assertEqual(len(restored.artifacts.records), 1)
+tests/test_v02_literature_base.py:59:    def test_failures_remain_pending_without_artifacts(self) -> None:
+tests/test_v02_literature_base.py:63:            restricted = new_observation(
+tests/test_v02_literature_base.py:64:                observation_id="restricted", canonical_uri="https://example.test/r", pinned_version="v1",
+tests/test_v02_literature_base.py:68:            base = LiteratureBase(directory)
+tests/test_v02_literature_base.py:71:            self.assertEqual(result.observation.status, ObservationStatus.PENDING)
+tests/test_v02_literature_base.py:72:            self.assertEqual(len(base.artifacts.records), 0)
+tests/test_v02_literature_base.py:77:            base = LiteratureBase(directory)
+tests/test_v02_literature_base.py:82:            self.assertEqual(len(base.artifacts.records), 0)
+tests/test_v02_literature_base.py:88:            base = LiteratureBase(directory)
+tests/test_v02_literature_base.py:93:    def test_unsupported_media_is_rejected_by_observation_contract(self) -> None:
+tests/test_v02_literature_base.py:95:            new_observation(
+tests/test_v02_literature_base.py:96:                observation_id="image", canonical_uri="https://example.test/image", pinned_version="v1",
+tests/test_v02_literature_base.py:101:    def test_duplicate_observation_id_cannot_overwrite_another_identity(self) -> None:
+tests/test_v02_literature_base.py:106:        second = new_observation(
+tests/test_v02_literature_base.py:107:            observation_id=first.observation_id, canonical_uri=second.canonical_uri, pinned_version="v1",
+tests/test_v02_literature_base.py:112:            base = LiteratureBase(directory)
+tests/test_v02_literature_base.py:116:            self.assertEqual(len(base.observations), 1)
+tests/test_v02_literature_base.py:122:            base = LiteratureBase(directory, BudgetLedger(cost_usd_limit=0.0, spent_cost_usd=0.0))
+tests/test_v02_literature_base.py:125:            self.assertEqual(len(base.artifacts.records), 0)
+tests/test_v02_literature_base.py:126:            self.assertIsNone(result.observation.artifact_id)
+matharc/v02/visualization.py:148:document.getElementById('timeline').innerHTML = T.public_reasoning.map(step => `<article class="step"><h4>${{esc(step.step_id)}} · ${{esc(step.role)}}</h4><div class="reason-grid small"><b>目标</b><span>${{esc(step.objective)}}</span><b>前提</b><span>${{step.premises.map(esc).join('；')}}</span><b>动作</b><span>${{esc(step.proposed_move)}}</span><b>观察</b><span>${{esc(step.observation)}}</span><b>证伪</b><span>${{esc(step.falsification_test)}}</span><b>决策</b><span>${{esc(step.decision)}}</span></div></article>`).join('') || '<div class="muted">No public reasoning steps.</div>';
+matharc/v02/workspace_visualization.py:26:        "artifacts": workspace.artifacts.to_dict(),
+matharc/v02/workspace_visualization.py:33:            "strict_artifacts": workspace.strict_artifacts,
+matharc/v02/workspace_visualization.py:88:  <article class="card"><h2 class="section">内容寻址证据</h2><div class="scroll"><table><thead><tr><th>Artifact</th><th>Role</th><th>Claims</th><th>SHA-256</th></tr></thead><tbody id="artifacts"></tbody></table></div></article>
+matharc/v02/workspace_visualization.py:100:const k=[['Release',M.release_state,0],['Target closure',M.target_logical_closure,1],['Critical path',M.critical_path_closure,1],['Audit',A.valid?'PASS':'FAIL',0],['Events',D.events.events.length,0],['Artifacts',D.artifacts.records.length,0],['Objects',D.objects.objects.length,0],['Open critical',M.open_critical_obligations.length,0]];
+matharc/v02/workspace_visualization.py:109:document.getElementById('reasoning').innerHTML=T.public_reasoning.map(s=>`<article class="event"><h4>${esc(s.step_id)} · ${esc(s.role)}</h4><div class="kv small"><b>目标</b><span>${esc(s.objective)}</span><b>前提</b><span>${s.premises.map(esc).join('；')}</span><b>动作</b><span>${esc(s.proposed_move)}</span><b>观察</b><span>${esc(s.observation)}</span><b>证伪</b><span>${esc(s.falsification_test)}</span><b>决策</b><span>${esc(s.decision)}</span></div></article>`).join('')||'<span class="muted">No public reasoning.</span>';
+matharc/v02/workspace_visualization.py:117:document.getElementById('artifacts').innerHTML=D.artifacts.records.map(a=>`<tr><td><code>${esc(a.artifact_id)}</code></td><td>${esc(a.logical_role)}</td><td>${a.linked_claim_ids.map(esc).join(', ')}</td><td class="hash">${esc(a.sha256)}</td></tr>`).join('');
+tests/test_v02_model_workers.py:46:                "observation": "obs",
+matharc/v02/workspace_bundle.py:61:        "artifact_manifest": target / "artifacts" / "manifest.json",
+tests/test_v03_failure_workspace.py:57:        artifact_uri="workspace://E-CEX",
+tests/test_v03_failure_workspace.py:81:    def test_trace_only_counterexample_without_artifact_is_rejected(self) -> None:
+tests/test_v03_failure_workspace.py:85:            workspace = ResearchWorkspace(directory, trace, strict_artifacts=True)
+tests/test_v03_failure_workspace.py:86:            with self.assertRaisesRegex(WorkspaceFailureError, "lacks stored artifacts"):
+tests/test_v03_failure_workspace.py:94:            workspace = ResearchWorkspace(directory, trace, strict_artifacts=True)
+tests/test_v03_failure_workspace.py:97:                artifact_content=content,
+tests/test_v03_failure_workspace.py:98:                artifact_id="ART-CEX",
+tests/test_v02_source_observation.py:6:from matharc.v02.source_observation import (
+tests/test_v02_source_observation.py:17:def observation(**overrides: object) -> SourceObservation:
+tests/test_v02_source_observation.py:19:        "observation_id": "OBS-1",
+tests/test_v02_source_observation.py:29:        "artifact_id": "ART-1",
+tests/test_v02_source_observation.py:30:        "status": ObservationStatus.OBSERVED,
+tests/test_v02_source_observation.py:38:        value = observation()
+tests/test_v02_source_observation.py:43:    def test_same_identity_different_digest_is_conflict(self) -> None:
+tests/test_v02_source_observation.py:44:        self.assertTrue(observation().conflicts_with(observation(content_digest_sha256=digest(b"other"))))
+tests/test_v02_source_observation.py:47:        value = observation(license_status=LicenseStatus.UNKNOWN, status=ObservationStatus.PENDING)
+tests/test_v02_source_observation.py:50:            observation(license_status=LicenseStatus.UNKNOWN)
+tests/test_v02_source_observation.py:54:            observation(pinned_version="latest")
+tests/test_v02_source_observation.py:56:            observation(media_type="image/png")
+tests/test_v02_source_observation.py:60:            observation(observed_at="yesterday")
+tests/test_v02_source_observation.py:62:            observation(status="OBSERVED")
+tests/test_v02_source_observation.py:64:            observation(license_status="OPEN")
+tests/test_v02_source_observation.py:68:            observation(content_summary="The theorem is proved and the problem is solved.")
+tests/test_v02_source_observation.py:71:        value = observation(content_summary="The paper studies an open dataset and records metadata.")
+tests/test_v02_source_observation.py:72:        self.assertEqual(value.status, ObservationStatus.OBSERVED)
+tests/test_v02_source_observation.py:74:    def test_observation_is_not_a_source_claim(self) -> None:
+tests/test_v02_source_observation.py:75:        value = observation()
+tests/test_v02_source_observation.py:81:            SourceObservation.from_dict({**observation().to_dict(), "extra": True})
+tests/test_v02_source_observation.py:83:            observation(content_digest_sha256="bad")
+matharc/v02/__init__.py:23:from .source_observation import LicenseStatus, ObservationStatus, SourceObservation, new_observation
+matharc/v02/__init__.py:24:from .literature_base import ImportDisposition, ImportResult, LiteratureBase
+matharc/v02/__init__.py:105:    "new_observation",
+matharc/v02/__init__.py:108:    "LiteratureBase",
+tests/test_v02_authorization.py:41:        artifact_uri=f"workspace://{evidence_id}",
+tests/test_v02_authorization.py:58:            ResearchWorkspace(directory, trace, strict_artifacts=True)
+tests/test_v02_authorization.py:85:                    actor("prover"), evidence("E0", "g0", "zero"), artifact_content="zero"
+tests/test_v02_authorization.py:90:                artifact_content="one",
+tests/test_v02_authorization.py:95:                artifact_content="two",
+tests/test_v02_benchmark_runner.py:137:    def test_request_and_execution_artifacts_are_hash_recorded(self) -> None:
+tests/test_v02_benchmark_runner.py:153:                root = Path(execution.artifact_directory)
+tests/test_v02_benchmark_runner.py:161:                self.assertEqual(len(execution.result.artifact_digest_sha256), 64)
+tests/test_v03_legacy_import_mapping.py:118:                    "artifact_sha256": "a" * 64,
+tests/test_v03_review_bundle.py:117:            artifact_uri="mem://exact",
+tests/test_v03_review_bundle.py:133:            artifact_uri="mem://lit",
+matharc/v02/smt_tools.py:555:        artifact_uri="",
+matharc/v02/smt_tools.py:625:            artifact_uri="",
+tests/test_v02_benchmark.py:30:        artifact_digest_sha256=hashlib.sha256(f"{system}-{case}".encode()).hexdigest(),
+tests/test_v02_workers.py:41:            "observation": "candidate identity produced",
+tests/test_publication_gates.py:24:                           "summary": "x", "artifact_uri": "x", "digest_sha256": "", "producer": "a",
+tests/test_publication_gates.py:83:            HumanSignoff.from_dict({"gate": "g", "decision": "d", "reviewer": "", "reviewed_at": "t", "artifact_digest": "h", "notes": ""})
+tests/test_v03_review.py:144:            witness_artifact_id="ART-1" if is_counterexample else "",
+tests/test_v03_review.py:322:                artifact_uri="mem://existing",
+tests/test_v03_review.py:371:            trace, "REV-1", evidence_id="EV-REVIEW-1", artifact_uri="mem://review-1"
+tests/test_v03_review.py:454:            review_to_evidence(trace, "REV-GAP", evidence_id="EV-X", artifact_uri="mem://x")
+tests/test_v03_review.py:463:            trace, "REV-1", evidence_id="EV-REVIEW-1", artifact_uri="mem://review-1"
+tests/test_codex_api.py:24:        "observation": "events arrived",
+matharc/v02/failure_workspace.py:5:content-addressed artifacts whose bytes hash to the EvidenceRecord digest before
+matharc/v02/failure_workspace.py:61:def _verify_counterexample_artifacts(
+matharc/v02/failure_workspace.py:67:        if evidence_id not in workspace.evidence_artifact_links
+matharc/v02/failure_workspace.py:71:            f"counterexample evidence lacks stored artifacts: {missing_links}"
+matharc/v02/failure_workspace.py:77:        artifact_id = workspace.evidence_artifact_links[evidence_id]
+matharc/v02/failure_workspace.py:79:            artifact = workspace.artifacts.get(artifact_id)
+matharc/v02/failure_workspace.py:82:                f"counterexample artifact is missing: {artifact_id}"
+matharc/v02/failure_workspace.py:84:        if artifact.sha256 != evidence.digest_sha256:
+matharc/v02/failure_workspace.py:86:                f"counterexample artifact digest mismatch for {evidence_id}: "
+matharc/v02/failure_workspace.py:87:                f"artifact={artifact.sha256} evidence={evidence.digest_sha256}"
+matharc/v02/failure_workspace.py:99:    _verify_counterexample_artifacts(workspace, record)
+matharc/v02/_workspace_impl.py:10:from .artifact_store import ArtifactRecord, ArtifactStore
+matharc/v02/_workspace_impl.py:39:    artifacts, cross-links and an append-only event ledger.  Direct mutations
+matharc/v02/_workspace_impl.py:52:        artifacts: ArtifactStore | None = None,
+matharc/v02/_workspace_impl.py:55:        evidence_artifact_links: Mapping[str, str] | None = None,
+matharc/v02/_workspace_impl.py:56:        tool_artifact_links: Mapping[str, Iterable[str]] | None = None,
+matharc/v02/_workspace_impl.py:57:        strict_artifacts: bool = True,
+matharc/v02/_workspace_impl.py:65:        self.artifacts = artifacts or ArtifactStore(self.root / "artifacts")
+matharc/v02/_workspace_impl.py:68:        self.evidence_artifact_links = {
+matharc/v02/_workspace_impl.py:70:            for key, value in (evidence_artifact_links or {}).items()
+matharc/v02/_workspace_impl.py:72:        self.tool_artifact_links = self._normalize_multi_links(tool_artifact_links)
+matharc/v02/_workspace_impl.py:73:        self.strict_artifacts = bool(strict_artifacts)
+matharc/v02/_workspace_impl.py:94:            "artifacts": self.artifacts.to_dict(),
+matharc/v02/_workspace_impl.py:96:            "strict_artifacts": self.strict_artifacts,
+matharc/v02/_workspace_impl.py:110:            "evidence_artifact_links": dict(
+matharc/v02/_workspace_impl.py:111:                sorted(self.evidence_artifact_links.items())
+matharc/v02/_workspace_impl.py:113:            "tool_artifact_links": {
+matharc/v02/_workspace_impl.py:114:                key: list(value) for key, value in sorted(self.tool_artifact_links.items())
+matharc/v02/_workspace_impl.py:259:        artifact_content: bytes | str | Mapping[str, Any] | None = None,
+matharc/v02/_workspace_impl.py:260:        artifact_id: str | None = None,
+matharc/v02/_workspace_impl.py:265:        linked_artifact: ArtifactRecord | None = None
+matharc/v02/_workspace_impl.py:266:        if artifact_content is not None:
+matharc/v02/_workspace_impl.py:267:            target_id = artifact_id or f"ART-{evidence.evidence_id}"
+matharc/v02/_workspace_impl.py:268:            linked_artifact = self._store_content(
+matharc/v02/_workspace_impl.py:270:                artifact_content,
+matharc/v02/_workspace_impl.py:275:            if linked_artifact.sha256 != evidence.digest_sha256:
+matharc/v02/_workspace_impl.py:283:                    f"evidence digest {evidence.digest_sha256} does not match stored artifact "
+matharc/v02/_workspace_impl.py:284:                    f"{linked_artifact.sha256}"
+matharc/v02/_workspace_impl.py:286:            self.evidence_artifact_links[evidence.evidence_id] = linked_artifact.artifact_id
+matharc/v02/_workspace_impl.py:287:        elif self.strict_artifacts and evidence.status.value == "ACCEPTED":
+matharc/v02/_workspace_impl.py:297:                "artifact_id": linked_artifact.artifact_id if linked_artifact else None,
+matharc/v02/_workspace_impl.py:311:        artifact_ids: list[str] = []
+matharc/v02/_workspace_impl.py:321:            artifact_ids.append(record.artifact_id)
+matharc/v02/_workspace_impl.py:331:            artifact_ids.append(record.artifact_id)
+matharc/v02/_workspace_impl.py:332:        if artifact_ids:
+matharc/v02/_workspace_impl.py:333:            self.tool_artifact_links[tool_call.call_id] = tuple(artifact_ids)
+matharc/v02/_workspace_impl.py:340:                "artifact_ids": artifact_ids,
+matharc/v02/_workspace_impl.py:415:        if self.strict_artifacts:
+matharc/v02/_workspace_impl.py:422:                and evidence_id not in self.evidence_artifact_links
+matharc/v02/_workspace_impl.py:426:                    f"claim {claim_id} has accepted evidence without stored artifacts {unlinked}"
+matharc/v02/_workspace_impl.py:463:        artifact_manifest = self.artifacts.save_manifest()
+matharc/v02/_workspace_impl.py:481:            "artifacts/manifest.json": self._file_sha256(artifact_manifest),
+matharc/v02/_workspace_impl.py:486:            "strict_artifacts": self.strict_artifacts,
+matharc/v02/_workspace_impl.py:510:            "strict_artifacts",
+matharc/v02/_workspace_impl.py:536:            artifacts=ArtifactStore.load(root_path / "artifacts"),
+matharc/v02/_workspace_impl.py:539:            evidence_artifact_links=links.get("evidence_artifact_links", {}),
+matharc/v02/_workspace_impl.py:540:            tool_artifact_links=links.get("tool_artifact_links", {}),
+matharc/v02/_workspace_impl.py:541:            strict_artifacts=bool(payload.get("strict_artifacts", True)),
+matharc/v02/_workspace_impl.py:563:        artifact_id: str,
+matharc/v02/_workspace_impl.py:572:            return self.artifacts.put_bytes(
+matharc/v02/_workspace_impl.py:573:                artifact_id,
+matharc/v02/_workspace_impl.py:581:            return self.artifacts.put_text(
+matharc/v02/_workspace_impl.py:582:                artifact_id,
+matharc/v02/_workspace_impl.py:589:        return self.artifacts.put_json(
+matharc/v02/_workspace_impl.py:590:            artifact_id,
+tests/test_v02_claude_code_runtime.py:61:                    "observation": "obs",
+matharc/v02/prompting.py:173:                "observation",
+matharc/v02/prompting.py:181:                "observation": {"type": "string"},
+matharc/v02/workspace/__init__.py:37:        artifact_content: bytes | str | Mapping[str, Any] | None = None,
+matharc/v02/workspace/__init__.py:38:        artifact_id: str | None = None,
+matharc/v02/workspace/__init__.py:41:        if artifact_content is not None:
+matharc/v02/workspace/__init__.py:42:            actual = hashlib.sha256(_content_bytes(artifact_content)).hexdigest()
+matharc/v02/workspace/__init__.py:46:                    f"prospective artifact {actual}"
+matharc/v02/workspace/__init__.py:50:            artifact_content=artifact_content,
+matharc/v02/workspace/__init__.py:51:            artifact_id=artifact_id,
+tests/test_v03_falsification.py:95:            "observation": "the exact checker decides the bounded route test",
+tests/test_v03_falsification.py:201:            report = ResearchWorkspace(directory, missing, strict_artifacts=False).audit()
+tests/test_v03_falsification.py:221:            report = ResearchWorkspace(directory, passing, strict_artifacts=False).audit()
+matharc/v02/review_server.py:268:                    artifact_uri=f"review-record:{record.review_id}",
+matharc/v02/audit.py:185:    artifact_validation = workspace.artifacts.verify()
+matharc/v02/audit.py:186:    for message in artifact_validation["errors"]:
+matharc/v02/audit.py:191:            repair="restore the content-addressed artifact or update no records",
+matharc/v02/audit.py:216:    artifact_ids = {item.artifact_id for item in workspace.artifacts.records}
+matharc/v02/audit.py:256:    for evidence_id, artifact_id in workspace.evidence_artifact_links.items():
+matharc/v02/audit.py:261:                f"artifact link references unknown evidence {evidence_id}",
+matharc/v02/audit.py:265:        if artifact_id not in artifact_ids:
+matharc/v02/audit.py:269:                f"evidence {evidence_id} references unknown artifact {artifact_id}",
+matharc/v02/audit.py:270:                (evidence_id, artifact_id),
+matharc/v02/audit.py:271:                "store the artifact in the content-addressed store",
+matharc/v02/audit.py:275:            artifact = workspace.artifacts.get(artifact_id)
+matharc/v02/audit.py:276:            if evidence.digest_sha256 != artifact.sha256:
+matharc/v02/audit.py:280:                    f"evidence {evidence_id} digest differs from artifact {artifact_id}",
+matharc/v02/audit.py:281:                    (evidence_id, artifact_id),
+matharc/v02/audit.py:282:                    "recreate the evidence record from the stored artifact digest",
+matharc/v02/audit.py:285:    for tool_id, artifact_ids_for_tool in workspace.tool_artifact_links.items():
+matharc/v02/audit.py:290:                f"artifact links reference unknown tool call {tool_id}",
+matharc/v02/audit.py:294:        for artifact_id in artifact_ids_for_tool:
+matharc/v02/audit.py:295:            if artifact_id not in artifact_ids:
+matharc/v02/audit.py:299:                    f"tool call {tool_id} references unknown artifact {artifact_id}",
+matharc/v02/audit.py:300:                    (tool_id, artifact_id),
+matharc/v02/audit.py:301:                    "store stdout, stderr or certificate under the declared artifact ID",
+matharc/v02/audit.py:345:        if workspace.strict_artifacts:
+matharc/v02/audit.py:350:                if evidence_id not in workspace.evidence_artifact_links:
+matharc/v02/audit.py:354:                        f"accepted evidence {evidence_id} has no stored artifact",
+matharc/v02/audit.py:405:        if step.falsification_test.strip() and step.observation.strip()
+matharc/v02/audit.py:445:        if record.witness_artifact_id and record.witness_artifact_id not in artifact_ids:
+matharc/v02/audit.py:449:                f"route evaluation {record.evaluation_id} references missing witness artifact {record.witness_artifact_id}",
+matharc/v02/audit.py:450:                (record.evaluation_id, record.witness_artifact_id),
+matharc/v02/audit.py:500:                "migrate the route to KillTestSpec/RouteEvaluationRecord or record the legacy observation",
+matharc/v02/audit.py:508:                f"exact failure {failure.failure_id} has no evidence artifact",
+tests/test_v02_smt_tools.py:286:                "observation": "the formula is linear and bounded",
+tests/test_v03_failure_channels.py:69:        artifact_uri=f"workspace://{evidence_id}",
+tests/test_v02_governed_creation.py:19:        "observation": "structure identified",
+tests/test_v02_workspace_demo.py:17:            self.assertEqual(len(workspace.artifacts.records), 6)
+tests/test_v02_workspace.py:9:from matharc.v02.artifact_store import ArtifactStore
+tests/test_v02_workspace.py:86:        artifact_uri=f"workspace://{evidence_id}",
+tests/test_v02_workspace.py:98:        workspace = ResearchWorkspace(root, empty_trace(), strict_artifacts=True)
+tests/test_v02_workspace.py:133:            artifact_content=b"certificate-a",
+tests/test_v02_workspace.py:137:            artifact_content=b"certificate-b",
+tests/test_v02_workspace.py:175:    def test_artifact_tampering_is_detected(self) -> None:
+tests/test_v02_workspace.py:177:            store = ArtifactStore(directory)
+tests/test_v02_workspace.py:184:            store.path_for(record.artifact_id).write_text("tampered", encoding="utf-8")
+tests/test_v02_workspace.py:195:            with self.assertRaisesRegex(ValueError, "prospective artifact"):
+tests/test_v02_workspace.py:196:                workspace.add_evidence(record, artifact_content=b"different")
+tests/test_v02_workspace.py:200:            self.assertEqual(len(workspace.artifacts.records), 0)
+tests/test_v02_workspace.py:225:            workspace = ResearchWorkspace(directory, empty_trace(), strict_artifacts=False)
+tests/test_v02_workspace.py:240:            workspace = ResearchWorkspace(directory, empty_trace(), strict_artifacts=False)
+tests/test_v02_workspace_server.py:49:    def test_health_workspace_events_and_artifacts(self) -> None:
+tests/test_v02_workspace_server.py:66:        artifacts = self.get_json("/api/artifacts")
+tests/test_v02_workspace_server.py:67:        self.assertFalse(artifacts["raw_download_enabled"])
+tests/test_v02_workspace_server.py:68:        self.assertGreaterEqual(len(artifacts["records"]), 1)
+tests/test_v02_workspace_server.py:125:            "/artifacts/manifest.json",
+tests/test_codex_runtime.py:48:        "proposed_move": "Replay an exact checker", "observation": "No promotion yet",
+matharc/v02/_workspace_server_impl.py:127:            if parsed.path == "/api/artifacts":
+matharc/v02/_workspace_server_impl.py:133:                            item.to_dict() for item in workspace.artifacts.records
+tests/test_v03_audit_fixes.py:57:                "observation": "provider metering is deliberately different",
+matharc/v02/metrics.py:238:        if step.falsification_test.strip() and step.observation.strip()
+tests/test_v02_framework_adapters.py:134:                    "import json,sys; json.load(sys.stdin); print(json.dumps({'public_reasoning': {'objective':'x','premises':[],'proposed_move':'x','observation':'x','falsification':'x','decision':'candidate'}}))",
+matharc/v02/benchmark.py:25:    artifact_digest_sha256: str
+matharc/v02/benchmark.py:45:            "artifact_digest_sha256": self.artifact_digest_sha256,
+matharc/v02/benchmark.py:63:            artifact_digest_sha256=str(payload["artifact_digest_sha256"]),
+matharc/v02/benchmark.py:240:        structural_reasons.append("one or more paired artifacts fail cold replay")
+tests/fake_claude_code.py:43:            "observation": "fake observation",
+tests/test_matharc_v02_legacy_harness.py:55:                    "artifact_sha256": "a" * 64,
+tests/test_matharc_v02_legacy_harness.py:78:                    "artifact_sha256": "a" * 64,
+matharc/v02/failure_channels.py:237:        and evidence.artifact_uri.strip()
+tests/test_v02_research_protocol.py:55:        artifact_uri=f"artifact://{evidence_id}",
+tests/test_v02_research_protocol.py:84:            "observation": "x",
+tests/test_v02_research_protocol.py:103:                    "observation": "looks plausible",
+tests/test_v02_research_protocol.py:231:    def test_dashboard_and_artifacts_are_generated(self) -> None:
+tests/fake_codex.py:69:        "command": "python -m matharc validate --run artifacts/demo/run.json",
+tests/fake_codex.py:100:        "observations": ["The stored run is machine readable."],
+tests/fake_codex.py:122:    "next_actions": ["Create an exact artifact", "Attach it through ResearchEngine guards"]
+tests/test_v03_lrat_tools.py:10:from matharc.v02.lrat_tools import build_cnf_lrat_artifact, cnf_lrat_unsat
+tests/test_v03_lrat_tools.py:50:    def test_unsat_cnf_produces_embedded_independently_checked_artifact(self) -> None:
+tests/test_v03_lrat_tools.py:60:        prefix, encoded = result.evidence.artifact_uri.split(",", 1)
+tests/test_v03_lrat_tools.py:62:        artifact = json.loads(base64.b64decode(encoded).decode("utf-8"))
+tests/test_v03_lrat_tools.py:63:        self.assertTrue(artifact["checker"]["valid"])
+tests/test_v03_lrat_tools.py:64:        self.assertEqual(digest_json(artifact), result.evidence.digest_sha256)
+tests/test_v03_lrat_tools.py:65:        self.assertEqual(canonical_json(artifact), canonical_json(build_cnf_lrat_artifact(arguments)))
+tests/test_v03_lrat_tools.py:119:        first = build_cnf_lrat_artifact(
+tests/test_v03_lrat_tools.py:122:        second = build_cnf_lrat_artifact(
+tests/test_core.py:41:    def test_artifact_roundtrip_and_dashboard(self) -> None:
+tests/test_v03_evidence_gain.py:36:            "observation": "the same certificate will be replayed each round",
+tests/test_v03_review_policy.py:96:                artifact_uri="u",
+tests/test_v03_review_policy.py:112:                artifact_uri="u",
+tests/test_v03_review_policy.py:136:            trace, "REV-1", evidence_id="EV-REV-1", artifact_uri="review:REV-1"
+tests/test_v03_review_policy.py:159:            trace, "REV-A", evidence_id="EV-A", artifact_uri="review:REV-A"
+tests/test_v03_review_policy.py:165:            trace, "REV-B", evidence_id="EV-B", artifact_uri="review:REV-B"
+tests/test_v03_review_policy.py:196:                artifact_uri="u",
+tests/test_v03_review_policy.py:208:            trace, "REV-A", evidence_id="EV-A", artifact_uri="review:REV-A"
+
+exec
+/bin/zsh -lc "nl -ba matharc/v02/artifact_store.py | sed -n '220,360p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+   220	            linked_claim_ids=linked_claim_ids,
+   221	            linked_tool_call_ids=linked_tool_call_ids,
+   222	            source_filename=path.name,
+   223	        )
+   224	
+   225	    def verify(self) -> dict[str, Any]:
+   226	        errors: list[str] = []
+   227	        verified = 0
+   228	        for record in self._records.values():
+   229	            try:
+   230	                path = self.path_for(record.artifact_id)
+   231	            except ValueError as exc:
+   232	                errors.append(str(exc))
+   233	                continue
+   234	            if not path.is_file():
+   235	                errors.append(f"artifact file is missing: {record.artifact_id}")
+   236	                continue
+   237	            content = path.read_bytes()
+   238	            actual = hashlib.sha256(content).hexdigest()
+   239	            if actual != record.sha256:
+   240	                errors.append(f"artifact digest mismatch: {record.artifact_id}")
+   241	                continue
+   242	            if len(content) != record.size_bytes:
+   243	                errors.append(f"artifact size mismatch: {record.artifact_id}")
+   244	                continue
+   245	            verified += 1
+   246	        return {
+   247	            "valid": not errors,
+   248	            "errors": errors,
+   249	            "artifact_count": len(self._records),
+   250	            "verified_count": verified,
+   251	            "manifest_digest_sha256": digest_json(self.to_dict()),
+   252	        }
+   253	
+   254	    def to_dict(self) -> dict[str, Any]:
+   255	        return {
+   256	            "schema_version": "1.0",
+   257	            "content_addressing": "sha256",
+   258	            "records": [record.to_dict() for record in self.records],
+   259	        }
+   260	
+   261	    def save_manifest(self) -> Path:
+   262	        self.root.mkdir(parents=True, exist_ok=True)
+   263	        temporary = self.manifest_path.with_suffix(".tmp")
+   264	        temporary.write_text(
+   265	            json.dumps(self.to_dict(), ensure_ascii=False, indent=2, sort_keys=True) + "\n",
+   266	            encoding="utf-8",
+   267	        )
+   268	        os.replace(temporary, self.manifest_path)
+   269	        return self.manifest_path
+   270	
+   271	    @classmethod
+   272	    def load(cls, root: str | Path) -> "ArtifactStore":
+   273	        root_path = Path(root)
+   274	        manifest = root_path / "manifest.json"
+   275	        if not manifest.is_file():
+   276	            return cls(root_path)
+   277	        payload = json.loads(manifest.read_text(encoding="utf-8"))
+   278	        if not isinstance(payload, dict):
+   279	            raise ValueError("artifact manifest root must be an object")
+   280	        if set(payload) - {"schema_version", "content_addressing", "records"}:
+   281	            raise ValueError("unknown artifact-manifest fields")
+   282	        if str(payload.get("schema_version")) != "1.0":
+   283	            raise ValueError("unsupported artifact-manifest schema")
+   284	        if str(payload.get("content_addressing")) != "sha256":
+   285	            raise ValueError("unsupported artifact addressing scheme")
+   286	        store = cls(
+   287	            root_path,
+   288	            (ArtifactRecord.from_dict(item) for item in payload.get("records", [])),
+   289	        )
+   290	        verification = store.verify()
+   291	        if not verification["valid"]:
+   292	            raise ValueError("; ".join(verification["errors"]))
+   293	        return store
+   294	
+   295	    def _add_record(self, record: ArtifactRecord) -> None:
+   296	        if record.artifact_id in self._records:
+   297	            existing = self._records[record.artifact_id]
+   298	            if existing.to_dict() != record.to_dict():
+   299	                raise ValueError(f"conflicting artifact id: {record.artifact_id}")
+   300	            return
+   301	        if len(record.sha256) != 64:
+   302	            raise ValueError(f"artifact {record.artifact_id} has invalid SHA-256")
+   303	        self._records[record.artifact_id] = record
+
+exec
+/bin/zsh -lc "nl -ba matharc/v02/literature_base.py | sed -n '1,240p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "nl -ba matharc/v02/source_observation.py | sed -n '1,300p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	"""Persistent, reviewable storage for imported literature observations."""
+     2	
+     3	from __future__ import annotations
+     4	
+     5	import hashlib
+     6	import json
+     7	import os
+     8	from dataclasses import dataclass
+     9	from enum import Enum
+    10	from pathlib import Path
+    11	from typing import Any
+    12	
+    13	from .artifact_store import ArtifactRecord, ArtifactStore
+    14	from .budget import BudgetLedger
+    15	from .source_observation import LicenseStatus, ObservationStatus, SourceObservation
+    16	
+    17	
+    18	class ImportDisposition(str, Enum):
+    19	    IMPORTED = "IMPORTED"
+    20	    IDEMPOTENT = "IDEMPOTENT"
+    21	    PENDING = "PENDING"
+    22	    CONFLICT = "CONFLICT"
+    23	    REJECTED = "REJECTED"
+    24	
+    25	
+    26	@dataclass(frozen=True, slots=True)
+    27	class ImportResult:
+    28	    disposition: ImportDisposition
+    29	    observation: SourceObservation
+    30	    artifact: ArtifactRecord | None = None
+    31	    reason: str = ""
+    32	
+    33	
+    34	class LiteratureBase:
+    35	    """Keep literature observations separate from verified mathematical claims."""
+    36	
+    37	    def __init__(self, root: str | Path, budget: BudgetLedger | None = None) -> None:
+    38	        self.root = Path(root)
+    39	        self.root.mkdir(parents=True, exist_ok=True)
+    40	        self.artifacts = ArtifactStore.load(self.root / "artifacts")
+    41	        self.manifest_path = self.root / "observations.json"
+    42	        self.budget = budget
+    43	        self._observations: dict[str, SourceObservation] = {}
+    44	        if self.manifest_path.is_file():
+    45	            payload = json.loads(self.manifest_path.read_text(encoding="utf-8"))
+    46	            if not isinstance(payload, dict) or set(payload) != {"schema_version", "observations"}:
+    47	                raise ValueError("invalid literature observation manifest")
+    48	            if payload["schema_version"] != "1.0":
+    49	                raise ValueError("unsupported literature observation schema")
+    50	            for item in payload["observations"]:
+    51	                observation = SourceObservation.from_dict(item)
+    52	                if observation.observation_id in self._observations:
+    53	                    raise ValueError("duplicate observation id")
+    54	                self._observations[observation.observation_id] = observation
+    55	
+    56	    @property
+    57	    def observations(self) -> tuple[SourceObservation, ...]:
+    58	        return tuple(self._observations[key] for key in sorted(self._observations))
+    59	
+    60	    def import_file(self, observation: SourceObservation, source: str | Path) -> ImportResult:
+    61	        path = Path(source)
+    62	        return self.import_bytes(observation, path.read_bytes(), source_filename=path.name)
+    63	
+    64	    def import_bytes(
+    65	        self,
+    66	        observation: SourceObservation,
+    67	        content: bytes,
+    68	        *,
+    69	        source_filename: str = "",
+    70	    ) -> ImportResult:
+    71	        existing_id = self._observations.get(observation.observation_id)
+    72	        if existing_id is not None and existing_id.logical_identity != observation.logical_identity:
+    73	            rejected = self._rejected(observation)
+    74	            return ImportResult(ImportDisposition.REJECTED, rejected, reason="observation_id already names another logical identity")
+    75	        existing_identity = [item for item in self.observations if item.logical_identity == observation.logical_identity]
+    76	        if existing_identity:
+    77	            for item in existing_identity:
+    78	                if (
+    79	                    item.content_digest_sha256 == observation.content_digest_sha256
+    80	                    and item.content_digest_sha256
+    81	                    and item.status is ObservationStatus.OBSERVED
+    82	                    and item.artifact_id is not None
+    83	                ):
+    84	                    try:
+    85	                        artifact = self.artifacts.get(item.artifact_id)
+    86	                        artifact_path = self.artifacts.path_for(item.artifact_id)
+    87	                        if artifact.sha256 != item.content_digest_sha256 or not artifact_path.is_file():
+    88	                            raise ValueError("artifact reference is not intact")
+    89	                    except (KeyError, ValueError) as exc:
+    90	                        rejected = self._rejected(observation)
+    91	                        return ImportResult(ImportDisposition.REJECTED, rejected, reason=f"artifact integrity failure: {exc}")
+    92	                    return ImportResult(ImportDisposition.IDEMPOTENT, item, artifact, "same identity and digest")
+    93	                if (
+    94	                    item.content_digest_sha256
+    95	                    and observation.content_digest_sha256
+    96	                    and item.content_digest_sha256 != observation.content_digest_sha256
+    97	                ):
+    98	                    conflict_id = observation.observation_id
+    99	                    if conflict_id in self._observations:
+   100	                        conflict_id = f"{conflict_id}-conflict-{observation.content_digest_sha256[:8]}"
+   101	                    conflict = SourceObservation.from_dict(
+   102	                        {**observation.to_dict(), "observation_id": conflict_id, "status": ObservationStatus.CONFLICT.value, "artifact_id": None}
+   103	                    )
+   104	                    self._record(conflict)
+   105	                    return ImportResult(ImportDisposition.CONFLICT, conflict, reason="same identity has a different digest")
+   106	
+   107	        if self.budget is not None and self.budget.exhausted():
+   108	            pending = self._pending(observation)
+   109	            self._record(pending)
+   110	            return ImportResult(ImportDisposition.PENDING, pending, reason="budget exhausted")
+   111	        if observation.license_status is not LicenseStatus.OPEN:
+   112	            pending = self._pending(observation)
+   113	            self._record(pending)
+   114	            return ImportResult(ImportDisposition.PENDING, pending, reason="license is not confirmed open")
+   115	        if not observation.content_digest_sha256:
+   116	            pending = self._pending(observation)
+   117	            self._record(pending)
+   118	            return ImportResult(ImportDisposition.PENDING, pending, reason="content digest is missing")
+   119	        actual_digest = hashlib.sha256(content).hexdigest()
+   120	        if actual_digest != observation.content_digest_sha256:
+   121	            pending = self._pending(observation)
+   122	            self._record(pending)
+   123	            return ImportResult(ImportDisposition.PENDING, pending, reason="content digest mismatch")
+   124	
+   125	        artifact_id = "lit-" + hashlib.sha256(
+   126	            f"{observation.logical_identity}|{actual_digest}".encode("utf-8")
+   127	        ).hexdigest()[:32]
+   128	        artifact = self.artifacts.put_bytes(
+   129	            artifact_id,
+   130	            content,
+   131	            logical_role="literature-observation",
+   132	            producer="matharc-literature-base",
+   133	            media_type=observation.media_type,
+   134	            source_filename=source_filename,
+   135	        )
+   136	        observed = SourceObservation.from_dict(
+   137	            {**observation.to_dict(), "status": ObservationStatus.OBSERVED.value, "artifact_id": artifact.artifact_id}
+   138	        )
+   139	        self._record(observed)
+   140	        return ImportResult(ImportDisposition.IMPORTED, observed, artifact)
+   141	
+   142	    def _pending(self, observation: SourceObservation) -> SourceObservation:
+   143	        return SourceObservation.from_dict(
+   144	            {**observation.to_dict(), "status": ObservationStatus.PENDING.value, "artifact_id": None}
+   145	        )
+   146	
+   147	    def _rejected(self, observation: SourceObservation) -> SourceObservation:
+   148	        return SourceObservation.from_dict(
+   149	            {**observation.to_dict(), "status": ObservationStatus.REJECTED.value, "artifact_id": None}
+   150	        )
+   151	
+   152	    def _record(self, observation: SourceObservation) -> None:
+   153	        self._observations[observation.observation_id] = observation
+   154	        payload = {
+   155	            "schema_version": "1.0",
+   156	            "observations": [item.to_dict() for item in self.observations],
+   157	        }
+   158	        temporary = self.manifest_path.with_suffix(".tmp")
+   159	        temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
+   160	        os.replace(temporary, self.manifest_path)
+
+ succeeded in 0ms:
+     1	"""Fail-closed records for observing external source material.
+     2	
+     3	Observations are deliberately separate from :mod:`source_registry`: a
+     4	downloaded or summarized source is not a verified mathematical premise.
+     5	"""
+     6	
+     7	from __future__ import annotations
+     8	
+     9	import hashlib
+    10	import re
+    11	from dataclasses import dataclass
+    12	from datetime import datetime
+    13	from enum import Enum
+    14	from typing import Any, Mapping
+    15	
+    16	from .schema import utc_now
+    17	
+    18	
+    19	class ObservationStatus(str, Enum):
+    20	    PENDING = "PENDING"
+    21	    OBSERVED = "OBSERVED"
+    22	    REJECTED = "REJECTED"
+    23	    CONFLICT = "CONFLICT"
+    24	
+    25	
+    26	class LicenseStatus(str, Enum):
+    27	    OPEN = "OPEN"
+    28	    RESTRICTED = "RESTRICTED"
+    29	    UNKNOWN = "UNKNOWN"
+    30	
+    31	
+    32	_DIGEST_RE = re.compile(r"^[0-9a-f]{64}$")
+    33	_STATUS_ASSERTION_LANGUAGE = re.compile(
+    34	    r"\b(?:proved|proof|solved|novel)\b|"
+    35	    r"\b(?:open|closed)\s+(?:problem|question|conjecture)\b|"
+    36	    r"\b(?:remains?|is|was)\s+(?:provably\s+)?open\b",
+    37	    re.I,
+    38	)
+    39	_MEDIA_TYPES = frozenset(
+    40	    {
+    41	        "application/json",
+    42	        "application/pdf",
+    43	        "application/octet-stream",
+    44	        "text/html",
+    45	        "text/plain",
+    46	    }
+    47	)
+    48	
+    49	
+    50	@dataclass(frozen=True, slots=True)
+    51	class SourceObservation:
+    52	    """A versioned, content-addressed observation of source material."""
+    53	
+    54	    observation_id: str
+    55	    canonical_uri: str
+    56	    pinned_version: str
+    57	    observed_at: str
+    58	    license_status: LicenseStatus
+    59	    license_basis: str
+    60	    content_summary: str
+    61	    summary_basis: str
+    62	    media_type: str
+    63	    content_digest_sha256: str = ""
+    64	    artifact_id: str | None = None
+    65	    status: ObservationStatus = ObservationStatus.PENDING
+    66	
+    67	    schema_version: str = "1.0"
+    68	
+    69	    def __post_init__(self) -> None:
+    70	        if not isinstance(self.license_status, LicenseStatus):
+    71	            raise TypeError("license_status must be a LicenseStatus")
+    72	        if not isinstance(self.status, ObservationStatus):
+    73	            raise TypeError("status must be an ObservationStatus")
+    74	        if not self.observation_id.strip():
+    75	            raise ValueError("observation_id must be non-empty")
+    76	        if not self.canonical_uri.strip() or "://" not in self.canonical_uri and not self.canonical_uri.startswith("urn:"):
+    77	            raise ValueError("canonical_uri must be an absolute URI or urn")
+    78	        if not self.pinned_version.strip() or self.pinned_version.strip().lower() == "latest":
+    79	            raise ValueError("pinned_version must be concrete, not latest")
+    80	        if not self.observed_at.strip():
+    81	            raise ValueError("observed_at must be non-empty")
+    82	        try:
+    83	            datetime.fromisoformat(self.observed_at)
+    84	        except ValueError as exc:
+    85	            raise ValueError("observed_at must be an ISO-8601 timestamp") from exc
+    86	        if not self.license_basis.strip():
+    87	            raise ValueError("license_basis must be non-empty")
+    88	        if not self.content_summary.strip() or not self.summary_basis.strip():
+    89	            raise ValueError("content summary and summary basis must be non-empty")
+    90	        if self.media_type not in _MEDIA_TYPES:
+    91	            raise ValueError(f"unsupported media_type: {self.media_type}")
+    92	        if self.content_digest_sha256 and not _DIGEST_RE.fullmatch(self.content_digest_sha256):
+    93	            raise ValueError("content_digest_sha256 must be a lowercase SHA-256 digest")
+    94	        if self.status is ObservationStatus.OBSERVED and self.license_status is LicenseStatus.UNKNOWN:
+    95	            raise ValueError("unknown license cannot produce an OBSERVED record")
+    96	        if _STATUS_ASSERTION_LANGUAGE.search(self.content_summary):
+    97	            raise ValueError("content_summary must remain descriptive, not proof/status language")
+    98	
+    99	    @property
+   100	    def logical_identity(self) -> str:
+   101	        normalized_uri = self.canonical_uri.strip().rstrip("/").lower()
+   102	        return f"{normalized_uri}|{self.pinned_version.strip()}"
+   103	
+   104	    @property
+   105	    def idempotency_key(self) -> str:
+   106	        payload = f"{self.logical_identity}|{self.content_digest_sha256}"
+   107	        return hashlib.sha256(payload.encode("utf-8")).hexdigest()
+   108	
+   109	    def conflicts_with(self, other: "SourceObservation") -> bool:
+   110	        return self.logical_identity == other.logical_identity and (
+   111	            bool(self.content_digest_sha256)
+   112	            and bool(other.content_digest_sha256)
+   113	            and self.content_digest_sha256 != other.content_digest_sha256
+   114	        )
+   115	
+   116	    def to_dict(self) -> dict[str, Any]:
+   117	        return {
+   118	            "schema_version": self.schema_version,
+   119	            "observation_id": self.observation_id,
+   120	            "canonical_uri": self.canonical_uri,
+   121	            "pinned_version": self.pinned_version,
+   122	            "observed_at": self.observed_at,
+   123	            "license_status": self.license_status.value,
+   124	            "license_basis": self.license_basis,
+   125	            "content_summary": self.content_summary,
+   126	            "summary_basis": self.summary_basis,
+   127	            "media_type": self.media_type,
+   128	            "content_digest_sha256": self.content_digest_sha256,
+   129	            "artifact_id": self.artifact_id,
+   130	            "status": self.status.value,
+   131	        }
+   132	
+   133	    @classmethod
+   134	    def from_dict(cls, payload: Mapping[str, Any]) -> "SourceObservation":
+   135	        allowed = {
+   136	            "schema_version", "observation_id", "canonical_uri", "pinned_version",
+   137	            "observed_at", "license_status", "license_basis", "content_summary",
+   138	            "summary_basis", "media_type", "content_digest_sha256", "artifact_id", "status",
+   139	        }
+   140	        unknown = set(payload) - allowed
+   141	        if unknown:
+   142	            raise ValueError(f"unknown source-observation fields: {sorted(unknown)}")
+   143	        if str(payload.get("schema_version", "1.0")) != "1.0":
+   144	            raise ValueError("unsupported source-observation schema_version")
+   145	        return cls(
+   146	            observation_id=str(payload["observation_id"]),
+   147	            canonical_uri=str(payload["canonical_uri"]),
+   148	            pinned_version=str(payload["pinned_version"]),
+   149	            observed_at=str(payload["observed_at"]),
+   150	            license_status=LicenseStatus(str(payload["license_status"])),
+   151	            license_basis=str(payload["license_basis"]),
+   152	            content_summary=str(payload["content_summary"]),
+   153	            summary_basis=str(payload["summary_basis"]),
+   154	            media_type=str(payload["media_type"]),
+   155	            content_digest_sha256=str(payload.get("content_digest_sha256", "")),
+   156	            artifact_id=(str(payload["artifact_id"]) if payload.get("artifact_id") is not None else None),
+   157	            status=ObservationStatus(str(payload.get("status", ObservationStatus.PENDING.value))),
+   158	            schema_version="1.0",
+   159	        )
+   160	
+   161	
+   162	def new_observation(**kwargs: Any) -> SourceObservation:
+   163	    """Create an observation with the current UTC timestamp by default."""
+   164	
+   165	    kwargs.setdefault("observed_at", utc_now())
+   166	    return SourceObservation(**kwargs)
+
+exec
+/bin/zsh -lc "nl -ba tests/test_v02_literature_base.py | sed -n '1,300p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	from __future__ import annotations
+     2	
+     3	import hashlib
+     4	import tempfile
+     5	import unittest
+     6	from pathlib import Path
+     7	
+     8	from matharc.v02.budget import BudgetLedger
+     9	from matharc.v02.literature_base import ImportDisposition, LiteratureBase
+    10	from matharc.v02.source_observation import LicenseStatus, ObservationStatus, new_observation
+    11	
+    12	
+    13	def obs(uri: str = "https://example.test/paper.pdf", digest: str = ""):
+    14	    return new_observation(
+    15	        observation_id=uri + digest[:4], canonical_uri=uri, pinned_version="v1",
+    16	        license_status=LicenseStatus.OPEN, license_basis="publisher license page",
+    17	        content_summary="descriptive bibliographic metadata", summary_basis="abstract",
+    18	        media_type="application/pdf", content_digest_sha256=digest,
+    19	    )
+    20	
+    21	
+    22	class LiteratureBaseTests(unittest.TestCase):
+    23	    def test_pending_license_can_be_retried_after_license_confirmation(self) -> None:
+    24	        content = b"<html>abstract</html>"
+    25	        digest = hashlib.sha256(content).hexdigest()
+    26	        restricted = new_observation(
+    27	            observation_id="retry", canonical_uri="https://example.test/retry", pinned_version="v1",
+    28	            license_status=LicenseStatus.RESTRICTED, license_basis="terms", content_summary="metadata",
+    29	            summary_basis="abstract", media_type="text/html", content_digest_sha256=digest,
+    30	        )
+    31	        opened = new_observation(
+    32	            observation_id="retry", canonical_uri="https://example.test/retry", pinned_version="v1",
+    33	            license_status=LicenseStatus.OPEN, license_basis="publisher license page", content_summary="metadata",
+    34	            summary_basis="abstract", media_type="text/html", content_digest_sha256=digest,
+    35	        )
+    36	        with tempfile.TemporaryDirectory() as directory:
+    37	            base = LiteratureBase(directory)
+    38	            self.assertEqual(base.import_bytes(restricted, content).disposition, ImportDisposition.PENDING)
+    39	            result = base.import_bytes(opened, content, source_filename="abstract.html")
+    40	            self.assertEqual(result.disposition, ImportDisposition.IMPORTED)
+    41	            self.assertEqual(result.observation.status, ObservationStatus.OBSERVED)
+    42	            self.assertEqual(result.artifact.size_bytes if result.artifact else None, len(content))
+    43	
+    44	    def test_import_idempotency_conflict_and_reload(self) -> None:
+    45	        content = b"%PDF-1.7 sample"
+    46	        digest = hashlib.sha256(content).hexdigest()
+    47	        with tempfile.TemporaryDirectory() as directory:
+    48	            base = LiteratureBase(directory)
+    49	            first = base.import_bytes(obs(digest=digest), content, source_filename="paper.pdf")
+    50	            self.assertEqual(first.disposition, ImportDisposition.IMPORTED)
+    51	            replay = base.import_bytes(obs(uri="https://example.test/paper.pdf", digest=digest), content)
+    52	            self.assertEqual(replay.disposition, ImportDisposition.IDEMPOTENT)
+    53	            conflict = base.import_bytes(obs(uri="https://example.test/paper.pdf", digest="a" * 64), b"other")
+    54	            self.assertEqual(conflict.disposition, ImportDisposition.CONFLICT)
+    55	            restored = LiteratureBase(directory)
+    56	            self.assertEqual(len(restored.observations), 2)
+    57	            self.assertEqual(len(restored.artifacts.records), 1)
+    58	
+    59	    def test_failures_remain_pending_without_artifacts(self) -> None:
+    60	        content = b"%PDF"
+    61	        digest = hashlib.sha256(content).hexdigest()
+    62	        with tempfile.TemporaryDirectory() as directory:
+    63	            restricted = new_observation(
+    64	                observation_id="restricted", canonical_uri="https://example.test/r", pinned_version="v1",
+    65	                license_status=LicenseStatus.RESTRICTED, license_basis="terms", content_summary="metadata",
+    66	                summary_basis="abstract", media_type="application/pdf", content_digest_sha256=digest,
+    67	            )
+    68	            base = LiteratureBase(directory)
+    69	            result = base.import_bytes(restricted, content)
+    70	            self.assertEqual(result.disposition, ImportDisposition.PENDING)
+    71	            self.assertEqual(result.observation.status, ObservationStatus.PENDING)
+    72	            self.assertEqual(len(base.artifacts.records), 0)
+    73	
+    74	    def test_digest_errors_and_missing_digest_remain_pending(self) -> None:
+    75	        content = b"%PDF"
+    76	        with tempfile.TemporaryDirectory() as directory:
+    77	            base = LiteratureBase(directory)
+    78	            missing = obs(uri="https://example.test/missing")
+    79	            self.assertEqual(base.import_bytes(missing, content).disposition, ImportDisposition.PENDING)
+    80	            mismatch = obs(uri="https://example.test/mismatch", digest="a" * 64)
+    81	            self.assertEqual(base.import_bytes(mismatch, content).disposition, ImportDisposition.PENDING)
+    82	            self.assertEqual(len(base.artifacts.records), 0)
+    83	
+    84	    def test_registry_is_not_created_or_mutated(self) -> None:
+    85	        content = b"%PDF registry boundary"
+    86	        digest = hashlib.sha256(content).hexdigest()
+    87	        with tempfile.TemporaryDirectory() as directory:
+    88	            base = LiteratureBase(directory)
+    89	            base.import_bytes(obs(digest=digest), content)
+    90	            self.assertFalse((Path(directory) / "source-registry.json").exists())
+    91	            self.assertFalse((Path(directory) / "claims.json").exists())
+    92	
+    93	    def test_unsupported_media_is_rejected_by_observation_contract(self) -> None:
+    94	        with self.assertRaises(ValueError):
+    95	            new_observation(
+    96	                observation_id="image", canonical_uri="https://example.test/image", pinned_version="v1",
+    97	                license_status=LicenseStatus.OPEN, license_basis="license", content_summary="metadata",
+    98	                summary_basis="abstract", media_type="image/png", content_digest_sha256="a" * 64,
+    99	            )
+   100	
+   101	    def test_duplicate_observation_id_cannot_overwrite_another_identity(self) -> None:
+   102	        content = b"same id"
+   103	        digest = hashlib.sha256(content).hexdigest()
+   104	        first = obs(uri="https://example.test/one", digest=digest)
+   105	        second = obs(uri="https://example.test/two", digest=digest)
+   106	        second = new_observation(
+   107	            observation_id=first.observation_id, canonical_uri=second.canonical_uri, pinned_version="v1",
+   108	            license_status=LicenseStatus.OPEN, license_basis="publisher license page", content_summary="metadata",
+   109	            summary_basis="abstract", media_type="application/pdf", content_digest_sha256=digest,
+   110	        )
+   111	        with tempfile.TemporaryDirectory() as directory:
+   112	            base = LiteratureBase(directory)
+   113	            self.assertEqual(base.import_bytes(first, content).disposition, ImportDisposition.IMPORTED)
+   114	            result = base.import_bytes(second, content)
+   115	            self.assertEqual(result.disposition, ImportDisposition.REJECTED)
+   116	            self.assertEqual(len(base.observations), 1)
+   117	
+   118	    def test_budget_blocks_before_write_and_does_not_create_claims(self) -> None:
+   119	        content = b"%PDF"
+   120	        digest = hashlib.sha256(content).hexdigest()
+   121	        with tempfile.TemporaryDirectory() as directory:
+   122	            base = LiteratureBase(directory, BudgetLedger(cost_usd_limit=0.0, spent_cost_usd=0.0))
+   123	            result = base.import_bytes(obs(digest=digest), content)
+   124	            self.assertEqual(result.disposition, ImportDisposition.PENDING)
+   125	            self.assertEqual(len(base.artifacts.records), 0)
+   126	            self.assertIsNone(result.observation.artifact_id)
+   127	
+   128	
+   129	if __name__ == "__main__":
+   130	    unittest.main()
+
+exec
+/bin/zsh -lc "nl -ba tests/test_v02_source_observation.py | sed -n '1,220p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	from __future__ import annotations
+     2	
+     3	import hashlib
+     4	import unittest
+     5	
+     6	from matharc.v02.source_observation import (
+     7	    LicenseStatus,
+     8	    ObservationStatus,
+     9	    SourceObservation,
+    10	)
+    11	
+    12	
+    13	def digest(value: bytes) -> str:
+    14	    return hashlib.sha256(value).hexdigest()
+    15	
+    16	
+    17	def observation(**overrides: object) -> SourceObservation:
+    18	    values: dict[str, object] = {
+    19	        "observation_id": "OBS-1",
+    20	        "canonical_uri": "https://arxiv.org/abs/2601.22401",
+    21	        "pinned_version": "v1",
+    22	        "observed_at": "2026-08-31T00:00:00+00:00",
+    23	        "license_status": LicenseStatus.OPEN,
+    24	        "license_basis": "publisher metadata, checked 2026-08-31",
+    25	        "content_summary": "Metadata and abstract describe the stated research question.",
+    26	        "summary_basis": "abstract, section 1",
+    27	        "media_type": "application/pdf",
+    28	        "content_digest_sha256": digest(b"source"),
+    29	        "artifact_id": "ART-1",
+    30	        "status": ObservationStatus.OBSERVED,
+    31	    }
+    32	    values.update(overrides)
+    33	    return SourceObservation(**values)  # type: ignore[arg-type]
+    34	
+    35	
+    36	class SourceObservationTests(unittest.TestCase):
+    37	    def test_round_trip_and_deterministic_key(self) -> None:
+    38	        value = observation()
+    39	        restored = SourceObservation.from_dict(value.to_dict())
+    40	        self.assertEqual(value, restored)
+    41	        self.assertEqual(value.idempotency_key, restored.idempotency_key)
+    42	
+    43	    def test_same_identity_different_digest_is_conflict(self) -> None:
+    44	        self.assertTrue(observation().conflicts_with(observation(content_digest_sha256=digest(b"other"))))
+    45	
+    46	    def test_unknown_license_is_pending_only(self) -> None:
+    47	        value = observation(license_status=LicenseStatus.UNKNOWN, status=ObservationStatus.PENDING)
+    48	        self.assertEqual(value.status, ObservationStatus.PENDING)
+    49	        with self.assertRaises(ValueError):
+    50	            observation(license_status=LicenseStatus.UNKNOWN)
+    51	
+    52	    def test_rejects_latest_version_and_unsupported_media(self) -> None:
+    53	        with self.assertRaises(ValueError):
+    54	            observation(pinned_version="latest")
+    55	        with self.assertRaises(ValueError):
+    56	            observation(media_type="image/png")
+    57	
+    58	    def test_rejects_invalid_timestamp_and_bare_status_strings(self) -> None:
+    59	        with self.assertRaises(ValueError):
+    60	            observation(observed_at="yesterday")
+    61	        with self.assertRaises(TypeError):
+    62	            observation(status="OBSERVED")
+    63	        with self.assertRaises(TypeError):
+    64	            observation(license_status="OPEN")
+    65	
+    66	    def test_rejects_proof_language_in_summary(self) -> None:
+    67	        with self.assertRaises(ValueError):
+    68	            observation(content_summary="The theorem is proved and the problem is solved.")
+    69	
+    70	    def test_allows_descriptive_open_word_without_status_assertion(self) -> None:
+    71	        value = observation(content_summary="The paper studies an open dataset and records metadata.")
+    72	        self.assertEqual(value.status, ObservationStatus.OBSERVED)
+    73	
+    74	    def test_observation_is_not_a_source_claim(self) -> None:
+    75	        value = observation()
+    76	        self.assertNotIn("claimed_result", value.to_dict())
+    77	        self.assertNotIn("linked_claim_ids", value.to_dict())
+    78	
+    79	    def test_rejects_unknown_fields_and_bad_digest(self) -> None:
+    80	        with self.assertRaises(ValueError):
+    81	            SourceObservation.from_dict({**observation().to_dict(), "extra": True})
+    82	        with self.assertRaises(ValueError):
+    83	            observation(content_digest_sha256="bad")
+    84	
+    85	
+    86	if __name__ == "__main__":
+    87	    unittest.main()
+
+exec
+/bin/zsh -lc "nl -ba agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/ledger/L2-integrity-repair.json | sed -n '1,260p'; nl -ba agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/task.txt | sed -n '1,260p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	{
+     2	  "artifact_dir": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity",
+     3	  "attempts": [],
+     4	  "automatic_executor_switch": false,
+     5	  "automatic_l4_fallback": false,
+     6	  "final_decision": "running",
+     7	  "l3_escalation_limit": 1,
+     8	  "l3_wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh",
+     9	  "ledger_path": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/ledger/L2-integrity-repair.json",
+    10	  "primary_executor": "lw-luna",
+    11	  "primary_retry_limit": 1,
+    12	  "primary_wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+    13	  "project_root": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research",
+    14	  "schema_version": 2,
+    15	  "spawn_agent_fallback": false,
+    16	  "started_at": "2026-08-31T08:21:28.425607+00:00",
+    17	  "task_file": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/task.txt",
+    18	  "task_id": "L2-integrity-repair",
+    19	  "task_sha256": "968f3662a6dec7e4f97504c0d2f1979506b5e18c8a55e04f15be966af5146560",
+    20	  "validation_command_file": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/validation.sh",
+    21	  "validation_command_sha256": "a0db7bc122b3183aaa5b0a66a6eabd5c552d5ec91c8b6d1ce5b47db321f1eb5b",
+    22	  "validation_execution_mode": "prelaunch-bytes-via-stdin"
+    23	}
+     1	Task ID: L2-integrity-repair
+     2	Direct parent: L2 / A2 acceptance remediation
+     3	Pinned source: bf7739a5b79099f5136aecd82efd840f8153e33a, except the coordinator's reverted uncommitted SSOT status edits.
+     4	Decision: decision.problem-intelligence.amendment@2.
+     5	Invalidation keys: implementation.problem-intelligence.literature-base, acceptance.problem-intelligence.literature-base.
+     6	
+     7	Objective: repair the review-confirmed LiteratureBase integrity defects and add focused regression tests.
+     8	
+     9	Allowed read scope: matharc/v02/literature_base.py, matharc/v02/artifact_store.py, matharc/v02/source_observation.py, tests/test_v02_literature_base.py, relevant existing v02 tests.
+    10	Allowed write scope: only matharc/v02/literature_base.py and tests/test_v02_literature_base.py. Do not edit any other source, test, SSOT, evidence, progress, manifest, lock, or generated file.
+    11	Forbidden: changes to ResearchTrace, SourceRegistry, budget accounting, claim promotion, protected unrelated tests, external networking, commits, pushes, and any agent-result file other than the required structured return path.
+    12	Runtime isolation: use only tempfile-created test roots; do not reuse a repository path.
+    13	
+    14	Required behavior:
+    15	1. An existing OBSERVED record must never be overwritten or downgraded by a retry with missing/invalid digest, restricted license, budget exhaustion, mismatched content, or the same observation ID. Preserve its artifact linkage. Return an auditable non-success disposition.
+    16	2. Before returning IDEMPOTENT, verify the referenced artifact's current blob digest and size, not just manifest metadata; corruption must fail closed without replacing the OBSERVED record.
+    17	3. Make same-identity import recoverable when the content-addressed artifact blob/manifest was written but the observation manifest was not. Reuse an existing matching artifact record rather than raising duplicate artifact ID. Do not silently accept mismatching artifact metadata.
+    18	4. Loading a persisted OBSERVED observation must validate its artifact reference and actual blob integrity; fail closed on missing/damaged artifact.
+    19	5. Preserve all existing required behavior and the hard boundary that LiteratureBase never creates SourceRegistry or mathematical claims.
+    20	6. Add narrow tests for each behavior above, including reload behavior. Treat SourceObservation's media whitelist rejection as L1 contract behavior; do not widen its type acceptance in this task.
+    21	
+    22	Acceptance commands:
+    23	python3 -m unittest -v tests.test_v02_source_observation tests.test_v02_literature_base
+    24	python3 -m unittest discover -s tests
+    25	git diff --check
+    26	
+    27	Stop condition: tests pass, no paths outside allowed write scope changed, and structured return is written exactly to $STRUCTURED_RETURN_PATH as JSON with task_id, version tuple, actual read/write scope, command results, changed_files, evidence identities, unverified_items, failure_class, failure_origin, risks, shared_resource_impact, and proposed_state IMPLEMENTED or VERIFIED. Do not set ACCEPTED.
+
+codex
+代码定位已确认五个缺口都集中在 `LiteratureBase`：失败重试路径直接 `_record` 覆盖已观测记录；幂等检查只看记录字段和文件存在性；正常导入无条件调用 `put_bytes`；初始化只加载观察清单、不校验观察到 artifact 的引用。修复会在 `LiteratureBase` 内增加目标 artifact 的实际字节校验与“复用或拒绝”分支，不触碰 `ArtifactStore`、`SourceObservation` 或预算逻辑；测试只扩展现有 LiteratureBase 测试并继续使用 `tempfile`。
+exec
+/bin/zsh -lc 'python3 -m unittest -v tests.test_v02_source_observation tests.test_v02_literature_base' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 55ms:
+test_allows_descriptive_open_word_without_status_assertion (tests.test_v02_source_observation.SourceObservationTests.test_allows_descriptive_open_word_without_status_assertion) ... ok
+test_observation_is_not_a_source_claim (tests.test_v02_source_observation.SourceObservationTests.test_observation_is_not_a_source_claim) ... ok
+test_rejects_invalid_timestamp_and_bare_status_strings (tests.test_v02_source_observation.SourceObservationTests.test_rejects_invalid_timestamp_and_bare_status_strings) ... ok
+test_rejects_latest_version_and_unsupported_media (tests.test_v02_source_observation.SourceObservationTests.test_rejects_latest_version_and_unsupported_media) ... ok
+test_rejects_proof_language_in_summary (tests.test_v02_source_observation.SourceObservationTests.test_rejects_proof_language_in_summary) ... ok
+test_rejects_unknown_fields_and_bad_digest (tests.test_v02_source_observation.SourceObservationTests.test_rejects_unknown_fields_and_bad_digest) ... ok
+test_round_trip_and_deterministic_key (tests.test_v02_source_observation.SourceObservationTests.test_round_trip_and_deterministic_key) ... ok
+test_same_identity_different_digest_is_conflict (tests.test_v02_source_observation.SourceObservationTests.test_same_identity_different_digest_is_conflict) ... ok
+test_unknown_license_is_pending_only (tests.test_v02_source_observation.SourceObservationTests.test_unknown_license_is_pending_only) ... ok
+test_budget_blocks_before_write_and_does_not_create_claims (tests.test_v02_literature_base.LiteratureBaseTests.test_budget_blocks_before_write_and_does_not_create_claims) ... ok
+test_digest_errors_and_missing_digest_remain_pending (tests.test_v02_literature_base.LiteratureBaseTests.test_digest_errors_and_missing_digest_remain_pending) ... ok
+test_duplicate_observation_id_cannot_overwrite_another_identity (tests.test_v02_literature_base.LiteratureBaseTests.test_duplicate_observation_id_cannot_overwrite_another_identity) ... ok
+test_failures_remain_pending_without_artifacts (tests.test_v02_literature_base.LiteratureBaseTests.test_failures_remain_pending_without_artifacts) ... ok
+test_import_idempotency_conflict_and_reload (tests.test_v02_literature_base.LiteratureBaseTests.test_import_idempotency_conflict_and_reload) ... ok
+test_pending_license_can_be_retried_after_license_confirmation (tests.test_v02_literature_base.LiteratureBaseTests.test_pending_license_can_be_retried_after_license_confirmation) ... ok
+test_registry_is_not_created_or_mutated (tests.test_v02_literature_base.LiteratureBaseTests.test_registry_is_not_created_or_mutated) ... ok
+test_unsupported_media_is_rejected_by_observation_contract (tests.test_v02_literature_base.LiteratureBaseTests.test_unsupported_media_is_rejected_by_observation_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 17 tests in 0.013s
+
+OK
+
+2026-08-31T08:27:25.032131Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (1/5 in 197ms)... turn_id=01a056e8-c161-78d3-84a0-c10430a6aa4f retries=1 max_retries=5 sampling_error=stream disconnected before completion: Upstream request failed
+ERROR: Reconnecting... 1/5
+2026-08-31T08:27:28.521715Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (2/5 in 383ms)... turn_id=01a056e8-c161-78d3-84a0-c10430a6aa4f retries=2 max_retries=5 sampling_error=unexpected status 503 Service Unavailable: Service temporarily unavailable, url: http://localhost:8080/responses, request id: e6f34f90-8cab-4a37-8558-c885d02f611e
+ERROR: Reconnecting... 2/5
+2026-08-31T08:27:32.039830Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (3/5 in 722ms)... turn_id=01a056e8-c161-78d3-84a0-c10430a6aa4f retries=3 max_retries=5 sampling_error=unexpected status 503 Service Unavailable: Service temporarily unavailable, url: http://localhost:8080/responses, request id: 8fbe0c07-81c2-488f-b318-1499d40a900a
+ERROR: Reconnecting... 3/5
+2026-08-31T08:27:35.897659Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (4/5 in 1.543s)... turn_id=01a056e8-c161-78d3-84a0-c10430a6aa4f retries=4 max_retries=5 sampling_error=unexpected status 503 Service Unavailable: Service temporarily unavailable, url: http://localhost:8080/responses, request id: cd632c46-e2e9-4e83-b969-5fd7173e8594
+ERROR: Reconnecting... 4/5
+2026-08-31T08:27:40.890985Z  WARN codex_core::responses_retry: stream disconnected - retrying sampling request (5/5 in 3.203s)... turn_id=01a056e8-c161-78d3-84a0-c10430a6aa4f retries=5 max_retries=5 sampling_error=unexpected status 503 Service Unavailable: Service temporarily unavailable, url: http://localhost:8080/responses, request id: f04d1968-246d-46aa-bad4-c8c442cb3059
+ERROR: Reconnecting... 5/5
+ERROR: unexpected status 503 Service Unavailable: Service temporarily unavailable, url: http://localhost:8080/responses, request id: 8ed0a95a-722f-49dc-af23-d41e958a1549
+ERROR: unexpected status 503 Service Unavailable: Service temporarily unavailable, url: http://localhost:8080/responses, request id: 8ed0a95a-722f-49dc-af23-d41e958a1549
+2026-08-31T08:27:47.192453Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: failed to resolve OAuth metadata before using stored credentials
+tokens used
+55,715
