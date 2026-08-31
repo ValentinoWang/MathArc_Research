@@ -1,0 +1,14 @@
+{
+  "evidence_id": "EV-D2-DECISION-2",
+  "task_id": "D2",
+  "evidence_level": "human-audit",
+  "observed_at": "2026-08-31",
+  "source_revision": "797b20fe91776602037ad22ae667086099def189",
+  "decision": "APPROVED",
+  "choice": "union-closed",
+  "scope": "首个主题采用并集封闭问题；已解决碰撞题对照取 arXiv 2601.22401 列出的数据库标记开放但文献已解决问题。",
+  "non_claims": ["不预断开放状态", "不预断完整解答", "不预断结果新颖性"],
+  "actor": "用户（研究负责人/仓库所有者）",
+  "decision_version": 2,
+  "acceptance_contract": "decision.problem-intelligence.first-topic@2"
+}

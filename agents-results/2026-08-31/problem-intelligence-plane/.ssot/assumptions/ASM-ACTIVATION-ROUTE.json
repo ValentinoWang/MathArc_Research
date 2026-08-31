@@ -2,7 +2,7 @@
   "assumption_id": "ASM-ACTIVATION-ROUTE",
   "decision_semantic_key": "decision.problem-intelligence.amendment",
   "expected_value": "supporting-slice-approved",
-  "state": "ACTIVE",
+  "state": "CONFIRMED",
   "invalidation_keys": ["decision.problem-intelligence.amendment"],
-  "scope": "仅允许 L1 生成可撤销的文献合同隔离草稿；不允许进入权威合同或正式发布。"
+  "scope": "A1 已批准支持性小切片；L1 可进入正式合同编译，但仍不得越过后续验收门直接发布。"
 }

@@ -1,0 +1,13 @@
+{
+  "evidence_id": "EV-A1-DECISION-2",
+  "task_id": "A1",
+  "evidence_level": "human-audit",
+  "observed_at": "2026-08-31",
+  "source_revision": "797b20fe91776602037ad22ae667086099def189",
+  "decision": "APPROVED",
+  "scope": "批准五个发布切片；Gate 0 独立仓库 registry 修复作为前置/并行条款；视图定义回填和 S1 三例纸面演练属于 revision 2。",
+  "guardrails": ["资料观察不等于证明证据", "开放状态不等于永久开放", "候选结果必须另做新颖性审计"],
+  "actor": "用户（研究负责人/仓库所有者）",
+  "decision_version": 2,
+  "acceptance_contract": "decision.problem-intelligence.amendment@2"
+}

@@ -22,7 +22,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 本计划把评审建议收敛成五个可以分别验收、分别停止的发布切片。当前唯一可以立即执行的工作是治理对账和两个待拍板选项；后续实现必须等研究负责人和仓库所有者正式批准修订。计划不改变现有论文准备路线，也不改变正式结论的唯一晋升入口。
 
-本 revision 2 固定机器源中的两组定义：四路检索为正典来源前向引用、名称/别名/等价表述、陈述与数学结构语义检索、综述/作者/问题源及专家线索；三种真实档案为 Frankl q=6、数据库标 open 但文献实际已解决的碰撞题、当前确实需要继续研究的问题。三例只验证资料、状态和预算闭环，不预先证明开放状态或结果新颖性。
+本修订版本 2 固定机器源中的两组定义：四路检索为正典来源前向引用、名称/别名/等价表述、陈述与数学结构语义检索、综述/作者/问题源及专家线索；三种真实档案为 Frankl q=6、数据库标记为 open（开放）但文献实际已解决的碰撞题、当前确实需要继续研究的问题。三例只验证资料、状态和预算闭环，不预先证明开放状态或结果新颖性。
 
 首个目标是形成一条最小的“资料观察—问题状态—新颖性审计—预算授权”链路。它先服务现有的论文准备和资料登记能力，再用一个主题和三份真实档案验证边界。只有回归记录表明流程稳定，才考虑扩大主题数量或增加长期观测。
 
@@ -133,14 +133,14 @@ main_thread_policy: orchestration-only
 main_thread_source_write: false
 planning source: .ssot/planning-compiler.json
 machine source: .ssot/manifest.json
-current project HEAD: 836dc6860f8f997e4e128bcd745c96b98c6b9b29
+current project HEAD: 797b20fe91776602037ad22ae667086099def189
 ```
 
 ### 发布、基线与候选
 
 | Macro phase | Release ID | User value | Independent acceptance | Independent failure | Development baseline | Promotion baseline | Release candidate |
 |---|---|---|---|---|---|---|---|
-| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:836dc6860f8f997e4e128bcd745c96b98c6b9b29` | `main:836dc6860f8f997e4e128bcd745c96b98c6b9b29` | `candidate:pi-r1-v1` |
+| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:797b20fe91776602037ad22ae667086099def189` | `main:797b20fe91776602037ad22ae667086099def189` | `candidate:pi-r1-v2` |
 | P1 共享文献资料底座 | PI-R2 | 公开资料可追溯导入 | 观察、去重、预算和信任门 | 资料停留待审 | `candidate:pi-r1-v1` | `accepted:pi-r1-v1` | `candidate:pi-r2-v1` |
 | P2 问题状态与新颖性审计 | PI-R3 | 状态与新颖性分离 | 四路检索和失效负测 | 冻结完整预算 | `candidate:pi-r2-v1` | `accepted:pi-r2-v1` | `candidate:pi-r3-v1` |
 | P3 一次性主题观测 | PI-R4 | 三例真实闭环 | 重放、恢复、去重和人工审计 | 进入人工通道 | `candidate:pi-r3-v1` | `accepted:pi-r3-v1` | `candidate:pi-r4-v1` |
@@ -204,10 +204,10 @@ current project HEAD: 836dc6860f8f997e4e128bcd745c96b98c6b9b29
 |---|---|---|---|---:|---|---|---|---|---|
 | CHARTER | P0 | 1/1/1/1/2 | ACCEPTED | 0 | 仓库所有者 | EG-PLAN | 无 | source:authority-reconciled | F1 |
 | F1 | P0 | 1/1/1/1/2 | ACCEPTED | 0 | 规划编排者 | EG-PLAN | 无 | source:fact-reconciliation | D1,D2 |
-| D1 | P0 | 1/1/1/1/2 | READY | 0 | 研究负责人 | EG-PLAN | 待人工选择 | source:option-draft | A1 |
-| D2 | P0 | 1/1/1/1/2 | READY | 0 | 研究负责人 | EG-PLAN | 待人工选择 | source:option-draft | A1 |
-| A1 | P0 | 1/1/1/1/2 | BLOCKED | 0 | 研究负责人和仓库所有者 | EG-PLAN | D1、D2 未接受 | source:decision-pending | L1 |
-| L1 | P1 | 1/1/1/1/2 | READY | 0 | 研究基础设施负责人 | EG-PLAN | 仅可按活动假设写隔离草稿 | source:conditional-draft | L2 |
+| D1 | P0 | 1/1/1/1/2 | ACCEPTED | 0 | 研究负责人 | EG-PLAN | 支持性小切片已批准 | source:decision-accepted | A1 |
+| D2 | P0 | 1/1/1/1/2 | ACCEPTED | 0 | 研究负责人 | EG-PLAN | union-closed 已批准 | source:decision-accepted | A1 |
+| A1 | P0 | 1/1/1/1/2 | ACCEPTED | 0 | 研究负责人和仓库所有者 | EG-PLAN | revision 2 已批准 | source:decision-accepted | L1 |
+| L1 | P1 | 1/1/1/1/2 | READY | 0 | 研究基础设施负责人 | EG-PLAN | 正式合同编译已解锁 | source:ready | L2 |
 | L2 | P1 | 1/1/1/1/2 | BLOCKED | 0 | 研究基础设施负责人 | EG-PLAN | L1 未接受 | source:not-started | A2 |
 | A2 | P1 | 1/1/1/1/2 | BLOCKED | 0 | 验收负责人 | EG-PLAN | L2 未接受 | source:not-started | S1 |
 | S1 | P2 | 1/1/1/1/2 | BLOCKED | 0 | 问题状态负责人 | EG-PLAN | A2 未接受 | source:not-started | S2 |
@@ -226,10 +226,10 @@ current project HEAD: 836dc6860f8f997e4e128bcd745c96b98c6b9b29
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
 | CHARTER | decision.problem-intelligence.charter | charter | governance | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | none | none | none | none | decision.problem-intelligence.charter | isolated-record | 仓库所有者 |
 | F1 | fact.problem-intelligence.authority-reconciliation | fact-discovery | governance | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | CHARTER | none | none | none | fact.problem-intelligence.authority-reconciliation | isolated-record | 规划编排者 |
-| D1 | decision.problem-intelligence.activation-route | decision-acceptance | governance | READY | PROPOSED | 1 | FORMAL | F1 | none | none | none | decision.problem-intelligence.activation-route | isolated-record | 研究负责人 |
-| D2 | decision.problem-intelligence.first-topic | decision-acceptance | governance | READY | PROPOSED | 1 | FORMAL | F1 | none | none | none | decision.problem-intelligence.first-topic | isolated-record | 研究负责人 |
-| A1 | decision.problem-intelligence.amendment | decision-acceptance | governance | BLOCKED | PROPOSED | 1 | FORMAL | D1,D2 | none | none | decision.problem-intelligence.activation-route@1,decision.problem-intelligence.first-topic@1 | decision.problem-intelligence.amendment | isolated-record | 研究负责人和仓库所有者 |
-| L1 | contract.problem-intelligence.source-observation | contract-compile | literature | READY | NOT_APPLICABLE | n/a | CONDITIONAL | A1 | none | ASM-ACTIVATION-ROUTE | decision.problem-intelligence.amendment@1 | contract.problem-intelligence.source-observation | isolated-draft | 研究基础设施负责人 |
+| D1 | decision.problem-intelligence.activation-route | decision-acceptance | governance | ACCEPTED | ACCEPTED | 2 | FORMAL | F1 | none | none | none | decision.problem-intelligence.activation-route | isolated-record | 研究负责人 |
+| D2 | decision.problem-intelligence.first-topic | decision-acceptance | governance | ACCEPTED | ACCEPTED | 2 | FORMAL | F1 | none | none | none | decision.problem-intelligence.first-topic | isolated-record | 研究负责人 |
+| A1 | decision.problem-intelligence.amendment | decision-acceptance | governance | ACCEPTED | ACCEPTED | 2 | FORMAL | D1,D2 | none | none | decision.problem-intelligence.activation-route@2,decision.problem-intelligence.first-topic@2 | decision.problem-intelligence.amendment | isolated-record | 研究负责人和仓库所有者 |
+| L1 | contract.problem-intelligence.source-observation | contract-compile | literature | READY | NOT_APPLICABLE | n/a | FORMAL | A1 | none | none | decision.problem-intelligence.amendment@2 | contract.problem-intelligence.source-observation | isolated-record | 研究基础设施负责人 |
 | L2 | implementation.problem-intelligence.literature-base | implementation | literature | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | L1 | none | none | decision.problem-intelligence.amendment@1 | implementation.problem-intelligence.literature-base | implementation | 研究基础设施负责人 |
 | A2 | acceptance.problem-intelligence.literature-base | validation | literature | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | L2 | none | none | decision.problem-intelligence.amendment@1 | acceptance.problem-intelligence.literature-base | evidence-only | 验收负责人 |
 | S1 | implementation.problem-intelligence.status-model | implementation | problem-status | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | A2 | none | none | decision.problem-intelligence.amendment@1 | implementation.problem-intelligence.status-model | implementation | 问题状态负责人 |
@@ -268,22 +268,20 @@ current project HEAD: 836dc6860f8f997e4e128bcd745c96b98c6b9b29
 
 | Frontier | Task ID | Eligibility | Unsatisfied hard dependencies | Active assumptions | Resource decision |
 |---|---|---|---|---|---|
-| formal-decision-frontier | D1 | FORMAL | none | none | conflict-free |
-| formal-decision-frontier | D2 | FORMAL | none | none | conflict-free |
-| conditional-contract-frontier | L1 | CONDITIONAL | A1 | ASM-ACTIVATION-ROUTE | conflict-free |
+| implementation-frontier | L1 | FORMAL | none | none | conflict-free |
 
 ### 波前指标
 
 | Metric | Value | Basis |
 |---|---:|---|
-| ready-frontier-width | 3 | 机器状态为 READY 的节点数，包含一个条件草稿 |
-| formal-ready | 2 | D1、D2 的正式依赖已满足 |
-| conditional-ready | 1 | L1 受活动假设保护且只写隔离草稿 |
+| ready-frontier-width | 1 | 机器状态为 READY 的节点数 |
+| formal-ready | 1 | L1 的 A1 正式依赖已满足 |
+| conditional-ready | 0 | 没有条件草稿 |
 | global-completeness-barriers | 0 | 没有把全局完成度作为普通节点前置条件 |
 | critical-path-length | 16 | 显式硬边上的最长节点路径 |
-| graph-ready-width | 2 | 结构分析器按已接受父节点计算 |
-| graph-antichain-width | 2 | D1 与 D2 构成最大反链 |
-| resource-verified-width | 2 | D1、D2 的读写区和资源声明不冲突 |
+| graph-ready-width | 1 | 结构分析器按已接受父节点计算 |
+| graph-antichain-width | 1 | 当前反链只有 L1 |
+| resource-verified-width | 1 | L1 的读写区和资源声明不冲突 |
 
 ### 叶交付物清单
 
@@ -313,7 +311,7 @@ current project HEAD: 836dc6860f8f997e4e128bcd745c96b98c6b9b29
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | W2-formal-frontier | DL-D1,DL-D2 | 2 | 0 | 2 | 1 | 2 | 2 | 2 | 2 |
 
-并行宽度的逻辑目标由独立交付物决定；当前没有注册外部 worker，因此实际执行由人工负责人串行完成。条件性 `L1` 不进入正式图就绪宽度，但保留在状态前沿中以便决定接受后立即重算。
+并行宽度的逻辑目标由独立交付物决定；当前正式前沿只有 L1。L2 及后续实现必须等待上游验收节点，不因决定记录而越过依赖。
 
 ### 假设与冲突登记
 

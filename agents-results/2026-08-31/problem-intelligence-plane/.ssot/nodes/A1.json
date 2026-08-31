@@ -4,16 +4,16 @@
   "stage": "P0",
   "work_kind": "decision-acceptance",
   "domain_lane": "governance",
-  "execution_state": "BLOCKED",
-  "decision_state": "PROPOSED",
-  "decision_version": 1,
+  "execution_state": "ACCEPTED",
+  "decision_state": "ACCEPTED",
+  "decision_version": 2,
   "readiness_mode": "FORMAL",
   "hard_dependencies": ["D1", "D2"],
   "soft_dependencies": [],
   "assumption_ids": [],
   "decision_refs": [
-    {"semantic_key": "decision.problem-intelligence.activation-route", "version": 1},
-    {"semantic_key": "decision.problem-intelligence.first-topic", "version": 1}
+    {"semantic_key": "decision.problem-intelligence.activation-route", "version": 2},
+    {"semantic_key": "decision.problem-intelligence.first-topic", "version": 2}
   ],
   "invalidation_keys": ["decision.problem-intelligence.amendment"],
   "write_authority": "isolated-record",

@@ -1,0 +1,13 @@
+{
+  "evidence_id": "EV-D1-DECISION-2",
+  "task_id": "D1",
+  "evidence_level": "human-audit",
+  "observed_at": "2026-08-31",
+  "source_revision": "797b20fe91776602037ad22ae667086099def189",
+  "decision": "APPROVED",
+  "choice": "supporting-slice",
+  "scope": "问题情报平面仅作为现有论文准备和资料登记的支持性小切片；不批准完整平台或绕过正式数学结论晋升入口。",
+  "actor": "用户（研究负责人/仓库所有者）",
+  "decision_version": 2,
+  "acceptance_contract": "decision.problem-intelligence.activation-route@2"
+}
