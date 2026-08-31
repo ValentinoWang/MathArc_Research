@@ -1,0 +1,8 @@
+# MathArc Research repository-local authority registry.
+# Kept at repository root so clean-checkout CI is self-contained.
+profiles:
+  project-matharc-research:
+    extends: core
+    project_namespace: .
+    status: active
+    repository: ValentinoWang/MathArc_Research

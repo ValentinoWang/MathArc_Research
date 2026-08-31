@@ -66,7 +66,7 @@
       "acceptance_command": "python3 /Users/vsiyo/.codex/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
       "future_phase_required_for_success": false,
       "development_baseline": "git:836dc6860f8f997e4e128bcd745c96b98c6b9b29",
-      "promotion_baseline": "main:836dc6860f8f997e4e128bcd745c96b98c6b9b29",
+      "promotion_baseline": "A1-repin-required:main:5d22123919382158a481cc80830197fcaedcf30b",
       "release_candidate": "candidate:pi-r1-v1"
     },
     {
@@ -147,7 +147,7 @@
     {"id": "L1", "kind": "implementation", "goal": "定义统一文献观察、版本、许可和内容摘要合同。", "dependencies": ["A1"], "acceptance": "合同能区分观察资料与证明证据，并能拒绝缺失版本或许可依据。", "owner": "研究基础设施负责人"},
     {"id": "L2", "kind": "implementation", "goal": "复用 SourceRegistry、ArtifactStore 和预算边界实现开放资料导入。", "dependencies": ["L1"], "acceptance": "重复导入幂等，超预算和不受支持内容类型均停在待审状态。", "owner": "研究基础设施负责人"},
     {"id": "A2", "kind": "validation", "goal": "验收统一文献资料底座的静态和 fixture 证据。", "dependencies": ["L2"], "acceptance": "专项测试通过且每项负面路径都有可追溯证据。", "owner": "验收负责人"},
-    {"id": "S1", "kind": "implementation", "goal": "建立 StatementVersion、OpenStatusCertificate 和 ProblemDossierSnapshot 的关系。", "dependencies": ["A2"], "acceptance": "命题摘要变化、证书过期和来源缺失会使状态失效。", "owner": "问题状态负责人"},
+    {"id": "S1", "kind": "implementation", "goal": "建立 StatementVersion、OpenStatusCertificate 和 ProblemDossierSnapshot 的关系。", "dependencies": ["A2"], "acceptance": "命题摘要变化、证书过期和来源缺失会使状态失效；实现前必须对 T2 的 Frankl q=6、已解决碰撞题、确实开放题三例真实数据完成纸面 dry-run 并通过合同校验。", "owner": "问题状态负责人"},
     {"id": "S2", "kind": "implementation", "goal": "建立独立的 NoveltyAuditRecord 及人工审计入口。", "dependencies": ["S1"], "acceptance": "前向引用、别名语义、结构检索和综述线索四路结果可分开记录。", "owner": "文献审计负责人"},
     {"id": "A3", "kind": "validation", "goal": "验收问题状态和新颖性审计竖切的失效与权限边界。", "dependencies": ["S2"], "acceptance": "未审计的解决声称不能获得完整预算或公开定性。", "owner": "验收负责人"},
     {"id": "T1", "kind": "implementation", "goal": "实现一次性主题观测、游标恢复和去重。", "dependencies": ["A3"], "acceptance": "同一游标可安全重放，预算和高风险事件进入人工通道。", "owner": "主题观测负责人"},

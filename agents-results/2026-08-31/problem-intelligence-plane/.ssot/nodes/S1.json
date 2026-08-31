@@ -30,7 +30,7 @@
   ],
   "produced_artifact_ids": ["DL-S1"],
   "consumed_artifact_ids": ["DL-A2"],
-  "acceptance_commands": ["python3 -m unittest"],
+  "acceptance_commands": ["python3 -m unittest", "paper dry-run: validate T2 three real archives against the S1 contract"],
   "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/S1.json"],
   "actor_pool": "human-review"
 }

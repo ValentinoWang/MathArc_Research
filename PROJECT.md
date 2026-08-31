@@ -1,6 +1,6 @@
 # MathArc Research project adapter
 
-- **Owning repository:** `Harness_Engineering`
+- **Owning repository:** `ValentinoWang/MathArc_Research`
 - **Canonical branch:** `main`
 - **Registry profile:** `project-matharc-research`（`extends: core`；活跃项目，不是仅档案命名空间）
 - **Namespace:** `./`

@@ -134,7 +134,7 @@ class AuditFixTests(unittest.TestCase):
         self.assertIn("Serve a verified MathArc v0.2 workspace", completed.stdout)
 
     def test_repository_registry_has_active_matharc_profile(self) -> None:
-        repo_root = Path(__file__).resolve().parents[3]
+        repo_root = Path(__file__).resolve().parents[1]
         registry = (repo_root / "registry.yaml").read_text(encoding="utf-8")
         self.assertIn("project-matharc-research:", registry)
         self.assertIn("project_namespace: .", registry)
