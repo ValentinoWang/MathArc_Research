@@ -21,6 +21,7 @@ from .failure_channels import (
     record_route_failure,
 )
 from .source_observation import LicenseStatus, ObservationStatus, SourceObservation, new_observation
+from .literature_base import ImportDisposition, ImportResult, LiteratureBase
 from .failure_memory import FailureMemory
 from .falsification import (
     FalsificationContractError,
@@ -102,6 +103,9 @@ __all__ = [
     "render_research_dashboard",
     "save_trace",
     "new_observation",
+    "ImportDisposition",
+    "ImportResult",
+    "LiteratureBase",
 ]
 
 __version__ = "0.2.0"
