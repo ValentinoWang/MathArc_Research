@@ -20,7 +20,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 “问题情报平面”是研究流程中的支持层：它整理公开资料、记录问题在某个时间点的开放状态，并在产生候选结果后单独检查新颖性。它不是证明系统，也不拥有最终数学结论的晋升权。本文所说的“开放”只表示在明确资料范围和观察时间内尚未得到足够反证；它不等于永久证明问题没有答案。
 
-本计划把评审建议收敛成五个可以分别验收、分别停止的发布切片。L1 资料观察合同已经实现，L2 资料导入已形成可撤销实现候选；后续正式验收仍必须由指定负责人完成。计划不改变现有论文准备路线，也不改变正式结论的唯一晋升入口。
+本计划把评审建议收敛成五个可以分别验收、分别停止的发布切片。L1 资料观察合同和 L2 资料导入已实现并完成 A2 验收；后续正式验收仍必须由各自指定负责人完成。计划不改变现有论文准备路线，也不改变正式结论的唯一晋升入口。
 
 本修订版本 2 固定机器源中的两组定义：四路检索为正典来源前向引用、名称/别名/等价表述、陈述与数学结构语义检索、综述/作者/问题源及专家线索；三种真实档案为弗兰克尔（Frankl）q=6 问题、数据库标记为开放（open）但文献实际已解决的碰撞题、当前确实需要继续研究的问题。三例只验证资料、状态和预算闭环，不预先证明开放状态或结果新颖性。
 
@@ -74,7 +74,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
 
-当前计划状态是“治理已对账、决定版本 2 已接受、L1 已实现、L2 已实现候选但等待正式验收”。它是一份开发计划和编排 SSOT，不是功能完成报告。
+当前计划状态是“治理已对账、决定版本 2 已接受、L1/L2/A2 已接受，S1 已解锁”。它是一份开发计划和编排 SSOT，不是功能完成报告。
 
 ## 七、权威边界与不确定性路由
 
@@ -207,10 +207,10 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | D1 | P0 | 1/1/1/1/2 | ACCEPTED | 0 | 研究负责人 | EG-PLAN | 支持性小切片已批准 | source:decision-accepted | A1 |
 | D2 | P0 | 1/1/1/1/2 | ACCEPTED | 0 | 研究负责人 | EG-PLAN | union-closed 已批准 | source:decision-accepted | A1 |
 | A1 | P0 | 1/1/1/1/2 | ACCEPTED | 0 | 研究负责人和仓库所有者 | EG-PLAN | revision 2 已批准 | source:decision-accepted | L1 |
-| L1 | P1 | 1/1/1/1/2 | READY | 0 | 研究基础设施负责人 | EG-PLAN | 正式合同编译已解锁 | source:ready | L2 |
-| L2 | P1 | 1/1/1/1/2 | BLOCKED | 0 | 研究基础设施负责人 | EG-PLAN | L1 未接受 | source:not-started | A2 |
-| A2 | P1 | 1/1/1/1/2 | BLOCKED | 0 | 验收负责人 | EG-PLAN | L2 未接受 | source:not-started | S1 |
-| S1 | P2 | 1/1/1/1/2 | BLOCKED | 0 | 问题状态负责人 | EG-PLAN | A2 未接受 | source:not-started | S2 |
+| L1 | P1 | 1/1/1/1/2 | ACCEPTED | 0 | 研究基础设施负责人 | EG-PLAN | 用户验收确认 | source:accepted | L2 |
+| L2 | P1 | 1/1/1/1/2 | ACCEPTED | 0 | 研究基础设施负责人 | EG-PLAN | 完整性修复后接受 | source:accepted | A2 |
+| A2 | P1 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 用户验收确认，专项负测通过 | source:accepted | S1 |
+| S1 | P2 | 1/1/1/1/2 | READY | 0 | 问题状态负责人 | EG-PLAN | A2 已接受；需先完成三例纸面 dry-run | source:ready | S2 |
 | S2 | P2 | 1/1/1/1/2 | BLOCKED | 0 | 文献审计负责人 | EG-PLAN | S1 未接受 | source:not-started | A3 |
 | A3 | P2 | 1/1/1/1/2 | BLOCKED | 0 | 验收负责人 | EG-PLAN | S2 未接受 | source:not-started | T1 |
 | T1 | P3 | 1/1/1/1/2 | BLOCKED | 0 | 主题观测负责人 | EG-PLAN | A3 未接受 | source:not-started | T2 |
@@ -229,10 +229,10 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | D1 | decision.problem-intelligence.activation-route | decision-acceptance | governance | ACCEPTED | ACCEPTED | 2 | FORMAL | F1 | none | none | none | decision.problem-intelligence.activation-route | isolated-record | 研究负责人 |
 | D2 | decision.problem-intelligence.first-topic | decision-acceptance | governance | ACCEPTED | ACCEPTED | 2 | FORMAL | F1 | none | none | none | decision.problem-intelligence.first-topic | isolated-record | 研究负责人 |
 | A1 | decision.problem-intelligence.amendment | decision-acceptance | governance | ACCEPTED | ACCEPTED | 2 | FORMAL | D1,D2 | none | none | decision.problem-intelligence.activation-route@2,decision.problem-intelligence.first-topic@2 | decision.problem-intelligence.amendment | isolated-record | 研究负责人和仓库所有者 |
-| L1 | contract.problem-intelligence.source-observation | contract-compile | literature | READY | NOT_APPLICABLE | n/a | FORMAL | A1 | none | none | decision.problem-intelligence.amendment@2 | contract.problem-intelligence.source-observation | isolated-record | 研究基础设施负责人 |
-| L2 | implementation.problem-intelligence.literature-base | implementation | literature | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | L1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.literature-base | implementation | 研究基础设施负责人 |
-| A2 | acceptance.problem-intelligence.literature-base | validation | literature | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | L2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.literature-base | evidence-only | 验收负责人 |
-| S1 | implementation.problem-intelligence.status-model | implementation | problem-status | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | A2 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.status-model | implementation | 问题状态负责人 |
+| L1 | contract.problem-intelligence.source-observation | contract-compile | literature | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A1 | none | none | decision.problem-intelligence.amendment@2 | contract.problem-intelligence.source-observation | isolated-record | 研究基础设施负责人 |
+| L2 | implementation.problem-intelligence.literature-base | implementation | literature | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | L1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.literature-base | implementation | 研究基础设施负责人 |
+| A2 | acceptance.problem-intelligence.literature-base | validation | literature | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | L2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.literature-base | evidence-only | 验收负责人 |
+| S1 | implementation.problem-intelligence.status-model | implementation | problem-status | READY | NOT_APPLICABLE | n/a | FORMAL | A2 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.status-model | implementation | 问题状态负责人 |
 | S2 | implementation.problem-intelligence.novelty-audit | implementation | novelty-audit | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | S1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.novelty-audit | implementation | 文献审计负责人 |
 | A3 | acceptance.problem-intelligence.status-novelty | validation | novelty-audit | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | S2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.status-novelty | evidence-only | 验收负责人 |
 | T1 | implementation.problem-intelligence.topic-observation | implementation | topic-observation | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | A3 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.topic-observation | implementation | 主题观测负责人 |
