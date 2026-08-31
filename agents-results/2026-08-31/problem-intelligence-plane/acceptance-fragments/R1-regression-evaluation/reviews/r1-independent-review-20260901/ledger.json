@@ -1,0 +1,44 @@
+{
+  "review_campaign_id": "R1-independent-review-20260901",
+  "frozen_head": "ad28c1d8225f0305095ee3b88c6bef13952ee92b",
+  "frozen_input_manifest": "frozen-inputs.json",
+  "frozen_input_manifest_sha256": "4deb2f3963ac0cbf0e17e38e055e262fe9b72c2536bb0d836d92eb4b11bb956b",
+  "launch_barrier": "both attempt-1 PIDs were registered before the first wait",
+  "attempts": [
+    {
+      "lane": "ablation-boundary",
+      "attempt": 1,
+      "reviewer_identity": "r1-ablation-boundary-l3-luna",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh",
+      "pid": 29463,
+      "mode": "zero-write",
+      "result": "TIMEOUT_NO_TERMINAL_REPORT",
+      "failure_class": "transport",
+      "failure_origin": "worker-transport",
+      "log_path": "attempts/ablation-boundary-attempt1-timeout.log",
+      "log_sha256": "120e7a4c3ec64d7855fd183330eba3438559ede48e69cec41c918cafc1af3454",
+      "prompt_cleanup": "completed after exit evidence registration; prelaunch prompt hash was not captured and this attempt is not reusable",
+      "runtime_handle_cleanup": "completed by termination after the six-minute review limit",
+      "codex_transcript_retention": "preserve ~/.codex/sessions and ~/.codex/archived_sessions"
+    },
+    {
+      "lane": "identity-contract",
+      "attempt": 1,
+      "reviewer_identity": "r1-identity-contract-l4-sol",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+      "pid": 29464,
+      "mode": "zero-write",
+      "result": "TIMEOUT_WITH_BLOCKING_IDENTITY_FINDING",
+      "failure_class": "verification",
+      "failure_origin": "test-oracle",
+      "finding": "R1 evidence recorded the superseded protected-test SHA-256 instead of the contract-locked test bytes.",
+      "log_path": "attempts/identity-contract-attempt1-timeout.log",
+      "log_sha256": "df467d785ed9af2b0848fb7650b56d1ed9fbed74acd95b95e44c04c9684e1160",
+      "prompt_cleanup": "completed after exit evidence registration; prelaunch prompt hash was not captured and this attempt is not reusable",
+      "runtime_handle_cleanup": "completed by termination after the six-minute review limit",
+      "codex_transcript_retention": "preserve ~/.codex/sessions and ~/.codex/archived_sessions"
+    }
+  ],
+  "disposition": "NOT_A_PASS_REPAIR_REQUIRED",
+  "next_action": "Freeze a repaired candidate and run one bounded retry per lane with captured prompt hashes and terminal reports."
+}

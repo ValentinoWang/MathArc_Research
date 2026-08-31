@@ -1,11 +1,22 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-31T17:48:38.617869+00:00",
+  "generated_at": "2026-08-31T18:11:46.637920+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "47e0b203855213f5f02b99252edd1276b114f94e",
     "dirty": true,
     "dirty_files": [
+      ".pre-commit-config.yaml",
+      "AGENTS.md",
+      "Projects/Athlete-OS_repo/PROJECT.md",
+      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/SKILL.md",
+      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/agents/openai.yaml",
+      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/references/backend-variable-leakage-review.md",
+      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/references/impeccable-localization.md",
+      "Projects/Athlete-OS_repo/source-provenance.json",
+      "acceptance/human/PZ-source-integrity/binding.md",
+      "acceptance/human/PZ-source-integrity/checklist.md",
+      "acceptance/index.md",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-C1-Q1.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-D1-C1.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-D1-D2.json",
@@ -30,10 +41,24 @@
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/planning-compiler.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/validation-report.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/view-sources/00-main.md",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance-contract.md",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/index.md",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/evidence/list-profiles.log",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/evidence/list-skills-flutter.log",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/evidence/list-skills-project-athlete-os.log",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/evidence/list-skills-project-hongru-digital-education.log",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/evidence/source-audit.log",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/result.md",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/unit/runs/20260901T020447Z-static-test-6e2d4f/evidence/test_harnessctl_source_audit.log",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/unit/runs/20260901T020447Z-static-test-6e2d4f/result.md",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/implementation-progress.md",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/ssot-archive.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/ssot-development-paths.md"
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/ssot-development-paths.md",
+      "registry.yaml",
+      "tools/harnessctl.py",
+      "tools/tests/test_harnessctl_source_audit.py"
     ],
-    "dirty_diff_sha256": "9065900fdd43c1761ce6874293989b317c77ccd8394794157a6ee93e2f64bc23",
+    "dirty_diff_sha256": "11b51c873e58523ab507bdc4e3f1a5cd7479efcad828e013d5949c7be13f2169",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
     "skill_sha256": "23d9638a5bd3fae1638480a1c170eac691ab6975678d752f8bd4cdf40c536d41",
@@ -41,15 +66,15 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "0cbf6a843cd0a5ff065e684e54e501b031b251ef",
+    "project_commit": "ad28c1d8225f0305095ee3b88c6bef13952ee92b",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "df383f4422452b632f00eeb9a76d039f222817f55a345a4ef70f27bd925c39c4",
+    "project_dirty_diff_sha256": "bc6fc2a5a23d8c1778e4c721d21d079777c0f200659f38d9edb086d9088e2115",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "0abd633fbe13f3a6a533e1007f5c04a34c1252a60fea32428357c252a0deeb7d",
-    "content_sha256": "0abd633fbe13f3a6a533e1007f5c04a34c1252a60fea32428357c252a0deeb7d",
+    "sha256": "918ace0075522b0e2dbbfdebb96cada0ae3c98c952ea8fffb311c5053703932a",
+    "content_sha256": "918ace0075522b0e2dbbfdebb96cada0ae3c98c952ea8fffb311c5053703932a",
     "manifest_sha256": "4d6343ca6e467d6544ce0723736c25282868283d481e1d57591ced4b44c7c224",
     "manifest_identity_sha256": "4d6343ca6e467d6544ce0723736c25282868283d481e1d57591ced4b44c7c224"
   },
@@ -66,7 +91,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 30\nruntime_skill_check: enabled\nWARN Harness source dirty files: 1\ndoctor: ok\n"
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 30\nruntime_skill_check: enabled\nWARN Harness source dirty files: 10\ndoctor: ok\n"
     },
     {
       "id": "complexity",
@@ -150,17 +175,6 @@
       "exit_code": 0,
       "result": "passed",
       "output": "{\n  \"status\": \"verified\",\n  \"source\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane\",\n  \"destination\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-08-31/matharc-research/problem-intelligence-plane\",\n  \"project_name\": \"matharc-research\",\n  \"ssot_name\": \"problem-intelligence-plane\",\n  \"snapshot_date\": \"2026-08-31\",\n  \"main_document\": \"ssot-development-paths.md\",\n  \"file_count\": 2,\n  \"contains_openproblem\": true\n}\n"
-    },
-    {
-      "id": "strict-provenance",
-      "command": [
-        "git",
-        "status",
-        "--short"
-      ],
-      "exit_code": 0,
-      "result": "passed",
-      "output": "protected Harness inputs are clean"
     }
   ],
   "parallelism": {

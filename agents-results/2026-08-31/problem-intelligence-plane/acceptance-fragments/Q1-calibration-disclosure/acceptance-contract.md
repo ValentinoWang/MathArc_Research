@@ -1,11 +1,11 @@
 # Acceptance Contract: Q1-calibration-disclosure
 
 - Task ID: Q1-calibration-disclosure
-- Contract version: 1
-- Contract status: APPROVED
+- Contract version: 2
+- Contract status: INVALIDATED_PENDING_UPSTREAM
 - Test baseline: LOCKED
 - Acceptance owner: 研究负责人
-- Approval evidence: 用户已明确要求验收通过、持续完成，并在每个阶段推送 GitHub
+- Approval evidence: 历史接受记录保留；用户于 2026-09-01 批准 R1 独立复审加固，R1 重新打开会阻断 Q1，直至 R1 在合同版本 4 下重新接受
 - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/Q1.json
 - SSOT node: Q1
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
@@ -18,7 +18,7 @@
 
 ## User and scenario
 
-研究负责人需要基于已接受的 R1 三例固定回归夹具，记录困难度、研究优先级和传播边界，而不把该记录伪装为已校准预测、数学结论或公开发布授权。
+研究负责人需要基于历史 R1 三例固定回归夹具，记录困难度、研究优先级和传播边界，而不把该记录伪装为已校准预测、数学结论或公开发布授权。当前 Q1 因 R1 重新验收而阻断，不能用于后续 A5 决定。
 
 ## Problem
 
@@ -35,7 +35,7 @@ R1 固定了三例和四路检索增量，但没有机器可核验的困难度�
 ## Normal path
 
 ```gherkin
-Given accepted R1 evidence and its fixed three-case regression fixture
+Given a byte-locked historical R1 evidence record and its fixed three-case regression fixture
 When the Q1 disclosure policy is loaded
 Then it validates every source identity, case identity, uncalibrated label, priority, readiness, disclosure limit, and policy digest
 And it returns a passive non-public policy record
@@ -86,7 +86,7 @@ And it returns a passive non-public policy record
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_calibration_disclosure.py | 0a55a78158faa4f28b47d02b983fbdbd32217155b8d8ca17e659646dd7d7ec9d | AC-01, AC-02, AC-03, AC-04 |
+| tests/test_v02_calibration_disclosure.py | 2888174c1e9ff3b739fcf57f557decb73e63a0828eda812fb4cc245cb512fd83 | AC-01, AC-02, AC-03, AC-04 |
 
 ## Requirements-test traceability
 
@@ -108,4 +108,4 @@ And it returns a passive non-public policy record
 
 ## Risks and open decisions
 
-三个固定案例不构成校准样本，也不构成统计性能、泛化、外部文献或独立数学审阅。是否公开任何范围仍由 A5 的独立发布决定处理。
+三个固定案例不构成校准样本，也不构成统计性能、泛化、外部文献或独立数学审阅。是否公开任何范围仍由 A5 的独立发布决定处理。当前 Q1 只保留历史可审计性；R1 合同版本 4 的接受完成后，必须重新核验 Q1 生命周期及其下游 A5 决定。

@@ -12,7 +12,11 @@ from matharc.v02.calibration_disclosure import CalibrationDisclosureError, Calib
 ROOT = Path(__file__).parents[1]
 FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json"
 R1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json"
+R1_HISTORICAL_EVIDENCE = (
+    ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json"
+)
 R1_FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json"
+Q1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
 
 
 class CalibrationDisclosureTests(unittest.TestCase):
@@ -28,19 +32,29 @@ class CalibrationDisclosureTests(unittest.TestCase):
         self.assertTrue(all(record.calibration_status.value == "UNCALIBRATED" for record in policy.records))
         self.assertTrue(all(record.communication_readiness.value == "NOT_READY" for record in policy.records))
 
-    def test_policy_pins_the_accepted_r1_evidence_and_fixture_content(self) -> None:
+    def test_policy_pins_historical_r1_evidence_and_fixture_content(self) -> None:
         _, policy = self.load()
-        r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
+        r1_evidence = json.loads(R1_HISTORICAL_EVIDENCE.read_text(encoding="utf-8"))
         r1_fixture = json.loads(R1_FIXTURE.read_text(encoding="utf-8"))
         self.assertEqual("EV-R1-ACCEPTED-1", r1_evidence["evidence_id"])
         self.assertEqual(
-            hashlib.sha256(R1_EVIDENCE.read_bytes()).hexdigest(), policy.r1_evidence_sha256
+            hashlib.sha256(R1_HISTORICAL_EVIDENCE.read_bytes()).hexdigest(),
+            policy.r1_evidence_sha256,
         )
         self.assertEqual(
             hashlib.sha256(R1_FIXTURE.read_bytes()).hexdigest(), policy.r1_fixture_sha256
         )
         self.assertEqual(r1_fixture["fixture_content_sha256"], policy.r1_fixture_content_sha256)
         self.assertEqual([record.case_id for record in policy.records], r1_fixture["case_ids"])
+
+    def test_current_q1_acceptance_is_blocked_while_r1_is_reopened(self) -> None:
+        r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
+        q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+        self.assertEqual("EV-R1-REOPENED-2", r1_evidence["evidence_id"])
+        self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+        self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+        self.assertEqual("BLOCKED", q1_evidence["proposed_state"])
+        self.assertEqual("R1-independent-review-contract-v4", q1_evidence["invalidation"]["cause"])
 
     def test_science_priority_remains_separate_from_communication_readiness(self) -> None:
         _, policy = self.load()

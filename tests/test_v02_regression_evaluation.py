@@ -75,10 +75,27 @@ class RegressionEvaluationTests(unittest.TestCase):
         self.assertNotIn("authorize", source)
         self.assertNotIn("http", source.lower())
 
-    def test_accepted_evidence_requires_two_distinct_durable_independent_reviews(self) -> None:
+    def test_independent_review_gate_is_fail_closed_for_pending_and_accepted_evidence(self) -> None:
         evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
         reviews = evidence["independent_ai_reviews"]
-        self.assertEqual("EV-R1-ACCEPTED-2", evidence["evidence_id"])
+        self.assertEqual(
+            hashlib.sha256(Path(__file__).read_bytes()).hexdigest(),
+            evidence["source_identity"]["protected_test_sha256"],
+        )
+        is_acceptance_claim = (
+            evidence["evidence_id"] == "EV-R1-ACCEPTED-2"
+            or evidence["acceptance_self_check"] == "pass"
+        )
+        if not is_acceptance_claim:
+            self.assertEqual("EV-R1-REOPENED-2", evidence["evidence_id"])
+            self.assertEqual("blocked", evidence["acceptance_self_check"])
+            self.assertEqual("BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS", reviews["disposition"])
+            self.assertEqual(
+                "NOT_A_PASS_REPAIR_REQUIRED",
+                json.loads(REVIEW_LEDGER.read_text(encoding="utf-8"))["disposition"],
+            )
+            return
+
         self.assertEqual("PASS", reviews["disposition"])
         self.assertEqual(4, reviews["contract_version"])
         ledger = json.loads(REVIEW_LEDGER.read_text(encoding="utf-8"))

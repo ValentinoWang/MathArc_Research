@@ -7,7 +7,7 @@
     "a4_evidence_sha256": "85a3e6335bf8e5c886bef328e87f853c8eadc132a793b55ff39a962caae618dd",
     "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
     "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
-    "protected_test_sha256": "115a979168d4d62dca45f76c977f43f7d92d19814ce0740ef9f8279e3e4e550f"
+    "protected_test_sha256": "a8320b5af5c000515b0cd0bb5bc177fa4acc87ee9da63439f80f25edf26022cf"
   },
   "acceptance_self_check": "blocked",
   "acceptance_commands": [

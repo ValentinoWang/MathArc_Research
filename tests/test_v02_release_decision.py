@@ -11,16 +11,17 @@ from matharc.v02.calibration_disclosure import CalibrationDisclosurePolicy
 ROOT = Path(__file__).parents[1]
 Q1_POLICY = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json"
 Q1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
+Q1_HISTORICAL_EVIDENCE = (
+    ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/Q1-accepted-1.json"
+)
 A5_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json"
-A5_CONTRACT = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md"
-A5_BINDING = ROOT / "acceptance/human/A5-problem-intelligence-v0-release/binding.md"
 
 
 class SourceLevelReleaseDecisionTests(unittest.TestCase):
     def load(self) -> dict:
         return json.loads(A5_EVIDENCE.read_text(encoding="utf-8"))
 
-    def test_release_decision_pins_the_accepted_q1_artifacts(self) -> None:
+    def test_release_decision_pins_historical_q1_artifacts(self) -> None:
         evidence = self.load()
         policy = CalibrationDisclosurePolicy.from_dict(
             json.loads(Q1_POLICY.read_text(encoding="utf-8"))
@@ -28,7 +29,7 @@ class SourceLevelReleaseDecisionTests(unittest.TestCase):
         self.assertFalse(policy.public_release_allowed)
         self.assertEqual("EV-Q1-ACCEPTED-1", evidence["consumed_evidence"][0])
         self.assertEqual(
-            hashlib.sha256(Q1_EVIDENCE.read_bytes()).hexdigest(),
+            hashlib.sha256(Q1_HISTORICAL_EVIDENCE.read_bytes()).hexdigest(),
             evidence["source_identity"]["q1_evidence_sha256"],
         )
         self.assertEqual(
@@ -45,7 +46,7 @@ class SourceLevelReleaseDecisionTests(unittest.TestCase):
             evidence["source_identity"]["q1_protected_test_sha256"],
         )
 
-    def test_release_evidence_has_only_the_locked_schema_and_artifacts(self) -> None:
+    def test_release_evidence_is_fail_closed_when_q1_is_reopened(self) -> None:
         evidence = self.load()
         self.assertEqual(
             {
@@ -57,46 +58,21 @@ class SourceLevelReleaseDecisionTests(unittest.TestCase):
                 "release_decision",
                 "delivery_requirements",
                 "acceptance_record",
+                "invalidation",
                 "proposed_state",
                 "unverified_items",
             },
             set(evidence),
         )
-        self.assertEqual("EV-A5-ACCEPTED-1", evidence["evidence_id"])
+        self.assertEqual("EV-A5-REOPENED-2", evidence["evidence_id"])
         self.assertEqual("A5", evidence["task_id"])
-        self.assertEqual("ACCEPTED", evidence["proposed_state"])
-        expected_runs = {
-            "machine_acceptance_run": ("machine/static", "machine_acceptance_result_sha256"),
-            "human_acceptance_result": ("human", "human_acceptance_result_sha256"),
-            "release_review_run": ("release", "release_review_result_sha256"),
-        }
-        contract_hash = hashlib.sha256(A5_CONTRACT.read_bytes()).hexdigest()
-        binding_hash = hashlib.sha256(A5_BINDING.read_bytes()).hexdigest()
-        for key, (expected_lane, result_hash_key) in expected_runs.items():
-            referenced = ROOT / evidence["acceptance_record"][key]
-            self.assertTrue(referenced.is_file(), key)
-            self.assertEqual(
-                hashlib.sha256(referenced.read_bytes()).hexdigest(),
-                evidence["acceptance_record"][result_hash_key],
-                key,
-            )
-            result = referenced.read_text(encoding="utf-8")
-            self.assertIn("- Task ID: A5-problem-intelligence-v0-release", result)
-            self.assertIn(f"- Lane: {expected_lane}", result)
-            self.assertIn("- Status: PASS", result)
-            self.assertIn(
-                "- Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/"
-                "acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md",
-                result,
-            )
-            self.assertIn(f"- Contract SHA-256: {contract_hash}", result)
-            if expected_lane == "human":
-                self.assertIn(f"- Binding SHA-256: {binding_hash}", result)
+        self.assertEqual("BLOCKED", evidence["proposed_state"])
+        self.assertEqual("Q1-invalidated-by-R1-review-contract-v4", evidence["invalidation"]["cause"])
 
     def test_release_scope_is_limited_to_repository_source_delivery(self) -> None:
         evidence = self.load()
-        self.assertEqual("ACCEPTED_SOURCE_SCOPE", evidence["release_decision"]["status"])
-        self.assertTrue(evidence["release_decision"]["github_source_delivery_authorized"])
+        self.assertEqual("BLOCKED_UPSTREAM_R1_REVIEW", evidence["release_decision"]["status"])
+        self.assertFalse(evidence["release_decision"]["github_source_delivery_authorized"])
         self.assertFalse(evidence["release_decision"]["mathematical_result_publication_authorized"])
         self.assertFalse(evidence["release_decision"]["q1_public_release_allowed"])
         self.assertEqual("union-closed", evidence["release_scope"]["topic_id"])

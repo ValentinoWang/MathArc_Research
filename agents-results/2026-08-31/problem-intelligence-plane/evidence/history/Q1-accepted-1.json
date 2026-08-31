@@ -1,5 +1,5 @@
 {
-  "evidence_id": "EV-Q1-REOPENED-2",
+  "evidence_id": "EV-Q1-ACCEPTED-1",
   "task_id": "Q1",
   "consumed_evidence": ["EV-R1-ACCEPTED-1"],
   "source_identity": {
@@ -10,9 +10,9 @@
     "q1_policy_fixture_sha256": "abec04146d058c28899ffc1ac3a61d93d14c0468696b65b6558f9f6fbcab8426",
     "q1_policy_digest_sha256": "46622020c1f86981de9b2b3372f04d29abad119d823ca571998798b806006cda",
     "q1_implementation_sha256": "b4988a67c0a13918a0ce775c01be687423822c8e069c1ebb03a09c4c9b4c6535",
-    "protected_test_sha256": "2888174c1e9ff3b739fcf57f557decb73e63a0828eda812fb4cc245cb512fd83"
+    "protected_test_sha256": "0a55a78158faa4f28b47d02b983fbdbd32217155b8d8ca17e659646dd7d7ec9d"
   },
-  "acceptance_self_check": "blocked",
+  "acceptance_self_check": "pass",
   "acceptance_commands": [
     "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_calibration_disclosure tests.test_v02_regression_evaluation",
     "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest discover -s tests -p 'test_v02*.py'",
@@ -47,13 +47,7 @@
     "scope": "Q1 对 R1 固定三例的困难度、未校准预测和分级披露策略的本地验收",
     "ai_review_boundary": "AI 审阅仅提供设计和代码边界复核；它们不构成独立数学证明、外部文献结论、统计性能、生产验收或公开发布决定。"
   },
-  "invalidation": {
-    "invalidated_at": "2026-09-01",
-    "cause": "R1-independent-review-contract-v4",
-    "basis": "R1 的历史接受证据已因缺失两条持久化独立 AI PASS 报告而重新打开；Q1 只能保留为历史政策工件，不能继续作为当前接受状态或 A5 前置条件。",
-    "required_reacceptance": "等待 R1 在合同版本 4 下接受后，重新核验 Q1 的历史输入或创建新的版本化政策夹具。"
-  },
-  "proposed_state": "BLOCKED",
+  "proposed_state": "ACCEPTED",
   "unverified_items": [
     "Independent mathematical proof review",
     "Live external literature retrieval",

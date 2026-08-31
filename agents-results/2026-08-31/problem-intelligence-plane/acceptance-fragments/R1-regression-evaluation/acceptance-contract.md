@@ -88,7 +88,7 @@ And the result remains a passive evaluation artifact
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_regression_evaluation.py | 0fa8fd335e7520805de8dab14a52ad5b2ea87de7b45894708cc39aa5bdc65238 | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
+| tests/test_v02_regression_evaluation.py | a8320b5af5c000515b0cd0bb5bc177fa4acc87ee9da63439f80f25edf26022cf | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
 
 ## Requirements-test traceability
 

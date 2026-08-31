@@ -1,11 +1,11 @@
 # Acceptance Contract: A5-problem-intelligence-v0-release
 
 - Task ID: A5-problem-intelligence-v0-release
-- Contract version: 1
-- Contract status: APPROVED
+- Contract version: 2
+- Contract status: INVALIDATED_PENDING_UPSTREAM
 - Test baseline: LOCKED
 - Acceptance owner: 研究负责人和仓库所有者
-- Approval evidence: 用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub
+- Approval evidence: 历史接受记录保留；R1 的合同版本 4 复审加固使 Q1 与 A5 当前生命周期阻断，须在上游重新接受后重新执行 A5 决定
 - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/A5.json
 - SSOT node: A5
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
@@ -18,7 +18,7 @@
 
 ## User and scenario
 
-研究负责人和仓库所有者需要将已接受的问题情报平面 v0 的仓库源级范围提交并交付到 GitHub `main`，同时防止该交付被误读为数学结论、外部资料结论或生产发布。
+研究负责人和仓库所有者需要将已接受的问题情报平面 v0 的仓库源级范围提交并交付到 GitHub `main`，同时防止该交付被误读为数学结论、外部资料结论或生产发布。当前 A5 因 R1/Q1 重新验收而阻断。
 
 ## Problem
 
@@ -35,7 +35,7 @@ Q1 仅产生三例固定档案的本地 `UNCALIBRATED`、`NOT_READY` 披露策�
 ## Normal path
 
 ```gherkin
-Given accepted Q1 evidence and its fixed uncalibrated policy
+Given a byte-locked historical Q1 evidence record and its fixed uncalibrated policy
 When the joint source-level release decision is reviewed
 Then A5 records only the accepted repository source scope and every excluded claim
 And GitHub delivery may be claimed only after the final local HEAD equals origin/main by remote ref readback
@@ -86,8 +86,8 @@ And GitHub delivery may be claimed only after the final local HEAD equals origin
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_release_decision.py | 14c6987c095dd012fb31c179e22cb95c5640a6e99cb53c75a0a4cc05c68c9573 | AC-01, AC-02, AC-03 |
-| tests/test_v02_calibration_disclosure.py | 0a55a78158faa4f28b47d02b983fbdbd32217155b8d8ca17e659646dd7d7ec9d | AC-01, AC-02 |
+| tests/test_v02_release_decision.py | 202cc472dcfb959a94f89b4701f0f54c72682d9cacce13f5f09263a6376695fc | AC-01, AC-02, AC-03 |
+| tests/test_v02_calibration_disclosure.py | 2888174c1e9ff3b739fcf57f557decb73e63a0828eda812fb4cc245cb512fd83 | AC-01, AC-02 |
 
 ## Requirements-test traceability
 
@@ -109,4 +109,4 @@ And GitHub delivery may be claimed only after the final local HEAD equals origin
 
 ## Risks and open decisions
 
-GitHub 源码交付并不回答数学真伪、文献完整性、新颖性、统计性能或生产可用性。任何面向公众的研究结论需要独立的后续授权与相应证据，不能引用 A5 代替。
+GitHub 源码交付并不回答数学真伪、文献完整性、新颖性、统计性能或生产可用性。任何面向公众的研究结论需要独立的后续授权与相应证据，不能引用 A5 代替。当前 A5 仅保留历史可审计性，R1 和 Q1 重新接受后才可再次执行发布决定。

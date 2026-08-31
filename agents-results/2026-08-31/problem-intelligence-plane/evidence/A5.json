@@ -1,5 +1,5 @@
 {
-  "evidence_id": "EV-A5-ACCEPTED-1",
+  "evidence_id": "EV-A5-REOPENED-2",
   "task_id": "A5",
   "consumed_evidence": ["EV-Q1-ACCEPTED-1"],
   "source_identity": {
@@ -28,11 +28,11 @@
     ]
   },
   "release_decision": {
-    "status": "ACCEPTED_SOURCE_SCOPE",
-    "github_source_delivery_authorized": true,
+    "status": "BLOCKED_UPSTREAM_R1_REVIEW",
+    "github_source_delivery_authorized": false,
     "mathematical_result_publication_authorized": false,
     "q1_public_release_allowed": false,
-    "reason": "Q1 remains a hash-bound, three-record, local UNCALIBRATED and NOT_READY disclosure policy; this decision delivers only the accepted repository source scope."
+    "reason": "Q1 was invalidated when R1 was reopened for its missing durable independent AI review reports. Historical source-delivery evidence is retained, but no current GitHub source delivery decision is authorized until R1 and Q1 are reaccepted."
   },
   "delivery_requirements": {
     "remote_ref_readback": "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
@@ -49,7 +49,13 @@
     "release_review_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T010900Z-local-a5c009/result.md",
     "release_review_result_sha256": "f333f921450d3deb7b2766a8fde29b01c20934b79a36c82daa9762f024fb8192"
   },
-  "proposed_state": "ACCEPTED",
+  "invalidation": {
+    "invalidated_at": "2026-09-01",
+    "cause": "Q1-invalidated-by-R1-review-contract-v4",
+    "basis": "R1 合同版本 4 使两份持久化独立 AI PASS 报告成为阻断条件，当前 Q1 已随之失效，因此 A5 的历史发布决定不得继续作为当前 GitHub 源码交付授权。",
+    "required_reacceptance": "先接受 R1，再重新核验或版本化 Q1，并在新的上游身份上重新执行 A5 的机器、人工与发布复审。"
+  },
+  "proposed_state": "BLOCKED",
   "unverified_items": [
     "Independent mathematical proof review",
     "Live external literature retrieval",

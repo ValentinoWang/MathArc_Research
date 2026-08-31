@@ -1,0 +1,17 @@
+{
+  "review_campaign_id": "R1-independent-review-20260901",
+  "frozen_head": "ad28c1d8225f0305095ee3b88c6bef13952ee92b",
+  "scope": "R1 contract-v4 acceptance hardening only; Q1 and A5 are intentionally dependency-blocked and no report may accept them.",
+  "inputs": [
+    {"path": "matharc/v02/regression_evaluation.py", "sha256": "a733a72c0d79012bf94fef04af783c2210f23a7e3f8dd8abc3aba179e20bf86d"},
+    {"path": "tests/test_v02_regression_evaluation.py", "sha256": "0fa8fd335e7520805de8dab14a52ad5b2ea87de7b45894708cc39aa5bdc65238"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json", "sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json", "sha256": "17a2106adb65c9c88541558ff2fb1f621f508a0d37a031cf387eadee07ca7a1c"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/A4.json", "sha256": "85a3e6335bf8e5c886bef328e87f853c8eadc132a793b55ff39a962caae618dd"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md", "sha256": "36950824c7e68d55f3bd601c76d157bfb2f0edd8e067850412ac4e904a179457"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json", "sha256": "d035f8776821e2b1410b68ebf975d5919b56fd76f0e6ad4aa0c2cbcb148ecbd5"},
+    {"path": "acceptance/human/R1-regression-evaluation/binding.md", "sha256": "7b32151efd84e75de3a33f06be960db2f197e986ffbdf8056c46d0462a1bf110"}
+  ],
+  "required_verdict": "PASS only if no release-blocking finding exists within the frozen R1 scope; a finding must be FAIL and prevent R1 acceptance.",
+  "review_boundary": "No mathematical proof, external literature verification, statistical-performance claim, production/device evidence, Q1 acceptance, or A5 release decision."
+}

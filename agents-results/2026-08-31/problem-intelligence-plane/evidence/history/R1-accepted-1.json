@@ -1,10 +1,7 @@
 {
   "evidence_id": "EV-R1-ACCEPTED-1",
   "task_id": "R1",
-  "historical_status": "SUPERSEDED_FOR_REVIEW_HARDENING",
-  "superseded_by": "evidence/R1.json",
-  "reason": "Two independent AI review lanes were transport-limited and produced no durable report. They were not passes; R1 contract version 4 makes durable independent PASS reports blocking.",
-  "original_evidence_sha256": "88dae7d1e4314009a6a7869f1265df0e86dc95bc6f9c8ce4797850b8040a9e06",
+  "consumed_evidence": ["EV-A4-ACCEPTED-1"],
   "source_identity": {
     "implementation_base": "2e47f5040d3a833e10de07286d68f017efec5d42",
     "a4_evidence_sha256": "85a3e6335bf8e5c886bef328e87f853c8eadc132a793b55ff39a962caae618dd",
@@ -12,23 +9,45 @@
     "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
     "protected_test_sha256": "115a979168d4d62dca45f76c977f43f7d92d19814ce0740ef9f8279e3e4e550f"
   },
-  "independent_ai_reviews": {
-    "ablation_boundary": "transport-limited-no-durable-report",
-    "identity_contract": "transport-limited-no-durable-report",
-    "disposition": "NOT_A_PASS"
+  "acceptance_self_check": "pass",
+  "acceptance_commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_regression_evaluation tests.test_v02_novelty_audit tests.test_v02_dogfood_archives",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_v02*.py'",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile matharc/v02/regression_evaluation.py tests/test_v02_regression_evaluation.py",
+    "git diff --check"
+  ],
+  "test_summary": {
+    "focused": "31 passed",
+    "v02": "227 passed, 8 skipped",
+    "full": "394 passed, 10 skipped",
+    "nonblocking_observation": "Existing ResourceWarning messages in Codex runtime tests did not fail the full suite and are outside the R1 changed scope."
   },
-  "historical_acceptance_summary": {
+  "acceptance_matrix": {
+    "three_accepted_a4_case_ids_and_four_ordered_routes": "pass",
+    "full_route_incremental_and_leave_one_route_out_calculations_are_deterministic": "pass",
+    "a4_t2_topic_case_route_query_source_and_content_digest_drift_fail_closed": "pass",
+    "only_hit_miss_gap_and_bounded_manual_minutes_are_exposed": "pass",
+    "no_trace_claim_or_authorization_dependency": "pass"
+  },
+  "independent_ai_reviews": {
+    "ablation_boundary": "transport-limited: worker read frozen source and focused test output but produced no durable report before the five-minute review limit",
+    "identity_contract": "transport-limited: worker read frozen source and focused test output but produced no durable report before the five-minute review limit",
+    "disposition": "Neither stalled review is counted as a pass. The acceptance owner reran focused, v02, and full tests directly."
+  },
+  "acceptance_record": {
     "accepted_at": "2026-09-01",
     "accepted_by": "用户（研究负责人/仓库所有者）",
-    "tests": "focused 31 passed; v02 227 passed, 8 skipped; full 394 passed, 10 skipped",
-    "boundary": "The historical tests do not replace the two missing independent review reports."
+    "human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260831T164400Z-local-a41a31/result.md",
+    "authority_basis": "用户已要求验收通过、持续完成并在每个阶段推送 GitHub；R1 的锁定合同、专项回归、v02 回归、全库回归、人工清单结果和机器合同校验均通过。",
+    "scope": "R1 对固定 A4 三例档案的四路检索回归、路线消融和保守小样本披露边界的本地验收",
+    "ai_review_boundary": "两条早期独立 AI 复审因传输停滞未形成可接受返回；它们不构成通过证据。后续独立静态审阅发现的夹具身份和人工验收记录缺口已修复并由专项负测覆盖。任何 AI 复审都不构成独立数学证明、外部文献结论或生产验收。"
   },
-  "proposed_state": "SUPERSEDED",
+  "proposed_state": "ACCEPTED",
   "unverified_items": [
-    "Independent durable AI review reports",
     "Live external literature retrieval",
     "Independent mathematical proof review",
     "Production or device behavior",
-    "Statistical performance, accuracy, recall, or generalization"
+    "Statistical performance, accuracy, recall, or generalization beyond the fixed three-case fixture"
   ]
 }
