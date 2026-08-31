@@ -38,7 +38,7 @@
   "acceptance_record": {
     "accepted_at": "2026-09-01",
     "accepted_by": "用户（研究负责人/仓库所有者）",
-    "human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/2026-09-01-user-acceptance/result.md",
+    "human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260831T164400Z-local-a41a31/result.md",
     "authority_basis": "用户已要求验收通过、持续完成并在每个阶段推送 GitHub；R1 的锁定合同、专项回归、v02 回归、全库回归、人工清单结果和机器合同校验均通过。",
     "scope": "R1 对固定 A4 三例档案的四路检索回归、路线消融和保守小样本披露边界的本地验收",
     "ai_review_boundary": "两条早期独立 AI 复审因传输停滞未形成可接受返回；它们不构成通过证据。后续独立静态审阅发现的夹具身份和人工验收记录缺口已修复并由专项负测覆盖。任何 AI 复审都不构成独立数学证明、外部文献结论或生产验收。"

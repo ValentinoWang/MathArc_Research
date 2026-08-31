@@ -1,0 +1,56 @@
+{
+  "schema_version": "1.0",
+  "policy_id": "Q1-UNCALIBRATED-DISCLOSURE-V1",
+  "topic_id": "union-closed",
+  "r1_evidence_id": "EV-R1-ACCEPTED-1",
+  "r1_evidence_sha256": "88dae7d1e4314009a6a7869f1265df0e86dc95bc6f9c8ce4797850b8040a9e06",
+  "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+  "r1_fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
+  "r1_implementation_base": "2e47f5040d3a833e10de07286d68f017efec5d42",
+  "records": [
+    {
+      "case_id": "P-FRANKL-Q6",
+      "predicted_difficulty": "HIGH",
+      "calibration_status": "UNCALIBRATED",
+      "scientific_priority": "HIGH",
+      "communication_readiness": "NOT_READY",
+      "disclosure_limits": [
+        "NO_MATHEMATICAL_PROOF",
+        "NO_NOVELTY_ACCEPTANCE",
+        "NO_OPEN_STATUS_CONFIRMATION",
+        "NO_PUBLIC_RELEASE",
+        "NO_STATISTICAL_PERFORMANCE"
+      ]
+    },
+    {
+      "case_id": "P-ARXIV-2601-22401-COLLISION",
+      "predicted_difficulty": "MEDIUM",
+      "calibration_status": "UNCALIBRATED",
+      "scientific_priority": "HIGH",
+      "communication_readiness": "NOT_READY",
+      "disclosure_limits": [
+        "NO_MATHEMATICAL_PROOF",
+        "NO_NOVELTY_ACCEPTANCE",
+        "NO_OPEN_STATUS_CONFIRMATION",
+        "NO_PUBLIC_RELEASE",
+        "NO_STATISTICAL_PERFORMANCE"
+      ]
+    },
+    {
+      "case_id": "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+      "predicted_difficulty": "MEDIUM",
+      "calibration_status": "UNCALIBRATED",
+      "scientific_priority": "MEDIUM",
+      "communication_readiness": "NOT_READY",
+      "disclosure_limits": [
+        "NO_MATHEMATICAL_PROOF",
+        "NO_NOVELTY_ACCEPTANCE",
+        "NO_OPEN_STATUS_CONFIRMATION",
+        "NO_PUBLIC_RELEASE",
+        "NO_STATISTICAL_PERFORMANCE"
+      ]
+    }
+  ],
+  "public_release_allowed": false,
+  "policy_digest_sha256": "46622020c1f86981de9b2b3372f04d29abad119d823ca571998798b806006cda"
+}

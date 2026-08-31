@@ -1,0 +1,60 @@
+{
+  "evidence_id": "EV-Q1-ACCEPTED-1",
+  "task_id": "Q1",
+  "consumed_evidence": ["EV-R1-ACCEPTED-1"],
+  "source_identity": {
+    "implementation_base": "c0dcc523ba00de9f660a8e1f1badd887f21de1f7",
+    "r1_evidence_sha256": "88dae7d1e4314009a6a7869f1265df0e86dc95bc6f9c8ce4797850b8040a9e06",
+    "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+    "r1_fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
+    "q1_policy_fixture_sha256": "abec04146d058c28899ffc1ac3a61d93d14c0468696b65b6558f9f6fbcab8426",
+    "q1_policy_digest_sha256": "46622020c1f86981de9b2b3372f04d29abad119d823ca571998798b806006cda",
+    "q1_implementation_sha256": "b4988a67c0a13918a0ce775c01be687423822c8e069c1ebb03a09c4c9b4c6535",
+    "protected_test_sha256": "0a55a78158faa4f28b47d02b983fbdbd32217155b8d8ca17e659646dd7d7ec9d"
+  },
+  "acceptance_self_check": "pass",
+  "acceptance_commands": [
+    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_calibration_disclosure tests.test_v02_regression_evaluation",
+    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest discover -s tests -p 'test_v02*.py'",
+    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest discover -s tests",
+    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m py_compile matharc/v02/calibration_disclosure.py tests/test_v02_calibration_disclosure.py",
+    "git diff --check"
+  ],
+  "test_summary": {
+    "focused": "10 passed",
+    "v02": "233 passed, 8 skipped",
+    "full": "400 passed, 10 skipped",
+    "nonblocking_observation": "Existing ResourceWarning messages in Codex runtime tests did not fail the full suite and are outside the Q1 changed scope."
+  },
+  "acceptance_matrix": {
+    "fixed_r1_evidence_fixture_content_topic_and_case_identity": "pass",
+    "all_three_records_are_uncalibrated_and_non_public": "pass",
+    "scientific_priority_and_communication_readiness_are_separate": "pass",
+    "identity_status_priority_limit_field_and_digest_tampering_fail_closed": "pass",
+    "no_claim_novelty_authorization_or_network_dependency": "pass"
+  },
+  "independent_ai_reviews": {
+    "policy_contract_review": "pass: Q1 is restricted to an evidence-bound, fail-closed, uncalibrated local disclosure policy; it does not infer proof, open status, novelty, calibration quality, statistical performance or public release.",
+    "independent_api_review": "pass with applied hardening: the policy uses strict typed records and does not reuse the benchmark deserialization path, ResearchTrace, ClaimStatus, novelty authorization or network access.",
+    "review_boundary": "The reviews are implementation and policy-boundary review only; they are not mathematical proof, external literature verification, statistical validation, production evidence or public-release acceptance."
+  },
+  "acceptance_record": {
+    "accepted_at": "2026-09-01",
+    "accepted_by": "用户（研究负责人/仓库所有者）",
+    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260831T164758Z-local-c11a53/result.md",
+    "human_acceptance_result": "acceptance/human/Q1-calibration-disclosure/runs/20260831T164758Z-local-d22b64/result.md",
+    "authority_basis": "用户已要求验收通过、持续完成并在每个阶段推送 GitHub；Q1 的锁定合同、专项测试、v0.2 回归、全库回归、人工清单结果、机器合同校验和独立 AI 边界审阅均通过。",
+    "scope": "Q1 对 R1 固定三例的困难度、未校准预测和分级披露策略的本地验收",
+    "ai_review_boundary": "AI 审阅仅提供设计和代码边界复核；它们不构成独立数学证明、外部文献结论、统计性能、生产验收或公开发布决定。"
+  },
+  "proposed_state": "ACCEPTED",
+  "unverified_items": [
+    "Independent mathematical proof review",
+    "Live external literature retrieval",
+    "Reported-open status confirmation",
+    "Novelty acceptance",
+    "Calibration quality, accuracy, recall, statistical performance or generalization",
+    "Production or device behavior",
+    "Public release authorization, which remains exclusively for A5"
+  ]
+}

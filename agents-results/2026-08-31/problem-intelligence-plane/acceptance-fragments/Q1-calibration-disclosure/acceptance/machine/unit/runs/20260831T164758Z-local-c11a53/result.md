@@ -1,0 +1,50 @@
+# Acceptance Run: 20260831T164758Z-local-c11a53
+
+- Run ID: 20260831T164758Z-local-c11a53
+- Task ID: Q1-calibration-disclosure
+- Lane: machine/unit
+- Status: PASS
+- Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md
+- Contract version: 1
+- Contract SHA-256: 77e6ae2b08e1b27aeb4852c56f0f3dd21fa85108fff1e65c7065658f72287c7a
+- Source identity: c0dcc523ba00de9f660a8e1f1badd887f21de1f7+q1-r1-metadata-migration
+- Runtime identity: python-3.13
+- Executor or reviewer: codex
+- Started at: 2026-08-31T16:47:58.283991Z
+- Completed at: 2026-08-31T16:48:36Z
+- Evidence directory: evidence/
+
+## Scope
+
+AC-01 through AC-04 for the current fixed local Q1 policy after the R1 human-run metadata migration. This run covers source identity, policy schema, uncalibrated dual-track semantics, fail-closed deserialization and the passive non-public boundary. It excludes mathematical, external, statistical, production and public-release claims.
+
+## Procedure
+
+Executed the focused Q1/R1 unit suite, complete v0.2 suite, Python compilation and whitespace validation under Python 3.13. Exact commands and outcomes are recorded in `evidence/verification-summary.md`.
+
+## Requirement disposition
+
+| Requirement | Result | Evidence | Notes |
+| --- | --- | --- | --- |
+| AC-01 | PASS | evidence/verification-summary.md | R1 evidence and fixture byte/content identity plus three-case order are checked directly. |
+| AC-02 | PASS | evidence/verification-summary.md | `UNCALIBRATED`, priority and `NOT_READY` are checked independently. |
+| AC-03 | PASS | evidence/verification-summary.md | Identity, status, disclosure, public flag, cardinality, field and digest tampering are rejected. |
+| AC-04 | PASS | evidence/verification-summary.md | Static dependency guard and immutable `public_release_allowed: false` both pass. |
+
+## Findings
+
+None.
+
+## Evidence manifest
+
+| Artifact | SHA-256 | Meaning |
+| --- | --- | --- |
+| evidence/verification-summary.md | 4c2373a708f0cedf1bbfc078c1388b991697a0de3ebcf4b267d5dc59dc63ef22 | Executed commands, outcomes and bounded AC coverage. |
+
+## Unverified items
+
+Mathematical proof, reported-open status, novelty, external literature retrieval, calibration quality, statistical performance, generalization, production/device behavior and public release approval.
+
+## Conclusion
+
+PASS: the current Q1 implementation and fixed policy satisfy the locked automated acceptance scope as a local, passive, uncalibrated disclosure record. This is not a Q1 acceptance decision or a release decision.
