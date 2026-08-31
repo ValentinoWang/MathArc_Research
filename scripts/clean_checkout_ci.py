@@ -24,6 +24,14 @@ def _git_output(repo_root: Path, *args: str) -> str:
     ).strip()
 
 
+def _archive_project(repo_root: Path, project_rel: str) -> bytes:
+    """Archive the project tree, including the repository-root case."""
+    target = "HEAD" if project_rel == "." else f"HEAD:{project_rel}"
+    return subprocess.check_output(
+        ["git", "-C", str(repo_root), "archive", "--format=tar", target]
+    )
+
+
 def _select_matharc_workflow_paths(paths: Iterable[str]) -> tuple[str, ...]:
     return tuple(
         sorted(
@@ -81,9 +89,7 @@ def main(argv: list[str] | None = None) -> int:
         return 2
 
     head = _git_output(repo_root, "rev-parse", "HEAD")
-    project_archive = subprocess.check_output(
-        ["git", "-C", str(repo_root), "archive", "--format=tar", f"HEAD:{project_rel}"]
-    )
+    project_archive = _archive_project(repo_root, project_rel)
     authority_payloads = {
         path: subprocess.check_output(
             ["git", "-C", str(repo_root), "show", f"HEAD:{path}"]
