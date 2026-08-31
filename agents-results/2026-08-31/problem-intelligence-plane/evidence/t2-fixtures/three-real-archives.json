@@ -1,0 +1,104 @@
+{
+  "fixture_kind": "t2-dogfood-archive-contract",
+  "topic_id": "union-closed",
+  "source_fixture_directory": "../s1-fixtures",
+  "fixture_sha256": {
+    "confirmed-open.json": "2eac896e4038750a0b59baadc5d4b3b04aa261f4680b51839fbb507ca035053a",
+    "frankl-q6.json": "d76d9f4a03d781f1a2b66168666b00ff7c1c4107b8ca48fb48fefdc18325c592",
+    "resolved-collision.json": "935ec7a4cc236f44fbba60c877be9cff85fc4edb99cfc7c0e55ab4f9ccdd2acd"
+  },
+  "expected_budget_snapshot": {
+    "limits": {
+      "wall_seconds": null,
+      "input_tokens": 1,
+      "output_tokens": null,
+      "cost_usd": null
+    },
+    "spent": {
+      "wall_seconds": 0.0,
+      "input_tokens": 1,
+      "output_tokens": 0,
+      "cost_usd": 0.0,
+      "tool_calls": 0,
+      "model_calls": 1
+    },
+    "divergent_usage_reports": [],
+    "exhausted": true
+  },
+  "expected_budget_digest_sha256": "efdf4e18af10228e0706db1ee91b896ead57982e132a4e5315faf79860eb4b45",
+  "source_artifacts": {
+    "P-FRANKL-Q6": {
+      "path": "sources/engineering-progress.md",
+      "sha256": "f0090168916eab1e1642c0ac0325914492b9725f1432027aa983b0bfe482b4cb",
+      "canonical_uri": "urn:matharc:local:docs:engineering-progress.md",
+      "pinned_version": "workspace-2026-08-31",
+      "locator": "docs/engineering-progress.md: q=6 residual boundary"
+    },
+    "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS": {
+      "path": "sources/frankl-q6-exactly-three-small-outside-parts.md",
+      "sha256": "8ef2177acb983fdd1ef6602e7cae1b4853eed0c94ba1eff2e3b6cd188fc33476",
+      "canonical_uri": "urn:matharc:local:docs:frankl-q6-exactly-three-small-outside-parts.md",
+      "pinned_version": "workspace-2026-08-31",
+      "locator": "docs/frankl-q6-exactly-three-small-outside-parts.md: residual statement"
+    },
+    "P-ARXIV-2601-22401-COLLISION": [
+      {
+        "source_kind": "problem-database-history",
+        "path": "sources/arxiv-2601.22401v3-main.tex",
+        "sha256": "540973d154a63470f8648ed2b84b75be04c2c56ee7bf0d4047640510573647bd",
+        "canonical_uri": "urn:matharc:history:erdos-397-open-corpus",
+        "pinned_version": "arXiv-2601.22401v3-corpus-2025-12",
+        "locator": "arXiv v3 historical corpus description: Erdos-397 was listed as open in the December 2025 source corpus",
+        "reported_status": "OPEN_REPORTED"
+      },
+      {
+        "source_kind": "problem-database-current",
+        "path": "sources/erdos-397-current.html",
+        "sha256": "ba778973416d0d89a00e206777be974891e0317c106ef155f8ddb430c00a6885",
+        "canonical_uri": "https://www.erdosproblems.com/397",
+        "pinned_version": "page-last-edited-2026-01-12",
+        "locator": "Current database readback is represented by the pinned extracted source artifact; do not infer OPEN from historical corpus text",
+        "reported_status": "RESOLVED_REPORTED"
+      },
+      {
+        "source_kind": "arxiv-source",
+        "path": "sources/arxiv-2601.22401v3-main.tex",
+        "sha256": "540973d154a63470f8648ed2b84b75be04c2c56ee7bf0d4047640510573647bd",
+        "canonical_uri": "https://export.arxiv.org/e-print/2601.22401v3",
+        "pinned_version": "arXiv:2601.22401v3",
+        "locator": "main.tex lines 721-732: Erdos-397 says the answer is no; infinitely many solutions",
+        "reported_status": "RESOLVED_REPORTED"
+      }
+    ]
+  },
+  "non_claim_boundary": "All outputs are source observations and reported-status review boundaries. They do not create a mathematical claim, research trace, public conclusion, or research-budget authorization.",
+  "cases": [
+    {
+      "problem_id": "P-FRANKL-Q6",
+      "case_role": "frankl-q6-constrained-residual",
+      "expected_topic_status": "APPLIED",
+      "expected_problem_status": "OPEN_REPORTED",
+      "expected_manual_reason": null,
+      "expected_novelty_status": null,
+      "expected_promotion_allowed": false
+    },
+    {
+      "problem_id": "P-ARXIV-2601-22401-COLLISION",
+      "case_role": "database-open-literature-resolved-collision",
+      "expected_topic_status": "APPLIED",
+      "expected_problem_status": "RESOLVED_REPORTED",
+      "expected_manual_reason": "HIGH_RISK_EVENT",
+      "expected_novelty_status": "PENDING_HUMAN_AUDIT",
+      "expected_promotion_allowed": false
+    },
+    {
+      "problem_id": "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+      "case_role": "frankl-q6-four-or-more-small-outside-parts-residual",
+      "expected_topic_status": "MANUAL_REVIEW",
+      "expected_problem_status": "OPEN_REPORTED",
+      "expected_manual_reason": "BUDGET_EXHAUSTED",
+      "expected_novelty_status": null,
+      "expected_promotion_allowed": false
+    }
+  ]
+}
