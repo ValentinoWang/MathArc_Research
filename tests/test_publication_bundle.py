@@ -8,7 +8,7 @@ from pathlib import Path
 from matharc.publication.adapters import publication_bundle_for_workspace
 from matharc.publication.models import PublicationBundle, ReviewBundleRef
 from matharc.v02.schema import digest_json
-from matharc.v02.workspace import ResearchWorkspace
+from matharc.v02.workspace import ResearchWorkspace, WorkspaceAuditError
 from matharc.v02.workspace_bundle import write_full_workspace_bundle
 from matharc.v02.workspace_demo import write_workspace_demo
 
@@ -89,17 +89,11 @@ class PublicationAdapterV02Tests(unittest.TestCase):
                 bundle.digest_sha256,
             )
 
-    def test_publication_bundle_for_workspace_does_not_gate_on_audit_validity(self) -> None:
-        """Documents actual (not assumed) behavior: unlike every mutating
-        ResearchWorkspace method (which asserts committed state and raises
-        WorkspaceAuditError on an unsealed change, e.g. add_claim), the
-        adapter does NOT check report.valid before building a bundle -- it
-        bakes whatever audit report it gets, valid or not, into
-        workspace_audit_digest. This is a real gap relative to the rest of
-        the workspace's fail-closed conventions; flagged to the repo owner
-        separately rather than silently changed here. This test pins the
-        current contract so a future change to that behavior is a
-        deliberate, visible diff instead of a silent one."""
+    def test_publication_bundle_for_workspace_fails_closed_on_a_blocked_audit(self) -> None:
+        """An unsealed direct state change must block bundle construction
+        rather than being stamped into workspace_audit_digest as though it
+        were certified state -- the same fail-closed rule ResearchWorkspace
+        applies in save/load/promote_claim."""
         with tempfile.TemporaryDirectory() as directory:
             target = Path(directory) / "v02-workspace"
             write_full_workspace_bundle(target)
@@ -107,9 +101,24 @@ class PublicationAdapterV02Tests(unittest.TestCase):
             # Same unsealed direct-mutation idiom as
             # scripts/v0_2_workspace_acceptance.py's gate_direct_mutation.
             workspace.trace.metadata["injected"] = True
-            invalid_report = workspace.audit(require_current_commit=True)
-            self.assertFalse(invalid_report.valid)
+            self.assertFalse(workspace.audit(require_current_commit=True).valid)
+
+            with self.assertRaises(WorkspaceAuditError) as caught:
+                publication_bundle_for_workspace(workspace, paper_id="paper", paper_version=1)
+
+            self.assertIn("last sealed event", str(caught.exception))
+
+    def test_publication_bundle_for_workspace_does_not_block_on_warnings(self) -> None:
+        """Warnings are not blockers anywhere else in the workspace's
+        transitions, so they must not become blockers here either."""
+        with tempfile.TemporaryDirectory() as directory:
+            target = Path(directory) / "v02-workspace"
+            write_full_workspace_bundle(target)
+            workspace = ResearchWorkspace.load(target)
+            report = workspace.audit(require_current_commit=True)
+            self.assertTrue(report.valid)
+            self.assertGreater(report.warning_count, 0)
 
             bundle = publication_bundle_for_workspace(workspace, paper_id="paper", paper_version=1)
 
-            self.assertEqual(digest_json(invalid_report.to_dict()), bundle.workspace_audit_digest)
+            self.assertEqual(digest_json(report.to_dict()), bundle.workspace_audit_digest)

@@ -1,7 +1,8 @@
 from __future__ import annotations
 
+from ...v02.audit import AuditSeverity
 from ...v02.schema import digest_json
-from ...v02.workspace import ResearchWorkspace
+from ...v02.workspace import ResearchWorkspace, WorkspaceAuditError
 from ..models import PublicationBundle, ReviewBundleRef
 
 
@@ -12,8 +13,23 @@ def publication_bundle_for_workspace(
     paper_version: int = 1,
     review_bundles: tuple[ReviewBundleRef, ...] = (),
 ) -> PublicationBundle:
-    """Create a reference-only aggregate from the v0.2 workspace."""
+    """Create a reference-only aggregate from the v0.2 workspace.
+
+    Fails closed on a blocked audit, matching ResearchWorkspace's own
+    save/load/promote_claim transitions: a publication bundle stamps
+    content digests over workspace state, so it must never be built from
+    unsealed or otherwise audit-blocked state. Warnings do not block,
+    exactly as in those transitions.
+    """
     report = workspace.audit(require_current_commit=True)
+    if not report.valid:
+        raise WorkspaceAuditError(
+            "; ".join(
+                issue.message
+                for issue in report.issues
+                if issue.severity is AuditSeverity.ERROR
+            )
+        )
     return PublicationBundle(
         paper_id=paper_id,
         paper_version=paper_version,
