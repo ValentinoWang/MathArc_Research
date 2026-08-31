@@ -1,0 +1,41 @@
+{
+  "evidence_id": "EV-L2-IMPLEMENTED-1",
+  "task_id": "L2",
+  "source_revision": "4c368a1a20699aa6199cd14b3600f62cad3b86ea",
+  "changed_files": [
+    "matharc/v02/literature_base.py",
+    "matharc/v02/__init__.py",
+    "tests/test_v02_literature_base.py"
+  ],
+  "acceptance_self_check": "pass",
+  "acceptance_commands": [
+    "python3 -m unittest -v tests.test_v02_literature_base",
+    "python3 -m unittest discover -s tests",
+    "git diff --check"
+  ],
+  "test_summary": {
+    "focused_tests": 8,
+    "full_suite_tests": 310,
+    "skipped": 10,
+    "mypy": "not_available_in_current_interpreter"
+  },
+  "covered_behaviors": [
+    "open import persists an artifact and observation manifest",
+    "same logical identity and digest replay is idempotent",
+    "different digest for one logical identity is a conflict",
+    "pending license, budget, missing digest, and digest mismatch never write artifacts",
+    "pending observations can be retried after license confirmation",
+    "observation IDs cannot silently overwrite another logical identity",
+    "unsupported media types fail at the SourceObservation contract",
+    "literature import does not create a source registry or mathematical claim"
+  ],
+  "proposed_state": "IMPLEMENTED",
+  "unverified_items": [
+    "A2 formal acceptance evidence",
+    "external literature service integration",
+    "formal node acceptance by research infrastructure owner",
+    "strict mypy run in an environment that provides mypy"
+  ],
+  "failure_class": null,
+  "failure_origin": null
+}
