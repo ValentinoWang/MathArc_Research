@@ -8,8 +8,11 @@ from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
 
-from matharc.v02.console_export import build_console_export, campaign_report_envelope
+from matharc.v02.budget import BudgetLedger
+from matharc.v02.campaign import ResearchCampaign
+from matharc.v02.workspace import ResearchWorkspace
 from matharc.v02.workspace_bundle import write_full_workspace_bundle
+from matharc.v02.workers import StaticProposalWorker
 from matharc.v02.workspace_server import make_server
 
 
@@ -20,7 +23,7 @@ class ConsoleObservatoryTests(unittest.TestCase):
         write_full_workspace_bundle(self.root)
         self.console = self.root / "console.html"
         self.console.write_text("<!doctype html><title>Console fixture</title>", encoding="utf-8")
-        self.server = make_server(self.root, host="127.0.0.1", port=0, dashboard_path=self.console, campaign_report_path=self.root / "campaign.json")
+        self.server = make_server(self.root, host="127.0.0.1", port=0, dashboard_path=self.console)
         self.thread = threading.Thread(target=self.server.serve_forever, daemon=True)
         self.thread.start()
         self.base = f"http://127.0.0.1:{self.server.server_address[1]}"
@@ -38,13 +41,21 @@ class ConsoleObservatoryTests(unittest.TestCase):
         self.assertEqual(captured.exception.code, 405)
 
     def test_campaign_schema_and_console_dashboard_are_served(self) -> None:
-        report = {"rounds": [], "stop_reason": "done", "final_metrics": {}, "budget": None, "creation_log": []}
-        envelope = campaign_report_envelope(report, build_console_export(self.root)["provenance"])
-        (self.root / "campaign.json").write_text(json.dumps(envelope), encoding="utf-8")
+        workspace = ResearchWorkspace.load(self.root)
+        campaign = ResearchCampaign(
+            workspace.trace,
+            [StaticProposalWorker("prover", {})],
+            budget=BudgetLedger(wall_seconds_limit=0.0),
+        )
+        workspace.record_campaign_result(campaign, campaign.run())
+        workspace.save()
         with urlopen(self.base + "/api/campaign") as response:
             payload = json.loads(response.read().decode())
         self.assertTrue(payload["available"])
-        self.assertEqual(payload["report"], report)
+        self.assertEqual(
+            payload["report"]["stop_reason"],
+            "release_state_terminal:PROVED_AND_AUDITED",
+        )
         with urlopen(self.base + "/") as response:
             self.assertIn("Console fixture", response.read().decode())
 

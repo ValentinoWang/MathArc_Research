@@ -15,7 +15,9 @@ from typing import Any, Mapping
 
 from .._workspace_impl import ResearchWorkspace as _ResearchWorkspaceImpl
 from .._workspace_impl import WorkspaceAuditError
+from ..campaign import CampaignReport, ResearchCampaign
 from ..schema import EvidenceRecord
+from ..schema import digest_json
 from ..trace import PromotionError
 
 
@@ -30,6 +32,62 @@ def _content_bytes(value: bytes | str | Mapping[str, Any]) -> bytes:
 
 
 class ResearchWorkspace(_ResearchWorkspaceImpl):
+    def _record_campaign_report(
+        self,
+        report: CampaignReport,
+        *,
+        actor: str = "campaign-runner",
+    ) -> str:
+        """Commit an actual campaign result as the current workspace artifact."""
+
+        self._assert_committed()
+        payload = report.to_dict()
+        report_identity = digest_json(payload)
+        report_digest = hashlib.sha256(_content_bytes(payload)).hexdigest()
+        artifact_id = f"ART-CAMPAIGN-{report_identity[:16]}"
+        try:
+            existing = self.artifacts.get(artifact_id)
+        except KeyError:
+            record = self._store_content(
+                artifact_id,
+                payload,
+                logical_role="campaign-report",
+                producer=actor,
+            )
+        else:
+            if existing.logical_role != "campaign-report" or existing.sha256 != report_digest:
+                raise ValueError("campaign artifact identity is already bound to other content")
+            record = existing
+        self._seal_transition(
+            "CAMPAIGN_RECORDED",
+            actor=actor,
+            subject_ids=(self.trace.run_id, record.artifact_id),
+            details={
+                "artifact_id": record.artifact_id,
+                "report_digest_sha256": record.sha256,
+            },
+        )
+        return record.artifact_id
+
+    def record_campaign_result(
+        self,
+        campaign: ResearchCampaign,
+        report: CampaignReport,
+        *,
+        actor: str = "campaign-runner",
+    ) -> str:
+        """Seal a just-mutated campaign trace, then register its report."""
+
+        if campaign.trace is not self.trace or campaign.last_report is not report:
+            raise ValueError("campaign report was not produced by this workspace campaign run")
+        self._seal_transition(
+            "CAMPAIGN_COMPLETED",
+            actor=actor,
+            subject_ids=(self.trace.run_id,),
+            details={"report_identity_sha256": digest_json(report.to_dict())},
+        )
+        return self._record_campaign_report(report, actor=actor)
+
     def add_evidence(
         self,
         evidence: EvidenceRecord,

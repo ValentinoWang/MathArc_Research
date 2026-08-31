@@ -251,6 +251,13 @@ class ResearchCampaign:
         self.max_rounds = max_rounds
         self.max_rounds_without_gain = max_rounds_without_gain
         self.persist_path = Path(persist_path) if persist_path is not None else None
+        self._last_report: CampaignReport | None = None
+
+    @property
+    def last_report(self) -> CampaignReport | None:
+        """The exact report object produced by this campaign's latest run."""
+
+        return self._last_report
 
     def run(self) -> CampaignReport:
         rounds: list[dict[str, Any]] = []
@@ -279,13 +286,15 @@ class ResearchCampaign:
                 stop_reason = "no_gain_rounds_exhausted"
                 break
         final_metrics = compute_research_metrics(self.trace)
-        return CampaignReport(
+        report = CampaignReport(
             rounds=tuple(rounds),
             stop_reason=stop_reason,
             final_metrics=final_metrics,
             budget=self.budget.to_dict() if self.budget is not None else None,
             creation_log=tuple(self.orchestrator.creation_log),
         )
+        self._last_report = report
+        return report
 
     def _run_one_round(self, round_index: int) -> dict[str, Any]:
         metrics_before = compute_research_metrics(self.trace)

@@ -39,6 +39,7 @@ from .review_bundle import (
     write_review_bundle,
 )
 from .trace import load_trace, save_trace
+from .workspace import ResearchWorkspace
 
 DEFAULT_RUN_WALL_SECONDS_BUDGET = 30.0 * 60.0
 DEFAULT_RUN_ROUNDS = 10
@@ -229,7 +230,6 @@ def main(argv: list[str] | None = None) -> None:
     export = sub.add_parser("export", help="write a read-only console.json workspace export")
     export.add_argument("--workspace-root", required=True)
     export.add_argument("--output", required=True)
-    export.add_argument("--campaign-report")
 
     plan = sub.add_parser("plan", help="select the next load-bearing research obligation")
     plan.add_argument("--trace", required=True)
@@ -243,7 +243,11 @@ def main(argv: list[str] | None = None) -> None:
     claude_status.add_argument("--output")
 
     run = sub.add_parser("run", help="run an autonomous multi-round research campaign")
-    run.add_argument("--trace", required=True, help="path to an existing research trace")
+    run.add_argument("--trace", help="path to an existing research trace")
+    run.add_argument(
+        "--workspace-root",
+        help="run against a governed workspace and register the campaign result",
+    )
     run.add_argument(
         "--role",
         action="append",
@@ -345,7 +349,6 @@ def main(argv: list[str] | None = None) -> None:
         write_console_export(
             args.workspace_root,
             args.output,
-            campaign_report_path=args.campaign_report,
         )
         return
     if args.command == "plan":
@@ -369,7 +372,10 @@ def main(argv: list[str] | None = None) -> None:
             raise SystemExit("--rounds must be positive")
         if args.max_rounds_without_gain <= 0:
             raise SystemExit("--max-rounds-without-gain must be positive")
-        trace = load_trace(args.trace)
+        if bool(args.trace) == bool(args.workspace_root):
+            raise SystemExit("run requires exactly one of --trace or --workspace-root")
+        workspace = ResearchWorkspace.load(args.workspace_root) if args.workspace_root else None
+        trace = workspace.trace if workspace is not None else load_trace(args.trace)
         roles = args.role or ["prover", "falsifier", "verifier"]
         claude_config = ClaudeCodeConfig.from_env()
         if args.claude_executable:
@@ -388,8 +394,16 @@ def main(argv: list[str] | None = None) -> None:
             persist_path=args.persist,
         )
         report = campaign.run()
-        save_trace(trace, args.trace)
-        _write_or_print(report.to_dict(), args.output)
+        if workspace is None:
+            assert args.trace is not None
+            save_trace(trace, args.trace)
+        else:
+            artifact_id = workspace.record_campaign_result(campaign, report)
+            workspace.save()
+        payload = report.to_dict()
+        if workspace is not None:
+            payload = {"campaign_artifact_id": artifact_id, "report": payload}
+        _write_or_print(payload, args.output)
         return
     if args.command == "review":
         _run_review_command(args)

@@ -40,6 +40,17 @@ class OperationsLedgerTests(unittest.TestCase):
             with self.assertRaises(OperationsLedgerError):
                 OperationsLedger(path, "a" * 64)
 
+    def test_non_string_persisted_kind_is_rejected_when_reopened(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "operations.json"
+            ledger = OperationsLedger(path, "a" * 64)
+            ledger.append(record_id="A", kind="ACCOUNT_CREATED", payload={"account":"u"})
+            state = json.loads(path.read_text(encoding="utf-8"))
+            state["records"][0]["kind"] = ["ACCOUNT_CREATED"]
+            path.write_text(json.dumps(state), encoding="utf-8")
+            with self.assertRaises(OperationsLedgerError):
+                OperationsLedger(path, "a" * 64)
+
     def test_records_are_deep_copies_of_the_append_only_history(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             path = Path(directory) / "operations.json"

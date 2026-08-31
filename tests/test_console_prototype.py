@@ -1,5 +1,8 @@
 from __future__ import annotations
 
+import shutil
+import subprocess
+import textwrap
 import unittest
 from pathlib import Path
 
@@ -40,6 +43,143 @@ class ConsolePrototypeTests(unittest.TestCase):
         self.assertIn("#console-provenance{order:2", page)
         self.assertIn(".topbar{height:auto", page)
         self.assertIn('setAttribute("aria-live", "polite")', page)
+
+    def test_bridge_rejects_stale_loads_and_reconnects_on_generation_reset(self) -> None:
+        node = shutil.which("node")
+        if node is None:
+            self.skipTest("node is required for the embedded bridge regression")
+        script = textwrap.dedent(
+            r"""
+            const fs = require("fs");
+            const vm = require("vm");
+            const page = fs.readFileSync(process.argv[1], "utf8");
+            const start = page.indexOf("const ConsoleBridge = (() => {");
+            const endMarker = "window.MathArcConsole = ConsoleBridge;";
+            const end = page.indexOf(endMarker, start);
+            if (start < 0 || end < 0) throw new Error("bridge source was not found");
+
+            class Element {
+              constructor() { this.dataset = {}; this.id = ""; this.textContent = ""; }
+              setAttribute() {}
+              focus() {}
+            }
+            class InputElement extends Element {}
+            class EventSourceStub {
+              static instances = [];
+              constructor(url) {
+                this.url = url;
+                this.closed = false;
+                this.handlers = {};
+                EventSourceStub.instances.push(this);
+              }
+              addEventListener(name, handler) { this.handlers[name] = handler; }
+              close() { this.closed = true; }
+              fail() { if (this.onerror) this.onerror(); }
+            }
+
+            const timers = [];
+            let nextTimerId = 0;
+            const window = {
+              location: { href: "https://example.test/console.html" },
+              setTimeout(handler, delay) {
+                const timer = { id: ++nextTimerId, handler, delay, cancelled: false };
+                timers.push(timer);
+                return timer.id;
+              },
+              clearTimeout(id) {
+                const timer = timers.find(item => item.id === id);
+                if (timer) timer.cancelled = true;
+              },
+            };
+            const topbar = { inserted: [], insertBefore(element) { this.inserted.push(element); } };
+            const document = {
+              activeElement: null,
+              createElement() { return new Element(); },
+              querySelector(selector) { return selector === ".topbar" ? topbar : null; },
+              getElementById() { return null; },
+              querySelectorAll() { return []; },
+            };
+            const requests = [];
+            let renderCount = 0;
+            const context = {
+              console,
+              document,
+              Element,
+              HTMLElement: Element,
+              HTMLInputElement: InputElement,
+              EventSource: EventSourceStub,
+              URL,
+              window,
+              fetch(url) {
+                return new Promise((resolve, reject) => requests.push({ url, resolve, reject }));
+              },
+              S: { consolePayload: null },
+              render() { renderCount += 1; },
+              toast() {},
+            };
+            vm.runInNewContext(page.slice(start, end) + endMarker, context);
+            const bridge = context.window.MathArcConsole;
+            const response = payload => ({ ok: true, json: async () => payload });
+            const payload = (runId, count) => ({
+              schema_version: "1.0",
+              provenance: { run_id: runId, state_digest_sha256: runId + "-state", event_head_hash: runId + "-head" },
+              workspace: { events: { events: Array.from({ length: count }, (_, sequence) => ({ sequence })) } },
+              view_contract: {},
+              role_policy: {},
+              campaign: {},
+            });
+            const flush = () => new Promise(resolve => setImmediate(resolve));
+            const runNextTimer = () => {
+              const timer = timers.find(item => !item.cancelled);
+              if (!timer) throw new Error("expected a scheduled reconnect");
+              timer.cancelled = true;
+              timer.handler();
+            };
+
+            (async () => {
+              const staleLoad = bridge.loadExport("/api/console");
+              const latestLoad = bridge.loadExport("/api/console");
+              if (requests.length !== 2) throw new Error("expected two concurrent loads");
+              requests[1].resolve(response(payload("current", 8)));
+              if (!(await latestLoad)) throw new Error("latest load was rejected");
+              requests[0].resolve(response(payload("stale", 100)));
+              if (await staleLoad) throw new Error("stale load was accepted");
+              if (context.S.consolePayload.provenance.run_id !== "current") throw new Error("stale load mutated memory");
+              if (topbar.inserted[0].textContent !== "已接入工作区 current · current-stat" || topbar.inserted[0].dataset.source !== "export") throw new Error("stale load mutated the provenance view");
+              if (renderCount !== 1) throw new Error("stale load mutated the view");
+
+              if (!bridge.connectEvents("/events")) throw new Error("initial event connection failed");
+              if (!EventSourceStub.instances[0].url.endsWith("/events?after=7")) throw new Error("initial cursor was not preserved");
+
+              const rebuiltLoad = bridge.loadExport("/api/console");
+              requests[2].resolve(response(payload("rebuilt", 1)));
+              if (!(await rebuiltLoad)) throw new Error("rebuilt workspace load failed");
+              if (!EventSourceStub.instances[0].closed) throw new Error("old generation stream stayed open");
+              if (!EventSourceStub.instances[1].url.endsWith("/events?after=0")) throw new Error("generation reset kept the old cursor");
+
+              const advanceLoad = bridge.loadExport("/api/console");
+              requests[3].resolve(response(payload("rebuilt", 6)));
+              if (!(await advanceLoad)) throw new Error("same-generation update failed");
+              const restartLoad = bridge.loadExport("/api/console");
+              requests[4].resolve(response(payload("rebuilt", 1)));
+              if (!(await restartLoad)) throw new Error("same-generation restart load failed");
+              if (!EventSourceStub.instances[1].closed) throw new Error("sequence restart kept the old stream");
+              if (!EventSourceStub.instances[2].url.endsWith("/events?after=0")) throw new Error("sequence restart kept the old cursor");
+
+              EventSourceStub.instances[2].fail();
+              runNextTimer();
+              await flush();
+              if (!EventSourceStub.instances[3].url.endsWith("/events?after=0")) throw new Error("normal reconnect did not use the current cursor");
+            })().catch(error => { console.error(error.stack || error); process.exitCode = 1; });
+            """
+        )
+        completed = subprocess.run(
+            [node, "-e", script, str(Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html")],
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
 
 
 if __name__ == "__main__":
