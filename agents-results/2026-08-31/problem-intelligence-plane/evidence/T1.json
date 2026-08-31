@@ -1,0 +1,60 @@
+{
+  "evidence_id": "EV-T1-ACCEPTED-1",
+  "task_id": "T1",
+  "source_revision": {
+    "local_implementation_commit": "8f638d380d15975d2661991c313084751a82d767",
+    "remote_equivalent_commit": "643bceeacb0bf40fff0e0a86c42905bad9761581",
+    "equivalence_basis": "Both commits contain the same three T1 path blobs. The remote commit was created from the verified remote main parent with the GitHub Git Data API because Git HTTPS push consistently hung."
+  },
+  "changed_files": [
+    "matharc/v02/topic_observation.py",
+    "tests/test_v02_topic_observation.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/t1-fixtures/one-topic-replay.json"
+  ],
+  "acceptance_self_check": "pass",
+  "acceptance_commands": [
+    "python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_literature_base",
+    "python3 -m unittest discover -s tests",
+    "python3 -m py_compile matharc/v02/topic_observation.py tests/test_v02_topic_observation.py",
+    "git diff --check"
+  ],
+  "test_summary": {
+    "focused_and_dependency_tests": 24,
+    "full_suite_tests": 361,
+    "skipped": 10,
+    "result": "passed"
+  },
+  "acceptance_matrix": {
+    "single_topic_cursor_persistence_and_restart_replay": "pass",
+    "cross_batch_source_observation_idempotency_deduplication": "pass",
+    "budget_exhaustion_and_high_risk_events_are_durable_manual_review": "pass",
+    "cursor_and_input_identifier_conflicts_are_durable_manual_review": "pass",
+    "literature_conflicts_and_rejected_imports_preserve_reason_in_manual_review": "pass",
+    "ordinary_revalidatable_pending_records_remain_distinct": "pass",
+    "no_problem_status_claim_or_research_trace_mutation": "pass"
+  },
+  "ai_review": {
+    "rounds": 3,
+    "repaired_findings": [
+      "same logical source version with changed digest was incorrectly marked PENDING",
+      "same observation_id with different logical identity was incorrectly marked PENDING"
+    ],
+    "post_repair_review": "pass",
+    "remaining_risk": "Artifact-persistence failure mapping has no direct T1 fault-injection test; no external literature-service execution or mathematical conclusion is claimed."
+  },
+  "acceptance_record": {
+    "accepted_at": "2026-08-31",
+    "accepted_by": "用户（研究负责人/仓库所有者）",
+    "authority_basis": "用户在当前任务中明确确认“验收通过”；修复后的专项、全库测试和独立 AI 复审均通过。",
+    "scope": "T1 one-topic observation, durable cursor replay, deduplication, and manual-review routing",
+    "ai_review_boundary": "AI reviews provide implementation-quality evidence only and do not create a mathematical conclusion."
+  },
+  "proposed_state": "ACCEPTED",
+  "unverified_items": [
+    "External literature-service retrieval",
+    "T2 three-real-archive execution",
+    "Global Obsidian archive audit blocked by unrelated historical iCloud placeholder manifests"
+  ],
+  "failure_class": null,
+  "failure_origin": null
+}
