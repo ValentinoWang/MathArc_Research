@@ -74,7 +74,11 @@ class OperationsLedger:
             raise OperationsLedgerError("operations ledger record schema is invalid")
         if not isinstance(item["record_id"], str) or not item["record_id"].strip():
             raise OperationsLedgerError("operations ledger record id is invalid")
-        if item["kind"] not in _KINDS or not isinstance(item["payload"], dict):
+        if (
+            not isinstance(item["kind"], str)
+            or item["kind"] not in _KINDS
+            or not isinstance(item["payload"], dict)
+        ):
             raise OperationsLedgerError("operations ledger record content is invalid")
         unsigned = {
             "record_id": item["record_id"],
@@ -97,7 +101,7 @@ class OperationsLedger:
     def append(self, *, record_id: str, kind: str, payload: Mapping[str, Any]) -> dict[str, Any]:
         if not isinstance(record_id, str) or not record_id.strip():
             raise OperationsLedgerError("record_id must be non-empty")
-        if kind not in _KINDS:
+        if not isinstance(kind, str) or kind not in _KINDS:
             raise OperationsLedgerError("unsupported operations record kind")
         if not isinstance(payload, Mapping):
             raise OperationsLedgerError("operations payload must be an object")

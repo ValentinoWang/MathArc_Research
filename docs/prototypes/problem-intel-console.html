@@ -4326,8 +4326,11 @@ V.campaign = () => {
 const ConsoleBridge = (() => {
   let cursor = -1;
   let eventStream = null;
+  let eventEndpoint = null;
+  let eventGeneration = null;
   let latestLoad = 0;
   let refreshScheduled = false;
+  let reconnectTimer = null;
   const provenance = document.createElement("span");
   provenance.id = "console-provenance";
   provenance.className = "miniprog";
@@ -4355,13 +4358,43 @@ const ConsoleBridge = (() => {
       : [...document.querySelectorAll("[data-act]")].find(item => item instanceof HTMLElement && item.dataset.act === focus.act && (item.dataset.v || "") === focus.view);
     if (target instanceof HTMLElement) target.focus();
   };
-  const applyExport = payload => {
-    if (!payload || payload.schema_version !== "1.0" || !payload.provenance || !payload.workspace || !payload.view_contract || !payload.role_policy || !payload.campaign) return false;
-    S.consolePayload = payload;
+  const clearReconnect = () => {
+    if (reconnectTimer === null) return;
+    window.clearTimeout(reconnectTimer);
+    reconnectTimer = null;
+  };
+  /* run_id is the server-owned workspace identity; state and head digests change as events append. */
+  const workspaceGeneration = payload => {
+    const runId = payload && payload.provenance && payload.provenance.run_id;
+    return typeof runId === "string" && runId.length ? runId : null;
+  };
+  const eventTail = payload => {
     const events = payload.workspace.events && payload.workspace.events.events;
-    if (Array.isArray(events) && events.length) cursor = Math.max(cursor, Number(events[events.length - 1].sequence));
+    if (!Array.isArray(events) || !events.length) return -1;
+    const tail = Number(events[events.length - 1].sequence);
+    return Number.isInteger(tail) && tail >= 0 ? tail : -1;
+  };
+  const scheduleReconnect = endpoint => {
+    if (reconnectTimer !== null) return;
+    reconnectTimer = window.setTimeout(() => {
+      reconnectTimer = null;
+      connectEvents(endpoint);
+    }, 1000);
+  };
+  const applyExport = (payload, loadId) => {
+    if (loadId !== latestLoad) return false;
+    if (!payload || payload.schema_version !== "1.0" || !payload.provenance || !payload.workspace || !payload.view_contract || !payload.role_policy || !payload.campaign) return false;
+    const generation = workspaceGeneration(payload);
+    if (generation === null) return false;
+    const tail = eventTail(payload);
+    const generationChanged = generation !== eventGeneration;
+    const sequenceRestarted = tail < cursor;
+    S.consolePayload = payload;
+    eventGeneration = generation;
+    cursor = generationChanged || sequenceRestarted ? tail : Math.max(cursor, tail);
     const p = payload.provenance;
     label(`已接入工作区 ${p.run_id || "未知"} · ${String(p.state_digest_sha256 || "").slice(0,12)}`, "export");
+    if ((generationChanged || sequenceRestarted) && eventEndpoint) connectEvents(eventEndpoint);
     return true;
   };
   const loadExport = async url => {
@@ -4369,8 +4402,12 @@ const ConsoleBridge = (() => {
     try {
       const endpoints = url ? [url] : ["console.json", "/api/console"];
       for (const endpoint of endpoints) {
+        if (loadId !== latestLoad) return false;
         const response = await fetch(endpoint, { cache:"no-store", credentials:"same-origin" });
-        if (response.ok && applyExport(await response.json())) {
+        if (!response.ok) continue;
+        const payload = await response.json();
+        if (loadId !== latestLoad) return false;
+        if (applyExport(payload, loadId)) {
           if (loadId === latestLoad) renderPreservingFocus();
           return true;
         }
@@ -4387,22 +4424,34 @@ const ConsoleBridge = (() => {
   };
   const connectEvents = endpoint => {
     if (!endpoint || typeof EventSource === "undefined") return false;
-    if (eventStream) eventStream.close();
+    clearReconnect();
+    if (eventStream) {
+      const previousStream = eventStream;
+      eventStream = null;
+      previousStream.close();
+    }
+    eventEndpoint = endpoint;
     const url = new URL(endpoint, window.location.href);
     url.searchParams.set("after", String(cursor));
-    eventStream = new EventSource(url.toString());
-    eventStream.addEventListener("research_event", event => {
-      cursor = Number(event.lastEventId);
-      if (!Number.isInteger(cursor) || cursor < 0) return;
+    const stream = new EventSource(url.toString());
+    eventStream = stream;
+    const connectionGeneration = eventGeneration;
+    stream.addEventListener("research_event", event => {
+      if (eventStream !== stream || (connectionGeneration !== null && eventGeneration !== connectionGeneration)) return;
+      const nextCursor = Number(event.lastEventId);
+      if (!Number.isInteger(nextCursor) || nextCursor < 0) return;
+      cursor = Math.max(cursor, nextCursor);
       label(`实时观察 · 事件 ${cursor}`, "live");
       if (!refreshScheduled) {
         refreshScheduled = true;
         window.setTimeout(() => { refreshScheduled = false; loadExport("/api/console"); }, 100);
       }
     });
-    eventStream.onerror = () => {
-      if (eventStream) eventStream.close();
-      window.setTimeout(() => connectEvents(endpoint), 1000);
+    stream.onerror = () => {
+      if (eventStream !== stream) return;
+      eventStream = null;
+      stream.close();
+      scheduleReconnect(endpoint);
     };
     return true;
   };

@@ -63,15 +63,11 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         repository: WorkspaceRepository,
         *,
         dashboard_path: str | Path,
-        campaign_report_path: str | Path | None = None,
         sse_poll_seconds: float = 0.5,
         sse_lifetime_seconds: float = 30.0,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
-        self.campaign_report_path = (
-            Path(campaign_report_path).resolve() if campaign_report_path is not None else None
-        )
         self.sse_poll_seconds = sse_poll_seconds
         self.sse_lifetime_seconds = sse_lifetime_seconds
         super().__init__(server_address, WorkspaceRequestHandler)
@@ -110,10 +106,7 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
             if parsed.path == "/api/console":
                 self._json(
                     HTTPStatus.OK,
-                    build_console_export(
-                        self.server.repository.root,
-                        campaign_report_path=self.server.campaign_report_path,
-                    ),
+                    build_console_export(self.server.repository.root),
                 )
                 return
             if parsed.path == "/api/audit":
@@ -210,14 +203,7 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
 
     def _campaign_payload(self) -> dict[str, Any]:
         workspace = self.server.repository.load()
-        return campaign_snapshot(
-            self.server.campaign_report_path,
-            workspace_provenance={
-                "run_id": workspace.trace.run_id,
-                "state_digest_sha256": workspace.state_digest(),
-                "event_head_hash": workspace.events.head_hash,
-            },
-        )
+        return campaign_snapshot(workspace)
 
     def _sse(self, after: int) -> None:
         self.send_response(HTTPStatus.OK)
@@ -263,7 +249,6 @@ def make_server(
     host: str = "127.0.0.1",
     port: int = 8000,
     dashboard_path: str | Path | None = None,
-    campaign_report_path: str | Path | None = None,
     sse_poll_seconds: float = 0.5,
     sse_lifetime_seconds: float = 30.0,
 ) -> WorkspaceHTTPServer:
@@ -279,7 +264,6 @@ def make_server(
         (host, port),
         repository,
         dashboard_path=dashboard,
-        campaign_report_path=campaign_report_path,
         sse_poll_seconds=sse_poll_seconds,
         sse_lifetime_seconds=sse_lifetime_seconds,
     )

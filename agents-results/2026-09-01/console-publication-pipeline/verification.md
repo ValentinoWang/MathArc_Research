@@ -50,3 +50,42 @@ Two subsequent fixed-commit AI reviews found a P0 export overwrite path and seve
 New negative coverage rejects workspace-output overwrite, forged/malformed campaign envelopes, ledger field injection, two-instance lost writes, and persistence-failure memory contamination.
 
 The final authoritative Gate 0 rerun after this hardening passed strict mypy for 70 modules, 428 unit tests with zero failures/errors (two declared historical skips), 20 SMT tests with zero skips, v0.1 and v0.2 acceptance, and Frankl replay. The focused console/observatory/ledger/workspace suite passed 27 tests; prototype JavaScript parsing passed.
+
+## Third hardening: campaign origin and client ordering
+
+The final repair removed the externally supplied campaign-report file contract.
+`run --workspace-root` now records only the exact `ResearchCampaign.run()` return
+from that workspace as a content-addressed artifact, then seals the completion
+and artifact registration into the workspace event ledger. `export`,
+`GET /api/console`, and `GET /api/campaign` read only the terminal registered
+workspace artifact. A later workspace transition marks that report stale; an
+arbitrary JSON file cannot become a live campaign view.
+
+The prototype bridge now rejects an out-of-date load before it can change the
+in-memory export, provenance label, or rendered view. It treats `run_id` as the
+workspace generation and resets the SSE cursor when the generation changes or
+the reported sequence tail moves backwards. The new Node-based behavior test
+executes the embedded bridge against fetch/EventSource stubs and covers stale
+response ordering, generation change, sequence restart, and normal reconnect.
+
+The isolated operations ledger also normalizes a persisted non-string `kind`
+into `OperationsLedgerError` rather than leaking `TypeError`.
+
+Final evidence on the frozen candidate:
+
+```text
+/tmp/matharc-console-ci.zumGSg/bin/python -m unittest -v \
+  tests.test_v02_console_export tests.test_v02_console_observatory \
+  tests.test_console_prototype tests.test_operations_ledger tests.test_v02_campaign
+# 31 passed
+
+make ci-full PYTHON=/tmp/matharc-console-ci.zumGSg/bin/python
+# strict mypy: 70 modules
+# unittest: 432 passed, 0 failures/errors, 2 declared skips
+# SMT: 20 executed, 0 skipped
+```
+
+Two final independent worker reviews were dispatched against this frozen source
+but failed to return structured conclusions within their bounded review window.
+Their logs are retained as execution evidence; no final independent-AI PASS is
+claimed here.

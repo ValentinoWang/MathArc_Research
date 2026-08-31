@@ -9,13 +9,30 @@ from pathlib import Path
 
 from matharc.v02.console_export import (
     build_console_export,
-    campaign_report_envelope,
     write_console_export,
 )
+from matharc.v02.budget import BudgetLedger
+from matharc.v02.campaign import ResearchCampaign
+from matharc.v02.workspace import ResearchWorkspace
 from matharc.v02.workspace_bundle import write_full_workspace_bundle
+from matharc.v02.workers import StaticProposalWorker
+from tests.fake_claude_code import write_fake_claude_code
 
 
 class ConsoleExportTests(unittest.TestCase):
+    @staticmethod
+    def _record_campaign(root: Path) -> str:
+        workspace = ResearchWorkspace.load(root)
+        campaign = ResearchCampaign(
+            workspace.trace,
+            [StaticProposalWorker("prover", {})],
+            budget=BudgetLedger(wall_seconds_limit=0.0),
+        )
+        report = campaign.run()
+        artifact_id = workspace.record_campaign_result(campaign, report)
+        workspace.save()
+        return artifact_id
+
     def test_export_is_read_only_and_discloses_absent_campaign(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "workspace"
@@ -36,16 +53,15 @@ class ConsoleExportTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "workspace"
             write_full_workspace_bundle(root)
-            report = Path(directory) / "campaign.json"
-            report_value = {"rounds": [], "stop_reason": "done", "final_metrics": {}, "budget": None, "creation_log": []}
-            report.write_text(
-                json.dumps(campaign_report_envelope(report_value, build_console_export(root)["provenance"])),
-                encoding="utf-8",
-            )
-            target = write_console_export(root, Path(directory) / "console.json", campaign_report_path=report)
+            artifact_id = self._record_campaign(root)
+            target = write_console_export(root, Path(directory) / "console.json")
             payload = json.loads(target.read_text(encoding="utf-8"))
             self.assertTrue(payload["campaign"]["available"])
-            self.assertEqual(payload["campaign"]["report"]["stop_reason"], "done")
+            self.assertEqual(
+                payload["campaign"]["report"]["stop_reason"],
+                "release_state_terminal:PROVED_AND_AUDITED",
+            )
+            self.assertEqual(payload["campaign"]["artifact_id"], artifact_id)
             with self.assertRaises(ValueError):
                 write_console_export(root, Path(directory) / "console.txt")
 
@@ -59,7 +75,7 @@ class ConsoleExportTests(unittest.TestCase):
                 write_console_export(root, manifest)
             self.assertEqual(before, manifest.read_bytes())
 
-    def test_campaign_requires_typed_workspace_bound_envelope(self) -> None:
+    def test_external_campaign_json_cannot_be_presented_as_a_registered_report(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "workspace"
             report = Path(directory) / "campaign.json"
@@ -68,14 +84,42 @@ class ConsoleExportTests(unittest.TestCase):
                 json.dumps({"rounds": "not-an-array", "stop_reason": 7, "final_metrics": {}, "budget": None, "creation_log": []}),
                 encoding="utf-8",
             )
-            with self.assertRaises(ValueError):
-                build_console_export(root, campaign_report_path=report)
-            valid = {"rounds": [], "stop_reason": "done", "final_metrics": {}, "budget": None, "creation_log": []}
-            forged = campaign_report_envelope(valid, build_console_export(root)["provenance"])
-            forged["provenance"]["run_id"] = "another-run"
-            report.write_text(json.dumps(forged), encoding="utf-8")
-            with self.assertRaises(ValueError):
-                build_console_export(root, campaign_report_path=report)
+            payload = build_console_export(root)
+            self.assertFalse(payload["campaign"]["available"])
+            self.assertEqual(payload["campaign"]["reason"], "campaign_report_not_recorded")
+
+    def test_workspace_rejects_a_report_not_returned_by_its_campaign_run(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "workspace"
+            write_full_workspace_bundle(root)
+            workspace = ResearchWorkspace.load(root)
+            campaign = ResearchCampaign(
+                workspace.trace,
+                [StaticProposalWorker("prover", {})],
+                budget=BudgetLedger(wall_seconds_limit=0.0),
+            )
+            report = campaign.run()
+            other_campaign = ResearchCampaign(
+                workspace.trace,
+                [StaticProposalWorker("prover", {})],
+                budget=BudgetLedger(wall_seconds_limit=0.0),
+            )
+            with self.assertRaisesRegex(ValueError, "not produced"):
+                workspace.record_campaign_result(other_campaign, report)
+
+    def test_later_workspace_transition_makes_a_campaign_report_stale(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "workspace"
+            write_full_workspace_bundle(root)
+            self._record_campaign(root)
+            workspace = ResearchWorkspace.load(root)
+            workspace._seal_transition(
+                "TEST_FOLLOWUP", actor="test", subject_ids=(), details={}
+            )
+            workspace.save()
+            payload = build_console_export(root)
+            self.assertFalse(payload["campaign"]["available"])
+            self.assertEqual(payload["campaign"]["reason"], "campaign_report_stale")
 
     def test_module_cli_writes_the_same_versioned_contract(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -100,6 +144,57 @@ class ConsoleExportTests(unittest.TestCase):
             self.assertEqual(completed.returncode, 0, completed.stderr)
             payload = json.loads(output.read_text(encoding="utf-8"))
             self.assertEqual(payload["view_contract"]["verification_publication"], "live")
+
+    def test_workspace_run_then_export_exposes_only_the_registered_campaign(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "workspace"
+            report = Path(directory) / "run-report.json"
+            output = Path(directory) / "console.json"
+            fake = write_fake_claude_code(directory)
+            write_full_workspace_bundle(root)
+            completed = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "matharc.v02",
+                    "run",
+                    "--workspace-root",
+                    str(root),
+                    "--role",
+                    "prover",
+                    "--rounds",
+                    "1",
+                    "--claude-executable",
+                    str(fake),
+                    "--output",
+                    str(report),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            run_payload = json.loads(report.read_text(encoding="utf-8"))
+            self.assertIn("campaign_artifact_id", run_payload)
+            exported = subprocess.run(
+                [
+                    sys.executable,
+                    "-m",
+                    "matharc.v02",
+                    "export",
+                    "--workspace-root",
+                    str(root),
+                    "--output",
+                    str(output),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(exported.returncode, 0, exported.stderr)
+            payload = json.loads(output.read_text(encoding="utf-8"))
+            self.assertTrue(payload["campaign"]["available"])
+            self.assertEqual(payload["campaign"]["artifact_id"], run_payload["campaign_artifact_id"])
 
 
 if __name__ == "__main__":
