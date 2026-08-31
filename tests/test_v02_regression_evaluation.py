@@ -87,7 +87,7 @@ class RegressionEvaluationTests(unittest.TestCase):
             or evidence["acceptance_self_check"] == "pass"
         )
         if not is_acceptance_claim:
-            self.assertEqual("EV-R1-REOPENED-2", evidence["evidence_id"])
+            self.assertIn(evidence["evidence_id"], {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3"})
             self.assertEqual("blocked", evidence["acceptance_self_check"])
             self.assertEqual("BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS", reviews["disposition"])
             self.assertEqual(
@@ -97,10 +97,21 @@ class RegressionEvaluationTests(unittest.TestCase):
             return
 
         self.assertEqual("PASS", reviews["disposition"])
-        self.assertEqual(6, reviews["contract_version"])
+        self.assertEqual(7, reviews["contract_version"])
         ledger = json.loads(REVIEW_LEDGER.read_text(encoding="utf-8"))
         self.assertEqual(reviews["frozen_input_manifest_sha256"], ledger["frozen_input_manifest_sha256"])
         self.assertEqual(reviews["frozen_head"], ledger["frozen_head"])
+        manifest_path = ROOT / reviews["frozen_input_manifest"]
+        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
+        self.assertEqual(reviews["frozen_input_manifest_sha256"], hashlib.sha256(manifest_path.read_bytes()).hexdigest())
+        manifest_hashes = {item["path"]: item["sha256"] for item in manifest["inputs"]}
+        for path in (
+            "tests/test_v02_regression_evaluation.py",
+            "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md",
+            "acceptance/human/R1-regression-evaluation/binding.md",
+            "acceptance/human/R1-regression-evaluation/checklist.md",
+        ):
+            self.assertEqual(hashlib.sha256((ROOT / path).read_bytes()).hexdigest(), manifest_hashes[path])
         required_lanes = {"ablation-boundary", "identity-contract"}
         reports = reviews["reports"]
         self.assertEqual(required_lanes, {report["lane"] for report in reports})

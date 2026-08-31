@@ -1,0 +1,80 @@
+    25	## R1 criterion disposition
+    26
+    27	- AC-01: PASS. The frozen fixture has the three accepted case IDs, exact ordered four-route records per case, unique normalized route scopes and queries, and globally unique route source IDs.
+    28	- AC-02: PASS. Full coverage is the union of route hit sets; incremental hits remove hits found by other routes; leave-one-route-out loss is recomputed from the full union. Results are sorted and deterministic.
+    29	- AC-03: PASS. Strict fields, fixed content digest, A4/T2/topic/case identities, route independence, and finite non-negative manual minutes bounded at 240 reject tampering or drift. Hit/miss/gap labels are closed and bounded.
+    30	- AC-04: PASS. The evaluator is passive and does not import or write `ResearchTrace`, `ClaimStatus`, authorization, or network state.
+    31	- AC-05: PASS for this ablation-boundary lane after persistence of this report. Overall R1 remains blocked until both required distinct durable PASS reports exist.
+    32	- AC-06: Not assessed by this lane; it remains the separate identity-contract review requirement.
+    33	- Active R1 evidence is `EV-R1-REOPENED-2` with a blocked acceptance self-check and `BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS` disposition. Implementation readiness does not override that acceptance blocker. Q1 and A5 are checked only as downstream blocked lifecycle records; this lane cannot accept R1, Q1, or A5.
+    34
+    35	## Protected-test integrity
+    36
+    37	- Protected path: `tests/test_v02_regression_evaluation.py`.
+    38	- Expected SHA-256: `a8320b5af5c000515b0cd0bb5bc177fa4acc87ee9da63439f80f25edf26022cf`.
+    39	- Observed SHA-256: `a8320b5af5c000515b0cd0bb5bc177fa4acc87ee9da63439f80f25edf26022cf`.
+    40	- Disposition: PASS. The protected test exists, is frozen, has no observed weakening or broad skip, and the focused run passed.
+    41
+    42	## Residual risk
+    43
+    44	- Evidence covers only the fixed three-case A4 fixture. It does not establish mathematical proof, external literature status, statistical performance, generalization, production behavior, or public-release authorization.
+    45	- This report supplies only the ablation lane result. The independent identity-contract report is still required before R1 can leave its blocked state; Q1 and A5 must not be promoted by this lane.
+    46	- Human acceptance H-01 and final R1 acceptance are outside this lane.
+    47
+    48	## Verdict
+    49
+    50	Verdict: PASS
+    51	proposed_state: REVIEWED
+    52
+    53	This is an independent review-lane result only. This lane cannot accept R1, Q1, or A5.
+
+exec
+/bin/zsh -lc 'git diff --check' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+exec
+/bin/zsh -lc 'git status --short --untracked-files=all' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/dispatch.json
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/frozen-inputs.json
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/logs/ablation-boundary.log
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/logs/identity-contract.log
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/prompts/ablation-boundary.txt
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/prompts/identity-contract.txt
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/reports/ablation-boundary.md
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/runtime-pids.txt
+
+exec
+/bin/zsh -lc 'find . -type d -name __pycache__ -newer agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/frozen-inputs.json -print' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+codex
+The adversarial probe succeeded: the v6 accepted-state test accepted one retry-2 contract-v4 report twice when its two entries were given fabricated distinct lane/reviewer/wrapper metadata. That is a P1 lifecycle-integrity finding; I’m completing the downstream blocked-state probe and final worktree checks, then I’ll write a FAIL report at the sole authorized path without changing the implementation or evidence.
+exec
+/bin/zsh -lc "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 - <<'PY'
+import json
+
+import tests.test_v02_calibration_disclosure as q1_target
+import tests.test_v02_release_decision as a5_target
+
+class AcceptedR1Evidence:
+    def read_text(self, encoding=\"utf-8\"):
+        return json.dumps({\"evidence_id\": \"EV-R1-ACCEPTED-2\"})
+
+q1_target.R1_EVIDENCE = AcceptedR1Evidence()
+q1_case = q1_target.CalibrationDisclosureTests(
+    \"test_current_q1_acceptance_is_blocked_until_q1_is_reaccepted\"
+)
+q1_case.test_current_q1_acceptance_is_blocked_until_q1_is_reaccepted()
+
+a5 = json.loads(a5_target.A5_EVIDENCE.read_text(encoding=\"utf-8\"))
+assert a5[\"proposed_state\"] == \"BLOCKED\"
+assert a5[\"release_decision\"][\"status\"] == \"BLOCKED_UPSTREAM_R1_REVIEW\"
+assert a5[\"release_decision\"][\"github_source_delivery_authorized\"] is False
+assert a5[\"release_decision\"][\"mathematical_result_publication_authorized\"] is False
+assert a5[\"release_decision\"][\"q1_public_release_allowed\"] is False
+assert a5[\"delivery_requirements\"][\"pre_push_delivery_claim\"] is False
+
+print(\"R1_ACCEPTED_2_WITH_Q1_STILL_BLOCKED=YES\")
+print(\"Q1_HISTORICAL_ACCEPTANCE_AUTHORIZES_CURRENT_PROMOTION=NO\")
+print(\"A5_CURRENT_PROMOTION_AUTHORIZED=NO\")
+PY" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 2ms:

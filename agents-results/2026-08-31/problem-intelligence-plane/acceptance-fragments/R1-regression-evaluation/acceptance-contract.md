@@ -1,7 +1,7 @@
 # Acceptance Contract: R1-regression-evaluation
 
 - Task ID: R1-regression-evaluation
-- Contract version: 6
+- Contract version: 7
 - Contract status: APPROVED
 - Test baseline: LOCKED
 - Acceptance owner: 评测负责人
@@ -88,7 +88,7 @@ And the result remains a passive evaluation artifact
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_regression_evaluation.py | c1585a78c26b7d43cea64c4060699e8ca48b27e9f63dc49b8dcdd52ca8590319 | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
+| tests/test_v02_regression_evaluation.py | 91a588052e9d32e688bb677503628c304ac5ff2420cbd756d4769e513651b6ff | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
 
 ## Requirements-test traceability
 
@@ -114,4 +114,4 @@ And the result remains a passive evaluation artifact
 
 小样本只代表固定 A4 档案，不代表检索系统总体准确率、召回率或文献开放性；真实外部文献检索仍未由本合同覆盖。
 
-合同版本 6 保留版本 5 的夹具、主题和来源身份闭合，并将两份独立 AI 复审维持为硬性、可机读的接受条件。报告完整性检查对冻结清单摘要接受等价的 Markdown 定界表达，避免把无语义差异的反引号写法误判为证据缺失；Q1 生命周期测试明确允许 R1 已重新接受而 Q1 仍阻断的中间状态；已接受分支也必须明确核验当前合同版本，避免阻断态测试掩盖版本漂移。每份报告必须绑定同一冻结输入清单、使用不同审阅身份和不同外部包装器，并以 `PASS` 结束；缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。
+合同版本 7 保留版本 6 的夹具、主题和来源身份闭合，并将两份独立 AI 复审维持为硬性、可机读的接受条件。报告完整性检查对冻结清单摘要接受等价的 Markdown 定界表达，避免把无语义差异的反引号写法误判为证据缺失；Q1 生命周期测试明确允许 R1 已重新接受而 Q1 仍阻断的中间状态；已接受分支不仅核验当前合同版本，还必须读取报告绑定的冻结清单，逐项比对当前受保护测试、R1 合同、人工绑定和清单的 SHA-256，阻止旧合同的整套报告/清单被重标后回放。每份报告必须绑定同一冻结输入清单、使用不同审阅身份和不同外部包装器，并以 `PASS` 结束；缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。
