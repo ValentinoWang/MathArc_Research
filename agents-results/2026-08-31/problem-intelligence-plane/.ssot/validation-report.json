@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-31T06:40:11.584316+00:00",
+  "generated_at": "2026-08-31T06:44:18.693773+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "928556ced521716e82ddc331b0e83921bb67bb3c",
@@ -15,15 +15,15 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "4c368a1a20699aa6199cd14b3600f62cad3b86ea",
-    "project_dirty": true,
-    "project_dirty_diff_sha256": "943003257e146564360f0f91eb0845aac808f46b42e7d4753234558fb7669fdc",
+    "project_commit": "b3cb641a0dee9c28f29670de6cf781d9dfcbf22d",
+    "project_dirty": false,
+    "project_dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "d82e1b5f012df4a210cc39c5c8136be450c57e581aca5b9d1104cd9a81e33492",
-    "content_sha256": "d82e1b5f012df4a210cc39c5c8136be450c57e581aca5b9d1104cd9a81e33492",
+    "sha256": "d4c773b5a1504b11878d02da27749348f20115a752cf7f16f9166978927acf79",
+    "content_sha256": "d4c773b5a1504b11878d02da27749348f20115a752cf7f16f9166978927acf79",
     "manifest_sha256": "431aee110e94c61cb6f6f5c72ff5139810e66624d6c722d72fccffa4623a4ba4",
     "manifest_identity_sha256": "431aee110e94c61cb6f6f5c72ff5139810e66624d6c722d72fccffa4623a4ba4"
   },
@@ -121,9 +121,9 @@
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
         "--check"
       ],
-      "exit_code": 2,
-      "result": "failed",
-      "output": "SSOT snapshot error: snapshot manifest managed_files do not match current source hashes\n"
+      "exit_code": 0,
+      "result": "passed",
+      "output": "{\n  \"status\": \"verified\",\n  \"source\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane\",\n  \"destination\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-08-31/matharc-research/problem-intelligence-plane\",\n  \"project_name\": \"matharc-research\",\n  \"ssot_name\": \"problem-intelligence-plane\",\n  \"snapshot_date\": \"2026-08-31\",\n  \"main_document\": \"ssot-development-paths.md\",\n  \"file_count\": 2,\n  \"contains_openproblem\": true\n}\n"
     }
   ],
   "parallelism": {
