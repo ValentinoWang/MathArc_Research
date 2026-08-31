@@ -1,0 +1,19 @@
+{
+  "fixture_kind": "s1-paper-dry-run",
+  "problem_id": "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+  "statement_version": 1,
+  "case_role": "frankl-q6-four-or-more-small-outside-parts-residual",
+  "statement": "In the same q=6 setup, classify admissible small-part hypergraphs of size at least four and prove the corresponding coarse balance is nonnegative, or output an exact negative configuration that survives the full trace constraints.",
+  "source_assertions": [
+    {
+      "source_kind": "local-document",
+      "source_path": "docs/frankl-q6-exactly-three-small-outside-parts.md",
+      "assertion": "The current proof does not cover four or more small outside parts; the next target is the stated at-least-four-small-parts residual."
+    }
+  ],
+  "expected_report_status": "OPEN_REPORTED",
+  "limitations": [
+    "The scope is limited to the minimum-three-set q=6 setup and four-or-more small outside parts.",
+    "This residual does not upgrade to the general minimum-three-set case or to Frankl's conjecture."
+  ]
+}

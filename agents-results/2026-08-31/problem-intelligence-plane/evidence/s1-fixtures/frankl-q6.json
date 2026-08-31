@@ -1,0 +1,19 @@
+{
+  "fixture_kind": "s1-paper-dry-run",
+  "problem_id": "P-FRANKL-Q6",
+  "statement_version": 1,
+  "case_role": "frankl-q6-constrained-residual",
+  "statement": "Resolve the constrained q=6 outside-balance residual after the at-most-three-small-outside-parts cases; this target is not the global Frankl conjecture.",
+  "source_assertions": [
+    {
+      "source_kind": "local-document",
+      "source_path": "docs/engineering-progress.md",
+      "assertion": "The remaining q=6 counterexample must contain at least four small outside parts; global Frankl remains open."
+    }
+  ],
+  "expected_report_status": "OPEN_REPORTED",
+  "limitations": [
+    "This is the q=6 outside-balance residual, not a claim about the global Frankl conjecture.",
+    "A reported status is not a proof of the underlying statement and requires source artifact readback."
+  ]
+}

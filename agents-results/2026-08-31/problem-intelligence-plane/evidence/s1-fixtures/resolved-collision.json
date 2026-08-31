@@ -1,0 +1,50 @@
+{
+  "fixture_kind": "s1-paper-dry-run",
+  "problem_id": "P-ARXIV-2601-22401-COLLISION",
+  "statement_version": 1,
+  "case_role": "database-open-literature-resolved-collision",
+  "case_identity": "Erdos-397",
+  "statement": "Erdos-397 asks whether there are only finitely many equal products of central binomial coefficients with all indices distinct. arXiv:2601.22401v3 answers no by constructing infinitely many such equal-product pairs; the reported status is therefore RESOLVED_REPORTED pending independent mathematical review.",
+  "source_assertions": [
+    {
+      "source_kind": "database",
+      "asserted_status": "OPEN",
+      "assertion": "The database labels the selected control problem open."
+    },
+    {
+      "source_kind": "literature",
+      "canonical_uri": "https://arxiv.org/abs/2601.22401",
+      "asserted_status": "RESOLVED",
+      "assertion": "arXiv:2601.22401 is the approved literature source for the database-open, literature-resolved control."
+    }
+  ],
+  "source_chain": [
+    {
+      "source_kind": "problem-database",
+      "canonical_uri": "https://www.erdosproblems.com/397",
+      "pinned_version": "page-last-edited-2026-01-12",
+      "locator": "HTML source lines 395-435: #397 is marked DISPROVED (LEAN), and the additional text records a negative answer with an explicit central-binomial-coefficient identity.",
+      "assertion": "The current database record identifies the exact Erdős-397 problem as solved in the negative."
+    },
+    {
+      "source_kind": "arxiv-source",
+      "canonical_uri": "https://export.arxiv.org/e-print/2601.22401v3",
+      "pinned_version": "arXiv:2601.22401v3",
+      "locator": "main.tex lines 721-732: subsection Erdos-397 states the central-binomial-coefficient problem and then states, 'The answer is no; there are infinitely many solutions.'",
+      "assertion": "The v3 source names Erdős-397, supplies the exact statement, and reports an infinite-family negative resolution."
+    },
+    {
+      "source_kind": "arxiv-source",
+      "canonical_uri": "https://export.arxiv.org/e-print/2601.22401v3",
+      "pinned_version": "arXiv:2601.22401v3",
+      "locator": "main.tex lines 727-729: the paper says its Erdos-397 solution was later found essentially identical to a Chinese IMO team-selection-test question.",
+      "assertion": "This records the paper's independent-rediscovery provenance and prevents a novelty inference from the fixture."
+    }
+  ],
+  "expected_report_status": "RESOLVED_REPORTED",
+  "limitations": [
+    "The fixture records a reported resolution for the specifically named Erdős-397 case, not an independently accepted mathematical proof.",
+    "The legacy source_assertions field remains test-contract compatibility data; source_chain is the authoritative, case-specific provenance for this fixture.",
+    "A reported resolution needs independent mathematical review and source artifact readback."
+  ]
+}
