@@ -1,0 +1,10 @@
+{
+  "evidence_id": "EV-A3-ACCEPTED-1",
+  "task_id": "A3",
+  "consumed_evidence": ["EV-S1-ACCEPTED-1", "EV-S2-ACCEPTED-1"],
+  "acceptance_self_check": "pass",
+  "acceptance_matrix": {"unreviewed_prior_result_cannot_authorize_budget_or_public_conclusion": "pass", "incomplete_route_cannot_authorize": "pass", "source_or_artifact_failure_cannot_authorize": "pass", "status_and_novelty_remain_separate_from_claim_promotion": "pass"},
+  "acceptance_record": {"accepted_at": "2026-08-31", "accepted_by": "用户（研究负责人/仓库所有者）", "authority_basis": "当前任务中的明确验收确认，结合 S1/S2 专项和独立 AI 复审。"},
+  "proposed_state": "ACCEPTED",
+  "unverified_items": ["External services and independent mathematics review remain outside this local acceptance slice"]
+}

@@ -1,0 +1,13 @@
+{
+  "evidence_id": "EV-S2-ACCEPTED-1",
+  "task_id": "S2",
+  "source_revision": {"local_implementation_commit": "2b3fdbb", "remote_equivalent_commit": "3a908b0342627f14a53c9a8de930c4bde7b5ea05"},
+  "acceptance_self_check": "pass",
+  "acceptance_commands": ["python3 -m unittest -v tests.test_v02_novelty_audit tests.test_v02_problem_status tests.test_v02_source_observation tests.test_v02_literature_base tests.test_v02_budget", "python3 -m unittest discover -s tests", "git diff --check"],
+  "test_summary": {"focused_and_dependency_tests": 65, "full_suite_tests": 353, "skipped": 10, "result": "passed"},
+  "acceptance_matrix": {"four_route_identity_independence": "pass", "human_review_and_sealing_order": "pass", "source_observation_and_artifact_readback": "pass", "future_or_naive_observations_fail_closed": "pass", "contract_fixture_never_authorizes_consumers": "pass", "no_claim_or_trace_promotion": "pass"},
+  "ai_review": {"rounds": 3, "repaired_findings": ["copied routes", "unverified source support", "audit temporal order", "source-id aliases", "source observed after route search"], "post_repair_review": "pass", "remaining_risk": "No external search execution or mathematical proof review is claimed."},
+  "acceptance_record": {"accepted_at": "2026-08-31", "accepted_by": "用户（研究负责人/仓库所有者）", "authority_basis": "用户在当前任务中明确确认“验收通过”；专项和全库测试及独立 AI 复审通过。"},
+  "proposed_state": "ACCEPTED",
+  "unverified_items": ["External search-provider execution", "Independent mathematical review", "Global Obsidian archive audit blocked by unrelated historical placeholders"]
+}
