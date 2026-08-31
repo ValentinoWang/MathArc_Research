@@ -2,13 +2,15 @@
 
 from __future__ import annotations
 
+import fcntl
 import hashlib
 import json
 import os
+from contextlib import contextmanager
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 
 from .artifact_store import ArtifactRecord, ArtifactStore
 from .budget import BudgetLedger
@@ -39,20 +41,10 @@ class LiteratureBase:
         self.root.mkdir(parents=True, exist_ok=True)
         self.artifacts = ArtifactStore.load(self.root / "artifacts")
         self.manifest_path = self.root / "observations.json"
+        self.lock_path = self.root / ".observations.lock"
         self.budget = budget
         self._observations: dict[str, SourceObservation] = {}
-        if self.manifest_path.is_file():
-            payload = json.loads(self.manifest_path.read_text(encoding="utf-8"))
-            if not isinstance(payload, dict) or set(payload) != {"schema_version", "observations"}:
-                raise ValueError("invalid literature observation manifest")
-            if payload["schema_version"] != "1.0":
-                raise ValueError("unsupported literature observation schema")
-            for item in payload["observations"]:
-                observation = SourceObservation.from_dict(item)
-                if observation.observation_id in self._observations:
-                    raise ValueError("duplicate observation id")
-                self._observations[observation.observation_id] = observation
-            self._validate_observed_artifacts()
+        self._reload_state()
 
     @property
     def observations(self) -> tuple[SourceObservation, ...]:
@@ -68,6 +60,28 @@ class LiteratureBase:
         content: bytes,
         *,
         source_filename: str = "",
+    ) -> ImportResult:
+        with self._writer_lock():
+            try:
+                self._reload_state()
+            except (KeyError, ValueError) as exc:
+                return ImportResult(
+                    ImportDisposition.REJECTED,
+                    self._rejected(observation),
+                    reason=f"stored state integrity failure: {exc}",
+                )
+            return self._import_bytes_locked(
+                observation,
+                content,
+                source_filename=source_filename,
+            )
+
+    def _import_bytes_locked(
+        self,
+        observation: SourceObservation,
+        content: bytes,
+        *,
+        source_filename: str,
     ) -> ImportResult:
         actual_digest = hashlib.sha256(content).hexdigest()
         existing_id = self._observations.get(observation.observation_id)
@@ -119,12 +133,14 @@ class LiteratureBase:
                         and observation.content_digest_sha256
                         and item.content_digest_sha256 != observation.content_digest_sha256
                     ):
-                        conflict_id = observation.observation_id
-                        if conflict_id in self._observations:
-                            conflict_id = f"{conflict_id}-conflict-{observation.content_digest_sha256[:8]}"
-                        conflict = SourceObservation.from_dict(
-                            {**observation.to_dict(), "observation_id": conflict_id, "status": ObservationStatus.CONFLICT.value, "artifact_id": None}
-                        )
+                        conflict = self._conflict(observation)
+                        if conflict is None:
+                            rejected = self._rejected(observation)
+                            return ImportResult(
+                                ImportDisposition.REJECTED,
+                                rejected,
+                                reason="derived conflict observation_id already names another record",
+                            )
                         self._record(conflict)
                         return ImportResult(ImportDisposition.CONFLICT, conflict, reason="same identity has a different digest")
                     return ImportResult(
@@ -145,12 +161,14 @@ class LiteratureBase:
                     and observation.content_digest_sha256
                     and item.content_digest_sha256 != observation.content_digest_sha256
                 ):
-                    conflict_id = observation.observation_id
-                    if conflict_id in self._observations:
-                        conflict_id = f"{conflict_id}-conflict-{observation.content_digest_sha256[:8]}"
-                    conflict = SourceObservation.from_dict(
-                        {**observation.to_dict(), "observation_id": conflict_id, "status": ObservationStatus.CONFLICT.value, "artifact_id": None}
-                    )
+                    conflict = self._conflict(observation)
+                    if conflict is None:
+                        rejected = self._rejected(observation)
+                        return ImportResult(
+                            ImportDisposition.REJECTED,
+                            rejected,
+                            reason="derived conflict observation_id already names another record",
+                        )
                     self._record(conflict)
                     return ImportResult(ImportDisposition.CONFLICT, conflict, reason="same identity has a different digest")
 
@@ -201,7 +219,63 @@ class LiteratureBase:
             {**observation.to_dict(), "status": ObservationStatus.REJECTED.value, "artifact_id": None}
         )
 
+    def _conflict(self, observation: SourceObservation) -> SourceObservation | None:
+        """Build a deterministic conflict ID without replacing any stored record."""
+
+        identity_digest = hashlib.sha256(
+            f"{observation.logical_identity}|{observation.content_digest_sha256}".encode("utf-8")
+        ).hexdigest()
+        conflict_id = f"{observation.observation_id}-conflict-{identity_digest}"
+        conflict = SourceObservation.from_dict(
+            {
+                **observation.to_dict(),
+                "observation_id": conflict_id,
+                "status": ObservationStatus.CONFLICT.value,
+                "artifact_id": None,
+            }
+        )
+        existing = self._observations.get(conflict_id)
+        if existing is not None and existing.to_dict() != conflict.to_dict():
+            return None
+        return conflict
+
+    @contextmanager
+    def _writer_lock(self) -> Iterator[None]:
+        self.lock_path.touch(exist_ok=True)
+        with self.lock_path.open("a+", encoding="utf-8") as lock_file:
+            fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+
+    def _reload_state(self) -> None:
+        self.artifacts = ArtifactStore.load(self.root / "artifacts")
+        self._observations = {}
+        if not self.manifest_path.is_file():
+            return
+        payload = json.loads(self.manifest_path.read_text(encoding="utf-8"))
+        if not isinstance(payload, dict) or set(payload) != {"schema_version", "observations"}:
+            raise ValueError("invalid literature observation manifest")
+        if payload["schema_version"] != "1.0":
+            raise ValueError("unsupported literature observation schema")
+        if not isinstance(payload["observations"], list):
+            raise ValueError("invalid literature observation manifest")
+        for item in payload["observations"]:
+            observation = SourceObservation.from_dict(item)
+            if observation.observation_id in self._observations:
+                raise ValueError("duplicate observation id")
+            self._observations[observation.observation_id] = observation
+        self._validate_observed_artifacts()
+
     def _record(self, observation: SourceObservation) -> None:
+        existing = self._observations.get(observation.observation_id)
+        if existing is not None and existing.to_dict() != observation.to_dict():
+            if (
+                existing.logical_identity != observation.logical_identity
+                or existing.status is not ObservationStatus.PENDING
+            ):
+                raise ValueError(f"refusing to overwrite observation id: {observation.observation_id}")
         self._observations[observation.observation_id] = observation
         payload = {
             "schema_version": "1.0",

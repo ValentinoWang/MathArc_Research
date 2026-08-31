@@ -22,7 +22,10 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 本计划把评审建议收敛成五个可以分别验收、分别停止的发布切片。L1 资料观察合同和 L2 资料导入已实现并完成 A2 验收；后续正式验收仍必须由各自指定负责人完成。计划不改变现有论文准备路线，也不改变正式结论的唯一晋升入口。
 
-本修订版本 2 固定机器源中的两组定义：四路检索为正典来源前向引用、名称/别名/等价表述、陈述与数学结构语义检索、综述/作者/问题源及专家线索；三种真实档案为弗兰克尔（Frankl）q=6 问题、数据库标记为开放（open）但文献实际已解决的碰撞题、当前确实需要继续研究的问题。三例只验证资料、状态和预算闭环，不预先证明开放状态或结果新颖性。
+本修订版本 2 固定机器源中的两组定义：
+
+1. 四路检索分别是：从正典来源展开前向引用；检索名称、别名和等价表述；按陈述与数学结构做语义检索；以及记录综述、作者、问题源和专家线索。每一路都必须独立保留查询范围、命中和未决项，不能把单一路“没有搜到”当作开放性证明。
+2. 三种真实档案分别是：弗兰克尔（Frankl）q=6 问题，用于保留既有覆盖和不作新颖性宣传；数据库标记为开放（open）但文献实际已解决的碰撞题，用于验证状态失效和人工复核；当前确实需要继续研究的问题，用于验证证据不足时不自动升级结论。三例只验证资料、状态和预算闭环，不预先证明开放状态或结果新颖性。
 
 首个目标是形成一条最小的“资料观察—问题状态—新颖性审计—预算授权”链路。它先服务现有的论文准备和资料登记能力，再用一个主题和三份真实档案验证边界。只有回归记录表明流程稳定，才考虑扩大主题数量或增加长期观测。
 
@@ -44,21 +47,21 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 ## 三、明确排除的工作
 
-本计划不包含常驻后台观测程序、多主题抓取、大规模候选池、付费出版社全文自动归档、自动把普通相关文章改写为问题状态、未经校准的统计性能声明，也不包含“已解决”或“已确认新颖性”的宣传。首个主题候选可以是并集封闭问题（`union-closed`），但在人工决定前不视为确定选择。
+本计划不包含常驻后台观测程序、多主题抓取、大规模候选池、付费出版社全文自动归档、自动把普通相关文章改写为问题状态、未经校准的统计性能声明，也不包含“已解决”或“已确认新颖性”的宣传。首个主题已接受为并集封闭问题（`union-closed`），但该选择不预先证明开放状态或任何结果的新颖性。
 
 任何实现都不得改写唯一的正式结论晋升入口（`ResearchTrace.promote_claim()`）；资料观察、问题状态和新颖性审计只能提供受限输入或阻塞信号，不能自行制造正式数学结论。
 
-## 四、仍需人工拍板的问题
+## 四、已接受的人工决定
 
 ### 术语说明
 
-这里的“支持性小切片”是把问题情报能力明确登记为现有论文准备和资料登记的辅助发布；它不等于批准完整平台。“首个主题”是一次性观测的范围边界；“修订批准”是让后续实现节点从阻塞状态转为正式可执行状态的人工决定。
+这里的“支持性小切片”是把问题情报能力明确登记为现有论文准备和资料登记的辅助发布；它不等于批准完整平台。“首个主题”是一次性观测的范围边界；修订批准记录（`decision.problem-intelligence.amendment@2`）是让后续正式消费者依赖的人工决定。
 
-1. 是否采用支持性小切片路线？推荐批准一条只服务现有论文准备和资料登记的最小路线；备选是等当前核心、复核和学习路线完成后再启动。前者较早验证新颖性边界，后者减少并行治理成本；两者都不允许绕过现行唯一工程决策入口。决定人是研究负责人和仓库所有者，影响节点（`D1`、`A1`）及其后续消费者。
-2. 首个监测主题是否采用并集封闭问题？推荐只在确认资料范围、预算和不宣称事项后采用；备选是换成另一个有正典来源的问题。选择会决定检索合同、三份真实档案和回归样本，但不会预先证明任何结果新颖。决定人是研究负责人，影响节点（`D2`、`A1`）以及主题观测切片。
-3. 是否批准问题情报平面对当前路线图的修订？推荐在前两项已有明确记录且权威文档对账无冲突后批准；备选是拒绝或延后，所有实现节点继续阻塞。决定人是研究负责人和仓库所有者，影响节点（`A1`）及全部后续发布切片。
+1. 支持性小切片路线已由研究负责人和仓库所有者接受（`decision.problem-intelligence.activation-route@2`）：范围限于现有论文准备和资料登记，不得绕过现行唯一工程决策入口。该决定供支持性小切片决定节点（`D1`）、修订接受节点（`A1`）及其正式消费者使用。
+2. 首个监测主题已由研究负责人接受（`decision.problem-intelligence.first-topic@2`）：采用并集封闭问题，并保留资料范围、预算和不宣称事项；该选择决定检索合同、三种真实档案定义和回归样本，但不预先证明任何结果新颖。该决定供首个主题决定节点（`D2`）、修订接受节点（`A1`）及主题观测切片使用。
+3. 当前路线图修订批准记录（`decision.problem-intelligence.amendment@2`）已由研究负责人和仓库所有者接受：它解锁已接受的资料底座和当前问题状态模型节点（`S1`）的正式前沿，但不替代任何后续切片各自的验收。
 
-在上述决定完成前，计划只允许资料观察合同节点（`L1`）依据活动假设生成可撤销的隔离草稿；不得修改正式合同、合并到权威分支或宣称接口冻结。
+活动假设（`ASM-ACTIVATION-ROUTE`）仅保留为修订批准前的可撤销隔离草稿历史，不再描述当前主视图的执行资格；所有正式消费者统一绑定修订批准记录（`decision.problem-intelligence.amendment@2`）。
 
 ## 五、五个发布切片摘要
 
@@ -76,7 +79,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 当前计划状态是“治理已对账、决定版本 2 已接受、L1/L2/A2 已接受，S1 已解锁”。它是一份开发计划和编排 SSOT，不是功能完成报告。
 
-## 七、权威边界与不确定性路由
+## 七、权威边界与剩余不确定性路由
 
 ### 输入一致性
 
@@ -106,10 +109,10 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 | 不确定性 | 分类 | 去向 | 负责人 | 阻塞范围 | 解决证据 |
 |---|---|---|---|---|---|
-| 是否采用支持性小切片 | human-decision | `openproblem.md` | 研究负责人和仓库所有者 | `D1`、`A1` 及后续实现 | 已签署决定记录 |
-| 首个主题是否采用并集封闭问题 | human-decision | `openproblem.md` | 研究负责人 | `D2`、`A1` 及主题切片 | 主题决定记录 |
-| 是否批准路线图修订 | human-decision | `openproblem.md` | 研究负责人和仓库所有者 | `A1` 及全部后续切片 | 修订决定记录 |
-| 延期文档与现行路线图的优先级 | authority-conflict | `openproblem.md` 与冲突分片 | 仓库所有者 | `D1`、`D2`、`A1` | 明确权威优先级 |
+| 支持性小切片路线 | accepted-decision | `openproblem.md` | 研究负责人和仓库所有者 | 已满足 `D1`、`A1` 依赖 | `decision.problem-intelligence.activation-route@2` |
+| 首个主题采用并集封闭问题 | accepted-decision | `openproblem.md` | 研究负责人 | 已满足 `D2`、`A1` 依赖 | `decision.problem-intelligence.first-topic@2` |
+| 路线图修订 | accepted-decision | `openproblem.md` | 研究负责人和仓库所有者 | 已满足 `A1` 依赖 | `decision.problem-intelligence.amendment@2` |
+| 延期文档与现行路线图的优先级 | resolved-authority-conflict | `openproblem.md` 与冲突分片 | 仓库所有者 | 不再阻塞 `D1`、`D2`、`A1` | 当前路线图与 `decision.problem-intelligence.amendment@2` |
 | 现有字段和预算实现细节 | discoverable-fact | 节点内有界调查 | 对应负责人 | 不单独阻塞人工决定 | 源码、配置和测试 |
 | 真实文献审计样本不足 | evidence-gap | 节点证据台账 | 文献审计负责人 | 只阻塞相应验收声明 | 具体验证记录 |
 | 外部检索凭据或服务不可用 | execution-blocker | 节点阻塞台账 | 主题观测负责人 | 只阻塞需要外部访问的动作 | 能力恢复记录 |
@@ -158,7 +161,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | `L1` | 定义统一文献观察、版本、许可和内容摘要合同 | `A1` | 能区分观察资料与证明证据 | 研究基础设施负责人 |
 | `L2` | 复用现有来源登记与预算边界实现开放资料导入 | `L1` | 重复导入幂等，超预算或错误类型停在待审 | 研究基础设施负责人 |
 | `A2` | 验收统一文献资料底座 | `L2` | 专项测试和负面路径证据齐全 | 验收负责人 |
-| `S1` | 建立命题版本、开放状态证书和问题档案快照关系 | `A2` | 先对 T2 三例真实档案完成纸面 dry-run；摘要变化、证书过期和来源缺失使状态失效 | 问题状态负责人 |
+| `S1` | 建立命题版本、开放状态证书和问题档案快照关系 | `A2` | 先以三种真实档案定义建立独立纸面 dry-run 夹具；该夹具只校验 S1 合同，不执行或验收后续 `T2`。摘要变化、证书过期和来源缺失使状态失效 | 问题状态负责人 |
 | `S2` | 建立独立候选结果新颖性审计与人工入口 | `S1` | 四路结果可分开记录 | 文献审计负责人 |
 | `A3` | 验收问题状态与新颖性竖切 | `S2` | 未审计解决声称不能获得完整预算或公开定性 | 验收负责人 |
 | `T1` | 实现一次性主题观测、游标恢复和去重 | `A3` | 游标可重放，预算和高风险事件进入人工通道 | 主题观测负责人 |
@@ -228,7 +231,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | F1 | fact.problem-intelligence.authority-reconciliation | fact-discovery | governance | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | CHARTER | none | none | none | fact.problem-intelligence.authority-reconciliation | isolated-record | 规划编排者 |
 | D1 | decision.problem-intelligence.activation-route | decision-acceptance | governance | ACCEPTED | ACCEPTED | 2 | FORMAL | F1 | none | none | none | decision.problem-intelligence.activation-route | isolated-record | 研究负责人 |
 | D2 | decision.problem-intelligence.first-topic | decision-acceptance | governance | ACCEPTED | ACCEPTED | 2 | FORMAL | F1 | none | none | none | decision.problem-intelligence.first-topic | isolated-record | 研究负责人 |
-| A1 | decision.problem-intelligence.amendment | decision-acceptance | governance | ACCEPTED | ACCEPTED | 2 | FORMAL | D1,D2 | none | none | decision.problem-intelligence.activation-route@2,decision.problem-intelligence.first-topic@2 | decision.problem-intelligence.amendment | isolated-record | 研究负责人和仓库所有者 |
+| A1 | decision.problem-intelligence.amendment@2 | decision-acceptance | governance | ACCEPTED | ACCEPTED | 2 | FORMAL | D1,D2 | none | none | decision.problem-intelligence.activation-route@2,decision.problem-intelligence.first-topic@2 | decision.problem-intelligence.amendment@2 | isolated-record | 研究负责人和仓库所有者 |
 | L1 | contract.problem-intelligence.source-observation | contract-compile | literature | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A1 | none | none | decision.problem-intelligence.amendment@2 | contract.problem-intelligence.source-observation | isolated-record | 研究基础设施负责人 |
 | L2 | implementation.problem-intelligence.literature-base | implementation | literature | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | L1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.literature-base | implementation | 研究基础设施负责人 |
 | A2 | acceptance.problem-intelligence.literature-base | validation | literature | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | L2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.literature-base | evidence-only | 验收负责人 |
@@ -251,7 +254,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | F1 | D2 | hard | specific-output | ACCEPTED | none | edge.fact-reconciliation.topic-option | 权威事实对账包 | F1 路径、提交身份和缺口 |
 | D1 | A1 | hard | specific-output | ACCEPTED | none | edge.activation-option.amendment | 支持性小切片路线选项 | D1 选项、代价和停止条件 |
 | D2 | A1 | hard | specific-output | ACCEPTED | none | edge.topic-option.amendment | 首个监测主题选项 | D2 主题、范围和预算 |
-| A1 | L1 | hard | specific-output | ACCEPTED | ASM-ACTIVATION-ROUTE | edge.amendment.source-observation | 修订决定或条件隔离草稿授权 | A1 决定记录与活动假设 |
+| A1 | L1 | hard | specific-output | ACCEPTED | none | edge.amendment.source-observation | 已接受的 `decision.problem-intelligence.amendment@2` | A1 决定记录 |
 | L1 | L2 | hard | specific-output | ACCEPTED | none | edge.source-observation.literature-base | 冻结的文献观察合同 | L1 字段和边界检查 |
 | L2 | A2 | hard | specific-output | ACCEPTED | none | edge.literature-base.literature-acceptance | 导入实现和重放记录 | L2 幂等、预算和类型测试 |
 | A2 | S1 | hard | specific-output | ACCEPTED | none | edge.literature-acceptance.status-model | 已验收的资料观察层 | A2 专项测试和负面证据 |
@@ -268,15 +271,15 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 
 | Frontier | Task ID | Eligibility | Unsatisfied hard dependencies | Active assumptions | Resource decision |
 |---|---|---|---|---|---|
-| implementation-frontier | L1 | FORMAL | none | none | conflict-free |
+| implementation-frontier | S1 | FORMAL | none | none | conflict-free；先运行独立纸面 dry-run 夹具 |
 
 ### 波前指标
 
 | Metric | Value | Basis |
 |---|---:|---|
 | ready-frontier-width | 1 | 机器状态为 READY 的节点数 |
-| formal-ready | 1 | L1 的 A1 正式依赖已满足 |
-| conditional-ready | 0 | 没有条件草稿 |
+| formal-ready | 1 | S1 的 A2 正式依赖已满足 |
+| conditional-ready | 0 | 当前没有条件草稿 |
 | global-completeness-barriers | 0 | 没有把全局完成度作为普通节点前置条件 |
 | critical-path-length | 16 | 显式硬边上的最长节点路径 |
 | graph-ready-width | 1 | 结构分析器按已接受父节点计算 |
@@ -311,7 +314,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
 
-并行宽度的逻辑目标由独立交付物决定；当前正式前沿只有 L1。L2 及后续实现必须等待上游验收节点，不因决定记录而越过依赖。
+并行宽度的逻辑目标由独立交付物决定；当前正式前沿只有 S1。S2 及后续实现必须等待上游验收节点，不因已接受决定而越过依赖。
 
 ### 假设与冲突登记
 
@@ -343,7 +346,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | EXT-V03-STATUS | docs/V03_IMPLEMENTATION_STATUS.md | b3eb7512c5b03a9beb8b0eb5f946597c723d07be | a2436a810f92ef192ab16ce6e452828998a387e23ad7e294f093b38d80d8012e | ACCEPTED | F1,D1,D2 |
 | EXT-DISCOVERY-V04 | docs/DISCOVERY_PLANE_V04.md | 0fb8f15f04451834719c929a264260278e1f6727 | 449aff96d31989e85582c04118541cb24368aae180cb0067c638b18ab6f05143 | ACCEPTED | CHARTER,F1,D1,D2,A1 |
 | EXT-SOURCE-REGISTRY | matharc/v02/source_registry.py | 0fb8f15f04451834719c929a264260278e1f6727 | e697f0894d8ac35a19c39ade521a8dfa6d4e42f7c291261a6e0004702c1b3c22 | ACCEPTED | L1,L2 |
-| EXT-BUDGET-V02 | matharc/v02/budget.py | 0fb8f15f04451834719c929a264260278e1f6727 | fc5affd66099c16695d0e7742725c371cca0490bcbdaab6495cfc95dbafea0b6 | ACCEPTED | L1,L2,T1,R1 |
+| EXT-BUDGET-V02 | matharc/v02/budget.py | 0fb8f15f04451834719c929a264260278e1f6727 | 24f9b7714324a3120c0addefcd391bc4f00000a84c06692875873a7804beec1e | ACCEPTED | L1,L2,T1,R1 |
 
 ### 执行合同与 worker 注册
 
@@ -379,7 +382,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 |---|---|---|
 | decision.problem-intelligence.activation-route | D1、A1、L1 及其后继 | 只沿显式边和活动假设传播 |
 | decision.problem-intelligence.first-topic | D2、A1、主题观测切片 | 只重算首个主题相关节点 |
-| decision.problem-intelligence.amendment | A1 及所有正式消费者 | 版本不匹配时阻塞正式验收 |
+| decision.problem-intelligence.amendment@2 | A1 及所有正式消费者 | 版本不匹配时阻塞正式验收 |
 | edge.source-observation.literature-base | L1、L2、A2 | 不重置无关切片 |
 
 ### 资源与隔离核对
@@ -439,8 +442,8 @@ F1
                                                         v
                                       T1 --> T2 --> A4 --> R1 --> Q1 --> A5
 
-D1 与 D2 在 F1 已接受后可以并行；L1 仅在活动假设下生成隔离草稿。
-所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
+D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；当前前沿是 S1。
+S1 先运行独立纸面 dry-run 夹具；该夹具不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
 ```
 
 ### Mermaid 依赖图
@@ -468,4 +471,4 @@ flowchart LR
 
 ### 结论与当前停止点
 
-当前停止点是人工决定门：D1、D2 尚未接受，A1 仍然阻塞；后续节点全部保持未开始。计划已经写入机器源和生成主视图后，仍需通过复杂度、程序、结构、中文可读性和选择性归档检查，才能称为“计划文档已验证”；这不改变“功能尚未实现”的结论。
+当前正式前沿是 S1：D1、D2、A1、L1、L2、A2 已接受，S1 已解锁但尚未实现；S2 及后续节点仍因各自的硬依赖而阻塞。S1 必须先完成独立纸面 dry-run 夹具，不能把这项夹具当作 T2 的执行或真实档案验收。计划已经写入机器源和生成主视图后，仍需通过复杂度、程序、结构、中文可读性和选择性归档检查，才能称为“计划文档已验证”；这不改变“功能尚未实现”的结论。

@@ -47,9 +47,22 @@ class BudgetLedger:
         self.tool_call_count += 1
 
     def charge_model_usage(self, usage: Mapping[str, Any]) -> None:
-        input_tokens = int(usage.get("input_tokens", 0) or 0)
-        output_tokens = int(usage.get("output_tokens", 0) or 0)
+        raw_input_tokens = usage.get("input_tokens", 0)
+        raw_output_tokens = usage.get("output_tokens", 0)
+        input_tokens = int(raw_input_tokens or 0)
+        output_tokens = int(raw_output_tokens or 0)
         cost_usd = usage.get("cost_usd")
+        if (
+            input_tokens < 0
+            or output_tokens < 0
+            or isinstance(raw_input_tokens, (int, float)) and raw_input_tokens < 0
+            or isinstance(raw_output_tokens, (int, float)) and raw_output_tokens < 0
+        ):
+            raise ValueError("model usage tokens cannot be negative")
+        if isinstance(cost_usd, bool) or (cost_usd is not None and not isinstance(cost_usd, (int, float))):
+            raise ValueError("cost_usd must be a number when provided")
+        if isinstance(cost_usd, (int, float)) and cost_usd < 0:
+            raise ValueError("model usage cost_usd cannot be negative")
         self.spent_input_tokens += input_tokens
         self.spent_output_tokens += output_tokens
         if isinstance(cost_usd, (int, float)):

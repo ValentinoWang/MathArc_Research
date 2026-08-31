@@ -41,7 +41,7 @@
     {
       "view_id": "main",
       "source": "view-sources/00-main.md",
-      "source_sha256": "2305e5e690dcee84bbe1274a2c7d5f5a2486db9283351b9252f1db7e5cd8b6c7",
+      "source_sha256": "a2b51e0d7f90834d692ad43b657c7cc5f0324f40afef5ac6f8d327c60312b1e3",
       "output": "../ssot-development-paths.md"
     }
   ],
@@ -111,7 +111,7 @@
       "semantic_key": "domain.budget-v02",
       "authority_path": "matharc/v02/budget.py",
       "authority_commit": "0fb8f15f04451834719c929a264260278e1f6727",
-      "authority_sha256": "fc5affd66099c16695d0e7742725c371cca0490bcbdaab6495cfc95dbafea0b6",
+      "authority_sha256": "24f9b7714324a3120c0addefcd391bc4f00000a84c06692875873a7804beec1e",
       "required_state": "ACCEPTED",
       "consumers": [
         "L1",

@@ -35,6 +35,22 @@ class BudgetLedgerTests(unittest.TestCase):
         )
         self.assertTrue(ledger.exhausted())
 
+    def test_negative_model_usage_is_rejected_without_reopening_exhausted_budget(self) -> None:
+        ledger = BudgetLedger(input_token_limit=10, spent_input_tokens=10)
+        with self.assertRaisesRegex(ValueError, "cannot be negative"):
+            ledger.charge_model_usage({"input_tokens": -0.5, "output_tokens": 0, "cost_usd": 0.0})
+        self.assertEqual(ledger.spent_input_tokens, 10)
+        self.assertTrue(ledger.exhausted())
+
+    def test_negative_model_cost_is_rejected_without_mutating_usage(self) -> None:
+        ledger = BudgetLedger(cost_usd_limit=1.0, spent_cost_usd=1.0)
+        with self.assertRaisesRegex(ValueError, "cannot be negative"):
+            ledger.charge_model_usage({"input_tokens": 2, "output_tokens": 3, "cost_usd": -0.1})
+        self.assertEqual(ledger.spent_input_tokens, 0)
+        self.assertEqual(ledger.spent_output_tokens, 0)
+        self.assertEqual(ledger.spent_cost_usd, 1.0)
+        self.assertTrue(ledger.exhausted())
+
     def test_model_usage_and_cost_are_accumulated(self) -> None:
         ledger = BudgetLedger(cost_usd_limit=1.0)
         ledger.charge_model_usage({"input_tokens": 100, "output_tokens": 50, "cost_usd": 0.6})

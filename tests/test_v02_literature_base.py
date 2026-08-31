@@ -222,6 +222,60 @@ class LiteratureBaseTests(unittest.TestCase):
             self.assertEqual(base.import_bytes(conflict, content_b).disposition, ImportDisposition.CONFLICT)
             self.assertEqual(base.import_bytes(observed, content_a).disposition, ImportDisposition.IDEMPOTENT)
 
+    def test_conflict_id_does_not_overwrite_unrelated_observed_record(self) -> None:
+        content_a = b"first"
+        content_b = b"second"
+        digest_a = hashlib.sha256(content_a).hexdigest()
+        digest_b = hashlib.sha256(content_b).hexdigest()
+        observed = new_observation(
+            observation_id="shared", canonical_uri="https://example.test/one", pinned_version="v1",
+            license_status=LicenseStatus.OPEN, license_basis="license", content_summary="metadata",
+            summary_basis="abstract", media_type="application/pdf", content_digest_sha256=digest_a,
+        )
+        conflicting = new_observation(
+            observation_id="shared", canonical_uri=observed.canonical_uri, pinned_version="v1",
+            license_status=LicenseStatus.OPEN, license_basis="license", content_summary="metadata",
+            summary_basis="abstract", media_type="application/pdf", content_digest_sha256=digest_b,
+        )
+        unrelated = new_observation(
+            observation_id="shared-conflict-" + hashlib.sha256(
+                f"{conflicting.logical_identity}|{digest_b}".encode("utf-8")
+            ).hexdigest(),
+            canonical_uri="https://example.test/unrelated", pinned_version="v1",
+            license_status=LicenseStatus.OPEN, license_basis="license", content_summary="metadata",
+            summary_basis="abstract", media_type="application/pdf", content_digest_sha256=digest_b,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            base = LiteratureBase(directory)
+            self.assertEqual(base.import_bytes(observed, content_a).disposition, ImportDisposition.IMPORTED)
+            self.assertEqual(base.import_bytes(unrelated, content_b).disposition, ImportDisposition.IMPORTED)
+            result = base.import_bytes(conflicting, content_b)
+            self.assertEqual(result.disposition, ImportDisposition.REJECTED)
+            restored = LiteratureBase(directory)
+            self.assertEqual(
+                restored._observations[unrelated.observation_id].logical_identity,
+                unrelated.logical_identity,
+            )
+
+    def test_two_instances_merge_distinct_writes_from_the_same_root(self) -> None:
+        content_a = b"first instance"
+        content_b = b"second instance"
+        with tempfile.TemporaryDirectory() as directory:
+            first = LiteratureBase(directory)
+            second = LiteratureBase(directory)
+            first_result = first.import_bytes(
+                obs(uri="https://example.test/first", digest=hashlib.sha256(content_a).hexdigest()),
+                content_a,
+            )
+            second_result = second.import_bytes(
+                obs(uri="https://example.test/second", digest=hashlib.sha256(content_b).hexdigest()),
+                content_b,
+            )
+            self.assertEqual(first_result.disposition, ImportDisposition.IMPORTED)
+            self.assertEqual(second_result.disposition, ImportDisposition.IMPORTED)
+            restored = LiteratureBase(directory)
+            self.assertEqual(len(restored.observations), 2)
+
     def test_replay_rejects_conflicting_artifact_metadata(self) -> None:
         content = b"metadata integrity"
         digest = hashlib.sha256(content).hexdigest()
