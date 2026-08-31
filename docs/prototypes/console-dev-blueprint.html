@@ -343,9 +343,9 @@ html{scroll-behavior:smooth;}
   <div class="tw"><table>
     <thead><tr><th>视图</th><th>后端现状</th><th>状态</th></tr></thead>
     <tbody>
-      <tr><td>资料核验</td><td><code>SourceRegistry</code> 已有，五项核对逐字段对应；缺的只是录入界面与待审队列持久化</td><td><span class="chip c-wire">待接线</span></td></tr>
-      <tr><td>每日新论文 / 开放状态核查 / 是否算新结果的检索侧</td><td>依赖文献适配器 W2-6（<code>literature.py</code>，计划项，文件不存在）；来源登记目前纯人工</td><td><span class="chip c-new">需新建</span></td></tr>
-      <tr><td>方向信息流 / 候选主题</td><td>领域聚类、五条标准、席位规则均无后端；先做主题/标准的存储与人工流程</td><td><span class="chip c-new">需新建</span></td></tr>
+      <tr><td>资料核验</td><td><code>SourceRegistry</code>、<code>SourceObservation</code>、<code>LiteratureBase</code> 与单主题游标/人工队列已存在；控制台只读投影待接线，录入界面仍未授权</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>每日新论文 / 开放状态核查 / 是否算新结果的检索侧</td><td>本地文献存储与可重放观察已存在；真实外部检索适配器、实时统计与状态推断均不存在，不能由界面补造</td><td><span class="chip c-part">部分待建</span></td></tr>
+      <tr><td>方向信息流 / 候选主题</td><td>单主题游标、预算与人工复核队列已有；领域聚类、五条标准和席位规则仍无后端</td><td><span class="chip c-part">部分待建</span></td></tr>
       <tr><td>候选问题（九道门）</td><td>门控引擎无后端；<code>PAPER_READINESS.md</code> 是人工先例，引擎化时以它为验收样本</td><td><span class="chip c-new">需新建</span></td></tr>
       <tr><td>问题详情 / 已知结果与缺口</td><td>陈述版本关系与结果图无存储；「编译缺口→根命题」入口已有雏形（<code>cli plan</code>）</td><td><span class="chip c-part">部分待建</span></td></tr>
       <tr><td>难度评估</td><td>量表与预测台账无存储；校准规则已定（样本不足二十条一律标未校准，禁总分）</td><td><span class="chip c-new">需新建</span></td></tr>
@@ -369,7 +369,7 @@ html{scroll-behavior:smooth;}
   <div class="tw"><table>
     <thead><tr><th>项</th><th>现状</th><th>备注</th></tr></thead>
     <tbody>
-      <tr><td>文献适配器（W2-6）</td><td>计划项，<code>literature.py</code> 不存在；来源登记为人工录入</td><td class="mut">平面①检索侧与新颖性审计的硬前提；落地前相关界面保持协议展示，<b>零检索统计数字</b></td></tr>
+      <tr><td>外部文献适配器（W2-6）</td><td>本地 <code>literature_base.py</code> 与 <code>topic_observation.py</code> 已支持可重放导入；真实外部提供方适配器不存在</td><td class="mut">平面①检索侧与新颖性审计的硬前提；落地前相关界面保持协议展示，<b>零外部检索统计数字</b></td></tr>
       <tr><td>选题门控引擎（九道门）</td><td>无</td><td class="mut">门的定义已在原型固化；引擎化后以既有人工审读为回归样本</td></tr>
       <tr><td>难度量表 + 预测台账存储</td><td>无</td><td class="mut">布赖尔校准逻辑随台账一起做；界面已禁一切总分呈现</td></tr>
       <tr><td>运营域（积分/席位/计费/上游路由）</td><td>无</td><td class="mut">独立服务，不进研究内核进程；换模型不得影响证据可重放性</td></tr>
@@ -414,8 +414,8 @@ html{scroll-behavior:smooth;}
         <td class="mut">跑一次 <code>cli run</code>，控制台不刷新即见新事件；断线重连按 <code>after</code> 游标续传无缺口</td></tr>
       <tr><td>M2 评审闭环</td><td>评审队列/送审包接真服务；义务逐条判定 + 整体决定提交 <code>POST /api/review</code></td>
         <td class="mut">APPROVE 含非 OK 义务被后端拒绝并在界面如实呈现；令牌仅存内存</td></tr>
-      <tr><td>M3 选题最小闭环</td><td>资料核验录入接 <code>SourceRegistry</code>；主题/标准存储；文献适配器落地后开检索侧</td>
-        <td class="mut">五项核对状态机与后端一致；适配器未落地的视图仍无统计数字</td></tr>
+      <tr><td>M3 选题最小闭环</td><td>资料核验读模型接 <code>SourceRegistry</code> 与单主题观察存储；主题/标准存储；外部适配器落地后才开检索侧</td>
+        <td class="mut">五项核对状态机与后端一致；外部适配器未落地的视图仍无统计数字，且不推断开放/已解决/新颖性状态</td></tr>
       <tr><td>M4 运营域</td><td>积分/席位/计费/上游独立服务</td>
         <td class="mut">换模型/换上游后，历史结论重放逐字节不变（这是硬验收，不是口号）</td></tr>
     </tbody>

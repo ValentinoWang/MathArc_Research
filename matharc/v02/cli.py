@@ -8,6 +8,7 @@ from typing import Any
 from .benchmark import compare_agents, load_results
 from .budget import BudgetLedger
 from .campaign import ResearchCampaign
+from .console_export import write_console_export
 from .claude_code_runtime import ClaudeCodeConfig, ClaudeCodeRunner, claude_code_status
 from .demo import write_research_demo
 from .failure_memory import FailureMemory
@@ -225,6 +226,11 @@ def main(argv: list[str] | None = None) -> None:
     metrics.add_argument("--trace", required=True)
     metrics.add_argument("--output")
 
+    export = sub.add_parser("export", help="write a read-only console.json workspace export")
+    export.add_argument("--workspace-root", required=True)
+    export.add_argument("--output", required=True)
+    export.add_argument("--campaign-report")
+
     plan = sub.add_parser("plan", help="select the next load-bearing research obligation")
     plan.add_argument("--trace", required=True)
     plan.add_argument("--failure-memory")
@@ -334,6 +340,13 @@ def main(argv: list[str] | None = None) -> None:
         raise SystemExit(0 if validation["valid"] else 1)
     if args.command == "metrics":
         _write_or_print(compute_research_metrics(load_trace(args.trace)), args.output)
+        return
+    if args.command == "export":
+        write_console_export(
+            args.workspace_root,
+            args.output,
+            campaign_report_path=args.campaign_report,
+        )
         return
     if args.command == "plan":
         trace = load_trace(args.trace)

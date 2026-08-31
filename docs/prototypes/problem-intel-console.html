@@ -108,6 +108,14 @@ button{font:inherit;color:inherit;cursor:pointer;}
   .side{grid-column:2;position:static;max-height:none;overflow:visible;}
 }
 @media (max-width:820px){
+  .topbar{height:auto;min-height:var(--topbar-h);padding:7px 10px;gap:7px;flex-wrap:wrap;align-items:center;}
+  .brand .sub{display:none;}
+  #console-provenance{order:2;min-width:0;max-width:45vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #budget{display:none;}
+  .who{order:2;margin-left:auto;padding-left:0;border-left:0;gap:5px;}
+  .planes{order:3;flex:1 1 100%;width:100%;overflow-x:auto;}
+  .planes button{flex:1;justify-content:center;padding:5px 8px;}
+  .nowtask{order:4;flex:1 1 100%;white-space:normal;overflow:visible;}
   .shell,.shell.nosd{grid-template-columns:minmax(0,1fr);}
   .rail{position:static;max-height:none;overflow:visible;} .side{grid-column:1;}
 }
@@ -4180,6 +4188,191 @@ function syncThemeBtn(){
   const isDark = cur ? cur==="dark" : matchMedia("(prefers-color-scheme:dark)").matches;
   ["#themebtn","#themebtn2"].forEach(s=>{ const b = $(s); if(b) b.textContent = isDark ? "浅色" : "深色"; });
 }
+/* These overrides are deliberately narrow: only views declared live by the
+   export contract stop rendering demonstration constants. Every other view
+   retains its visible demonstration boundary until a matching backend model
+   exists. */
+const DEMO_VIEWS = Object.fromEntries(["source","dag","proofchain","tools","reasoning","admin_roles","campaign"].map(id=>[id,V[id]]));
+const liveWorkspace = () => S.consolePayload && S.consolePayload.workspace;
+const liveEsc = value => esc(value == null ? "—" : String(value));
+const safeExternalHref = value => {
+  try {
+    const parsed = new URL(String(value));
+    return /^(https?):$/.test(parsed.protocol) ? parsed.href : null;
+  } catch (_) { return null; }
+};
+const livePill = value => {
+  const text = liveEsc(value), raw = String(value || "");
+  const kind = /^(PROVED|VERIFIED|PASS|ACCEPTED|ACTIVE)$/.test(raw) ? "ok"
+    : /^(REFUTED|REJECTED|FAIL|ERROR|RETRACTED)$/.test(raw) ? "err"
+    : /^(BLOCKED|PENDING|CANDIDATE|OPEN|PROPOSED|RUNNING)$/.test(raw) ? "gap" : "skip";
+  return `<span class="pill ${kind}">${text}</span>`;
+};
+const liveChain = events => {
+  const genesis = events.length ? String(events[0].previous_hash || "") : "0".repeat(64);
+  let previous = genesis, valid = true;
+  const rows = events.map((event, index) => {
+    const unsigned = { sequence:event.sequence, event_id:event.event_id, event_type:event.event_type,
+      actor:event.actor, subject_ids:event.subject_ids, payload:event.payload,
+      previous_hash:event.previous_hash, timestamp:event.timestamp };
+    const sequenceOk = event.sequence === index;
+    const previousOk = event.previous_hash === previous;
+    const hashOk = event.event_hash === sha256(canon(unsigned));
+    const rowOk = sequenceOk && previousOk && hashOk;
+    valid = valid && rowOk;
+    previous = event.event_hash;
+    return { event, sequenceOk, previousOk, hashOk, rowOk };
+  });
+  return { rows, valid, head:previous, genesis };
+};
+const liveCard = (title, subtitle, body) => card(title, subtitle, `<div class="body">${body}</div>`);
+
+V.source = () => {
+  const workspace = liveWorkspace(), sourceTopic = S.consolePayload && S.consolePayload.source_topic;
+  if(!workspace || !sourceTopic) return DEMO_VIEWS.source();
+  const claims = sourceTopic.source_claims || [], observations = sourceTopic.topic_observations || {};
+  const sourceCell = item => {
+    const label = liveEsc(item.source_claim_id), uri = safeExternalHref(item.canonical_uri);
+    const source = uri ? `<a href="${liveEsc(uri)}" rel="noreferrer">${label}</a>` : label;
+    return `${source}<br><span class="hash">${liveEsc(item.source_digest_sha256)}</span>`;
+  };
+  return { task:`来源审计 · <b>真实来源登记</b> · ${claims.length} 条`,
+    rail: liveCard("读模型边界","不推断研究状态", `<p class="note">${liveEsc(sourceTopic.status_boundary)}</p><div class="divider"></div><p class="note">控制台只展示已持久化的来源核验字段；未配置外部适配器时，不显示任何外部检索统计。</p>`),
+    main: liveCard("资料核验",`${claims.length} 条来源声明`, `<div class="tw"><table><thead><tr><th>来源</th><th>状态</th><th>固定版本 / 定位</th><th>核验方法</th><th>语句对应</th></tr></thead><tbody>${claims.map(item=>`<tr><td>${sourceCell(item)}</td><td>${livePill(item.status)}</td><td class="mono">${liveEsc(item.pinned_version)}<br>${liveEsc(item.locator)}</td><td>${liveEsc(item.verification_method)}</td><td>${liveEsc(item.statement_correspondence)}</td></tr>`).join("") || `<tr><td colspan="5" class="mut">工作区没有来源声明。</td></tr>`}</tbody></table></div>`),
+    side: liveCard("观察状态","仅持久化记录", `<dl class="kv"><dt>观察可用</dt><dd>${observations.available ? "是" : "否"}</dd><dt>已观察</dt><dd>${liveEsc(observations.observed_count || 0)}</dd><dt>待人工复核</dt><dd>${liveEsc(observations.manual_review_count || 0)}</dd><dt>外部统计</dt><dd class="mono">${liveEsc(observations.external_search_statistics)}</dd></dl>`) };
+};
+
+V.dag = () => {
+  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.dag();
+  const trace = workspace.trace, claims = trace.claims || [], evidence = trace.evidence || [];
+  const rows = claims.map(claim => `<tr><td class="mono">${liveEsc(claim.claim_id)}</td><td>${liveEsc(claim.statement)}</td>
+    <td>${livePill(claim.status)}</td><td class="mono">${(claim.dependencies||[]).map(liveEsc).join(" · ") || "—"}</td>
+    <td>${(claim.evidence_ids||[]).length}</td><td>${(claim.route_ids||[]).length}</td></tr>`).join("") ||
+    `<tr><td colspan="6" class="mut">工作区没有命题记录。</td></tr>`;
+  return { task:`命题依赖图 · <b>真实工作区</b> · ${claims.length} 条命题`,
+    rail: liveCard("数据契约","仅显示导出中的工作区事实", `<p class="note">依赖边、证据和路线均来自同一份已通过工作区审计的导出。命题状态由后端写入，控制台不提供晋升或编辑入口。</p>`),
+    main: liveCard("命题依赖表",`事件链头 ${liveEsc(String(workspace.events.head_hash||"").slice(0,12))}`, `<div class="tw"><table><thead><tr><th>命题</th><th>陈述</th><th>状态</th><th>依赖</th><th>证据</th><th>路线</th></tr></thead><tbody>${rows}</tbody></table></div>`)
+      + liveCard("证据台账",`${evidence.length} 条真实证据`, `<div class="tw"><table><thead><tr><th>证据</th><th>命题</th><th>类型 / 状态</th><th>独立组</th><th>冷重放</th></tr></thead><tbody>${evidence.map(item=>`<tr><td class="mono">${liveEsc(item.evidence_id)}</td><td>${(item.claim_ids||[]).map(liveEsc).join(" · ")}</td><td>${livePill(item.kind)} ${livePill(item.status)}</td><td class="mono">${liveEsc(item.independence_group)}</td><td class="hash">${liveEsc(item.replay_command||"未提供")}</td></tr>`).join("") || `<tr><td colspan="5" class="mut">没有可显示的证据。</td></tr>`}</tbody></table></div>`),
+    side: liveCard("审计状态","导出前验证", `<dl class="kv"><dt>工作区审计</dt><dd>${livePill(workspace.audit.valid ? "VERIFIED" : "ERROR")}</dd><dt>状态摘要</dt><dd class="hash">${liveEsc(workspace.workspace.state_digest_sha256)}</dd><dt>声明链头</dt><dd class="hash">${liveEsc(workspace.events.head_hash)}</dd></dl>`)};
+};
+
+V.proofchain = () => {
+  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.proofchain();
+  const chain = liveChain(workspace.events.events || []), declaredHead = String(workspace.events.head_hash || "");
+  return { task:`证明过程链 · <b>真实事件账本</b> · ${(workspace.events.events||[]).length} 条`,
+    rail: liveCard("浏览器复算","与 EventLedger 相同的无符号字段", `<p class="note">每条事件在浏览器内重算 SHA-256，并检查顺序、前哈希和声明哈希。此页的复算用于现场核验，不替代后端审计。</p>`),
+    main: liveCard("账本核验",`${chain.valid && chain.head===declaredHead ? "链完整" : "链不一致"}`, `<div class="banner ${chain.valid && chain.head===declaredHead ? "ok" : "err"}"><div><b>${chain.valid && chain.head===declaredHead ? "全部事件通过本地复算。" : "本地复算与声明链头不一致。"}</b> 声明链头：<span class="hash">${liveEsc(declaredHead)}</span></div></div><div class="tw"><table><thead><tr><th>#</th><th>事件</th><th>执行者</th><th>对象</th><th>顺序</th><th>咬合</th><th>哈希</th></tr></thead><tbody>${chain.rows.map(row=>`<tr><td>${row.event.sequence}</td><td class="mono">${liveEsc(row.event.event_type)}</td><td>${liveEsc(row.event.actor)}</td><td class="mono">${(row.event.subject_ids||[]).map(liveEsc).join(" · ") || "—"}</td><td>${livePill(row.sequenceOk ? "VERIFIED" : "ERROR")}</td><td>${livePill(row.previousOk ? "VERIFIED" : "ERROR")}</td><td>${livePill(row.hashOk ? "VERIFIED" : "ERROR")}</td></tr>`).join("") || `<tr><td colspan="7" class="mut">账本为空。</td></tr>`}</tbody></table></div>`),
+    side: liveCard("链头","外部可钉定的摘要", `<dl class="kv"><dt>创世前哈希</dt><dd class="hash">${liveEsc(chain.genesis)}</dd><dt>复算链头</dt><dd class="hash">${liveEsc(chain.head)}</dd><dt>事件数</dt><dd>${chain.rows.length}</dd></dl>`)};
+};
+
+V.tools = () => {
+  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.tools();
+  const tools = workspace.trace.tool_calls || [];
+  const replayable = tools.filter(item=>item.replay_command && item.input_digest_sha256 && item.output_digest_sha256 && item.environment_digest_sha256).length;
+  return { task:`工具调用台账 · <b>真实记录</b> · ${tools.length} 次调用`,
+    rail: liveCard("冷重放","四字段同时存在才成立", `<p class="note">页面只根据记录中的命令、输入摘要、输出摘要和环境摘要计算可重放性；不会把成功状态误读为可重放。</p>`),
+    main: liveCard("工具调用",`${replayable} / ${tools.length} 条可冷重放`, `<div class="tw"><table><thead><tr><th>调用</th><th>工具 / 用途</th><th>状态</th><th>命题</th><th>独立组</th><th>可重放</th></tr></thead><tbody>${tools.map(item=>{ const ok=!!(item.replay_command&&item.input_digest_sha256&&item.output_digest_sha256&&item.environment_digest_sha256); return `<tr><td class="mono">${liveEsc(item.call_id)}</td><td><b>${liveEsc(item.tool)}</b><br><span class="mut">${liveEsc(item.purpose)}</span></td><td>${livePill(item.status)}</td><td class="mono">${(item.linked_claim_ids||[]).map(liveEsc).join(" · ")||"—"}</td><td class="mono">${liveEsc(item.independence_group)}</td><td>${livePill(ok?"VERIFIED":"PENDING")}</td></tr>`; }).join("") || `<tr><td colspan="6" class="mut">没有工具调用记录。</td></tr>`}</tbody></table></div>`),
+    side: liveCard("导出边界","只读", `<p class="note">工具调用由受治理运行时记录。控制台不执行工具、不创建证据，也不改变命题状态。</p>`)};
+};
+
+V.reasoning = () => {
+  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.reasoning();
+  const reasoning = workspace.trace.public_reasoning || [];
+  return { task:`公开推理 · <b>真实结构化记录</b> · ${reasoning.length} 条`,
+    rail: liveCard("公开字段","不含私有思维链", `<p class="note">导出只包含目标、前提、动作、观察、证伪测试和决定等可审计字段。不存在的字段不由前端补造。</p>`),
+    main: liveCard("结构化推理",`${reasoning.length} 条`, `<div class="chain plain">${reasoning.map(item=>`<div class="cev open"><div class="cev-h"><span class="pill acc">${liveEsc(item.role)}</span><span class="subj">${liveEsc(item.objective)}</span><span class="hash">${liveEsc(item.step_id)}</span></div><div class="cev-b"><dl class="kv"><dt>前提</dt><dd>${(item.premises||[]).map(liveEsc).join("；")||"—"}</dd><dt>动作</dt><dd>${liveEsc(item.proposed_move)}</dd><dt>观察</dt><dd>${liveEsc(item.observation)}</dd><dt>证伪</dt><dd>${liveEsc(item.falsification_test)}</dd><dt>决定</dt><dd>${liveEsc(item.decision)}</dd></dl></div></div>`).join("") || `<p class="note">没有公开推理记录。</p>`}</div>`),
+    side: liveCard("事实边界","可核验而非私密", `<p class="note">公开推理解释决策；证据和事件链分别记录结论依据与变更历史，三者不能相互替代。</p>`)};
+};
+
+V.admin_roles = () => {
+  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.admin_roles();
+  const grants = workspace.role_policy.grants || {}, roles = Object.keys(grants).sort();
+  const capabilities = [...new Set(roles.flatMap(role=>grants[role]||[]))].sort();
+  return { task:`管理端 · 角色与权限 · <b>真实策略</b> · ${roles.length} 个角色`,
+    rail: liveCard("角色策略","应用内权限，不是身份提供方", `<p class="note">${liveEsc(workspace.role_policy.boundary)}</p>`),
+    main: liveCard("能力矩阵",`${capabilities.length} 项能力 × ${roles.length} 个角色`, `<div class="tw"><table><thead><tr><th>能力</th>${roles.map(role=>`<th>${liveEsc(role)}</th>`).join("")}</tr></thead><tbody>${capabilities.map(capability=>`<tr><td class="mono">${liveEsc(capability)}</td>${roles.map(role=>`<td>${(grants[role]||[]).includes(capability)?"是":"—"}</td>`).join("")}</tr>`).join("")}</tbody></table></div>`),
+    side: liveCard("写口边界","控制台不扩大权限", `<p class="note">唯一评审写口仍属于独立评审服务。此导出不携带身份令牌、支付配置或上游凭据。</p>`)};
+};
+
+V.campaign = () => {
+  const workspace = liveWorkspace(); if(!workspace) return DEMO_VIEWS.campaign();
+  const campaign = S.consolePayload.campaign;
+  if(!campaign.available) return { task:"攻克进程 · <b>未提供报告</b>", rail:liveCard("观察站状态","明确不可用",`<p class="note">${liveEsc(campaign.reason)}</p>`), main:liveCard("轮次记录","无报告",`<div class="banner gap"><div>当前工作区未附带 campaign report，控制台不会用演示轮次替代。</div></div>`), side:null };
+  const report = campaign.report, rounds = report.rounds || [];
+  return { task:`攻克进程 · <b>真实报告</b> · ${rounds.length} 轮`, rail:liveCard("报告边界","只读快照", `<p class="note">报告由受治理的 campaign 运行时产生。此页面不启动、停止或修改攻克进程。</p>`), main:liveCard("轮次记录",`停止原因：${liveEsc(report.stop_reason)}`, `<div class="chain plain">${rounds.map((round,index)=>`<div class="cev open"><div class="cev-h"><span class="seq">${String(index+1).padStart(2,"0")}</span><span class="subj">${liveEsc(round.summary || round.role || "轮次记录")}</span></div><div class="cev-b"><pre class="hash">${liveEsc(JSON.stringify(round, null, 2))}</pre></div></div>`).join("") || `<p class="note">报告没有轮次条目。</p>`}</div>`), side:liveCard("预算","报告快照", `<pre class="hash">${liveEsc(JSON.stringify(report.budget, null, 2))}</pre>`)};
+};
+/* Console transport is deliberately separate from the demonstration model.
+   A compatible export may improve provenance, but never fabricates mappings
+   for views whose backend contract has not been implemented. */
+const ConsoleBridge = (() => {
+  let cursor = -1;
+  let eventStream = null;
+  const provenance = document.createElement("span");
+  provenance.id = "console-provenance";
+  provenance.className = "miniprog";
+  provenance.textContent = "演示数据";
+  document.querySelector(".topbar").insertBefore(provenance, document.getElementById("budget"));
+  const label = (text, state) => {
+    provenance.textContent = text;
+    provenance.dataset.source = state;
+  };
+  const applyExport = payload => {
+    if (!payload || payload.schema_version !== "1.0" || !payload.provenance || !payload.workspace || !payload.view_contract) return false;
+    S.consolePayload = payload;
+    const p = payload.provenance;
+    label(`已接入工作区 ${p.run_id || "未知"} · ${String(p.state_digest_sha256 || "").slice(0,12)}`, "export");
+    return true;
+  };
+  const loadExport = async url => {
+    try {
+      const endpoints = url ? [url] : ["console.json", "/api/console"];
+      for (const endpoint of endpoints) {
+        const response = await fetch(endpoint, { cache:"no-store", credentials:"same-origin" });
+        if (response.ok && applyExport(await response.json())) { render(); return true; }
+      }
+      throw new Error("incompatible console export");
+    } catch (_) {
+      label("演示数据（console.json 不可用）", "fallback");
+      return false;
+    }
+  };
+  const connectEvents = endpoint => {
+    if (!endpoint || typeof EventSource === "undefined") return false;
+    if (eventStream) eventStream.close();
+    const url = new URL(endpoint, window.location.href);
+    url.searchParams.set("after", String(cursor));
+    eventStream = new EventSource(url.toString());
+    eventStream.addEventListener("research_event", event => {
+      cursor = Number(event.lastEventId);
+      if (!Number.isInteger(cursor) || cursor < 0) return;
+      label(`实时观察 · 事件 ${cursor}`, "live");
+      window.setTimeout(() => { loadExport("/api/console"); }, 0);
+    });
+    eventStream.onerror = () => {
+      if (eventStream) eventStream.close();
+      window.setTimeout(() => connectEvents(endpoint), 1000);
+    };
+    return true;
+  };
+  const submitReview = async (endpoint, record, tokenInput) => {
+    if (!(tokenInput instanceof HTMLInputElement) || tokenInput.type !== "password") throw new Error("review token must come from a password input");
+    const token = tokenInput.value;
+    tokenInput.value = "";
+    if (!token) throw new Error("review token is required");
+    try {
+      const response = await fetch(endpoint, { method:"POST", credentials:"same-origin", headers:{"Content-Type":"application/json", "Authorization":`Bearer ${token}`}, body:JSON.stringify(record) });
+      const payload = await response.json();
+      if (!response.ok) throw new Error(payload.message || payload.error || "review rejected");
+      return payload;
+    } catch (error) {
+      toast(`评审提交失败：${error.message}`);
+      throw error;
+    }
+  };
+  return { loadExport, connectEvents, submitReview };
+})();
+window.MathArcConsole = ConsoleBridge;
+ConsoleBridge.loadExport().then(loaded => { if (loaded && location.protocol !== "file:") ConsoleBridge.connectEvents("/events"); });
 render();
 </script>
 </body>
