@@ -1,0 +1,99 @@
+{
+  "fixture_kind": "s2-novelty-audit-fixture",
+  "fixture_scope": "Contract-only dry run for a candidate result; this is not a novelty claim.",
+  "record": {
+    "audit_digest_sha256": "a3ad408bafbe2bb2c0a087b829be98cb6d4175b969f100f47eee7e4d578f5bf9",
+    "audit_id": "NOVELTY-Q6-1",
+    "candidate": {
+      "candidate_digest_sha256": "8ddd4df1dc72295486f9df37fc10f603b651e7c56ccb8afd07aca3079d6df182",
+      "candidate_fingerprint_sha256": "de783d19c2bc8bf3df61aa16fe088b02a2161b713fc3f38a0409be3857657804",
+      "candidate_id": "CAND-FRANKL-Q6-1",
+      "schema_version": "1.0",
+      "scope": "The constrained q=6 outside-balance residual only.",
+      "source_support": [
+        {
+          "canonical_uri": "https://example.test/candidate-draft",
+          "locator": "section 2, theorem statement",
+          "pinned_version": "v1",
+          "source_fingerprint_sha256": "ca44be54d3ff326f65428841625c988020f86f207b32d3d3d34fb2a23233df04",
+          "source_id": "candidate-draft"
+        }
+      ],
+      "version": "draft-1"
+    },
+    "conclusion": "NO_PRIOR_RESULT_FOUND",
+    "created_at": "2026-08-31T07:00:00+00:00",
+    "human_audit": {
+      "conclusion": "NO_PRIOR_RESULT_FOUND",
+      "rationale": "All four route records were compared against the candidate's constrained scope.",
+      "reviewed_at": "2026-08-31T09:00:00+00:00",
+      "reviewer_id": "literature-auditor-1",
+      "verdict": "APPROVED"
+    },
+    "purpose": "CONTRACT_FIXTURE",
+    "route_results": [
+      {
+        "completed": true,
+        "hits": [
+          {
+            "hit_id": "HIT-FORWARD-1",
+            "result_fingerprint_sha256": "4927f3ff0e59ea85e865d8d4e2e45b20cfcc5b7f3751115bb7284b1d3e62ba69",
+            "scope": "A related finite-universe verification, not the candidate scope.",
+            "source_support": [
+              {
+                "canonical_uri": "https://example.test/forward-hit",
+                "locator": "section 2, theorem statement",
+                "pinned_version": "v1",
+                "source_fingerprint_sha256": "65edeebd8096d1cefd1dc2aafcba0d5141ddfaa299efcc1dfe8ec5e0a9a4eff4",
+                "source_id": "forward-hit"
+              }
+            ],
+            "version": "v2"
+          }
+        ],
+        "queries": ["query FORWARD_CITATION"],
+        "query_scope": "Route-specific scope for FORWARD_CITATION.",
+        "route": "FORWARD_CITATION",
+        "route_result_digest_sha256": "5788f4715d4d760c9ba22f0cb8c5cd71efe3620d07818b79c17210776d194f5c",
+        "schema_version": "1.0",
+        "searched_at": "2026-08-31T08:00:00+00:00",
+        "unresolved_items": []
+      },
+      {
+        "completed": true,
+        "hits": [],
+        "queries": ["query ALIAS_AND_EQUIVALENCE"],
+        "query_scope": "Route-specific scope for ALIAS_AND_EQUIVALENCE.",
+        "route": "ALIAS_AND_EQUIVALENCE",
+        "route_result_digest_sha256": "69e60bb06dc94c53e70f0f1f383dee6c2530f7ceac69ceb8b2bdf10bfb82fae6",
+        "schema_version": "1.0",
+        "searched_at": "2026-08-31T08:00:00+00:00",
+        "unresolved_items": []
+      },
+      {
+        "completed": true,
+        "hits": [],
+        "queries": ["query STRUCTURAL_SEMANTIC"],
+        "query_scope": "Route-specific scope for STRUCTURAL_SEMANTIC.",
+        "route": "STRUCTURAL_SEMANTIC",
+        "route_result_digest_sha256": "334c3da9c44716c76e523e63eecd5920e1a8b544f060dc29b88d72003725e0cf",
+        "schema_version": "1.0",
+        "searched_at": "2026-08-31T08:00:00+00:00",
+        "unresolved_items": []
+      },
+      {
+        "completed": true,
+        "hits": [],
+        "queries": ["query REVIEW_AND_EXPERT_LEAD"],
+        "query_scope": "Route-specific scope for REVIEW_AND_EXPERT_LEAD.",
+        "route": "REVIEW_AND_EXPERT_LEAD",
+        "route_result_digest_sha256": "486e9fae5ab2e72208b79fdc9bfa22882c69a73803f0ccbfc967c6b6a77138ee",
+        "schema_version": "1.0",
+        "searched_at": "2026-08-31T08:00:00+00:00",
+        "unresolved_items": []
+      }
+    ],
+    "schema_version": "1.0",
+    "sealed_at": "2026-08-31T10:00:00+00:00"
+  }
+}
