@@ -20,6 +20,7 @@ from .failure_channels import (
     record_review_gap,
     record_route_failure,
 )
+from .source_observation import LicenseStatus, ObservationStatus, SourceObservation, new_observation
 from .failure_memory import FailureMemory
 from .falsification import (
     FalsificationContractError,
@@ -65,6 +66,7 @@ __all__ = [
     "FailureClass",
     "FailureMemory",
     "FailureRecord",
+    "LicenseStatus",
     "FailureResolution",
     "FalsificationContractError",
     "KillTestKind",
@@ -75,9 +77,11 @@ __all__ = [
     "ResearchRoundPlan",
     "ResearchRoute",
     "ResearchTrace",
+    "ObservationStatus",
     "RouteEvaluationOutcome",
     "RouteEvaluationRecord",
     "RouteStatus",
+    "SourceObservation",
     "TheoremContract",
     "ToolCallRecord",
     "ToolStatus",
@@ -97,6 +101,7 @@ __all__ = [
     "record_route_failure",
     "render_research_dashboard",
     "save_trace",
+    "new_observation",
 ]
 
 __version__ = "0.2.0"

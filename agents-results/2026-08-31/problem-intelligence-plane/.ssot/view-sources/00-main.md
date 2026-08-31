@@ -22,7 +22,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 本计划把评审建议收敛成五个可以分别验收、分别停止的发布切片。当前唯一可以立即执行的工作是治理对账和两个待拍板选项；后续实现必须等研究负责人和仓库所有者正式批准修订。计划不改变现有论文准备路线，也不改变正式结论的唯一晋升入口。
 
-本修订版本 2 固定机器源中的两组定义：四路检索为正典来源前向引用、名称/别名/等价表述、陈述与数学结构语义检索、综述/作者/问题源及专家线索；三种真实档案为 Frankl q=6、数据库标记为 open（开放）但文献实际已解决的碰撞题、当前确实需要继续研究的问题。三例只验证资料、状态和预算闭环，不预先证明开放状态或结果新颖性。
+本修订版本 2 固定机器源中的两组定义：四路检索为正典来源前向引用、名称/别名/等价表述、陈述与数学结构语义检索、综述/作者/问题源及专家线索；三种真实档案为 Frankl q=6 问题、数据库标记为 open（开放）但文献实际已解决的碰撞题、当前确实需要继续研究的问题。三例只验证资料、状态和预算闭环，不预先证明开放状态或结果新颖性。
 
 首个目标是形成一条最小的“资料观察—问题状态—新颖性审计—预算授权”链路。它先服务现有的论文准备和资料登记能力，再用一个主题和三份真实档案验证边界。只有回归记录表明流程稳定，才考虑扩大主题数量或增加长期观测。
 
@@ -280,8 +280,8 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | global-completeness-barriers | 0 | 没有把全局完成度作为普通节点前置条件 |
 | critical-path-length | 16 | 显式硬边上的最长节点路径 |
 | graph-ready-width | 1 | 结构分析器按已接受父节点计算 |
-| graph-antichain-width | 1 | 当前反链只有 L1 |
-| resource-verified-width | 1 | L1 的读写区和资源声明不冲突 |
+| graph-antichain-width | 2 | 结构分析器计算的最大反链宽度 |
+| resource-verified-width | 1 | 当前可执行资源宽度；最大反链中另一路仍受依赖约束 |
 
 ### 叶交付物清单
 
@@ -309,7 +309,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 
 | Parallel batch | Leaf deliverables | Independent deliverables | Conflict-grouped deliverables | Logical lane target | Available worker slots | Wave count | Graph ready width | Graph antichain width | Resource-verified width |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| W2-formal-frontier | DL-D1,DL-D2 | 2 | 0 | 2 | 1 | 2 | 2 | 2 | 2 |
+| W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
 
 并行宽度的逻辑目标由独立交付物决定；当前正式前沿只有 L1。L2 及后续实现必须等待上游验收节点，不因决定记录而越过依赖。
 

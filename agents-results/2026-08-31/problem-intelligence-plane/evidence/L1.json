@@ -1,0 +1,27 @@
+{
+  "evidence_id": "EV-L1-IMPLEMENTED-1",
+  "task_id": "L1",
+  "source_revision": "working-tree-after-8e143b2-l1-contract-boundary-repair",
+  "changed_files": [
+    "matharc/v02/source_observation.py",
+    "matharc/v02/__init__.py",
+    "tests/test_v02_source_observation.py"
+  ],
+  "acceptance_self_check": "pass",
+  "acceptance_commands": [
+    "python3 -m unittest tests.test_v02_source_observation",
+    "python3 -m unittest tests.test_v03_audit_fixes tests.test_gate0_ci_contract",
+    "python3 -m unittest discover -s tests",
+    "git diff --check"
+  ],
+  "test_summary": {
+    "focused_tests": 9,
+    "gate0_audit_tests": 16,
+    "full_suite_tests": 302,
+    "skipped": 10
+  },
+  "proposed_state": "IMPLEMENTED",
+  "unverified_items": ["A2 acceptance evidence", "external literature service integration", "formal node acceptance by research infrastructure owner"],
+  "failure_class": null,
+  "failure_origin": null
+}
