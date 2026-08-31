@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-A4-R1",
+  "from": "A4",
+  "to": "R1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.dogfood-acceptance.regression"],
+  "transferred_input": "已验收的真实主题档案",
+  "gate_evidence": "A4 的三例闭环证据",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "回归集必须以真实消费者闭环中的已知结果为基准。",
+  "transferred_artifact_ids": ["DL-A4"],
+  "resource_ids": []
+}

@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-A3-T1",
+  "from": "A3",
+  "to": "T1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.status-novelty.topic-observation"],
+  "transferred_input": "已验收的问题状态和新颖性边界",
+  "gate_evidence": "A3 的未审计不得晋升测试",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "主题观测不得绕过状态与新颖性审计边界。",
+  "transferred_artifact_ids": ["DL-A3"],
+  "resource_ids": []
+}

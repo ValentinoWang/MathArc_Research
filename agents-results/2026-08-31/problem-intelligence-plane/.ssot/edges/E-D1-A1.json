@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-D1-A1",
+  "from": "D1",
+  "to": "A1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.activation-option.amendment"],
+  "transferred_input": "支持性小切片路线决定选项",
+  "gate_evidence": "D1 的选项、代价和停止条件记录",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "amendment 必须明确是否采用支持性小切片路线。",
+  "transferred_artifact_ids": ["DL-D1"],
+  "resource_ids": []
+}

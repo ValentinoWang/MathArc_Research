@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-T2-A4",
+  "from": "T2",
+  "to": "A4",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.dogfood-archives.dogfood-acceptance"],
+  "transferred_input": "三例真实档案及其审计结果",
+  "gate_evidence": "T2 的重放、恢复、去重和失败模式证据",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "主题消费者发布前必须验收三种真实失败模式。",
+  "transferred_artifact_ids": ["DL-T2"],
+  "resource_ids": []
+}

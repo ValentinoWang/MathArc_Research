@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-L2-A2",
+  "from": "L2",
+  "to": "A2",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.literature-base.literature-acceptance"],
+  "transferred_input": "开放资料导入实现和重放记录",
+  "gate_evidence": "L2 的幂等、预算和内容类型测试结果",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "资料底座验收必须直接检查实际导入结果。",
+  "transferred_artifact_ids": ["DL-L2"],
+  "resource_ids": []
+}

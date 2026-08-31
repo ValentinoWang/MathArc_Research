@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-L1-L2",
+  "from": "L1",
+  "to": "L2",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.source-observation.literature-base"],
+  "transferred_input": "已冻结的文献观察合同",
+  "gate_evidence": "L1 合同草稿通过字段和边界检查",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "导入实现必须以统一观察、版本和许可合同为准。",
+  "transferred_artifact_ids": ["DL-L1"],
+  "resource_ids": []
+}

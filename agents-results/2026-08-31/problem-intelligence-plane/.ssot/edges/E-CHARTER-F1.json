@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-CHARTER-F1",
+  "from": "CHARTER",
+  "to": "F1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.charter.fact-reconciliation"],
+  "transferred_input": "已接受的治理准入记录",
+  "gate_evidence": "CHARTER 的范围和权威入口记录",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "事实对账必须以已确认的治理范围为输入。",
+  "transferred_artifact_ids": ["DL-CHARTER"],
+  "resource_ids": []
+}

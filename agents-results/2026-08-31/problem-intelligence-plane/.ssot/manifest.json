@@ -1,0 +1,100 @@
+{
+  "ssot_schema_version": 2,
+  "machine_validation_profile": "release",
+  "artifact_class": "ssot-development",
+  "plan_version": 1,
+  "dag_version": 1,
+  "interface_freeze_version": 1,
+  "node_contract_version": 1,
+  "parallelism_contract_version": 1,
+  "execution_contract_validation": "strict",
+  "main_thread_policy": "orchestration-only",
+  "main_thread_source_write": false,
+  "target_evidence_level": "source",
+  "execution_contracts_dir": "execution-contracts",
+  "executor_policy": {
+    "schema_version": 3,
+    "default_primary_executor": "lw-luna",
+    "default_writable_parallel_executor": "lw-luna",
+    "default_writable_wrapper": "run-lw-luna.sh",
+    "fallback_executor": "l3",
+    "fallback_wrapper": "run-l3.sh",
+    "primary_retry_limit": 1,
+    "l3_escalation_limit": 1,
+    "allowed_primary_executors": {
+      "lw-luna": "run-lw-luna.sh",
+      "lw-terra": "run-lw-terra.sh"
+    }
+  },
+  "actor_pools": {
+    "codex-primary": {
+      "actor": "codex",
+      "capacity": 1
+    },
+    "human-review": {
+      "actor": "human",
+      "capacity": 1
+    }
+  },
+  "generated_main": "../ssot-development-paths.md",
+  "generated_views": [
+    {
+      "view_id": "main",
+      "source": "view-sources/00-main.md",
+      "source_sha256": "37317e08185975065596e66b3cab1e7b24959aecc0a8e353b5cb75dea4d0332c",
+      "output": "../ssot-development-paths.md"
+    }
+  ],
+  "nodes_dir": "nodes",
+  "edges_dir": "edges",
+  "assumptions_dir": "assumptions",
+  "conflicts_dir": "conflicts",
+  "scheduling_model": "event-driven",
+  "external_dependencies": [
+    {
+      "external_dependency_id": "EXT-DEV-PATH",
+      "semantic_key": "authority.dev-path-v03",
+      "authority_path": "docs/DEV_PATH_V03.md",
+      "authority_commit": "b3eb7512c5b03a9beb8b0eb5f946597c723d07be",
+      "authority_sha256": "a711ba1292bdbc9a2e312d5c639566d1e176526f9dbe32d55648b4011babb471",
+      "required_state": "ACCEPTED",
+      "consumers": ["CHARTER", "F1", "D1", "D2", "A1"]
+    },
+    {
+      "external_dependency_id": "EXT-V03-STATUS",
+      "semantic_key": "authority.v03-implementation-status",
+      "authority_path": "docs/V03_IMPLEMENTATION_STATUS.md",
+      "authority_commit": "b3eb7512c5b03a9beb8b0eb5f946597c723d07be",
+      "authority_sha256": "a2436a810f92ef192ab16ce6e452828998a387e23ad7e294f093b38d80d8012e",
+      "required_state": "ACCEPTED",
+      "consumers": ["F1", "D1", "D2"]
+    },
+    {
+      "external_dependency_id": "EXT-DISCOVERY-V04",
+      "semantic_key": "authority.discovery-plane-v04",
+      "authority_path": "docs/DISCOVERY_PLANE_V04.md",
+      "authority_commit": "0fb8f15f04451834719c929a264260278e1f6727",
+      "authority_sha256": "449aff96d31989e85582c04118541cb24368aae180cb0067c638b18ab6f05143",
+      "required_state": "ACCEPTED",
+      "consumers": ["CHARTER", "F1", "D1", "D2", "A1"]
+    },
+    {
+      "external_dependency_id": "EXT-SOURCE-REGISTRY",
+      "semantic_key": "domain.source-registry-v02",
+      "authority_path": "matharc/v02/source_registry.py",
+      "authority_commit": "0fb8f15f04451834719c929a264260278e1f6727",
+      "authority_sha256": "e697f0894d8ac35a19c39ade521a8dfa6d4e42f7c291261a6e0004702c1b3c22",
+      "required_state": "ACCEPTED",
+      "consumers": ["L1", "L2"]
+    },
+    {
+      "external_dependency_id": "EXT-BUDGET-V02",
+      "semantic_key": "domain.budget-v02",
+      "authority_path": "matharc/v02/budget.py",
+      "authority_commit": "0fb8f15f04451834719c929a264260278e1f6727",
+      "authority_sha256": "fc5affd66099c16695d0e7742725c371cca0490bcbdaab6495cfc95dbafea0b6",
+      "required_state": "ACCEPTED",
+      "consumers": ["L1", "L2", "T1", "R1"]
+    }
+  ]
+}

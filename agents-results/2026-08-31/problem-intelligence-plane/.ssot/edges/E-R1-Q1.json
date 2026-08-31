@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-R1-Q1",
+  "from": "R1",
+  "to": "Q1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.regression.calibration-disclosure"],
+  "transferred_input": "四路检索回归和消融结果",
+  "gate_evidence": "R1 的样本、路线增量和缺口记录",
+  "reason_code": "data-dependency",
+  "necessity_proof": "难度与披露政策必须基于实际检索结果而非预设权重。",
+  "transferred_artifact_ids": ["DL-R1"],
+  "resource_ids": []
+}

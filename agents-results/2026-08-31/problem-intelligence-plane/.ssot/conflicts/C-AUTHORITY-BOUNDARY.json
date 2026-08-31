@@ -1,0 +1,12 @@
+{
+  "conflict_id": "C-AUTHORITY-BOUNDARY",
+  "left_semantic_key": "decision.problem-intelligence.amendment",
+  "right_semantic_key": "decision.problem-intelligence.charter",
+  "violated_invariant": "延期的发现平面文档不能越过当前唯一工程决策入口直接解锁实现。",
+  "severity": "BLOCKING",
+  "state": "OPEN",
+  "blocking_scope": "release:PI-R1",
+  "affected_nodes": ["D1", "D2", "A1"],
+  "affected_releases": ["PI-R1"],
+  "resolution_required": "研究负责人和仓库所有者共同确认 amendment 以及首个主题。"
+}

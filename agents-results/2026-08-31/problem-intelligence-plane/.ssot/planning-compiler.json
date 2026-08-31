@@ -1,0 +1,212 @@
+{
+  "planning_compiler_schema_version": 1,
+  "ssot_schema_version": 2,
+  "machine_validation_profile": "release",
+  "parallelism_contract_version": 1,
+  "execution_contract_validation": "strict",
+  "main_thread_policy": "orchestration-only",
+  "main_thread_source_write": false,
+  "classification": {
+    "applicability": "ssot",
+    "ssot_depth": "L2",
+    "artifact_policy": "create-ssot",
+    "selection_authority": "planning-model",
+    "rationale": "该请求把跨文献来源、问题状态、新颖性审计、人工复核和五个独立发布切片纳入同一条长期路线；当前 DEV_PATH_V03.md 仍是唯一工程决策入口，因此需要可回溯的发布型 SSOT amendment，而不是一次性待办。"
+  },
+  "external_systems": [
+    "arxiv-api",
+    "crossref-api",
+    "openalex-api"
+  ],
+  "acceptance_layers": [
+    "source",
+    "static-test",
+    "fixture/mock",
+    "human-audit"
+  ],
+  "macro_phases": [
+    {
+      "id": "P0",
+      "title": "治理准入与事实对账",
+      "release_ids": ["PI-R1"]
+    },
+    {
+      "id": "P1",
+      "title": "共享文献资料底座",
+      "release_ids": ["PI-R2"]
+    },
+    {
+      "id": "P2",
+      "title": "问题状态与新颖性审计",
+      "release_ids": ["PI-R3"]
+    },
+    {
+      "id": "P3",
+      "title": "首个真实消费者",
+      "release_ids": ["PI-R4"]
+    },
+    {
+      "id": "P4",
+      "title": "回归、校准与披露政策",
+      "release_ids": ["PI-R5"]
+    }
+  ],
+  "release_slices": [
+    {
+      "id": "PI-R1",
+      "macro_phase_id": "P0",
+      "title": "治理准入与 SSOT amendment",
+      "node_ids": ["CHARTER", "F1", "D1", "D2", "A1"],
+      "user_value": "让研究负责人能够在不绕过现行路线图的情况下决定是否启动问题情报支持切片。",
+      "independent_acceptance": "完成当前权威文档对账，记录激活选择、首个监测主题和负责人，并生成可复核的 amendment 决定。",
+      "independent_failure": "任何未获批准的激活选择、权威冲突或事实缺口都停留在阻塞状态，不解锁代码实现。",
+      "acceptance_node_id": "A1",
+      "release_candidate_artifact_id": "candidate:pi-r1-v1",
+      "independent_proof_artifact_id": "proof:pi-r1-static-v1",
+      "acceptance_command": "python3 /Users/vsiyo/.codex/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
+      "future_phase_required_for_success": false,
+      "development_baseline": "git:836dc6860f8f997e4e128bcd745c96b98c6b9b29",
+      "promotion_baseline": "main:836dc6860f8f997e4e128bcd745c96b98c6b9b29",
+      "release_candidate": "candidate:pi-r1-v1"
+    },
+    {
+      "id": "PI-R2",
+      "macro_phase_id": "P1",
+      "title": "统一文献资料底座",
+      "node_ids": ["L1", "L2", "A2"],
+      "user_value": "让研究人员能够对固定版本的公开文献进行可追溯、可去重、受预算约束的资料采集。",
+      "independent_acceptance": "资料观察记录、版本与内容校验、开放资料导入以及现有 SourceRegistry 信任门形成一个可测试的最小底座。",
+      "independent_failure": "来源版本、许可依据、文件大小、内容类型或重复拉取无法验证时，资料只保留为待审观察，不进入证明证据。",
+      "acceptance_node_id": "A2",
+      "release_candidate_artifact_id": "candidate:pi-r2-v1",
+      "independent_proof_artifact_id": "proof:pi-r2-fixture-v1",
+      "acceptance_command": "python3 -m unittest discover -s tests",
+      "future_phase_required_for_success": false,
+      "development_baseline": "candidate:pi-r1-v1",
+      "promotion_baseline": "accepted:pi-r1-v1",
+      "release_candidate": "candidate:pi-r2-v1"
+    },
+    {
+      "id": "PI-R3",
+      "macro_phase_id": "P2",
+      "title": "问题状态与新颖性审计竖切",
+      "node_ids": ["S1", "S2", "A3"],
+      "user_value": "让选题启动前的开放状态判断与结果产生后的新颖性判断分属两个可审计对象，并能安全授权不同预算。",
+      "independent_acceptance": "StatementVersion、OpenStatusCertificate、ProblemDossierSnapshot 和 NoveltyAuditRecord 的状态、对应关系和失效规则均有负面测试。",
+      "independent_failure": "状态证书过期、命题摘要改变、解决声称未审计或模型单独检索时，系统不得授予完整研究预算或公开定性。",
+      "acceptance_node_id": "A3",
+      "release_candidate_artifact_id": "candidate:pi-r3-v1",
+      "independent_proof_artifact_id": "proof:pi-r3-negative-v1",
+      "acceptance_command": "python3 -m unittest discover -s tests",
+      "future_phase_required_for_success": false,
+      "development_baseline": "candidate:pi-r2-v1",
+      "promotion_baseline": "accepted:pi-r2-v1",
+      "release_candidate": "candidate:pi-r3-v1"
+    },
+    {
+      "id": "PI-R4",
+      "macro_phase_id": "P3",
+      "title": "一次性主题观测与三例真实档案",
+      "node_ids": ["T1", "T2", "A4"],
+      "user_value": "让一个明确主题能够按游标增量同步，并用三种失败模式验证资料、状态和预算授权的完整闭环。",
+      "independent_acceptance": "一次性同步命令可重放、可恢复、可去重，且 Frankl q=6、已解决碰撞题、确实开放题三份档案都能完成指定审计。",
+      "independent_failure": "预算耗尽、游标重跑、普通相关文章或高风险事件都必须停在正确的资料或复核通道，不得自动改写定理状态。",
+      "acceptance_node_id": "A4",
+      "release_candidate_artifact_id": "candidate:pi-r4-v1",
+      "independent_proof_artifact_id": "proof:pi-r4-dogfood-v1",
+      "acceptance_command": "python3 -m unittest discover -s tests",
+      "future_phase_required_for_success": false,
+      "development_baseline": "candidate:pi-r3-v1",
+      "promotion_baseline": "accepted:pi-r3-v1",
+      "release_candidate": "candidate:pi-r4-v1"
+    },
+    {
+      "id": "PI-R5",
+      "macro_phase_id": "P4",
+      "title": "回归集、难度记录与分级披露",
+      "node_ids": ["R1", "Q1", "A5"],
+      "user_value": "让团队能够比较四条检索路线的增量贡献，并用可校准的分级记录支持研究优先级和准确发布。",
+      "independent_acceptance": "ProblemIntel Regression Suite v0、消融指标、三张难度量表、实验性预测记录和分级披露模板均完成，且不把传播性混入科学优先级。",
+      "independent_failure": "样本不足、预测未校准或结果未完成新颖性审计时，只能报告具体命中与缺口，不能宣称统计性能或公开完整解决。",
+      "acceptance_node_id": "A5",
+      "release_candidate_artifact_id": "candidate:pi-r5-v1",
+      "independent_proof_artifact_id": "proof:pi-r5-regression-v1",
+      "acceptance_command": "python3 -m unittest discover -s tests",
+      "future_phase_required_for_success": false,
+      "development_baseline": "candidate:pi-r4-v1",
+      "promotion_baseline": "accepted:pi-r4-v1",
+      "release_candidate": "candidate:pi-r5-v1"
+    }
+  ],
+  "nodes": [
+    {"id": "CHARTER", "kind": "decision", "goal": "确认问题情报能力只能作为当前 v4 SSOT 的 amendment 候选进入。", "dependencies": [], "acceptance": "权威入口、实现状态和延期文档完成事实对账。", "owner": "仓库所有者"},
+    {"id": "F1", "kind": "deterministic-generation", "goal": "形成权威事实、现有能力和延期边界的核对包。", "dependencies": ["CHARTER"], "acceptance": "每项事实都绑定路径、提交身份和待解决缺口。", "owner": "规划编排者"},
+    {"id": "D1", "kind": "decision", "goal": "提出是否采用支持性小切片路线的可选决定。", "dependencies": ["F1"], "acceptance": "选项、代价、停止条件和批准人字段齐全。", "owner": "研究负责人"},
+    {"id": "D2", "kind": "decision", "goal": "提出首个监测主题及其范围的可选决定。", "dependencies": ["F1"], "acceptance": "主题、范围、预算上限和不宣称事项字段齐全。", "owner": "研究负责人"},
+    {"id": "A1", "kind": "decision", "goal": "接受或拒绝问题情报支持切片的 amendment。", "dependencies": ["D1", "D2"], "acceptance": "只有研究负责人和仓库所有者共同记录后才可解锁后续实现。", "owner": "研究负责人和仓库所有者"},
+    {"id": "L1", "kind": "implementation", "goal": "定义统一文献观察、版本、许可和内容摘要合同。", "dependencies": ["A1"], "acceptance": "合同能区分观察资料与证明证据，并能拒绝缺失版本或许可依据。", "owner": "研究基础设施负责人"},
+    {"id": "L2", "kind": "implementation", "goal": "复用 SourceRegistry、ArtifactStore 和预算边界实现开放资料导入。", "dependencies": ["L1"], "acceptance": "重复导入幂等，超预算和不受支持内容类型均停在待审状态。", "owner": "研究基础设施负责人"},
+    {"id": "A2", "kind": "validation", "goal": "验收统一文献资料底座的静态和 fixture 证据。", "dependencies": ["L2"], "acceptance": "专项测试通过且每项负面路径都有可追溯证据。", "owner": "验收负责人"},
+    {"id": "S1", "kind": "implementation", "goal": "建立 StatementVersion、OpenStatusCertificate 和 ProblemDossierSnapshot 的关系。", "dependencies": ["A2"], "acceptance": "命题摘要变化、证书过期和来源缺失会使状态失效。", "owner": "问题状态负责人"},
+    {"id": "S2", "kind": "implementation", "goal": "建立独立的 NoveltyAuditRecord 及人工审计入口。", "dependencies": ["S1"], "acceptance": "前向引用、别名语义、结构检索和综述线索四路结果可分开记录。", "owner": "文献审计负责人"},
+    {"id": "A3", "kind": "validation", "goal": "验收问题状态和新颖性审计竖切的失效与权限边界。", "dependencies": ["S2"], "acceptance": "未审计的解决声称不能获得完整预算或公开定性。", "owner": "验收负责人"},
+    {"id": "T1", "kind": "implementation", "goal": "实现一次性主题观测、游标恢复和去重。", "dependencies": ["A3"], "acceptance": "同一游标可安全重放，预算和高风险事件进入人工通道。", "owner": "主题观测负责人"},
+    {"id": "T2", "kind": "implementation", "goal": "用三种真实档案完成资料、状态和预算闭环演练。", "dependencies": ["T1"], "acceptance": "Frankl q=6、已解决碰撞题和确实开放题各自停在正确审计状态。", "owner": "主题观测负责人"},
+    {"id": "A4", "kind": "validation", "goal": "验收一次性主题观测和三例真实档案。", "dependencies": ["T2"], "acceptance": "重放、恢复、去重和三种失败模式证据全部可查。", "owner": "验收负责人"},
+    {"id": "R1", "kind": "implementation", "goal": "建立四条检索路线的回归集和消融记录。", "dependencies": ["A4"], "acceptance": "能比较路线增量但不把小样本结果包装成统计性能。", "owner": "评测负责人"},
+    {"id": "Q1", "kind": "validation", "goal": "建立难度 rubric、实验性预测和分级披露模板。", "dependencies": ["R1"], "acceptance": "未校准预测标记为 UNCALIBRATED，科学优先级与传播准备度分离。", "owner": "研究负责人"},
+    {"id": "A5", "kind": "validation", "goal": "作出问题情报平面 v0 的发布决定。", "dependencies": ["Q1"], "acceptance": "仅发布已验收范围，并明确未解决、新颖性未确认和校准不足事项。", "owner": "研究负责人和仓库所有者"}
+  ],
+  "waves": [
+    {"id": "W0", "release_id": "PI-R1", "node_ids": ["CHARTER"]},
+    {"id": "W1", "release_id": "PI-R1", "node_ids": ["F1"]},
+    {"id": "W2", "release_id": "PI-R1", "node_ids": ["D1", "D2"]},
+    {"id": "W3", "release_id": "PI-R1", "node_ids": ["A1"]},
+    {"id": "W4", "release_id": "PI-R2", "node_ids": ["L1"]},
+    {"id": "W5", "release_id": "PI-R2", "node_ids": ["L2"]},
+    {"id": "W6", "release_id": "PI-R2", "node_ids": ["A2"]},
+    {"id": "W7", "release_id": "PI-R3", "node_ids": ["S1"]},
+    {"id": "W8", "release_id": "PI-R3", "node_ids": ["S2"]},
+    {"id": "W9", "release_id": "PI-R3", "node_ids": ["A3"]},
+    {"id": "W10", "release_id": "PI-R4", "node_ids": ["T1"]},
+    {"id": "W11", "release_id": "PI-R4", "node_ids": ["T2"]},
+    {"id": "W12", "release_id": "PI-R4", "node_ids": ["A4"]},
+    {"id": "W13", "release_id": "PI-R5", "node_ids": ["R1"]},
+    {"id": "W14", "release_id": "PI-R5", "node_ids": ["Q1"]},
+    {"id": "W15", "release_id": "PI-R5", "node_ids": ["A5"]}
+  ],
+  "scheduling_model": "event-driven",
+  "scheduling_hints": [
+    "只有已验收的决定或发布候选才解锁正式消费者。",
+    "未获批准的路线只允许可撤销的隔离草稿。",
+    "D1 与 D2 只共享已核对事实，不共享可变写入区。",
+    "最终发布决定只消费本切片声明的节点。"
+  ],
+  "release_boundary_compiler": {
+    "boundary_required": true,
+    "decision_authority": "MathArc 研究负责人和仓库所有者",
+    "rationale": "五个切片分别拥有独立的用户价值、验收证据和失败半径；文献底座、状态审计、主题消费者和回归政策不能依赖未来大规模平台才能解释成功。"
+  },
+  "artifacts": {
+    "ssot_bundle": true,
+    "generated_views": ["main"],
+    "worker_ledger": false,
+    "runner_registry": false,
+    "resource_matrix": false,
+    "evidence_identity_registry": false
+  },
+  "complexity_budget": {
+    "authority": "规划编排者",
+    "rationale": "保留五个发布切片和最小验收节点；不注册外部 Codex worker，不把每个测试断言拆成独立节点。",
+    "limits": {
+      "total_nodes": 20,
+      "implementation_nodes_per_release": 3,
+      "codex_worker_nodes": 0,
+      "generated_views": 1
+    }
+  },
+  "goal_size_detector": {
+    "split_required": false,
+    "split_strategy": "release"
+  }
+}

@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-F1-D1",
+  "from": "F1",
+  "to": "D1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.fact-reconciliation.activation-option"],
+  "transferred_input": "权威事实对账包",
+  "gate_evidence": "F1 的路径、提交身份和缺口清单",
+  "reason_code": "data-dependency",
+  "necessity_proof": "激活路线选项必须引用同一份事实对账。",
+  "transferred_artifact_ids": ["DL-F1"],
+  "resource_ids": []
+}

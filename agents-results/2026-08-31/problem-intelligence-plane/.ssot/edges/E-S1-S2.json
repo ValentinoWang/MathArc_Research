@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-S1-S2",
+  "from": "S1",
+  "to": "S2",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.status-model.novelty-audit"],
+  "transferred_input": "版本化命题和开放状态对象",
+  "gate_evidence": "S1 的失效规则和关系校验",
+  "reason_code": "data-dependency",
+  "necessity_proof": "新颖性审计必须绑定具体的命题版本和状态快照。",
+  "transferred_artifact_ids": ["DL-S1"],
+  "resource_ids": []
+}

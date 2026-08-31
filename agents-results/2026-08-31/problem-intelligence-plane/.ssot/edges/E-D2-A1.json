@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-D2-A1",
+  "from": "D2",
+  "to": "A1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.topic-option.amendment"],
+  "transferred_input": "首个监测主题决定选项",
+  "gate_evidence": "D2 的主题、范围和预算上限记录",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "amendment 必须明确首个主题及其范围。",
+  "transferred_artifact_ids": ["DL-D2"],
+  "resource_ids": []
+}

@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-A2-S1",
+  "from": "A2",
+  "to": "S1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.literature-acceptance.status-model"],
+  "transferred_input": "已验收的文献资料观察层",
+  "gate_evidence": "A2 的专项测试和负面路径证据",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "问题状态只能建立在可追溯的资料观察之上。",
+  "transferred_artifact_ids": ["DL-A2"],
+  "resource_ids": []
+}

@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-T1-T2",
+  "from": "T1",
+  "to": "T2",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.topic-observation.dogfood-archives"],
+  "transferred_input": "可重放的一次性主题观测结果",
+  "gate_evidence": "T1 的游标、预算和去重记录",
+  "reason_code": "data-dependency",
+  "necessity_proof": "三例真实档案必须从可重放的主题观测输入生成。",
+  "transferred_artifact_ids": ["DL-T1"],
+  "resource_ids": []
+}

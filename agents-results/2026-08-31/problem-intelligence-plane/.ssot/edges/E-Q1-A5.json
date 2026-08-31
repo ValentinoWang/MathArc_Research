@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-Q1-A5",
+  "from": "Q1",
+  "to": "A5",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.calibration-disclosure.release"],
+  "transferred_input": "难度记录、校准状态和分级披露模板",
+  "gate_evidence": "Q1 的未校准标记和科学/传播双轨检查",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "发布决定必须知道哪些结果仍未校准或未完成新颖性审计。",
+  "transferred_artifact_ids": ["DL-Q1"],
+  "resource_ids": []
+}

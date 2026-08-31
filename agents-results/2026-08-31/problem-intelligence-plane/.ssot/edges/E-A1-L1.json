@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-A1-L1",
+  "from": "A1",
+  "to": "L1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": ["ASM-ACTIVATION-ROUTE"],
+  "invalidation_keys": ["edge.amendment.source-observation"],
+  "transferred_input": "amendment 决定或其条件性隔离草稿授权",
+  "gate_evidence": "A1 决定记录；条件执行必须绑定活动假设",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "统一文献合同不得脱离已批准或明确隔离的 amendment 范围。",
+  "transferred_artifact_ids": ["DL-A1"],
+  "resource_ids": []
+}
