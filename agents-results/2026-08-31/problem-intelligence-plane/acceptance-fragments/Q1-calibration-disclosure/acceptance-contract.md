@@ -1,11 +1,11 @@
 # Acceptance Contract: Q1-calibration-disclosure
 
 - Task ID: Q1-calibration-disclosure
-- Contract version: 2
+- Contract version: 3
 - Contract status: INVALIDATED_PENDING_UPSTREAM
 - Test baseline: LOCKED
 - Acceptance owner: 研究负责人
-- Approval evidence: 历史接受记录保留；用户于 2026-09-01 批准 R1 独立复审加固，R1 重新打开会阻断 Q1，直至 R1 在合同版本 4 下重新接受
+- Approval evidence: 历史接受记录保留；用户于 2026-09-01 批准 R1 独立复审加固。Q1 阻断门禁覆盖 R1 重开或 R1 已重新接受但 Q1 尚未重新接受两种状态，直至 Q1 获得新上游身份下的独立验收
 - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/Q1.json
 - SSOT node: Q1
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
@@ -86,7 +86,7 @@ And it returns a passive non-public policy record
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_calibration_disclosure.py | 2888174c1e9ff3b739fcf57f557decb73e63a0828eda812fb4cc245cb512fd83 | AC-01, AC-02, AC-03, AC-04 |
+| tests/test_v02_calibration_disclosure.py | b9188cdbf0aa2a556c55a7341c9e461a7f54dc864d938212e2bffb0eed2b8a94 | AC-01, AC-02, AC-03, AC-04 |
 
 ## Requirements-test traceability
 

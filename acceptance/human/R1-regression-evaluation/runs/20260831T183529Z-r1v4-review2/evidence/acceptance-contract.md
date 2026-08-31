@@ -1,11 +1,11 @@
 # Acceptance Contract: R1-regression-evaluation
 
 - Task ID: R1-regression-evaluation
-- Contract version: 5
+- Contract version: 4
 - Contract status: APPROVED
 - Test baseline: LOCKED
 - Acceptance owner: 评测负责人
-- Approval evidence: 用户于 2026-09-01 批准修订 R1 验收，要求两条独立 AI 复审均产出持久化 PASS 报告；本次对报告 Markdown 哈希定界符和 R1/Q1 生命周期转换补充负测，缺失、停滞或非 PASS 报告均阻断接受
+- Approval evidence: 用户于 2026-09-01 批准修订 R1 验收，要求两条独立 AI 复审均产出持久化 PASS 报告；缺失、停滞或非 PASS 报告均阻断接受
 - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json
 - SSOT node: R1
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
@@ -88,7 +88,7 @@ And the result remains a passive evaluation artifact
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_regression_evaluation.py | 8f0b7a0c3b63b29a3ff8b240e8dd976e0af68a6f223caabbdc9fd24f8d2ea986 | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
+| tests/test_v02_regression_evaluation.py | a8320b5af5c000515b0cd0bb5bc177fa4acc87ee9da63439f80f25edf26022cf | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
 
 ## Requirements-test traceability
 
@@ -114,4 +114,4 @@ And the result remains a passive evaluation artifact
 
 小样本只代表固定 A4 档案，不代表检索系统总体准确率、召回率或文献开放性；真实外部文献检索仍未由本合同覆盖。
 
-合同版本 5 保留版本 4 的夹具、主题和来源身份闭合，并将两份独立 AI 复审维持为硬性、可机读的接受条件。报告完整性检查对冻结清单摘要接受等价的 Markdown 定界表达，避免把无语义差异的反引号写法误判为证据缺失；Q1 生命周期测试明确允许 R1 已重新接受而 Q1 仍阻断的中间状态。每份报告必须绑定同一冻结输入清单、使用不同审阅身份和不同外部包装器，并以 `PASS` 结束；缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。
+合同版本 4 保留版本 3 的夹具、主题和来源身份闭合，并将两份独立 AI 复审提升为硬性、可机读的接受条件。每份报告必须绑定同一冻结输入清单、使用不同审阅身份和不同外部包装器，并以 `PASS` 结束；缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。

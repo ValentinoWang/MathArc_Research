@@ -1,0 +1,21 @@
+{
+  "review_campaign_id": "R1-independent-review-20260901-retry2",
+  "frozen_head": "0a58bf984ef2764bafe0c2b26d1d6cefdec43783",
+  "scope": "R1 contract-v4 acceptance only. Q1 and A5 are reviewed solely to confirm their required blocked lifecycle; neither may be accepted by this campaign.",
+  "inputs": [
+    {"path": "matharc/v02/regression_evaluation.py", "sha256": "a733a72c0d79012bf94fef04af783c2210f23a7e3f8dd8abc3aba179e20bf86d"},
+    {"path": "tests/test_v02_regression_evaluation.py", "sha256": "a8320b5af5c000515b0cd0bb5bc177fa4acc87ee9da63439f80f25edf26022cf"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json", "sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json", "sha256": "a75dd125a75fc5840491e8f92bb9639f47fb79100a294fe2b81855708a094c49"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/A4.json", "sha256": "85a3e6335bf8e5c886bef328e87f853c8eadc132a793b55ff39a962caae618dd"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md", "sha256": "e1f4044a4e9e5cdb011da1b9fccf5b95aeb4c7483af051f81005fcfa28fe3647"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json", "sha256": "d035f8776821e2b1410b68ebf975d5919b56fd76f0e6ad4aa0c2cbcb148ecbd5"},
+    {"path": "acceptance/human/R1-regression-evaluation/binding.md", "sha256": "7b888fdd2d6c3995971fcef2ce65211c30f1b76d0731058bed2a6bbaf4395784"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json", "sha256": "a5fe5a7febf796652c14cc4fec21bf845f5926b39b5ffec6a1fb1b2a5c9f7eba"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json", "sha256": "58f053e614dded059d62e9cb7984be48d70af5ee1b026621d2bcdbc3de3400b6"},
+    {"path": "tests/test_v02_calibration_disclosure.py", "sha256": "2888174c1e9ff3b739fcf57f557decb73e63a0828eda812fb4cc245cb512fd83"},
+    {"path": "tests/test_v02_release_decision.py", "sha256": "202cc472dcfb959a94f89b4701f0f54c72682d9cacce13f5f09263a6376695fc"}
+  ],
+  "required_verdict": "PASS only if every frozen identity matches, no P0/P1 finding exists in the assigned R1 review lane, and the lane writes its single required report. Any mismatch, missing report, nonterminal output, or finding is FAIL.",
+  "review_boundary": "No mathematical proof, external literature verification, statistical-performance claim, production/device evidence, Q1 acceptance, A5 release decision, remote mutation, or source/test/contract/evidence edit."
+}

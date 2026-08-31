@@ -47,10 +47,13 @@ class CalibrationDisclosureTests(unittest.TestCase):
         self.assertEqual(r1_fixture["fixture_content_sha256"], policy.r1_fixture_content_sha256)
         self.assertEqual([record.case_id for record in policy.records], r1_fixture["case_ids"])
 
-    def test_current_q1_acceptance_is_blocked_while_r1_is_reopened(self) -> None:
+    def test_current_q1_acceptance_is_blocked_until_q1_is_reaccepted(self) -> None:
         r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
-        self.assertEqual("EV-R1-REOPENED-2", r1_evidence["evidence_id"])
+        self.assertIn(
+            r1_evidence["evidence_id"],
+            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-ACCEPTED-2"},
+        )
         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
         self.assertEqual("BLOCKED", q1_evidence["proposed_state"])

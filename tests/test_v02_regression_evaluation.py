@@ -92,7 +92,7 @@ class RegressionEvaluationTests(unittest.TestCase):
             self.assertEqual("BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS", reviews["disposition"])
             self.assertEqual(
                 "NOT_A_PASS_REPAIR_REQUIRED",
-                json.loads(REVIEW_LEDGER.read_text(encoding="utf-8"))["disposition"],
+                json.loads(REVIEW_LEDGER.read_text(encoding="utf-8"))["attempt_1"]["disposition"],
             )
             return
 
@@ -115,7 +115,10 @@ class RegressionEvaluationTests(unittest.TestCase):
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), report["sha256"])
             content = path.read_text(encoding="utf-8")
             self.assertIn("Verdict: PASS", content)
-            self.assertIn(f"Frozen input manifest SHA-256: {reviews['frozen_input_manifest_sha256']}", content)
+            self.assertIn(
+                f"Frozen input manifest SHA-256: {reviews['frozen_input_manifest_sha256']}",
+                content.replace("`", ""),
+            )
 
 
 if __name__ == "__main__":

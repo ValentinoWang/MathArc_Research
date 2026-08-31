@@ -1,0 +1,53 @@
+{
+  "review_campaign_id": "R1-independent-review-20260901-retry2",
+  "frozen_head": "0a58bf984ef2764bafe0c2b26d1d6cefdec43783",
+  "frozen_input_manifest": "frozen-inputs.json",
+  "frozen_input_manifest_sha256": "4878c7b30f5e289e733a513afd8e17aee336e46b9752a4a5a574fa5d30216420",
+  "launch_barrier": "passed",
+  "attempt_1": {
+    "result": "transport-limited-no-durable-return",
+    "counted_as_pass": false,
+    "reason": "The background parent shell was cleaned up before either worker produced a report."
+  },
+  "lanes": [
+    {
+      "lane": "ablation-boundary",
+      "reviewer_identity": "r1-ablation-boundary-l3-luna-retry2",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh",
+      "mode": "zero-write-except-own-report",
+      "pid": 38971,
+      "report_path": "reports/ablation-boundary.md",
+      "report_sha256": "b0cef870b6688a8ee68aeaf1bd9eb0dc0c54ed1dc4bd155b32f1de58580bd9a7",
+      "log_path": "logs/ablation-boundary-attempt2.log",
+      "log_sha256": "caa70cfe9e031f5518d4a41ce1b6d80441633b3f91851083629b543deb78783d",
+      "prompt_sha256": "b59a009fc60fc4f1c0e40ce596ab7a85ac8861d34b994f84108be66a9ac37382",
+      "exit": "completed with a durable terminal PASS report",
+      "verdict": "PASS",
+      "zero_write_verified": true
+    },
+    {
+      "lane": "identity-contract",
+      "reviewer_identity": "r1-identity-contract-l4-sol-retry2",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+      "mode": "zero-write-except-own-report",
+      "pid": 38972,
+      "report_path": "reports/identity-contract.md",
+      "report_sha256": "bb8bdc29068386ed4562a9692bed2da283f045fda0a1935e3ef2d11ed70064c6",
+      "log_path": "logs/identity-contract-attempt2.log",
+      "log_sha256": "8ba92db1cf13ba0d0bd2c968016802e96fba4796a1369ded673f2a9e92396a95",
+      "prompt_sha256": "dfc886ff99eefa8563757ecaa284113bdae0203868ab931112b35c38f930324f",
+      "exit": "terminal PASS report persisted; the idle post-report process was terminated by the orchestrator after its report and log hashes were recorded",
+      "verdict": "PASS",
+      "zero_write_verified": true
+    }
+  ],
+  "convergence": {
+    "result": "two distinct durable PASS reports on the same frozen input set",
+    "counted_as_pass": true,
+    "acceptance_authority": "评测负责人",
+    "review_authority_boundary": "The review lanes cannot accept R1, Q1, or A5."
+  },
+  "log_normalization": "Trailing whitespace was removed before repository commit; dispatch-recorded SHA-256 values bind the normalized durable logs without changing their non-whitespace content.",
+  "prompt_cleanup": "completed after prompt hashes, logs, report hashes, and terminal dispositions were recorded",
+  "codex_transcript_retention": "preserve ~/.codex/sessions and ~/.codex/archived_sessions"
+}
