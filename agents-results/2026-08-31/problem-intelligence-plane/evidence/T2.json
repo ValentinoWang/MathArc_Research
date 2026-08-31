@@ -1,0 +1,65 @@
+{
+  "evidence_id": "EV-T2-ACCEPTED-1",
+  "task_id": "T2",
+  "source_revision": {
+    "local_implementation_commit": "87e315c4c9e20834dfc86e813b9e69a56297bce3",
+    "remote_equivalent_commit": "55c50f7bb7cf4edb2f89f0f901d9f7428ab245c8",
+    "equivalence_basis": "Both commits contain the same seven T2 path blobs. The remote commit was created from the verified remote main parent with the GitHub Git Data API because Git HTTPS push consistently hung."
+  },
+  "changed_files": [
+    "matharc/v02/dogfood_archives.py",
+    "tests/test_v02_dogfood_archives.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/"
+  ],
+  "acceptance_self_check": "pass",
+  "acceptance_commands": [
+    "python3 -m unittest -v tests.test_v02_dogfood_archives",
+    "python3 -m unittest discover -s tests -p 'test_v02*.py'",
+    "python3 -m unittest discover -s tests",
+    "python3 -m py_compile matharc/v02/dogfood_archives.py tests/test_v02_dogfood_archives.py"
+  ],
+  "test_summary": {
+    "focused_tests": 3,
+    "v02_suite_tests": 197,
+    "v02_skipped": 8,
+    "full_suite_tests": 364,
+    "full_suite_skipped": 10,
+    "result": "passed"
+  },
+  "acceptance_matrix": {
+    "checked_in_source_bytes_and_sha256_reverified_on_restart": "pass",
+    "three_s1_fixture_digests_and_per_case_contract_results_are_bound": "pass",
+    "historical_open_and_current_resolved_erdos_397_records_remain_distinct": "pass",
+    "cursor_replay_deduplication_and_persisted_manual_queue_are_bound": "pass",
+    "complete_budget_snapshot_and_rebuilt_ledger_must_match": "pass",
+    "tampered_sources_contract_fixture_budget_or_manual_queue_fail_closed": "pass",
+    "no_claim_trace_promotion_or_public_authorization": "pass"
+  },
+  "ai_review": {
+    "rounds": 4,
+    "repaired_findings": [
+      "archive sources were synthesized instead of read from fixed artifacts",
+      "restart did not verify sources, fixture contract, budget, or manual queue",
+      "historical OPEN and current RESOLVED provenance for Erdos-397 were not distinct",
+      "complete budget snapshots could drift after internal digest recomputation"
+    ],
+    "post_repair_review": "pass",
+    "remaining_risk": "The archive uses checked-in source snapshots and makes no live retrieval, independent proof review, mathematical conclusion, or external-service claim."
+  },
+  "acceptance_record": {
+    "accepted_at": "2026-08-31",
+    "accepted_by": "用户（研究负责人/仓库所有者）",
+    "authority_basis": "用户要求持续完成并确认验收；T2 专项、v0.2、全库回归和多轮独立 AI 复审均已通过。",
+    "scope": "T2 three source-pinned dogfood archives and their non-promotion boundaries",
+    "ai_review_boundary": "AI reviews provide implementation-quality evidence only and do not create a mathematical conclusion."
+  },
+  "proposed_state": "ACCEPTED",
+  "unverified_items": [
+    "Live external literature retrieval",
+    "Independent mathematical proof review",
+    "A4 separate acceptance decision",
+    "Global Obsidian archive audit blocked by unrelated historical iCloud placeholder manifests"
+  ],
+  "failure_class": null,
+  "failure_origin": null
+}
