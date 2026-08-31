@@ -1,8 +1,8 @@
 {
-  "evidence_id": "EV-A2-PREPARED-1",
+  "evidence_id": "EV-A2-ACCEPTED-1",
   "task_id": "A2",
-  "source_revision": "05626d82275419cd9b3cb9f1f3648f2b3d1bfb2e",
-  "consumed_evidence": ["EV-L1-IMPLEMENTED-1", "EV-L2-IMPLEMENTED-1"],
+  "source_revision": "b01c7620f448307db4134a12ce528ddbacef8b1b",
+  "consumed_evidence": ["EV-L1-IMPLEMENTED-1", "EV-L2-IMPLEMENTED-2"],
   "acceptance_self_check": "pass",
   "acceptance_commands": [
     "python3 -m unittest -v tests.test_v02_source_observation tests.test_v02_literature_base",
@@ -10,8 +10,8 @@
     "git diff --check"
   ],
   "test_summary": {
-    "focused_tests": 17,
-    "full_suite_tests": 310,
+    "focused_tests": 23,
+    "full_suite_tests": 316,
     "skipped": 10,
     "result": "passed",
     "make_ci_full": "passed_with_formal_dependencies",
@@ -25,13 +25,27 @@
     "pending_license_budget_and_digest_failures": "pass",
     "pending_retry": "pass",
     "duplicate_observation_id_protection": "pass",
-    "source_registry_claim_boundary": "pass"
+    "source_registry_claim_boundary": "pass",
+    "observed_record_immutable_on_incomplete_retry": "pass",
+    "observed_record_immutable_on_restricted_retry": "pass",
+    "observed_record_immutable_on_budget_exhaustion": "pass",
+    "blob_digest_and_size_validation_on_replay_and_load": "pass",
+    "artifact_recovery_after_manifest_gap": "pass",
+    "conflict_ordering_replay": "pass",
+    "artifact_metadata_integrity": "pass"
   },
-  "proposed_state": "NOT_READY",
+  "acceptance_record": {
+    "accepted_at": "2026-08-31",
+    "accepted_by": "用户（研究负责人/仓库所有者）",
+    "authority_basis": "用户在当前任务中明确确认“验收通过”，且修复后的专项与全库测试通过",
+    "accepted_implementation_revision": "b01c7620f448307db4134a12ce528ddbacef8b1b",
+    "scope": "L1 SourceObservation 合同、L2 LiteratureBase 实现及 A2 专项测试与负面路径",
+    "ai_review_boundary": "AI 审阅仅提供独立质量意见，不替代正式验收权威"
+  },
+  "proposed_state": "ACCEPTED",
   "unverified_items": [
-    "formal acceptance by the named acceptance owner",
     "external literature service integration"
   ],
-  "failure_class": "human-acceptance-missing",
-  "failure_origin": "permission"
+  "failure_class": null,
+  "failure_origin": null
 }

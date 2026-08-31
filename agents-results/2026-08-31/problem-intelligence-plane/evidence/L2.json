@@ -1,7 +1,7 @@
 {
-  "evidence_id": "EV-L2-IMPLEMENTED-1",
+  "evidence_id": "EV-L2-IMPLEMENTED-2",
   "task_id": "L2",
-  "source_revision": "4c368a1a20699aa6199cd14b3600f62cad3b86ea",
+  "source_revision": "b01c7620f448307db4134a12ce528ddbacef8b1b",
   "changed_files": [
     "matharc/v02/literature_base.py",
     "matharc/v02/__init__.py",
@@ -9,13 +9,13 @@
   ],
   "acceptance_self_check": "pass",
   "acceptance_commands": [
-    "python3 -m unittest -v tests.test_v02_literature_base",
+    "python3 -m unittest -v tests.test_v02_source_observation tests.test_v02_literature_base",
     "python3 -m unittest discover -s tests",
     "git diff --check"
   ],
   "test_summary": {
-    "focused_tests": 8,
-    "full_suite_tests": 310,
+    "focused_tests": 23,
+    "full_suite_tests": 316,
     "skipped": 10,
     "mypy": "passed_62_source_files",
     "make_ci_full": "passed_with_formal_dependencies"
@@ -29,7 +29,27 @@
     "observation IDs cannot silently overwrite another logical identity",
     "unsupported media types fail at the SourceObservation contract",
     "literature import does not create a source registry or mathematical claim"
+    ,"observed records are immutable under incomplete, restricted, or exhausted-budget replay"
+    ,"replay verifies artifact blob digest, size, and literature metadata"
+    ,"artifact persistence can recover after an observation-manifest gap"
+    ,"conflict records do not hide a valid observed replay"
   ],
+  "ai_review": {
+    "reviewed_revision": "b01c7620f448307db4134a12ce528ddbacef8b1b",
+    "reviewers": [
+      "review_l2_repaired",
+      "review_l2_tests_repaired",
+      "review_ssot_after_repair"
+    ],
+    "disposition": "blocking findings repaired and covered by regression tests",
+    "remaining_risk": "external literature service integration is outside this local-byte slice"
+  },
+  "worker_transport": {
+    "task_id": "L2-integrity-repair",
+    "ledger": "agents-results/2026-08-31/problem-intelligence-plane/worker-runs/l2-integrity/ledger/L2-integrity-repair.json",
+    "result": "primary and primary-retry stopped on provider transport failure; no structured return",
+    "impact": "does not replace direct implementation evidence or acceptance authority"
+  },
   "proposed_state": "IMPLEMENTED",
   "unverified_items": [
     "A2 formal acceptance evidence",
