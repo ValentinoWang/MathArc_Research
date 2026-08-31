@@ -11,7 +11,7 @@
   "hard_dependencies": ["L2"],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 1}],
+  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
   "invalidation_keys": ["acceptance.problem-intelligence.literature-base"],
   "write_authority": "evidence-only",
   "acceptance_authority": "验收负责人",

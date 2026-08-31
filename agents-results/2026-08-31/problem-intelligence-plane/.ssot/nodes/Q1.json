@@ -11,7 +11,7 @@
   "hard_dependencies": ["R1"],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 1}],
+  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
   "invalidation_keys": ["validation.problem-intelligence.calibration-disclosure"],
   "write_authority": "evidence-only",
   "acceptance_authority": "研究负责人",

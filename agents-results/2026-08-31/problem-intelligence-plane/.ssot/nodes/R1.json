@@ -11,7 +11,7 @@
   "hard_dependencies": ["A4"],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 1}],
+  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
   "invalidation_keys": ["implementation.problem-intelligence.regression"],
   "write_authority": "implementation",
   "acceptance_authority": "评测负责人",

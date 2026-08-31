@@ -11,7 +11,7 @@
   "hard_dependencies": ["Q1"],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 1}],
+  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
   "invalidation_keys": ["release.problem-intelligence.v0"],
   "write_authority": "isolated-record",
   "acceptance_authority": "研究负责人和仓库所有者",
