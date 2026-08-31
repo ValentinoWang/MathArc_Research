@@ -2,14 +2,14 @@ from __future__ import annotations
 
 from dataclasses import dataclass, field
 from enum import Enum
-from typing import Any, Mapping
+from typing import Any, Mapping, cast
 
 from ..v02.schema import digest_json, utc_now
 
 
 class _Enum(str, Enum):
     def __str__(self) -> str:
-        return self.value
+        return cast(str, self.value)
 
 
 class ScientificClosure(_Enum):
