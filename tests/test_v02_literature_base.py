@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import hashlib
+import json
 import tempfile
 import unittest
 from pathlib import Path
@@ -220,6 +221,22 @@ class LiteratureBaseTests(unittest.TestCase):
             base.import_bytes(observed, content_a)
             self.assertEqual(base.import_bytes(conflict, content_b).disposition, ImportDisposition.CONFLICT)
             self.assertEqual(base.import_bytes(observed, content_a).disposition, ImportDisposition.IDEMPOTENT)
+
+    def test_replay_rejects_conflicting_artifact_metadata(self) -> None:
+        content = b"metadata integrity"
+        digest = hashlib.sha256(content).hexdigest()
+        observation = obs(uri="https://example.test/metadata", digest=digest)
+        with tempfile.TemporaryDirectory() as directory:
+            base = LiteratureBase(directory)
+            first = base.import_bytes(observation, content)
+            assert first.artifact is not None
+            manifest_path = Path(directory) / "artifacts" / "manifest.json"
+            payload = json.loads(manifest_path.read_text(encoding="utf-8"))
+            payload["records"][0]["producer"] = "untrusted-producer"
+            manifest_path.write_text(json.dumps(payload), encoding="utf-8")
+            with self.assertRaises(ValueError):
+                restored = LiteratureBase(directory)
+                restored.import_bytes(observation, content)
 
 
 if __name__ == "__main__":

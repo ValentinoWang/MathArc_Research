@@ -105,7 +105,11 @@ class LiteratureBase:
                                 reason="imported bytes do not match the declared digest",
                             )
                         try:
-                            artifact = self._verified_artifact(item.artifact_id, item.content_digest_sha256)
+                            artifact = self._verified_artifact(
+                                item.artifact_id,
+                                item.content_digest_sha256,
+                                expected_media_type=item.media_type,
+                            )
                         except (KeyError, ValueError) as exc:
                             rejected = self._rejected(observation)
                             return ImportResult(ImportDisposition.REJECTED, rejected, reason=f"artifact integrity failure: {exc}")
@@ -207,10 +211,22 @@ class LiteratureBase:
         temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
         os.replace(temporary, self.manifest_path)
 
-    def _verified_artifact(self, artifact_id: str, expected_digest: str) -> ArtifactRecord:
+    def _verified_artifact(
+        self,
+        artifact_id: str,
+        expected_digest: str,
+        *,
+        expected_media_type: str | None = None,
+    ) -> ArtifactRecord:
         artifact = self.artifacts.get(artifact_id)
         path = self.artifacts.path_for(artifact_id)
-        if artifact.sha256 != expected_digest or not path.is_file():
+        if (
+            artifact.sha256 != expected_digest
+            or not path.is_file()
+            or artifact.logical_role != "literature-observation"
+            or artifact.producer != "matharc-literature-base"
+            or (expected_media_type is not None and artifact.media_type != expected_media_type)
+        ):
             raise ValueError("artifact reference is not intact")
         content = path.read_bytes()
         if hashlib.sha256(content).hexdigest() != artifact.sha256:
@@ -226,7 +242,11 @@ class LiteratureBase:
             if not observation.artifact_id or not observation.content_digest_sha256:
                 raise ValueError(f"observed record has incomplete artifact reference: {observation.observation_id}")
             try:
-                self._verified_artifact(observation.artifact_id, observation.content_digest_sha256)
+                self._verified_artifact(
+                    observation.artifact_id,
+                    observation.content_digest_sha256,
+                    expected_media_type=observation.media_type,
+                )
             except (KeyError, ValueError) as exc:
                 raise ValueError(f"invalid artifact for observed record {observation.observation_id}: {exc}") from exc
 
@@ -251,7 +271,11 @@ class LiteratureBase:
                 or existing.media_type != observation.media_type
             ):
                 raise ValueError("existing artifact metadata conflicts with imported content")
-            self._verified_artifact(artifact_id, actual_digest)
+            self._verified_artifact(
+                artifact_id,
+                actual_digest,
+                expected_media_type=observation.media_type,
+            )
             return existing
         return self.artifacts.put_bytes(
             artifact_id,
