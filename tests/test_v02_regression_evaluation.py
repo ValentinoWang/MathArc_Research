@@ -97,7 +97,7 @@ class RegressionEvaluationTests(unittest.TestCase):
             return
 
         self.assertEqual("PASS", reviews["disposition"])
-        self.assertEqual(4, reviews["contract_version"])
+        self.assertEqual(6, reviews["contract_version"])
         ledger = json.loads(REVIEW_LEDGER.read_text(encoding="utf-8"))
         self.assertEqual(reviews["frozen_input_manifest_sha256"], ledger["frozen_input_manifest_sha256"])
         self.assertEqual(reviews["frozen_head"], ledger["frozen_head"])

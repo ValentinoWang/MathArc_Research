@@ -5,10 +5,10 @@
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
 - SSOT node: R1
 - Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
-- Contract version: 5
-- Contract SHA-256: 6a56e8ea95bd29446495fe79ad3d4b1a15530591ac54855bac8c01ab565cd525
+- Contract version: 6
+- Contract SHA-256: 836d11f43946e3a29894d1d155dbe146b86710903d35e9d43161030fcd4b097e
 - Human checklist: acceptance/human/R1-regression-evaluation/checklist.md
-- Checklist SHA-256: c0ac0045f29835573f9a62d2b7e526faeb3582057b201b4ad93dc26727d0c53f
+- Checklist SHA-256: 1d298aa563e370d261c2b03f761ac79ca6a50784ca4d43a57f4970fc64172fff
 
 ## Item bindings
 

@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-31T18:47:05.540682+00:00",
+  "generated_at": "2026-08-31T18:51:50.977474+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "47e0b203855213f5f02b99252edd1276b114f94e",
@@ -45,6 +45,7 @@
       "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/references/backend-variable-leakage-review.md",
       "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/references/impeccable-localization.md",
       "Projects/Athlete-OS_repo/source-provenance.json",
+      "README.md",
       "acceptance/human/C1-product-aware-contract/binding.md",
       "acceptance/human/C1-product-aware-contract/checklist.md",
       "acceptance/human/I1-product-aware-core/binding.md",
@@ -108,7 +109,7 @@
       "tools/tests/test_harnessctl_source_audit.py",
       "tools/tests/test_product_aware_frontend_core.py"
     ],
-    "dirty_diff_sha256": "43c9552f7cab8aa5cfeaa4e0ca2e93add99468da62b6cdcdc2450172741ff02d",
+    "dirty_diff_sha256": "53c6c0c576e546a31d9c476a694d28170e665c3bf427276874a4a69cdb535060",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
     "skill_sha256": "23d9638a5bd3fae1638480a1c170eac691ab6975678d752f8bd4cdf40c536d41",
@@ -116,15 +117,15 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "0a58bf984ef2764bafe0c2b26d1d6cefdec43783",
+    "project_commit": "3ff1d0a9b2905acb8ef7f12c014af3165cdd9fc3",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "a3338ad05c29fc87ba3bcca8a38819c8142df6dd1e9860b26caee413bd770304",
+    "project_dirty_diff_sha256": "8a8604175d305d273850cd362a28ea7d1f079eabda428f55d27e6954cbe0b99f",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "c75e42d89d3ffd71927e4be50ae5f361c5e7fb00a8d0ddaf7eb22beaaaf7dda3",
-    "content_sha256": "c75e42d89d3ffd71927e4be50ae5f361c5e7fb00a8d0ddaf7eb22beaaaf7dda3",
+    "sha256": "c0e044f6f4855c4e660afcea713ae982e3c7d75104838ba737e3e9738b6c46a8",
+    "content_sha256": "c0e044f6f4855c4e660afcea713ae982e3c7d75104838ba737e3e9738b6c46a8",
     "manifest_sha256": "4d6343ca6e467d6544ce0723736c25282868283d481e1d57591ced4b44c7c224",
     "manifest_identity_sha256": "4d6343ca6e467d6544ce0723736c25282868283d481e1d57591ced4b44c7c224"
   },
@@ -141,7 +142,7 @@
       ],
       "exit_code": 1,
       "result": "failed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 33\nruntime_skill_check: enabled\nWARN Harness source dirty files: 29\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/develop/Harness/product-frontend-harness.md\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.agents/skills/product-context-discovery\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.agents/skills/role-fit-ux\n"
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 33\nruntime_skill_check: enabled\nWARN Harness source dirty files: 30\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/develop/Harness/product-frontend-harness.md\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.agents/skills/product-context-discovery\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.agents/skills/role-fit-ux\n"
     },
     {
       "id": "complexity",
