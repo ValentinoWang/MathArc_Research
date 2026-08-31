@@ -1,0 +1,12 @@
+{
+  "fixture_kind": "t1-topic-observation-fixture",
+  "topic_id": "union-closed",
+  "cursor": "fixture-c0",
+  "next_cursor": "fixture-c1",
+  "non_claim_boundary": "This fixture records a one-topic source-observation replay contract, not a problem-status, novelty, claim, or trace conclusion.",
+  "cases": [
+    "same-cursor replay returns the stored batch result",
+    "duplicate source observations are not imported twice",
+    "budget exhaustion and high-risk events require human review"
+  ]
+}
