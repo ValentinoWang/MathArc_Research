@@ -1,0 +1,8 @@
+{
+  "frozen_candidate": "main@2e47f5040d3a833e10de07286d68f017efec5d42 plus R1 uncommitted candidate",
+  "review_lanes": [
+    {"lane": "ablation-boundary", "mode": "zero-write", "result": "transport-limited-no-durable-return", "counted_as_pass": false},
+    {"lane": "identity-contract", "mode": "zero-write", "result": "transport-limited-no-durable-return", "counted_as_pass": false}
+  ],
+  "fallback_evidence": "Acceptance owner reran focused, v02, and full local regression commands directly."
+}

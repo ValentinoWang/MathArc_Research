@@ -8,30 +8,65 @@
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["CHARTER"],
+  "hard_dependencies": [
+    "CHARTER"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
   "decision_refs": [],
-  "invalidation_keys": ["fact.problem-intelligence.authority-reconciliation"],
+  "invalidation_keys": [
+    "fact.problem-intelligence.authority-reconciliation"
+  ],
   "write_authority": "isolated-record",
   "acceptance_authority": "规划编排者",
-  "unlocks": ["D1", "D2"],
+  "unlocks": [
+    "D1",
+    "D2"
+  ],
   "node_role": "leaf",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-F1"],
+  "execution_contract_ref": "F1.json",
+  "deliverable_ids": [
+    "DL-F1"
+  ],
   "side_effect_class": "none",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-charter-record", "authority:docs-v03-status"],
-  "write_set": ["artifact:pi-fact-reconciliation"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-charter-record", "mode": "R", "isolation_key": "pi-fact"},
-    {"resource_id": "authority:docs-v03-status", "mode": "R", "isolation_key": "pi-fact"},
-    {"resource_id": "artifact:pi-fact-reconciliation", "mode": "W", "isolation_key": "pi-fact"}
+  "read_set": [
+    "artifact:pi-charter-record",
+    "authority:docs-v03-status"
   ],
-  "produced_artifact_ids": ["DL-F1"],
-  "consumed_artifact_ids": ["DL-CHARTER"],
-  "acceptance_commands": ["python3 -m unittest"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/F1.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-fact-reconciliation"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-charter-record",
+      "mode": "R",
+      "isolation_key": "pi-fact"
+    },
+    {
+      "resource_id": "authority:docs-v03-status",
+      "mode": "R",
+      "isolation_key": "pi-fact"
+    },
+    {
+      "resource_id": "artifact:pi-fact-reconciliation",
+      "mode": "W",
+      "isolation_key": "pi-fact"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-F1"
+  ],
+  "consumed_artifact_ids": [
+    "DL-CHARTER"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/F1.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "86ba22e3b6709e936d1c55d5ef88f7dbd328d5860a7339efe84495d20224fb3a"
 }

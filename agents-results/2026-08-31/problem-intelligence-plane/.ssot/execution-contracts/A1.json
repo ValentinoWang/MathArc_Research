@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "contract_id": "A1",
+  "node_id": "A1",
+  "semantic_key": "decision.problem-intelligence.amendment",
+  "work_kind": "decision-acceptance",
+  "execution_actor": "human",
+  "write_authority": "isolated-record",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "D1",
+    "D2"
+  ],
+  "read_set": [
+    "artifact:pi-activation-option",
+    "artifact:pi-topic-option"
+  ],
+  "write_set": [
+    "artifact:pi-amendment-decision"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/A1.json"
+  ]
+}

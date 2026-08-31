@@ -4,33 +4,67 @@
   "stage": "P4",
   "work_kind": "validation",
   "domain_lane": "evaluation",
-  "execution_state": "BLOCKED",
+  "execution_state": "READY",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["R1"],
+  "hard_dependencies": [
+    "R1"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
-  "invalidation_keys": ["validation.problem-intelligence.calibration-disclosure"],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.problem-intelligence.amendment",
+      "version": 2
+    }
+  ],
+  "invalidation_keys": [
+    "validation.problem-intelligence.calibration-disclosure"
+  ],
   "write_authority": "evidence-only",
   "acceptance_authority": "研究负责人",
-  "unlocks": ["A5"],
+  "unlocks": [
+    "A5"
+  ],
   "node_role": "leaf",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-Q1"],
+  "execution_contract_ref": "Q1.json",
+  "deliverable_ids": [
+    "DL-Q1"
+  ],
   "side_effect_class": "none",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-regression-suite"],
-  "write_set": ["artifact:pi-disclosure-policy"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-regression-suite", "mode": "R", "isolation_key": "pi-q1"},
-    {"resource_id": "artifact:pi-disclosure-policy", "mode": "W", "isolation_key": "pi-q1"}
+  "read_set": [
+    "artifact:pi-regression-suite"
   ],
-  "produced_artifact_ids": ["DL-Q1"],
-  "consumed_artifact_ids": ["DL-R1"],
-  "acceptance_commands": ["python3 -m unittest"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-disclosure-policy"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-regression-suite",
+      "mode": "R",
+      "isolation_key": "pi-q1"
+    },
+    {
+      "resource_id": "artifact:pi-disclosure-policy",
+      "mode": "W",
+      "isolation_key": "pi-q1"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-Q1"
+  ],
+  "consumed_artifact_ids": [
+    "DL-R1"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "bea478adc7da2f5f21c01990a2bcf6820ac4b469f7a131d1e9552f527dd7c31b"
 }

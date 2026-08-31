@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "contract_id": "A5",
+  "node_id": "A5",
+  "semantic_key": "release.problem-intelligence.v0",
+  "work_kind": "release-decision",
+  "execution_actor": "human",
+  "write_authority": "isolated-record",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "must-match",
+  "hard_dependencies": [
+    "Q1"
+  ],
+  "read_set": [
+    "artifact:pi-disclosure-policy"
+  ],
+  "write_set": [
+    "artifact:pi-release-decision"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json"
+  ]
+}

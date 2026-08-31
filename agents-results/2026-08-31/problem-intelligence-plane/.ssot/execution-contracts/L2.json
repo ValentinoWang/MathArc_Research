@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "contract_id": "L2",
+  "node_id": "L2",
+  "semantic_key": "implementation.problem-intelligence.literature-base",
+  "work_kind": "implementation",
+  "execution_actor": "human",
+  "write_authority": "implementation",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "L1"
+  ],
+  "read_set": [
+    "artifact:pi-literature-contract-draft"
+  ],
+  "write_set": [
+    "artifact:pi-literature-import"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/L2.json"
+  ]
+}

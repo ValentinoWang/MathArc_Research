@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "contract_id": "A2",
+  "node_id": "A2",
+  "semantic_key": "acceptance.problem-intelligence.literature-base",
+  "work_kind": "validation",
+  "execution_actor": "human",
+  "write_authority": "evidence-only",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "L2"
+  ],
+  "read_set": [
+    "artifact:pi-literature-import"
+  ],
+  "write_set": [
+    "artifact:pi-literature-proof"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest discover -s tests"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/A2.json"
+  ]
+}

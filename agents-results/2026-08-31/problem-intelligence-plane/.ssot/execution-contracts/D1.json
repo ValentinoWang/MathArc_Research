@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "contract_id": "D1",
+  "node_id": "D1",
+  "semantic_key": "decision.problem-intelligence.activation-route",
+  "work_kind": "decision-acceptance",
+  "execution_actor": "human",
+  "write_authority": "isolated-record",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "F1"
+  ],
+  "read_set": [
+    "artifact:pi-fact-reconciliation"
+  ],
+  "write_set": [
+    "artifact:pi-activation-option"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/D1.json"
+  ]
+}

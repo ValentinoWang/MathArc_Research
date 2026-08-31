@@ -8,29 +8,63 @@
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["S1"],
+  "hard_dependencies": [
+    "S1"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
-  "invalidation_keys": ["implementation.problem-intelligence.novelty-audit"],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.problem-intelligence.amendment",
+      "version": 2
+    }
+  ],
+  "invalidation_keys": [
+    "implementation.problem-intelligence.novelty-audit"
+  ],
   "write_authority": "implementation",
   "acceptance_authority": "文献审计负责人",
-  "unlocks": ["A3"],
+  "unlocks": [
+    "A3"
+  ],
   "node_role": "leaf",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-S2"],
+  "execution_contract_ref": "S2.json",
+  "deliverable_ids": [
+    "DL-S2"
+  ],
   "side_effect_class": "reversible",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-status-model"],
-  "write_set": ["artifact:pi-novelty-audit"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-status-model", "mode": "R", "isolation_key": "pi-s2"},
-    {"resource_id": "artifact:pi-novelty-audit", "mode": "W", "isolation_key": "pi-s2"}
+  "read_set": [
+    "artifact:pi-status-model"
   ],
-  "produced_artifact_ids": ["DL-S2"],
-  "consumed_artifact_ids": ["DL-S1"],
-  "acceptance_commands": ["python3 -m unittest"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/S2.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-novelty-audit"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-status-model",
+      "mode": "R",
+      "isolation_key": "pi-s2"
+    },
+    {
+      "resource_id": "artifact:pi-novelty-audit",
+      "mode": "W",
+      "isolation_key": "pi-s2"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-S2"
+  ],
+  "consumed_artifact_ids": [
+    "DL-S1"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/S2.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "7fcb2469c680389aadfbb12b60ccd4f9e519a3d8f31e2bc84e5f1688c6f67a77"
 }

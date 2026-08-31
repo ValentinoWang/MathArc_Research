@@ -1,0 +1,25 @@
+{
+  "schema_version": 1,
+  "contract_id": "CHARTER",
+  "node_id": "CHARTER",
+  "semantic_key": "decision.problem-intelligence.charter",
+  "work_kind": "charter",
+  "execution_actor": "human",
+  "write_authority": "isolated-record",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [],
+  "read_set": [
+    "authority:docs-dev-path-v03",
+    "authority:docs-discovery-v04"
+  ],
+  "write_set": [
+    "artifact:pi-charter-record"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/CHARTER.json"
+  ]
+}

@@ -8,29 +8,64 @@
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["A2"],
+  "hard_dependencies": [
+    "A2"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
-  "invalidation_keys": ["implementation.problem-intelligence.status-model"],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.problem-intelligence.amendment",
+      "version": 2
+    }
+  ],
+  "invalidation_keys": [
+    "implementation.problem-intelligence.status-model"
+  ],
   "write_authority": "implementation",
   "acceptance_authority": "问题状态负责人",
-  "unlocks": ["S2"],
+  "unlocks": [
+    "S2"
+  ],
   "node_role": "leaf",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-S1"],
+  "execution_contract_ref": "S1.json",
+  "deliverable_ids": [
+    "DL-S1"
+  ],
   "side_effect_class": "reversible",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-literature-proof"],
-  "write_set": ["artifact:pi-status-model"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-literature-proof", "mode": "R", "isolation_key": "pi-s1"},
-    {"resource_id": "artifact:pi-status-model", "mode": "W", "isolation_key": "pi-s1"}
+  "read_set": [
+    "artifact:pi-literature-proof"
   ],
-  "produced_artifact_ids": ["DL-S1"],
-  "consumed_artifact_ids": ["DL-A2"],
-  "acceptance_commands": ["python3 -m unittest", "paper dry-run: validate T2 three real archives against the S1 contract"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/S1.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-status-model"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-literature-proof",
+      "mode": "R",
+      "isolation_key": "pi-s1"
+    },
+    {
+      "resource_id": "artifact:pi-status-model",
+      "mode": "W",
+      "isolation_key": "pi-s1"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-S1"
+  ],
+  "consumed_artifact_ids": [
+    "DL-A2"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest",
+    "paper dry-run: validate T2 three real archives against the S1 contract"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/S1.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "47e2c474fbf01bf4e86b6b2e40da34bc1b17554e934dd72f262566f21131fafd"
 }

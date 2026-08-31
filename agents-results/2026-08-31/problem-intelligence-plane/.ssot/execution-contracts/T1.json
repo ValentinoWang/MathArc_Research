@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "contract_id": "T1",
+  "node_id": "T1",
+  "semantic_key": "implementation.problem-intelligence.topic-observation",
+  "work_kind": "implementation",
+  "execution_actor": "human",
+  "write_authority": "implementation",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "A3"
+  ],
+  "read_set": [
+    "artifact:pi-status-novelty-proof"
+  ],
+  "write_set": [
+    "artifact:pi-topic-observation"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/T1.json"
+  ]
+}

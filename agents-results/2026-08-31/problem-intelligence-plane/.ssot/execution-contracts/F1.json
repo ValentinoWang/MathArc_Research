@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "contract_id": "F1",
+  "node_id": "F1",
+  "semantic_key": "fact.problem-intelligence.authority-reconciliation",
+  "work_kind": "fact-discovery",
+  "execution_actor": "human",
+  "write_authority": "isolated-record",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "CHARTER"
+  ],
+  "read_set": [
+    "artifact:pi-charter-record",
+    "authority:docs-v03-status"
+  ],
+  "write_set": [
+    "artifact:pi-fact-reconciliation"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/F1.json"
+  ]
+}

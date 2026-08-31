@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "contract_id": "S1",
+  "node_id": "S1",
+  "semantic_key": "implementation.problem-intelligence.status-model",
+  "work_kind": "implementation",
+  "execution_actor": "human",
+  "write_authority": "implementation",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "A2"
+  ],
+  "read_set": [
+    "artifact:pi-literature-proof"
+  ],
+  "write_set": [
+    "artifact:pi-status-model"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest",
+    "paper dry-run: validate T2 three real archives against the S1 contract"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/S1.json"
+  ]
+}

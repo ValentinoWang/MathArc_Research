@@ -8,29 +8,58 @@
   "decision_state": "ACCEPTED",
   "decision_version": 2,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["F1"],
+  "hard_dependencies": [
+    "F1"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
   "decision_refs": [],
-  "invalidation_keys": ["decision.problem-intelligence.first-topic"],
+  "invalidation_keys": [
+    "decision.problem-intelligence.first-topic"
+  ],
   "write_authority": "isolated-record",
   "acceptance_authority": "研究负责人",
-  "unlocks": ["A1"],
+  "unlocks": [
+    "A1"
+  ],
   "node_role": "leaf",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-D2"],
+  "execution_contract_ref": "D2.json",
+  "deliverable_ids": [
+    "DL-D2"
+  ],
   "side_effect_class": "none",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-fact-reconciliation"],
-  "write_set": ["artifact:pi-topic-option"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-fact-reconciliation", "mode": "R", "isolation_key": "pi-d2"},
-    {"resource_id": "artifact:pi-topic-option", "mode": "W", "isolation_key": "pi-d2"}
+  "read_set": [
+    "artifact:pi-fact-reconciliation"
   ],
-  "produced_artifact_ids": ["DL-D2"],
-  "consumed_artifact_ids": ["DL-F1"],
-  "acceptance_commands": ["python3 -m unittest"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/D2.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-topic-option"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-fact-reconciliation",
+      "mode": "R",
+      "isolation_key": "pi-d2"
+    },
+    {
+      "resource_id": "artifact:pi-topic-option",
+      "mode": "W",
+      "isolation_key": "pi-d2"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-D2"
+  ],
+  "consumed_artifact_ids": [
+    "DL-F1"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/D2.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "43b9703bda8d6b9f16b6aacc38b79f65634b47d483157b26c1b166d011a9a542"
 }

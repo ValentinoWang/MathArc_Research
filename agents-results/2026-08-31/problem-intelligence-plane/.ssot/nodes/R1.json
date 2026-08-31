@@ -4,33 +4,67 @@
   "stage": "P4",
   "work_kind": "implementation",
   "domain_lane": "evaluation",
-  "execution_state": "READY",
+  "execution_state": "ACCEPTED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["A4"],
+  "hard_dependencies": [
+    "A4"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
-  "invalidation_keys": ["implementation.problem-intelligence.regression"],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.problem-intelligence.amendment",
+      "version": 2
+    }
+  ],
+  "invalidation_keys": [
+    "implementation.problem-intelligence.regression"
+  ],
   "write_authority": "implementation",
   "acceptance_authority": "评测负责人",
-  "unlocks": ["Q1"],
+  "unlocks": [
+    "Q1"
+  ],
   "node_role": "leaf",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-R1"],
+  "execution_contract_ref": "R1.json",
+  "deliverable_ids": [
+    "DL-R1"
+  ],
   "side_effect_class": "reversible",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-dogfood-proof"],
-  "write_set": ["artifact:pi-regression-suite"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-dogfood-proof", "mode": "R", "isolation_key": "pi-r1"},
-    {"resource_id": "artifact:pi-regression-suite", "mode": "W", "isolation_key": "pi-r1"}
+  "read_set": [
+    "artifact:pi-dogfood-proof"
   ],
-  "produced_artifact_ids": ["DL-R1"],
-  "consumed_artifact_ids": ["DL-A4"],
-  "acceptance_commands": ["python3 -m unittest"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-regression-suite"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-dogfood-proof",
+      "mode": "R",
+      "isolation_key": "pi-r1"
+    },
+    {
+      "resource_id": "artifact:pi-regression-suite",
+      "mode": "W",
+      "isolation_key": "pi-r1"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-R1"
+  ],
+  "consumed_artifact_ids": [
+    "DL-A4"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "82841c8b91ea04d499f213270127643f6f6994ef7c5e3a3907645428ca09e508"
 }

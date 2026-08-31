@@ -8,29 +8,63 @@
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["S2"],
+  "hard_dependencies": [
+    "S2"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
-  "invalidation_keys": ["acceptance.problem-intelligence.status-novelty"],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.problem-intelligence.amendment",
+      "version": 2
+    }
+  ],
+  "invalidation_keys": [
+    "acceptance.problem-intelligence.status-novelty"
+  ],
   "write_authority": "evidence-only",
   "acceptance_authority": "验收负责人",
-  "unlocks": ["T1"],
+  "unlocks": [
+    "T1"
+  ],
   "node_role": "acceptance-gate",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-A3"],
+  "execution_contract_ref": "A3.json",
+  "deliverable_ids": [
+    "DL-A3"
+  ],
   "side_effect_class": "none",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-novelty-audit"],
-  "write_set": ["artifact:pi-status-novelty-proof"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-novelty-audit", "mode": "R", "isolation_key": "pi-a3"},
-    {"resource_id": "artifact:pi-status-novelty-proof", "mode": "W", "isolation_key": "pi-a3"}
+  "read_set": [
+    "artifact:pi-novelty-audit"
   ],
-  "produced_artifact_ids": ["DL-A3"],
-  "consumed_artifact_ids": ["DL-S2"],
-  "acceptance_commands": ["python3 -m unittest discover -s tests"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/A3.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-status-novelty-proof"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-novelty-audit",
+      "mode": "R",
+      "isolation_key": "pi-a3"
+    },
+    {
+      "resource_id": "artifact:pi-status-novelty-proof",
+      "mode": "W",
+      "isolation_key": "pi-a3"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-A3"
+  ],
+  "consumed_artifact_ids": [
+    "DL-S2"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest discover -s tests"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/A3.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "fd6bc6f96d1d0ec4271dcfc231603d8bc7ab89e6e6f7aab9615c1a8d9a4314ae"
 }

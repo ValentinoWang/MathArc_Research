@@ -1,0 +1,75 @@
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import unittest
+from pathlib import Path
+
+from matharc.v02.regression_evaluation import RegressionSuite, RegressionValidationError
+
+
+ROOT = Path(__file__).parents[1]
+FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json"
+
+
+class RegressionEvaluationTests(unittest.TestCase):
+    def load(self) -> tuple[dict, RegressionSuite]:
+        payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+        return payload, RegressionSuite.from_dict(payload)
+
+    def test_three_cases_four_routes_and_deterministic_ablation(self) -> None:
+        payload, suite = self.load()
+        result = suite.evaluate()
+        self.assertEqual(payload["case_ids"], list(result.case_ids))
+        self.assertEqual(3, len(result.cases))
+        for case in result.cases:
+            self.assertEqual(4, len(case.routes))
+            self.assertEqual(set(payload["route_order"]), set(case.route_names))
+            self.assertEqual(case, suite.evaluate().case_by_id(case.case_id))
+        self.assertEqual(result.digest_sha256, suite.evaluate().digest_sha256)
+        self.assertTrue(any(item.incremental_hits == () for case in result.cases for item in case.routes))
+
+    def test_expected_outcomes_are_only_hits_misses_and_gaps(self) -> None:
+        _, suite = self.load()
+        result = suite.evaluate()
+        allowed = {"hit", "miss", "gap"}
+        for case in result.cases:
+            self.assertTrue(set(case.outcome_labels) <= allowed)
+            self.assertGreaterEqual(case.manual_minutes, 0)
+            self.assertLessEqual(case.manual_minutes, 240)
+            self.assertEqual(case.full_hit_ids, tuple(sorted(case.full_hit_ids)))
+            for route in case.routes:
+                self.assertEqual(route.incremental_hits, tuple(sorted(route.incremental_hits)))
+
+    def test_tampering_identity_digest_and_ablation_fails_closed(self) -> None:
+        payload, _ = self.load()
+        for mutate in (
+            lambda p: p.update({"a4_evidence_digest": "0" * 64}),
+            lambda p: p["cases"].pop(),
+            lambda p: p["cases"][0]["routes"].pop(),
+            lambda p: p["cases"][0]["routes"][1].update(p["cases"][0]["routes"][0]),
+            lambda p: p["cases"][0].update({"expected_status": "PROVED"}),
+            lambda p: p.update({"topic_id": "foreign-topic"}),
+            lambda p: p["cases"][0]["routes"][0]["queries"].__setitem__(0, "tampered query"),
+            lambda p: p["cases"][0]["routes"][0]["source_ids"].__setitem__(0, "tampered-source"),
+            lambda p: p["cases"][0]["routes"][0]["hits"].__setitem__(0, "tampered-hit"),
+            lambda p: p["cases"][0]["routes"][0]["unresolved"].append("tampered gap"),
+            lambda p: p["cases"][0].update({"manual_minutes": 13}),
+            lambda p: p["cases"][0].update({"manual_minutes": -1}),
+        ):
+            candidate = copy.deepcopy(payload)
+            mutate(candidate)
+            with self.subTest(mutate=mutate), self.assertRaises(RegressionValidationError):
+                RegressionSuite.from_dict(candidate)
+
+    def test_is_passive_and_does_not_import_authorization_or_trace(self) -> None:
+        source = (ROOT / "matharc/v02/regression_evaluation.py").read_text(encoding="utf-8")
+        self.assertNotIn("ResearchTrace", source)
+        self.assertNotIn("ClaimStatus", source)
+        self.assertNotIn("authorize", source)
+        self.assertNotIn("http", source.lower())
+
+
+if __name__ == "__main__":
+    unittest.main()

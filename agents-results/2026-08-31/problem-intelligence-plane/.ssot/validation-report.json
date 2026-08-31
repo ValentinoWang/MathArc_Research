@@ -1,31 +1,30 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-31T15:48:24.966083+00:00",
+  "generated_at": "2026-08-31T16:30:36.582139+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
-    "commit": "928556ced521716e82ddc331b0e83921bb67bb3c",
+    "commit": "47e0b203855213f5f02b99252edd1276b114f94e",
     "dirty": false,
     "dirty_files": [],
     "dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
-    "skill_sha256": "653cd9fbbb3afaeff289cb34978b3449440f2de4fe91149eeaeaa70c9e0888da",
-    "checker_bundle_sha256": "284d62641347b466235d047e8b61b30e52712e4c1826f5711bbe8bc127cb3a04",
-    "validation_contract": "strict-schema-v2-release-v1"
+    "skill_sha256": "23d9638a5bd3fae1638480a1c170eac691ab6975678d752f8bd4cdf40c536d41",
+    "checker_bundle_sha256": "445169fcc852a421939689f4d3dcdd187da088c52eb21d18a8e2966905183f02"
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe",
+    "project_commit": "2e47f5040d3a833e10de07286d68f017efec5d42",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "0c12855897e2ed1545c5f72cfeaf938476a6ee2551bf90b28995aaf6e7e48328",
+    "project_dirty_diff_sha256": "fb80b70cdaa38f2ff3185d378db39e9c4e3e27251569a3ad1300840a72ecd3b1",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "3afe13f4c546633f14e7577a03c507fea5e48b470e97695acef6357f928d53e9",
-    "content_sha256": "3afe13f4c546633f14e7577a03c507fea5e48b470e97695acef6357f928d53e9",
-    "manifest_sha256": "32106da8a2f78f402561425c2bb42f48fe710e87fce2726d7aa38ff23443dcaf",
-    "manifest_identity_sha256": "32106da8a2f78f402561425c2bb42f48fe710e87fce2726d7aa38ff23443dcaf"
+    "sha256": "575d3b7b359ad0ffbbb092c740255b68b956b80b925455e645d0cff821717315",
+    "content_sha256": "575d3b7b359ad0ffbbb092c740255b68b956b80b925455e645d0cff821717315",
+    "manifest_sha256": "eb1656257b132a2b5867faee1b81abad4b2ecbc9cc9e09b27690fe29356c8c1a",
+    "manifest_identity_sha256": "eb1656257b132a2b5867faee1b81abad4b2ecbc9cc9e09b27690fe29356c8c1a"
   },
   "checks": [
     {
@@ -40,7 +39,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 31\nruntime_skill_check: enabled\ndoctor: ok\n"
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 30\nruntime_skill_check: enabled\ndoctor: ok\n"
     },
     {
       "id": "complexity",
@@ -85,7 +84,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "{\n  \"actor_pools\": {\n    \"codex-primary\": {\n      \"actor\": \"codex\",\n      \"capacity\": 1\n    },\n    \"human-review\": {\n      \"actor\": \"human\",\n      \"capacity\": 1\n    }\n  },\n  \"critical_path_edges\": 15,\n  \"current_ready_nodes\": [\n    \"R1\"\n  ],\n  \"current_ready_width\": 1,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"CHARTER\",\n      \"unlocks\": [\n        \"F1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"F1\",\n      \"unlocks\": [\n        \"D1\",\n        \"D2\"\n      ],\n      \"waits_for\": [\n        \"CHARTER\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D1\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D2\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A1\",\n      \"unlocks\": [\n        \"L1\"\n      ],\n      \"waits_for\": [\n        \"D1\",\n        \"D2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L1\",\n      \"unlocks\": [\n        \"L2\"\n      ],\n      \"waits_for\": [\n        \"A1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L2\",\n      \"unlocks\": [\n        \"A2\"\n      ],\n      \"waits_for\": [\n        \"L1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A2\",\n      \"unlocks\": [\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"L2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"S2\"\n      ],\n      \"waits_for\": [\n        \"A2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S2\",\n      \"unlocks\": [\n        \"A3\"\n      ],\n      \"waits_for\": [\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A3\",\n      \"unlocks\": [\n        \"T1\"\n      ],\n      \"waits_for\": [\n        \"S2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T1\",\n      \"unlocks\": [\n        \"T2\"\n      ],\n      \"waits_for\": [\n        \"A3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T2\",\n      \"unlocks\": [\n        \"A4\"\n      ],\n      \"waits_for\": [\n        \"T1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A4\",\n      \"unlocks\": [\n        \"R1\"\n      ],\n      \"waits_for\": [\n        \"T2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"R1\",\n      \"unlocks\": [\n        \"Q1\"\n      ],\n      \"waits_for\": [\n        \"A4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"Q1\",\n      \"unlocks\": [\n        \"A5\"\n      ],\n      \"waits_for\": [\n        \"R1\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 2,\n  \"parallelism_contract_activation_error\": null,\n  \"parallelism_contract_active\": true,\n  \"resource_verified_antichain_width\": 2,\n  \"resource_verified_width\": 1,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n"
+      "output": "{\n  \"actor_pools\": {\n    \"codex-primary\": {\n      \"actor\": \"codex\",\n      \"capacity\": 1\n    },\n    \"human-review\": {\n      \"actor\": \"human\",\n      \"capacity\": 1\n    }\n  },\n  \"critical_path_edges\": 15,\n  \"current_ready_nodes\": [\n    \"Q1\"\n  ],\n  \"current_ready_width\": 1,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"CHARTER\",\n      \"unlocks\": [\n        \"F1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"F1\",\n      \"unlocks\": [\n        \"D1\",\n        \"D2\"\n      ],\n      \"waits_for\": [\n        \"CHARTER\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D1\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D2\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A1\",\n      \"unlocks\": [\n        \"L1\"\n      ],\n      \"waits_for\": [\n        \"D1\",\n        \"D2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L1\",\n      \"unlocks\": [\n        \"L2\"\n      ],\n      \"waits_for\": [\n        \"A1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L2\",\n      \"unlocks\": [\n        \"A2\"\n      ],\n      \"waits_for\": [\n        \"L1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A2\",\n      \"unlocks\": [\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"L2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"S2\"\n      ],\n      \"waits_for\": [\n        \"A2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S2\",\n      \"unlocks\": [\n        \"A3\"\n      ],\n      \"waits_for\": [\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A3\",\n      \"unlocks\": [\n        \"T1\"\n      ],\n      \"waits_for\": [\n        \"S2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T1\",\n      \"unlocks\": [\n        \"T2\"\n      ],\n      \"waits_for\": [\n        \"A3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T2\",\n      \"unlocks\": [\n        \"A4\"\n      ],\n      \"waits_for\": [\n        \"T1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A4\",\n      \"unlocks\": [\n        \"R1\"\n      ],\n      \"waits_for\": [\n        \"T2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"R1\",\n      \"unlocks\": [\n        \"Q1\"\n      ],\n      \"waits_for\": [\n        \"A4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"Q1\",\n      \"unlocks\": [\n        \"A5\"\n      ],\n      \"waits_for\": [\n        \"R1\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 2,\n  \"resource_verified_width\": 1,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n"
     },
     {
       "id": "structure",
@@ -150,7 +149,7 @@
     },
     "critical_path_edges": 15,
     "current_ready_nodes": [
-      "R1"
+      "Q1"
     ],
     "current_ready_width": 1,
     "frontier_transitions": [
@@ -301,9 +300,6 @@
     ],
     "manifest": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
     "maximum_antichain_width": 2,
-    "parallelism_contract_activation_error": null,
-    "parallelism_contract_active": true,
-    "resource_verified_antichain_width": 2,
     "resource_verified_width": 1,
     "scheduling_model": "event-driven",
     "static_waves_are_authority": false

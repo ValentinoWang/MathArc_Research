@@ -8,29 +8,63 @@
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["T1"],
+  "hard_dependencies": [
+    "T1"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
-  "invalidation_keys": ["implementation.problem-intelligence.dogfood-archives"],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.problem-intelligence.amendment",
+      "version": 2
+    }
+  ],
+  "invalidation_keys": [
+    "implementation.problem-intelligence.dogfood-archives"
+  ],
   "write_authority": "implementation",
   "acceptance_authority": "主题观测负责人",
-  "unlocks": ["A4"],
+  "unlocks": [
+    "A4"
+  ],
   "node_role": "leaf",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-T2"],
+  "execution_contract_ref": "T2.json",
+  "deliverable_ids": [
+    "DL-T2"
+  ],
   "side_effect_class": "reversible",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-topic-observation"],
-  "write_set": ["artifact:pi-dogfood-archives"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-topic-observation", "mode": "R", "isolation_key": "pi-t2"},
-    {"resource_id": "artifact:pi-dogfood-archives", "mode": "W", "isolation_key": "pi-t2"}
+  "read_set": [
+    "artifact:pi-topic-observation"
   ],
-  "produced_artifact_ids": ["DL-T2"],
-  "consumed_artifact_ids": ["DL-T1"],
-  "acceptance_commands": ["python3 -m unittest"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/T2.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-dogfood-archives"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-topic-observation",
+      "mode": "R",
+      "isolation_key": "pi-t2"
+    },
+    {
+      "resource_id": "artifact:pi-dogfood-archives",
+      "mode": "W",
+      "isolation_key": "pi-t2"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-T2"
+  ],
+  "consumed_artifact_ids": [
+    "DL-T1"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/T2.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "8f001e17540d53fef12a7a5cb26dea4ec93003f12d8e8c7701f38c686d9dcf9a"
 }

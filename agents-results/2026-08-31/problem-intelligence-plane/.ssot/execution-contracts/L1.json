@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "contract_id": "L1",
+  "node_id": "L1",
+  "semantic_key": "contract.problem-intelligence.source-observation",
+  "work_kind": "contract-compile",
+  "execution_actor": "human",
+  "write_authority": "isolated-draft",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "A1"
+  ],
+  "read_set": [
+    "artifact:pi-amendment-decision",
+    "authority:matharc-source-registry"
+  ],
+  "write_set": [
+    "artifact:pi-literature-contract-draft"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/L1.json"
+  ]
+}

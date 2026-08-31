@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "contract_id": "S2",
+  "node_id": "S2",
+  "semantic_key": "implementation.problem-intelligence.novelty-audit",
+  "work_kind": "implementation",
+  "execution_actor": "human",
+  "write_authority": "implementation",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "S1"
+  ],
+  "read_set": [
+    "artifact:pi-status-model"
+  ],
+  "write_set": [
+    "artifact:pi-novelty-audit"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/S2.json"
+  ]
+}

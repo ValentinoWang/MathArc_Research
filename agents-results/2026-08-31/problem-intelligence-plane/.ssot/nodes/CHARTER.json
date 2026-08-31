@@ -12,26 +12,56 @@
   "soft_dependencies": [],
   "assumption_ids": [],
   "decision_refs": [],
-  "invalidation_keys": ["decision.problem-intelligence.charter"],
+  "invalidation_keys": [
+    "decision.problem-intelligence.charter"
+  ],
   "write_authority": "isolated-record",
   "acceptance_authority": "仓库所有者",
-  "unlocks": ["F1"],
+  "unlocks": [
+    "F1"
+  ],
   "node_role": "charter",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-CHARTER"],
+  "execution_contract_ref": "CHARTER.json",
+  "deliverable_ids": [
+    "DL-CHARTER"
+  ],
   "side_effect_class": "none",
   "candidate_identity_policy": "none",
-  "read_set": ["authority:docs-dev-path-v03", "authority:docs-discovery-v04"],
-  "write_set": ["artifact:pi-charter-record"],
-  "resource_claims": [
-    {"resource_id": "authority:docs-dev-path-v03", "mode": "R", "isolation_key": "pi-authority"},
-    {"resource_id": "authority:docs-discovery-v04", "mode": "R", "isolation_key": "pi-authority"},
-    {"resource_id": "artifact:pi-charter-record", "mode": "W", "isolation_key": "pi-charter"}
+  "read_set": [
+    "authority:docs-dev-path-v03",
+    "authority:docs-discovery-v04"
   ],
-  "produced_artifact_ids": ["DL-CHARTER"],
+  "write_set": [
+    "artifact:pi-charter-record"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "authority:docs-dev-path-v03",
+      "mode": "R",
+      "isolation_key": "pi-authority"
+    },
+    {
+      "resource_id": "authority:docs-discovery-v04",
+      "mode": "R",
+      "isolation_key": "pi-authority"
+    },
+    {
+      "resource_id": "artifact:pi-charter-record",
+      "mode": "W",
+      "isolation_key": "pi-charter"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-CHARTER"
+  ],
   "consumed_artifact_ids": [],
-  "acceptance_commands": ["python3 -m unittest"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/CHARTER.json"],
-  "actor_pool": "human-review"
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/CHARTER.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "2191da62dfaa192f20f88dbdc9651c69433bc41eb7fb33c78a7acddf285f18c8"
 }

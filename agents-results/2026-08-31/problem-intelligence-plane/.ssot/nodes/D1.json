@@ -8,29 +8,58 @@
   "decision_state": "ACCEPTED",
   "decision_version": 2,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["F1"],
+  "hard_dependencies": [
+    "F1"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
   "decision_refs": [],
-  "invalidation_keys": ["decision.problem-intelligence.activation-route"],
+  "invalidation_keys": [
+    "decision.problem-intelligence.activation-route"
+  ],
   "write_authority": "isolated-record",
   "acceptance_authority": "研究负责人",
-  "unlocks": ["A1"],
+  "unlocks": [
+    "A1"
+  ],
   "node_role": "leaf",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-D1"],
+  "execution_contract_ref": "D1.json",
+  "deliverable_ids": [
+    "DL-D1"
+  ],
   "side_effect_class": "none",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-fact-reconciliation"],
-  "write_set": ["artifact:pi-activation-option"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-fact-reconciliation", "mode": "R", "isolation_key": "pi-d1"},
-    {"resource_id": "artifact:pi-activation-option", "mode": "W", "isolation_key": "pi-d1"}
+  "read_set": [
+    "artifact:pi-fact-reconciliation"
   ],
-  "produced_artifact_ids": ["DL-D1"],
-  "consumed_artifact_ids": ["DL-F1"],
-  "acceptance_commands": ["python3 -m unittest"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/D1.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-activation-option"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-fact-reconciliation",
+      "mode": "R",
+      "isolation_key": "pi-d1"
+    },
+    {
+      "resource_id": "artifact:pi-activation-option",
+      "mode": "W",
+      "isolation_key": "pi-d1"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-D1"
+  ],
+  "consumed_artifact_ids": [
+    "DL-F1"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/D1.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "575e1899096511ae7d789868e85a03ce713ea8467321231d25cc4b8216058857"
 }

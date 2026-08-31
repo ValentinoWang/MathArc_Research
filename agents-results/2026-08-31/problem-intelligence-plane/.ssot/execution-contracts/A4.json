@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "contract_id": "A4",
+  "node_id": "A4",
+  "semantic_key": "acceptance.problem-intelligence.dogfood",
+  "work_kind": "validation",
+  "execution_actor": "human",
+  "write_authority": "evidence-only",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "T2"
+  ],
+  "read_set": [
+    "artifact:pi-dogfood-archives"
+  ],
+  "write_set": [
+    "artifact:pi-dogfood-proof"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest discover -s tests"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/A4.json"
+  ]
+}

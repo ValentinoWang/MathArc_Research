@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "contract_id": "R1",
+  "node_id": "R1",
+  "semantic_key": "implementation.problem-intelligence.regression",
+  "work_kind": "implementation",
+  "execution_actor": "human",
+  "write_authority": "implementation",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "A4"
+  ],
+  "read_set": [
+    "artifact:pi-dogfood-proof"
+  ],
+  "write_set": [
+    "artifact:pi-regression-suite"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json"
+  ]
+}

@@ -8,29 +8,61 @@
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["Q1"],
+  "hard_dependencies": [
+    "Q1"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
-  "decision_refs": [{"semantic_key": "decision.problem-intelligence.amendment", "version": 2}],
-  "invalidation_keys": ["release.problem-intelligence.v0"],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.problem-intelligence.amendment",
+      "version": 2
+    }
+  ],
+  "invalidation_keys": [
+    "release.problem-intelligence.v0"
+  ],
   "write_authority": "isolated-record",
   "acceptance_authority": "研究负责人和仓库所有者",
   "unlocks": [],
   "node_role": "release-decision",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-A5"],
+  "execution_contract_ref": "A5.json",
+  "deliverable_ids": [
+    "DL-A5"
+  ],
   "side_effect_class": "none",
   "candidate_identity_policy": "must-match",
-  "read_set": ["artifact:pi-disclosure-policy"],
-  "write_set": ["artifact:pi-release-decision"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-disclosure-policy", "mode": "R", "isolation_key": "pi-a5"},
-    {"resource_id": "artifact:pi-release-decision", "mode": "W", "isolation_key": "pi-a5"}
+  "read_set": [
+    "artifact:pi-disclosure-policy"
   ],
-  "produced_artifact_ids": ["DL-A5"],
-  "consumed_artifact_ids": ["DL-Q1"],
-  "acceptance_commands": ["python3 -m unittest"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-release-decision"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-disclosure-policy",
+      "mode": "R",
+      "isolation_key": "pi-a5"
+    },
+    {
+      "resource_id": "artifact:pi-release-decision",
+      "mode": "W",
+      "isolation_key": "pi-a5"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-A5"
+  ],
+  "consumed_artifact_ids": [
+    "DL-Q1"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "2b800a4867584c68585a51fde1b597c1b678ee6cf2b532840b05e68fdb713784"
 }

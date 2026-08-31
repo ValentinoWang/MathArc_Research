@@ -8,33 +8,75 @@
   "decision_state": "ACCEPTED",
   "decision_version": 2,
   "readiness_mode": "FORMAL",
-  "hard_dependencies": ["D1", "D2"],
+  "hard_dependencies": [
+    "D1",
+    "D2"
+  ],
   "soft_dependencies": [],
   "assumption_ids": [],
   "decision_refs": [
-    {"semantic_key": "decision.problem-intelligence.activation-route", "version": 2},
-    {"semantic_key": "decision.problem-intelligence.first-topic", "version": 2}
+    {
+      "semantic_key": "decision.problem-intelligence.activation-route",
+      "version": 2
+    },
+    {
+      "semantic_key": "decision.problem-intelligence.first-topic",
+      "version": 2
+    }
   ],
-  "invalidation_keys": ["decision.problem-intelligence.amendment"],
+  "invalidation_keys": [
+    "decision.problem-intelligence.amendment"
+  ],
   "write_authority": "isolated-record",
   "acceptance_authority": "研究负责人和仓库所有者",
-  "unlocks": ["L1"],
+  "unlocks": [
+    "L1"
+  ],
   "node_role": "acceptance-gate",
   "execution_actor": "human",
-  "execution_contract_ref": "n/a",
-  "deliverable_ids": ["DL-A1"],
+  "execution_contract_ref": "A1.json",
+  "deliverable_ids": [
+    "DL-A1"
+  ],
   "side_effect_class": "none",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-activation-option", "artifact:pi-topic-option"],
-  "write_set": ["artifact:pi-amendment-decision"],
-  "resource_claims": [
-    {"resource_id": "artifact:pi-activation-option", "mode": "R", "isolation_key": "pi-a1"},
-    {"resource_id": "artifact:pi-topic-option", "mode": "R", "isolation_key": "pi-a1"},
-    {"resource_id": "artifact:pi-amendment-decision", "mode": "W", "isolation_key": "pi-a1"}
+  "read_set": [
+    "artifact:pi-activation-option",
+    "artifact:pi-topic-option"
   ],
-  "produced_artifact_ids": ["DL-A1"],
-  "consumed_artifact_ids": ["DL-D1", "DL-D2"],
-  "acceptance_commands": ["python3 -m unittest"],
-  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/A1.json"],
-  "actor_pool": "human-review"
+  "write_set": [
+    "artifact:pi-amendment-decision"
+  ],
+  "resource_claims": [
+    {
+      "resource_id": "artifact:pi-activation-option",
+      "mode": "R",
+      "isolation_key": "pi-a1"
+    },
+    {
+      "resource_id": "artifact:pi-topic-option",
+      "mode": "R",
+      "isolation_key": "pi-a1"
+    },
+    {
+      "resource_id": "artifact:pi-amendment-decision",
+      "mode": "W",
+      "isolation_key": "pi-a1"
+    }
+  ],
+  "produced_artifact_ids": [
+    "DL-A1"
+  ],
+  "consumed_artifact_ids": [
+    "DL-D1",
+    "DL-D2"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/A1.json"
+  ],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "e395e1ebb03b3f66501372c6b7e5ff26f762beb43571e17a6b00cccac6daefd1"
 }

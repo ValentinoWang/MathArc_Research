@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "contract_id": "Q1",
+  "node_id": "Q1",
+  "semantic_key": "validation.problem-intelligence.calibration-disclosure",
+  "work_kind": "validation",
+  "execution_actor": "human",
+  "write_authority": "evidence-only",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "R1"
+  ],
+  "read_set": [
+    "artifact:pi-regression-suite"
+  ],
+  "write_set": [
+    "artifact:pi-disclosure-policy"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
+  ]
+}
