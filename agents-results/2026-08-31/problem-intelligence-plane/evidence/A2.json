@@ -1,0 +1,36 @@
+{
+  "evidence_id": "EV-A2-PREPARED-1",
+  "task_id": "A2",
+  "source_revision": "05626d82275419cd9b3cb9f1f3648f2b3d1bfb2e",
+  "consumed_evidence": ["EV-L1-IMPLEMENTED-1", "EV-L2-IMPLEMENTED-1"],
+  "acceptance_self_check": "pass",
+  "acceptance_commands": [
+    "python3 -m unittest -v tests.test_v02_source_observation tests.test_v02_literature_base",
+    "python3 -m unittest discover -s tests",
+    "git diff --check"
+  ],
+  "test_summary": {
+    "focused_tests": 17,
+    "full_suite_tests": 310,
+    "skipped": 10,
+    "result": "passed"
+  },
+  "acceptance_matrix": {
+    "observation_contract": "pass",
+    "open_import_and_persistence": "pass",
+    "idempotent_replay": "pass",
+    "digest_conflict": "pass",
+    "pending_license_budget_and_digest_failures": "pass",
+    "pending_retry": "pass",
+    "duplicate_observation_id_protection": "pass",
+    "source_registry_claim_boundary": "pass"
+  },
+  "proposed_state": "NOT_READY",
+  "unverified_items": [
+    "formal acceptance by the named acceptance owner",
+    "strict mypy in an environment that provides mypy",
+    "external literature service integration"
+  ],
+  "failure_class": "human-acceptance-missing",
+  "failure_origin": "permission"
+}
