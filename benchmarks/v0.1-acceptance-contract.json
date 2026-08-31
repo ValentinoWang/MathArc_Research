@@ -27,9 +27,9 @@
       "required": true,
       "evidence": [
         "experiments/frankl_q6_round4/LATEST_Q6_AUDIT.md",
-        "docs/proof-process-lessons-2026-08-23.md",
-        "docs/v0.1-engineering-contract-acceptance.md",
-        "docs/codex-agent-runtime.md"
+        "docs/lessons/proof-process-lessons-2026-08-23.md",
+        "docs/reports/v0.1-engineering-contract-acceptance.md",
+        "docs/reports/codex-agent-runtime.md"
       ]
     },
     {"id": "tests-demo-validation-and-zero-debt", "required": true, "evidence": ["tests/", "matharc/demo.py", "matharc/validator.py", "scripts/v0_1_acceptance.py"]},

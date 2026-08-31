@@ -16,4 +16,7 @@ build/
 .harness/local.yaml
 .harness/lock.yaml
 .agents/skills/*
+# Exception: matharc-publication is deliberately committed project content
+# (predates this ignore rule), not a harnessctl-regenerated symlink target.
+!.agents/skills/matharc-publication/
 develop/Harness/*

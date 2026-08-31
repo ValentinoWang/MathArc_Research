@@ -1,5 +1,7 @@
 # MathArc Research v0.2
 
+This is the v0.2 delta doc (release states, benchmark policy, main files). For the v0.1-era baseline product doc — install/run, architecture, product views — see [README.md](README.md).
+
 MathArc Research v0.2 is a verifier-gated theorem-research harness.  It turns a mathematical project into an auditable dependency graph rather than treating a fluent model response as a proof.
 
 ## What changed from v0.1
@@ -105,7 +107,7 @@ The open-source adapter registry is in `benchmarks/agent_registry_v02.json`.  En
 matharc/v02/schema.py           strict records and enums
 matharc/v02/trace.py            claim DAG, promotion and invalidation
 matharc/v02/orchestrator.py     load-bearing round planning
-matharc/v02/failure_memory.py   transparent cross-run failure retrieval
+matharc/v02/failure_memory/     transparent cross-run failure retrieval (package + _failure_memory_impl.py)
 matharc/v02/metrics.py          proof-research observability metrics
 matharc/v02/benchmark.py        qualification-gated comparisons
 matharc/v02/visualization.py    self-contained dashboard
