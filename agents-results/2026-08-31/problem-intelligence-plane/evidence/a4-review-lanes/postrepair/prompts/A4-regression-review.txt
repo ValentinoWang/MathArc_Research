@@ -1,0 +1,17 @@
+Task ID: A4-regression-review
+Purpose: independent, zero-write post-repair review for unintended behavior changes and protected test integrity.
+
+Read only:
+- matharc/v02/dogfood_archives.py
+- matharc/v02/topic_observation.py
+- tests/test_v02_dogfood_archives.py
+- tests/test_v02_topic_observation.py
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/T2.json
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/artifacts/ledger/A4-persisted-state-repair.json
+
+Verify whether the state-version change and new integrity fields preserve normal cursor replay, duplicate behavior, manual review routing, source pinning, budget snapshot behavior, and no-claim/no-trace boundaries. Check tests were expanded rather than weakened. Run only `python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives` if useful.
+
+Do not modify any file except this exact return:
+agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/postrepair/returns/A4-regression-review.md
+
+Write the return before optional exploration. Start with `STATE: PASS`, `STATE: CONDITIONAL`, or `STATE: BLOCKED`. Include findings with severity and path/line, command result, residual risk, failure_class, failure_origin, changed_files, and proposed_state REVIEWED. Do not accept any SSOT node.

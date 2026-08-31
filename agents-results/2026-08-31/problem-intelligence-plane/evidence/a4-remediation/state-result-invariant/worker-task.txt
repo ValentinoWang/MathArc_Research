@@ -1,0 +1,23 @@
+Task ID: A4-persisted-result-invariant-repair
+
+Direct parent: A4. This is a bounded writable repair after independent review found a P1.
+
+Pinned failure report: agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/final/returns/A4-state-semantics-final-review.md.
+Also address the compatibility finding in agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/final/returns/A4-regression-scope-final-review.md.
+
+Objective: make every durable TopicItemResult disposition independently checkable against persisted, non-result evidence. A recomputed result_digest_sha256 must not permit IMPORTED to become IDEMPOTENT, DUPLICATE, or PENDING. A manual item cannot become IMPORTED with manual_id cleared while leaving an orphan queue entry. Keep the no-claim/no-trace boundary. Provide explicit durable-state migration or a fail-closed versioned recovery contract for the schema change; do not silently strand prior state.
+
+Allowed source/test writes only:
+- matharc/v02/topic_observation.py
+- matharc/v02/dogfood_archives.py only if required by the state contract
+- tests/test_v02_topic_observation.py
+- tests/test_v02_dogfood_archives.py only if required by the state contract
+
+Allowed evidence write only:
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/state-result-invariant/implementation-return.json
+
+Forbidden: all other paths, any SSOT state/edge/evidence acceptance file, commits, pushes, network or remote changes, Harness files, and deletion/rewrite of previous evidence.
+
+Required red tests must mutate persisted state and recompute any local digest, then verify reload/replay fails for: IMPORTED -> each non-import terminal/nonterminal disposition that is not derivable; MANUAL_REVIEW -> IMPORTED with manual_id cleared and aggregate status adjusted; an orphaned manual queue entry. Test whichever migration/recovery policy is implemented.
+
+Run and record: focused topic/dogfood tests; v02 discovery; py_compile for touched source/tests; git diff --check; JSON validation of return evidence. Explain root cause, invariant, migration/recovery behavior, red/green proof, remaining integrity boundary, and state explicitly that this does not accept A4/T2 or create a promotion.

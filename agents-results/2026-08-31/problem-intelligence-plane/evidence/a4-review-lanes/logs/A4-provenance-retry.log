@@ -1,0 +1,1062 @@
+Reading additional input from stdin...
+2026-08-31T12:03:41.155073Z  WARN codex_core_plugins::manager: remote installed plugin bundle sync failed error=chatgpt authentication required for remote plugin catalog; api key auth is not supported
+2026-08-31T12:03:41.251122Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-31T12:03:41.251154Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+OpenAI Codex v0.151.0
+--------
+workdir: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+model: gpt-5.6-luna
+provider: sub2api
+approval: never
+sandbox: danger-full-access
+reasoning effort: max
+reasoning summaries: none
+session id: 01a057b4-2e02-7251-a409-b925f4250f77
+--------
+user
+Task ID: A4-provenance-retry
+Retry reason: the first frozen A4-provenance review ended with Responses transport 503 before writing its return. Perform a concise independent read-only conclusion only.
+
+Frozen identity: local commit 46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe; remote equivalent b41afbe30ee47243d83a76291c046af575ea2fc4; T2 evidence SHA-256 42e5e5993a2705cd5a51532282f887f0950bf2634b2d4c186771b7f2a37fbaa3; module SHA-256 2573c6a2b8486931abaabe589d73f6df51a57161badf5463e086e100bdb2dec9; test SHA-256 cd8b242ac75add9915504e61bc9c2236a1331e817327bf53322d38193403aff6.
+
+Read only: matharc/v02/dogfood_archives.py; tests/test_v02_dogfood_archives.py; agents-results/2026-08-31/problem-intelligence-plane/evidence/T2.json; agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/; agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures/.
+
+Decide only whether these acceptance requirements pass: fixed source bytes are hash-bound and reread on restart; S1/T2 contracts bind all cases; historical Erdos-397 OPEN_REPORTED is distinct from current RESOLVED_REPORTED; no claim, trace, proof, public authorization, or external-service conclusion occurs. Run only `python3 -m unittest -v tests.test_v02_dogfood_archives` if needed.
+
+Do not modify anything except this exact return file:
+agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+
+Write the return before any optional exploration. It must begin `STATE: PASS`, `STATE: CONDITIONAL`, or `STATE: BLOCKED`, then list findings with severity/path/line, command result, residual risk, failure_class, failure_origin, changed_files, and `proposed_state: REVIEWED`. Do not accept A4.
+warning: Skill descriptions were shortened to fit the skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.
+2026-08-31T12:03:43.500794Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-08-31T12:03:43.503300Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-08-31T12:03:51.159206Z  WARN codex_core_plugins::manager: failed to warm featured plugin ids cache error=failed to send remote featured plugin request to https://chatgpt.com/backend-api/plugins/featured?platform=codex: route-aware request timed out
+codex
+I will inspect only the frozen source, test, T2 evidence, and the two fixture directories, then write the required return file immediately. I will not modify or review any other project files, and I will not accept A4.
+2026-08-31T12:04:12.383925Z  WARN codex_exec_server::client::http_client::route_aware_http_client: http/request send failed http_method="GET" error_is_timeout=true error_is_connect=false error=error sending request
+exec
+/bin/zsh -lc 'nl -ba matharc/v02/dogfood_archives.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	"""Offline, source-pinned execution of the three T2 dogfood archives."""
+     2	from __future__ import annotations
+     3	import hashlib, json, os
+     4	from pathlib import Path
+     5	from typing import Any, Mapping
+     6	from .budget import BudgetLedger
+     7	from .novelty_audit import CandidateResult, NoveltyAuditPurpose, NoveltyAuditRecord, NoveltyConclusion, SearchRoute, SearchRouteResult, SourceSupport
+     8	from .problem_status import ObservationDigestRef, OpenStatusCertificate, ProblemDossierSnapshot, ProblemStatus, StatementVersion
+     9	from .schema import canonical_json, digest_json
+    10	from .source_observation import LicenseStatus, SourceObservation
+    11	from .topic_observation import ManualReviewReason, TopicObservationBatch, TopicObservationInput, TopicObservationRunner, TopicRunStatus
+    12	
+    13	_SCHEMA_VERSION = "1.1"
+    14	_TOPIC_ID = "union-closed"
+    15	_S1_NAMES = ("frankl-q6.json", "resolved-collision.json", "confirmed-open.json")
+    16	_CASE_ORDER = ("P-FRANKL-Q6", "P-ARXIV-2601-22401-COLLISION", "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS")
+    17	_ROLES = {"P-FRANKL-Q6": "frankl-q6-constrained-residual", "P-ARXIV-2601-22401-COLLISION": "database-open-literature-resolved-collision", "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS": "frankl-q6-four-or-more-small-outside-parts-residual"}
+    18	
+    19	class DogfoodArchiveError(ValueError):
+    20	    """Raised when a fixture, source artifact, or persisted archive is invalid."""
+    21	
+    22	def _text(value: object, field: str) -> str:
+    23	    if not isinstance(value, str) or not value.strip(): raise DogfoodArchiveError(f"{field} must be non-empty")
+    24	    return value
+    25	
+    26	def _fields(value: Mapping[str, Any], expected: set[str], name: str) -> None:
+    27	    unknown, missing = set(value) - expected, expected - set(value)
+    28	    if unknown: raise DogfoodArchiveError(f"unknown {name} fields: {sorted(unknown)}")
+    29	    if missing: raise DogfoodArchiveError(f"missing {name} fields: {sorted(missing)}")
+    30	
+    31	class DogfoodArchiveRunner:
+    32	    """Run and replay exactly three checked-in, provenance-bound archives."""
+    33	    def __init__(self, root: str | Path, fixture_root: str | Path) -> None:
+    34	        self.root, self.fixture_root = Path(root), Path(fixture_root)
+    35	        self.root.mkdir(parents=True, exist_ok=True)
+    36	        self.contract_path = self.fixture_root / "three-real-archives.json"
+    37	        if not self.contract_path.exists(): self.contract_path = self.fixture_root.parent / "t2-fixtures" / "three-real-archives.json"
+    38	        self.result_path, self.contract = self.root / "dogfood-archives.json", {}
+    39	
+    40	    def run(self) -> dict[str, Any]:
+    41	        self.contract = self._load_contract()
+    42	        fixtures = self._load_s1_fixtures()
+    43	        specs = self._load_source_specs()
+    44	        if self.result_path.exists(): return self._replay(specs)
+    45	        return self._execute(fixtures, specs)
+    46	
+    47	    def _load_contract(self) -> dict[str, Any]:
+    48	        try: contract = json.loads(self.contract_path.read_text(encoding="utf-8"))
+    49	        except (OSError, json.JSONDecodeError) as exc: raise DogfoodArchiveError("T2 contract is unreadable") from exc
+    50	        if not isinstance(contract, dict): raise DogfoodArchiveError("T2 contract must be an object")
+    51	        _fields(contract, {"fixture_kind", "topic_id", "source_fixture_directory", "fixture_sha256", "source_artifacts", "expected_budget_snapshot", "expected_budget_digest_sha256", "non_claim_boundary", "cases"}, "T2 contract")
+    52	        if contract["fixture_kind"] != "t2-dogfood-archive-contract" or contract["topic_id"] != _TOPIC_ID: raise DogfoodArchiveError("incompatible T2 contract identity")
+    53	        if not isinstance(contract["cases"], list) or len(contract["cases"]) != 3: raise DogfoodArchiveError("T2 contract must define exactly three cases")
+    54	        case_fields = {"problem_id", "case_role", "expected_topic_status", "expected_problem_status", "expected_manual_reason", "expected_novelty_status", "expected_promotion_allowed"}
+    55	        ids = []
+    56	        for case in contract["cases"]:
+    57	            if not isinstance(case, dict): raise DogfoodArchiveError("T2 contract case must be an object")
+    58	            _fields(case, case_fields, "T2 contract case")
+    59	            problem_id = _text(case["problem_id"], "contract problem_id")
+    60	            if problem_id not in _ROLES or case["case_role"] != _ROLES[problem_id]: raise DogfoodArchiveError("unknown or mismatched contract case")
+    61	            if case["expected_promotion_allowed"] is not False: raise DogfoodArchiveError("dogfood promotion must remain disabled")
+    62	            ids.append(problem_id)
+    63	        if tuple(ids) != _CASE_ORDER: raise DogfoodArchiveError("contract case order or identity drift")
+    64	        if set(contract["fixture_sha256"]) != set(_S1_NAMES) or any(not isinstance(value, str) or len(value) != 64 for value in contract["fixture_sha256"].values()):
+    65	            raise DogfoodArchiveError("fixture_sha256 must cover exactly the three S1 fixtures")
+    66	        if contract["expected_budget_snapshot"] != self._new_residual_budget().to_dict():
+    67	            raise DogfoodArchiveError("T2 contract budget identity is incompatible")
+    68	        if contract["expected_budget_digest_sha256"] != digest_json(contract["expected_budget_snapshot"]):
+    69	            raise DogfoodArchiveError("T2 contract budget digest mismatch")
+    70	        if not isinstance(contract["source_artifacts"], dict): raise DogfoodArchiveError("source_artifacts must be an object")
+    71	        return contract
+    72	
+    73	    @staticmethod
+    74	    def _new_residual_budget() -> BudgetLedger:
+    75	        budget = BudgetLedger(input_token_limit=1)
+    76	        budget.charge_model_usage({"input_tokens": 1})
+    77	        return budget
+    78	
+    79	    def _load_s1_fixtures(self) -> dict[str, dict[str, Any]]:
+    80	        paths = sorted(self.fixture_root.glob("*.json"))
+    81	        if tuple(path.name for path in paths) != tuple(sorted(_S1_NAMES)): raise DogfoodArchiveError("S1 fixture directory must contain exactly the three named fixtures")
+    82	        values = {}
+    83	        for path in paths:
+    84	            expected_sha = self.contract["fixture_sha256"].get(path.name)
+    85	            actual_sha = hashlib.sha256(path.read_bytes()).hexdigest()
+    86	            if expected_sha != actual_sha: raise DogfoodArchiveError(f"S1 fixture digest mismatch: {path.name}")
+    87	            try: payload = json.loads(path.read_text(encoding="utf-8"))
+    88	            except (OSError, json.JSONDecodeError) as exc: raise DogfoodArchiveError(f"fixture is unreadable: {path.name}") from exc
+    89	            if not isinstance(payload, dict): raise DogfoodArchiveError(f"fixture must be an object: {path.name}")
+    90	            problem_id = _text(payload.get("problem_id"), "problem_id")
+    91	            if problem_id not in _ROLES or payload.get("case_role") != _ROLES[problem_id]: raise DogfoodArchiveError("unknown or mismatched S1 case")
+    92	            for field in ("statement", "source_assertions", "expected_report_status", "limitations"):
+    93	                if field not in payload: raise DogfoodArchiveError(f"missing S1 fixture field: {field}")
+    94	            if not isinstance(payload["source_assertions"], list) or not payload["source_assertions"]:
+    95	                raise DogfoodArchiveError("missing source assertions")
+    96	            for assertion in payload["source_assertions"]:
+    97	                if not isinstance(assertion, dict): raise DogfoodArchiveError("malformed source assertion")
+    98	                required = {"source_kind", "assertion"} | ({"source_path"} if problem_id != _CASE_ORDER[1] else set())
+    99	                if problem_id == _CASE_ORDER[1]:
+   100	                    if not required.issubset(assertion): raise DogfoodArchiveError("missing S1 source assertion fields")
+   101	                else:
+   102	                    _fields(assertion, required, "S1 source assertion")
+   103	            if problem_id == _CASE_ORDER[1]:
+   104	                chain = payload.get("source_chain")
+   105	                if not isinstance(chain, list) or not chain: raise DogfoodArchiveError("missing collision source_chain")
+   106	                for entry in chain: _fields(entry, {"source_kind", "canonical_uri", "pinned_version", "locator", "assertion"}, "collision source provenance")
+   107	            values[problem_id] = payload
+   108	        if set(values) != set(_CASE_ORDER): raise DogfoodArchiveError("S1 fixtures do not define exactly three cases")
+   109	        return {key: values[key] for key in _CASE_ORDER}
+   110	
+   111	    def _load_source_specs(self) -> dict[str, list[dict[str, str]]]:
+   112	        raw, specs = self.contract["source_artifacts"], {}
+   113	        required = {"path", "sha256", "canonical_uri", "pinned_version", "locator"}
+   114	        for problem_id in _CASE_ORDER:
+   115	            if problem_id not in raw: raise DogfoodArchiveError(f"missing source_artifacts for {problem_id}")
+   116	            entries = raw[problem_id] if isinstance(raw[problem_id], list) else [raw[problem_id]]
+   117	            specs[problem_id] = []
+   118	            for item in entries:
+   119	                if not isinstance(item, dict): raise DogfoodArchiveError("source artifact spec must be an object")
+   120	                _fields(item, required | ({"source_kind", "reported_status"} if problem_id == _CASE_ORDER[1] else set()), "source artifact spec")
+   121	                path = self.contract_path.parent / item["path"]
+   122	                if not path.is_file(): raise DogfoodArchiveError(f"missing source artifact: {item['path']}")
+   123	                content = path.read_bytes()
+   124	                if hashlib.sha256(content).hexdigest() != item["sha256"]: raise DogfoodArchiveError(f"source artifact digest mismatch: {item['path']}")
+   125	                for field in required: _text(item[field], field)
+   126	                specs[problem_id].append(dict(item))
+   127	        return specs
+   128	
+   129	    def _inputs_for(self, fixture: Mapping[str, Any], specs: list[dict[str, str]]) -> tuple[tuple[TopicObservationInput, ...], list[dict[str, str]]]:
+   130	        inputs, provenance = [], []
+   131	        for index, spec in enumerate(specs):
+   132	            path, content = self.contract_path.parent / spec["path"], (self.contract_path.parent / spec["path"]).read_bytes()
+   133	            source_id = "source-" + hashlib.sha256(f"{spec['canonical_uri']}|{spec['pinned_version']}".encode()).hexdigest()[:24]
+   134	            observation = SourceObservation(source_id, spec["canonical_uri"], spec["pinned_version"], "2026-08-31T11:00:00+00:00", LicenseStatus.OPEN, "Checked-in pinned artifact license/provenance record.", f"Pinned source artifact for {fixture['case_role']}.", "T2 source artifact contract.", "text/html" if path.suffix == ".html" else "text/plain", hashlib.sha256(content).hexdigest())
+   135	            inputs.append(TopicObservationInput(f"{fixture['problem_id']}:source:{index:02d}", observation, content))
+   136	            provenance.append({"source_id": source_id, "source_kind": spec.get("source_kind", "local-document"), "canonical_uri": spec["canonical_uri"], "pinned_version": spec["pinned_version"], "locator": spec["locator"], "artifact_path": spec["path"], "content_sha256": observation.content_digest_sha256, **({"reported_status": spec["reported_status"]} if "reported_status" in spec else {})})
+   137	        return tuple(inputs), provenance
+   138	
+   139	    def _execute(self, fixtures: Mapping[str, Mapping[str, Any]], specs: Mapping[str, list[dict[str, str]]]) -> dict[str, Any]:
+   140	        main = TopicObservationRunner(self.root / "topic-observation", topic_id=_TOPIC_ID, initial_cursor="dogfood-c0")
+   141	        fi, fp = self._inputs_for(fixtures[_CASE_ORDER[0]], specs[_CASE_ORDER[0]])
+   142	        first, replay = main.run(TopicObservationBatch(_TOPIC_ID, "dogfood-c0", "dogfood-c1", fi)), main.run(TopicObservationBatch(_TOPIC_ID, "dogfood-c0", "dogfood-c1", fi))
+   143	        if first.status is not TopicRunStatus.APPLIED or replay.status is not TopicRunStatus.REPLAYED: raise DogfoodArchiveError("Frankl cursor replay failed")
+   144	        ci, cp = self._inputs_for(fixtures[_CASE_ORDER[1]], specs[_CASE_ORDER[1]])
+   145	        cr = main.run(TopicObservationBatch(_TOPIC_ID, "dogfood-c1", "dogfood-c2", ci))
+   146	        if cr.status is not TopicRunStatus.APPLIED: raise DogfoodArchiveError("collision source import failed")
+   147	        observations = {item.observation_id: item for item in main.literature.observations}
+   148	        cs = self._reported_status(fixtures[_CASE_ORDER[0]], fp, observations, main), self._reported_status(fixtures[_CASE_ORDER[1]], cp, observations, main)
+   149	        alert = TopicObservationInput("collision-review-alert", ci[0].observation, ci[0].content, ("reported-resolution",))
+   150	        ar = main.run(TopicObservationBatch(_TOPIC_ID, "dogfood-c2", "dogfood-c3", (alert,)))
+   151	        duplicate = TopicObservationInput("collision-review-recheck", ci[0].observation, ci[0].content)
+   152	        dr = main.run(TopicObservationBatch(_TOPIC_ID, "dogfood-c3", "dogfood-c4", (duplicate,)))
+   153	        if ar.status is not TopicRunStatus.MANUAL_REVIEW or dr.item_results[0].status.value != "DUPLICATE": raise DogfoodArchiveError("collision review/replay boundary failed")
+   154	        ri, rp = self._inputs_for(fixtures[_CASE_ORDER[2]], specs[_CASE_ORDER[2]])
+   155	        budget = self._new_residual_budget()
+   156	        residual_runner = TopicObservationRunner(self.root / "residual-budget", topic_id=_TOPIC_ID, initial_cursor="budget-c0", budget=budget)
+   157	        rr = residual_runner.run(TopicObservationBatch(_TOPIC_ID, "budget-c0", "budget-c1", ri))
+   158	        if rr.status is not TopicRunStatus.MANUAL_REVIEW: raise DogfoodArchiveError("residual budget boundary failed")
+   159	        rs = self._insufficient_status(fixtures[_CASE_ORDER[2]], ri[0].observation, residual_runner)
+   160	        blocking = sorted(item.manual_id for item in (*main.manual_queue, *residual_runner.manual_queue))
+   161	        budget_snapshot = budget.to_dict()
+   162	        if budget_snapshot != self.contract["expected_budget_snapshot"]:
+   163	            raise DogfoodArchiveError("executed residual budget does not match T2 contract")
+   164	        result = {"schema_version": _SCHEMA_VERSION, "topic_id": _TOPIC_ID, "contract_digest_sha256": self._contract_digest(), "fixture_identity_digest_sha256": digest_json(self.contract["fixture_sha256"]), "source_identity_digest_sha256": digest_json(specs), "fixture_files": list(_S1_NAMES), "replayed": False, "archive_blocked": bool(blocking), "blocking_manual_ids": blocking, "cases": [self._case(fixtures[_CASE_ORDER[0]], fp, first.status.value, replay.status.value, cs[0], "LIMITED_REPORTED_OPEN_NO_PROMOTION"), self._case(fixtures[_CASE_ORDER[1]], cp, cr.status.value, dr.item_results[0].status.value, cs[1], "REPORTED_RESOLUTION_REQUIRES_INDEPENDENT_MATHEMATICAL_REVIEW", ManualReviewReason.HIGH_RISK_EVENT.value, self._collision_audit(fixtures[_CASE_ORDER[1]], cp, observations, main)), self._case(fixtures[_CASE_ORDER[2]], rp, rr.status.value, "NOT_APPLICABLE", rs, "REPORTED_OPEN_EVIDENCE_INSUFFICIENT_NO_PROMOTION", ManualReviewReason.BUDGET_EXHAUSTED.value)], "budget_snapshot": budget_snapshot, "budget_digest_sha256": digest_json(budget_snapshot), "no_claim_or_trace_created": self._no_claim_or_trace_created()}
+   165	        if not result["archive_blocked"] or not result["no_claim_or_trace_created"]: raise DogfoodArchiveError("dogfood archive boundary failed")
+   166	        self._assert_contract_results(result)
+   167	        self._save(result); return result
+   168	
+   169	    def _reported_status(self, fixture, provenance, observations, runner):
+   170	        statement = StatementVersion(fixture["problem_id"], fixture["statement_version"], fixture["statement"])
+   171	        cert = OpenStatusCertificate(f"status-{fixture['problem_id']}", fixture["problem_id"], fixture["statement_version"], statement.statement_version_id, statement.statement_digest_sha256, tuple(ObservationDigestRef.from_observation(observations[key]) for key in sorted({p["source_id"] for p in provenance})), ProblemStatus(fixture["expected_report_status"]), tuple(fixture["limitations"]), "dogfood-status-reporter", "2026-08-31T11:15:00+00:00", "2026-09-30T00:00:00+00:00")
+   172	        dossier = ProblemDossierSnapshot(f"dossier-{fixture['problem_id']}", fixture["problem_id"], fixture["statement_version"], statement, cert, "2026-08-31T11:20:00+00:00")
+   173	        validation = dossier.validate(observations, as_of="2026-08-31T12:00:00+00:00", artifacts=runner.literature.artifacts)
+   174	        if validation.status is not cert.status: raise DogfoodArchiveError("source readback status mismatch")
+   175	        return {"reported_status": cert.status.value, "validated_status": validation.status.value, "invalidations": [x.value for x in validation.invalidations], "dossier": dossier.to_dict()}
+   176	
+   177	    def _insufficient_status(self, fixture, observation, runner):
+   178	        statement = StatementVersion(fixture["problem_id"], fixture["statement_version"], fixture["statement"])
+   179	        cert = OpenStatusCertificate(f"status-{fixture['problem_id']}-budget", fixture["problem_id"], fixture["statement_version"], statement.statement_version_id, statement.statement_digest_sha256, (ObservationDigestRef.from_observation(observation),), ProblemStatus(fixture["expected_report_status"]), tuple(fixture["limitations"]), "dogfood-status-reporter", "2026-08-31T11:15:00+00:00", "2026-09-30T00:00:00+00:00")
+   180	        dossier = ProblemDossierSnapshot(f"dossier-{fixture['problem_id']}-budget", fixture["problem_id"], fixture["statement_version"], statement, cert, "2026-08-31T11:20:00+00:00")
+   181	        validation = dossier.validate({observation.observation_id: observation}, as_of="2026-08-31T12:00:00+00:00", artifacts=runner.literature.artifacts)
+   182	        if validation.status is not ProblemStatus.STALE: raise DogfoodArchiveError("budget exhaustion did not preserve evidence insufficiency")
+   183	        return {"reported_status": cert.status.value, "validated_status": validation.status.value, "invalidations": [x.value for x in validation.invalidations], "dossier": dossier.to_dict()}
+   184	
+   185	    def _collision_audit(self, fixture, provenance, observations, runner):
+   186	        p = next(item for item in provenance if item["source_kind"] == "arxiv-source")
+   187	        support = SourceSupport(p["source_id"], p["canonical_uri"], p["pinned_version"], p["locator"], p["content_sha256"])
+   188	        routes = tuple(SearchRouteResult(route, f"Dogfood {route.value} scope.", (f"dogfood {route.value}",), (), (), "2026-08-31T12:00:00+00:00", True) for route in SearchRoute)
+   189	        record = NoveltyAuditRecord("dogfood-collision-review", CandidateResult("dogfood-collision", digest_json({"statement": fixture["statement"]}), "Reported-resolution review only.", "s1-fixture-v1", (support,)), routes, NoveltyConclusion.PRIOR_RESULT_FOUND, None, "2026-08-31T11:30:00+00:00", "2026-08-31T12:30:00+00:00", NoveltyAuditPurpose.CONTRACT_FIXTURE)
+   190	        auth = record.authorization(observations=observations, artifacts=runner.literature.artifacts)
+   191	        return {"record": record.to_dict(), "authorization_status": auth.status.value, "complete_research_budget": auth.allows_complete_budget, "public_qualitative_conclusion": auth.allows_public_qualitative_conclusion, "invalidations": [x.value for x in auth.invalidations]}
+   192	
+   193	    def _case(self, fixture, provenance, topic_status, replay_status, status, boundary, manual_reason=None, novelty=None):
+   194	        return {"problem_id": fixture["problem_id"], "case_role": fixture["case_role"], "topic_status": topic_status, "replay_status": replay_status, "manual_reason": manual_reason, "review_boundary": boundary, "provenance": provenance, "status": dict(status), "novelty": dict(novelty) if novelty else None, "promotion_allowed": False, "claim_created": False, "trace_created": False}
+   195	
+   196	    def _contract_digest(self): return hashlib.sha256(self.contract_path.read_bytes()).hexdigest()
+   197	    def _no_claim_or_trace_created(self): return not any(path.name in {"claims.json", "research-trace.json", "trace.json"} for path in self.root.rglob("*.json"))
+   198	
+   199	    def _replay(self, specs):
+   200	        payload = self._load_result()
+   201	        if payload["contract_digest_sha256"] != self._contract_digest() or payload["fixture_identity_digest_sha256"] != digest_json(self.contract["fixture_sha256"]) or payload["source_identity_digest_sha256"] != digest_json(specs): raise DogfoodArchiveError("contract or source identity drift on replay")
+   202	        main = TopicObservationRunner(self.root / "topic-observation", topic_id=_TOPIC_ID, initial_cursor="dogfood-c0")
+   203	        residual_budget = self._new_residual_budget()
+   204	        residual = TopicObservationRunner(self.root / "residual-budget", topic_id=_TOPIC_ID, initial_cursor="budget-c0", budget=residual_budget)
+   205	        if not (main.next_cursor == "dogfood-c4" and residual.next_cursor == "budget-c1"):
+   206	            raise DogfoodArchiveError("topic observation state is missing or has invalid cursor")
+   207	        manual_ids = sorted(item.manual_id for item in (*main.manual_queue, *residual.manual_queue))
+   208	        if manual_ids != sorted(payload["blocking_manual_ids"]):
+   209	            raise DogfoodArchiveError("topic observation manual queue does not match persisted archive")
+   210	        if len(main.literature.observations) != 4 or len(residual.literature.observations) != 0:
+   211	            raise DogfoodArchiveError("topic observation ArtifactStore state is missing or inconsistent")
+   212	        reconstructed_budget = residual_budget.to_dict()
+   213	        if self.contract["expected_budget_snapshot"] != reconstructed_budget:
+   214	            raise DogfoodArchiveError("reconstructed residual budget does not match T2 contract")
+   215	        if payload["budget_snapshot"] != reconstructed_budget:
+   216	            raise DogfoodArchiveError("persisted budget snapshot does not match reconstructed residual budget")
+   217	        if not payload["no_claim_or_trace_created"] or not self._no_claim_or_trace_created(): raise DogfoodArchiveError("claim or trace artifact is forbidden on replay")
+   218	        self._assert_contract_results(payload)
+   219	        payload["replayed"] = True; self._save(payload); return payload
+   220	
+   221	    def _assert_contract_results(self, result: Mapping[str, Any]) -> None:
+   222	        cases = {case["problem_id"]: case for case in result["cases"]}
+   223	        for expected in self.contract["cases"]:
+   224	            actual = cases.get(expected["problem_id"])
+   225	            if actual is None:
+   226	                raise DogfoodArchiveError("persisted result is missing a contract case")
+   227	            checks = {
+   228	                "case_role": expected["case_role"],
+   229	                "topic_status": expected["expected_topic_status"],
+   230	                "promotion_allowed": expected["expected_promotion_allowed"],
+   231	                "manual_reason": expected["expected_manual_reason"],
+   232	            }
+   233	            for field, value in checks.items():
+   234	                if actual.get(field) != value:
+   235	                    raise DogfoodArchiveError(f"contract expected {field}={value!r}, got {actual.get(field)!r}")
+   236	            if actual["status"]["reported_status"] != expected["expected_problem_status"]:
+   237	                raise DogfoodArchiveError("contract expected problem status drift")
+   238	            novelty_status = actual["novelty"]["authorization_status"] if actual["novelty"] else None
+   239	            if novelty_status != expected["expected_novelty_status"]:
+   240	                raise DogfoodArchiveError("contract expected novelty status drift")
+   241	
+   242	    def _load_result(self):
+   243	        try: payload = json.loads(self.result_path.read_text(encoding="utf-8"))
+   244	        except (OSError, json.JSONDecodeError) as exc: raise DogfoodArchiveError("persisted archive is unreadable") from exc
+   245	        if not isinstance(payload, dict): raise DogfoodArchiveError("persisted archive must be an object")
+   246	        required = {"schema_version", "topic_id", "contract_digest_sha256", "fixture_identity_digest_sha256", "source_identity_digest_sha256", "fixture_files", "replayed", "archive_blocked", "blocking_manual_ids", "cases", "budget_snapshot", "budget_digest_sha256", "no_claim_or_trace_created", "archive_digest_sha256"}
+   247	        _fields(payload, required, "persisted archive")
+   248	        if payload["schema_version"] != _SCHEMA_VERSION or payload["topic_id"] != _TOPIC_ID or payload["fixture_files"] != list(_S1_NAMES) or not payload["archive_blocked"]: raise DogfoodArchiveError("persisted archive identity or fixture contract mismatch")
+   249	        if payload["budget_digest_sha256"] != self.contract["expected_budget_digest_sha256"]: raise DogfoodArchiveError("persisted budget snapshot identity mismatch")
+   250	        if payload["budget_digest_sha256"] != digest_json(payload["budget_snapshot"]): raise DogfoodArchiveError("persisted budget snapshot digest mismatch")
+   251	        digest_payload = {k: v for k, v in payload.items() if k not in {"archive_digest_sha256", "replayed"}}
+   252	        if payload["archive_digest_sha256"] != digest_json(digest_payload): raise DogfoodArchiveError("persisted archive digest mismatch")
+   253	        return payload
+   254	
+   255	    def _save(self, result):
+   256	        payload = dict(result); payload.pop("archive_digest_sha256", None); payload["archive_digest_sha256"] = digest_json({k: v for k, v in payload.items() if k != "replayed"})
+   257	        temporary = self.result_path.with_suffix(".tmp"); temporary.write_text(canonical_json(payload) + "\n", encoding="utf-8"); os.replace(temporary, self.result_path)
+
+exec
+/bin/zsh -lc 'nl -ba tests/test_v02_dogfood_archives.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	from __future__ import annotations
+     2	
+     3	import copy
+     4	import json
+     5	import shutil
+     6	import tempfile
+     7	import unittest
+     8	from pathlib import Path
+     9	
+    10	from matharc.v02.dogfood_archives import DogfoodArchiveError, DogfoodArchiveRunner
+    11	from matharc.v02.schema import digest_json
+    12	
+    13	
+    14	ROOT = Path(__file__).parents[1]
+    15	S1_FIXTURES = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures"
+    16	T2_FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json"
+    17	
+    18	
+    19	class DogfoodArchiveTests(unittest.TestCase):
+    20	    def test_three_real_archives_persist_replay_budget_and_nonpromotion_boundaries(self) -> None:
+    21	        contract = json.loads(T2_FIXTURE.read_text(encoding="utf-8"))
+    22	        self.assertEqual("t2-dogfood-archive-contract", contract["fixture_kind"])
+    23	        self.assertEqual("union-closed", contract["topic_id"])
+    24	        self.assertEqual(3, len(contract["cases"]))
+    25	        with tempfile.TemporaryDirectory() as directory:
+    26	            runner = DogfoodArchiveRunner(directory, S1_FIXTURES)
+    27	            result = runner.run()
+    28	            self.assertTrue((Path(directory) / "dogfood-archives.json").is_file())
+    29	            self.assertTrue(result["archive_blocked"])
+    30	            self.assertTrue(result["blocking_manual_ids"])
+    31	            self.assertTrue(result["no_claim_or_trace_created"])
+    32	            self.assertEqual(result["budget_digest_sha256"], __import__("hashlib").sha256(
+    33	                json.dumps(result["budget_snapshot"], ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    34	            ).hexdigest())
+    35	
+    36	            cases = {case["problem_id"]: case for case in result["cases"]}
+    37	            frankl = cases["P-FRANKL-Q6"]
+    38	            self.assertEqual("APPLIED", frankl["topic_status"])
+    39	            self.assertEqual("REPLAYED", frankl["replay_status"])
+    40	            self.assertEqual("OPEN_REPORTED", frankl["status"]["validated_status"])
+    41	            self.assertFalse(frankl["promotion_allowed"])
+    42	
+    43	            collision = cases["P-ARXIV-2601-22401-COLLISION"]
+    44	            self.assertEqual("RESOLVED_REPORTED", collision["status"]["validated_status"])
+    45	            self.assertEqual("HIGH_RISK_EVENT", collision["manual_reason"])
+    46	            self.assertEqual("DUPLICATE", collision["replay_status"])
+    47	            self.assertEqual("PENDING_HUMAN_AUDIT", collision["novelty"]["authorization_status"])
+    48	            self.assertFalse(collision["novelty"]["complete_research_budget"])
+    49	            self.assertFalse(collision["novelty"]["public_qualitative_conclusion"])
+    50	            provenance = collision["provenance"]
+    51	            self.assertEqual({"OPEN_REPORTED", "RESOLVED_REPORTED"}, {item["reported_status"] for item in provenance})
+    52	            self.assertEqual("problem-database-current", next(item for item in provenance if item["reported_status"] == "RESOLVED_REPORTED")["source_kind"])
+    53	            self.assertEqual("problem-database-history", next(item for item in provenance if item["reported_status"] == "OPEN_REPORTED")["source_kind"])
+    54	
+    55	            residual = cases["P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS"]
+    56	            self.assertEqual("MANUAL_REVIEW", residual["topic_status"])
+    57	            self.assertEqual("BUDGET_EXHAUSTED", residual["manual_reason"])
+    58	            self.assertEqual("OPEN_REPORTED", residual["status"]["reported_status"])
+    59	            self.assertEqual("STALE", residual["status"]["validated_status"])
+    60	            self.assertFalse(residual["promotion_allowed"])
+    61	
+    62	            for case in result["cases"]:
+    63	                self.assertFalse(case["claim_created"])
+    64	                self.assertFalse(case["trace_created"])
+    65	                self.assertTrue(case["provenance"])
+    66	                for source in case["provenance"]:
+    67	                    self.assertTrue(source["canonical_uri"])
+    68	                    self.assertTrue(source["pinned_version"])
+    69	                    self.assertTrue(source["locator"])
+    70	                    self.assertEqual(64, len(source["content_sha256"]))
+    71	            self.assertFalse((Path(directory) / "claims.json").exists())
+    72	            self.assertFalse((Path(directory) / "research-trace.json").exists())
+    73	
+    74	            restarted = DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+    75	            self.assertTrue(restarted["replayed"])
+    76	            self.assertEqual(result["budget_digest_sha256"], restarted["budget_digest_sha256"])
+    77	            self.assertEqual(result["blocking_manual_ids"], restarted["blocking_manual_ids"])
+    78	            (Path(directory) / "topic-observation" / "topic-observation-state.json").unlink()
+    79	            with self.assertRaisesRegex(DogfoodArchiveError, "state is missing"):
+    80	                DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+    81	
+    82	        with tempfile.TemporaryDirectory() as directory:
+    83	            DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+    84	            state_path = Path(directory) / "topic-observation" / "topic-observation-state.json"
+    85	            state = json.loads(state_path.read_text(encoding="utf-8"))
+    86	            state["manual_queue"] = []
+    87	            state_path.write_text(json.dumps(state), encoding="utf-8")
+    88	            with self.assertRaisesRegex(DogfoodArchiveError, "manual queue does not match"):
+    89	                DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+    90	
+    91	    def test_unknown_case_missing_provenance_and_tampered_archive_fail_closed(self) -> None:
+    92	        with tempfile.TemporaryDirectory() as directory:
+    93	            fixture_root = Path(directory) / "fixtures"
+    94	            fixture_root.mkdir()
+    95	            for path in S1_FIXTURES.glob("*.json"):
+    96	                (fixture_root / path.name).write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
+    97	            contract_root = Path(directory) / "t2-fixtures"
+    98	            contract_root.mkdir()
+    99	            shutil.copy2(T2_FIXTURE, contract_root / T2_FIXTURE.name)
+   100	            shutil.copytree(T2_FIXTURE.parent / "sources", contract_root / "sources")
+   101	            bad = json.loads((fixture_root / "frankl-q6.json").read_text(encoding="utf-8"))
+   102	            bad["problem_id"] = "P-UNKNOWN"
+   103	            (fixture_root / "frankl-q6.json").write_text(json.dumps(bad), encoding="utf-8")
+   104	            with self.assertRaisesRegex(DogfoodArchiveError, "digest mismatch"):
+   105	                DogfoodArchiveRunner(Path(directory) / "run-unknown", fixture_root).run()
+   106	
+   107	            (fixture_root / "frankl-q6.json").write_text((S1_FIXTURES / "frankl-q6.json").read_text(encoding="utf-8"), encoding="utf-8")
+   108	            bad = json.loads((fixture_root / "frankl-q6.json").read_text(encoding="utf-8"))
+   109	            bad["problem_id"] = "P-FRANKL-Q6"
+   110	            del bad["source_assertions"][0]["source_path"]
+   111	            (fixture_root / "frankl-q6.json").write_text(json.dumps(bad), encoding="utf-8")
+   112	            with self.assertRaisesRegex(DogfoodArchiveError, "digest mismatch"):
+   113	                DogfoodArchiveRunner(Path(directory) / "run-missing", fixture_root).run()
+   114	
+   115	        with tempfile.TemporaryDirectory() as directory:
+   116	            runner = DogfoodArchiveRunner(directory, S1_FIXTURES)
+   117	            runner.run()
+   118	            archive = Path(directory) / "dogfood-archives.json"
+   119	            payload = json.loads(archive.read_text(encoding="utf-8"))
+   120	            payload["budget_snapshot"] = copy.deepcopy(payload["budget_snapshot"])
+   121	            payload["budget_snapshot"]["limits"]["cost_usd"] = 1.0
+   122	            archive.write_text(json.dumps(payload), encoding="utf-8")
+   123	            with self.assertRaisesRegex(DogfoodArchiveError, "budget snapshot"):
+   124	                DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+   125	
+   126	    def test_recomputed_budget_digests_cannot_accept_budget_snapshot_drift(self) -> None:
+   127	        def archive_digest(payload: dict) -> str:
+   128	            return digest_json({key: value for key, value in payload.items() if key not in {"archive_digest_sha256", "replayed"}})
+   129	
+   130	        altered_snapshots = []
+   131	        output_tokens = {"limits": {"wall_seconds": None, "input_tokens": 1, "output_tokens": None, "cost_usd": None}, "spent": {"wall_seconds": 0.0, "input_tokens": 1, "output_tokens": 1, "cost_usd": 0.0, "tool_calls": 0, "model_calls": 1}, "divergent_usage_reports": [], "exhausted": True}
+   132	        altered_snapshots.append(output_tokens)
+   133	        model_calls = copy.deepcopy(output_tokens)
+   134	        model_calls["spent"]["output_tokens"] = 0
+   135	        model_calls["spent"]["model_calls"] = 2
+   136	        altered_snapshots.append(model_calls)
+   137	
+   138	        with tempfile.TemporaryDirectory() as directory:
+   139	            DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+   140	            archive = Path(directory) / "dogfood-archives.json"
+   141	            original = json.loads(archive.read_text(encoding="utf-8"))
+   142	            for snapshot in altered_snapshots:
+   143	                with self.subTest(snapshot=snapshot):
+   144	                    payload = copy.deepcopy(original)
+   145	                    payload["budget_snapshot"] = snapshot
+   146	                    payload["budget_digest_sha256"] = digest_json(snapshot)
+   147	                    payload["archive_digest_sha256"] = archive_digest(payload)
+   148	                    archive.write_text(json.dumps(payload), encoding="utf-8")
+   149	                    with self.assertRaisesRegex(DogfoodArchiveError, "budget snapshot identity"):
+   150	                        DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+   151	
+   152	        with tempfile.TemporaryDirectory() as directory:
+   153	            fixture_root = Path(directory) / "s1-fixtures"
+   154	            fixture_root.mkdir()
+   155	            for path in S1_FIXTURES.glob("*.json"):
+   156	                shutil.copy2(path, fixture_root / path.name)
+   157	            contract_root = Path(directory) / "t2-fixtures"
+   158	            contract_root.mkdir()
+   159	            shutil.copy2(T2_FIXTURE, contract_root / T2_FIXTURE.name)
+   160	            shutil.copytree(T2_FIXTURE.parent / "sources", contract_root / "sources")
+   161	            runner = DogfoodArchiveRunner(Path(directory) / "run", fixture_root)
+   162	            runner.run()
+   163	            source = contract_root / "sources" / "engineering-progress.md"
+   164	            source.write_text(source.read_text(encoding="utf-8") + "tampered\n", encoding="utf-8")
+   165	            with self.assertRaisesRegex(DogfoodArchiveError, "digest mismatch"):
+   166	                DogfoodArchiveRunner(Path(directory) / "run", fixture_root).run()
+   167	            source.unlink()
+   168	            with self.assertRaisesRegex(DogfoodArchiveError, "missing source artifact"):
+   169	                DogfoodArchiveRunner(Path(directory) / "run", fixture_root).run()
+   170	
+   171	        with tempfile.TemporaryDirectory() as directory:
+   172	            fixture_root = Path(directory) / "s1-fixtures"
+   173	            fixture_root.mkdir()
+   174	            for path in S1_FIXTURES.glob("*.json"):
+   175	                shutil.copy2(path, fixture_root / path.name)
+   176	            contract_root = Path(directory) / "t2-fixtures"
+   177	            contract_root.mkdir()
+   178	            shutil.copy2(T2_FIXTURE, contract_root / T2_FIXTURE.name)
+   179	            shutil.copytree(T2_FIXTURE.parent / "sources", contract_root / "sources")
+   180	            run_root = Path(directory) / "run"
+   181	            DogfoodArchiveRunner(run_root, fixture_root).run()
+   182	            fixture = json.loads((fixture_root / "frankl-q6.json").read_text(encoding="utf-8"))
+   183	            fixture["statement"] = fixture["statement"] + " altered"
+   184	            (fixture_root / "frankl-q6.json").write_text(json.dumps(fixture), encoding="utf-8")
+   185	            with self.assertRaisesRegex(DogfoodArchiveError, "S1 fixture digest mismatch"):
+   186	                DogfoodArchiveRunner(run_root, fixture_root).run()
+   187	            shutil.copy2(S1_FIXTURES / "frankl-q6.json", fixture_root / "frankl-q6.json")
+   188	            contract = json.loads((contract_root / T2_FIXTURE.name).read_text(encoding="utf-8"))
+   189	            contract["cases"][0]["expected_problem_status"] = "RESOLVED_REPORTED"
+   190	            (contract_root / T2_FIXTURE.name).write_text(json.dumps(contract), encoding="utf-8")
+   191	            with self.assertRaisesRegex(DogfoodArchiveError, "contract or source identity drift"):
+   192	                DogfoodArchiveRunner(run_root, fixture_root).run()
+   193	
+   194	
+   195	if __name__ == "__main__":
+   196	    unittest.main()
+
+exec
+/bin/zsh -lc 'nl -ba agents-results/2026-08-31/problem-intelligence-plane/evidence/T2.json' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	{
+     2	  "evidence_id": "EV-T2-ACCEPTED-1",
+     3	  "task_id": "T2",
+     4	  "source_revision": {
+     5	    "local_implementation_commit": "87e315c4c9e20834dfc86e813b9e69a56297bce3",
+     6	    "remote_equivalent_commit": "55c50f7bb7cf4edb2f89f0f901d9f7428ab245c8",
+     7	    "equivalence_basis": "Both commits contain the same seven T2 path blobs. The remote commit was created from the verified remote main parent with the GitHub Git Data API because Git HTTPS push consistently hung."
+     8	  },
+     9	  "changed_files": [
+    10	    "matharc/v02/dogfood_archives.py",
+    11	    "tests/test_v02_dogfood_archives.py",
+    12	    "agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/"
+    13	  ],
+    14	  "acceptance_self_check": "pass",
+    15	  "acceptance_commands": [
+    16	    "python3 -m unittest -v tests.test_v02_dogfood_archives",
+    17	    "python3 -m unittest discover -s tests -p 'test_v02*.py'",
+    18	    "python3 -m unittest discover -s tests",
+    19	    "python3 -m py_compile matharc/v02/dogfood_archives.py tests/test_v02_dogfood_archives.py"
+    20	  ],
+    21	  "test_summary": {
+    22	    "focused_tests": 3,
+    23	    "v02_suite_tests": 197,
+    24	    "v02_skipped": 8,
+    25	    "full_suite_tests": 364,
+    26	    "full_suite_skipped": 10,
+    27	    "result": "passed"
+    28	  },
+    29	  "acceptance_matrix": {
+    30	    "checked_in_source_bytes_and_sha256_reverified_on_restart": "pass",
+    31	    "three_s1_fixture_digests_and_per_case_contract_results_are_bound": "pass",
+    32	    "historical_open_and_current_resolved_erdos_397_records_remain_distinct": "pass",
+    33	    "cursor_replay_deduplication_and_persisted_manual_queue_are_bound": "pass",
+    34	    "complete_budget_snapshot_and_rebuilt_ledger_must_match": "pass",
+    35	    "tampered_sources_contract_fixture_budget_or_manual_queue_fail_closed": "pass",
+    36	    "no_claim_trace_promotion_or_public_authorization": "pass"
+    37	  },
+    38	  "ai_review": {
+    39	    "rounds": 4,
+    40	    "repaired_findings": [
+    41	      "archive sources were synthesized instead of read from fixed artifacts",
+    42	      "restart did not verify sources, fixture contract, budget, or manual queue",
+    43	      "historical OPEN and current RESOLVED provenance for Erdos-397 were not distinct",
+    44	      "complete budget snapshots could drift after internal digest recomputation"
+    45	    ],
+    46	    "post_repair_review": "pass",
+    47	    "remaining_risk": "The archive uses checked-in source snapshots and makes no live retrieval, independent proof review, mathematical conclusion, or external-service claim."
+    48	  },
+    49	  "acceptance_record": {
+    50	    "accepted_at": "2026-08-31",
+    51	    "accepted_by": "用户（研究负责人/仓库所有者）",
+    52	    "authority_basis": "用户要求持续完成并确认验收；T2 专项、v0.2、全库回归和多轮独立 AI 复审均已通过。",
+    53	    "scope": "T2 three source-pinned dogfood archives and their non-promotion boundaries",
+    54	    "ai_review_boundary": "AI reviews provide implementation-quality evidence only and do not create a mathematical conclusion."
+    55	  },
+    56	  "proposed_state": "ACCEPTED",
+    57	  "unverified_items": [
+    58	    "Live external literature retrieval",
+    59	    "Independent mathematical proof review",
+    60	    "A4 separate acceptance decision",
+    61	    "Global Obsidian archive audit blocked by unrelated historical iCloud placeholder manifests"
+    62	  ],
+    63	  "failure_class": null,
+    64	  "failure_origin": null
+    65	}
+
+exec
+/bin/zsh -lc 'rg --files agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/sources/erdos-397-current.html
+agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/sources/frankl-q6-exactly-three-small-outside-parts.md
+agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/sources/engineering-progress.md
+agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/sources/arxiv-2601.22401v3-main.tex
+agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json
+
+exec
+/bin/zsh -lc 'rg --files agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures/frankl-q6.json
+agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures/resolved-collision.json
+agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures/confirmed-open.json
+
+codex
+The first pass shows the implementation and test suite explicitly cover restart validation, fixture/source digests, provenance status separation, and no-claim boundaries. I am narrowing the read to the exact helper lines and fixture/contract contents needed to cite each requirement, then I will write the return before running any optional test.
+exec
+/bin/zsh -lc 'nl -ba agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures/frankl-q6.json' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	{
+     2	  "fixture_kind": "s1-paper-dry-run",
+     3	  "problem_id": "P-FRANKL-Q6",
+     4	  "statement_version": 1,
+     5	  "case_role": "frankl-q6-constrained-residual",
+     6	  "statement": "Resolve the constrained q=6 outside-balance residual after the at-most-three-small-outside-parts cases; this target is not the global Frankl conjecture.",
+     7	  "source_assertions": [
+     8	    {
+     9	      "source_kind": "local-document",
+    10	      "source_path": "docs/engineering-progress.md",
+    11	      "assertion": "The remaining q=6 counterexample must contain at least four small outside parts; global Frankl remains open."
+    12	    }
+    13	  ],
+    14	  "expected_report_status": "OPEN_REPORTED",
+    15	  "limitations": [
+    16	    "This is the q=6 outside-balance residual, not a claim about the global Frankl conjecture.",
+    17	    "A reported status is not a proof of the underlying statement and requires source artifact readback."
+    18	  ]
+    19	}
+
+exec
+/bin/zsh -lc "sed -n '169,257p' matharc/v02/dogfood_archives.py | nl -ba -v169" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+   169	    def _reported_status(self, fixture, provenance, observations, runner):
+   170	        statement = StatementVersion(fixture["problem_id"], fixture["statement_version"], fixture["statement"])
+   171	        cert = OpenStatusCertificate(f"status-{fixture['problem_id']}", fixture["problem_id"], fixture["statement_version"], statement.statement_version_id, statement.statement_digest_sha256, tuple(ObservationDigestRef.from_observation(observations[key]) for key in sorted({p["source_id"] for p in provenance})), ProblemStatus(fixture["expected_report_status"]), tuple(fixture["limitations"]), "dogfood-status-reporter", "2026-08-31T11:15:00+00:00", "2026-09-30T00:00:00+00:00")
+   172	        dossier = ProblemDossierSnapshot(f"dossier-{fixture['problem_id']}", fixture["problem_id"], fixture["statement_version"], statement, cert, "2026-08-31T11:20:00+00:00")
+   173	        validation = dossier.validate(observations, as_of="2026-08-31T12:00:00+00:00", artifacts=runner.literature.artifacts)
+   174	        if validation.status is not cert.status: raise DogfoodArchiveError("source readback status mismatch")
+   175	        return {"reported_status": cert.status.value, "validated_status": validation.status.value, "invalidations": [x.value for x in validation.invalidations], "dossier": dossier.to_dict()}
+   176	
+   177	    def _insufficient_status(self, fixture, observation, runner):
+   178	        statement = StatementVersion(fixture["problem_id"], fixture["statement_version"], fixture["statement"])
+   179	        cert = OpenStatusCertificate(f"status-{fixture['problem_id']}-budget", fixture["problem_id"], fixture["statement_version"], statement.statement_version_id, statement.statement_digest_sha256, (ObservationDigestRef.from_observation(observation),), ProblemStatus(fixture["expected_report_status"]), tuple(fixture["limitations"]), "dogfood-status-reporter", "2026-08-31T11:15:00+00:00", "2026-09-30T00:00:00+00:00")
+   180	        dossier = ProblemDossierSnapshot(f"dossier-{fixture['problem_id']}-budget", fixture["problem_id"], fixture["statement_version"], statement, cert, "2026-08-31T11:20:00+00:00")
+   181	        validation = dossier.validate({observation.observation_id: observation}, as_of="2026-08-31T12:00:00+00:00", artifacts=runner.literature.artifacts)
+   182	        if validation.status is not ProblemStatus.STALE: raise DogfoodArchiveError("budget exhaustion did not preserve evidence insufficiency")
+   183	        return {"reported_status": cert.status.value, "validated_status": validation.status.value, "invalidations": [x.value for x in validation.invalidations], "dossier": dossier.to_dict()}
+   184	
+   185	    def _collision_audit(self, fixture, provenance, observations, runner):
+   186	        p = next(item for item in provenance if item["source_kind"] == "arxiv-source")
+   187	        support = SourceSupport(p["source_id"], p["canonical_uri"], p["pinned_version"], p["locator"], p["content_sha256"])
+   188	        routes = tuple(SearchRouteResult(route, f"Dogfood {route.value} scope.", (f"dogfood {route.value}",), (), (), "2026-08-31T12:00:00+00:00", True) for route in SearchRoute)
+   189	        record = NoveltyAuditRecord("dogfood-collision-review", CandidateResult("dogfood-collision", digest_json({"statement": fixture["statement"]}), "Reported-resolution review only.", "s1-fixture-v1", (support,)), routes, NoveltyConclusion.PRIOR_RESULT_FOUND, None, "2026-08-31T11:30:00+00:00", "2026-08-31T12:30:00+00:00", NoveltyAuditPurpose.CONTRACT_FIXTURE)
+   190	        auth = record.authorization(observations=observations, artifacts=runner.literature.artifacts)
+   191	        return {"record": record.to_dict(), "authorization_status": auth.status.value, "complete_research_budget": auth.allows_complete_budget, "public_qualitative_conclusion": auth.allows_public_qualitative_conclusion, "invalidations": [x.value for x in auth.invalidations]}
+   192	
+   193	    def _case(self, fixture, provenance, topic_status, replay_status, status, boundary, manual_reason=None, novelty=None):
+   194	        return {"problem_id": fixture["problem_id"], "case_role": fixture["case_role"], "topic_status": topic_status, "replay_status": replay_status, "manual_reason": manual_reason, "review_boundary": boundary, "provenance": provenance, "status": dict(status), "novelty": dict(novelty) if novelty else None, "promotion_allowed": False, "claim_created": False, "trace_created": False}
+   195	
+   196	    def _contract_digest(self): return hashlib.sha256(self.contract_path.read_bytes()).hexdigest()
+   197	    def _no_claim_or_trace_created(self): return not any(path.name in {"claims.json", "research-trace.json", "trace.json"} for path in self.root.rglob("*.json"))
+   198	
+   199	    def _replay(self, specs):
+   200	        payload = self._load_result()
+   201	        if payload["contract_digest_sha256"] != self._contract_digest() or payload["fixture_identity_digest_sha256"] != digest_json(self.contract["fixture_sha256"]) or payload["source_identity_digest_sha256"] != digest_json(specs): raise DogfoodArchiveError("contract or source identity drift on replay")
+   202	        main = TopicObservationRunner(self.root / "topic-observation", topic_id=_TOPIC_ID, initial_cursor="dogfood-c0")
+   203	        residual_budget = self._new_residual_budget()
+   204	        residual = TopicObservationRunner(self.root / "residual-budget", topic_id=_TOPIC_ID, initial_cursor="budget-c0", budget=residual_budget)
+   205	        if not (main.next_cursor == "dogfood-c4" and residual.next_cursor == "budget-c1"):
+   206	            raise DogfoodArchiveError("topic observation state is missing or has invalid cursor")
+   207	        manual_ids = sorted(item.manual_id for item in (*main.manual_queue, *residual.manual_queue))
+   208	        if manual_ids != sorted(payload["blocking_manual_ids"]):
+   209	            raise DogfoodArchiveError("topic observation manual queue does not match persisted archive")
+   210	        if len(main.literature.observations) != 4 or len(residual.literature.observations) != 0:
+   211	            raise DogfoodArchiveError("topic observation ArtifactStore state is missing or inconsistent")
+   212	        reconstructed_budget = residual_budget.to_dict()
+   213	        if self.contract["expected_budget_snapshot"] != reconstructed_budget:
+   214	            raise DogfoodArchiveError("reconstructed residual budget does not match T2 contract")
+   215	        if payload["budget_snapshot"] != reconstructed_budget:
+   216	            raise DogfoodArchiveError("persisted budget snapshot does not match reconstructed residual budget")
+   217	        if not payload["no_claim_or_trace_created"] or not self._no_claim_or_trace_created(): raise DogfoodArchiveError("claim or trace artifact is forbidden on replay")
+   218	        self._assert_contract_results(payload)
+   219	        payload["replayed"] = True; self._save(payload); return payload
+   220	
+   221	    def _assert_contract_results(self, result: Mapping[str, Any]) -> None:
+   222	        cases = {case["problem_id"]: case for case in result["cases"]}
+   223	        for expected in self.contract["cases"]:
+   224	            actual = cases.get(expected["problem_id"])
+   225	            if actual is None:
+   226	                raise DogfoodArchiveError("persisted result is missing a contract case")
+   227	            checks = {
+   228	                "case_role": expected["case_role"],
+   229	                "topic_status": expected["expected_topic_status"],
+   230	                "promotion_allowed": expected["expected_promotion_allowed"],
+   231	                "manual_reason": expected["expected_manual_reason"],
+   232	            }
+   233	            for field, value in checks.items():
+   234	                if actual.get(field) != value:
+   235	                    raise DogfoodArchiveError(f"contract expected {field}={value!r}, got {actual.get(field)!r}")
+   236	            if actual["status"]["reported_status"] != expected["expected_problem_status"]:
+   237	                raise DogfoodArchiveError("contract expected problem status drift")
+   238	            novelty_status = actual["novelty"]["authorization_status"] if actual["novelty"] else None
+   239	            if novelty_status != expected["expected_novelty_status"]:
+   240	                raise DogfoodArchiveError("contract expected novelty status drift")
+   241	
+   242	    def _load_result(self):
+   243	        try: payload = json.loads(self.result_path.read_text(encoding="utf-8"))
+   244	        except (OSError, json.JSONDecodeError) as exc: raise DogfoodArchiveError("persisted archive is unreadable") from exc
+   245	        if not isinstance(payload, dict): raise DogfoodArchiveError("persisted archive must be an object")
+   246	        required = {"schema_version", "topic_id", "contract_digest_sha256", "fixture_identity_digest_sha256", "source_identity_digest_sha256", "fixture_files", "replayed", "archive_blocked", "blocking_manual_ids", "cases", "budget_snapshot", "budget_digest_sha256", "no_claim_or_trace_created", "archive_digest_sha256"}
+   247	        _fields(payload, required, "persisted archive")
+   248	        if payload["schema_version"] != _SCHEMA_VERSION or payload["topic_id"] != _TOPIC_ID or payload["fixture_files"] != list(_S1_NAMES) or not payload["archive_blocked"]: raise DogfoodArchiveError("persisted archive identity or fixture contract mismatch")
+   249	        if payload["budget_digest_sha256"] != self.contract["expected_budget_digest_sha256"]: raise DogfoodArchiveError("persisted budget snapshot identity mismatch")
+   250	        if payload["budget_digest_sha256"] != digest_json(payload["budget_snapshot"]): raise DogfoodArchiveError("persisted budget snapshot digest mismatch")
+   251	        digest_payload = {k: v for k, v in payload.items() if k not in {"archive_digest_sha256", "replayed"}}
+   252	        if payload["archive_digest_sha256"] != digest_json(digest_payload): raise DogfoodArchiveError("persisted archive digest mismatch")
+   253	        return payload
+   254	
+   255	    def _save(self, result):
+   256	        payload = dict(result); payload.pop("archive_digest_sha256", None); payload["archive_digest_sha256"] = digest_json({k: v for k, v in payload.items() if k != "replayed"})
+   257	        temporary = self.result_path.with_suffix(".tmp"); temporary.write_text(canonical_json(payload) + "\n", encoding="utf-8"); os.replace(temporary, self.result_path)
+
+exec
+/bin/zsh -lc 'nl -ba agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	{
+     2	  "fixture_kind": "t2-dogfood-archive-contract",
+     3	  "topic_id": "union-closed",
+     4	  "source_fixture_directory": "../s1-fixtures",
+     5	  "fixture_sha256": {
+     6	    "confirmed-open.json": "2eac896e4038750a0b59baadc5d4b3b04aa261f4680b51839fbb507ca035053a",
+     7	    "frankl-q6.json": "d76d9f4a03d781f1a2b66168666b00ff7c1c4107b8ca48fb48fefdc18325c592",
+     8	    "resolved-collision.json": "935ec7a4cc236f44fbba60c877be9cff85fc4edb99cfc7c0e55ab4f9ccdd2acd"
+     9	  },
+    10	  "expected_budget_snapshot": {
+    11	    "limits": {
+    12	      "wall_seconds": null,
+    13	      "input_tokens": 1,
+    14	      "output_tokens": null,
+    15	      "cost_usd": null
+    16	    },
+    17	    "spent": {
+    18	      "wall_seconds": 0.0,
+    19	      "input_tokens": 1,
+    20	      "output_tokens": 0,
+    21	      "cost_usd": 0.0,
+    22	      "tool_calls": 0,
+    23	      "model_calls": 1
+    24	    },
+    25	    "divergent_usage_reports": [],
+    26	    "exhausted": true
+    27	  },
+    28	  "expected_budget_digest_sha256": "efdf4e18af10228e0706db1ee91b896ead57982e132a4e5315faf79860eb4b45",
+    29	  "source_artifacts": {
+    30	    "P-FRANKL-Q6": {
+    31	      "path": "sources/engineering-progress.md",
+    32	      "sha256": "f0090168916eab1e1642c0ac0325914492b9725f1432027aa983b0bfe482b4cb",
+    33	      "canonical_uri": "urn:matharc:local:docs:engineering-progress.md",
+    34	      "pinned_version": "workspace-2026-08-31",
+    35	      "locator": "docs/engineering-progress.md: q=6 residual boundary"
+    36	    },
+    37	    "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS": {
+    38	      "path": "sources/frankl-q6-exactly-three-small-outside-parts.md",
+    39	      "sha256": "8ef2177acb983fdd1ef6602e7cae1b4853eed0c94ba1eff2e3b6cd188fc33476",
+    40	      "canonical_uri": "urn:matharc:local:docs:frankl-q6-exactly-three-small-outside-parts.md",
+    41	      "pinned_version": "workspace-2026-08-31",
+    42	      "locator": "docs/frankl-q6-exactly-three-small-outside-parts.md: residual statement"
+    43	    },
+    44	    "P-ARXIV-2601-22401-COLLISION": [
+    45	      {
+    46	        "source_kind": "problem-database-history",
+    47	        "path": "sources/arxiv-2601.22401v3-main.tex",
+    48	        "sha256": "540973d154a63470f8648ed2b84b75be04c2c56ee7bf0d4047640510573647bd",
+    49	        "canonical_uri": "urn:matharc:history:erdos-397-open-corpus",
+    50	        "pinned_version": "arXiv-2601.22401v3-corpus-2025-12",
+    51	        "locator": "arXiv v3 historical corpus description: Erdos-397 was listed as open in the December 2025 source corpus",
+    52	        "reported_status": "OPEN_REPORTED"
+    53	      },
+    54	      {
+    55	        "source_kind": "problem-database-current",
+    56	        "path": "sources/erdos-397-current.html",
+    57	        "sha256": "ba778973416d0d89a00e206777be974891e0317c106ef155f8ddb430c00a6885",
+    58	        "canonical_uri": "https://www.erdosproblems.com/397",
+    59	        "pinned_version": "page-last-edited-2026-01-12",
+    60	        "locator": "Current database readback is represented by the pinned extracted source artifact; do not infer OPEN from historical corpus text",
+    61	        "reported_status": "RESOLVED_REPORTED"
+    62	      },
+    63	      {
+    64	        "source_kind": "arxiv-source",
+    65	        "path": "sources/arxiv-2601.22401v3-main.tex",
+    66	        "sha256": "540973d154a63470f8648ed2b84b75be04c2c56ee7bf0d4047640510573647bd",
+    67	        "canonical_uri": "https://export.arxiv.org/e-print/2601.22401v3",
+    68	        "pinned_version": "arXiv:2601.22401v3",
+    69	        "locator": "main.tex lines 721-732: Erdos-397 says the answer is no; infinitely many solutions",
+    70	        "reported_status": "RESOLVED_REPORTED"
+    71	      }
+    72	    ]
+    73	  },
+    74	  "non_claim_boundary": "All outputs are source observations and reported-status review boundaries. They do not create a mathematical claim, research trace, public conclusion, or research-budget authorization.",
+    75	  "cases": [
+    76	    {
+    77	      "problem_id": "P-FRANKL-Q6",
+    78	      "case_role": "frankl-q6-constrained-residual",
+    79	      "expected_topic_status": "APPLIED",
+    80	      "expected_problem_status": "OPEN_REPORTED",
+    81	      "expected_manual_reason": null,
+    82	      "expected_novelty_status": null,
+    83	      "expected_promotion_allowed": false
+    84	    },
+    85	    {
+    86	      "problem_id": "P-ARXIV-2601-22401-COLLISION",
+    87	      "case_role": "database-open-literature-resolved-collision",
+    88	      "expected_topic_status": "APPLIED",
+    89	      "expected_problem_status": "RESOLVED_REPORTED",
+    90	      "expected_manual_reason": "HIGH_RISK_EVENT",
+    91	      "expected_novelty_status": "PENDING_HUMAN_AUDIT",
+    92	      "expected_promotion_allowed": false
+    93	    },
+    94	    {
+    95	      "problem_id": "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+    96	      "case_role": "frankl-q6-four-or-more-small-outside-parts-residual",
+    97	      "expected_topic_status": "MANUAL_REVIEW",
+    98	      "expected_problem_status": "OPEN_REPORTED",
+    99	      "expected_manual_reason": "BUDGET_EXHAUSTED",
+   100	      "expected_novelty_status": null,
+   101	      "expected_promotion_allowed": false
+   102	    }
+   103	  ]
+   104	}
+
+exec
+/bin/zsh -lc 'nl -ba agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures/resolved-collision.json' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	{
+     2	  "fixture_kind": "s1-paper-dry-run",
+     3	  "problem_id": "P-ARXIV-2601-22401-COLLISION",
+     4	  "statement_version": 1,
+     5	  "case_role": "database-open-literature-resolved-collision",
+     6	  "case_identity": "Erdos-397",
+     7	  "statement": "Erdos-397 asks whether there are only finitely many equal products of central binomial coefficients with all indices distinct. arXiv:2601.22401v3 answers no by constructing infinitely many such equal-product pairs; the reported status is therefore RESOLVED_REPORTED pending independent mathematical review.",
+     8	  "source_assertions": [
+     9	    {
+    10	      "source_kind": "database",
+    11	      "asserted_status": "OPEN",
+    12	      "assertion": "The database labels the selected control problem open."
+    13	    },
+    14	    {
+    15	      "source_kind": "literature",
+    16	      "canonical_uri": "https://arxiv.org/abs/2601.22401",
+    17	      "asserted_status": "RESOLVED",
+    18	      "assertion": "arXiv:2601.22401 is the approved literature source for the database-open, literature-resolved control."
+    19	    }
+    20	  ],
+    21	  "source_chain": [
+    22	    {
+    23	      "source_kind": "problem-database",
+    24	      "canonical_uri": "https://www.erdosproblems.com/397",
+    25	      "pinned_version": "page-last-edited-2026-01-12",
+    26	      "locator": "HTML source lines 395-435: #397 is marked DISPROVED (LEAN), and the additional text records a negative answer with an explicit central-binomial-coefficient identity.",
+    27	      "assertion": "The current database record identifies the exact Erdős-397 problem as solved in the negative."
+    28	    },
+    29	    {
+    30	      "source_kind": "arxiv-source",
+    31	      "canonical_uri": "https://export.arxiv.org/e-print/2601.22401v3",
+    32	      "pinned_version": "arXiv:2601.22401v3",
+    33	      "locator": "main.tex lines 721-732: subsection Erdos-397 states the central-binomial-coefficient problem and then states, 'The answer is no; there are infinitely many solutions.'",
+    34	      "assertion": "The v3 source names Erdős-397, supplies the exact statement, and reports an infinite-family negative resolution."
+    35	    },
+    36	    {
+    37	      "source_kind": "arxiv-source",
+    38	      "canonical_uri": "https://export.arxiv.org/e-print/2601.22401v3",
+    39	      "pinned_version": "arXiv:2601.22401v3",
+    40	      "locator": "main.tex lines 727-729: the paper says its Erdos-397 solution was later found essentially identical to a Chinese IMO team-selection-test question.",
+    41	      "assertion": "This records the paper's independent-rediscovery provenance and prevents a novelty inference from the fixture."
+    42	    }
+    43	  ],
+    44	  "expected_report_status": "RESOLVED_REPORTED",
+    45	  "limitations": [
+    46	    "The fixture records a reported resolution for the specifically named Erdős-397 case, not an independently accepted mathematical proof.",
+    47	    "The legacy source_assertions field remains test-contract compatibility data; source_chain is the authoritative, case-specific provenance for this fixture.",
+    48	    "A reported resolution needs independent mathematical review and source artifact readback."
+    49	  ]
+    50	}
+
+exec
+/bin/zsh -lc 'nl -ba agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures/confirmed-open.json' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	{
+     2	  "fixture_kind": "s1-paper-dry-run",
+     3	  "problem_id": "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+     4	  "statement_version": 1,
+     5	  "case_role": "frankl-q6-four-or-more-small-outside-parts-residual",
+     6	  "statement": "In the same q=6 setup, classify admissible small-part hypergraphs of size at least four and prove the corresponding coarse balance is nonnegative, or output an exact negative configuration that survives the full trace constraints.",
+     7	  "source_assertions": [
+     8	    {
+     9	      "source_kind": "local-document",
+    10	      "source_path": "docs/frankl-q6-exactly-three-small-outside-parts.md",
+    11	      "assertion": "The current proof does not cover four or more small outside parts; the next target is the stated at-least-four-small-parts residual."
+    12	    }
+    13	  ],
+    14	  "expected_report_status": "OPEN_REPORTED",
+    15	  "limitations": [
+    16	    "The scope is limited to the minimum-three-set q=6 setup and four-or-more small outside parts.",
+    17	    "This residual does not upgrade to the general minimum-three-set case or to Frankl's conjecture."
+    18	  ]
+    19	}
+
+exec
+/bin/zsh -lc "test -e agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md && printf 'exists\\n' || printf 'absent\\n'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+absent
+
+codex
+The exact contract and fixture contents confirm the Erdos-397 split: historical corpus provenance is `OPEN_REPORTED`, while the current database and literature records are separately pinned as `RESOLVED_REPORTED`. The return will be `STATE: PASS` for the four requested A4 conditions, with `proposed_state: REVIEWED`; that is a review conclusion, not A4 acceptance.
+apply patch
+patch: completed
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..1acdfe9b46d1b93621b5893da39f310405357a77
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+@@ -0,0 +1,16 @@
++STATE: PASS
++
++Findings:
++- PASS (LOW) [matharc/v02/dogfood_archives.py:40-45,79-127,199-219; tests/test_v02_dogfood_archives.py:74-89,152-192]: S1 fixture bytes and every fixed source artifact are SHA-256 bound; the runner reloads and revalidates them before replay, and tampering or missing state fails closed.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:51-69,108-127,221-240; evidence/t2-fixtures/three-real-archives.json:75-103; tests/test_v02_dogfood_archives.py:20-60]: the T2 contract names exactly three ordered cases, binds each case role/status/boundary, and verifies each S1 fixture and source artifact.
++- PASS (LOW) [evidence/t2-fixtures/three-real-archives.json:44-70; evidence/s1-fixtures/resolved-collision.json:21-48; tests/test_v02_dogfood_archives.py:50-53]: historical Erdos-397 provenance is `OPEN_REPORTED`, while current database/literature provenance is separately pinned as `RESOLVED_REPORTED`.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:164-167,185-197,217-219; tests/test_v02_dogfood_archives.py:28-31,43-72]: the run is source-observation/review-boundary data only; promotion, claims, traces, complete-budget authorization, and public qualitative authorization remain false. No live external retrieval or mathematical proof is performed.
++
++Command result: NOT RUN before this return was written; the permitted focused unittest is optional.
++
++Residual risk: This is static, checked-in fixture evidence. It does not establish an independent mathematical proof, live external-service readback, or A4 acceptance.
++
++failure_class: none observed
++failure_origin: none observed in the scoped files
++changed_files: agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
++proposed_state: REVIEWED
+
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..1acdfe9b46d1b93621b5893da39f310405357a77
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+@@ -0,0 +1,16 @@
++STATE: PASS
++
++Findings:
++- PASS (LOW) [matharc/v02/dogfood_archives.py:40-45,79-127,199-219; tests/test_v02_dogfood_archives.py:74-89,152-192]: S1 fixture bytes and every fixed source artifact are SHA-256 bound; the runner reloads and revalidates them before replay, and tampering or missing state fails closed.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:51-69,108-127,221-240; evidence/t2-fixtures/three-real-archives.json:75-103; tests/test_v02_dogfood_archives.py:20-60]: the T2 contract names exactly three ordered cases, binds each case role/status/boundary, and verifies each S1 fixture and source artifact.
++- PASS (LOW) [evidence/t2-fixtures/three-real-archives.json:44-70; evidence/s1-fixtures/resolved-collision.json:21-48; tests/test_v02_dogfood_archives.py:50-53]: historical Erdos-397 provenance is `OPEN_REPORTED`, while current database/literature provenance is separately pinned as `RESOLVED_REPORTED`.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:164-167,185-197,217-219; tests/test_v02_dogfood_archives.py:28-31,43-72]: the run is source-observation/review-boundary data only; promotion, claims, traces, complete-budget authorization, and public qualitative authorization remain false. No live external retrieval or mathematical proof is performed.
++
++Command result: NOT RUN before this return was written; the permitted focused unittest is optional.
++
++Residual risk: This is static, checked-in fixture evidence. It does not establish an independent mathematical proof, live external-service readback, or A4 acceptance.
++
++failure_class: none observed
++failure_origin: none observed in the scoped files
++changed_files: agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
++proposed_state: REVIEWED
+
+codex
+The required return file is now written before optional execution. I am running the single permitted focused unittest only, then I will update that same return with the observed command result and perform no further exploration.
+exec
+/bin/zsh -lc 'python3 -m unittest -v tests.test_v02_dogfood_archives' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 465ms:
+test_recomputed_budget_digests_cannot_accept_budget_snapshot_drift (tests.test_v02_dogfood_archives.DogfoodArchiveTests.test_recomputed_budget_digests_cannot_accept_budget_snapshot_drift) ... ok
+test_three_real_archives_persist_replay_budget_and_nonpromotion_boundaries (tests.test_v02_dogfood_archives.DogfoodArchiveTests.test_three_real_archives_persist_replay_budget_and_nonpromotion_boundaries) ... ok
+test_unknown_case_missing_provenance_and_tampered_archive_fail_closed (tests.test_v02_dogfood_archives.DogfoodArchiveTests.test_unknown_case_missing_provenance_and_tampered_archive_fail_closed) ... ok
+
+----------------------------------------------------------------------
+Ran 3 tests in 0.348s
+
+OK
+
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..1acdfe9b46d1b93621b5893da39f310405357a77
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+@@ -0,0 +1,16 @@
++STATE: PASS
++
++Findings:
++- PASS (LOW) [matharc/v02/dogfood_archives.py:40-45,79-127,199-219; tests/test_v02_dogfood_archives.py:74-89,152-192]: S1 fixture bytes and every fixed source artifact are SHA-256 bound; the runner reloads and revalidates them before replay, and tampering or missing state fails closed.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:51-69,108-127,221-240; evidence/t2-fixtures/three-real-archives.json:75-103; tests/test_v02_dogfood_archives.py:20-60]: the T2 contract names exactly three ordered cases, binds each case role/status/boundary, and verifies each S1 fixture and source artifact.
++- PASS (LOW) [evidence/t2-fixtures/three-real-archives.json:44-70; evidence/s1-fixtures/resolved-collision.json:21-48; tests/test_v02_dogfood_archives.py:50-53]: historical Erdos-397 provenance is `OPEN_REPORTED`, while current database/literature provenance is separately pinned as `RESOLVED_REPORTED`.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:164-167,185-197,217-219; tests/test_v02_dogfood_archives.py:28-31,43-72]: the run is source-observation/review-boundary data only; promotion, claims, traces, complete-budget authorization, and public qualitative authorization remain false. No live external retrieval or mathematical proof is performed.
++
++Command result: NOT RUN before this return was written; the permitted focused unittest is optional.
++
++Residual risk: This is static, checked-in fixture evidence. It does not establish an independent mathematical proof, live external-service readback, or A4 acceptance.
++
++failure_class: none observed
++failure_origin: none observed in the scoped files
++changed_files: agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
++proposed_state: REVIEWED
+
+codex
+The focused suite passed: all 3 tests completed successfully in 0.348s with exit code 0. I will record that result in the already-created return file; the conclusion remains `STATE: PASS` with `proposed_state: REVIEWED`, and A4 remains unaccepted.
+apply patch
+patch: completed
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..888a327afc3f836569495fd6470ed72a4467a668
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+@@ -0,0 +1,16 @@
++STATE: PASS
++
++Findings:
++- PASS (LOW) [matharc/v02/dogfood_archives.py:40-45,79-127,199-219; tests/test_v02_dogfood_archives.py:74-89,152-192]: S1 fixture bytes and every fixed source artifact are SHA-256 bound; the runner reloads and revalidates them before replay, and tampering or missing state fails closed.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:51-69,108-127,221-240; evidence/t2-fixtures/three-real-archives.json:75-103; tests/test_v02_dogfood_archives.py:20-60]: the T2 contract names exactly three ordered cases, binds each case role/status/boundary, and verifies each S1 fixture and source artifact.
++- PASS (LOW) [evidence/t2-fixtures/three-real-archives.json:44-70; evidence/s1-fixtures/resolved-collision.json:21-48; tests/test_v02_dogfood_archives.py:50-53]: historical Erdos-397 provenance is `OPEN_REPORTED`, while current database/literature provenance is separately pinned as `RESOLVED_REPORTED`.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:164-167,185-197,217-219; tests/test_v02_dogfood_archives.py:28-31,43-72]: the run is source-observation/review-boundary data only; promotion, claims, traces, complete-budget authorization, and public qualitative authorization remain false. No live external retrieval or mathematical proof is performed.
++
++Command result: `python3 -m unittest -v tests.test_v02_dogfood_archives` passed; 3 tests ran in 0.348s, exit code 0.
++
++Residual risk: This is static, checked-in fixture evidence. It does not establish an independent mathematical proof, live external-service readback, or A4 acceptance.
++
++failure_class: none observed
++failure_origin: none observed in the scoped files
++changed_files: agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
++proposed_state: REVIEWED
+
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..888a327afc3f836569495fd6470ed72a4467a668
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+@@ -0,0 +1,16 @@
++STATE: PASS
++
++Findings:
++- PASS (LOW) [matharc/v02/dogfood_archives.py:40-45,79-127,199-219; tests/test_v02_dogfood_archives.py:74-89,152-192]: S1 fixture bytes and every fixed source artifact are SHA-256 bound; the runner reloads and revalidates them before replay, and tampering or missing state fails closed.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:51-69,108-127,221-240; evidence/t2-fixtures/three-real-archives.json:75-103; tests/test_v02_dogfood_archives.py:20-60]: the T2 contract names exactly three ordered cases, binds each case role/status/boundary, and verifies each S1 fixture and source artifact.
++- PASS (LOW) [evidence/t2-fixtures/three-real-archives.json:44-70; evidence/s1-fixtures/resolved-collision.json:21-48; tests/test_v02_dogfood_archives.py:50-53]: historical Erdos-397 provenance is `OPEN_REPORTED`, while current database/literature provenance is separately pinned as `RESOLVED_REPORTED`.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:164-167,185-197,217-219; tests/test_v02_dogfood_archives.py:28-31,43-72]: the run is source-observation/review-boundary data only; promotion, claims, traces, complete-budget authorization, and public qualitative authorization remain false. No live external retrieval or mathematical proof is performed.
++
++Command result: `python3 -m unittest -v tests.test_v02_dogfood_archives` passed; 3 tests ran in 0.348s, exit code 0.
++
++Residual risk: This is static, checked-in fixture evidence. It does not establish an independent mathematical proof, live external-service readback, or A4 acceptance.
++
++failure_class: none observed
++failure_origin: none observed in the scoped files
++changed_files: agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
++proposed_state: REVIEWED
+
+codex
+`STATE: PASS` recorded in [A4-provenance-retry.md](/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md).
+
+Focused tests passed: 3/3. `proposed_state: REVIEWED`; A4 was not accepted.
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..888a327afc3f836569495fd6470ed72a4467a668
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
+@@ -0,0 +1,16 @@
++STATE: PASS
++
++Findings:
++- PASS (LOW) [matharc/v02/dogfood_archives.py:40-45,79-127,199-219; tests/test_v02_dogfood_archives.py:74-89,152-192]: S1 fixture bytes and every fixed source artifact are SHA-256 bound; the runner reloads and revalidates them before replay, and tampering or missing state fails closed.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:51-69,108-127,221-240; evidence/t2-fixtures/three-real-archives.json:75-103; tests/test_v02_dogfood_archives.py:20-60]: the T2 contract names exactly three ordered cases, binds each case role/status/boundary, and verifies each S1 fixture and source artifact.
++- PASS (LOW) [evidence/t2-fixtures/three-real-archives.json:44-70; evidence/s1-fixtures/resolved-collision.json:21-48; tests/test_v02_dogfood_archives.py:50-53]: historical Erdos-397 provenance is `OPEN_REPORTED`, while current database/literature provenance is separately pinned as `RESOLVED_REPORTED`.
++- PASS (LOW) [matharc/v02/dogfood_archives.py:164-167,185-197,217-219; tests/test_v02_dogfood_archives.py:28-31,43-72]: the run is source-observation/review-boundary data only; promotion, claims, traces, complete-budget authorization, and public qualitative authorization remain false. No live external retrieval or mathematical proof is performed.
++
++Command result: `python3 -m unittest -v tests.test_v02_dogfood_archives` passed; 3 tests ran in 0.348s, exit code 0.
++
++Residual risk: This is static, checked-in fixture evidence. It does not establish an independent mathematical proof, live external-service readback, or A4 acceptance.
++
++failure_class: none observed
++failure_origin: none observed in the scoped files
++changed_files: agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md
++proposed_state: REVIEWED
+
+2026-08-31T12:05:53.612830Z  WARN codex_mcp::rmcp_client: failed to initialize MCP client during shutdown: MCP startup failed: failed to resolve OAuth metadata before using stored credentials
+tokens used
+43,912
+`STATE: PASS` recorded in [A4-provenance-retry.md](/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-provenance-retry.md).
+
+Focused tests passed: 3/3. `proposed_state: REVIEWED`; A4 was not accepted.

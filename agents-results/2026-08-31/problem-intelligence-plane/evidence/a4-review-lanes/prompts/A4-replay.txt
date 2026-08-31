@@ -1,0 +1,39 @@
+Task ID: A4-replay
+Parent node: A4 acceptance.problem-intelligence.dogfood
+Purpose: independent, read-only acceptance review of T2 replay, recovery, deduplication, manual-queue, and budget integrity.
+
+Pinned input identity:
+- Local implementation acceptance commit: 46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe.
+- Remote equivalent acceptance commit: b41afbe30ee47243d83a76291c046af575ea2fc4.
+- T2 evidence SHA-256: 42e5e5993a2705cd5a51532282f887f0950bf2634b2d4c186771b7f2a37fbaa3.
+- T2 module SHA-256: 2573c6a2b8486931abaabe589d73f6df51a57161badf5463e086e100bdb2dec9.
+- T2 focused-test SHA-256: cd8b242ac75add9915504e61bc9c2236a1331e817327bf53322d38193403aff6.
+
+Read scope only:
+- matharc/v02/dogfood_archives.py
+- matharc/v02/topic_observation.py
+- matharc/v02/budget.py
+- tests/test_v02_dogfood_archives.py
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/T2.json
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/
+
+Review questions:
+1. Does restart revalidate retained source bytes, S1 fixture identities, T2 contract, runner state, manual queue, and budget snapshot before accepting replay?
+2. Are cursor replay, duplicate handling, recovery from missing state, and unresolved manual-review blocking explicitly demonstrated?
+3. Can recomputing internal archive or budget digests conceal drift in any budget limit, spend, exhaustion, or model-call field?
+4. Identify any blocker with severity P0/P1/P2 and exact path/line evidence.
+
+Commands permitted:
+- python3 -m unittest -v tests.test_v02_dogfood_archives tests.test_v02_topic_observation tests.test_v02_budget
+- python3 -m py_compile matharc/v02/dogfood_archives.py matharc/v02/topic_observation.py tests/test_v02_dogfood_archives.py
+- read-only rg, sed, git show, shasum, and JSON parsing.
+
+Forbidden:
+- Do not modify source, tests, SSOT machine files, fixtures, evidence other than the sole return file, git state, remote state, or any path outside the return path.
+- Do not accept A4 or alter node state.
+
+Sole allowed write path:
+agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-replay.md
+
+Return format:
+State PASS, CONDITIONAL, or BLOCKED. List severity-ordered findings first. Then record commands/results, exact reviewed identities, residual risk, failure_class, failure_origin, changed_files, and proposed_state REVIEWED. Do not claim mathematical proof or release approval.

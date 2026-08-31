@@ -1,0 +1,12 @@
+{
+  "run_id": "A4-post-cursor-topic-20260831",
+  "frozen_head": "46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe",
+  "candidate_diff_sha256": "d8d847924653bb6df547094e525b61378d234b727f8f20d93418771c2b1fefd6",
+  "lanes": [
+    {"id": "state-integrity", "attempt": 1, "pid": 54485, "result": "VERIFIED", "return": "returns/A4-state-integrity.md"},
+    {"id": "archive-boundary", "attempt": 1, "pid": 54486, "result": "transport-stalled", "log": "attempts/A4-archive-boundary-attempt1-transport.log"},
+    {"id": "archive-boundary", "attempt": 2, "pid": 60978, "result": "VERIFIED", "return": "returns/A4-archive-boundary.md"},
+    {"id": "regression-scope", "attempt": 1, "pid": 54487, "result": "transport-stalled", "log": "attempts/A4-regression-scope-attempt1-transport.log"},
+    {"id": "regression-scope", "attempt": 2, "pid": 60979, "result": "transport-stalled-after-command-evidence", "log": "attempts/A4-regression-scope-attempt2-transport.log", "recorded_command": "focused topic/archive suite: 37 passed"}
+  ]
+}

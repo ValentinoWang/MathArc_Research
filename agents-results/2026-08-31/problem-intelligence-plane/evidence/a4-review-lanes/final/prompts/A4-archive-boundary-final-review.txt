@@ -1,0 +1,22 @@
+Task ID: A4-archive-boundary-final-review
+Mode: zero-write review. The only permitted write is the exact return file below. Do not modify code, tests, fixtures, SSOT state, Git state, remote state, or any other file.
+
+Frozen candidate identity:
+- combined patch SHA-256: 11ae14101270c98c54387579917c1c9d20da585d5d33a12dd9ae763c5df18a8f
+- matharc/v02/topic_observation.py: 48cf857cca156a72c3e3676d561801bdd83ca99a6fb91a48aab05a447114bbad
+- matharc/v02/dogfood_archives.py: 7ec934f7330e72e83e4f25bd7eee3e419e66db9121243adef4d343bf3287f5e2
+- tests/test_v02_topic_observation.py: 7f7157c421259c06eb67b6d36e2c2a7c5e092e5d1ef72521064dc4b71d6e5865
+- tests/test_v02_dogfood_archives.py: c4b8084c0c8d89ff290784911e1b7a9dc17e8036b7bc5733c93e4c82f74d7806
+
+Review only:
+- matharc/v02/dogfood_archives.py
+- tests/test_v02_dogfood_archives.py
+- matharc/v02/topic_observation.py
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/archive-error-boundary/implementation-return.json
+
+Check the public DogfoodArchiveRunner error contract and T2 replay behavior. Verify it translates underlying TopicObservationError with a chained DogfoodArchiveError, preserves manual-queue versus missing-state diagnostics, does not hide other wrong failure classes, and does not weaken archive integrity, source pinning, budget pinning, manual queue comparison, or no-promotion boundaries. Attempt one independent negative mutation if helpful. Do not treat a test pass as proof unless the reviewed code covers the stated condition.
+
+Write the review to exactly:
+agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/final/returns/A4-archive-boundary-final-review.md
+
+First line must be one of `STATE: PASS`, `STATE: CONDITIONAL`, `STATE: BLOCKED`. Include severity-ranked findings with file/line, command result, frozen identity check, residual risk, failure_class, failure_origin, changed_files, and proposed_state REVIEWED. Do not accept A4/T2 or create any claim/proof/promotion assertion.

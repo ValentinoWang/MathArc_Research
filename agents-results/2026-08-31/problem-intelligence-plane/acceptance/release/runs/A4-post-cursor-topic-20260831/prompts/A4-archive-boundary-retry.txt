@@ -1,0 +1,6 @@
+Zero-write retry of a stalled A4 archive-boundary review. Write exactly one return at agents-results/2026-08-31/problem-intelligence-plane/acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-archive-boundary.md; no other writes.
+
+Frozen identity: HEAD 46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe; candidate diff d8d847924653bb6df547094e525b61378d234b727f8f20d93418771c2b1fefd6; A4 node SHA 5aa099a7ebaf6f5ee8963131b282126bc78cc50a869405048f9f92878c6e79a4; T2 evidence SHA 42e5e5993a2705cd5a51532282f887f0950bf2634b2d4c186771b7f2a37fbaa3.
+
+Read only matharc/v02/dogfood_archives.py, tests/test_v02_dogfood_archives.py, A4 node/edge, T2 evidence/fixture contract. Run exactly `PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_dogfood_archives`. Check canonical replay compares full archive and both state snapshots, source/fixture/budget/manual-queue binding, recovery failure-closed, and no claim/trace. Return concise Markdown with: findings P0/P1 or none; command result; protected-test integrity; A4 criteria; residual risk; `proposed_state: VERIFIED` only with no P0/P1. Never accept A4.
+

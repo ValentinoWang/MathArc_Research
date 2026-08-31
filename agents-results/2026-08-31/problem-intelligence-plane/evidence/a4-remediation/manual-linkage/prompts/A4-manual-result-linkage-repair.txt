@@ -1,0 +1,32 @@
+Task ID: A4-manual-result-linkage-repair
+Direct parent: A4 acceptance.problem-intelligence.dogfood, second remediation of post-repair independent review finding.
+Decision reference: decision.problem-intelligence.amendment@2. Invalidation keys: acceptance.problem-intelligence.dogfood, implementation.problem-intelligence.dogfood-archives, edge.dogfood-archives.dogfood-acceptance.
+
+Failure evidence: agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/postrepair/returns/A4-state-integrity-review.md reports a persisted TopicItemResult with MANUAL_REVIEW can have its manual_id replaced by another non-empty identifier and its result digest recomputed without requiring a matching manual queue entry. It also identifies missing complete batch-status/item-status semantic invariants.
+
+Implement the smallest durable repair:
+1. On TopicObservationRunner state load, every MANUAL_REVIEW TopicItemResult must map to exactly one persisted ManualReviewItem whose manual_id, topic_id, cursor, and input_id agree with that result and batch. A non-manual result must not carry a manual_id.
+2. Enforce persisted TopicBatchResult status invariants against its item results. Do not invent a new public status; reuse the existing TopicRunStatus semantics as produced by `run`.
+3. Add red/green tests where stored result manual_id is changed to a non-empty value and result digest is recomputed, and where a batch status is changed and digest recomputed. Both must fail closed. Preserve existing tests without weakening, skipping, deleting, renaming, or fixture-specific bypasses.
+
+Read scope:
+- matharc/v02/topic_observation.py
+- tests/test_v02_topic_observation.py
+- matharc/v02/dogfood_archives.py
+- tests/test_v02_dogfood_archives.py
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/postrepair/returns/A4-state-integrity-review.md
+
+Allowed write scope only:
+- matharc/v02/topic_observation.py
+- tests/test_v02_topic_observation.py
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/manual-linkage/implementation-return.json
+
+Forbidden writes: dogfood code/tests, all SSOT state/views/evidence, fixtures, Git/remote state, and every other path.
+
+Commands required:
+- python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives
+- python3 -m unittest discover -s tests -p 'test_v02*.py'
+- python3 -m py_compile matharc/v02/topic_observation.py tests/test_v02_topic_observation.py
+- git diff --check
+
+Stop condition: every required command passes and both new tamper forms fail closed. Do not accept T2 or A4. Before finishing, write the worker structured return JSON with task_id, proposed_state, acceptance_self_check, failure_class, failure_origin, command_results, changed_files, new_test_names, residual_risk, and unverified_items.

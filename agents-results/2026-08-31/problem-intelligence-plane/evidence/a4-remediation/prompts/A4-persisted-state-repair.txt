@@ -1,0 +1,34 @@
+Task ID: A4-persisted-state-repair
+Direct parent: A4 acceptance.problem-intelligence.dogfood, remediation of its independent review finding.
+Decision reference: decision.problem-intelligence.amendment@2. Invalidation keys: acceptance.problem-intelligence.dogfood, implementation.problem-intelligence.dogfood-archives, edge.dogfood-archives.dogfood-acceptance.
+Frozen baseline: local acceptance commit 46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe; remote equivalent b41afbe30ee47243d83a76291c046af575ea2fc4. Protected baseline hashes: matharc/v02/dogfood_archives.py=2573c6a2b8486931abaabe589d73f6df51a57161badf5463e086e100bdb2dec9; tests/test_v02_dogfood_archives.py=cd8b242ac75add9915504e61bc9c2236a1331e817327bf53322d38193403aff6.
+
+Implement the smallest durable repair for two P1 persisted-state integrity failures found by A4-replay review:
+1. On dogfood archive replay, bind and compare the complete canonical manual-review entries from both runners, not only manual_id values. Mutating an entry's reason, detail, cursor, topic_id, or input_id while retaining manual_id must fail closed.
+2. In TopicObservationRunner persisted state, bind each stored batch result to a canonical digest and verify it on every load. Add cross-field integrity checks sufficient to reject a syntactically valid tampered stored result whose topic/cursor/next_cursor or item/input consistency conflicts with the persisted state. Existing state that lacks the new integrity data may fail closed; do not silently accept legacy integrity-poor state.
+3. Add focused red/green tests for same-ID manual-queue semantic tampering and stored batch-result tampering. Preserve all existing tests and acceptance behavior; do not weaken, skip, rename, delete, or fixture-bypass them.
+
+Read scope:
+- matharc/v02/dogfood_archives.py
+- matharc/v02/topic_observation.py
+- tests/test_v02_dogfood_archives.py
+- tests/test_v02_topic_observation.py
+- matharc/v02/schema.py
+- existing A4 review at agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-replay-retry.md
+
+Allowed write scope only:
+- matharc/v02/dogfood_archives.py
+- matharc/v02/topic_observation.py
+- tests/test_v02_dogfood_archives.py
+- tests/test_v02_topic_observation.py
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/returns/implementation.json
+
+Forbidden writes: all SSOT machine files, generated views, implementation-progress.md, T2/A4 evidence, node states, remote/git state, contracts/fixtures outside the named tests, and every other path.
+
+Commands required:
+- python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives
+- python3 -m unittest discover -s tests -p 'test_v02*.py'
+- python3 -m py_compile matharc/v02/topic_observation.py matharc/v02/dogfood_archives.py tests/test_v02_topic_observation.py tests/test_v02_dogfood_archives.py
+- git diff --check
+
+Stop condition: all required commands pass, protected pre-existing assertions remain meaningful, and the two tampering classes fail closed. Do not accept T2 or A4. Before finishing, write the sole return JSON with: task_id, proposed_state IMPLEMENTED or FAILED, acceptance_self_check pass/fail, failure_class, failure_origin, command_results, changed_files, read_scope, write_scope, protected_baseline_hashes, new_test_names, residual_risk, and unverified_items.

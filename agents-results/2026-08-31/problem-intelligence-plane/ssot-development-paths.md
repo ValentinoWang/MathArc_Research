@@ -218,8 +218,8 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | A3 | P2 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 未审计结果不得授权的专项证据通过 | source:accepted | T1 |
 | T1 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 游标重放、去重和人工通道专项及独立 AI 复审通过 | source:accepted | T2 |
 | T2 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 三个固定来源档案、重放、预算和人工闭环均通过独立 AI 复审 | source:accepted | A4 |
-| A4 | P3 | 1/1/1/1/2 | READY | 0 | 验收负责人 | EG-PLAN | T2 已接受 | source:ready | R1 |
-| R1 | P4 | 1/1/1/1/2 | BLOCKED | 0 | 评测负责人 | EG-PLAN | A4 未接受 | source:not-started | Q1 |
+| A4 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 三例档案、重放、恢复、去重和失败模式验收通过 | evidence:A4 | R1 |
+| R1 | P4 | 1/1/1/1/2 | READY | 0 | 评测负责人 | EG-PLAN | A4 已接受 | source:ready | Q1 |
 | Q1 | P4 | 1/1/1/1/2 | BLOCKED | 0 | 研究负责人 | EG-PLAN | R1 未接受 | source:not-started | A5 |
 | A5 | P4 | 1/1/1/1/2 | BLOCKED | 0 | 研究负责人和仓库所有者 | EG-PLAN | Q1 未接受 | source:not-started | 无 |
 
@@ -240,8 +240,8 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | A3 | acceptance.problem-intelligence.status-novelty | validation | novelty-audit | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | S2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.status-novelty | evidence-only | 验收负责人 |
 | T1 | implementation.problem-intelligence.topic-observation | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A3 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.topic-observation | implementation | 主题观测负责人 |
 | T2 | implementation.problem-intelligence.dogfood-archives | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.dogfood-archives | implementation | 主题观测负责人 |
-| A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | READY | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
-| R1 | implementation.problem-intelligence.regression | implementation | evaluation | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
+| A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
+| R1 | implementation.problem-intelligence.regression | implementation | evaluation | READY | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
 | Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
 | A5 | release.problem-intelligence.v0 | release-decision | governance | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | evidence-only | 研究负责人和仓库所有者 |
 
@@ -314,7 +314,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
 
-并行宽度的逻辑目标由独立交付物决定；当前正式前沿只有 A4。后续实现必须等待上游验收节点，不因已接受决定而越过依赖。
+并行宽度的逻辑目标由独立交付物决定；当前正式前沿只有 R1。后续实现必须等待上游验收节点，不因已接受决定而越过依赖。
 
 ### 假设与冲突登记
 
@@ -442,7 +442,7 @@ F1
                                                         v
                                       T1 --> T2 --> A4 --> R1 --> Q1 --> A5
 
-D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；S1、S2、A3、T1 和 T2 已接受，当前前沿是 A4。
+D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；S1、S2、A3、T1、T2 和 A4 已接受，当前前沿是 R1。
 S1 的独立纸面 dry-run 已通过；它不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
 ```
 
@@ -471,4 +471,4 @@ flowchart LR
 
 ### 结论与当前停止点
 
-当前正式前沿是 A4：D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2 已接受；R1 及后续节点仍因各自的硬依赖而阻塞。S1 的独立纸面 dry-run 没有替代 T2；T2 已用固定来源字节和重放记录完成真实档案演练。计划仍需在各后续节点完成各自的专项证据，不能把本状态标记为部署完成或数学结论。
+当前正式前沿是 R1：D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2、A4 已接受；Q1 及后续节点仍因各自的硬依赖而阻塞。A4 已独立验收 T2 的固定来源档案、重放、恢复、去重和失败模式。计划仍需在各后续节点完成各自的专项证据，不能把本状态标记为部署完成或数学结论。

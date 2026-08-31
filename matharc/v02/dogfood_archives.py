@@ -1,6 +1,6 @@
 """Offline, source-pinned execution of the three T2 dogfood archives."""
 from __future__ import annotations
-import hashlib, json, os
+import hashlib, json, os, tempfile
 from pathlib import Path
 from typing import Any, Mapping
 from .budget import BudgetLedger
@@ -8,13 +8,41 @@ from .novelty_audit import CandidateResult, NoveltyAuditPurpose, NoveltyAuditRec
 from .problem_status import ObservationDigestRef, OpenStatusCertificate, ProblemDossierSnapshot, ProblemStatus, StatementVersion
 from .schema import canonical_json, digest_json
 from .source_observation import LicenseStatus, SourceObservation
-from .topic_observation import ManualReviewReason, TopicObservationBatch, TopicObservationInput, TopicObservationRunner, TopicRunStatus
+from .topic_observation import ManualQueueObservationError, ManualReviewItem, ManualReviewReason, TopicObservationBatch, TopicObservationError, TopicObservationInput, TopicObservationRunner, TopicRunStatus
 
-_SCHEMA_VERSION = "1.1"
+_SCHEMA_VERSION = "1.2"
+_RECOVERY_CONTRACT = "dogfood-archive-recovery-v1"
+_LEGACY_SCHEMA_VERSIONS = {"1.0", "1.1"}
 _TOPIC_ID = "union-closed"
 _S1_NAMES = ("frankl-q6.json", "resolved-collision.json", "confirmed-open.json")
 _CASE_ORDER = ("P-FRANKL-Q6", "P-ARXIV-2601-22401-COLLISION", "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS")
 _ROLES = {"P-FRANKL-Q6": "frankl-q6-constrained-residual", "P-ARXIV-2601-22401-COLLISION": "database-open-literature-resolved-collision", "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS": "frankl-q6-four-or-more-small-outside-parts-residual"}
+_ARCHIVE_FIELDS = {
+    "schema_version", "recovery_contract", "topic_id", "contract_digest_sha256",
+    "fixture_identity_digest_sha256", "source_identity_digest_sha256", "fixture_files",
+    "replayed", "archive_blocked", "blocking_manual_ids", "blocking_manual_queue",
+    "cases", "budget_snapshot", "budget_digest_sha256", "no_claim_or_trace_created",
+    "archive_digest_sha256",
+}
+_CASE_FIELDS = {
+    "problem_id", "case_role", "topic_status", "replay_status", "manual_reason",
+    "review_boundary", "provenance", "status", "novelty", "promotion_allowed",
+    "claim_created", "trace_created",
+}
+_STATUS_FIELDS = {"reported_status", "validated_status", "invalidations", "dossier"}
+_NOVELTY_FIELDS = {
+    "record", "authorization_status", "complete_research_budget",
+    "public_qualitative_conclusion", "invalidations",
+}
+_PROVENANCE_FIELDS = {
+    "source_id", "source_kind", "canonical_uri", "pinned_version", "locator",
+    "artifact_path", "content_sha256",
+}
+_PROVENANCE_FIELDS_WITH_STATUS = _PROVENANCE_FIELDS | {"reported_status"}
+_STATE_SNAPSHOT_PATHS = (
+    "topic-observation/topic-observation-state.json",
+    "residual-budget/topic-observation-state.json",
+)
 
 class DogfoodArchiveError(ValueError):
     """Raised when a fixture, source artifact, or persisted archive is invalid."""
@@ -41,8 +69,23 @@ class DogfoodArchiveRunner:
         self.contract = self._load_contract()
         fixtures = self._load_s1_fixtures()
         specs = self._load_source_specs()
-        if self.result_path.exists(): return self._replay(specs)
-        return self._execute(fixtures, specs)
+        try:
+            if self.result_path.exists(): return self._replay(specs)
+            return self._execute(fixtures, specs)
+        except DogfoodArchiveError:
+            raise
+        except ManualQueueObservationError as exc:
+            raise DogfoodArchiveError(
+                f"topic observation manual queue does not match persisted archive: {exc}"
+            ) from exc
+        except TopicObservationError as exc:
+            raise DogfoodArchiveError(
+                f"topic observation state is missing or invalid: {exc}"
+            ) from exc
+        except (KeyError, TypeError, ValueError, OSError) as exc:
+            raise DogfoodArchiveError(
+                f"topic observation state is missing or invalid: {exc}"
+            ) from exc
 
     def _load_contract(self) -> dict[str, Any]:
         try: contract = json.loads(self.contract_path.read_text(encoding="utf-8"))
@@ -157,11 +200,12 @@ class DogfoodArchiveRunner:
         rr = residual_runner.run(TopicObservationBatch(_TOPIC_ID, "budget-c0", "budget-c1", ri))
         if rr.status is not TopicRunStatus.MANUAL_REVIEW: raise DogfoodArchiveError("residual budget boundary failed")
         rs = self._insufficient_status(fixtures[_CASE_ORDER[2]], ri[0].observation, residual_runner)
-        blocking = sorted(item.manual_id for item in (*main.manual_queue, *residual_runner.manual_queue))
+        blocking_entries = self._manual_queue_entries(main, residual_runner)
+        blocking = [item["manual_id"] for item in blocking_entries]
         budget_snapshot = budget.to_dict()
         if budget_snapshot != self.contract["expected_budget_snapshot"]:
             raise DogfoodArchiveError("executed residual budget does not match T2 contract")
-        result = {"schema_version": _SCHEMA_VERSION, "topic_id": _TOPIC_ID, "contract_digest_sha256": self._contract_digest(), "fixture_identity_digest_sha256": digest_json(self.contract["fixture_sha256"]), "source_identity_digest_sha256": digest_json(specs), "fixture_files": list(_S1_NAMES), "replayed": False, "archive_blocked": bool(blocking), "blocking_manual_ids": blocking, "cases": [self._case(fixtures[_CASE_ORDER[0]], fp, first.status.value, replay.status.value, cs[0], "LIMITED_REPORTED_OPEN_NO_PROMOTION"), self._case(fixtures[_CASE_ORDER[1]], cp, cr.status.value, dr.item_results[0].status.value, cs[1], "REPORTED_RESOLUTION_REQUIRES_INDEPENDENT_MATHEMATICAL_REVIEW", ManualReviewReason.HIGH_RISK_EVENT.value, self._collision_audit(fixtures[_CASE_ORDER[1]], cp, observations, main)), self._case(fixtures[_CASE_ORDER[2]], rp, rr.status.value, "NOT_APPLICABLE", rs, "REPORTED_OPEN_EVIDENCE_INSUFFICIENT_NO_PROMOTION", ManualReviewReason.BUDGET_EXHAUSTED.value)], "budget_snapshot": budget_snapshot, "budget_digest_sha256": digest_json(budget_snapshot), "no_claim_or_trace_created": self._no_claim_or_trace_created()}
+        result = {"schema_version": _SCHEMA_VERSION, "recovery_contract": _RECOVERY_CONTRACT, "topic_id": _TOPIC_ID, "contract_digest_sha256": self._contract_digest(), "fixture_identity_digest_sha256": digest_json(self.contract["fixture_sha256"]), "source_identity_digest_sha256": digest_json(specs), "fixture_files": list(_S1_NAMES), "replayed": False, "archive_blocked": bool(blocking), "blocking_manual_ids": blocking, "blocking_manual_queue": blocking_entries, "cases": [self._case(fixtures[_CASE_ORDER[0]], fp, first.status.value, replay.status.value, cs[0], "LIMITED_REPORTED_OPEN_NO_PROMOTION"), self._case(fixtures[_CASE_ORDER[1]], cp, cr.status.value, dr.item_results[0].status.value, cs[1], "REPORTED_RESOLUTION_REQUIRES_INDEPENDENT_MATHEMATICAL_REVIEW", ManualReviewReason.HIGH_RISK_EVENT.value, self._collision_audit(fixtures[_CASE_ORDER[1]], cp, observations, main)), self._case(fixtures[_CASE_ORDER[2]], rp, rr.status.value, "NOT_APPLICABLE", rs, "REPORTED_OPEN_EVIDENCE_INSUFFICIENT_NO_PROMOTION", ManualReviewReason.BUDGET_EXHAUSTED.value)], "budget_snapshot": budget_snapshot, "budget_digest_sha256": digest_json(budget_snapshot), "no_claim_or_trace_created": self._no_claim_or_trace_created()}
         if not result["archive_blocked"] or not result["no_claim_or_trace_created"]: raise DogfoodArchiveError("dogfood archive boundary failed")
         self._assert_contract_results(result)
         self._save(result); return result
@@ -196,6 +240,175 @@ class DogfoodArchiveRunner:
     def _contract_digest(self): return hashlib.sha256(self.contract_path.read_bytes()).hexdigest()
     def _no_claim_or_trace_created(self): return not any(path.name in {"claims.json", "research-trace.json", "trace.json"} for path in self.root.rglob("*.json"))
 
+    @staticmethod
+    def _manual_queue_entries(*runners: TopicObservationRunner) -> list[dict[str, str]]:
+        return [
+            item.to_dict()
+            for item in sorted(
+                (entry for runner in runners for entry in runner.manual_queue),
+                key=lambda entry: entry.manual_id,
+            )
+        ]
+
+    @staticmethod
+    def _archive_body(payload: Mapping[str, Any]) -> dict[str, Any]:
+        return {
+            key: value
+            for key, value in payload.items()
+            if key not in {"archive_digest_sha256", "replayed"}
+        }
+
+    @staticmethod
+    def _require_bool(value: object, field: str) -> None:
+        if type(value) is not bool:
+            raise DogfoodArchiveError(f"{field} must be bool")
+
+    @staticmethod
+    def _require_string_list(value: object, field: str) -> None:
+        if not isinstance(value, list) or any(not isinstance(item, str) for item in value):
+            raise DogfoodArchiveError(f"{field} must be an array of strings")
+
+    @classmethod
+    def _validate_case_shape(cls, case: object) -> None:
+        if not isinstance(case, dict):
+            raise DogfoodArchiveError("persisted archive case must be an object")
+        _fields(case, _CASE_FIELDS, "persisted archive case")
+        for field in (
+            "problem_id", "case_role", "topic_status", "replay_status", "review_boundary",
+        ):
+            _text(case[field], f"persisted case {field}")
+        if case["manual_reason"] is not None:
+            _text(case["manual_reason"], "persisted case manual_reason")
+        for field in ("promotion_allowed", "claim_created", "trace_created"):
+            cls._require_bool(case[field], f"persisted case {field}")
+
+        provenance = case["provenance"]
+        if not isinstance(provenance, list) or not provenance:
+            raise DogfoodArchiveError("persisted case provenance must be a non-empty array")
+        for source in provenance:
+            if not isinstance(source, dict) or set(source) not in (
+                _PROVENANCE_FIELDS, _PROVENANCE_FIELDS_WITH_STATUS,
+            ):
+                raise DogfoodArchiveError("persisted case provenance has invalid fields")
+            for field in (
+                "source_id", "source_kind", "canonical_uri", "pinned_version", "locator", "artifact_path",
+            ):
+                _text(source[field], f"persisted provenance {field}")
+            if not isinstance(source["content_sha256"], str) or len(source["content_sha256"]) != 64:
+                raise DogfoodArchiveError("persisted provenance content_sha256 must be a SHA-256 digest")
+            if "reported_status" in source:
+                _text(source["reported_status"], "persisted provenance reported_status")
+
+        status = case["status"]
+        if not isinstance(status, dict):
+            raise DogfoodArchiveError("persisted case status must be an object")
+        _fields(status, _STATUS_FIELDS, "persisted case status")
+        _text(status["reported_status"], "persisted case reported_status")
+        _text(status["validated_status"], "persisted case validated_status")
+        cls._require_string_list(status["invalidations"], "persisted case invalidations")
+        if not isinstance(status["dossier"], dict):
+            raise DogfoodArchiveError("persisted case dossier must be an object")
+
+        novelty = case["novelty"]
+        if novelty is not None:
+            if not isinstance(novelty, dict):
+                raise DogfoodArchiveError("persisted case novelty must be an object or null")
+            _fields(novelty, _NOVELTY_FIELDS, "persisted case novelty")
+            if not isinstance(novelty["record"], dict):
+                raise DogfoodArchiveError("persisted case novelty record must be an object")
+            _text(novelty["authorization_status"], "persisted novelty authorization_status")
+            cls._require_bool(
+                novelty["complete_research_budget"],
+                "persisted novelty complete_research_budget",
+            )
+            cls._require_bool(
+                novelty["public_qualitative_conclusion"],
+                "persisted novelty public_qualitative_conclusion",
+            )
+            cls._require_string_list(novelty["invalidations"], "persisted novelty invalidations")
+
+    @classmethod
+    def _validate_archive_shape(cls, payload: Mapping[str, Any]) -> None:
+        _fields(payload, _ARCHIVE_FIELDS, "persisted archive")
+        for field in (
+            "schema_version", "recovery_contract", "topic_id", "contract_digest_sha256",
+            "fixture_identity_digest_sha256", "source_identity_digest_sha256", "budget_digest_sha256",
+            "archive_digest_sha256",
+        ):
+            _text(payload[field], f"persisted archive {field}")
+        for field in (
+            "contract_digest_sha256", "fixture_identity_digest_sha256", "source_identity_digest_sha256",
+            "budget_digest_sha256", "archive_digest_sha256",
+        ):
+            value = payload[field]
+            if len(value) != 64 or any(character not in "0123456789abcdef" for character in value):
+                raise DogfoodArchiveError(f"persisted archive {field} must be a lowercase SHA-256 digest")
+        cls._require_bool(payload["replayed"], "persisted archive replayed")
+        cls._require_bool(payload["archive_blocked"], "persisted archive archive_blocked")
+        cls._require_bool(payload["no_claim_or_trace_created"], "persisted archive no_claim_or_trace_created")
+        if not isinstance(payload["fixture_files"], list) or any(
+            not isinstance(item, str) for item in payload["fixture_files"]
+        ):
+            raise DogfoodArchiveError("persisted archive fixture_files must be an array of strings")
+        cls._require_string_list(payload["blocking_manual_ids"], "persisted archive blocking_manual_ids")
+        if not isinstance(payload["blocking_manual_queue"], list):
+            raise DogfoodArchiveError("persisted archive blocking_manual_queue must be an array")
+        if not isinstance(payload["cases"], list):
+            raise DogfoodArchiveError("persisted archive cases must be an array")
+        for case in payload["cases"]:
+            cls._validate_case_shape(case)
+        if not isinstance(payload["budget_snapshot"], dict):
+            raise DogfoodArchiveError("persisted archive budget_snapshot must be an object")
+
+    @staticmethod
+    def _read_json_object(path: Path, name: str) -> dict[str, Any]:
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (OSError, json.JSONDecodeError) as exc:
+            raise DogfoodArchiveError(f"{name} is unreadable") from exc
+        if not isinstance(payload, dict):
+            raise DogfoodArchiveError(f"{name} must be an object")
+        return payload
+
+    def _canonical_expected_execution(
+        self,
+        fixtures: Mapping[str, Mapping[str, Any]],
+        specs: Mapping[str, list[dict[str, str]]],
+    ) -> tuple[dict[str, Any], dict[str, dict[str, Any]]]:
+        with tempfile.TemporaryDirectory(prefix="matharc-dogfood-archive-") as directory:
+            expected_runner = DogfoodArchiveRunner(directory, self.fixture_root)
+            expected_runner.contract = self.contract
+            expected_runner._execute(fixtures, specs)
+            expected_archive = self._read_json_object(
+                expected_runner.result_path,
+                "canonical dogfood-archives.json",
+            )
+            expected_states = {
+                relative: self._read_json_object(Path(directory) / relative, f"canonical {relative}")
+                for relative in _STATE_SNAPSHOT_PATHS
+            }
+            return expected_archive, expected_states
+
+    def _assert_canonical_execution(
+        self,
+        payload: Mapping[str, Any],
+        expected_archive: Mapping[str, Any],
+        expected_states: Mapping[str, Mapping[str, Any]],
+    ) -> None:
+        for relative, expected_state in expected_states.items():
+            actual_state = self._read_json_object(self.root / relative, f"persisted {relative}")
+            if actual_state != expected_state:
+                raise DogfoodArchiveError(
+                    "persisted topic observation state does not match canonical dogfood state"
+                )
+        if (
+            self._archive_body(payload) != self._archive_body(expected_archive)
+            or payload["archive_digest_sha256"] != expected_archive["archive_digest_sha256"]
+        ):
+            raise DogfoodArchiveError(
+                "persisted archive does not match canonical dogfood execution"
+            )
+
     def _replay(self, specs):
         payload = self._load_result()
         if payload["contract_digest_sha256"] != self._contract_digest() or payload["fixture_identity_digest_sha256"] != digest_json(self.contract["fixture_sha256"]) or payload["source_identity_digest_sha256"] != digest_json(specs): raise DogfoodArchiveError("contract or source identity drift on replay")
@@ -204,8 +417,9 @@ class DogfoodArchiveRunner:
         residual = TopicObservationRunner(self.root / "residual-budget", topic_id=_TOPIC_ID, initial_cursor="budget-c0", budget=residual_budget)
         if not (main.next_cursor == "dogfood-c4" and residual.next_cursor == "budget-c1"):
             raise DogfoodArchiveError("topic observation state is missing or has invalid cursor")
-        manual_ids = sorted(item.manual_id for item in (*main.manual_queue, *residual.manual_queue))
-        if manual_ids != sorted(payload["blocking_manual_ids"]):
+        blocking_entries = self._manual_queue_entries(main, residual)
+        manual_ids = [item["manual_id"] for item in blocking_entries]
+        if manual_ids != payload["blocking_manual_ids"] or digest_json(blocking_entries) != digest_json(payload["blocking_manual_queue"]):
             raise DogfoodArchiveError("topic observation manual queue does not match persisted archive")
         if len(main.literature.observations) != 4 or len(residual.literature.observations) != 0:
             raise DogfoodArchiveError("topic observation ArtifactStore state is missing or inconsistent")
@@ -215,15 +429,42 @@ class DogfoodArchiveRunner:
         if payload["budget_snapshot"] != reconstructed_budget:
             raise DogfoodArchiveError("persisted budget snapshot does not match reconstructed residual budget")
         if not payload["no_claim_or_trace_created"] or not self._no_claim_or_trace_created(): raise DogfoodArchiveError("claim or trace artifact is forbidden on replay")
+        fixtures = self._load_s1_fixtures()
+        expected_archive, expected_states = self._canonical_expected_execution(fixtures, specs)
         self._assert_contract_results(payload)
+        self._assert_canonical_execution(payload, expected_archive, expected_states)
         payload["replayed"] = True; self._save(payload); return payload
 
     def _assert_contract_results(self, result: Mapping[str, Any]) -> None:
-        cases = {case["problem_id"]: case for case in result["cases"]}
+        raw_cases = result.get("cases")
+        expected_ids = tuple(case["problem_id"] for case in self.contract["cases"])
+        if (
+            not isinstance(raw_cases, list)
+            or any(not isinstance(case, dict) or not isinstance(case.get("problem_id"), str) for case in raw_cases)
+        ):
+            raise DogfoodArchiveError(
+                "persisted result must contain exactly the contract case IDs once each"
+            )
+        case_ids = [case["problem_id"] for case in raw_cases]
+        if (
+            len(case_ids) != len(expected_ids)
+            or len(set(case_ids)) != len(case_ids)
+            or set(case_ids) != set(expected_ids)
+        ):
+            raise DogfoodArchiveError(
+                "persisted result must contain exactly the contract case IDs once each"
+            )
+        cases = {case["problem_id"]: case for case in raw_cases}
         for expected in self.contract["cases"]:
             actual = cases.get(expected["problem_id"])
             if actual is None:
                 raise DogfoodArchiveError("persisted result is missing a contract case")
+            self._validate_case_shape(actual)
+            for field in ("promotion_allowed", "claim_created", "trace_created"):
+                if actual.get(field) is not False:
+                    raise DogfoodArchiveError(
+                        f"persisted case {expected['problem_id']} must have {field}=False"
+                    )
             checks = {
                 "case_role": expected["case_role"],
                 "topic_status": expected["expected_topic_status"],
@@ -243,9 +484,33 @@ class DogfoodArchiveRunner:
         try: payload = json.loads(self.result_path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc: raise DogfoodArchiveError("persisted archive is unreadable") from exc
         if not isinstance(payload, dict): raise DogfoodArchiveError("persisted archive must be an object")
-        required = {"schema_version", "topic_id", "contract_digest_sha256", "fixture_identity_digest_sha256", "source_identity_digest_sha256", "fixture_files", "replayed", "archive_blocked", "blocking_manual_ids", "cases", "budget_snapshot", "budget_digest_sha256", "no_claim_or_trace_created", "archive_digest_sha256"}
-        _fields(payload, required, "persisted archive")
+        schema_version = payload.get("schema_version")
+        if schema_version in _LEGACY_SCHEMA_VERSIONS:
+            raise DogfoodArchiveError(
+                f"persisted archive schema_version {schema_version!r} is legacy; "
+                f"recovery contract {_RECOVERY_CONTRACT!r} requires preserving the "
+                "legacy archive and rerunning the checked-in dogfood inputs"
+            )
+        if schema_version != _SCHEMA_VERSION:
+            raise DogfoodArchiveError(
+                f"unsupported persisted archive schema_version {schema_version!r}; "
+                f"recovery contract {_RECOVERY_CONTRACT!r} requires an explicit "
+                "operator recovery"
+            )
+        self._validate_archive_shape(payload)
+        if payload["recovery_contract"] != _RECOVERY_CONTRACT:
+            raise DogfoodArchiveError("persisted archive recovery contract does not match the current schema")
         if payload["schema_version"] != _SCHEMA_VERSION or payload["topic_id"] != _TOPIC_ID or payload["fixture_files"] != list(_S1_NAMES) or not payload["archive_blocked"]: raise DogfoodArchiveError("persisted archive identity or fixture contract mismatch")
+        if not isinstance(payload["blocking_manual_queue"], list) or any(not isinstance(item, dict) for item in payload["blocking_manual_queue"]):
+            raise DogfoodArchiveError("persisted manual queue is malformed")
+        try:
+            normalized_entries = [ManualReviewItem.from_dict(item).to_dict() for item in payload["blocking_manual_queue"]]
+        except (KeyError, TypeError, ValueError) as exc:
+            raise DogfoodArchiveError("persisted manual queue is malformed") from exc
+        if digest_json(normalized_entries) != digest_json(payload["blocking_manual_queue"]):
+            raise DogfoodArchiveError("persisted manual queue is not canonical")
+        if [item["manual_id"] for item in normalized_entries] != payload["blocking_manual_ids"]:
+            raise DogfoodArchiveError("persisted manual queue IDs do not match entries")
         if payload["budget_digest_sha256"] != self.contract["expected_budget_digest_sha256"]: raise DogfoodArchiveError("persisted budget snapshot identity mismatch")
         if payload["budget_digest_sha256"] != digest_json(payload["budget_snapshot"]): raise DogfoodArchiveError("persisted budget snapshot digest mismatch")
         digest_payload = {k: v for k, v in payload.items() if k not in {"archive_digest_sha256", "replayed"}}

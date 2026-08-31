@@ -1,0 +1,13 @@
+Task ID: A4-replay-retry
+Retry reason: the first frozen A4-replay review ended with Responses transport 503 before writing its return. Perform a concise independent read-only conclusion only.
+
+Frozen identity: local commit 46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe; remote equivalent b41afbe30ee47243d83a76291c046af575ea2fc4; T2 evidence SHA-256 42e5e5993a2705cd5a51532282f887f0950bf2634b2d4c186771b7f2a37fbaa3; module SHA-256 2573c6a2b8486931abaabe589d73f6df51a57161badf5463e086e100bdb2dec9; test SHA-256 cd8b242ac75add9915504e61bc9c2236a1331e817327bf53322d38193403aff6.
+
+Read only: matharc/v02/dogfood_archives.py; matharc/v02/topic_observation.py; matharc/v02/budget.py; tests/test_v02_dogfood_archives.py; agents-results/2026-08-31/problem-intelligence-plane/evidence/T2.json; agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/.
+
+Decide only whether these acceptance requirements pass: restart revalidates source, fixture, contract, state, manual queue and complete budget snapshot; replay/dedup/missing-state/manual-queue failure paths fail closed; recomputing internal digests cannot conceal budget drift. Run only `python3 -m unittest -v tests.test_v02_dogfood_archives` if needed.
+
+Do not modify anything except this exact return file:
+agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-replay-retry.md
+
+Write the return before any optional exploration. It must begin `STATE: PASS`, `STATE: CONDITIONAL`, or `STATE: BLOCKED`, then list findings with severity/path/line, command result, residual risk, failure_class, failure_origin, changed_files, and `proposed_state: REVIEWED`. Do not accept A4.

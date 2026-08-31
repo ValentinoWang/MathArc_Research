@@ -1,0 +1,63 @@
+{
+  "task_id": "A4-persisted-state-repair",
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_self_check": "pass",
+  "failure_class": "none",
+  "failure_origin": "none",
+  "command_results": {
+    "python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives": {
+      "exit_code": 0,
+      "result": "pass",
+      "summary": "14 tests passed"
+    },
+    "python3 -m unittest discover -s tests -p 'test_v02*.py'": {
+      "exit_code": 0,
+      "result": "pass",
+      "summary": "200 tests passed, 8 skipped"
+    },
+    "python3 -m py_compile matharc/v02/topic_observation.py matharc/v02/dogfood_archives.py tests/test_v02_topic_observation.py tests/test_v02_dogfood_archives.py": {
+      "exit_code": 0,
+      "result": "pass"
+    },
+    "git diff --check": {
+      "exit_code": 0,
+      "result": "pass"
+    }
+  },
+  "changed_files": [
+    "matharc/v02/dogfood_archives.py",
+    "matharc/v02/topic_observation.py",
+    "tests/test_v02_dogfood_archives.py",
+    "tests/test_v02_topic_observation.py"
+  ],
+  "read_scope": [
+    "matharc/v02/dogfood_archives.py",
+    "matharc/v02/topic_observation.py",
+    "tests/test_v02_dogfood_archives.py",
+    "tests/test_v02_topic_observation.py",
+    "matharc/v02/schema.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-review-lanes/returns/A4-replay-retry.md"
+  ],
+  "write_scope": [
+    "matharc/v02/dogfood_archives.py",
+    "matharc/v02/topic_observation.py",
+    "tests/test_v02_dogfood_archives.py",
+    "tests/test_v02_topic_observation.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/returns/implementation.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/artifacts/returns/A4-persisted-state-repair-primary.json"
+  ],
+  "protected_baseline_hashes": {
+    "matharc/v02/dogfood_archives.py": "2573c6a2b8486931abaabe589d73f6df51a57161badf5463e086e100bdb2dec9",
+    "tests/test_v02_dogfood_archives.py": "cd8b242ac75add9915504e61bc9c2236a1331e817327bf53322d38193403aff6"
+  },
+  "new_test_names": [
+    "test_same_manual_id_manual_queue_semantic_tampering_fails_closed",
+    "test_tampered_stored_batch_result_digest_fails_closed",
+    "test_tampered_stored_batch_result_cross_fields_fail_closed"
+  ],
+  "residual_risk": "Legacy topic-observation state without the new integrity fields is intentionally rejected and is not migrated. The digests bind local persisted records but do not provide an external trust anchor against a fully compromised host.",
+  "unverified_items": [
+    "Remote or git delivery state was not verified; it is outside the bounded task.",
+    "T2 and A4 acceptance or release verification was not performed; this attempt only supplies the implementation and local command evidence."
+  ]
+}

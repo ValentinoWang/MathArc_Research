@@ -1,0 +1,52 @@
+{
+  "task_id": "A4-manual-result-linkage-repair",
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_self_check": "pass",
+  "failure_class": "none",
+  "failure_origin": "none",
+  "command_results": [
+    {
+      "command": "python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives",
+      "exit_code": 0,
+      "result": "PASS; 16 tests, 0 failures"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_v02*.py'",
+      "exit_code": 0,
+      "result": "PASS; 202 tests, 8 existing skips"
+    },
+    {
+      "command": "python3 -m py_compile matharc/v02/topic_observation.py tests/test_v02_topic_observation.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "bash agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/manual-linkage/validation.sh",
+      "exit_code": 0,
+      "result": "PASS; required validation sequence completed"
+    }
+  ],
+  "changed_files": [
+    "matharc/v02/topic_observation.py",
+    "tests/test_v02_topic_observation.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/manual-linkage/implementation-return.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/manual-linkage/artifacts/returns/A4-manual-result-linkage-repair-primary.json"
+  ],
+  "new_test_names": [
+    "test_tampered_stored_manual_result_linkage_fails_closed_after_digest_recompute",
+    "test_tampered_stored_batch_status_fails_closed_after_digest_recompute"
+  ],
+  "residual_risk": [
+    "Digests remain local integrity signals without an external trust anchor on a fully compromised host.",
+    "Queue-entry semantic tampering with a stale manual_id remains owned by the existing dogfood archive replay boundary; no dogfood source or test was changed in this task."
+  ],
+  "unverified_items": [
+    "T2 and A4 acceptance, release, promotion, and independent mathematical proof were not performed by instruction.",
+    "No remote or production/device evidence was requested or established."
+  ]
+}

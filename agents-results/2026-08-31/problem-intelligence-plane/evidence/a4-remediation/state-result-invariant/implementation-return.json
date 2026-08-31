@@ -1,0 +1,100 @@
+{
+  "task_id": "A4-persisted-result-invariant-repair",
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_self_check": "pass",
+  "failure_class": "persisted_topic_item_disposition_semantic_integrity_gap",
+  "failure_origin": "result_digest_sha256 covered only the mutable TopicBatchResult object, so a recomputed digest could change an item disposition without changing persisted LiteratureBase evidence, processed-input state, seen keys, or manual queue state",
+  "root_cause": "The durable result did not record or validate the reason that each TopicItemResult disposition was produced. Manual results also had only one-way linkage to the queue, so a queue entry could remain orphaned after the result was changed.",
+  "invariant": [
+    "NEW_IMPORT derives only IMPORTED and requires an observed LiteratureBase record, a matching persisted artifact, and IMPORTED import evidence",
+    "EXISTING_OBSERVED derives only IDEMPOTENT and requires an observed LiteratureBase record, artifact, and IDEMPOTENT import evidence",
+    "SEEN_OBSERVATION_KEY and PROCESSED_INPUT_REPLAY derive only DUPLICATE from persisted seen-key or prior-batch evidence",
+    "PENDING_OBSERVATION derives only PENDING from a persisted PENDING LiteratureBase record and PENDING import evidence",
+    "MANUAL_QUEUE derives only MANUAL_REVIEW and requires an exactly matching persisted ManualReviewItem",
+    "Every manual queue entry is referenced exactly once by a manual result or a persisted cursor-conflict event"
+  ],
+  "repair": {
+    "topic_observation": "Added durable disposition_evidence per input, result-digest verification, LiteratureBase and ArtifactStore readback checks, prior-batch duplicate checks, aggregate-status checks, bidirectional manual queue closure, and deterministic manual_id validation.",
+    "dogfood_archive": "Versioned the archive schema and recovery contract, and retained replay checks for reconstructed topic state, complete manual queue entries, case set, budget, source identity, and no-claim/no-trace boundaries."
+  },
+  "migration_recovery": {
+    "topic_state": {
+      "schema_version": "1.2",
+      "recovery_contract": "topic-observation-state-recovery-v1",
+      "legacy_versions": ["1.0", "1.1"],
+      "behavior": "Legacy or unknown state versions fail closed. The error requires preserving the legacy state and replaying authoritative source batches into a new state root; the loader never rewrites or silently discards the legacy file."
+    },
+    "dogfood_archive": {
+      "schema_version": "1.2",
+      "recovery_contract": "dogfood-archive-recovery-v1",
+      "legacy_versions": ["1.0", "1.1"],
+      "behavior": "Legacy or unknown archive versions fail closed. The error requires preserving the legacy archive and rerunning the checked-in dogfood inputs; replay never silently upgrades the old archive."
+    }
+  },
+  "red_green_proof": {
+    "status": "pass",
+    "red": {
+      "status": "pass",
+      "tests": [
+        "TopicObservationTests.test_imported_result_disposition_mutations_fail_closed_after_digest_recompute",
+        "TopicObservationTests.test_manual_result_cannot_become_imported_with_orphan_queue_after_digest_recompute",
+        "TopicObservationTests.test_valid_orphaned_manual_queue_entry_fails_closed",
+        "DogfoodArchiveTests.test_topic_manual_result_tampering_fails_closed_on_archive_replay",
+        "TopicObservationTests.test_legacy_topic_state_requires_recovery_contract_and_is_preserved",
+        "DogfoodArchiveTests.test_legacy_archive_requires_recovery_contract_and_is_preserved"
+      ],
+      "details": "Persisted mutations recomputed result_digest_sha256 where applicable. IMPORTED to IDEMPOTENT, DUPLICATE, and PENDING, MANUAL_REVIEW to IMPORTED with manual_id cleared and aggregate status changed, and a semantically valid orphan queue entry all fail on reload or archive replay."
+    },
+    "green": {
+      "status": "pass",
+      "tests": [
+        "TopicObservationTests.test_single_topic_batch_replays_after_restart_without_second_import",
+        "TopicObservationTests.test_preexisting_observation_is_idempotent_and_replays",
+        "TopicObservationTests.test_restricted_observation_remains_pending_and_replays",
+        "DogfoodArchiveTests.test_three_real_archives_persist_replay_budget_and_nonpromotion_boundaries"
+      ],
+      "details": "Fresh import, valid idempotent replay, valid pending result, duplicate/conflict routing, manual review, cursor replay, dogfood archive replay, budget checks, and no-claim/no-trace boundaries remain passing."
+    }
+  },
+  "command_results": [
+    {
+      "command": "python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives",
+      "status": "pass",
+      "summary": "30 tests passed"
+    },
+    {
+      "command": "python3 -m unittest discover -s tests -p 'test_v02*.py'",
+      "status": "pass",
+      "summary": "216 tests passed, 8 skipped"
+    },
+    {
+      "command": "python3 -m py_compile matharc/v02/topic_observation.py matharc/v02/dogfood_archives.py tests/test_v02_topic_observation.py tests/test_v02_dogfood_archives.py",
+      "status": "pass",
+      "summary": "All touched source and test files compiled"
+    },
+    {
+      "command": "git diff --check",
+      "status": "pass",
+      "summary": "No whitespace errors"
+    },
+    {
+      "command": "python3 -m json.tool agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/state-result-invariant/implementation-return.json",
+      "status": "pass",
+      "summary": "Return evidence is valid JSON"
+    }
+  ],
+  "changed_files": [
+    "matharc/v02/topic_observation.py",
+    "matharc/v02/dogfood_archives.py",
+    "tests/test_v02_topic_observation.py",
+    "tests/test_v02_dogfood_archives.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/state-result-invariant/implementation-return.json"
+  ],
+  "remaining_integrity_boundary": "The local result and archive digests plus persisted-source checks detect the requested replay mutations, but a fully compromised host can rewrite every local state input and recompute every local digest. There is no external trust anchor or production/device evidence in this bounded repair. The pipeline retains the no-claim/no-trace boundary.",
+  "acceptance_boundary": "This does not accept A4 or T2, does not create a promotion, and establishes no independent mathematical proof or release acceptance.",
+  "git_policy": "No commit, push, network operation, remote change, SSOT change, Harness change, or previous-evidence rewrite was performed.",
+  "unverified_items": [
+    "Formal A4/T2 acceptance and promotion remain unperformed by instruction",
+    "External or production/device readback remains unverified"
+  ]
+}

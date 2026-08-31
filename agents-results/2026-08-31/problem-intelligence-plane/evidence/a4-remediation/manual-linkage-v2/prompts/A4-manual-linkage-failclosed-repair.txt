@@ -1,0 +1,28 @@
+Task ID: A4-manual-linkage-failclosed-repair
+
+Direct parent: A4 acceptance.problem-intelligence.dogfood. This is a bounded repair of a rejected A4 remediation candidate.
+
+Frozen failure finding: In matharc/v02/topic_observation.py state loading, the current manual-result linkage validation contains fail-open branches. In particular, it currently continues when a matching queue record has an invalid recomputed manual_id and when manual_queue is empty. This violates the requirement that every persisted MANUAL_REVIEW result maps to exactly one valid ManualReviewItem.
+
+Allowed write scope only:
+- matharc/v02/topic_observation.py
+- tests/test_v02_topic_observation.py
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/manual-linkage-v2/implementation-return.json
+
+Forbidden writes:
+- all other source and test files
+- all SSOT state, views, acceptance evidence, fixtures, Git state, and remote state
+
+Implement the smallest durable fail-closed repair:
+1. For every persisted MANUAL_REVIEW TopicItemResult, require exactly one ManualReviewItem with the same manual_id, topic_id, cursor, and input_id.
+2. Require that this queue item's manual_id equals _manual_id_for computed from its complete queue fields. Any mismatch, an absent queue, a nonmatching queue item, or a non-manual item carrying manual_id must raise TopicObservationError.
+3. Preserve the existing persisted batch-status/item-status invariant.
+4. Add focused tests that recompute the stored result digest after: (a) deleting the matching manual queue entry, (b) changing a queue entry manual_id so it no longer matches its own fields, and (c) changing an item to non-manual with manual_id. Each must fail closed. Do not weaken or remove existing tests.
+
+Required commands:
+- python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives
+- python3 -m unittest discover -s tests -p 'test_v02*.py'
+- python3 -m py_compile matharc/v02/topic_observation.py tests/test_v02_topic_observation.py
+- git diff --check
+
+Before exit, write one JSON object to STRUCTURED_RETURN_PATH and the implementation-return.json path. Include task_id, proposed_state, acceptance_self_check, failure_class, failure_origin, command_results, changed_files, new_test_names, residual_risk, and unverified_items. proposed_state must be IMPLEMENTED only after all commands pass. Do not accept A4 or T2.

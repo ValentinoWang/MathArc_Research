@@ -1,0 +1,36 @@
+{
+  "task_id": "A4-archive-error-boundary-repair",
+  "proposed_state": "VERIFIED",
+  "acceptance_self_check": "pass",
+  "failure_class": "none",
+  "failure_origin": "none",
+  "command_results": {
+    "python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives": {
+      "status": "pass",
+      "summary": "19 tests passed"
+    },
+    "python3 -m unittest discover -s tests -p 'test_v02*.py'": {
+      "status": "pass",
+      "summary": "205 tests passed, 8 skipped"
+    },
+    "python3 -m py_compile matharc/v02/dogfood_archives.py tests/test_v02_dogfood_archives.py": {
+      "status": "pass"
+    },
+    "git diff --check": {
+      "status": "pass"
+    },
+    "temporary boundary exception type, category, and chaining check": {
+      "status": "pass",
+      "summary": "Missing-state archive diagnostic was preserved; manual-queue tampering returned DogfoodArchiveError chained from TopicObservationError"
+    }
+  },
+  "changed_files": [
+    "matharc/v02/dogfood_archives.py"
+  ],
+  "new_test_names": [],
+  "residual_risk": "Boundary classification relies on the current stable manual-queue and manual-review diagnostic markers; a future manual-queue validation message with neither marker would receive the generic state diagnostic.",
+  "unverified_items": [
+    "Formal A4 and T2 acceptance was not performed by this bounded repair.",
+    "No commit, push, deployment, or remote acceptance was requested or performed."
+  ]
+}

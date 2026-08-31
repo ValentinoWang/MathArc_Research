@@ -1,0 +1,26 @@
+Task ID: A4-archive-error-boundary-repair
+
+Direct parent: A4 acceptance.problem-intelligence.dogfood. This is a bounded quality-gate repair following strict persisted manual queue linkage.
+
+Root-cause evidence: `python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives` now proves manual queue state tampering fails in `TopicObservationRunner`, but `DogfoodArchiveRunner.run()` lets `TopicObservationError` escape during replay. The archive runner's public contract and existing dogfood tests require `DogfoodArchiveError`. Existing red tests cover both missing topic state (expects a message containing `state is missing`) and manual-queue state tampering (expects a message containing `manual queue does not match`).
+
+Allowed write scope only:
+- matharc/v02/dogfood_archives.py
+- tests/test_v02_dogfood_archives.py
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/archive-error-boundary/implementation-return.json
+
+Forbidden writes: all other source/test files, SSOT state/views/acceptance evidence, fixtures, Git/remote state.
+
+Implement the smallest durable repair at the public DogfoodArchiveRunner boundary:
+1. Translate any underlying TopicObservationError emitted while executing/replaying into DogfoodArchiveError, preserving exception chaining.
+2. Preserve stable diagnostic categories expected by existing tests: manual-queue integrity failures must contain `manual queue does not match`; other replay state failures must contain `state is missing` or preserve the precise archive-level diagnostic where existing code already produces one.
+3. Do not alter TopicObservationRunner validation, weaken red tests, alter archived inputs, or introduce cross-module exception inheritance/circular imports.
+4. Add a focused boundary test only if existing red coverage does not already prove the public exception type and category.
+
+Required commands:
+- python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives
+- python3 -m unittest discover -s tests -p 'test_v02*.py'
+- python3 -m py_compile matharc/v02/dogfood_archives.py tests/test_v02_dogfood_archives.py
+- git diff --check
+
+Before exit, write one JSON object to STRUCTURED_RETURN_PATH and implementation-return.json with task_id, proposed_state, acceptance_self_check, failure_class, failure_origin, command_results, changed_files, new_test_names, residual_risk, and unverified_items. Do not accept A4 or T2.

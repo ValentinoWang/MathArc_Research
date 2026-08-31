@@ -1,0 +1,14 @@
+Perform a zero-write independent acceptance review for MathArc SSOT node A4 only. This is a review lane, not an implementation task. You may write exactly one Markdown return file at: agents-results/2026-08-31/problem-intelligence-plane/acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-state-integrity.md. Do not modify source, tests, fixtures, SSOT nodes, evidence records, git state, remote state, or any other path.
+
+Pinned review identity:
+- Project root: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+- HEAD: 46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe
+- Uncommitted A4 candidate diff SHA-256: d8d847924653bb6df547094e525b61378d234b727f8f20d93418771c2b1fefd6
+- A4 node SHA-256: 5aa099a7ebaf6f5ee8963131b282126bc78cc50a869405048f9f92878c6e79a4
+- T2 evidence SHA-256: 42e5e5993a2705cd5a51532282f887f0950bf2634b2d4c186771b7f2a37fbaa3
+- Latest remediation record SHA-256: 04b6bd9056ae4fb8157954326ea065b708c917d2c666a35940aa1cd9da457b89
+
+Read scope: A4 node and edge; T2 evidence; matharc/v02/topic_observation.py; tests/test_v02_topic_observation.py; latest input-projection remediation record. Review only persisted TopicObservationRunner state integrity. In particular, attempt or reason through coordinated mutations that recompute local digests/IDs: input projection swaps, forged manual dispositions, regular manual queue linkage, and the cursor-conflict queue item's topic_id with recomputed manual_id and replaced manual_events reference. Confirm failures normalize as TopicObservationError or ManualQueueObservationError. Run the focused topic-observation test suite. You may use temporary directories outside the repository for probes.
+
+Return headings: P0/P1 findings (or none); exact commands/results; source identity observed; protected-test integrity; acceptance-criterion disposition; residual risk; proposed_state VERIFIED only if no P0/P1, otherwise FAILED. State explicitly that this lane cannot accept A4.
+

@@ -1,0 +1,116 @@
+{
+  "task_id": "A4-input-projection-binding-repair",
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_self_check": "pass",
+  "failure_class": "persisted_input_projection_and_disposition_binding_gap",
+  "root_cause": "The persisted disposition_evidence held only a one-way input fingerprint and mutable result-linked fields. Because the input fingerprint digest was not a durable canonical projection of the complete input identity, an attacker could replace input A's observation, idempotency key, content digest, risk flags, and result evidence with values from persisted input B, recompute local digests, or introduce a valid manual queue item and make an ordinary input appear to be high-risk manual review. The loader had no independently persisted projection against which to reconstruct the TopicObservationInput identity and disposition.",
+  "repair": {
+    "canonical_projection": {
+      "persisted_per_batch_input": [
+        "input_id",
+        "complete SourceObservation identity and source fields",
+        "content_sha256",
+        "content_size_bytes",
+        "sorted unique risk_flags"
+      ],
+      "fingerprint_rule": "TopicObservationInput.fingerprint_sha256 is recomputed from the canonical projection's input_id, observation, content_sha256, and risk_flags.",
+      "envelope_binding": "Each batch stores and validates input_fingerprints, batch_digest_sha256, input_projection_digest_sha256, input_projections, input_observation_ids, disposition_evidence, and result_digest_sha256. The projection digest includes topic, cursor, next_cursor, batch digest, and sorted canonical projections. Every digest and mapping is recomputed and cross-checked on load.",
+      "load_invariants": [
+        "Each stored projection is schema-exact, canonical, reconstructible as SourceObservation, and keyed by its matching input_id.",
+        "The recomputed projection fingerprint must equal the persisted input_fingerprints entry and the projection digest must match the batch digest envelope.",
+        "Disposition evidence must match the projection's observation_id, idempotency key, observation content digest, byte digest, byte size, and risk flags; the result observation identity and input_observation_ids must also match.",
+        "Each evidence basis derives exactly one TopicItemStatus and is checked against persisted LiteratureBase observation/artifact state, import disposition, processed-input state, prior batch evidence, seen keys, and deterministic manual queue linkage.",
+        "A MANUAL_REVIEW result must match exactly one queue entry, every queue entry must be referenced exactly once, and HIGH_RISK_EVENT requires non-empty risk flags from the original projection. A newly added valid queue item therefore cannot legitimize a forged ordinary input.",
+        "Aggregate batch status, item IDs, observation IDs, cursor chain, processed fingerprints, and no orphan manual entries are fail-closed invariants."
+      ],
+      "cursor_conflict_manual_event_binding": "Persisted CURSOR_CONFLICT queue entries must name the enclosing state topic as well as having a deterministic manual_id, cursor input identity, cursor-conflict reason, and matching manual event. This prevents a coordinated foreign-topic substitution that recomputes the manual_id and replaces the event reference."
+    },
+    "changed_files": [
+      "matharc/v02/topic_observation.py",
+      "tests/test_v02_topic_observation.py"
+    ],
+    "forbidden_scope_preserved": [
+      "matharc/v02/dogfood_archives.py",
+      "tests/test_v02_dogfood_archives.py",
+      "SSOT machine files",
+      "Harness files",
+      "Git state",
+      "network or deployment state"
+    ]
+  },
+  "red_green_proof": {
+    "red": {
+      "status": "pass",
+      "tests": [
+        "TopicObservationTests.test_input_projection_rejects_cross_batch_observation_swap_after_digest_recompute",
+        "TopicObservationTests.test_input_projection_rejects_forged_high_risk_manual_result_and_reason",
+        "TopicObservationTests.test_cursor_conflict_manual_entry_must_match_state_topic_after_id_recompute"
+      ],
+      "count": 3,
+      "details": "The first test imports real A and B in separate batches, rewrites A's stored result, observation linkage, evidence, processed fingerprint, seen key, and local digests to B's values, and requires reload failure. The second test rewrites imported A into MANUAL_REVIEW/HIGH_RISK_EVENT, adds a deterministic self-consistent queue item, optionally forges evidence risk flags, recomputes the result digest, and requires reload failure because the original projection has no risk flags. The third changes a cursor-conflict queue entry to a foreign topic, recomputes its deterministic manual_id, and updates the matching manual event; reload fails closed."
+    },
+    "green": {
+      "status": "pass",
+      "tests": [
+        "TopicObservationTests.test_single_topic_batch_replays_after_restart_without_second_import",
+        "TopicObservationTests.test_preexisting_observation_is_idempotent_and_replays",
+        "TopicObservationTests.test_restricted_observation_remains_pending_and_replays",
+        "TopicObservationTests.test_cross_batch_duplicate_source_is_not_reimported",
+        "TopicObservationTests.test_high_risk_event_enters_manual_queue_without_import",
+        "DogfoodArchiveTests.test_three_real_archives_persist_replay_budget_and_nonpromotion_boundaries"
+      ],
+      "count": 6,
+      "details": "Normal import, idempotent replay, pending replay, duplicate and cursor behavior, manual review, archive replay, budget checks, and no-claim/no-trace boundaries remain passing."
+    },
+    "suite_counts": {
+      "focused_command": "37 tests passed",
+      "full_v02_discovery": "222 tests passed, 8 skipped"
+    }
+  },
+  "migration_recovery": {
+    "state_schema_version": "1.3",
+    "recovery_contract": "topic-observation-state-recovery-v2",
+    "legacy_versions": [
+      "1.0",
+      "1.1",
+      "1.2"
+    ],
+    "behavior": "The input-projection fields are required for state schema 1.3. Legacy 1.0, 1.1, and 1.2 state is preserved byte-for-byte and fails closed with an explicit recovery-contract error; the loader never silently upgrades, rewrites, or discards it. An operator must preserve the legacy state and replay authoritative source batches into a new state root under the 1.3 recovery contract. No claim, trace, or promotion recovery is implied.",
+    "contract_impact": "The existing 1.2 recovery contract was insufficient for the new canonical projection invariant, so the persisted topic state explicitly bumps to 1.3 and topic-observation-state-recovery-v2. The batch input schema remains 1.0."
+  },
+  "verification": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives",
+      "status": "pass",
+      "result": "37 tests passed"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_v02*.py'",
+      "status": "pass",
+      "result": "223 tests passed, 8 skipped"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
+      "status": "pass",
+      "result": "390 tests passed, 10 skipped; existing ResourceWarning messages from Codex runtime tests are non-failing and outside this change scope"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile matharc/v02/topic_observation.py tests/test_v02_topic_observation.py tests/test_v02_dogfood_archives.py",
+      "status": "pass",
+      "result": "All requested files compiled"
+    },
+    {
+      "command": "git diff --check",
+      "status": "pass",
+      "result": "No whitespace errors"
+    },
+    {
+      "command": "python3 -m json.tool agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/input-projection/implementation-return.json",
+      "status": "pass",
+      "result": "Valid JSON"
+    }
+  ],
+  "residual_local_digest_trust_boundary": "The local result, batch, projection, and archive-related digests plus persisted-source readback detect the requested coordinated replay mutations, but a fully compromised host can rewrite every local state input and recompute every local digest. This bounded repair has no external trust anchor and establishes no production/device or remote readback evidence.",
+  "acceptance_boundary": "This implementation return does not accept A4 or T2, does not create a promotion, does not authorize release, and does not establish an independent mathematical proof or formal human acceptance. The no-claim/no-trace boundary is preserved.",
+  "git_policy": "No commit, push, network operation, SSOT change, Harness change, prior evidence rewrite, or Git mutation was performed."
+}

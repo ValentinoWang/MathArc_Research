@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import hashlib
 import json
 import shutil
 import tempfile
@@ -9,6 +10,7 @@ from pathlib import Path
 
 from matharc.v02.dogfood_archives import DogfoodArchiveError, DogfoodArchiveRunner
 from matharc.v02.schema import digest_json
+from matharc.v02.topic_observation import TopicObservationError
 
 
 ROOT = Path(__file__).parents[1]
@@ -190,6 +192,231 @@ class DogfoodArchiveTests(unittest.TestCase):
             (contract_root / T2_FIXTURE.name).write_text(json.dumps(contract), encoding="utf-8")
             with self.assertRaisesRegex(DogfoodArchiveError, "contract or source identity drift"):
                 DogfoodArchiveRunner(run_root, fixture_root).run()
+
+    def test_same_manual_id_manual_queue_semantic_tampering_fails_closed(self) -> None:
+        mutations = {
+            "reason": lambda entry: entry.update(reason="CURSOR_CONFLICT"),
+            "detail": lambda entry: entry.update(detail=entry["detail"] + " tampered"),
+            "cursor": lambda entry: entry.update(cursor="tampered-cursor"),
+            "topic_id": lambda entry: entry.update(topic_id="tampered-topic"),
+            "input_id": lambda entry: entry.update(input_id="tampered-input"),
+        }
+        for field, mutate in mutations.items():
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
+                DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+                state_path = Path(directory) / "topic-observation" / "topic-observation-state.json"
+                state = json.loads(state_path.read_text(encoding="utf-8"))
+                mutate(state["manual_queue"][0])
+                state_path.write_text(json.dumps(state), encoding="utf-8")
+
+                with self.assertRaisesRegex(DogfoodArchiveError, "manual queue does not match"):
+                    DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+
+    @staticmethod
+    def _archive_digest(payload: dict) -> str:
+        return digest_json({key: value for key, value in payload.items() if key not in {"archive_digest_sha256", "replayed"}})
+
+    def test_replay_rejects_case_set_and_per_case_promotion_records_after_digest_recompute(self) -> None:
+        for case_index in range(3):
+            for field in ("promotion_allowed", "claim_created", "trace_created"):
+                with self.subTest(case_index=case_index, field=field), tempfile.TemporaryDirectory() as directory:
+                    runner = DogfoodArchiveRunner(directory, S1_FIXTURES)
+                    executed = runner.run()
+                    self.assertFalse(executed["replayed"])
+                    replayed = runner.run()
+                    self.assertTrue(replayed["replayed"])
+
+                    archive = Path(directory) / "dogfood-archives.json"
+                    payload = json.loads(archive.read_text(encoding="utf-8"))
+                    payload["cases"][case_index][field] = True
+                    payload["archive_digest_sha256"] = self._archive_digest(payload)
+                    archive.write_text(json.dumps(payload), encoding="utf-8")
+
+                    with self.assertRaisesRegex(DogfoodArchiveError, f"must have {field}=False"):
+                        DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+
+        set_mutations = {
+            "extra case": lambda cases: cases.append(
+                {**copy.deepcopy(cases[0]), "problem_id": "P-EXTRA", "promotion_allowed": True}
+            ),
+            "duplicate case ID": lambda cases: cases.append(copy.deepcopy(cases[0])),
+            "missing contract case": lambda cases: cases.pop(),
+        }
+        for label, mutate in set_mutations.items():
+            with self.subTest(case_set=label), tempfile.TemporaryDirectory() as directory:
+                DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+                archive = Path(directory) / "dogfood-archives.json"
+                payload = json.loads(archive.read_text(encoding="utf-8"))
+                mutate(payload["cases"])
+                payload["archive_digest_sha256"] = self._archive_digest(payload)
+                archive.write_text(json.dumps(payload), encoding="utf-8")
+
+                with self.assertRaisesRegex(
+                    DogfoodArchiveError,
+                    "persisted result must contain exactly the contract case IDs once each",
+                    ):
+                        DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+
+    def test_recomputed_archive_digest_cannot_accept_case_status_provenance_or_novelty_drift(self) -> None:
+        mutations = {
+            "status.validated_status": lambda payload: payload["cases"][0]["status"].update(
+                validated_status="STALE"
+            ),
+            "status.invalidations": lambda payload: payload["cases"][0]["status"].update(
+                invalidations=["INVALID_INPUT"]
+            ),
+            "provenance[0].canonical_uri": lambda payload: payload["cases"][0]["provenance"][0].update(
+                canonical_uri="urn:matharc:tampered:archive"
+            ),
+            "novelty.complete_research_budget": lambda payload: payload["cases"][1]["novelty"].update(
+                complete_research_budget=True
+            ),
+            "novelty.public_qualitative_conclusion": lambda payload: payload["cases"][1]["novelty"].update(
+                public_qualitative_conclusion=True
+            ),
+        }
+        for field, mutate in mutations.items():
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
+                result = DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+                self.assertFalse(result["replayed"])
+                archive = Path(directory) / "dogfood-archives.json"
+                payload = json.loads(archive.read_text(encoding="utf-8"))
+                mutate(payload)
+                payload["archive_digest_sha256"] = self._archive_digest(payload)
+                archive.write_text(json.dumps(payload), encoding="utf-8")
+
+                with self.assertRaisesRegex(DogfoodArchiveError, "canonical dogfood"):
+                    DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+
+    def test_malformed_case_status_and_novelty_fail_as_dogfood_archive_errors(self) -> None:
+        mutations = {
+            "missing status": lambda payload: payload["cases"][0].pop("status"),
+            "null status": lambda payload: payload["cases"][0].update(status=None),
+            "missing novelty": lambda payload: payload["cases"][1].pop("novelty"),
+            "array novelty": lambda payload: payload["cases"][1].update(novelty=[]),
+        }
+        for label, mutate in mutations.items():
+            with self.subTest(case_shape=label), tempfile.TemporaryDirectory() as directory:
+                DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+                archive = Path(directory) / "dogfood-archives.json"
+                payload = json.loads(archive.read_text(encoding="utf-8"))
+                mutate(payload)
+                payload["archive_digest_sha256"] = self._archive_digest(payload)
+                archive.write_text(json.dumps(payload), encoding="utf-8")
+
+                with self.assertRaises(DogfoodArchiveError) as raised:
+                    DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+                self.assertNotIsInstance(raised.exception, KeyError)
+
+    def test_coordinated_manual_queue_tampering_fails_against_canonical_state(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+            state_path = Path(directory) / "topic-observation" / "topic-observation-state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            queue_entry = state["manual_queue"][0]
+            tampered_detail = queue_entry["detail"] + " tampered"
+            identity = "|".join(
+                (
+                    queue_entry["topic_id"],
+                    queue_entry["cursor"],
+                    queue_entry["input_id"],
+                    queue_entry["reason"],
+                    tampered_detail,
+                )
+            )
+            tampered_manual_id = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+            queue_entry.update(detail=tampered_detail, manual_id=tampered_manual_id)
+            stored = state["batches"]["dogfood-c2"]
+            stored["result"]["item_results"][0]["manual_id"] = tampered_manual_id
+            stored["disposition_evidence"]["collision-review-alert"]["manual_id"] = tampered_manual_id
+            stored["result_digest_sha256"] = digest_json(stored["result"])
+            state_path.write_text(json.dumps(state), encoding="utf-8")
+
+            archive_path = Path(directory) / "dogfood-archives.json"
+            payload = json.loads(archive_path.read_text(encoding="utf-8"))
+            archived_entry = next(
+                entry
+                for entry in payload["blocking_manual_queue"]
+                if entry["input_id"] == queue_entry["input_id"]
+            )
+            archived_entry.update(detail=tampered_detail, manual_id=tampered_manual_id)
+            payload["blocking_manual_queue"].sort(key=lambda entry: entry["manual_id"])
+            payload["blocking_manual_ids"] = [
+                entry["manual_id"] for entry in payload["blocking_manual_queue"]
+            ]
+            payload["archive_digest_sha256"] = self._archive_digest(payload)
+            archive_path.write_text(json.dumps(payload), encoding="utf-8")
+
+            with self.assertRaisesRegex(DogfoodArchiveError, "canonical dogfood state"):
+                DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+
+    def test_invalid_topic_state_enum_is_normalized_at_archive_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+            state_path = Path(directory) / "topic-observation" / "topic-observation-state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            stored = state["batches"]["dogfood-c1"]
+            stored["result"]["status"] = "INVALID_TOPIC_STATUS"
+            stored["result_digest_sha256"] = digest_json(stored["result"])
+            state_path.write_text(json.dumps(state), encoding="utf-8")
+
+            with self.assertRaisesRegex(DogfoodArchiveError, "topic observation state is missing or invalid"):
+                DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+
+    def test_malformed_manual_queue_is_chained_as_archive_mismatch(self) -> None:
+        mutations = {
+            "missing field": lambda entry: entry.pop("detail"),
+            "invalid reason": lambda entry: entry.update(reason="INVALID_MANUAL_REASON"),
+        }
+        for label, mutate in mutations.items():
+            with self.subTest(queue_entry=label), tempfile.TemporaryDirectory() as directory:
+                DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+                state_path = Path(directory) / "topic-observation" / "topic-observation-state.json"
+                state = json.loads(state_path.read_text(encoding="utf-8"))
+                mutate(state["manual_queue"][0])
+                state_path.write_text(json.dumps(state), encoding="utf-8")
+
+                with self.assertRaisesRegex(DogfoodArchiveError, "manual queue does not match") as raised:
+                    DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+                self.assertIsInstance(raised.exception.__cause__, TopicObservationError)
+
+    def test_topic_manual_result_tampering_fails_closed_on_archive_replay(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+            state_path = Path(directory) / "topic-observation" / "topic-observation-state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            stored = state["batches"]["dogfood-c2"]
+            item_result = stored["result"]["item_results"][0]
+            self.assertEqual("MANUAL_REVIEW", item_result["status"])
+            item_result["status"] = "IMPORTED"
+            item_result["manual_id"] = None
+            stored["result"]["status"] = "APPLIED"
+            stored["result_digest_sha256"] = digest_json(stored["result"])
+            state_path.write_text(json.dumps(state), encoding="utf-8")
+
+            with self.assertRaisesRegex(DogfoodArchiveError, "topic observation state is missing or invalid"):
+                DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+
+    def test_legacy_archive_requires_recovery_contract_and_is_preserved(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+            archive_path = Path(directory) / "dogfood-archives.json"
+            current = json.loads(archive_path.read_text(encoding="utf-8"))
+
+            for legacy_version in ("1.0", "1.1"):
+                with self.subTest(legacy_version=legacy_version):
+                    legacy = copy.deepcopy(current)
+                    legacy["schema_version"] = legacy_version
+                    legacy["archive_digest_sha256"] = self._archive_digest(legacy)
+                    legacy_bytes = json.dumps(legacy).encode("utf-8")
+                    archive_path.write_bytes(legacy_bytes)
+
+                    with self.assertRaisesRegex(
+                        DogfoodArchiveError,
+                        f"schema_version '{legacy_version}'.*recovery contract",
+                    ):
+                        DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+                    self.assertEqual(legacy_bytes, archive_path.read_bytes())
 
 
 if __name__ == "__main__":

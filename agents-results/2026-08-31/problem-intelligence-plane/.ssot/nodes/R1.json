@@ -4,7 +4,7 @@
   "stage": "P4",
   "work_kind": "implementation",
   "domain_lane": "evaluation",
-  "execution_state": "BLOCKED",
+  "execution_state": "READY",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",

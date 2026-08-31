@@ -1,0 +1,13 @@
+Perform a zero-write independent acceptance review for MathArc SSOT node A4 only. This is a review lane, not an implementation task. You may write exactly one Markdown return file at: agents-results/2026-08-31/problem-intelligence-plane/acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-regression-scope.md. Do not modify source, tests, fixtures, SSOT nodes, evidence records, git state, remote state, or any other path.
+
+Pinned review identity:
+- Project root: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+- HEAD: 46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe
+- Uncommitted A4 candidate diff SHA-256: d8d847924653bb6df547094e525b61378d234b727f8f20d93418771c2b1fefd6
+- A4 node SHA-256: 5aa099a7ebaf6f5ee8963131b282126bc78cc50a869405048f9f92878c6e79a4
+- Latest remediation record SHA-256: 04b6bd9056ae4fb8157954326ea065b708c917d2c666a35940aa1cd9da457b89
+
+Read scope: A4 node/edge, T2 evidence, all four changed source/test files, focused regression tests, and latest A4 remediation evidence. Verify no existing tests were weakened or removed, changes remain within topic observation/archive integrity, legacy recovery remains fail-closed, and full v02 plus full discovery evidence is sufficient for the A4 local acceptance slice. Independently run at least focused tests, v02 discovery, py_compile for changed files, and git diff --check. Do not claim deployment, external readback, independent mathematics review, or A4 acceptance.
+
+Return headings: P0/P1 findings (or none); exact commands/results; source identity observed; protected-test integrity; A4 acceptance-criterion disposition; residual risk; proposed_state VERIFIED only if no P0/P1, otherwise FAILED. State explicitly that this lane cannot accept A4.
+

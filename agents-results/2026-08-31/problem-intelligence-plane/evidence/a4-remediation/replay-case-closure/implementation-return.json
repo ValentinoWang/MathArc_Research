@@ -1,0 +1,77 @@
+{
+  "task_id": "A4-replay-case-closure-repair",
+  "failure_class": [
+    "REPLAY_CASE_SET_AND_NO_PROMOTION_RECORD_NOT_ENFORCED",
+    "MANUAL_QUEUE_DIAGNOSTIC_MISCLASSIFICATION"
+  ],
+  "root_cause": {
+    "replay_case_boundary": "_assert_contract_results converted persisted cases to a dictionary keyed by problem_id, so duplicate and extra records were discarded, missing records were checked only after projection, and claim_created and trace_created were never validated.",
+    "manual_queue_boundary": "The topic-state loader decoded ManualReviewReason directly and used base TopicObservationError messages for some queue failures; invalid enum values leaked ValueError and DogfoodArchiveRunner selected its public diagnostic with free-form message markers."
+  },
+  "repair": {
+    "replay_case_boundary": "Replay validation now requires a list containing exactly the contract problem IDs once each, then requires promotion_allowed, claim_created, and trace_created to be the boolean False for every persisted case before the existing contract field checks.",
+    "manual_queue_boundary": "TopicObservationRunner now normalizes manual queue collection, entry decoding, field, enum, ID, and stored-result linkage failures as ManualQueueObservationError, a TopicObservationError subclass. DogfoodArchiveRunner catches that structural category before the generic topic-state category and raises a chained manual-queue mismatch DogfoodArchiveError."
+  },
+  "touched_files": [
+    "matharc/v02/dogfood_archives.py",
+    "matharc/v02/topic_observation.py",
+    "tests/test_v02_dogfood_archives.py",
+    "tests/test_v02_topic_observation.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/replay-case-closure/implementation-return.json"
+  ],
+  "commands_results": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives",
+      "exit_code": 0,
+      "result": "PASS: 22 tests"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_v02*.py'",
+      "exit_code": 0,
+      "result": "PASS: 208 tests, 8 skipped"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile matharc/v02/topic_observation.py matharc/v02/dogfood_archives.py tests/test_v02_topic_observation.py tests/test_v02_dogfood_archives.py",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0,
+      "result": "PASS"
+    },
+    {
+      "command": "python3 -m json.tool agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/replay-case-closure/implementation-return.json",
+      "exit_code": 0,
+      "result": "PASS: evidence JSON is valid"
+    }
+  ],
+  "negative_red_proof": {
+    "status": "PASS",
+    "digest_handling": "Each persisted archive case mutation recomputed archive_digest_sha256 with replayed excluded. Topic-state manual queue mutations target the current state schema, which has no top-level state digest.",
+    "coverage": [
+      "Every contract case was independently mutated for promotion_allowed=true, claim_created=true, and trace_created=true; each replay raised DogfoodArchiveError with the field-specific False requirement.",
+      "An extra case, a duplicate case ID, and a missing contract case were each persisted with a recomputed archive digest; each replay raised DogfoodArchiveError requiring the exact contract case IDs once each.",
+      "A manual queue entry with detail removed and an entry with an invalid reason were each loaded through the topic-state loader; each raised ManualQueueObservationError as a TopicObservationError subclass and DogfoodArchiveRunner produced a chained manual queue mismatch error."
+    ],
+    "tests": [
+      "DogfoodArchiveTests.test_replay_rejects_case_set_and_per_case_promotion_records_after_digest_recompute",
+      "DogfoodArchiveTests.test_malformed_manual_queue_is_chained_as_archive_mismatch",
+      "TopicObservationTests.test_malformed_manual_queue_entries_are_topic_observation_errors"
+    ]
+  },
+  "green_proof": {
+    "status": "PASS",
+    "normal_behavior": "The normal dogfood execute and replay flow passed, including persisted replay state and non-promotion assertions.",
+    "tests": [
+      "DogfoodArchiveTests.test_three_real_archives_persist_replay_budget_and_nonpromotion_boundaries",
+      "22 focused tests passed",
+      "208 v02 discovery tests passed with 8 existing skips"
+    ]
+  },
+  "residual_risk": [
+    "Archive and topic-state digests remain local integrity signals without an external trust anchor on a fully compromised host.",
+    "This bounded repair does not add a new external release or production/device verification layer."
+  ],
+  "acceptance_boundary": "This does not accept A4/T2 and does not create a promotion."
+}

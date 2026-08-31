@@ -1,0 +1,96 @@
+{
+  "task_id": "A4-archive-complete-contract-repair",
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_self_check": "pass",
+  "failure_class": "archive_replay_self_consistent_case_and_manual_queue_tampering",
+  "root_cause": "Dogfood archive replay validated only selected contract fields and compared the persisted manual queue to persisted topic state. An operator could therefore change public case status, invalidations, provenance, novelty authorization flags, or coordinate queue/result/evidence/archive records and recompute local digests while preserving local self-consistency. Case and nested field shape validation was also incomplete, allowing malformed archives to reach direct indexing paths.",
+  "invariant": [
+    "Every replayed archive body, including all public case status, provenance, novelty, review-boundary, and no-claim/no-trace fields, must equal a canonical archive reconstructed from the checked-in S1 fixtures and T2 source contract.",
+    "Each persisted topic-observation state must equal the canonical state produced by the same checked-in dogfood inputs; queue, batch result, disposition evidence, processed-input, literature, and artifact linkage cannot be accepted merely because their local digests agree.",
+    "The archive contains exactly the three T2 contract cases once each, with exact case, status, provenance, novelty, and boolean non-promotion shapes before any field indexing.",
+    "Blocking manual queue entries are canonical ManualReviewItem records, have deterministic IDs, and are independently bound to the canonical runner state and archive projection.",
+    "Invalid topic state enums, malformed case status/novelty records, and missing fields cross the DogfoodArchiveRunner boundary as DogfoodArchiveError and never as raw KeyError."
+  ],
+  "repair": {
+    "dogfood_archives.py": [
+      "Added exact archive/case/status/novelty/provenance shape and type validation before indexing, including strict booleans, string arrays, digest syntax, and required field sets.",
+      "Added a fresh temporary canonical execution from the checked-in fixtures and source contract; replay compares both the complete archive body and both persisted topic-observation state files against that independently generated execution.",
+      "Bound blocking_manual_queue and blocking_manual_ids to canonical runner state while retaining schema 1.2 and legacy recovery behavior.",
+      "Normalized remaining topic-observation KeyError, TypeError, ValueError, and OSError failures at DogfoodArchiveRunner.run into DogfoodArchiveError, while preserving the specialized manual-queue diagnostic."
+    ],
+    "tests/test_v02_dogfood_archives.py": [
+      "Added archive-only digest-recomputed mutations for status.validated_status, status.invalidations, provenance[0].canonical_uri, collision novelty.complete_research_budget, and collision novelty.public_qualitative_conclusion.",
+      "Added coordinated manual queue tampering covering detail, deterministic manual_id, linked batch result/disposition evidence, result digest, archive queue projection, blocking IDs, and archive digest.",
+      "Added malformed/missing case status and novelty tests, invalid topic-state enum normalization, and retained existing replay, budget, legacy, and non-promotion tests."
+    ]
+  },
+  "red_green_proof": {
+    "red": {
+      "status": "pass",
+      "tests": [
+        "DogfoodArchiveTests.test_recomputed_archive_digest_cannot_accept_case_status_provenance_or_novelty_drift",
+        "DogfoodArchiveTests.test_coordinated_manual_queue_tampering_fails_against_canonical_state",
+        "DogfoodArchiveTests.test_malformed_case_status_and_novelty_fail_as_dogfood_archive_errors",
+        "DogfoodArchiveTests.test_invalid_topic_state_enum_is_normalized_at_archive_boundary",
+        "DogfoodArchiveTests.test_replay_rejects_case_set_and_per_case_promotion_records_after_digest_recompute",
+        "DogfoodArchiveTests.test_malformed_manual_queue_is_chained_as_archive_mismatch"
+      ],
+      "details": "All named archive-only case mutations failed after recomputing archive_digest_sha256. Coordinated queue tampering failed against canonical topic state even after deterministic manual ID, linked result/evidence, result digest, archive queue, blocking IDs, and archive digest were updated. Malformed status/novelty and invalid topic enums produced DogfoodArchiveError rather than KeyError or ValueError leakage."
+    },
+    "green": {
+      "status": "pass",
+      "tests": [
+        "DogfoodArchiveTests.test_three_real_archives_persist_replay_budget_and_nonpromotion_boundaries",
+        "DogfoodArchiveTests.test_same_manual_id_manual_queue_semantic_tampering_fails_closed",
+        "DogfoodArchiveTests.test_legacy_archive_requires_recovery_contract_and_is_preserved",
+        "12 focused dogfood archive tests passed",
+        "222 v02 tests passed with 8 existing skips"
+      ],
+      "details": "Fresh execution, idempotent replay, topic-state readback, manual-review blocking, budget identity, no-claim/no-trace boundary, and schema recovery behavior remain passing."
+    }
+  },
+  "recovery_behavior": {
+    "archive_schema_version": "1.2",
+    "recovery_contract": "dogfood-archive-recovery-v1",
+    "legacy_schema_versions": [
+      "1.0",
+      "1.1"
+    ],
+    "behavior": "Legacy or unknown archive versions fail closed with an operator recovery instruction. The legacy archive bytes are preserved; replay does not silently upgrade, overwrite, or reinterpret them. Recovery requires rerunning the checked-in dogfood inputs into an explicitly selected new root."
+  },
+  "verification": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_dogfood_archives",
+      "status": "pass",
+      "summary": "12 tests passed"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_v02*.py'",
+      "status": "pass",
+      "summary": "222 tests passed, 8 skipped"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile matharc/v02/dogfood_archives.py tests/test_v02_dogfood_archives.py",
+      "status": "pass",
+      "summary": "Both authorized source/test files compiled"
+    },
+    {
+      "command": "git diff --check",
+      "status": "pass",
+      "summary": "No whitespace errors"
+    },
+    {
+      "command": "python3 -m json.tool agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/archive-complete-contract/implementation-return.json",
+      "status": "pass",
+      "summary": "Return evidence is valid JSON"
+    }
+  ],
+  "changed_files": [
+    "matharc/v02/dogfood_archives.py",
+    "tests/test_v02_dogfood_archives.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/archive-complete-contract/implementation-return.json"
+  ],
+  "residual_boundary": "Archive and topic-state digests plus canonical local replay do not provide an external trust anchor on a fully compromised host that can replace every local fixture, contract, source artifact, state file, and digest. No production/device evidence, external release proof, or independent mathematical proof is established here. The no-claim/no-trace boundary remains enforced.",
+  "acceptance_boundary": "No A4 or T2 acceptance was performed. No A4/T2 promotion was created or authorized.",
+  "git_policy": "No commit, push, network operation, remote change, SSOT change, or Harness change was performed. The parallel worker's modifications to matharc/v02/topic_observation.py and tests/test_v02_topic_observation.py were preserved and were not edited by this repair."
+}
