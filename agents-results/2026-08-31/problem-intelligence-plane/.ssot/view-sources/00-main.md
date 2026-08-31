@@ -77,7 +77,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
 
-当前计划状态是“治理已对账、决定版本 2 已接受、L1/L2/A2/S1/S2/A3/T1/T2/A4/R1/Q1 已接受，A5 已解锁”。它是一份开发计划和编排 SSOT，不是功能完成报告。
+当前计划状态是“治理已对账、决定版本 2 已接受、L1/L2/A2/S1/S2/A3/T1/T2/A4/R1/Q1/A5 已接受”。A5 只接受已验收仓库源、测试、SSOT 记录和验收证据的交付决定；它不构成数学结论、外部状态、新颖性、校准表现或生产发布报告。
 
 ## 七、权威边界与剩余不确定性路由
 
@@ -221,7 +221,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | A4 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 三例档案、重放、恢复、去重和失败模式验收通过 | evidence:A4 | R1 |
 | R1 | P4 | 1/1/1/1/2 | ACCEPTED | 0 | 评测负责人 | EG-PLAN | 四路回归、消融、身份防篡改与保守披露边界通过 | evidence:R1 | Q1 |
 | Q1 | P4 | 1/1/1/1/2 | ACCEPTED | 0 | 研究负责人 | EG-PLAN | 未校准、双轨和禁止公开的专项验收通过 | evidence:Q1 | A5 |
-| A5 | P4 | 1/1/1/1/2 | READY | 0 | 研究负责人和仓库所有者 | EG-PLAN | Q1 已接受；等待范围受限的发布决定 | source:ready | 无 |
+| A5 | P4 | 1/1/1/1/2 | ACCEPTED | 0 | 研究负责人和仓库所有者 | EG-PLAN | 范围受限的仓库源级发布决定已记录；远端交付须在提交后回读 | evidence:A5 | 无 |
 
 ### 语义节点登记表
 
@@ -243,7 +243,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
 | R1 | implementation.problem-intelligence.regression | implementation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
 | Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
-| A5 | release.problem-intelligence.v0 | release-decision | governance | READY | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
+| A5 | release.problem-intelligence.v0 | release-decision | governance | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
 
 ### 依赖边表
 
@@ -271,20 +271,20 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 
 | Frontier | Task ID | Eligibility | Unsatisfied hard dependencies | Active assumptions | Resource decision |
 |---|---|---|---|---|---|
-| implementation-frontier | A5 | FORMAL | none | none | 只发布已接受范围，并披露未校准、新颖性与数学结论边界 |
+| none | none | n/a | none | none | 全部正式节点已接受；A5 仍仅限已验收的仓库源级交付边界 |
 
 ### 波前指标
 
 | Metric | Value | Basis |
 |---|---:|---|
-| ready-frontier-width | 1 | 机器状态为 READY 的节点数 |
-| formal-ready | 1 | A5 的 Q1 正式依赖已满足 |
+| ready-frontier-width | 0 | 没有机器状态为 READY 的节点 |
+| formal-ready | 0 | 没有待执行的正式节点 |
 | conditional-ready | 0 | 当前没有条件草稿 |
 | global-completeness-barriers | 0 | 没有把全局完成度作为普通节点前置条件 |
 | critical-path-length | 16 | 显式硬边上的最长节点路径 |
-| graph-ready-width | 1 | 结构分析器按已接受父节点计算 |
+| graph-ready-width | 0 | 没有待执行节点 |
 | graph-antichain-width | 2 | 结构分析器计算的最大反链宽度 |
-| resource-verified-width | 1 | 当前可执行资源宽度；最大反链中另一路仍受依赖约束 |
+| resource-verified-width | 0 | 没有待执行节点需要资源分配 |
 
 ### 叶交付物清单
 
@@ -442,7 +442,7 @@ F1
                                                         v
                                       T1 --> T2 --> A4 --> R1 --> Q1 --> A5
 
-D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；S1、S2、A3、T1、T2、A4、R1 和 Q1 已接受，当前前沿是 A5。
+D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；S1、S2、A3、T1、T2、A4、R1、Q1 和 A5 均已接受，没有待执行的正式前沿。
 S1 的独立纸面 dry-run 已通过；它不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
 ```
 
@@ -471,4 +471,4 @@ flowchart LR
 
 ### 结论与当前停止点
 
-当前正式前沿是 A5：D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2、A4、R1、Q1 已接受；A5 已解锁，等待其范围受限的发布决定。Q1 已独立验收固定三例的未校准预测、科学优先级与传播准备度双轨和禁止公开边界。计划仍需在各后续节点完成各自的专项证据，不能把本状态标记为部署完成或数学结论。
+全部正式节点已接受：D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2、A4、R1、Q1、A5。A5 的范围受限于已验收的仓库源、测试、SSOT 记录和验收证据，并要求 GitHub 交付后的远端引用回读；Q1 仍是固定三例、`UNCALIBRATED` 和 `NOT_READY` 的披露政策。不得把本状态标记为部署完成、公开研究结论、数学结论或外部文献确认。

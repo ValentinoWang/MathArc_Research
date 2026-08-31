@@ -1,0 +1,62 @@
+{
+  "evidence_id": "EV-A5-ACCEPTED-1",
+  "task_id": "A5",
+  "consumed_evidence": ["EV-Q1-ACCEPTED-1"],
+  "source_identity": {
+    "q1_evidence_sha256": "103d46d965a6bad218196ef41a399390fc372d238beb11c4b53511681603334c",
+    "q1_policy_fixture_sha256": "abec04146d058c28899ffc1ac3a61d93d14c0468696b65b6558f9f6fbcab8426",
+    "q1_policy_digest_sha256": "46622020c1f86981de9b2b3372f04d29abad119d823ca571998798b806006cda",
+    "q1_implementation_sha256": "b4988a67c0a13918a0ce775c01be687423822c8e069c1ebb03a09c4c9b4c6535",
+    "q1_protected_test_sha256": "0a55a78158faa4f28b47d02b983fbdbd32217155b8d8ca17e659646dd7d7ec9d",
+    "accepted_upstream_remote_main": "9d727862a5566b32fdeec3af017dc466a5f9dd12"
+  },
+  "release_scope": {
+    "evidence_level": "source",
+    "topic_id": "union-closed",
+    "fixed_case_count": 3,
+    "allowed": [
+      "accepted repository source, tests, SSOT records, and acceptance evidence",
+      "GitHub main ref delivery after the A5 decision commit"
+    ],
+    "prohibited": [
+      "mathematical proof or theorem acceptance",
+      "live external literature retrieval or open-status confirmation",
+      "novelty acceptance",
+      "calibration quality, accuracy, recall, statistical performance, or generalization",
+      "production, deployed-service, device, or monitoring evidence",
+      "public communication of any research conclusion"
+    ]
+  },
+  "release_decision": {
+    "status": "ACCEPTED_SOURCE_SCOPE",
+    "github_source_delivery_authorized": true,
+    "mathematical_result_publication_authorized": false,
+    "q1_public_release_allowed": false,
+    "reason": "Q1 remains a hash-bound, three-record, local UNCALIBRATED and NOT_READY disclosure policy; this decision delivers only the accepted repository source scope."
+  },
+  "delivery_requirements": {
+    "remote_ref_readback": "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
+    "pre_push_delivery_claim": false
+  },
+  "acceptance_record": {
+    "accepted_at": "2026-09-01",
+    "accepted_by": "用户（研究负责人和仓库所有者）",
+    "authority_basis": "用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；本切片仅记录受限的仓库源级发布决定。",
+    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T010700Z-local-a5c007/result.md",
+    "machine_acceptance_result_sha256": "c4ace31d4d0307d354c65201ce004fbe8bd0b0d7dc46e8a5f0e5b6dbda4b9242",
+    "human_acceptance_result": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T010800Z-local-a5c008/result.md",
+    "human_acceptance_result_sha256": "3572323d59d6e94cdd990f5fc24204a30d3aeb61bf75bf9271bb6286d90437e9",
+    "release_review_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T010900Z-local-a5c009/result.md",
+    "release_review_result_sha256": "f333f921450d3deb7b2766a8fde29b01c20934b79a36c82daa9762f024fb8192"
+  },
+  "proposed_state": "ACCEPTED",
+  "unverified_items": [
+    "Independent mathematical proof review",
+    "Live external literature retrieval",
+    "Reported-open status confirmation",
+    "Novelty acceptance",
+    "Calibration quality, accuracy, recall, statistical performance, or generalization",
+    "Production, deployed-service, device, or monitoring behavior",
+    "Public communication of any research conclusion"
+  ]
+}

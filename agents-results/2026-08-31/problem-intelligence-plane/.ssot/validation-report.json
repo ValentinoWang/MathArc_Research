@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-31T16:56:28.520200+00:00",
+  "generated_at": "2026-08-31T17:21:17.975197+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "47e0b203855213f5f02b99252edd1276b114f94e",
@@ -13,13 +13,12 @@
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-D1-D2.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-D2-P2.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-F-D1.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-F-P0.json",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-F-PZ.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-H1-Q5.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-I1-Q2.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-P0-Q0.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-P1-Q3.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-P2-Q4.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-Q0-C1.json",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-PZ-QZ.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-Q1-I1.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-Q2-CV.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-Q2-P1.json",
@@ -27,6 +26,7 @@
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-Q4-CV.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-Q4-H1.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-Q5-CV.json",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-QZ-C1.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/manifest.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/C1.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/CB.json",
@@ -47,12 +47,13 @@
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/Q5.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/QZ.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/planning-compiler.json",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/validation-report.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/view-sources/00-main.md",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/openproblem.md",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/ssot-archive.json",
       "agents-results/2026-09-01/product-aware-frontend-design-v0-2/ssot-development-paths.md"
     ],
-    "dirty_diff_sha256": "3eeac9f3dff4bb6cdd0526cd0bbe05eee69b51c627ef42ad931b365be21c53d3",
+    "dirty_diff_sha256": "9ae973bc173c17e927e4111098bac3f8abac714b65468b9634405e4faad598f1",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
     "skill_sha256": "23d9638a5bd3fae1638480a1c170eac691ab6975678d752f8bd4cdf40c536d41",
@@ -60,17 +61,17 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "c0dcc523ba00de9f660a8e1f1badd887f21de1f7",
+    "project_commit": "9d727862a5566b32fdeec3af017dc466a5f9dd12",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "7b3076eeb5be0b5914b118b85cc9c9914cf04202a30ca23cef28e4ce8ac29d6d",
+    "project_dirty_diff_sha256": "4e11576087a7e63564464c1bb97468df849f3cad4b11bcebfe8f6a31cda256f3",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "bdb63d1682fa651978b3bd491b3a3de2b01db890597df5e98267d6a06f17d40a",
-    "content_sha256": "bdb63d1682fa651978b3bd491b3a3de2b01db890597df5e98267d6a06f17d40a",
-    "manifest_sha256": "25ca1a170de13a238602d4e648ae8f867d80ff8756bfabdbf64f030408b57cc6",
-    "manifest_identity_sha256": "25ca1a170de13a238602d4e648ae8f867d80ff8756bfabdbf64f030408b57cc6"
+    "sha256": "dc9a80685dff4c6bc3482ea42f3be70139f482c8702d5871a7a4c837e0607811",
+    "content_sha256": "dc9a80685dff4c6bc3482ea42f3be70139f482c8702d5871a7a4c837e0607811",
+    "manifest_sha256": "80aa692b14eeaca9ffb03d9b6429f34678d6a82784043617371f2f3c926829d6",
+    "manifest_identity_sha256": "80aa692b14eeaca9ffb03d9b6429f34678d6a82784043617371f2f3c926829d6"
   },
   "checks": [
     {
@@ -119,7 +120,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "SSOT program check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json (nodes=17, formal_ready=1, conditional_ready=0)\n"
+      "output": "SSOT program check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json (nodes=17, formal_ready=0, conditional_ready=0)\n"
     },
     {
       "id": "parallelism-analysis",
@@ -130,7 +131,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "{\n  \"actor_pools\": {\n    \"codex-primary\": {\n      \"actor\": \"codex\",\n      \"capacity\": 1\n    },\n    \"human-review\": {\n      \"actor\": \"human\",\n      \"capacity\": 1\n    }\n  },\n  \"critical_path_edges\": 15,\n  \"current_ready_nodes\": [\n    \"A5\"\n  ],\n  \"current_ready_width\": 1,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"CHARTER\",\n      \"unlocks\": [\n        \"F1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"F1\",\n      \"unlocks\": [\n        \"D1\",\n        \"D2\"\n      ],\n      \"waits_for\": [\n        \"CHARTER\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D1\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D2\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A1\",\n      \"unlocks\": [\n        \"L1\"\n      ],\n      \"waits_for\": [\n        \"D1\",\n        \"D2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L1\",\n      \"unlocks\": [\n        \"L2\"\n      ],\n      \"waits_for\": [\n        \"A1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L2\",\n      \"unlocks\": [\n        \"A2\"\n      ],\n      \"waits_for\": [\n        \"L1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A2\",\n      \"unlocks\": [\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"L2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"S2\"\n      ],\n      \"waits_for\": [\n        \"A2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S2\",\n      \"unlocks\": [\n        \"A3\"\n      ],\n      \"waits_for\": [\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A3\",\n      \"unlocks\": [\n        \"T1\"\n      ],\n      \"waits_for\": [\n        \"S2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T1\",\n      \"unlocks\": [\n        \"T2\"\n      ],\n      \"waits_for\": [\n        \"A3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T2\",\n      \"unlocks\": [\n        \"A4\"\n      ],\n      \"waits_for\": [\n        \"T1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A4\",\n      \"unlocks\": [\n        \"R1\"\n      ],\n      \"waits_for\": [\n        \"T2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"R1\",\n      \"unlocks\": [\n        \"Q1\"\n      ],\n      \"waits_for\": [\n        \"A4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"Q1\",\n      \"unlocks\": [\n        \"A5\"\n      ],\n      \"waits_for\": [\n        \"R1\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 2,\n  \"resource_verified_width\": 1,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n"
+      "output": "{\n  \"actor_pools\": {\n    \"codex-primary\": {\n      \"actor\": \"codex\",\n      \"capacity\": 1\n    },\n    \"human-review\": {\n      \"actor\": \"human\",\n      \"capacity\": 1\n    }\n  },\n  \"critical_path_edges\": 15,\n  \"current_ready_nodes\": [],\n  \"current_ready_width\": 0,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"CHARTER\",\n      \"unlocks\": [\n        \"F1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"F1\",\n      \"unlocks\": [\n        \"D1\",\n        \"D2\"\n      ],\n      \"waits_for\": [\n        \"CHARTER\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D1\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D2\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A1\",\n      \"unlocks\": [\n        \"L1\"\n      ],\n      \"waits_for\": [\n        \"D1\",\n        \"D2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L1\",\n      \"unlocks\": [\n        \"L2\"\n      ],\n      \"waits_for\": [\n        \"A1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L2\",\n      \"unlocks\": [\n        \"A2\"\n      ],\n      \"waits_for\": [\n        \"L1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A2\",\n      \"unlocks\": [\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"L2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"S2\"\n      ],\n      \"waits_for\": [\n        \"A2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S2\",\n      \"unlocks\": [\n        \"A3\"\n      ],\n      \"waits_for\": [\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A3\",\n      \"unlocks\": [\n        \"T1\"\n      ],\n      \"waits_for\": [\n        \"S2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T1\",\n      \"unlocks\": [\n        \"T2\"\n      ],\n      \"waits_for\": [\n        \"A3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T2\",\n      \"unlocks\": [\n        \"A4\"\n      ],\n      \"waits_for\": [\n        \"T1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A4\",\n      \"unlocks\": [\n        \"R1\"\n      ],\n      \"waits_for\": [\n        \"T2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"R1\",\n      \"unlocks\": [\n        \"Q1\"\n      ],\n      \"waits_for\": [\n        \"A4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"Q1\",\n      \"unlocks\": [\n        \"A5\"\n      ],\n      \"waits_for\": [\n        \"R1\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 2,\n  \"resource_verified_width\": 0,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n"
     },
     {
       "id": "structure",
@@ -194,10 +195,8 @@
       }
     },
     "critical_path_edges": 15,
-    "current_ready_nodes": [
-      "A5"
-    ],
-    "current_ready_width": 1,
+    "current_ready_nodes": [],
+    "current_ready_width": 0,
     "frontier_transitions": [
       {
         "accepted_node": "CHARTER",
@@ -346,7 +345,7 @@
     ],
     "manifest": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
     "maximum_antichain_width": 2,
-    "resource_verified_width": 1,
+    "resource_verified_width": 0,
     "scheduling_model": "event-driven",
     "static_waves_are_authority": false
   },
