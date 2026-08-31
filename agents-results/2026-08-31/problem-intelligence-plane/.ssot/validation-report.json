@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-31T05:23:15.326546+00:00",
+  "generated_at": "2026-08-31T06:10:14.120073+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "928556ced521716e82ddc331b0e83921bb67bb3c",
@@ -15,37 +15,37 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "797b20fe91776602037ad22ae667086099def189",
+    "project_commit": "350dd40831cbcf2a462a236a0f6bc4c35a550ac7",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "bbfa70ab936a88c5cd6f17096b4bbb5a23664b376ac071a481518297aeec4e5c",
-    "harness_lock_sha256": null
+    "project_dirty_diff_sha256": "0b18388157aad97bc490af867c789f7c2e99c112e35ee5b690840b30b15e1bda",
+    "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "1812779189d1bb0abff35052f9ba1a1809593bdfd5a838bbb1a11521329801d4",
-    "content_sha256": "1812779189d1bb0abff35052f9ba1a1809593bdfd5a838bbb1a11521329801d4",
-    "manifest_sha256": "9b32c8d1e086c2418d0b60e5cc279bb696686f2da152a092ad0af46e8a1040c8",
-    "manifest_identity_sha256": "9b32c8d1e086c2418d0b60e5cc279bb696686f2da152a092ad0af46e8a1040c8"
+    "sha256": "00fe2aca631478407af79528145dfc1c947e07ded02a1b3cfc6b742945415ba7",
+    "content_sha256": "00fe2aca631478407af79528145dfc1c947e07ded02a1b3cfc6b742945415ba7",
+    "manifest_sha256": "16f29715196f2a06736c45a1d74763d3a8ededa81262778b925973ec4cf86446",
+    "manifest_identity_sha256": "16f29715196f2a06736c45a1d74763d3a8ededa81262778b925973ec4cf86446"
   },
   "checks": [
     {
       "id": "runtime-skill-provenance",
       "command": [
-        "/opt/homebrew/opt/python@3.12/bin/python3.12",
+        "/private/tmp/matharc-ci-venv/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/tools/harnessctl.py",
         "doctor",
         "--project",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
         "--check-runtime-skills"
       ],
-      "exit_code": 1,
-      "result": "failed",
-      "output": "PyYAML is required: python3 -m pip install pyyaml\n"
+      "exit_code": 0,
+      "result": "passed",
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 31\nruntime_skill_check: enabled\ndoctor: ok\n"
     },
     {
       "id": "complexity",
       "command": [
-        "/opt/homebrew/opt/python@3.12/bin/python3.12",
+        "/private/tmp/matharc-ci-venv/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/planning-compiler.json"
       ],
@@ -56,7 +56,7 @@
     {
       "id": "render",
       "command": [
-        "/opt/homebrew/opt/python@3.12/bin/python3.12",
+        "/private/tmp/matharc-ci-venv/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
         "--check",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
@@ -68,7 +68,7 @@
     {
       "id": "machine-program",
       "command": [
-        "/opt/homebrew/opt/python@3.12/bin/python3.12",
+        "/private/tmp/matharc-ci-venv/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
@@ -79,7 +79,7 @@
     {
       "id": "parallelism-analysis",
       "command": [
-        "/opt/homebrew/opt/python@3.12/bin/python3.12",
+        "/private/tmp/matharc-ci-venv/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
@@ -90,40 +90,25 @@
     {
       "id": "structure",
       "command": [
-        "/opt/homebrew/opt/python@3.12/bin/python3.12",
+        "/private/tmp/matharc-ci-venv/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md"
       ],
-      "exit_code": 1,
-      "result": "failed",
-      "output": "SSOT structure check failed:\n- /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md: Graph ready width mismatch: expected 1, got 2\n- /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md: Resource-verified width mismatch: expected 1, got 2\n"
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT structure check passed.\n"
     },
     {
       "id": "chinese-readability",
       "command": [
-        "/opt/homebrew/opt/python@3.12/bin/python3.12",
+        "/private/tmp/matharc-ci-venv/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_chinese_readability.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md"
       ],
-      "exit_code": 1,
-      "result": "failed",
-      "output": "中文可读性检查失败：\n- /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md:25: 英文没有放在中文名称后的括号中：revision, Frankl, open\n- /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md:3: 英文没有放在中文名称后的括号中：provenance\n- /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md:11: 代码标识没有由中文名称引出：`decision.problem-intelligence.activation-route@2`\n- /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md:21: 代码标识没有由中文名称引出：`union-closed`, `2601.22401`, `decision.problem-intelligence.first-topic@2`\n- /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md:21: 英文没有放在中文名称后的括号中：Frankl, arXiv, Gemini, open\n- /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md:31: 代码标识没有由中文名称引出：`decision.problem-intelligence.amendment@2`\n- /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md:31: 英文没有放在中文名称后的括号中：Gate, registry, revision\n修复方向：产品、平台和协议专名可以自然保留；开发术语先写中文名称，需要保留真实标识时紧跟在括号中。字段较多时改用工程映射表。\n"
-    },
-    {
-      "id": "archive-check",
-      "command": [
-        "/opt/homebrew/opt/python@3.12/bin/python3.12",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
-        "--source",
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-        "--project-root",
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-        "--check"
-      ],
-      "exit_code": 2,
-      "result": "failed",
-      "output": "SSOT snapshot error: snapshot manifest managed_files do not match current source hashes\n"
+      "exit_code": 0,
+      "result": "passed",
+      "output": "中文可读性检查通过。\n"
     }
   ],
   "parallelism": {
@@ -297,5 +282,5 @@
     "scheduling_model": "event-driven",
     "static_waves_are_authority": false
   },
-  "result": "fail"
+  "result": "pass"
 }

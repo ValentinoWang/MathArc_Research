@@ -1,7 +1,7 @@
 {
   "evidence_id": "EV-L1-IMPLEMENTED-1",
   "task_id": "L1",
-  "source_revision": "b9580f566877f26d3c5754d1e776c71c9c1455c5",
+  "source_revision": "83ad6e78f552fbfd54ede2600e9baee700bdbe5b",
   "changed_files": [
     "matharc/v02/source_observation.py",
     "matharc/v02/__init__.py",

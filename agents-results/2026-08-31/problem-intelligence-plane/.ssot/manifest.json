@@ -41,7 +41,7 @@
     {
       "view_id": "main",
       "source": "view-sources/00-main.md",
-      "source_sha256": "167101dfc65a42074b40131c90f03038876e836771ee8464d74b71b80c42976a",
+      "source_sha256": "31031d64dcc9b3246d45f8866d1226391d4bebd8515c161cf7f473c7ba2169b6",
       "output": "../ssot-development-paths.md"
     }
   ],
@@ -58,7 +58,13 @@
       "authority_commit": "b3eb7512c5b03a9beb8b0eb5f946597c723d07be",
       "authority_sha256": "a711ba1292bdbc9a2e312d5c639566d1e176526f9dbe32d55648b4011babb471",
       "required_state": "ACCEPTED",
-      "consumers": ["CHARTER", "F1", "D1", "D2", "A1"]
+      "consumers": [
+        "CHARTER",
+        "F1",
+        "D1",
+        "D2",
+        "A1"
+      ]
     },
     {
       "external_dependency_id": "EXT-V03-STATUS",
@@ -67,7 +73,11 @@
       "authority_commit": "b3eb7512c5b03a9beb8b0eb5f946597c723d07be",
       "authority_sha256": "a2436a810f92ef192ab16ce6e452828998a387e23ad7e294f093b38d80d8012e",
       "required_state": "ACCEPTED",
-      "consumers": ["F1", "D1", "D2"]
+      "consumers": [
+        "F1",
+        "D1",
+        "D2"
+      ]
     },
     {
       "external_dependency_id": "EXT-DISCOVERY-V04",
@@ -76,7 +86,13 @@
       "authority_commit": "0fb8f15f04451834719c929a264260278e1f6727",
       "authority_sha256": "449aff96d31989e85582c04118541cb24368aae180cb0067c638b18ab6f05143",
       "required_state": "ACCEPTED",
-      "consumers": ["CHARTER", "F1", "D1", "D2", "A1"]
+      "consumers": [
+        "CHARTER",
+        "F1",
+        "D1",
+        "D2",
+        "A1"
+      ]
     },
     {
       "external_dependency_id": "EXT-SOURCE-REGISTRY",
@@ -85,7 +101,10 @@
       "authority_commit": "0fb8f15f04451834719c929a264260278e1f6727",
       "authority_sha256": "e697f0894d8ac35a19c39ade521a8dfa6d4e42f7c291261a6e0004702c1b3c22",
       "required_state": "ACCEPTED",
-      "consumers": ["L1", "L2"]
+      "consumers": [
+        "L1",
+        "L2"
+      ]
     },
     {
       "external_dependency_id": "EXT-BUDGET-V02",
@@ -94,7 +113,18 @@
       "authority_commit": "0fb8f15f04451834719c929a264260278e1f6727",
       "authority_sha256": "fc5affd66099c16695d0e7742725c371cca0490bcbdaab6495cfc95dbafea0b6",
       "required_state": "ACCEPTED",
-      "consumers": ["L1", "L2", "T1", "R1"]
+      "consumers": [
+        "L1",
+        "L2",
+        "T1",
+        "R1"
+      ]
     }
-  ]
+  ],
+  "validation_report": {
+    "path": "validation-report.json",
+    "sha256": "d16f990ca218505fbfd722f4ddc19d38ee9b27705cbdb355ba60f889579d0f0d",
+    "manifest_identity_sha256": "16f29715196f2a06736c45a1d74763d3a8ededa81262778b925973ec4cf86446",
+    "bundle_content_sha256": "00fe2aca631478407af79528145dfc1c947e07ded02a1b3cfc6b742945415ba7"
+  }
 }
