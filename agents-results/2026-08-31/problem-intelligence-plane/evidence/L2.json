@@ -17,7 +17,8 @@
     "focused_tests": 8,
     "full_suite_tests": 310,
     "skipped": 10,
-    "mypy": "not_available_in_current_interpreter"
+    "mypy": "passed_62_source_files",
+    "make_ci_full": "passed_with_formal_dependencies"
   },
   "covered_behaviors": [
     "open import persists an artifact and observation manifest",
@@ -34,7 +35,7 @@
     "A2 formal acceptance evidence",
     "external literature service integration",
     "formal node acceptance by research infrastructure owner",
-    "strict mypy run in an environment that provides mypy"
+    "formal acceptance by the named acceptance owner"
   ],
   "failure_class": null,
   "failure_origin": null

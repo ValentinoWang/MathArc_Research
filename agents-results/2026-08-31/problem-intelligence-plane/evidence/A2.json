@@ -13,7 +13,9 @@
     "focused_tests": 17,
     "full_suite_tests": 310,
     "skipped": 10,
-    "result": "passed"
+    "result": "passed",
+    "make_ci_full": "passed_with_formal_dependencies",
+    "mypy": "passed_62_source_files"
   },
   "acceptance_matrix": {
     "observation_contract": "pass",
@@ -28,7 +30,6 @@
   "proposed_state": "NOT_READY",
   "unverified_items": [
     "formal acceptance by the named acceptance owner",
-    "strict mypy in an environment that provides mypy",
     "external literature service integration"
   ],
   "failure_class": "human-acceptance-missing",
