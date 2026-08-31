@@ -11,6 +11,11 @@ from matharc.v02.regression_evaluation import RegressionSuite, RegressionValidat
 
 ROOT = Path(__file__).parents[1]
 FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json"
+R1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json"
+REVIEW_LEDGER = ROOT / (
+    "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/"
+    "R1-regression-evaluation/reviews/r1-independent-review-20260901/ledger.json"
+)
 
 
 class RegressionEvaluationTests(unittest.TestCase):
@@ -69,6 +74,31 @@ class RegressionEvaluationTests(unittest.TestCase):
         self.assertNotIn("ClaimStatus", source)
         self.assertNotIn("authorize", source)
         self.assertNotIn("http", source.lower())
+
+    def test_accepted_evidence_requires_two_distinct_durable_independent_reviews(self) -> None:
+        evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
+        reviews = evidence["independent_ai_reviews"]
+        self.assertEqual("EV-R1-ACCEPTED-2", evidence["evidence_id"])
+        self.assertEqual("PASS", reviews["disposition"])
+        self.assertEqual(4, reviews["contract_version"])
+        ledger = json.loads(REVIEW_LEDGER.read_text(encoding="utf-8"))
+        self.assertEqual(reviews["frozen_input_manifest_sha256"], ledger["frozen_input_manifest_sha256"])
+        self.assertEqual(reviews["frozen_head"], ledger["frozen_head"])
+        required_lanes = {"ablation-boundary", "identity-contract"}
+        reports = reviews["reports"]
+        self.assertEqual(required_lanes, {report["lane"] for report in reports})
+        self.assertEqual(2, len(reports))
+        self.assertEqual(2, len({report["reviewer_identity"] for report in reports}))
+        self.assertEqual(2, len({report["wrapper"] for report in reports}))
+        for report in reports:
+            self.assertEqual("PASS", report["verdict"])
+            self.assertTrue(report["zero_write"])
+            path = ROOT / report["report_path"]
+            self.assertTrue(path.is_file(), report["report_path"])
+            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), report["sha256"])
+            content = path.read_text(encoding="utf-8")
+            self.assertIn("Verdict: PASS", content)
+            self.assertIn(f"Frozen input manifest SHA-256: {reviews['frozen_input_manifest_sha256']}", content)
 
 
 if __name__ == "__main__":

@@ -1,11 +1,11 @@
 # Acceptance Contract: R1-regression-evaluation
 
 - Task ID: R1-regression-evaluation
-- Contract version: 3
+- Contract version: 4
 - Contract status: APPROVED
 - Test baseline: LOCKED
 - Acceptance owner: 评测负责人
-- Approval evidence: 用户在 2026-08-31 明确要求验收通过并继续实施，且接受 AI 复审边界
+- Approval evidence: 用户于 2026-09-01 批准修订 R1 验收，要求两条独立 AI 复审均产出持久化 PASS 报告；缺失、停滞或非 PASS 报告均阻断接受
 - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json
 - SSOT node: R1
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
@@ -75,6 +75,8 @@ And the result remains a passive evaluation artifact
 | AC-02 | 全路、增量、留一路损失和 hit/miss/gap 确定性重算 | Unit | Automatic | Yes |
 | AC-03 | 摘要、身份、范围、来源、人工分钟或消融篡改 fail closed | Unit | Automatic | Yes |
 | AC-04 | 结果不含授权、声明或 ResearchTrace/ClaimStatus 依赖 | Static/Unit | Automatic | Yes |
+| AC-05 | 消融边界复审必须在冻结输入上由独立零写入审阅进程产出持久化 `PASS` 报告 | Review evidence/Unit | Automatic | Yes |
+| AC-06 | 身份与合同复审必须在同一冻结输入上由不同审阅身份的独立零写入审阅进程产出持久化 `PASS` 报告 | Review evidence/Unit | Automatic | Yes |
 
 ## Human acceptance
 
@@ -86,7 +88,7 @@ And the result remains a passive evaluation artifact
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_regression_evaluation.py | 115a979168d4d62dca45f76c977f43f7d92d19814ce0740ef9f8279e3e4e550f | AC-01, AC-02, AC-03, AC-04 |
+| tests/test_v02_regression_evaluation.py | 0fa8fd335e7520805de8dab14a52ad5b2ea87de7b45894708cc39aa5bdc65238 | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
 
 ## Requirements-test traceability
 
@@ -96,6 +98,8 @@ And the result remains a passive evaluation artifact
 | AC-02 | focused unit tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
 | AC-03 | tamper/negative tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
 | AC-04 | import/source guard | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-05 | frozen review ledger and report integrity gate | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-06 | distinct reviewer identity, wrapper, terminal verdict and report integrity gate | tests/test_v02_regression_evaluation.py | Automatic | Yes |
 | H-01 | human checklist | acceptance/human/R1-regression-evaluation/checklist.md#h-01 | Human | Yes |
 
 ## Exploratory testing
@@ -110,4 +114,4 @@ And the result remains a passive evaluation artifact
 
 小样本只代表固定 A4 档案，不代表检索系统总体准确率、召回率或文献开放性；真实外部文献检索仍未由本合同覆盖。
 
-合同版本 3 将固定夹具内容摘要、主题和每条路线的来源身份纳入 fail-closed 合同，并补齐合法值篡改负测；AC 范围、SSOT 绑定与验收所有者不变。
+合同版本 4 保留版本 3 的夹具、主题和来源身份闭合，并将两份独立 AI 复审提升为硬性、可机读的接受条件。每份报告必须绑定同一冻结输入清单、使用不同审阅身份和不同外部包装器，并以 `PASS` 结束；缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。
