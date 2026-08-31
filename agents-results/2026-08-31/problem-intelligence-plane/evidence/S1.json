@@ -1,0 +1,59 @@
+{
+  "evidence_id": "EV-S1-ACCEPTED-1",
+  "task_id": "S1",
+  "source_revision": {
+    "local_implementation_commit": "90e7de090e3a447befdccb065a88191c6bae2eed",
+    "remote_equivalent_commit": "734936c7d0d60849b1a07c4da2c424c6d9dff4a6",
+    "equivalence_basis": "Both commits have parent 77cff57422ba657a9f3a97104caa6c7d4359480c and the same five S1 path blobs; GitHub API transport was used after Git HTTPS pushes timed out."
+  },
+  "changed_files": [
+    "matharc/v02/problem_status.py",
+    "tests/test_v02_problem_status.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures/confirmed-open.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures/frankl-q6.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures/resolved-collision.json"
+  ],
+  "acceptance_self_check": "pass",
+  "acceptance_commands": [
+    "python3 -m unittest -v tests.test_v02_problem_status tests.test_v02_source_observation tests.test_v02_literature_base tests.test_v02_budget",
+    "python3 -m py_compile matharc/v02/problem_status.py tests/test_v02_problem_status.py",
+    "git diff --check"
+  ],
+  "test_summary": {
+    "focused_and_dependency_tests": 50,
+    "result": "passed"
+  },
+  "acceptance_matrix": {
+    "immutable_statement_certificate_and_snapshot": "pass",
+    "unknown_fields_and_forged_digests_fail_closed": "pass",
+    "artifact_byte_digest_size_media_role_and_producer_validation": "pass",
+    "timezone_aware_and_causal_time_ordering": "pass",
+    "missing_expired_or_future_facts_fail_closed": "pass",
+    "three_real_archive_paper_dry_runs": "pass",
+    "reported_statuses_do_not_promote_mathematical_claims": "pass"
+  },
+  "ai_review": {
+    "initial_findings": [
+      "future source, certificate, or snapshot facts could be used at an earlier as_of time",
+      "source/certificate/snapshot causal ordering was not enforced"
+    ],
+    "repairs": "Added fail-closed temporal and causal invalidations with artifact-backed regressions.",
+    "post_repair_review": "pass",
+    "remaining_risk": "The three fixtures are contract dry-runs, not external-service retrieval or independent mathematical proof review."
+  },
+  "acceptance_record": {
+    "accepted_at": "2026-08-31",
+    "accepted_by": "用户（研究负责人/仓库所有者）",
+    "authority_basis": "用户在当前任务中明确确认“验收通过”；修复后的专项、依赖和独立 AI 复审均通过。",
+    "scope": "S1 problem status model and the required three-archive paper dry-run fixtures",
+    "ai_review_boundary": "AI reviews provide implementation-quality evidence only and do not make a mathematical conclusion."
+  },
+  "proposed_state": "ACCEPTED",
+  "unverified_items": [
+    "External literature-service retrieval",
+    "Independent mathematical review of any reported resolution",
+    "Global Obsidian archive audit, blocked by unrelated historical iCloud placeholder manifests"
+  ],
+  "failure_class": null,
+  "failure_origin": null
+}

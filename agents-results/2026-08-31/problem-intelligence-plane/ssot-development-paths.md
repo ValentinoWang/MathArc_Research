@@ -77,7 +77,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
 
-当前计划状态是“治理已对账、决定版本 2 已接受、L1/L2/A2 已接受，S1 已解锁”。它是一份开发计划和编排 SSOT，不是功能完成报告。
+当前计划状态是“治理已对账、决定版本 2 已接受、L1/L2/A2/S1 已接受，S2 已解锁”。它是一份开发计划和编排 SSOT，不是功能完成报告。
 
 ## 七、权威边界与剩余不确定性路由
 
@@ -213,8 +213,8 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | L1 | P1 | 1/1/1/1/2 | ACCEPTED | 0 | 研究基础设施负责人 | EG-PLAN | 用户验收确认 | source:accepted | L2 |
 | L2 | P1 | 1/1/1/1/2 | ACCEPTED | 0 | 研究基础设施负责人 | EG-PLAN | 完整性修复后接受 | source:accepted | A2 |
 | A2 | P1 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 用户验收确认，专项负测通过 | source:accepted | S1 |
-| S1 | P2 | 1/1/1/1/2 | READY | 0 | 问题状态负责人 | EG-PLAN | A2 已接受；需先完成三例纸面 dry-run | source:ready | S2 |
-| S2 | P2 | 1/1/1/1/2 | BLOCKED | 0 | 文献审计负责人 | EG-PLAN | S1 未接受 | source:not-started | A3 |
+| S1 | P2 | 1/1/1/1/2 | ACCEPTED | 0 | 问题状态负责人 | EG-PLAN | 三例纸面 dry-run、失效和因果时间负测均通过 | source:accepted | S2 |
+| S2 | P2 | 1/1/1/1/2 | READY | 0 | 文献审计负责人 | EG-PLAN | S1 已接受 | source:ready | A3 |
 | A3 | P2 | 1/1/1/1/2 | BLOCKED | 0 | 验收负责人 | EG-PLAN | S2 未接受 | source:not-started | T1 |
 | T1 | P3 | 1/1/1/1/2 | BLOCKED | 0 | 主题观测负责人 | EG-PLAN | A3 未接受 | source:not-started | T2 |
 | T2 | P3 | 1/1/1/1/2 | BLOCKED | 0 | 主题观测负责人 | EG-PLAN | T1 未接受 | source:not-started | A4 |
@@ -235,8 +235,8 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | L1 | contract.problem-intelligence.source-observation | contract-compile | literature | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A1 | none | none | decision.problem-intelligence.amendment@2 | contract.problem-intelligence.source-observation | isolated-record | 研究基础设施负责人 |
 | L2 | implementation.problem-intelligence.literature-base | implementation | literature | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | L1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.literature-base | implementation | 研究基础设施负责人 |
 | A2 | acceptance.problem-intelligence.literature-base | validation | literature | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | L2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.literature-base | evidence-only | 验收负责人 |
-| S1 | implementation.problem-intelligence.status-model | implementation | problem-status | READY | NOT_APPLICABLE | n/a | FORMAL | A2 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.status-model | implementation | 问题状态负责人 |
-| S2 | implementation.problem-intelligence.novelty-audit | implementation | novelty-audit | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | S1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.novelty-audit | implementation | 文献审计负责人 |
+| S1 | implementation.problem-intelligence.status-model | implementation | problem-status | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A2 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.status-model | implementation | 问题状态负责人 |
+| S2 | implementation.problem-intelligence.novelty-audit | implementation | novelty-audit | READY | NOT_APPLICABLE | n/a | FORMAL | S1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.novelty-audit | implementation | 文献审计负责人 |
 | A3 | acceptance.problem-intelligence.status-novelty | validation | novelty-audit | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | S2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.status-novelty | evidence-only | 验收负责人 |
 | T1 | implementation.problem-intelligence.topic-observation | implementation | topic-observation | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | A3 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.topic-observation | implementation | 主题观测负责人 |
 | T2 | implementation.problem-intelligence.dogfood-archives | implementation | topic-observation | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | T1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.dogfood-archives | implementation | 主题观测负责人 |
@@ -271,14 +271,14 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 
 | Frontier | Task ID | Eligibility | Unsatisfied hard dependencies | Active assumptions | Resource decision |
 |---|---|---|---|---|---|
-| implementation-frontier | S1 | FORMAL | none | none | conflict-free；先运行独立纸面 dry-run 夹具 |
+| implementation-frontier | S2 | FORMAL | none | none | conflict-free；四路检索和人工审计入口必须独立记录 |
 
 ### 波前指标
 
 | Metric | Value | Basis |
 |---|---:|---|
 | ready-frontier-width | 1 | 机器状态为 READY 的节点数 |
-| formal-ready | 1 | S1 的 A2 正式依赖已满足 |
+| formal-ready | 1 | S2 的 S1 正式依赖已满足 |
 | conditional-ready | 0 | 当前没有条件草稿 |
 | global-completeness-barriers | 0 | 没有把全局完成度作为普通节点前置条件 |
 | critical-path-length | 16 | 显式硬边上的最长节点路径 |
@@ -314,7 +314,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
 
-并行宽度的逻辑目标由独立交付物决定；当前正式前沿只有 S1。S2 及后续实现必须等待上游验收节点，不因已接受决定而越过依赖。
+并行宽度的逻辑目标由独立交付物决定；当前正式前沿只有 S2。后续实现必须等待上游验收节点，不因已接受决定而越过依赖。
 
 ### 假设与冲突登记
 
@@ -442,8 +442,8 @@ F1
                                                         v
                                       T1 --> T2 --> A4 --> R1 --> Q1 --> A5
 
-D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；当前前沿是 S1。
-S1 先运行独立纸面 dry-run 夹具；该夹具不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
+D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；S1 已接受，当前前沿是 S2。
+S1 的独立纸面 dry-run 已通过；它不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
 ```
 
 ### Mermaid 依赖图
@@ -471,4 +471,4 @@ flowchart LR
 
 ### 结论与当前停止点
 
-当前正式前沿是 S1：D1、D2、A1、L1、L2、A2 已接受，S1 已解锁但尚未实现；S2 及后续节点仍因各自的硬依赖而阻塞。S1 必须先完成独立纸面 dry-run 夹具，不能把这项夹具当作 T2 的执行或真实档案验收。计划已经写入机器源和生成主视图后，仍需通过复杂度、程序、结构、中文可读性和选择性归档检查，才能称为“计划文档已验证”；这不改变“功能尚未实现”的结论。
+当前正式前沿是 S2：D1、D2、A1、L1、L2、A2、S1 已接受，S2 已解锁；A3 及后续节点仍因各自的硬依赖而阻塞。S1 的独立纸面 dry-run 不能当作 T2 的执行或真实档案验收。计划已经写入机器源和生成主视图后，仍需通过复杂度、程序、结构、中文可读性和选择性归档检查，才能称为“计划文档已验证”；这不改变“功能尚未实现”的结论。

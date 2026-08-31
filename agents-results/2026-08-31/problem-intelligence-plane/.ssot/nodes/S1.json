@@ -4,7 +4,7 @@
   "stage": "P2",
   "work_kind": "implementation",
   "domain_lane": "problem-status",
-  "execution_state": "READY",
+  "execution_state": "ACCEPTED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
