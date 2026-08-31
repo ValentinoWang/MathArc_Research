@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-31T19:07:15.509752+00:00",
+  "generated_at": "2026-08-31T19:32:13.463220+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "47e0b203855213f5f02b99252edd1276b114f94e",
@@ -10,7 +10,18 @@
       "AGENTS.md",
       "Core/harnesses/fullstack-ai-harness.md",
       "Core/harnesses/product-frontend-harness.md",
+      "Core/skills/business-plan-commercial-story/SKILL.md",
+      "Core/skills/business-plan-facts-evidence/SKILL.md",
+      "Core/skills/business-plan-facts-evidence/scripts/test_validate_business_plan_sources.py",
+      "Core/skills/business-plan-facts-evidence/scripts/validate_business_plan_sources.py",
+      "Core/skills/business-plan-release-qa/SKILL.md",
+      "Core/skills/business-plan-release-qa/scripts/find_external_copy_review_candidates.py",
+      "Core/skills/business-plan-release-qa/tests/test_find_external_copy_review_candidates.py",
+      "Core/skills/business-plan/SKILL.md",
+      "Core/skills/codex-explicit-worker-orchestration/SKILL.md",
+      "Core/skills/design-acceptance-contract/SKILL.md",
       "Core/skills/design-acceptance-contract/references/acceptance-contract-template.md",
+      "Core/skills/mainline-attribution-discipline/SKILL.md",
       "Core/skills/product-context-discovery/SKILL.md",
       "Core/skills/product-context-discovery/agents/openai.yaml",
       "Core/skills/role-fit-ux/SKILL.md",
@@ -40,6 +51,10 @@
       "Core/skills/screen-contract-ui/tests/test_screen_contract_pipeline.py",
       "Harness_Product_Aware_Frontend_Design_Development_Spec_v0.2.0.md",
       "Projects/Athlete-OS_repo/PROJECT.md",
+      "Projects/Athlete-OS_repo/skills/ai-harness-maintenance/SKILL.md",
+      "Projects/Athlete-OS_repo/skills/athlete-os-acceptance-e2e-adapter/SKILL.md",
+      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-modification/SKILL.md",
+      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-modification/references/frontend-ia-route-shell.md",
       "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/SKILL.md",
       "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/agents/openai.yaml",
       "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/references/backend-variable-leakage-review.md",
@@ -109,7 +124,7 @@
       "tools/tests/test_harnessctl_source_audit.py",
       "tools/tests/test_product_aware_frontend_core.py"
     ],
-    "dirty_diff_sha256": "53c6c0c576e546a31d9c476a694d28170e665c3bf427276874a4a69cdb535060",
+    "dirty_diff_sha256": "0093d31666b805f2e77674139aff45e5caee10797383ba3d74df0a33affd9778",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
     "skill_sha256": "23d9638a5bd3fae1638480a1c170eac691ab6975678d752f8bd4cdf40c536d41",
@@ -117,15 +132,15 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "dc0d0d36b02bdb2c1e1aa223f4c5d64077640483",
+    "project_commit": "ecb751529073f0e9ae3b761ba28e1ccb60ef1cc9",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "2c16b4dee58e708a1cc340e6bbb5fd3a9c9590a789adfecafb586c1d2c527ae0",
+    "project_dirty_diff_sha256": "41e82703f94a450b236510669390ca5d1bfd83a6c4828a8b73dd7d100e7bde12",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "d91a75f8f72c20fc4c49e05879a44fd8ac7502af6df7312992e3c04f77fc9328",
-    "content_sha256": "d91a75f8f72c20fc4c49e05879a44fd8ac7502af6df7312992e3c04f77fc9328",
+    "sha256": "9ef5565cd11dfbaf2e60e1b94f9a3a55cb18a9149bcf45d06c027a0effb4bd7f",
+    "content_sha256": "9ef5565cd11dfbaf2e60e1b94f9a3a55cb18a9149bcf45d06c027a0effb4bd7f",
     "manifest_sha256": "4d6343ca6e467d6544ce0723736c25282868283d481e1d57591ced4b44c7c224",
     "manifest_identity_sha256": "4d6343ca6e467d6544ce0723736c25282868283d481e1d57591ced4b44c7c224"
   },
@@ -142,7 +157,7 @@
       ],
       "exit_code": 1,
       "result": "failed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 33\nruntime_skill_check: enabled\nWARN Harness source dirty files: 30\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/develop/Harness/product-frontend-harness.md\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.agents/skills/product-context-discovery\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.agents/skills/role-fit-ux\n"
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 34\nruntime_skill_check: enabled\nWARN Harness source dirty files: 45\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/develop/Harness/product-frontend-harness.md\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.agents/skills/product-context-discovery\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.agents/skills/role-fit-ux\n"
     },
     {
       "id": "complexity",

@@ -52,7 +52,7 @@ class CalibrationDisclosureTests(unittest.TestCase):
         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
         self.assertIn(
             r1_evidence["evidence_id"],
-            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-ACCEPTED-2"},
+            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
         )
         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])

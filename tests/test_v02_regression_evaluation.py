@@ -3,6 +3,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+from tempfile import TemporaryDirectory
 import unittest
 from pathlib import Path
 
@@ -87,7 +88,10 @@ class RegressionEvaluationTests(unittest.TestCase):
             or evidence["acceptance_self_check"] == "pass"
         )
         if not is_acceptance_claim:
-            self.assertIn(evidence["evidence_id"], {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3"})
+            self.assertIn(
+                evidence["evidence_id"],
+                {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4"},
+            )
             self.assertEqual("blocked", evidence["acceptance_self_check"])
             self.assertEqual("BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS", reviews["disposition"])
             self.assertEqual(
@@ -97,7 +101,7 @@ class RegressionEvaluationTests(unittest.TestCase):
             return
 
         self.assertEqual("PASS", reviews["disposition"])
-        self.assertEqual(7, reviews["contract_version"])
+        self.assertEqual(8, reviews["contract_version"])
         ledger = json.loads(REVIEW_LEDGER.read_text(encoding="utf-8"))
         self.assertEqual(reviews["frozen_input_manifest_sha256"], ledger["frozen_input_manifest_sha256"])
         self.assertEqual(reviews["frozen_head"], ledger["frozen_head"])
@@ -123,13 +127,118 @@ class RegressionEvaluationTests(unittest.TestCase):
             self.assertTrue(report["zero_write"])
             path = ROOT / report["report_path"]
             self.assertTrue(path.is_file(), report["report_path"])
+            manifest_path = Path(reviews["frozen_input_manifest"])
+            self.assertEqual(manifest_path.parent / "reports", Path(report["report_path"]).parent)
+            self.assertEqual(f"{report['lane']}.md", path.name)
             self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), report["sha256"])
             content = path.read_text(encoding="utf-8")
+            self.assertIn(f"Lane: `{report['lane']}`", content)
+            self.assertIn(f"Reviewer identity: `{report['reviewer_identity']}`", content)
+            self.assertIn(f"Wrapper: `{report['wrapper']}`", content)
+            self.assertIn("zero-write", content.lower())
             self.assertIn("Verdict: PASS", content)
+            self.assertTrue(content.rstrip().endswith("Verdict: PASS"))
             self.assertIn(
                 f"Frozen input manifest SHA-256: {reviews['frozen_input_manifest_sha256']}",
                 content.replace("`", ""),
             )
+
+    def test_accepted_review_gate_rejects_one_report_replayed_as_two_lanes(self) -> None:
+        class MemoryJSON:
+            def __init__(self, value: dict) -> None:
+                self.value = value
+
+            def read_text(self, encoding: str = "utf-8") -> str:
+                return json.dumps(self.value)
+
+        original_root = ROOT
+        original_evidence = R1_EVIDENCE
+        original_ledger = REVIEW_LEDGER
+        with TemporaryDirectory() as temporary_root:
+            root = Path(temporary_root)
+            protected_paths = (
+                "tests/test_v02_regression_evaluation.py",
+                "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md",
+                "acceptance/human/R1-regression-evaluation/binding.md",
+                "acceptance/human/R1-regression-evaluation/checklist.md",
+            )
+            manifest_inputs = []
+            for path in protected_paths:
+                candidate = root / path
+                candidate.parent.mkdir(parents=True, exist_ok=True)
+                candidate.write_text(path, encoding="utf-8")
+                manifest_inputs.append({"path": path, "sha256": hashlib.sha256(candidate.read_bytes()).hexdigest()})
+
+            campaign = (
+                "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/"
+                "R1-regression-evaluation/reviews/synthetic-retry"
+            )
+            manifest = root / campaign / "frozen-inputs.json"
+            manifest.parent.mkdir(parents=True, exist_ok=True)
+            manifest.write_text(json.dumps({"inputs": manifest_inputs}), encoding="utf-8")
+            manifest_sha = hashlib.sha256(manifest.read_bytes()).hexdigest()
+            reports = []
+            for lane, identity, wrapper in (
+                ("ablation-boundary", "synthetic-luna", "/synthetic/run-l3.sh"),
+                ("identity-contract", "synthetic-sol", "/synthetic/run-l4.sh"),
+            ):
+                report = root / campaign / "reports" / f"{lane}.md"
+                report.parent.mkdir(parents=True, exist_ok=True)
+                report.write_text(
+                    "\n".join(
+                        (
+                            f"- Lane: `{lane}`",
+                            f"- Reviewer identity: `{identity}`",
+                            f"- Wrapper: `{wrapper}`",
+                            "- Review mode: zero-write",
+                            f"Frozen input manifest SHA-256: {manifest_sha}",
+                            "Verdict: PASS",
+                            "",
+                        )
+                    ),
+                    encoding="utf-8",
+                )
+                reports.append(
+                    {
+                        "lane": lane,
+                        "reviewer_identity": identity,
+                        "wrapper": wrapper,
+                        "verdict": "PASS",
+                        "zero_write": True,
+                        "report_path": str(report.relative_to(root)),
+                        "sha256": hashlib.sha256(report.read_bytes()).hexdigest(),
+                    }
+                )
+
+            evidence = {
+                "evidence_id": "EV-R1-ACCEPTED-2",
+                "acceptance_self_check": "pass",
+                "source_identity": {"protected_test_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()},
+                "independent_ai_reviews": {
+                    "contract_version": 8,
+                    "disposition": "PASS",
+                    "frozen_input_manifest": str(manifest.relative_to(root)),
+                    "frozen_input_manifest_sha256": manifest_sha,
+                    "frozen_head": "synthetic-head",
+                    "reports": reports,
+                },
+            }
+            try:
+                globals()["ROOT"] = root
+                globals()["R1_EVIDENCE"] = MemoryJSON(evidence)
+                globals()["REVIEW_LEDGER"] = MemoryJSON(
+                    {"frozen_input_manifest_sha256": manifest_sha, "frozen_head": "synthetic-head"}
+                )
+                self.test_independent_review_gate_is_fail_closed_for_pending_and_accepted_evidence()
+
+                evidence["independent_ai_reviews"]["reports"][1]["report_path"] = reports[0]["report_path"]
+                evidence["independent_ai_reviews"]["reports"][1]["sha256"] = reports[0]["sha256"]
+                with self.assertRaises(AssertionError):
+                    self.test_independent_review_gate_is_fail_closed_for_pending_and_accepted_evidence()
+            finally:
+                globals()["ROOT"] = original_root
+                globals()["R1_EVIDENCE"] = original_evidence
+                globals()["REVIEW_LEDGER"] = original_ledger
 
 
 if __name__ == "__main__":

@@ -3,7 +3,7 @@
 - 任务编号：R1-regression-evaluation
 - 人工验收绑定：acceptance/human/R1-regression-evaluation/binding.md
 - 验收合同：agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
-- 合同版本：7
+- 合同版本：8
 - 清单状态：已批准
 - 所需人工角色：评测负责人
 - 清单负责人：用户
