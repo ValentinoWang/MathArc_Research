@@ -178,6 +178,49 @@ class LiteratureBaseTests(unittest.TestCase):
             self.assertEqual(len(restored.artifacts.records), 1)
             self.assertEqual(len(restored.observations), 1)
 
+    def test_observed_replay_requires_open_license_and_budget(self) -> None:
+        content = b"replay gates"
+        digest = hashlib.sha256(content).hexdigest()
+        observation = obs(uri="https://example.test/replay-gates", digest=digest)
+        restricted = new_observation(
+            observation_id=observation.observation_id,
+            canonical_uri=observation.canonical_uri,
+            pinned_version=observation.pinned_version,
+            license_status=LicenseStatus.RESTRICTED,
+            license_basis="terms",
+            content_summary="metadata",
+            summary_basis="abstract",
+            media_type="application/pdf",
+            content_digest_sha256=digest,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            base = LiteratureBase(directory)
+            base.import_bytes(observation, content)
+            self.assertEqual(base.import_bytes(restricted, content).disposition, ImportDisposition.REJECTED)
+            exhausted = LiteratureBase(directory, BudgetLedger(cost_usd_limit=0.0, spent_cost_usd=0.0))
+            self.assertEqual(exhausted.import_bytes(observation, content).disposition, ImportDisposition.REJECTED)
+
+    def test_conflict_record_does_not_hide_observed_replay(self) -> None:
+        content_a = b"first"
+        content_b = b"second"
+        digest_a = hashlib.sha256(content_a).hexdigest()
+        digest_b = hashlib.sha256(content_b).hexdigest()
+        observed = new_observation(
+            observation_id="z-observed", canonical_uri="https://example.test/order", pinned_version="v1",
+            license_status=LicenseStatus.OPEN, license_basis="license", content_summary="metadata",
+            summary_basis="abstract", media_type="application/pdf", content_digest_sha256=digest_a,
+        )
+        conflict = new_observation(
+            observation_id="a-conflict", canonical_uri=observed.canonical_uri, pinned_version="v1",
+            license_status=LicenseStatus.OPEN, license_basis="license", content_summary="metadata",
+            summary_basis="abstract", media_type="application/pdf", content_digest_sha256=digest_b,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            base = LiteratureBase(directory)
+            base.import_bytes(observed, content_a)
+            self.assertEqual(base.import_bytes(conflict, content_b).disposition, ImportDisposition.CONFLICT)
+            self.assertEqual(base.import_bytes(observed, content_a).disposition, ImportDisposition.IDEMPOTENT)
+
 
 if __name__ == "__main__":
     unittest.main()

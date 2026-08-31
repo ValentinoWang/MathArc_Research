@@ -74,7 +74,10 @@ class LiteratureBase:
         if existing_id is not None and existing_id.logical_identity != observation.logical_identity:
             rejected = self._rejected(observation)
             return ImportResult(ImportDisposition.REJECTED, rejected, reason="observation_id already names another logical identity")
-        existing_identity = [item for item in self.observations if item.logical_identity == observation.logical_identity]
+        existing_identity = sorted(
+            (item for item in self.observations if item.logical_identity == observation.logical_identity),
+            key=lambda item: item.status is not ObservationStatus.OBSERVED,
+        )
         if existing_identity:
             for item in existing_identity:
                 if item.status is ObservationStatus.OBSERVED:
@@ -83,6 +86,18 @@ class LiteratureBase:
                         and item.content_digest_sha256
                         and item.artifact_id is not None
                     ):
+                        if observation.license_status is not LicenseStatus.OPEN:
+                            return ImportResult(
+                                ImportDisposition.REJECTED,
+                                item,
+                                reason="observed replay requires confirmed open license",
+                            )
+                        if self.budget is not None and self.budget.exhausted():
+                            return ImportResult(
+                                ImportDisposition.REJECTED,
+                                item,
+                                reason="observed replay blocked by exhausted budget",
+                            )
                         if actual_digest != observation.content_digest_sha256:
                             return ImportResult(
                                 ImportDisposition.REJECTED,
@@ -228,7 +243,13 @@ class LiteratureBase:
             existing = None
         actual_digest = hashlib.sha256(content).hexdigest()
         if existing is not None:
-            if existing.sha256 != actual_digest or existing.size_bytes != len(content):
+            if (
+                existing.sha256 != actual_digest
+                or existing.size_bytes != len(content)
+                or existing.logical_role != "literature-observation"
+                or existing.producer != "matharc-literature-base"
+                or existing.media_type != observation.media_type
+            ):
                 raise ValueError("existing artifact metadata conflicts with imported content")
             self._verified_artifact(artifact_id, actual_digest)
             return existing
