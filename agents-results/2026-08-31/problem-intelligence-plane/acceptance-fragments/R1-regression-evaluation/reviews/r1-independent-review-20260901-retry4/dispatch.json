@@ -1,0 +1,47 @@
+{
+  "review_campaign_id": "R1-independent-review-20260901-retry4",
+  "frozen_head": "d4b3396d786c1fed0a8405dc419ad483fa2acf41",
+  "frozen_input_manifest": "frozen-inputs.json",
+  "frozen_input_manifest_sha256": "d7fcfb268f97dc0a9d013356b90faa8fb07f542b09e6649ad0dfb63fe19b1534",
+  "launch_barrier": "passed: Luna and Sol worker processes were launched in parallel from the same frozen HEAD",
+  "mode": "parallel zero-write review except each lane's sole report",
+  "lanes": [
+    {
+      "lane": "ablation-boundary",
+      "reviewer_identity": "r1-ablation-boundary-l3-luna-retry4",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh",
+      "mode": "zero-write-except-own-report",
+      "prompt_sha256": "51742b984cc0c5de43b37c8d260add34d9529e51fdf2e168ea6b6746b36c3692",
+      "report_path": "reports/ablation-boundary.md",
+      "report_sha256": "3915d790985aedefe713c1f46ac0d4cd13c8bb08559dc9510ddb10dbe517993b",
+      "log_path": "logs/ablation-boundary.log",
+      "log_sha256": "7c0ae237a08b9be872f027f92ff99bd9e556f9edc3ad37a93c61cb012f000171",
+      "result": "durable lane-local PASS report written",
+      "counted_as_pass": false
+    },
+    {
+      "lane": "identity-contract",
+      "reviewer_identity": "r1-identity-contract-l4-sol-retry4",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+      "mode": "zero-write-except-own-report",
+      "prompt_sha256": "470f0280c62cca003f226cd327a5cf3d2039bcb0be2d9c0292dcb65b76785732",
+      "report_path": "reports/identity-contract.md",
+      "log_path": "logs/identity-contract.log",
+      "log_sha256": "1e2aa69c4af0be8c7671adffef69f27949168842520a4da2d3665649b6109a70",
+      "pid": 61733,
+      "result": "terminated after reproducing P1 and before terminal report write",
+      "failure_class": "verification",
+      "failure_origin": "test-oracle",
+      "finding": "The accepted-state gate accepted a prompt or one ablation report as both required reports when fabricated metadata supplied distinct lanes, identities, and wrappers; report content was not bound to those metadata fields.",
+      "counted_as_pass": false
+    }
+  ],
+  "convergence": {
+    "result": "NOT_A_PASS_REPAIR_REQUIRED",
+    "counted_as_pass": false,
+    "reason": "Only one durable terminal report exists, and the identity-contract lane found a P1 false-acceptance path."
+  },
+  "log_normalization": "Trailing whitespace and redundant terminal blank lines were removed before repository commit; recorded hashes bind the normalized durable logs without changing non-whitespace content.",
+  "prompt_cleanup": "completed after prompt hashes, report/log hashes, worker identity, and terminal dispositions were recorded",
+  "codex_transcript_retention": "preserve ~/.codex/sessions and ~/.codex/archived_sessions"
+}
