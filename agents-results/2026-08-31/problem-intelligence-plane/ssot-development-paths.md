@@ -77,7 +77,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
 
-当前计划状态是“治理已对账、决定版本 2 已接受；A4 已正式接受，R1 已重新打开”。A4 的接受记录（`EV-A4-ACCEPTED-2`）限定在离线、来源固定范围内；该决定不构成数学证明、外部文献确认、生产或设备证据，也不构成公开研究授权。R1 已基于该 A4 身份重新绑定，但在取得两份新的、相互独立且使用不同包装器的持久化通过报告前保持阻塞；Q1 和 A5 因此继续阻塞。
+当前计划状态是“治理已对账、决定版本 2 已接受；A4、R1、Q1 和 A5 均已在各自限定范围内接受”。A4 的接受记录（`EV-A4-ACCEPTED-2`）限定在离线、来源固定范围内；R1 只比较固定四路回归记录，Q1 只记录未校准披露政策，A5 只记录受限的仓库源级发布决定。这些接受均不构成数学证明、外部文献确认、生产或设备证据、部署完成或公开研究授权。
 
 ## 七、权威边界与剩余不确定性路由
 
@@ -136,15 +136,15 @@ main_thread_policy: orchestration-only
 main_thread_source_write: false
 planning source: .ssot/planning-compiler.json
 machine source: .ssot/manifest.json
-current pushed baseline: main@329b270460abf146561499fd5aa7ec4e62737eb1
-current worktree: contains uncommitted R1 reopening revision
+current pushed baseline: main@6a7ee857ba0162d0afe55f0a23302a6a92d4c9dc
+current worktree: clean
 ```
 
 ### 发布、基线与候选
 
 | Macro phase | Release ID | User value | Independent acceptance | Independent failure | Development baseline | Promotion baseline | Release candidate |
 |---|---|---|---|---|---|---|---|
-| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:fe9de3fd86e3670dc3a0c10621afa48fc4740fa8` | `main:fe9de3fd86e3670dc3a0c10621afa48fc4740fa8` | `candidate:pi-r1-v2` |
+| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:6a7ee857ba0162d0afe55f0a23302a6a92d4c9dc` | `main:6a7ee857ba0162d0afe55f0a23302a6a92d4c9dc` | `candidate:pi-r1-v2` |
 | P1 共享文献资料底座 | PI-R2 | 公开资料可追溯导入 | 观察、去重、预算和信任门 | 资料停留待审 | `candidate:pi-r1-v1` | `accepted:pi-r1-v1` | `candidate:pi-r2-v1` |
 | P2 问题状态与新颖性审计 | PI-R3 | 状态与新颖性分离 | 四路检索和失效负测 | 冻结完整预算 | `candidate:pi-r2-v1` | `accepted:pi-r2-v1` | `candidate:pi-r3-v1` |
 | P3 一次性主题观测 | PI-R4 | 三例真实闭环 | 重放、恢复、去重和人工审计 | 进入人工通道 | `candidate:pi-r3-v1` | `accepted:pi-r3-v1` | `candidate:pi-r4-v1` |
@@ -220,9 +220,9 @@ current worktree: contains uncommitted R1 reopening revision
 | T1 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 游标重放、去重和人工通道专项及独立 AI 复审通过 | source:accepted | T2 |
 | T2 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 三个固定来源档案、重放、预算和人工闭环均通过独立 AI 复审 | source:accepted | A4 |
 | A4 | P3 | 1/1/1/1/2 | ACCEPTED | 1 | 验收负责人 | EG-PLAN | 离线固定来源正式验收通过，非数学证明、非公开发布 | evidence:EV-A4-ACCEPTED-2 | R1 |
-| R1 | P4 | 1/1/1/1/2 | BLOCKED | 0 | 评测负责人 | EG-PLAN | 已基于 A4 重新打开，等待两份新的独立、不同包装器持久化通过报告 | evidence:EV-R1-REOPENED-5 | Q1 |
-| Q1 | P4 | 1/1/1/1/2 | BLOCKED | 2 | 研究负责人 | EG-PLAN | 等待 R1 按重新绑定的输入重新接受 | evidence:EV-R1-REOPENED-5 | A5 |
-| A5 | P4 | 1/1/1/1/2 | BLOCKED | 2 | 研究负责人和仓库所有者 | EG-PLAN | 等待 Q1 在 R1 新接受后重新验收和发布复核 | evidence:EV-R1-REOPENED-5 | 无 |
+| R1 | P4 | 1/1/1/1/2 | ACCEPTED | 0 | 评测负责人 | EG-PLAN | 固定四路回归、消融记录和两份独立持久化复核通过 | evidence:EV-R1-ACCEPTED-3 | Q1 |
+| Q1 | P4 | 1/1/1/1/2 | ACCEPTED | 2 | 研究负责人 | EG-PLAN | 固定三例披露政策、机器验收和人工记录通过 | evidence:EV-Q1-ACCEPTED-3 | A5 |
+| A5 | P4 | 1/1/1/1/2 | ACCEPTED | 2 | 研究负责人和仓库所有者 | EG-PLAN | 受限仓库源级发布决定、机器验收和人工记录通过 | evidence:EV-A5-ACCEPTED-2 | 无 |
 
 ### 语义节点登记表
 
@@ -242,9 +242,9 @@ current worktree: contains uncommitted R1 reopening revision
 | T1 | implementation.problem-intelligence.topic-observation | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A3 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.topic-observation | implementation | 主题观测负责人 |
 | T2 | implementation.problem-intelligence.dogfood-archives | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.dogfood-archives | implementation | 主题观测负责人 |
 | A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
-| R1 | implementation.problem-intelligence.regression | implementation | evaluation | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
-| Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
-| A5 | release.problem-intelligence.v0 | release-decision | governance | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
+| R1 | implementation.problem-intelligence.regression | implementation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
+| Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
+| A5 | release.problem-intelligence.v0 | release-decision | governance | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
 
 ### 依赖边表
 
@@ -315,7 +315,7 @@ current worktree: contains uncommitted R1 reopening revision
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
 
-并行宽度的逻辑目标由独立交付物决定；A4 已在 `EV-A4-ACCEPTED-2` 边界内接受。R1 已重新打开，但两份新的独立、不同包装器持久化通过报告缺失，因此 `DL-R1`、Q1 和 A5 均未解锁；历史复核材料不能替代该接受条件。
+并行宽度的逻辑目标由独立交付物决定；A4、R1、Q1 和 A5 已分别在各自合同边界内接受。接受记录仍只证明本地、固定来源、固定样本和受限发布决定，不向数学证明、外部文献确认、生产或公开发布延伸。
 
 ### 假设与冲突登记
 
@@ -441,7 +441,7 @@ F1
                                                         v
                                       T1 --> T2 --> A4 --> R1 --> Q1 --> A5
 
-D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；A4 已在 `EV-A4-ACCEPTED-2` 的离线固定来源边界内接受。R1 已重新打开但等待两份新的独立、不同包装器持久化通过报告；Q1 和 A5 因 R1 未重新接受而阻塞。
+D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；A4、R1、Q1 和 A5 已在各自固定合同与验收记录边界内接受。
 S1 的独立纸面 dry-run 已通过；它不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
 ```
 
@@ -470,4 +470,4 @@ flowchart LR
 
 ### 结论与当前停止点
 
-当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2、A4 已接受；R1 已重新打开并等待两份新的独立、不同包装器持久化通过报告，Q1 和 A5 因 R1 未重新接受而阻塞。不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。
+当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2、A4、R1、Q1、A5 均已接受。不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。

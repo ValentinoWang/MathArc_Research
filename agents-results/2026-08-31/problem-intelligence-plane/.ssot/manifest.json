@@ -41,7 +41,7 @@
     {
       "view_id": "main",
       "source": "view-sources/00-main.md",
-      "source_sha256": "0d5d7214760382cf276ec91f29365f4afc8f99b8582ddd3eb56054b3079d11ee",
+      "source_sha256": "546c990c657b8b8fa83d58923e361c40f041b1196e7acd9db12386f6a1ba6d2f",
       "output": "../ssot-development-paths.md"
     }
   ],
@@ -123,8 +123,8 @@
   ],
   "validation_report": {
     "path": "validation-report.json",
-    "sha256": "99b0494b7f68c44272ecb9d74d489460d5bf1af832a50376c6d60f08dc2194ee",
-    "manifest_identity_sha256": "1ea4b331355a0568fde2b26f1c652752f4b6db3739bde39bd9b4201ad6b4dbd0",
-    "bundle_content_sha256": "80a3325a33da199abad73ceef09fce20f05daddbf8236e69c5f86edb6cbe1c20"
+    "sha256": "1a90eed82bdf85f5b53a9ee782d3cc81fd7b34d819866afa130922890a23a96c",
+    "manifest_identity_sha256": "3e3ae9fe7d6081955452651b7d26416781b0cdd16de7bec372f4c46303fd8269",
+    "bundle_content_sha256": "4d5d75c9dc38c694fadcefaadd86603165818d3a7b301eb887985e4781124751"
   }
 }
