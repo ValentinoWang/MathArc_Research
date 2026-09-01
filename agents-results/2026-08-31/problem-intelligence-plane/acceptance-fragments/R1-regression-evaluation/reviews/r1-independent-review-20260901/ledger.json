@@ -1,9 +1,9 @@
 {
   "review_campaign_id": "R1-independent-review-20260901",
-  "frozen_head": "0a58bf984ef2764bafe0c2b26d1d6cefdec43783",
-  "frozen_input_manifest": "../r1-independent-review-20260901-retry2/frozen-inputs.json",
-  "frozen_input_manifest_sha256": "4878c7b30f5e289e733a513afd8e17aee336e46b9752a4a5a574fa5d30216420",
-  "launch_barrier": "retry-2 registered both PIDs before the first wait",
+  "frozen_head": "95ce4faf0d941345e8265dde1eb13a189e8454b3 plus R1-v9 candidate",
+  "frozen_input_manifest": "../r1-independent-review-20260901-retry6/frozen-inputs.json",
+  "frozen_input_manifest_sha256": "cbc5faeb3d55e7d0a80dfc33fb240ab6536876fd641af42f43ea367b49e0085b",
+  "launch_barrier": "retry-8 registered both isolated PTY worker processes before either completed",
   "attempt_1": {
     "frozen_head": "ad28c1d8225f0305095ee3b88c6bef13952ee92b",
     "frozen_input_manifest": "frozen-inputs.json",
@@ -37,14 +37,14 @@
       }
     ]
   },
-  "retry_2": {
-    "execution_ledger": "../r1-independent-review-20260901-retry2/dispatch.json",
+  "retry_6": {
+    "execution_ledger": "../r1-independent-review-20260901-retry6/frozen-inputs.json",
     "disposition": "PASS",
     "reports": [
-      "../r1-independent-review-20260901-retry2/reports/ablation-boundary.md",
-      "../r1-independent-review-20260901-retry2/reports/identity-contract.md"
+      "../r1-independent-review-20260901-retry6/reports/ablation-boundary.md",
+      "../r1-independent-review-20260901-retry6/reports/identity-contract.md"
     ]
   },
   "disposition": "PASS",
-  "next_action": "R1 may be accepted only after the acceptance authority validates the retry-2 report identities, hashes, and human H-01 result."
+  "next_action": "R1 acceptance is supported by the v9 report-integrity gate and a fresh H-01 human run; Q1 must be reaccepted separately."
 }

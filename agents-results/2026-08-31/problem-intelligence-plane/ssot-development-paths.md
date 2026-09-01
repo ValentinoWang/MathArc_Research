@@ -77,7 +77,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
 
-当前计划状态是“治理已对账、决定版本 2 已接受、L1/L2/A2/S1/S2/A3/T1/T2/A4 已接受；R1 已重新打开，Q1/A5 因依赖阻断”。R1 的合同版本 4 要求两份独立、零写入、持久化通过（`PASS`）的 AI 复审报告；旧的无报告审阅不能由测试替代。A5 仅能在 R1/Q1 重新接受后再作仓库源级交付决定；它不构成数学结论、外部状态、新颖性、校准表现或生产发布报告。
+当前计划状态是“治理已对账、决定版本 2 已接受、L1/L2/A2/S1/S2/A3/T1/T2/A4/R1 已接受；Q1 已解锁，A5 因依赖阻断”。R1 的合同版本 9 已获得两份独立、零写入、持久化通过（`PASS`）的 AI 复审报告，且报告完整性门禁拒绝硬链接和字节相同重放。A5 仅能在 Q1 重新接受后再作仓库源级交付决定；它不构成数学结论、外部状态、新颖性、校准表现或生产发布报告。
 
 ## 七、权威边界与剩余不确定性路由
 
@@ -219,8 +219,8 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | T1 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 游标重放、去重和人工通道专项及独立 AI 复审通过 | source:accepted | T2 |
 | T2 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 三个固定来源档案、重放、预算和人工闭环均通过独立 AI 复审 | source:accepted | A4 |
 | A4 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 三例档案、重放、恢复、去重和失败模式验收通过 | evidence:A4 | R1 |
-| R1 | P4 | 1/1/1/1/2 | READY | 1 | 评测负责人 | EG-PLAN | 需要两份冻结输入、独立身份和独立包装器的持久化零写入 PASS 复审报告 | evidence:R1-reopened | Q1 |
-| Q1 | P4 | 1/1/1/1/2 | BLOCKED | 0 | 研究负责人 | EG-PLAN | 等待 R1 重新接受后重新绑定未校准、双轨和禁止公开的专项验收 | evidence:Q1-historical | A5 |
+| R1 | P4 | 1/1/1/1/2 | ACCEPTED | 0 | 评测负责人 | EG-PLAN | 合同版本 9 的两份独立冻结输入复审与 H-01 已通过 | evidence:R1-accepted-2 | Q1 |
+| Q1 | P4 | 1/1/1/1/2 | READY | 1 | 研究负责人 | EG-PLAN | 已由 R1 重新接受解锁，须重新绑定未校准、双轨和禁止公开的专项验收 | evidence:Q1-historical | A5 |
 | A5 | P4 | 1/1/1/1/2 | BLOCKED | 0 | 研究负责人和仓库所有者 | EG-PLAN | 等待 Q1 重新接受后重作范围受限的仓库源级发布决定 | evidence:A5-historical | 无 |
 
 ### 语义节点登记表
@@ -241,8 +241,8 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | T1 | implementation.problem-intelligence.topic-observation | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A3 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.topic-observation | implementation | 主题观测负责人 |
 | T2 | implementation.problem-intelligence.dogfood-archives | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.dogfood-archives | implementation | 主题观测负责人 |
 | A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
-| R1 | implementation.problem-intelligence.regression | implementation | evaluation | READY | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
-| Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
+| R1 | implementation.problem-intelligence.regression | implementation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
+| Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | READY | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
 | A5 | release.problem-intelligence.v0 | release-decision | governance | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
 
 ### 依赖边表
