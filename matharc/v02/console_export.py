@@ -8,7 +8,8 @@ from pathlib import Path
 from typing import Any, Mapping
 
 from .authorization import RolePolicy
-from .console_topic import console_topic_projection
+from .console_topic import TopicStoreConfig, console_topic_projection
+from .topic_observation import TopicObservationRunner
 from .schema import canonical_json
 from .workspace import ResearchWorkspace
 from .workspace_visualization import workspace_dashboard_payload
@@ -95,10 +96,18 @@ def campaign_snapshot(workspace: ResearchWorkspace) -> dict[str, Any]:
 
 def build_console_export(
     workspace_root: str | Path,
+    *,
+    topic_store: TopicObservationRunner | None = None,
+    topic_store_config: TopicStoreConfig | None = None,
 ) -> dict[str, Any]:
     """Build a truthful console payload without changing workspace state."""
 
+    if topic_store is not None and topic_store_config is not None:
+        raise ValueError("supply either topic_store or topic_store_config, not both")
     root = Path(workspace_root).resolve()
+    resolved_topic_store = (
+        topic_store_config.open_read_only() if topic_store_config is not None else topic_store
+    )
     workspace = ResearchWorkspace.load(root)
     audit = workspace.audit()
     if not audit.valid:
@@ -116,13 +125,17 @@ def build_console_export(
             "campaign_observatory": "live_if_current_workspace_campaign_is_registered",
             "review_submission": "existing_review_service_only",
             "source_registry_projection": "live",
-            "topic_observation": "separate_read_model_required",
+            "topic_observation": (
+                "live_preexisting_single_topic_store"
+                if resolved_topic_store is not None
+                else "separate_read_model_required"
+            ),
             "external_search": "not_configured",
             "operations": "isolated_local_ledger_only",
         },
         "provenance": provenance,
         "workspace": workspace_payload,
-        "source_topic": console_topic_projection(workspace.sources),
+        "source_topic": console_topic_projection(workspace.sources, topic_store=resolved_topic_store),
         "campaign": campaign_snapshot(workspace),
         "role_policy": RolePolicy.default().to_dict(),
         "unsupported": {
@@ -136,6 +149,8 @@ def build_console_export(
 def write_console_export(
     workspace_root: str | Path,
     output_path: str | Path,
+    *,
+    topic_store_config: TopicStoreConfig | None = None,
 ) -> Path:
     """Write one explicit JSON export; callers choose its destination."""
 
@@ -145,7 +160,7 @@ def write_console_export(
         raise ValueError("console export output must have a .json suffix")
     if target.is_relative_to(root):
         raise ValueError("console export output must be outside the workspace root")
-    payload = build_console_export(root)
+    payload = build_console_export(root, topic_store_config=topic_store_config)
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",

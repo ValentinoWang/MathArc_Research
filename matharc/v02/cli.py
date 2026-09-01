@@ -9,6 +9,7 @@ from .benchmark import compare_agents, load_results
 from .budget import BudgetLedger
 from .campaign import ResearchCampaign
 from .console_export import write_console_export
+from .console_topic import TopicStoreConfig
 from .claude_code_runtime import ClaudeCodeConfig, ClaudeCodeRunner, claude_code_status
 from .demo import write_research_demo
 from .failure_memory import FailureMemory
@@ -231,6 +232,9 @@ def main(argv: list[str] | None = None) -> None:
     export = sub.add_parser("export", help="write a read-only console.json workspace export")
     export.add_argument("--workspace-root", required=True)
     export.add_argument("--output", required=True)
+    export.add_argument("--topic-store-root")
+    export.add_argument("--topic-id")
+    export.add_argument("--topic-initial-cursor")
 
     plan = sub.add_parser("plan", help="select the next load-bearing research obligation")
     plan.add_argument("--trace", required=True)
@@ -347,9 +351,24 @@ def main(argv: list[str] | None = None) -> None:
         _write_or_print(compute_research_metrics(load_trace(args.trace)), args.output)
         return
     if args.command == "export":
+        topic_args = (args.topic_store_root, args.topic_id, args.topic_initial_cursor)
+        if any(value is not None for value in topic_args) and not all(value is not None for value in topic_args):
+            raise SystemExit(
+                "--topic-store-root, --topic-id, and --topic-initial-cursor must be supplied together"
+            )
+        topic_store_config = (
+            TopicStoreConfig(
+                Path(args.topic_store_root),
+                str(args.topic_id),
+                str(args.topic_initial_cursor),
+            )
+            if all(value is not None for value in topic_args)
+            else None
+        )
         write_console_export(
             args.workspace_root,
             args.output,
+            topic_store_config=topic_store_config,
         )
         return
     if args.command == "plan":

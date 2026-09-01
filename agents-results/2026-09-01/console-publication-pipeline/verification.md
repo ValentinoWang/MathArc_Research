@@ -89,3 +89,32 @@ Two final independent worker reviews were dispatched against this frozen source
 but failed to return structured conclusions within their bounded review window.
 Their logs are retained as execution evidence; no final independent-AI PASS is
 claimed here.
+
+## M3/M4 completion repair
+
+The live export, module CLI, and workspace HTTP server now accept an explicit
+three-part topic-store configuration.  The store must already contain its topic
+state and literature manifest; missing or incomplete paths are rejected before
+construction, so the console cannot bootstrap a topic store.  When configured,
+the export projects only durable observations, cursor and manual-review facts,
+and retains the explicit boundary against open/resolved/novelty/new-result
+inference.  Focused tests build a real runner, capture all store bytes, exercise
+the read projection, and prove byte-for-byte preservation.
+
+The operations bridge now lives in `matharc.v02.operations_ledger`, leaving
+`matharc.operations` dependency-free.  It validates the selected workspace and
+derives a digest from run ID, state digest and event head; a ledger inside the
+workspace is rejected.  Tests prove that appending does not change workspace
+bytes and that an existing ledger fails after a real workspace transition.
+
+Authoritative rerun after this repair:
+
+```text
+make ci-full PYTHON=/tmp/matharc-console-ci.zumGSg/bin/python
+# strict mypy: 71 modules
+# unittest: 450 passed, 0 failures/errors, 2 declared skips
+# SMT: 20 executed, 0 skipped
+```
+
+Focused evidence also passed: 29 topic/export/server/operations tests, 15
+prototype/observatory tests, and `node scripts/console_browser_gate.mjs`.

@@ -12,6 +12,8 @@ from typing import Any
 from urllib.parse import parse_qs, urlparse
 
 from .console_export import campaign_snapshot, build_console_export
+from .console_topic import TopicStoreConfig
+from .topic_observation import TopicObservationRunner
 from .review_server import ReviewAPI, ReviewHTTPResponse, ReviewServerConfig
 from .workspace import ResearchWorkspace
 from .workspace_visualization import workspace_dashboard_payload
@@ -67,6 +69,7 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         sse_poll_seconds: float = 0.5,
         sse_lifetime_seconds: float = 30.0,
         review_api: ReviewAPI | None = None,
+        topic_store: TopicObservationRunner | None = None,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
@@ -75,6 +78,7 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         # Explicitly opt-in: this is a transport adapter over a separate
         # review trace, never an implicit workspace mutation path.
         self.review_api = review_api
+        self.topic_store = topic_store
         super().__init__(server_address, WorkspaceRequestHandler)
 
 
@@ -113,7 +117,7 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
             if parsed.path == "/api/console":
                 self._json(
                     HTTPStatus.OK,
-                    build_console_export(self.server.repository.root),
+                    build_console_export(self.server.repository.root, topic_store=self.server.topic_store),
                 )
                 return
             if parsed.path == "/api/audit":
@@ -311,8 +315,20 @@ def make_server(
     sse_lifetime_seconds: float = 30.0,
     review_trace_path: str | Path | None = None,
     review_write_token: str | None = None,
+    topic_store_root: str | Path | None = None,
+    topic_id: str | None = None,
+    topic_initial_cursor: str | None = None,
 ) -> WorkspaceHTTPServer:
     root = Path(workspace_root).resolve()
+    topic_args = (topic_store_root, topic_id, topic_initial_cursor)
+    if any(value is not None for value in topic_args) and not all(value is not None for value in topic_args):
+        raise ValueError("topic_store_root, topic_id, and topic_initial_cursor must be supplied together")
+    if topic_store_root is not None and topic_id is not None and topic_initial_cursor is not None:
+        topic_store = TopicStoreConfig(
+            Path(topic_store_root), topic_id, topic_initial_cursor
+        ).open_read_only()
+    else:
+        topic_store = None
     repository = WorkspaceRepository(root)
     repository.load(force=True)
     dashboard = (
@@ -335,7 +351,7 @@ def make_server(
                 trace_path=resolved_review_trace_path, write_token=review_write_token
             )
         )
-        if review_trace_path is not None and review_write_token is not None
+        if resolved_review_trace_path is not None and review_write_token is not None
         else None
     )
     return WorkspaceHTTPServer(
@@ -345,4 +361,5 @@ def make_server(
         sse_poll_seconds=sse_poll_seconds,
         sse_lifetime_seconds=sse_lifetime_seconds,
         review_api=review_api,
+        topic_store=topic_store,
     )
