@@ -1,0 +1,110 @@
+{
+  "schema_version": "1.0",
+  "task_id": "A4-review-sol-5e4ef52",
+  "reviewer_route": "gpt-5.6-sol/max through /Users/vsiyo/.codex/workers/run-l4.sh",
+  "reviewed_sha": "5e4ef522c91a478406931801eb8ddb7995758b22",
+  "started_at": "2026-09-02T06:52:15+08:00",
+  "ended_at": "2026-09-02T07:08:13+08:00",
+  "actual_read_scope": [
+    "Git identities for origin/main, 5e4ef522c91a478406931801eb8ddb7995758b22, and its parent bdd83e980f644f028e3dbaba9174f440d274b7d4",
+    "Focused frozen-object diff between bdd83e980f644f028e3dbaba9174f440d274b7d4 and 5e4ef522c91a478406931801eb8ddb7995758b22 for the eleven required paths",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/literature_base.py",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/topic_observation.py",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/source_observation.py",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/artifact_store.py",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/schema.py",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:tests/test_v02_topic_observation.py",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:tests/test_v02_topic_observation_integrity.py",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:tests/test_v02_dogfood_archives.py",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/implementation-candidate-20260902.json",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-luna.json",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-sol.json",
+    "5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/local_store.py, limited to external_root because TopicObservationRunner calls it"
+  ],
+  "actual_write_scope": [
+    "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-5e4ef52/returns/A4-review-sol.json"
+  ],
+  "commands": [
+    "git rev-parse --show-toplevel",
+    "git rev-parse origin/main 5e4ef522c91a478406931801eb8ddb7995758b22^ 5e4ef522c91a478406931801eb8ddb7995758b22",
+    "git show --no-ext-diff --format=fuller --no-patch 5e4ef522c91a478406931801eb8ddb7995758b22",
+    "git diff --no-ext-diff --stat bdd83e980f644f028e3dbaba9174f440d274b7d4 5e4ef522c91a478406931801eb8ddb7995758b22 -- matharc/v02/literature_base.py matharc/v02/topic_observation.py matharc/v02/source_observation.py matharc/v02/artifact_store.py matharc/v02/schema.py tests/test_v02_topic_observation.py tests/test_v02_topic_observation_integrity.py tests/test_v02_dogfood_archives.py agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/implementation-candidate-20260902.json agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-luna.json agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-sol.json",
+    "git ls-tree -l 5e4ef522c91a478406931801eb8ddb7995758b22 -- matharc/v02/literature_base.py matharc/v02/topic_observation.py matharc/v02/source_observation.py matharc/v02/artifact_store.py matharc/v02/schema.py tests/test_v02_topic_observation.py tests/test_v02_topic_observation_integrity.py tests/test_v02_dogfood_archives.py agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/implementation-candidate-20260902.json agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-luna.json agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-sol.json",
+    "git diff --no-ext-diff --unified=80 bdd83e980f644f028e3dbaba9174f440d274b7d4 5e4ef522c91a478406931801eb8ddb7995758b22 -- matharc/v02/literature_base.py matharc/v02/topic_observation.py matharc/v02/source_observation.py matharc/v02/artifact_store.py matharc/v02/schema.py tests/test_v02_topic_observation.py tests/test_v02_topic_observation_integrity.py tests/test_v02_dogfood_archives.py agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/implementation-candidate-20260902.json agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-luna.json agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-sol.json",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/literature_base.py | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/topic_observation.py | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/source_observation.py | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/artifact_store.py | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/schema.py | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:tests/test_v02_topic_observation.py | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:tests/test_v02_topic_observation_integrity.py | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:tests/test_v02_dogfood_archives.py | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/implementation-candidate-20260902.json | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-luna.json | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-sol.json | nl -ba",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/topic_observation.py | rg -n 'fsync|_atomic_write_bytes|_remove_transaction|_restore_literature_files|os\\.replace|os\\.unlink|mkdir'",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/artifact_store.py | rg -n 'fsync|write_bytes|write_text|os\\.replace|mkdir'",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/literature_base.py | rg -n 'fsync|write_bytes|write_text|os\\.replace|mkdir|_record'",
+    "git show 5e4ef522c91a478406931801eb8ddb7995758b22:matharc/v02/literature_base.py | rg -n 'getpid|register_at_fork|threading\\.local|held_paths|authorized_paths|allow_topic_transaction'",
+    "jq -e '.task_id == \"A4-review-sol-5e4ef52\" and .reviewed_sha == \"5e4ef522c91a478406931801eb8ddb7995758b22\" and .verdict == \"FAILED\" and .proposed_state == \"FAILED\" and .acceptance_self_check == \"pass\" and (.findings | length == 5)' agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-5e4ef52/returns/A4-review-sol.json",
+    "git status --short --untracked-files=all -- agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-5e4ef52/returns/A4-review-sol.json",
+    "shasum -a 256 agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-5e4ef52/returns/A4-review-sol.json",
+    "wc -c -l agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-5e4ef52/returns/A4-review-sol.json"
+  ],
+  "findings": [
+    {
+      "severity": "P1",
+      "path": "matharc/v02/topic_observation.py",
+      "line": "2569-2591",
+      "title": "A successful commit retires its only recovery journal before target literature is durable",
+      "detail": "_save_state durably records the target literature snapshot in COMMIT_INTENT, then writes state, authentication, and signing key and removes the journal without syncing the actual target literature files and directories. LiteratureBase._record at literature_base.py:415-417 and ArtifactStore.put_bytes/save_manifest at artifact_store.py:130-138 and 261-268 only write and replace; they do not fsync file contents or containing directories. Fsyncing the topic root for state, key, and journal entries does not make nested literature data durable. A power loss after run returns can therefore preserve the authenticated state and key while losing or reverting observations.json, the artifact manifest, or a blob. With both journal names durably absent, restart fails integrity checks and has no snapshot from which to recover the committed generation.",
+      "reproduction": "Run a first-generation import that creates a new artifact digest prefix on a fault-injection filesystem, allow _save_state to return, then crash while retaining only fsynced writes and directory entries. Preserve the root-level state/authentication/key and journal deletions but discard unsynced literature writes. Restarting TopicObservationRunner fails on missing or mismatched literature, and neither transaction journal exists."
+    },
+    {
+      "severity": "P2",
+      "path": "matharc/v02/topic_observation.py",
+      "line": "1455-1503",
+      "title": "Recovery does not durably link newly created nested literature directories",
+      "detail": "_restore_literature_files creates missing parent directories with mkdir but never fsyncs each directory's immediate parent after creation. _atomic_write_bytes fsyncs the directory containing each file, and the final call fsyncs only literature_root. For a recovered blob under artifacts/sha256/<prefix>/<digest>, neither artifacts after creation of sha256 nor sha256 after creation of <prefix> is necessarily fsynced. Recovery can validate the restored generation and retire the journal even though those directory links are not durable.",
+      "reproduction": "Recover a target snapshot into a literature tree missing artifacts/sha256/<prefix>, record fsync targets, and observe that mkdir creates sha256 and <prefix> without subsequent fsync of their immediate parents. Simulate another power loss after journal retirement that forgets those un-fsynced directory entries; the authenticated state remains but the restored artifact path disappears with no journal left."
+    },
+    {
+      "severity": "P1",
+      "path": "matharc/v02/topic_observation.py",
+      "line": "721-739, 788-789, 2054-2067",
+      "title": "A permitted cursor sequence signs a state that the loader immediately rejects",
+      "detail": "An out-of-order cursor records a CURSOR_CONFLICT manual entry whose detail is derived from the then-current next_cursor. The runner still permits a later batch at the correct cursor to advance next_cursor and saves that state without validating the produced projection. On reload, the validator recomputes the historical conflict detail using the new next_cursor, or rejects when the manual cursor now equals next_cursor. The valid batch returns successfully even though the newly authenticated state is self-invalidating.",
+      "reproduction": "Start at c0. Call run with a batch from c1 to c2; it returns CURSOR_BLOCKED and records detail Expected cursor 'c0', received 'c1'. Then call run with a valid batch from c0 to c1; it returns successfully and persists next_cursor c1. The next next_cursor/manual_queue access or a new TopicObservationRunner raises 'cursor conflict manual entry names the current cursor'."
+    },
+    {
+      "severity": "P1",
+      "path": "matharc/v02/topic_observation.py",
+      "line": "901-978, 2255-2281, 2546-2591",
+      "title": "A normal pending-to-observed upgrade authenticates historical evidence that the validator rejects",
+      "detail": "A first batch may persist PENDING_OBSERVATION evidence for a restricted or incomplete SourceObservation. LiteratureBase explicitly permits a later open retry with the same observation_id, logical identity, and digest to replace that pending record with OBSERVED. The later topic batch records the new observed generation but does not update the first batch's evidence. _save_state authenticates the result without semantic validation. On the next load, _validate_item_evidence compares the historical persisted_observation_status and artifact fields to the current mutable literature record, so the old PENDING evidence conflicts with the now-OBSERVED record and makes the successfully returned state unreadable.",
+      "reproduction": "Run c0->c1 with input A using a restricted observation so the result is PENDING. Run c1->c2 with input B using an OPEN SourceObservation with the same observation_id, canonical URI, pinned version, digest, and bytes. LiteratureBase upgrades the record and the second run returns IMPORTED/APPLIED. Constructing a new TopicObservationRunner or reading next_cursor then raises because the first batch says PENDING while the current literature record is OBSERVED."
+    },
+    {
+      "severity": "P2",
+      "path": "matharc/v02/literature_base.py",
+      "line": "25-33, 76-88, 107-119",
+      "title": "Forked children inherit reentrant lock ownership and transaction authority",
+      "detail": "Reentrancy and transaction authorization are stored in threading.local sets keyed only by path. They are not PID-bound and are not cleared with os.register_at_fork. A child forked by the thread holding the lock inherits held_paths and authorized_paths together with the flock file description. A normal child LiteratureBase import therefore takes the reentrant branch without acquiring independent exclusion; during a topic transaction it also passes the pending-journal check through inherited authorization. Parent and child can mutate the same manifests concurrently under shared flock ownership. This does not require arbitrary filesystem replacement or explicitly enabling authorization in the child.",
+      "reproduction": "On a POSIX host, enter literature_writer_lock(root, allow_topic_transaction=True), fork from that same thread, and have both parent and child perform distinct LiteratureBase(root).import_bytes calls while synchronizing them to overlap. The child sees root_key in its inherited held_paths, skips flock, retains inherited authorization, and can write concurrently with the parent."
+    }
+  ],
+  "verdict": "FAILED",
+  "proposed_state": "FAILED",
+  "acceptance_self_check": "pass",
+  "failure_class": "transaction-durability-validator-correspondence-and-fork-inherited-lock-authority",
+  "failure_origin": "implementation",
+  "unverified_items": [
+    "No executable tests were run; findings are based on frozen Git-object inspection so the zero-write boundary remained intact.",
+    "No live power-loss, filesystem fault injection, or os.fork interleaving was executed.",
+    "The implementation candidate's reported focused, expanded, and CI results were read but not rerun.",
+    "The intentionally stale A4 v2 contract and prior human A4 acceptance were not treated as implementation blockers and were not rebound.",
+    "Working-tree source versions, Harness Engineering, develop/Harness, Codex memory, unrelated repositories, and user files were not inspected.",
+    "Codex runtime transcript and plugin-cache writes for the required reviewer route were not inspected because ~/.codex was explicitly out of scope; the only intentional project write was this return."
+  ],
+  "acceptance_boundary": "This return is an independent pre-rebinding implementation review only. It is not human acceptance, never represents ACCEPTED, and does not authorize mathematical proof or public release."
+}

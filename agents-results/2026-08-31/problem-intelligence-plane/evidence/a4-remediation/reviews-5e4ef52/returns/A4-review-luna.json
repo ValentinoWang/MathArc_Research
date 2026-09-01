@@ -1,0 +1,91 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-review-luna-5e4ef52",
+  "reviewer_route": "gpt-5.6-luna/max through /Users/vsiyo/.codex/workers/run-l3.sh",
+  "reviewed_sha": "5e4ef522c91a478406931801eb8ddb7995758b22",
+  "started_at": "2026-09-01T23:14:50Z",
+  "ended_at": "2026-09-01T23:15:20Z",
+  "actual_read_scope": [
+    "matharc/v02/literature_base.py",
+    "matharc/v02/topic_observation.py",
+    "matharc/v02/source_observation.py",
+    "matharc/v02/artifact_store.py",
+    "matharc/v02/schema.py",
+    "tests/test_v02_topic_observation.py",
+    "tests/test_v02_topic_observation_integrity.py",
+    "tests/test_v02_dogfood_archives.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/implementation-candidate-20260902.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-luna.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-sol.json"
+  ],
+  "actual_write_scope": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-5e4ef52/returns/A4-review-luna.json"
+  ],
+  "commands": [
+    {
+      "command": "git show --no-patch --format='%H%n%P%n%s' 5e4ef522c91a478406931801eb8ddb7995758b22",
+      "result": "PASS; reviewed SHA resolved with parent bdd83e980f644f028e3dbaba9174f440d274b7d4"
+    },
+    {
+      "command": "git show 5e4ef522c91a478406931801eb8ddb7995758b22:<scoped-path> | nl -ba | sed -n '<focused ranges>'",
+      "result": "PASS; implementation and test evidence were read from the frozen commit"
+    },
+    {
+      "command": "git diff --no-ext-diff --unified=40 bdd83e980f644f028e3dbaba9174f440d274b7d4 5e4ef522c91a478406931801eb8ddb7995758b22 -- matharc/v02/literature_base.py matharc/v02/topic_observation.py matharc/v02/source_observation.py matharc/v02/artifact_store.py matharc/v02/schema.py tests/test_v02_topic_observation.py tests/test_v02_topic_observation_integrity.py tests/test_v02_dogfood_archives.py",
+      "result": "PASS; scoped parent-to-frozen-commit changes inspected"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+      "result": "PASS; 66 tests, 0 failures, 0 errors, 0 skips"
+    },
+    {
+      "command": "focused temporary-directory probes for mixed persisted observation identity and retiring-marker restoration failure",
+      "result": "FAIL reproduced; duplicate identity state is accepted in-process then rejected on restart, and a failed marker restoration opens the external literature writer"
+    }
+  ],
+  "findings": [
+    {
+      "severity": "P1",
+      "path": "matharc/v02/topic_observation.py",
+      "line": 1037,
+      "title": "OR-based persisted lookup can commit identity-drifting duplicate evidence",
+      "detail": "_persisted_observation_for_input selects candidates matching either observation_id or idempotency_key and then chooses by status and lexicographic observation_id. The two identities are not interchangeable: LiteratureBase rejects an observation_id reused for another logical source, and the state validator requires the persisted record selected for duplicate evidence to have the input idempotency key. _save_state authenticates the state but does not run the full state validator before committing it.",
+      "reproduction": "Persist observed OBS-A for URI /a and content a and OBS-B for URI /b and content b. First process OBS-B so its key is in seen_observation_keys, then submit an input with observation_id OBS-A but URI /b and content b. The seen-key path at lines 882-898 returns DUPLICATE with OBS-A because lines 1037-1057 select the ID match. The current process persists successfully. A new runner rejects the state with 'duplicate item evidence idempotency key conflicts' at lines 2321-2327. This is deterministic durable identity drift from valid SourceObservation input, not a stale-contract or acceptance-rebinding issue. The alternate persisted-ID tests cover a non-ambiguous key match and do not cover this cross-match."
+    },
+    {
+      "severity": "P1",
+      "path": "matharc/v02/artifact_store.py",
+      "line": 136,
+      "title": "The commit can retire its only recovery journal before literature data is durable",
+      "detail": "ArtifactStore.put_bytes writes the blob and replaces it without fsyncing the blob or its containing directory, save_manifest does the same for manifest.json, and LiteratureBase._record does the same for observations.json at lines 411-417. TopicObservationRunner._save_state snapshots those files, writes and fsyncs the topic transaction/state/authentication/key files, verifies the in-memory snapshot, and then _remove_transaction retires and removes the journal at lines 2582-2591. A root-directory fsync for the topic files is not a durability barrier for the literature files or their nested directories.",
+      "reproduction": "Use the import path that writes an artifact and both literature manifests, then model power loss after the topic state, authentication, signing key, and COMMIT_INTENT/retirement directory entries are durable but before the literature blob/manifest file data and parent directories are durable. On restart the journal is gone, while the authenticated state names a literature snapshot whose files may be stale or missing; recovery has no target snapshot available and the literature/state binding fails or has already lost the imported data. The focused suite checks recovery deletion fsync calls and journal retirement, but injects no power-loss boundary around the import writes."
+    },
+    {
+      "severity": "P1",
+      "path": "matharc/v02/topic_observation.py",
+      "line": 1611,
+      "title": "Retiring-fence restoration can fail open",
+      "detail": "_remove_retired_transaction unlinks the retiring marker, fsyncs the topic root, and on fsync failure attempts to restore the marker. Restoration errors at lines 1623-1629 are swallowed before the method raises. The storage locks then unwind, and LiteratureBase._topic_transaction_pending sees no active or retiring marker, so an independent writer is allowed to mutate literature while the commit outcome remains unresolved.",
+      "reproduction": "In a temporary directory, inject an OSError for the root fsync after the retiring marker is unlinked and independently fail _atomic_write_bytes before it can restore that marker. The runner raises the expected durable-retirement error, but the marker is absent after lock release and a separate LiteratureBase.import_bytes returns IMPORTED. If the non-durable unlink later reappears after a crash, recovery can apply the transaction snapshot and discard that external import. test_retirement_fsync_failure_keeps_external_writer_fenced only exercises successful marker restoration."
+    },
+    {
+      "severity": "P2",
+      "path": "tests/test_v02_topic_observation_integrity.py",
+      "line": 371,
+      "title": "Regression tests do not exercise the blocking branches found above",
+      "detail": "The 66 focused tests pass, including the alternate persisted-ID replay test and the retirement-fsync test, but they do not combine an observation_id collision with a different persisted idempotency key, do not validate state before _save_state commits it, do not inject failure of retiring-marker restoration, and do not exercise literature blob/manifest fsync ordering through a crash boundary. Passing tests therefore do not establish the claimed identity and durability remediation.",
+      "reproduction": "The focused unittest command passes with zero skips. The missing cases are reachable by the mixed OBS-A/OBS-B duplicate sequence above and by the two-stage retirement fault injection above; neither sequence is present in the reviewed test files."
+    }
+  ],
+  "verdict": "FAILED",
+  "proposed_state": "FAILED",
+  "acceptance_self_check": "pass",
+  "failure_class": "persisted-observation-identity-and-transaction-durability",
+  "failure_origin": "implementation",
+  "unverified_items": [
+    "No real power-loss or filesystem-device fault test was run; the literature durability finding follows from the write and fsync ordering in the frozen source.",
+    "No formal A4 rebinding, human acceptance, mathematical proof, or public-release verification was performed.",
+    "The stale Contract v2 and old human A4 acceptance were intentionally not used as failure reasons, per the review brief."
+  ],
+  "acceptance_boundary": "This is an independent zero-write implementation review and is never ACCEPTED. It is not human acceptance, does not authorize mathematical proof, and does not authorize public release. The FAILED verdict is based on the implementation findings above; stale contract/rebinding state is not the basis of failure. No source, test, contract, SSOT state, existing evidence, or git metadata was modified, and no network access was used."
+}
