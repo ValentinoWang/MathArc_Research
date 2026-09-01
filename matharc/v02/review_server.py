@@ -95,6 +95,14 @@ class ReviewServerError(ValueError):
     """Raised for a malformed server configuration."""
 
 
+@dataclass(slots=True, frozen=True)
+class ReviewHTTPResponse:
+    """Transport-neutral response for the single review API contract."""
+
+    status: HTTPStatus
+    payload: dict[str, Any]
+
+
 def bundle_view_model(bundle: Any) -> dict[str, Any]:
     """Transform a domain `ReviewBundle` into a response with no unmapped
     backend enum names anywhere in it -- the R6 acceptance criterion."""
@@ -162,22 +170,30 @@ class ReviewServerConfig:
             )
 
 
-class ReviewHTTPServer(ThreadingHTTPServer):
-    daemon_threads = True
+class ReviewAPI:
+    """The review HTTP contract, reusable by a dedicated or same-origin server.
 
-    def __init__(self, server_address: tuple[str, int], config: ReviewServerConfig) -> None:
+    The review trace remains a distinct authority from a workspace snapshot.
+    A host that wants the endpoints must opt in by constructing this API with
+    the exact review trace path and a real roster token.
+    """
+
+    def __init__(self, config: ReviewServerConfig) -> None:
         self.config = config
         self._lock = threading.RLock()
-        super().__init__(server_address, ReviewRequestHandler)
+
+    @staticmethod
+    def handles(path: str) -> bool:
+        return path in {"/api/review", "/api/review-queue"} or path.startswith(
+            "/api/review-bundle/"
+        )
 
     def load_trace_locked(self) -> ResearchTrace:
         with self._lock:
             return load_trace(self.config.trace_path)
 
     def mutate_and_save(self, fn: Any) -> Any:
-        """Run `fn(trace) -> result` under the write lock and persist the
-        trace afterward, exactly once, so two concurrent submissions can
-        never interleave a lost update."""
+        """Serialize read-modify-write so submissions cannot lose updates."""
 
         with self._lock:
             trace = load_trace(self.config.trace_path)
@@ -185,72 +201,51 @@ class ReviewHTTPServer(ThreadingHTTPServer):
             save_trace(trace, self.config.trace_path)
             return result
 
-
-class ReviewRequestHandler(BaseHTTPRequestHandler):
-    server: ReviewHTTPServer
-
-    def log_message(self, format: str, *args: object) -> None:
-        return
-
-    def do_GET(self) -> None:  # noqa: N802
-        parsed = urlparse(self.path)
+    def get(self, path: str) -> ReviewHTTPResponse:
         try:
-            if parsed.path == "/api/review":
-                # The one write endpoint: every method except POST is 405,
-                # not 404 -- the path exists, it just isn't readable.
-                self._method_not_allowed()
-                return
-            if parsed.path == "/api/review-queue":
-                self._handle_review_queue()
-                return
-            if parsed.path.startswith("/api/review-bundle/"):
-                claim_id = parsed.path[len("/api/review-bundle/") :]
-                self._handle_review_bundle(claim_id)
-                return
-            self._json(HTTPStatus.NOT_FOUND, {"error": "not_found", "path": parsed.path})
+            if path == "/api/review":
+                return self.method_not_allowed()
+            if path == "/api/review-queue":
+                return self._review_queue()
+            if path.startswith("/api/review-bundle/"):
+                return self._review_bundle(path[len("/api/review-bundle/") :])
+            return ReviewHTTPResponse(HTTPStatus.NOT_FOUND, {"error": "not_found", "path": path})
         except (ValueError, OSError, json.JSONDecodeError) as exc:
-            self._json(HTTPStatus.CONFLICT, {"error": type(exc).__name__, "message": str(exc)})
-
-    def do_PUT(self) -> None:  # noqa: N802
-        self._method_not_allowed()
-
-    def do_DELETE(self) -> None:  # noqa: N802
-        self._method_not_allowed()
-
-    def do_PATCH(self) -> None:  # noqa: N802
-        self._method_not_allowed()
-
-    def _method_not_allowed(self) -> None:
-        self._json(
-            HTTPStatus.METHOD_NOT_ALLOWED,
-            {"error": "method_not_allowed", "message": "only POST /api/review writes anything"},
-        )
-
-    def do_POST(self) -> None:  # noqa: N802
-        parsed = urlparse(self.path)
-        if parsed.path != "/api/review":
-            self._json(
-                HTTPStatus.METHOD_NOT_ALLOWED,
-                {"error": "method_not_allowed", "message": "only POST /api/review is a write endpoint"},
+            return ReviewHTTPResponse(
+                HTTPStatus.CONFLICT,
+                {"error": type(exc).__name__, "message": str(exc)},
             )
-            return
-        if not self._authorized():
-            self._json(HTTPStatus.UNAUTHORIZED, {"error": "unauthorized"})
-            return
-        length = int(self.headers.get("Content-Length", "0") or "0")
+
+    def preflight_post(
+        self, path: str, authorization: str, content_length: str | None
+    ) -> int | ReviewHTTPResponse:
+        if path != "/api/review":
+            return self.method_not_allowed()
+        if not self._authorized(authorization):
+            return ReviewHTTPResponse(HTTPStatus.UNAUTHORIZED, {"error": "unauthorized"})
+        try:
+            length = int(content_length or "0")
+        except ValueError:
+            return ReviewHTTPResponse(
+                HTTPStatus.BAD_REQUEST,
+                {"error": "invalid_length", "max_bytes": _MAX_BODY_BYTES},
+            )
         if length <= 0 or length > _MAX_BODY_BYTES:
-            self._json(
+            return ReviewHTTPResponse(
                 HTTPStatus.REQUEST_ENTITY_TOO_LARGE if length > _MAX_BODY_BYTES else HTTPStatus.BAD_REQUEST,
                 {"error": "invalid_length", "max_bytes": _MAX_BODY_BYTES},
             )
-            return
-        body = self.rfile.read(length)
+        return length
+
+    def post(self, body: bytes) -> ReviewHTTPResponse:
         try:
             payload = json.loads(body.decode("utf-8"))
             record = ReviewRecord.from_dict(payload)
         except (json.JSONDecodeError, ReviewContractError, UnicodeDecodeError) as exc:
-            self._json(HTTPStatus.BAD_REQUEST, {"error": "malformed_review", "message": str(exc)})
-            return
+            return ReviewHTTPResponse(
+                HTTPStatus.BAD_REQUEST,
+                {"error": "malformed_review", "message": str(exc)},
+            )
 
         def submit(trace: ResearchTrace) -> dict[str, Any]:
             submit_review(trace, record)
@@ -272,20 +267,27 @@ class ReviewRequestHandler(BaseHTTPRequestHandler):
             return result
 
         try:
-            result = self.server.mutate_and_save(submit)
+            return ReviewHTTPResponse(HTTPStatus.OK, self.mutate_and_save(submit))
         except (ReviewContractError, ReviewAuthorizationError) as exc:
-            self._json(HTTPStatus.CONFLICT, {"error": type(exc).__name__, "message": str(exc)})
-            return
-        self._json(HTTPStatus.OK, result)
+            return ReviewHTTPResponse(
+                HTTPStatus.CONFLICT,
+                {"error": type(exc).__name__, "message": str(exc)},
+            )
 
-    def _authorized(self) -> bool:
-        header = self.headers.get("Authorization", "")
+    @staticmethod
+    def method_not_allowed() -> ReviewHTTPResponse:
+        return ReviewHTTPResponse(
+            HTTPStatus.METHOD_NOT_ALLOWED,
+            {"error": "method_not_allowed", "message": "only POST /api/review writes anything"},
+        )
+
+    def _authorized(self, authorization: str) -> bool:
         prefix = "Bearer "
-        token = header[len(prefix) :] if header.startswith(prefix) else ""
-        return bool(token) and hmac.compare_digest(token, self.server.config.write_token)
+        token = authorization[len(prefix) :] if authorization.startswith(prefix) else ""
+        return bool(token) and hmac.compare_digest(token, self.config.write_token)
 
-    def _handle_review_queue(self) -> None:
-        trace = self.server.load_trace_locked()
+    def _review_queue(self) -> ReviewHTTPResponse:
+        trace = self.load_trace_locked()
         rows = []
         for nomination in all_nominations(trace):
             claim = trace.claims.get(nomination.claim_id)
@@ -305,16 +307,75 @@ class ReviewRequestHandler(BaseHTTPRequestHandler):
                     "active_review_count": len(active_reviews),
                 }
             )
-        self._json(HTTPStatus.OK, {"queue": rows})
+        return ReviewHTTPResponse(HTTPStatus.OK, {"queue": rows})
 
-    def _handle_review_bundle(self, claim_id: str) -> None:
-        trace = self.server.load_trace_locked()
+    def _review_bundle(self, claim_id: str) -> ReviewHTTPResponse:
+        trace = self.load_trace_locked()
         try:
             bundle = build_review_bundle(trace, claim_id, bundle_id=f"live:{claim_id}")
         except ReviewBundleError as exc:
-            self._json(HTTPStatus.NOT_FOUND, {"error": "unknown_claim", "message": str(exc)})
+            return ReviewHTTPResponse(
+                HTTPStatus.NOT_FOUND,
+                {"error": "unknown_claim", "message": str(exc)},
+            )
+        return ReviewHTTPResponse(HTTPStatus.OK, bundle_view_model(bundle))
+
+
+class ReviewHTTPServer(ThreadingHTTPServer):
+    daemon_threads = True
+
+    def __init__(self, server_address: tuple[str, int], config: ReviewServerConfig) -> None:
+        self.config = config
+        self.api = ReviewAPI(config)
+        super().__init__(server_address, ReviewRequestHandler)
+
+    def load_trace_locked(self) -> ResearchTrace:
+        return self.api.load_trace_locked()
+
+    def mutate_and_save(self, fn: Any) -> Any:
+        """Run `fn(trace) -> result` under the write lock and persist the
+        trace afterward, exactly once, so two concurrent submissions can
+        never interleave a lost update."""
+
+        return self.api.mutate_and_save(fn)
+
+
+class ReviewRequestHandler(BaseHTTPRequestHandler):
+    server: ReviewHTTPServer
+
+    def log_message(self, format: str, *args: object) -> None:
+        return
+
+    def do_GET(self) -> None:  # noqa: N802
+        parsed = urlparse(self.path)
+        response = self.server.api.get(parsed.path)
+        self._json(response.status, response.payload)
+
+    def do_PUT(self) -> None:  # noqa: N802
+        self._method_not_allowed()
+
+    def do_DELETE(self) -> None:  # noqa: N802
+        self._method_not_allowed()
+
+    def do_PATCH(self) -> None:  # noqa: N802
+        self._method_not_allowed()
+
+    def _method_not_allowed(self) -> None:
+        response = self.server.api.method_not_allowed()
+        self._json(response.status, response.payload)
+
+    def do_POST(self) -> None:  # noqa: N802
+        parsed = urlparse(self.path)
+        preflight = self.server.api.preflight_post(
+            parsed.path,
+            self.headers.get("Authorization", ""),
+            self.headers.get("Content-Length"),
+        )
+        if isinstance(preflight, ReviewHTTPResponse):
+            self._json(preflight.status, preflight.payload)
             return
-        self._json(HTTPStatus.OK, bundle_view_model(bundle))
+        response = self.server.api.post(self.rfile.read(preflight))
+        self._json(response.status, response.payload)
 
     def _json(self, status: HTTPStatus, payload: Any) -> None:
         content = (json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n").encode(

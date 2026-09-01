@@ -12,6 +12,7 @@ from typing import Any
 from urllib.parse import parse_qs, urlparse
 
 from .console_export import campaign_snapshot, build_console_export
+from .review_server import ReviewAPI, ReviewHTTPResponse, ReviewServerConfig
 from .workspace import ResearchWorkspace
 from .workspace_visualization import workspace_dashboard_payload
 
@@ -65,11 +66,15 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         dashboard_path: str | Path,
         sse_poll_seconds: float = 0.5,
         sse_lifetime_seconds: float = 30.0,
+        review_api: ReviewAPI | None = None,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
         self.sse_poll_seconds = sse_poll_seconds
         self.sse_lifetime_seconds = sse_lifetime_seconds
+        # Explicitly opt-in: this is a transport adapter over a separate
+        # review trace, never an implicit workspace mutation path.
+        self.review_api = review_api
         super().__init__(server_address, WorkspaceRequestHandler)
 
 
@@ -79,6 +84,8 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:  # noqa: N802
         parsed = urlparse(self.path)
         try:
+            if self._dispatch_review_get(parsed.path):
+                return
             if parsed.path in {"/", "/index.html"}:
                 self._serve_dashboard()
                 return
@@ -159,6 +166,9 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
             )
 
     def do_POST(self) -> None:  # noqa: N802
+        parsed = urlparse(self.path)
+        if self._dispatch_review_post(parsed.path):
+            return
         self._json(
             HTTPStatus.METHOD_NOT_ALLOWED,
             {
@@ -166,6 +176,15 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
                 "message": "The workspace observatory exposes no write endpoint.",
             },
         )
+
+    def do_PUT(self) -> None:  # noqa: N802
+        self._reject_non_post_review_or_observatory()
+
+    def do_PATCH(self) -> None:  # noqa: N802
+        self._reject_non_post_review_or_observatory()
+
+    def do_DELETE(self) -> None:  # noqa: N802
+        self._reject_non_post_review_or_observatory()
 
     def log_message(self, format: str, *args: object) -> None:
         # Keep startup demos quiet; callers can wrap the server for access logs.
@@ -204,6 +223,45 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
     def _campaign_payload(self) -> dict[str, Any]:
         workspace = self.server.repository.load()
         return campaign_snapshot(workspace)
+
+    def _dispatch_review_get(self, path: str) -> bool:
+        api = self.server.review_api
+        if api is None or not api.handles(path):
+            return False
+        response = api.get(path)
+        self._json(response.status, response.payload)
+        return True
+
+    def _dispatch_review_post(self, path: str) -> bool:
+        api = self.server.review_api
+        if api is None or not api.handles(path):
+            return False
+        preflight = api.preflight_post(
+            path,
+            self.headers.get("Authorization", ""),
+            self.headers.get("Content-Length"),
+        )
+        if isinstance(preflight, ReviewHTTPResponse):
+            self._json(preflight.status, preflight.payload)
+            return True
+        response = api.post(self.rfile.read(preflight))
+        self._json(response.status, response.payload)
+        return True
+
+    def _reject_non_post_review_or_observatory(self) -> None:
+        path = urlparse(self.path).path
+        api = self.server.review_api
+        if api is not None and api.handles(path):
+            response = api.method_not_allowed()
+            self._json(response.status, response.payload)
+            return
+        self._json(
+            HTTPStatus.METHOD_NOT_ALLOWED,
+            {
+                "error": "read_only",
+                "message": "The workspace observatory exposes no write endpoint.",
+            },
+        )
 
     def _sse(self, after: int) -> None:
         self.send_response(HTTPStatus.OK)
@@ -251,6 +309,8 @@ def make_server(
     dashboard_path: str | Path | None = None,
     sse_poll_seconds: float = 0.5,
     sse_lifetime_seconds: float = 30.0,
+    review_trace_path: str | Path | None = None,
+    review_write_token: str | None = None,
 ) -> WorkspaceHTTPServer:
     root = Path(workspace_root).resolve()
     repository = WorkspaceRepository(root)
@@ -260,10 +320,24 @@ def make_server(
         if dashboard_path is not None
         else root / "workspace-dashboard.html"
     )
+    if (review_trace_path is None) != (review_write_token is None):
+        raise ValueError(
+            "review_trace_path and review_write_token must be supplied together to enable same-origin review"
+        )
+    review_api = (
+        ReviewAPI(
+            ReviewServerConfig(
+                trace_path=Path(review_trace_path).resolve(), write_token=review_write_token
+            )
+        )
+        if review_trace_path is not None and review_write_token is not None
+        else None
+    )
     return WorkspaceHTTPServer(
         (host, port),
         repository,
         dashboard_path=dashboard,
         sse_poll_seconds=sse_poll_seconds,
         sse_lifetime_seconds=sse_lifetime_seconds,
+        review_api=review_api,
     )

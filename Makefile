@@ -2,7 +2,7 @@ PYTHON ?= python3
 PIP := $(PYTHON) -m pip
 export PYTHONPATH := $(CURDIR)$(if $(PYTHONPATH),:$(PYTHONPATH))
 
-.PHONY: bootstrap bootstrap-full ci-preflight formal-preflight test test-full typecheck architecture workflow-policy quality demo validate serve codex-status acceptance v02-demo v02-validate v02-acceptance frankl-replay ci ci-full clean-ci baseline smoke-claude
+.PHONY: bootstrap bootstrap-full ci-preflight formal-preflight test test-full typecheck architecture workflow-policy quality demo validate serve codex-status acceptance v02-demo v02-validate v02-acceptance frankl-replay console-browser-gate ci ci-full clean-ci baseline smoke-claude
 
 bootstrap:
 	$(PIP) install -e ".[research,dev]"
@@ -61,15 +61,21 @@ frankl-replay:
 	$(PYTHON) examples/frankl_q6_two_small.py --output artifacts/frankl-q6-two-small-python.json
 	$(PYTHON) -c "import json; assert json.load(open('artifacts/frankl-q6-two-small-python.json')) == json.load(open('benchmarks/certificates/frankl-q6-two-small-python.json'))"
 
+# Browser regression gate for the prototype contract in console-dev-blueprint.html.
+# It requires the repository's existing Node.js plus a locally installed or global
+# Playwright module with Chromium. Missing browser capability is a hard failure.
+console-browser-gate:
+	node scripts/console_browser_gate.mjs
+
 # Fast/developer gate. It always prints the exact skip count and formal-capability
 # state, but an environment without z3 is DEGRADED and must not be cited as the
 # authoritative green Gate 0 result.
-ci: ci-preflight quality test validate v02-validate codex-status acceptance v02-acceptance frankl-replay
+ci: ci-preflight quality test validate v02-validate codex-status acceptance v02-acceptance frankl-replay console-browser-gate
 	@echo "Gate 0 developer CI complete. For authoritative green evidence run: make ci-full"
 
 # Authoritative local Gate 0-b gate: formal extra must exist and SMT tests must
 # actually run rather than all being skipped.
-ci-full: formal-preflight quality test-full validate v02-validate codex-status acceptance v02-acceptance frankl-replay
+ci-full: formal-preflight quality test-full validate v02-validate codex-status acceptance v02-acceptance frankl-replay console-browser-gate
 	@echo "Gate 0 authoritative CI complete: formal capability present and SMT suite executed."
 
 # Reproducibility proof: archive the committed project and its root registry

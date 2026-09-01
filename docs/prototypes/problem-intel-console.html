@@ -275,6 +275,11 @@ td.mut{color:var(--muted);}
 .n-cand{fill:var(--gap-soft);stroke:var(--gap);stroke-width:1.6;}
 .n-bar{fill:var(--err-soft);stroke:var(--err);stroke-width:1.4;}
 .n-open{fill:var(--surface);stroke:var(--muted);stroke-width:1.4;stroke-dasharray:5 4;}
+.n-ok{fill:var(--ok-soft);stroke:var(--ok);stroke-width:1.6;}
+.n-gap{fill:var(--gap-soft);stroke:var(--gap);stroke-width:1.6;}
+.n-acc{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.6;}
+.n-err{fill:var(--err-soft);stroke:var(--err);stroke-width:1.6;}
+.n-skip{fill:var(--surface-2);stroke:var(--muted);stroke-width:1.4;stroke-dasharray:5 4;}
 .tx-d{font-family:var(--sans);font-size:12.5px;fill:var(--ink);}
 .tx-l{font-family:var(--sans);font-size:12.5px;fill:var(--on-e);}
 .sb-d{font-family:var(--mono);font-size:10px;fill:var(--muted);}
@@ -371,6 +376,12 @@ textarea{width:100%;min-height:84px;padding:11px 12px;border:1px solid var(--lin
   background:var(--surface-2);color:var(--ink);font-family:var(--sans);font-size:13px;
   line-height:1.7;resize:vertical;}
 textarea:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent);}
+.review-form{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;}
+.review-form label{display:flex;flex-direction:column;gap:4px;font-size:11.5px;color:var(--muted);}
+.review-form input,.review-form select,.review-form textarea{width:100%;padding:8px 9px;border:1px solid var(--line);border-radius:6px;background:var(--surface);color:var(--ink);font:inherit;}
+.review-form textarea{min-height:58px;resize:vertical;}
+.review-form .wide{grid-column:1/-1;}
+@media (max-width:700px){.review-form{grid-template-columns:1fr;}.review-form .wide{grid-column:auto;}}
 mark{background:var(--err-soft);color:var(--err);border-radius:3px;padding:0 3px;font-weight:500;}
 
 /* ---- 平面切换 ---- */
@@ -679,6 +690,7 @@ mark{background:var(--err-soft);color:var(--err);border-radius:3px;padding:0 3px
   <div class="brand"><span class="mark">MathArc</span><span class="sub">研究运行时</span></div>
   <div class="planes" id="planes"></div>
   <div class="nowtask" id="nowtask"></div>
+  <span class="miniprog" id="view-data-boundary" role="status" aria-live="polite">演示数据</span>
   <span class="miniprog" id="budget"></span>
   <button class="btn" id="themebtn">深色</button>
   <div class="who"><button class="avatar" id="avatar" data-act="go" data-v="acct_overview" style="border:0" title="我的">研</button>
@@ -1880,7 +1892,7 @@ V.difficulty = () => noProblem() || ({
             <div class="col" style="gap:9px">
               <span class="big" style="color:var(--muted);text-decoration:line-through;text-decoration-color:var(--err);text-decoration-thickness:2px">难度 87 / 100</span>
               <span class="uc bad" style="align-self:flex-start">发明了不存在的精度</span></div>
-            <p class="note">两位有效数字会让读者以为背后有模型支撑，而实际上没有。同理，工程完成度百分比不得画成研究进度条——它不是定理概率。四个维度合成的任何单一数字都落在这一条里。</p>
+            <p class="note">两位有效数字会让读者以为背后有模型支撑，而实际上没有。同理，工程完成度百分比不得画成研究进度条——它不是定理概率。<br>四个维度合成的任何单一数字都落在这一条里。</p>
           </div></div>`);
     })(),
   side: card("预测台账","3 条 · 需 20 条方可校准", `<div class="tw"><table>
@@ -3535,32 +3547,49 @@ V.admin_roster = () => ({
       <p class="note">因此名册记录的不只是「谁」，还有「谁和谁算一伙」。这一列填错，整套双人保证就失效了，而且失效得毫无痕迹。</p>`)),
 });
 
-V.admin_queue = () => ({
-  task:`管理端 · 评审队列 · <b>${QUEUE.filter(q=>q.life==="ACTIVE").length} 份生效评审</b>`,
-  rail: adminRail(),
-  main: card("评审记录","按提交时间", `<div class="tw"><table>
-      <thead><tr><th style="width:24%">命题</th><th>评审人</th><th>逐条判定</th><th>整体决定</th><th>所需保证</th><th>状态</th></tr></thead>
-      <tbody>${QUEUE.map(q=>{
-        const dec = DECISIONS.find(d=>d[1]===q.dec), asr = ASSURE.find(a=>a[1]===q.need);
-        const life = q.life==="ACTIVE"?["ok","生效"]:q.life==="SUPERSEDED"?["skip","已被取代"]:["err","已撤销"];
-        return `<tr${q.life!=="ACTIVE"?' style="opacity:.6"':''}>
-          <td><div style="font-size:12.5px">${q.cid}</div><div class="hash">修订 ${q.rev}</div></td>
-          <td><div class="mono" style="font-size:11.5px">${q.who}</div>
-            <div class="hash">${q.grp}</div></td>
-          <td><div class="row" style="gap:5px;flex-wrap:wrap">
-            ${q.ok?`<span class="pill ok">通过 ${q.ok}</span>`:""}
-            ${q.gap?`<span class="pill gap">缺口 ${q.gap}</span>`:""}
-            ${q.err?`<span class="pill err">错误 ${q.err}</span>`:""}
-            ${q.cj?`<span class="pill skip">无法判断 ${q.cj}</span>`:""}</div>
-            <p class="note" style="margin-top:4px">${q.note}</p></td>
-          <td>${pill(dec[2],dec[0])}</td>
-          <td>${pill(asr[3],asr[0])}</td>
-          <td>${pill(life[0],life[1])}</td></tr>`;}).join("")}
-      </tbody></table></div>
-      <div class="body">
-        <div class="banner gap"><div><b>「无法判断」不是弃权，它是一种有信息量的判定。</b>一名评审人明确说自己判断不了，比勉强给一个「通过」有用得多——它会把该义务推回到需要更强保证或更合适评审人的状态。</div></div>
-      </div>`)
-    + card("评审服务的写入纪律","读多写少，写入只有一个口子", `<div class="tw"><table>
+V.admin_queue = () => {
+  const review = ReviewConsole.view();
+  const isDemo = review.source === "demo";
+  const queueRows = isDemo ? QUEUE.map(q => ({ claim_id:q.cid, claim_revision:q.rev, has_active_review:q.life==="ACTIVE", active_review_count:q.life==="ACTIVE"?1:0 })) : review.queue;
+  const queueBody = review.source === "loading"
+    ? `<p class="note">正在读取同源评审队列。</p>`
+    : review.source === "unavailable"
+      ? `<div class="banner err"><div><b>评审服务不可用。</b>${liveEsc(review.error || "同源 /api/review-queue 未返回可用响应")}。此时不显示演示队列，也不能提交评审。</div></div>`
+      : `<div class="tw"><table><thead><tr><th>命题</th><th>修订</th><th>当前评审</th><th>操作</th></tr></thead><tbody>${queueRows.map(row=>`<tr>
+          <td class="mono">${liveEsc(row.claim_id)}</td><td>${liveEsc(row.claim_revision)}</td>
+          <td>${row.has_active_review ? `<span class="pill ok">已有 ${liveEsc(row.active_review_count)} 份生效评审</span>` : `<span class="pill gap">尚无生效评审</span>`}</td>
+          <td><button class="btn" data-act="review-bundle" data-claim="${liveEsc(row.claim_id)}">打开送审包</button></td></tr>`).join("") || `<tr><td colspan="4" class="mut">当前没有可评审命题。</td></tr>`}</tbody></table></div>`;
+  const bundle = review.bundle;
+  const obligationRows = bundle && Array.isArray(bundle.obligations) ? bundle.obligations.map(item => `<div class="wide" style="padding:9px 0;border-bottom:1px solid var(--line)">
+      <div class="row" style="align-items:flex-start"><div class="spacer"><b>${liveEsc(item.title)}</b><div class="hash">${liveEsc(item.obligation_id)} · ${liveEsc(item.required_assurance_label)}</div><p class="note">${liveEsc(item.ask)}</p></div>
+      <label style="width:132px;flex:none">判定<select data-review-verdict="${liveEsc(item.obligation_id)}"><option value="GAP">缺口</option><option value="OK">通过</option><option value="ERROR">错误</option><option value="CANNOT_JUDGE">无法判断</option></select></label></div>
+      <label>说明（可选）<input data-review-note="${liveEsc(item.obligation_id)}" maxlength="200"></label></div>`).join("") : "";
+  const bundlePanel = review.bundleState === "loading"
+    ? `<p class="note">正在读取送审包。</p>`
+    : review.bundleState === "error"
+      ? `<div class="banner err"><div><b>送审包读取失败。</b>${liveEsc(review.error)}</div></div>`
+      : bundle ? `<div class="body"><div class="stmtbox"><p class="stmt">${liveEsc(bundle.statement)}</p><p class="note">范围：${liveEsc(bundle.scope)}<br>边界：${liveEsc(bundle.boundary)}</p></div>
+        <div class="review-form" style="margin-top:12px">
+          <label>评审记录编号<input id="review-id" maxlength="120" placeholder="例如 REV-20260901-01"></label>
+          <label>评审人编号<input id="reviewer-id" maxlength="120" placeholder="名册中的 reviewer_id"></label>
+          <label>名册版本<input id="reviewer-roster-version" maxlength="120" placeholder="例如 roster-1"></label>
+          <label>评审人档案摘要<input id="reviewer-profile-digest" class="mono" maxlength="64" placeholder="64 位 SHA-256"></label>
+          <label>评审策略版本<input id="review-policy-version" maxlength="120" placeholder="例如 policy-1"></label>
+          <label>整体决定<select id="review-decision"><option value="REQUEST_CHANGES">要求修改</option><option value="APPROVE">接受</option><option value="REJECT">拒绝</option></select></label>
+          <label class="wide">语句对应的明确判断<textarea id="review-statement-correspondence" maxlength="1000" placeholder="说明冻结语句与待评命题是否相同，以及范围或边界是否有偏移。"></textarea></label>
+          <label class="wide">利益冲突声明（每行一项，可留空）<textarea id="review-conflict-declaration" maxlength="1000" placeholder="没有利益冲突，或逐行列出已声明事项。"></textarea></label>
+          ${obligationRows}
+          <label class="wide">名册令牌<input id="review-token" type="password" autocomplete="off" placeholder="仅用于这次提交，发送后立即从输入框清除"></label>
+          <div class="wide row"><button class="btn pri" data-act="review-submit">提交评审</button><span class="note">选择“接受”时，若任一义务不是“通过”，请求仍会发给后端，由既有契约拒绝并显示其原因。</span></div>
+        </div></div>`
+      : `<p class="note">从队列选择一个命题以读取其冻结送审包。</p>`;
+  const result = review.submission ? `<div class="banner ${review.submission.ok ? "ok" : "err"}"><div><b>${review.submission.ok ? "评审已提交。" : "评审未被接受。"}</b>${liveEsc(review.submission.message)}</div></div>` : "";
+  return {
+    task:`管理端 · 评审队列 · <b>${isDemo ? QUEUE.filter(q=>q.life==="ACTIVE").length : queueRows.filter(row=>row.has_active_review).length} 份生效评审</b>`,
+    rail: adminRail(),
+    main: card(isDemo ? "演示评审队列" : "评审队列", isDemo ? "未接线示例" : "同源真实服务", `<div class="body"><div class="row"><p class="note spacer">${isDemo ? "本地文件未连接服务，下面仅是演示数据。" : "队列与送审包均直接读取同源评审服务；工作区导出不参与评审状态。"}</p>${!isDemo?`<button class="btn" data-act="review-refresh">刷新队列</button>`:""}</div>${queueBody}</div>`)
+      + card("送审包与提交", bundle ? `${liveEsc(bundle.claim_id)} · 修订 ${liveEsc(bundle.claim_revision)}` : "选择命题后加载", bundlePanel + result)
+      + card("评审服务的写入纪律","读多写少，写入只有一个口子", `<div class="tw"><table>
         <thead><tr><th style="width:88px">方法</th><th style="width:28%">路径</th><th>认证</th><th>说明</th></tr></thead>
         <tbody>${ENDPOINTS.map(e=>`<tr${e.w?' style="background:var(--accent-soft)"':''}>
           <td><span class="mono" style="font-size:11.5px;font-weight:${e.w?600:400}">${e.m}</span></td>
@@ -3568,7 +3597,7 @@ V.admin_queue = () => ({
           <td class="mut">${e.auth}</td><td class="mut">${e.d}</td></tr>`).join("")}
         </tbody></table></div>
         <div class="body"><p class="note">只读端点不需要认证，因为它们的读权限本就等同于工作区文件的读权限；把它们锁起来只会制造虚假的安全感。真正需要守住的是那唯一一个写入端点。</p></div>`),
-  side: card("判定与决定的区别","",bd(`
+    side: card("判定与决定的区别","",bd(`
       <p class="note"><b>逐条判定</b>针对每一条证明义务：通过 / 缺口 / 错误 / 无法判断。</p>
       <div class="divider"></div>
       <p class="note"><b>整体决定</b>针对整份评审包：接受 / 要求修改 / 拒绝。</p>
@@ -3576,7 +3605,8 @@ V.admin_queue = () => ({
       <p class="note">两者分开记录，因此可以出现「大部分义务通过、但整体要求修改」这种真实情况；只记一个总体结论会把这些信息抹平。</p>
       <div class="divider"></div>
       <p class="note">评审记录还有生命周期：命题修订后，旧评审自动转为<b>已被取代</b>，不会被悄悄沿用。</p>`)),
-});
+  };
+};
 
 /* SHA-256：这一页的全部说服力在于哈希可被读者自行复算，因此用真算法，不用占位 */
 const sha256 = (() => {
@@ -3983,6 +4013,14 @@ function render(){
     : navPanel(pl.tree, pl.id, pl.depth)
       + `<div class="sep"></div><button data-act="go" data-v="acct_overview">我的</button>`;
   $("#nowtask").innerHTML = v.task;
+  /* A workspace export can wire only declared views. Keep that boundary visible
+     so a real provenance header cannot make an unconnected demo look live. */
+  const dataBoundary = $("#view-data-boundary");
+  if(dataBoundary){
+    const connected = S.view === "admin_queue" ? ReviewConsole.view().source === "live" : !!livePayloadFor(S.view);
+    dataBoundary.textContent = connected ? "真实数据" : "演示数据";
+    dataBoundary.dataset.source = connected ? "live" : "demo";
+  }
   $("#budget").textContent = S.guest ? "访客只读模式" : "预算 41% · 剩余 1 060 秒";
   $("#avatar").textContent = S.guest ? "客" : (S.role==="admin" ? "管" : "研");
   $("#railcard").innerHTML = v.rail;
@@ -3990,6 +4028,7 @@ function render(){
   $("#side").innerHTML = v.side || "";
   $("#shell").className = "shell" + (v.side ? "" : " nosd");
   syncThemeBtn();
+  if(S.view === "admin_queue") ReviewConsole.ensureQueue();
   try{ localStorage.setItem("ma-view", S.view); }catch(e){}
 }
 
@@ -3998,6 +4037,9 @@ document.addEventListener("click", e => {
   const el = e.target.closest("[data-act]");
   if(!el) return;
   const a = el.dataset.act, wasView = S.view;
+  if(a==="review-refresh"){ ReviewConsole.loadQueue(true); return; }
+  if(a==="review-bundle"){ ReviewConsole.loadBundle(el.dataset.claim); return; }
+  if(a==="review-submit"){ ReviewConsole.submit(); return; }
   if(a==="go"){ S.view = el.dataset.v; S.gate = null;
     if(!ACCT_VIEWS.includes(S.view) && !ADMIN_VIEWS.includes(S.view) && !FULLPAGE.includes(S.view)) S.plane = planeOf(S.view).id;
     if(el.dataset.cn) S.cnode = el.dataset.cn;
@@ -4218,6 +4260,118 @@ const livePill = value => {
     : /^(BLOCKED|PENDING|CANDIDATE|OPEN|PROPOSED|RUNNING)$/.test(raw) ? "gap" : "skip";
   return `<span class="pill ${kind}">${text}</span>`;
 };
+/* Backend enum values must pass through these maps before becoming visible UI.
+   Keep the key-set checks adjacent to the maps: a schema enum addition should
+   fail loudly here instead of silently leaking an implementation token. */
+const LIVE_ENUM_UI = Object.freeze({
+  claim_status: Object.freeze({
+    PROPOSED:{cls:"gap",label:"已提出"}, OPEN:{cls:"gap",label:"待研究"},
+    CANDIDATE:{cls:"acc",label:"候选"}, PROVED:{cls:"ok",label:"已证明"},
+    REFUTED:{cls:"err",label:"已证伪"}, BLOCKED:{cls:"gap",label:"受阻"},
+    RETRACTED:{cls:"err",label:"已撤回"},
+  }),
+  evidence_status: Object.freeze({
+    PROPOSED:{cls:"gap",label:"待接受"}, ACCEPTED:{cls:"ok",label:"已接受"},
+    REJECTED:{cls:"err",label:"已拒绝"}, STALE:{cls:"skip",label:"已过期"},
+  }),
+  evidence_kind: Object.freeze({
+    FORMAL_PROOF:{cls:"ok",label:"形式化证明"}, CHECKED_DERIVATION:{cls:"ok",label:"已检查推导"},
+    EXACT_CERTIFICATE:{cls:"ok",label:"精确证书"}, EXACT_COMPUTATION:{cls:"ok",label:"精确计算"},
+    COUNTEREXAMPLE:{cls:"err",label:"反例"}, LITERATURE_RESULT:{cls:"acc",label:"文献结果"},
+    HUMAN_AUDIT:{cls:"acc",label:"人工审计"}, NUMERICAL_EXPERIMENT:{cls:"gap",label:"数值实验"},
+    HEURISTIC:{cls:"gap",label:"启发式结果"},
+  }),
+  tool_status: Object.freeze({
+    REQUESTED:{cls:"skip",label:"已请求"}, RUNNING:{cls:"gap",label:"执行中"}, PASS:{cls:"ok",label:"通过"},
+    FAIL:{cls:"err",label:"未通过"}, ERROR:{cls:"err",label:"执行错误"},
+  }),
+  source_claim_status: Object.freeze({
+    PENDING:{cls:"gap",label:"待核验"}, VERIFIED:{cls:"ok",label:"已核验"},
+    REJECTED:{cls:"err",label:"已拒绝"}, SUPERSEDED:{cls:"skip",label:"已替代"},
+  }),
+});
+const LIVE_ENUM_KEYS = Object.freeze({
+  claim_status:["PROPOSED","OPEN","CANDIDATE","PROVED","REFUTED","BLOCKED","RETRACTED"],
+  evidence_status:["PROPOSED","ACCEPTED","REJECTED","STALE"],
+  evidence_kind:["FORMAL_PROOF","CHECKED_DERIVATION","EXACT_CERTIFICATE","EXACT_COMPUTATION","COUNTEREXAMPLE","LITERATURE_RESULT","HUMAN_AUDIT","NUMERICAL_EXPERIMENT","HEURISTIC"],
+  tool_status:["REQUESTED","RUNNING","PASS","FAIL","ERROR"],
+  source_claim_status:["PENDING","VERIFIED","REJECTED","SUPERSEDED"],
+});
+const assertExactEnumKeys = (domain, map, expected) => {
+  const actual = Object.keys(map).sort(), wanted = [...expected].sort();
+  if(actual.length !== wanted.length || actual.some((key, index) => key !== wanted[index])) {
+    throw new Error(`live enum map key mismatch for ${domain}`);
+  }
+};
+Object.entries(LIVE_ENUM_UI).forEach(([domain, map]) => assertExactEnumKeys(domain, map, LIVE_ENUM_KEYS[domain]));
+const liveEnum = (domain, value) => LIVE_ENUM_UI[domain] && LIVE_ENUM_UI[domain][String(value)] || null;
+const liveEnumPill = (domain, value) => {
+  const entry = liveEnum(domain, value);
+  return entry ? `<span class="pill ${entry.cls}">${entry.label}</span>`
+    : `<span class="pill err">未识别枚举值</span>`;
+};
+const liveEnumText = (domain, value) => (liveEnum(domain, value) || {label:"未识别枚举值"}).label;
+const liveDerivedPill = (ok, positive, negative) => `<span class="pill ${ok ? "ok" : "gap"}">${ok ? positive : negative}</span>`;
+const liveReplayFields = item => [
+  ["重放命令", item.replay_command], ["输入摘要", item.input_digest_sha256],
+  ["输出摘要", item.output_digest_sha256], ["环境摘要", item.environment_digest_sha256],
+];
+const liveIsReplayable = item => liveReplayFields(item).every(([, value]) => Boolean(value));
+const liveReplayFieldHtml = item => `<div class="c4">${liveReplayFields(item).map(([label, value]) =>
+  `<span class="${value ? "" : "bad"}">${label}：${value ? `<b class="hash">${liveEsc(value)}</b>` : "缺失"}</span>`).join("")}</div>`;
+const liveDependencyDag = claims => {
+  const byId = new Map(claims.map(claim => [String(claim.claim_id), claim]));
+  const visiting = new Set(), levels = new Map();
+  const levelFor = id => {
+    if(levels.has(id)) return levels.get(id);
+    if(visiting.has(id)) return 0;
+    visiting.add(id);
+    const claim = byId.get(id), deps = Array.isArray(claim && claim.dependencies) ? claim.dependencies : [];
+    const level = deps.length ? 1 + Math.max(...deps.filter(dep => byId.has(String(dep))).map(dep => levelFor(String(dep))), 0) : 0;
+    visiting.delete(id); levels.set(id, level); return level;
+  };
+  [...byId.keys()].forEach(levelFor);
+  const layers = new Map();
+  [...byId.keys()].sort().forEach(id => { const level = levelFor(id); (layers.get(level) || layers.set(level, []).get(level)).push(id); });
+  const nodeWidth = 236, nodeHeight = 76, columnGap = 64, rowGap = 26, padding = 30;
+  const maxLevel = Math.max(0, ...layers.keys()), maxRows = Math.max(1, ...[...layers.values()].map(layer => layer.length));
+  const width = padding * 2 + (maxLevel + 1) * nodeWidth + maxLevel * columnGap;
+  const height = padding * 2 + maxRows * nodeHeight + (maxRows - 1) * rowGap;
+  const nodes = new Map();
+  [...layers.entries()].forEach(([level, ids]) => ids.forEach((id, row) => {
+    nodes.set(id, {x:padding + level * (nodeWidth + columnGap), y:padding + row * (nodeHeight + rowGap)});
+  }));
+  const edges = [...byId.values()].flatMap(claim => (claim.dependencies || []).filter(dep => nodes.has(String(dep))).map(dep => {
+    const from = nodes.get(String(dep)), to = nodes.get(String(claim.claim_id));
+    const x1 = from.x + nodeWidth, y1 = from.y + nodeHeight / 2, x2 = to.x, y2 = to.y + nodeHeight / 2;
+    const bend = Math.max(24, (x2 - x1) / 2);
+    return `<path class="edge" d="M${x1} ${y1} C${x1 + bend} ${y1},${x2 - bend} ${y2},${x2} ${y2}" marker-end="url(#live-dag-arrow)"></path>`;
+  })).join("");
+  const cards = [...byId.values()].sort((a,b) => String(a.claim_id).localeCompare(String(b.claim_id))).map(claim => {
+    const pos = nodes.get(String(claim.claim_id)), entry = liveEnum("claim_status", claim.status) || {cls:"err",label:"未识别枚举值"};
+    return `<g class="nd"><rect class="n-${entry.cls}" x="${pos.x}" y="${pos.y}" width="${nodeWidth}" height="${nodeHeight}" rx="6"></rect>
+      <text class="tx-d" x="${pos.x + 12}" y="${pos.y + 22}">${liveEsc(String(claim.claim_id))}</text>
+      <text class="sb-d" x="${pos.x + 12}" y="${pos.y + 43}">${liveEsc(String(claim.statement || "未提供陈述")).slice(0,38)}</text>
+      <text class="sb-d" x="${pos.x + 12}" y="${pos.y + 63}">${entry.label} · ${(claim.evidence_ids || []).length} 条证据</text></g>`;
+  }).join("");
+  return `<div class="tw"><svg class="dsvg" viewBox="0 0 ${width} ${height}" style="min-width:${Math.min(width, 780)}px" role="img" aria-label="按命题依赖层自动布局的有向无环图"><defs><marker id="live-dag-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="currentColor"/></marker></defs><g style="color:var(--muted)">${edges}</g>${cards}</svg></div>`;
+};
+const liveRoundEventRange = (round, events) => {
+  const direct = round.event_sequence_range;
+  if(direct && Number.isInteger(direct.start) && Number.isInteger(direct.end)) return {start:direct.start, end:direct.end, source:"报告范围"};
+  if(Number.isInteger(round.event_sequence_start) && Number.isInteger(round.event_sequence_end)) return {start:round.event_sequence_start, end:round.event_sequence_end, source:"报告范围"};
+  const index = round.round_index, matches = events.filter(event => event && event.payload && event.payload.details && event.payload.details.round_index === index)
+    .map(event => event.sequence).filter(Number.isInteger).sort((a,b) => a-b);
+  return matches.length ? {start:matches[0], end:matches[matches.length - 1], source:"轮次检查点"} : null;
+};
+const liveStopReason = value => {
+  const text = String(value || "");
+  if(text === "budget_exhausted") return "研究预算耗尽";
+  if(text === "no_gain_rounds_exhausted") return "连续无语义增益";
+  if(text === "max_rounds_reached") return "达到轮次上限";
+  if(text.startsWith("release_state_terminal:")) return `发布状态已终止 (${text})`;
+  return "未识别停止原因";
+};
 const liveChain = events => {
   const genesis = "0".repeat(64);
   let previous = genesis, valid = true;
@@ -4256,22 +4410,18 @@ V.source = () => {
   };
   return { task:`来源审计 · <b>真实来源登记</b> · ${claims.length} 条`,
     rail: liveCard("读模型边界","不推断研究状态", `<p class="note">${liveEsc(sourceTopic.status_boundary)}</p><div class="divider"></div><p class="note">控制台只展示已持久化的来源核验字段；未配置外部适配器时，不显示任何外部检索统计。</p>`),
-    main: liveCard("资料核验",`${claims.length} 条来源声明`, `<div class="tw"><table><thead><tr><th>来源</th><th>状态</th><th>固定版本 / 定位</th><th>核验方法</th><th>语句对应</th></tr></thead><tbody>${claims.map(item=>`<tr><td>${sourceCell(item)}</td><td>${livePill(item.status)}</td><td class="mono">${liveEsc(item.pinned_version)}<br>${liveEsc(item.locator)}</td><td>${liveEsc(item.verification_method)}</td><td>${liveEsc(item.statement_correspondence)}</td></tr>`).join("") || `<tr><td colspan="5" class="mut">工作区没有来源声明。</td></tr>`}</tbody></table></div>`),
+    main: liveCard("资料核验",`${claims.length} 条来源声明`, `<div class="tw"><table><thead><tr><th>来源</th><th>状态</th><th>固定版本 / 定位</th><th>核验方法</th><th>语句对应</th></tr></thead><tbody>${claims.map(item=>`<tr><td>${sourceCell(item)}</td><td>${liveEnumPill("source_claim_status", item.status)}</td><td class="mono">${liveEsc(item.pinned_version)}<br>${liveEsc(item.locator)}</td><td>${liveEsc(item.verification_method)}</td><td>${liveEsc(item.statement_correspondence)}</td></tr>`).join("") || `<tr><td colspan="5" class="mut">工作区没有来源声明。</td></tr>`}</tbody></table></div>`),
     side: liveCard("观察状态","仅持久化记录", `<dl class="kv"><dt>观察可用</dt><dd>${observations.available ? "是" : "否"}</dd><dt>已观察</dt><dd>${liveEsc(observations.observed_count || 0)}</dd><dt>待人工复核</dt><dd>${liveEsc(observations.manual_review_count || 0)}</dd><dt>外部统计</dt><dd class="mono">${liveEsc(observations.external_search_statistics)}</dd></dl>`) };
 };
 
 V.dag = () => {
   const workspace = liveWorkspace("dag"); if(!workspace) return DEMO_VIEWS.dag();
   const trace = workspace.trace, claims = trace.claims || [], evidence = trace.evidence || [];
-  const rows = claims.map(claim => `<tr><td class="mono">${liveEsc(claim.claim_id)}</td><td>${liveEsc(claim.statement)}</td>
-    <td>${livePill(claim.status)}</td><td class="mono">${(claim.dependencies||[]).map(liveEsc).join(" · ") || "—"}</td>
-    <td>${(claim.evidence_ids||[]).length}</td><td>${(claim.route_ids||[]).length}</td></tr>`).join("") ||
-    `<tr><td colspan="6" class="mut">工作区没有命题记录。</td></tr>`;
   return { task:`命题依赖图 · <b>真实工作区</b> · ${claims.length} 条命题`,
-    rail: liveCard("数据契约","仅显示导出中的工作区事实", `<p class="note">依赖边、证据和路线均来自同一份已通过工作区审计的导出。命题状态由后端写入，控制台不提供晋升或编辑入口。</p>`),
-    main: liveCard("命题依赖表",`事件链头 ${liveEsc(String(workspace.events.head_hash||"").slice(0,12))}`, `<div class="tw"><table><thead><tr><th>命题</th><th>陈述</th><th>状态</th><th>依赖</th><th>证据</th><th>路线</th></tr></thead><tbody>${rows}</tbody></table></div>`)
-      + liveCard("证据台账",`${evidence.length} 条真实证据`, `<div class="tw"><table><thead><tr><th>证据</th><th>命题</th><th>类型 / 状态</th><th>独立组</th><th>冷重放</th></tr></thead><tbody>${evidence.map(item=>`<tr><td class="mono">${liveEsc(item.evidence_id)}</td><td>${(item.claim_ids||[]).map(liveEsc).join(" · ")}</td><td>${livePill(item.kind)} ${livePill(item.status)}</td><td class="mono">${liveEsc(item.independence_group)}</td><td class="hash">${liveEsc(item.replay_command||"未提供")}</td></tr>`).join("") || `<tr><td colspan="5" class="mut">没有可显示的证据。</td></tr>`}</tbody></table></div>`),
-    side: liveCard("审计状态","导出前验证", `<dl class="kv"><dt>工作区审计</dt><dd>${livePill(workspace.audit.valid ? "VERIFIED" : "ERROR")}</dd><dt>状态摘要</dt><dd class="hash">${liveEsc(workspace.workspace.state_digest_sha256)}</dd><dt>声明链头</dt><dd class="hash">${liveEsc(workspace.events.head_hash)}</dd></dl>`)};
+    rail: liveCard("数据契约","依赖决定层级", `<p class="note">每个命题按最长依赖路径自动分层，同层命题按编号稳定排序。边从前置命题指向依赖它的命题；控制台不提供晋升或编辑入口。</p>`),
+    main: liveCard("命题依赖图",`事件链头 ${liveEsc(String(workspace.events.head_hash||"").slice(0,12))}`, claims.length ? liveDependencyDag(claims) : `<p class="note">工作区没有命题记录。</p>`)
+      + liveCard("证据台账",`${evidence.length} 条真实证据`, `<div class="tw"><table><thead><tr><th>证据</th><th>命题</th><th>类型 / 状态</th><th>独立组</th><th>冷重放</th></tr></thead><tbody>${evidence.map(item=>`<tr><td class="mono">${liveEsc(item.evidence_id)}</td><td>${(item.claim_ids||[]).map(liveEsc).join(" · ")}</td><td>${liveEnumPill("evidence_kind", item.kind)} ${liveEnumPill("evidence_status", item.status)}</td><td class="mono">${liveEsc(item.independence_group)}</td><td class="hash">${liveEsc(item.replay_command||"未提供")}</td></tr>`).join("") || `<tr><td colspan="5" class="mut">没有可显示的证据。</td></tr>`}</tbody></table></div>`),
+    side: liveCard("审计状态","导出前验证", `<dl class="kv"><dt>工作区审计</dt><dd>${liveDerivedPill(Boolean(workspace.audit.valid), "审计通过", "审计失败")}</dd><dt>状态摘要</dt><dd class="hash">${liveEsc(workspace.workspace.state_digest_sha256)}</dd><dt>声明链头</dt><dd class="hash">${liveEsc(workspace.events.head_hash)}</dd></dl>`)};
 };
 
 V.proofchain = () => {
@@ -4286,10 +4436,10 @@ V.proofchain = () => {
 V.tools = () => {
   const workspace = liveWorkspace("tools"); if(!workspace) return DEMO_VIEWS.tools();
   const tools = workspace.trace.tool_calls || [];
-  const replayable = tools.filter(item=>item.replay_command && item.input_digest_sha256 && item.output_digest_sha256 && item.environment_digest_sha256).length;
+  const replayable = tools.filter(liveIsReplayable).length, passNotReplayable = tools.filter(item => item.status === "PASS" && !liveIsReplayable(item));
   return { task:`工具调用台账 · <b>真实记录</b> · ${tools.length} 次调用`,
     rail: liveCard("冷重放","四字段同时存在才成立", `<p class="note">页面只根据记录中的命令、输入摘要、输出摘要和环境摘要计算可重放性；不会把成功状态误读为可重放。</p>`),
-    main: liveCard("工具调用",`${replayable} / ${tools.length} 条可冷重放`, `<div class="tw"><table><thead><tr><th>调用</th><th>工具 / 用途</th><th>状态</th><th>命题</th><th>独立组</th><th>可重放</th></tr></thead><tbody>${tools.map(item=>{ const ok=!!(item.replay_command&&item.input_digest_sha256&&item.output_digest_sha256&&item.environment_digest_sha256); return `<tr><td class="mono">${liveEsc(item.call_id)}</td><td><b>${liveEsc(item.tool)}</b><br><span class="mut">${liveEsc(item.purpose)}</span></td><td>${livePill(item.status)}</td><td class="mono">${(item.linked_claim_ids||[]).map(liveEsc).join(" · ")||"—"}</td><td class="mono">${liveEsc(item.independence_group)}</td><td>${livePill(ok?"VERIFIED":"PENDING")}</td></tr>`; }).join("") || `<tr><td colspan="6" class="mut">没有工具调用记录。</td></tr>`}</tbody></table></div>`),
+    main: liveCard("工具调用",`${replayable} / ${tools.length} 条可冷重放`, `${passNotReplayable.length ? `<div class="banner gap"><div><b>${passNotReplayable.length} 条调用状态为“通过”，但不可冷重放。</b>它们缺少 ${passNotReplayable.map(item => `${liveEsc(item.call_id)}（${liveReplayFields(item).filter(([, value]) => !value).map(([label]) => label).join("、")}）`).join("；")}。通过不等于可复现，关键命题若依赖这些调用，晋升门必须拒绝。</div></div>` : ""}<div class="tw"><table><thead><tr><th>调用</th><th>工具 / 用途</th><th>状态</th><th>命题 / 独立组</th><th>可冷重放的四项构成</th><th>预先声明的成功判据</th></tr></thead><tbody>${tools.map(item=>{ const ok=liveIsReplayable(item); return `<tr><td class="mono">${liveEsc(item.call_id)}</td><td><b>${liveEsc(item.tool)}</b><br><span class="mut">${liveEsc(item.purpose)}</span></td><td>${liveEnumPill("tool_status", item.status)}<br>${liveDerivedPill(ok, "可冷重放", "不可冷重放")}</td><td class="mono">${(item.linked_claim_ids||[]).map(liveEsc).join(" · ")||"—"}<br>${liveEsc(item.independence_group)}</td><td>${liveReplayFieldHtml(item)}</td><td>${liveEsc(item.expected_discriminator || "未提供")}</td></tr>`; }).join("") || `<tr><td colspan="6" class="mut">没有工具调用记录。</td></tr>`}</tbody></table></div>`),
     side: liveCard("导出边界","只读", `<p class="note">工具调用由受治理运行时记录。控制台不执行工具、不创建证据，也不改变命题状态。</p>`)};
 };
 
@@ -4318,8 +4468,117 @@ V.campaign = () => {
   const campaign = payload.campaign;
   if(!campaign.available) return { task:"攻克进程 · <b>未提供报告</b>", rail:liveCard("观察站状态","明确不可用",`<p class="note">${liveEsc(campaign.reason)}</p>`), main:liveCard("轮次记录","无报告",`<div class="banner gap"><div>当前工作区未附带 campaign report，控制台不会用演示轮次替代。</div></div>`), side:null };
   const report = campaign.report, rounds = report.rounds || [];
-  return { task:`攻克进程 · <b>真实报告</b> · ${rounds.length} 轮`, rail:liveCard("报告边界","只读快照", `<p class="note">报告由受治理的 campaign 运行时产生。此页面不启动、停止或修改攻克进程。</p>`), main:liveCard("轮次记录",`停止原因：${liveEsc(report.stop_reason)}`, `<div class="chain plain">${rounds.map((round,index)=>`<div class="cev open"><div class="cev-h"><span class="seq">${String(index+1).padStart(2,"0")}</span><span class="subj">${liveEsc(round.summary || round.role || "轮次记录")}</span></div><div class="cev-b"><pre class="hash">${liveEsc(JSON.stringify(round, null, 2))}</pre></div></div>`).join("") || `<p class="note">报告没有轮次条目。</p>`}</div>`), side:liveCard("预算","报告快照", `<pre class="hash">${liveEsc(JSON.stringify(report.budget, null, 2))}</pre>`)};
+  const events = workspace.events.events || [];
+  const roundCards = rounds.map((round, index) => {
+    const range = liveRoundEventRange(round, events), focus = round.plan && round.plan.focus_claim_id;
+    const gain = Boolean(round.evidence_gain && round.evidence_gain.has_gain);
+    const rangeText = range ? `${range.start}–${range.end}` : "未提供";
+    return `<div class="cev open"><div class="cev-h"><span class="seq">${String(round.round_index || index + 1).padStart(2,"0")}</span><span class="subj">${focus ? `聚焦命题：${liveEsc(focus)}` : "轮次记录"}</span>${liveDerivedPill(gain, "有语义增益", "无语义增益")}</div><div class="cev-b"><dl class="kv"><dt>账本 event_sequence 范围</dt><dd>${range ? `<span class="mono">${rangeText}</span> <span class="note">${range.source}</span>` : `<span class="pill gap">未提供范围</span> <span class="note">导出未携带轮次索引事件或显式范围，控制台不会按时间猜测。</span>`}</dd><dt>工作者记录</dt><dd>${Array.isArray(round.workers) ? `${round.workers.length} 条` : "未提供"}</dd><dt>新建对象</dt><dd>${Array.isArray(round.creations) ? `${round.creations.length} 条` : "未提供"}</dd><dt>成本增量</dt><dd class="hash">${liveEsc(round.cost_delta == null ? "未提供" : JSON.stringify(round.cost_delta))}</dd></dl></div></div>`;
+  }).join("") || `<p class="note">报告没有轮次条目。</p>`;
+  return { task:`攻克进程 · <b>真实报告</b> · ${rounds.length} 轮`, rail:liveCard("报告边界","只读快照", `<p class="note">报告由受治理的 campaign 运行时产生。每轮与账本的对应只使用导出提供的 event_sequence 范围或携带同一 round_index 的检查点事件；缺失时明确显示不可归属。</p>`), main:liveCard("轮次记录",`停止原因：${liveStopReason(report.stop_reason)}`, `<div class="chain plain">${roundCards}</div>`), side:liveCard("预算","报告快照", `<pre class="hash">${liveEsc(JSON.stringify(report.budget, null, 2))}</pre>`)};
 };
+/* M2 reads only the review service. It deliberately does not derive review
+   state from console.json or the workspace observatory, whose authority is
+   separate from the bare ResearchTrace used by review.py. */
+const ReviewConsole = (() => {
+  const state = { source:"unloaded", queue:[], bundle:null, bundleState:"idle", error:"", submission:null };
+  const update = () => { if(S.view === "admin_queue") render(); };
+  const json = async response => {
+    let payload;
+    try { payload = await response.json(); } catch (_) { throw new Error("服务返回了非 JSON 响应"); }
+    if(!response.ok) throw new Error(payload && (payload.message || payload.error) || `HTTP ${response.status}`);
+    return payload;
+  };
+  const canonicalJson = value => {
+    if(value === null || typeof value === "boolean" || typeof value === "number" || typeof value === "string") return JSON.stringify(value);
+    if(Array.isArray(value)) return `[${value.map(canonicalJson).join(",")}]`;
+    if(value && typeof value === "object") return `{${Object.keys(value).sort().map(key => `${JSON.stringify(key)}:${canonicalJson(value[key])}`).join(",")}}`;
+    throw new Error("评审记录包含不支持的字段类型");
+  };
+  const inputValue = id => {
+    const input = document.getElementById(id);
+    return input instanceof HTMLInputElement || input instanceof HTMLTextAreaElement || input instanceof HTMLSelectElement ? input.value.trim() : "";
+  };
+  const required = (id, label) => {
+    const value = inputValue(id);
+    if(!value) throw new Error(`${label}不能为空`);
+    return value;
+  };
+  const loadQueue = async force => {
+    if(location.protocol === "file:") {
+      state.source = "demo"; state.error = ""; update(); return;
+    }
+    if(state.source === "loading" && !force) return;
+    state.source = "loading"; state.error = ""; update();
+    try {
+      const payload = await json(await fetch("/api/review-queue", {cache:"no-store", credentials:"same-origin"}));
+      if(!payload || !Array.isArray(payload.queue)) throw new Error("评审队列响应缺少 queue 数组");
+      state.source = "live";
+      state.queue = payload.queue.filter(item => item && typeof item.claim_id === "string" && Number.isInteger(item.claim_revision));
+    } catch(error) {
+      state.source = "unavailable"; state.queue = []; state.error = error instanceof Error ? error.message : String(error);
+    }
+    update();
+  };
+  const loadBundle = async claimId => {
+    if(state.source !== "live" || !claimId) return;
+    state.bundle = null; state.bundleState = "loading"; state.error = ""; update();
+    try {
+      const payload = await json(await fetch(`/api/review-bundle/${encodeURIComponent(claimId)}`, {cache:"no-store", credentials:"same-origin"}));
+      if(!payload || payload.claim_id !== claimId || !Array.isArray(payload.obligations) || !payload.bundle_digest_sha256) throw new Error("送审包响应不完整");
+      state.bundle = payload; state.bundleState = "ready";
+    } catch(error) {
+      state.bundleState = "error"; state.error = error instanceof Error ? error.message : String(error);
+    }
+    update();
+  };
+  const reviewRecord = () => {
+    const bundle = state.bundle;
+    if(!bundle) throw new Error("请先打开真实送审包");
+    const verdicts = bundle.obligations.map(item => {
+      const obligationId = String(item.obligation_id || "");
+      const verdict = [...document.querySelectorAll("[data-review-verdict]")].find(item => item.dataset.reviewVerdict === obligationId);
+      const note = [...document.querySelectorAll("[data-review-note]")].find(item => item.dataset.reviewNote === obligationId);
+      if(!(verdict instanceof HTMLSelectElement)) throw new Error(`义务 ${obligationId} 的判定缺失`);
+      return { obligation_id:obligationId, verdict:verdict.value, note:note instanceof HTMLInputElement ? note.value.trim() : "" };
+    });
+    const conflictDeclaration = inputValue("review-conflict-declaration").split(/\n+/).map(item => item.trim()).filter(Boolean).sort();
+    const signed = {
+      review_id:required("review-id", "评审记录编号"),
+      claim_id:bundle.claim_id,
+      claim_revision:bundle.claim_revision,
+      statement_digest:sha256(canonicalJson({statement:bundle.statement})),
+      bundle_digest:bundle.bundle_digest_sha256,
+      reviewer_id:required("reviewer-id", "评审人编号"),
+      reviewer_profile_digest:required("reviewer-profile-digest", "评审人档案摘要"),
+      roster_version:required("reviewer-roster-version", "名册版本"),
+      review_policy_version:required("review-policy-version", "评审策略版本"),
+      statement_correspondence:required("review-statement-correspondence", "语句对应判断"),
+      verdicts,
+      overall_decision:required("review-decision", "整体决定"),
+      conflict_declaration:conflictDeclaration,
+    };
+    return {...signed, review_signature:sha256(canonicalJson(signed))};
+  };
+  const submit = async () => {
+    try {
+      const token = document.getElementById("review-token");
+      const result = await ConsoleBridge.submitReview("/api/review", reviewRecord(), token);
+      state.submission = {ok:true, message:`评审 ${result.review_id || ""} 已被服务记录。`};
+      await loadQueue(true);
+    } catch(error) {
+      state.submission = {ok:false, message:error instanceof Error ? error.message : String(error)};
+      update();
+    }
+  };
+  return {
+    view: () => ({...state}),
+    ensureQueue: () => { if(state.source === "unloaded") void loadQueue(false); },
+    loadQueue: force => { void loadQueue(Boolean(force)); },
+    loadBundle: claimId => { void loadBundle(claimId); },
+    submit: () => { void submit(); },
+  };
+})();
 /* Console transport is deliberately separate from the demonstration model.
    A compatible export may improve provenance, but never fabricates mappings
    for views whose backend contract has not been implemented. */
