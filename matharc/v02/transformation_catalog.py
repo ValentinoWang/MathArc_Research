@@ -10,7 +10,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from types import MappingProxyType
-from typing import Any, Iterable, Mapping
+from typing import Any, Iterable, Iterator, Mapping
 
 from .schema import FailureClass, FailureRecord
 
@@ -203,7 +203,7 @@ class TransformationCatalog:
     def entries(self) -> tuple[TransformationSpec, ...]:
         return self._entries
 
-    def __iter__(self):
+    def __iter__(self) -> Iterator[TransformationSpec]:
         return iter(self._entries)
 
     def __len__(self) -> int:

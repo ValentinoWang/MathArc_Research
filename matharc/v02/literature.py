@@ -11,7 +11,7 @@ import hashlib
 import json
 import math
 import re
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from datetime import datetime, timezone
 from enum import Enum
 from types import MappingProxyType
@@ -45,7 +45,7 @@ class TransportResponse:
 
     status_code: int
     body: bytes
-    headers: Mapping[str, str] = ()
+    headers: Mapping[str, str] = field(default_factory=dict)
 
     def __post_init__(self) -> None:
         if not isinstance(self.status_code, int):
@@ -382,7 +382,10 @@ def normalize_provider_record(
     """Normalize one concrete provider record through ``SourceObservation``."""
 
     values = _record_mapping(record)
-    selected_provider = _provider(provider or values.get("provider"))
+    selected_provider_value: Any = provider if provider is not None else values.get("provider")
+    if selected_provider_value is None:
+        raise ValueError("provider record must include a provider")
+    selected_provider = _provider(selected_provider_value)
     raw_identity = request_identity or _first_value(
         values,
         "request_identity",

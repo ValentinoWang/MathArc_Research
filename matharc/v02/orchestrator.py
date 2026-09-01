@@ -747,8 +747,10 @@ class ResearchOrchestrator:
 
     @staticmethod
     def _raw_spawn_text(raw_request: Any, key: str) -> str:
-        if isinstance(raw_request, Mapping) and isinstance(raw_request.get(key), str):
-            return raw_request[key].strip()
+        if isinstance(raw_request, Mapping):
+            value = raw_request.get(key)
+            if isinstance(value, str):
+                return value.strip()
         return ""
 
     @staticmethod
@@ -763,8 +765,10 @@ class ResearchOrchestrator:
 
     @staticmethod
     def _raw_spawn_depth(raw_request: Any) -> int:
-        if isinstance(raw_request, Mapping) and isinstance(raw_request.get("depth"), int):
-            return raw_request["depth"]
+        if isinstance(raw_request, Mapping):
+            value = raw_request.get("depth")
+            if isinstance(value, int):
+                return value
         return -1
 
     def _required_tools(
