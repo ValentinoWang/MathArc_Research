@@ -1,0 +1,937 @@
+Reading additional input from stdin...
+2026-08-31T23:44:02.333922Z  WARN codex_core_plugins::manager: remote installed plugin bundle sync failed error=chatgpt authentication required for remote plugin catalog; api key auth is not supported
+2026-08-31T23:44:02.433085Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-08-31T23:44:02.433118Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+OpenAI Codex v0.151.0
+--------
+workdir: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+model: gpt-5.6-luna
+provider: sub2api
+approval: never
+sandbox: danger-full-access
+reasoning effort: max
+reasoning summaries: none
+session id: 01a05a35-5f3c-7690-8535-e26cd19ef451
+--------
+user
+TASK_ID=r1-v9-q1-companion-test
+ATTEMPT_ROLE=primary
+PRIMARY_EXECUTOR=lw-luna
+PRIMARY_WRAPPER=/Users/vsiyo/.codex/workers/run-lw-luna.sh
+ATTEMPT_EXECUTOR=lw-luna
+ATTEMPT_WRAPPER=/Users/vsiyo/.codex/workers/run-lw-luna.sh
+PROJECT_ROOT=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+TASK_SOURCE_SHA256=f8462904878550b6c838fd019509e5ffc0ad16f6c30205ea092dc1aa46920e7d
+STRUCTURED_RETURN_PATH=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json
+VALIDATION_COMMAND_FILE=/private/tmp/matharc-r1-v9-q1-companion-validation.sh
+VALIDATION_COMMAND_SHA256=4ee3c18ab8ed7c64b29cac022e0723b49e1741f49893f6429354ef894fb5c8dd
+
+Execute exactly the bounded task below. Preserve its frozen inputs, write scope, forbidden scope, and acceptance commands. Full filesystem access is process capability only and does not expand task authority.
+
+Write one JSON object to STRUCTURED_RETURN_PATH before exit. It must include proposed_state, acceptance_self_check, failure_class, and failure_origin. proposed_state must be IMPLEMENTED, VERIFIED, FAILED, or BLOCKED; acceptance_self_check must be pass, fail, or partial. failure_class must be none, implementation, runtime, verification, transport, architecture-conflict, authority-conflict, interface-freeze, permission, product-decision, or scope-conflict. failure_origin must identify one of: none, environment, app-server, browser, database, test-infrastructure, provider-network, provider-transport, worker-transport, product-behavior, implementation, architecture-complexity, control-plane, test-oracle, authority, scope, or unknown-origin. Use none only for a successful attempt.
+
+BOUNDED_TASK_BEGIN
+In /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research, make the minimal companion repair for the already completed R1 v9 review-integrity remediation. You are the only write owner. The current tracked diff deliberately changed R1 evidence to EV-R1-REOPENED-5 and contract v9; do not modify or revert it. Do not edit retry5 or any attempt evidence, no Git/remote operations.
+
+Allowed write path only: tests/test_v02_calibration_disclosure.py.
+
+The current test's blocked-R1 allowlist only includes EV-R1-REOPENED-2 through -4, making the documented blocked v9 evidence incorrectly fail. Update it narrowly to recognize EV-R1-REOPENED-5 as the same blocked upstream lifecycle state. Do not accept Q1, do not alter public-release restrictions, fixtures, Q1/A5 evidence, or other expected identities.
+
+Run exactly:
+- PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_regression_evaluation tests.test_v02_calibration_disclosure tests.test_v02_release_decision
+- git diff --check
+
+Write a JSON structured return to the provided path, then exit. Success requires only the allowed test file changed and all commands passing. Do not commit.
+BOUNDED_TASK_END
+
+2026-08-31T23:44:03.430427Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-08-31T23:44:03.435044Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+warning: Skill descriptions were shortened to fit the skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.
+2026-08-31T23:44:04.322469Z  WARN codex_rmcp_client::rmcp_client: stored OAuth refresh credentials could not be bound to their issuer for MCP server `figma`; using the stored access token without refresh
+2026-08-31T23:44:12.340059Z  WARN codex_core_plugins::manager: failed to warm featured plugin ids cache error=failed to send remote featured plugin request to https://chatgpt.com/backend-api/plugins/featured?platform=codex: error sending request for url (https://chatgpt.com/backend-api/plugins/featured?platform=codex)
+codex
+我会先读取项目要求的 Harness 文档、确认当前工作树与目标测试文件，再只对允许路径做最小补丁。随后严格执行给定的两条验收命令，并在退出前写入指定 JSON 返回文件；不会做提交、远程操作或触碰冻结证据。
+exec
+/bin/zsh -lc "sed -n '1,240p' develop/Harness/fullstack-ai-harness.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+# Fullstack AI Harness
+
+Use this entry before non-trivial implementation. Classify the task by impact layer, read the matching harness, identify the authority source, implement narrowly, and finish with evidence.
+
+## Routing
+
+- Frontend UI, interaction, design system, responsiveness: use `product-frontend-harness` first for user-visible semantic changes, then the frontend or app profile harness.
+- Backend route, service, domain logic, jobs: backend harness.
+- Database schema, migration, seed, indexes: database harness.
+- API contracts, OpenAPI, generated SDK: API contract harness.
+- CI, static guards, flaky tests, regression triage: quality harness.
+- Cross-project process or skill improvement: governance harness.
+
+## Closeout
+
+Every task should report business project changes, Harness SSOT changes, verification commands, evidence location, and any reusable guard or QA harness candidate.
+
+exec
+/bin/zsh -lc "sed -n '1,240p' .harness/overlays/project-harness-adapter.yaml" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+project:
+  name: matharc-research
+  profile: core
+design:
+  token_sources: []
+  theme_sources: []
+  page_shell_sources: []
+  component_sources: []
+quality:
+  static_guards: []
+  formatting: []
+qa:
+  screenshot: []
+  integration: []
+  evidence_root: agents-results
+skills:
+  enabled: []
+
+exec
+/bin/zsh -lc 'rg -n -i "MathArc_Research|R1|REOPENED-5|companion" /Users/vsiyo/.codex/memories/MEMORY.md' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+1:# Task Group: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research publication gates, Erdős–Szekeres audit, and CI delivery
+3:applies_to: cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research; reuse_rule=publication integrity checks and MathArc gate behavior are reusable in this checkout; external-repository artifacts, GitHub billing state, SHAs, and untracked content need fresh verification.
+9:- rollout_summaries/2026-08-30T18-08-56-aeS5-matharc_erdos_szekeres_publication_gates_ci_merge.md (cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/31/rollout-2026-08-31T02-46-43-01a053dc-3a51-7c33-a69f-f45a477c3a11_01a053fe-cf0c-7d62-97c5-f0e32db921d6.jsonl, updated_at=2026-08-30T19:29:36+00:00, thread_id=01a053dc-3a51-7c33-a69f-f45a477c3a11, external case audited without changing this workspace)
+19:- rollout_summaries/2026-08-30T18-08-56-aeS5-matharc_erdos_szekeres_publication_gates_ci_merge.md (cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/31/rollout-2026-08-31T02-46-43-01a053dc-3a51-7c33-a69f-f45a477c3a11_01a053fe-cf0c-7d62-97c5-f0e32db921d6.jsonl, updated_at=2026-08-30T19:29:36+00:00, thread_id=01a053dc-3a51-7c33-a69f-f45a477c3a11, local gates and remote merge verified; GitHub CI jobs blocked by billing)
+195:- MathArc_Research, Harness_Engineering, detached worktree, GitHub API, subtree migration, `git rm -r --sparse`, Python 3.12, unittest, `b3eb751`, `a83b865`, `feat/matharc-discovery-plane-v04`
+210:- Symptom: local source is stale or sparse checkout blocks bootstrap-file deletion. Fix: use the authoritative remote and a clean detached worktree; use `git rm -r --sparse`, then scan for stale `Projects/MathArc_Research` references before final push. [Task 1]
+801:- Symptom: rename work regresses to `r02-`/`r16-` or old suffixes during parallel edits. Fix: serialize rename, metadata/index updates, reference scan, and validation; read files back immediately.
+1651:- openclaw-media, C0, M1, M2, R1, R2, W1, E1, clean-room, Python 3.13, `py_ok = (3, 12) <= py[:2] < (3, 14)`, uv, wheel, `260 passed`, launchd, tenant archive
+1721:- `openclaw-bot-center`, `openclaw-tag-router`, Postiz, Mixpost, GET-only audit, `MPE2E-AUTH-WEB`, C1, `C1-AUTH-LOCAL-CANDIDATE-R1`, `final_decision: running`, `audit_site.mjs`, `production-qa`
+1758:- The canonical product path is `C0 -> [M1 || R1] -> [M2 || R2] -> W1 -> E1 -> independent audit -> release decision`. It has one machine contract, `PipelineRuntime`/node registry, Mac CLI/Agent, remote Device/Job and Archive APIs, and Web `/media-agent` plus `/archives`; package tests, typed projections, screenshots, and isolated HTTP checks cannot themselves promote remote or Mac layers [Task 5]
+3793:- rollout_summaries/2026-07-15T07-12-34-55R1-v20_ssot_scripts_screenshot_migration.md (cwd=/Users/vsiyo/Desktop/Athlete_Platform/Athlete-OS_repo, rollout_path=/Users/vsiyo/.codex/sessions/2026/07/15/rollout-2026-07-15T15-12-34-019f649e-c5b5-7f40-9e2c-e607b90703e3.jsonl, updated_at=2026-07-15T13:17:59+00:00, thread_id=019f649e-c5b5-7f40-9e2c-e607b90703e3, v20 screenshot/manifest/HTML migration with guard closure)
+3902:- rollout_summaries/2026-08-10T15-33-41-NR13-hongru_runtime_semantic_github_release.md (cwd=/Users/vsiyo/Desktop/副业/鸿儒数字化教育, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/10/rollout-2026-08-10T23-33-41-019fec4e-e572-7950-aa7d-4b76958d901d.jsonl, updated_at=2026-08-10T17:59:31+00:00, thread_id=019fec4e-e572-7950-aa7d-4b76958d901d, runtime, semantic release, merge, remote alignment verified)
+
+exec
+/bin/zsh -lc 'pwd && git status --short --branch' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+## main...origin/main
+ M acceptance/human/R1-regression-evaluation/binding.md
+ M acceptance/human/R1-regression-evaluation/checklist.md
+ M agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
+ M agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json
+ M tests/test_v02_regression_evaluation.py
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry5/
+
+codex
+该任务属于 Harness 规定的质量/回归测试层；我会按 `quality-gate-triage` 的要求确认失败类别、最小修复与负向边界。当前工作树已有用户冻结的 R1 相关改动和未跟踪 attempts 目录，我会保留它们，只核对目标测试中的 allowlist 位置。
+exec
+/bin/zsh -lc "sed -n '1,260p' /Users/vsiyo/.agents/skills/quality-gate-triage/SKILL.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ exited 1 in 0ms:
+sed: /Users/vsiyo/.agents/skills/quality-gate-triage/SKILL.md: No such file or directory
+
+exec
+/bin/zsh -lc "readlink tests/test_v02_calibration_disclosure.py || true
+stat -f '%N %z bytes' tests/test_v02_calibration_disclosure.py" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+tests/test_v02_calibration_disclosure.py 5262 bytes
+
+exec
+/bin/zsh -lc 'rg -n -C 8 "EV-R1-REOPENED|blocked|allowlist|REOPENED" tests/test_v02_calibration_disclosure.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+42-            policy.r1_evidence_sha256,
+43-        )
+44-        self.assertEqual(
+45-            hashlib.sha256(R1_FIXTURE.read_bytes()).hexdigest(), policy.r1_fixture_sha256
+46-        )
+47-        self.assertEqual(r1_fixture["fixture_content_sha256"], policy.r1_fixture_content_sha256)
+48-        self.assertEqual([record.case_id for record in policy.records], r1_fixture["case_ids"])
+49-
+50:    def test_current_q1_acceptance_is_blocked_until_q1_is_reaccepted(self) -> None:
+51-        r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
+52-        q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+53-        self.assertIn(
+54-            r1_evidence["evidence_id"],
+55:            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
+56-        )
+57:        self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+58:        self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+59-        self.assertEqual("BLOCKED", q1_evidence["proposed_state"])
+60-        self.assertEqual("R1-independent-review-contract-v4", q1_evidence["invalidation"]["cause"])
+61-
+62-    def test_science_priority_remains_separate_from_communication_readiness(self) -> None:
+63-        _, policy = self.load()
+64-        self.assertEqual("HIGH", policy.records[0].scientific_priority.value)
+65-        self.assertEqual("NOT_READY", policy.records[0].communication_readiness.value)
+66-
+
+exec
+/bin/zsh -lc 'git diff -- tests/test_v02_regression_evaluation.py agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
+index 137f8a3..74e66e0 100644
+--- a/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
++++ b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
+@@ -1,11 +1,11 @@
+ # Acceptance Contract: R1-regression-evaluation
+ 
+ - Task ID: R1-regression-evaluation
+-- Contract version: 8
++- Contract version: 9
+ - Contract status: APPROVED
+ - Test baseline: LOCKED
+ - Acceptance owner: 评测负责人
+-- Approval evidence: 用户于 2026-09-01 批准修订 R1 验收，要求两条独立 AI 复审均产出持久化 PASS 报告；本次对报告 Markdown 哈希定界符和 R1/Q1 生命周期转换补充负测，缺失、停滞或非 PASS 报告均阻断接受
++- Approval evidence: 用户于 2026-09-01 批准修订 R1 验收，要求两条独立 AI 复审均产出持久化 PASS 报告；本次对报告 Markdown 哈希定界符和 R1/Q1 生命周期转换补充负测，缺失、停滞或非 PASS 报告均阻断接受; v9 adds the byte-identical hard-link replay guard and exact-once self-declaration checks.
+ - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json
+ - SSOT node: R1
+ - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+@@ -88,7 +88,7 @@ And the result remains a passive evaluation artifact
+ 
+ | Path | SHA-256 | Covers |
+ | --- | --- | --- |
+-| tests/test_v02_regression_evaluation.py | 018b6311383a8f495b9f1a916bc027806f724782a03a3f88c9370a7979579350 | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
++| tests/test_v02_regression_evaluation.py | 4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6 | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
+ 
+ ## Requirements-test traceability
+ 
+@@ -114,4 +114,6 @@ And the result remains a passive evaluation artifact
+ 
+ 小样本只代表固定 A4 档案，不代表检索系统总体准确率、召回率或文献开放性；真实外部文献检索仍未由本合同覆盖。
+ 
+-合同版本 8 保留版本 7 的夹具、主题和来源身份闭合，并将两份独立 AI 复审维持为硬性、可机读的接受条件。报告完整性检查对冻结清单摘要接受等价的 Markdown 定界表达，避免把无语义差异的反引号写法误判为证据缺失；Q1 生命周期测试明确允许 R1 已重新接受而 Q1 仍阻断的中间状态；已接受分支不仅核验当前合同版本，还必须读取报告绑定的冻结清单，逐项比对当前受保护测试、R1 合同、人工绑定和清单的 SHA-256，阻止旧合同的整套报告/清单被重标后回放。每份报告还必须位于该冻结清单同一 campaign 的 `reports/<lane>.md`，正文自报与证据元数据一致的 lane、审阅身份和包装器，并以 `Verdict: PASS` 作为唯一终态末行；这样同一文件、prompt 或伪造元数据不能冒充两份独立报告。缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。
++合同版本 9 保留版本 8 的夹具、主题和来源身份闭合，并将两份独立 AI 复审维持为硬性、可机读的接受条件。报告完整性检查对冻结清单摘要接受等价的 Markdown 定界表达，避免把无语义差异的反引号写法误判为证据缺失；Q1 生命周期测试明确允许 R1 已重新接受而 Q1 仍阻断的中间状态；已接受分支不仅核验当前合同版本，还必须读取报告绑定的冻结清单，逐项比对当前受保护测试、R1 合同、人工绑定和清单的 SHA-256，阻止旧合同的整套报告/清单被重标后回放。每份报告还必须位于该冻结清单同一 campaign 的 `reports/<lane>.md`，正文自报与证据元数据一致的 lane、审阅身份和包装器，并以 `Verdict: PASS` 作为唯一终态末行；这样同一文件、prompt 或伪造元数据不能冒充两份独立报告。缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。
++
++Version 9 guard: the accepted review gate rejects reports unless the two report paths are distinct non-symlink regular files, their observed SHA-256 values differ, and each report contains exactly one lane marker, reviewer identity marker, and wrapper marker matching its evidence metadata. The protected negative test constructs one byte-identical report containing both lanes' declarations, hard-links it into both expected report paths, updates both synthetic report hashes, and verifies rejection. This is a stable review-integrity failure class; retry5 artifacts created before this guard are invalidated and cannot count as acceptance evidence. The guard does not expand the acceptance scope or limitations.
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json b/agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json
+index a357a96..ac163fa 100644
+--- a/agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json
++++ b/agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json
+@@ -1,5 +1,5 @@
+ {
+-  "evidence_id": "EV-R1-REOPENED-4",
++  "evidence_id": "EV-R1-REOPENED-5",
+   "task_id": "R1",
+   "consumed_evidence": ["EV-A4-ACCEPTED-1"],
+   "source_identity": {
+@@ -7,7 +7,7 @@
+     "a4_evidence_sha256": "85a3e6335bf8e5c886bef328e87f853c8eadc132a793b55ff39a962caae618dd",
+     "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
+     "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+-    "protected_test_sha256": "018b6311383a8f495b9f1a916bc027806f724782a03a3f88c9370a7979579350"
++    "protected_test_sha256": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6"
+   },
+   "acceptance_self_check": "blocked",
+   "acceptance_commands": [
+@@ -31,7 +31,7 @@
+     "no_trace_claim_or_authorization_dependency": "pass"
+   },
+   "independent_ai_reviews": {
+-    "contract_version": 8,
++    "contract_version": 9,
+     "disposition": "BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS",
+     "historical_evidence": "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json",
+     "superseded_retry_2": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry2/dispatch.json",
+@@ -43,9 +43,9 @@
+   "acceptance_record": {
+     "reopened_at": "2026-09-01",
+     "reopened_by": "质量门禁",
+-    "authority_basis": "retry-2 报告在合同版本 4 下已形成持久化 PASS，但正式接受门禁揭示 Markdown 定界符兼容、R1/Q1 生命周期转换、已接受分支合同版本比对、旧清单/报告重标回放以及同一文件冒充双报告缺口。合同版本 8 更新了受保护测试，因此必须重新冻结并复审。",
++    "authority_basis": "retry-2 报告在合同版本 4 下已形成持久化 PASS，但正式接受门禁揭示 Markdown 定界符兼容、R1/Q1 生命周期转换、已接受分支合同版本比对、旧清单/报告重标回放以及同一文件冒充双报告缺口。合同版本 9 更新了受保护测试并增加硬链接与自报字段完整性门禁，因此必须重新冻结并复审。 v9 invalidates retry5 because its review artifacts predate this guard and cannot count as acceptance evidence.",
+     "superseded_human_candidate": "acceptance/human/R1-regression-evaluation/runs/20260831T183529Z-r1v4-review2/result.md",
+-    "scope": "R1 对固定 A4 三例档案的四路检索回归、路线消融和保守小样本披露边界的合同版本 8 重新验收",
++    "scope": "R1 对固定 A4 三例档案的四路检索回归、路线消融和保守小样本披露边界的合同版本 9 重新验收",
+     "ai_review_boundary": "新审阅只复核实现、身份与披露边界；不构成独立数学证明、外部文献结论、统计验证、生产验收或公开发布决定。"
+   },
+   "proposed_state": "READY",
+diff --git a/tests/test_v02_regression_evaluation.py b/tests/test_v02_regression_evaluation.py
+index b81499c..9a3f24a 100644
+--- a/tests/test_v02_regression_evaluation.py
++++ b/tests/test_v02_regression_evaluation.py
+@@ -3,6 +3,8 @@ from __future__ import annotations
+ import copy
+ import hashlib
+ import json
++import os
++import stat
+ from tempfile import TemporaryDirectory
+ import unittest
+ from pathlib import Path
+@@ -90,7 +92,7 @@ class RegressionEvaluationTests(unittest.TestCase):
+         if not is_acceptance_claim:
+             self.assertIn(
+                 evidence["evidence_id"],
+-                {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4"},
++                {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-REOPENED-5"},
+             )
+             self.assertEqual("blocked", evidence["acceptance_self_check"])
+             self.assertEqual("BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS", reviews["disposition"])
+@@ -101,7 +103,7 @@ class RegressionEvaluationTests(unittest.TestCase):
+             return
+ 
+         self.assertEqual("PASS", reviews["disposition"])
+-        self.assertEqual(8, reviews["contract_version"])
++        self.assertEqual(9, reviews["contract_version"])
+         ledger = json.loads(REVIEW_LEDGER.read_text(encoding="utf-8"))
+         self.assertEqual(reviews["frozen_input_manifest_sha256"], ledger["frozen_input_manifest_sha256"])
+         self.assertEqual(reviews["frozen_head"], ledger["frozen_head"])
+@@ -122,19 +124,35 @@ class RegressionEvaluationTests(unittest.TestCase):
+         self.assertEqual(2, len(reports))
+         self.assertEqual(2, len({report["reviewer_identity"] for report in reports}))
+         self.assertEqual(2, len({report["wrapper"] for report in reports}))
++        report_paths = []
++        report_hashes = []
++        report_contents = []
+         for report in reports:
+             self.assertEqual("PASS", report["verdict"])
+             self.assertTrue(report["zero_write"])
+             path = ROOT / report["report_path"]
++            self.assertFalse(path.is_symlink(), report["report_path"])
++            self.assertTrue(stat.S_ISREG(path.lstat().st_mode), report["report_path"])
+             self.assertTrue(path.is_file(), report["report_path"])
+             manifest_path = Path(reviews["frozen_input_manifest"])
+             self.assertEqual(manifest_path.parent / "reports", Path(report["report_path"]).parent)
+             self.assertEqual(f"{report['lane']}.md", path.name)
+-            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), report["sha256"])
+-            content = path.read_text(encoding="utf-8")
+-            self.assertIn(f"Lane: `{report['lane']}`", content)
+-            self.assertIn(f"Reviewer identity: `{report['reviewer_identity']}`", content)
+-            self.assertIn(f"Wrapper: `{report['wrapper']}`", content)
++            report_path = path.resolve()
++            report_paths.append(report_path)
++            report_hash = hashlib.sha256(path.read_bytes()).hexdigest()
++            report_hashes.append(report_hash)
++            self.assertEqual(report_hash, report["sha256"])
++            report_contents.append((report, path.read_text(encoding="utf-8")))
++        self.assertEqual(2, len(set(report_paths)))
++        self.assertEqual(2, len(set(report_hashes)))
++        for report, content in report_contents:
++            for marker, value in (
++                ("- Lane: `", f"- Lane: `{report['lane']}`"),
++                ("- Reviewer identity: `", f"- Reviewer identity: `{report['reviewer_identity']}`"),
++                ("- Wrapper: `", f"- Wrapper: `{report['wrapper']}`"),
++            ):
++                self.assertEqual(1, content.count(marker), marker)
++                self.assertEqual(1, content.count(value), value)
+             self.assertIn("zero-write", content.lower())
+             self.assertIn("Verdict: PASS", content)
+             self.assertTrue(content.rstrip().endswith("Verdict: PASS"))
+@@ -215,7 +233,7 @@ class RegressionEvaluationTests(unittest.TestCase):
+                 "acceptance_self_check": "pass",
+                 "source_identity": {"protected_test_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()},
+                 "independent_ai_reviews": {
+-                    "contract_version": 8,
++                    "contract_version": 9,
+                     "disposition": "PASS",
+                     "frozen_input_manifest": str(manifest.relative_to(root)),
+                     "frozen_input_manifest_sha256": manifest_sha,
+@@ -240,6 +258,124 @@ class RegressionEvaluationTests(unittest.TestCase):
+                 globals()["R1_EVIDENCE"] = original_evidence
+                 globals()["REVIEW_LEDGER"] = original_ledger
+ 
++    def test_accepted_review_gate_rejects_byte_identical_hard_linked_dual_declaration_reports(self) -> None:
++        class MemoryJSON:
++            def __init__(self, value: dict) -> None:
++                self.value = value
++
++            def read_text(self, encoding: str = "utf-8") -> str:
++                return json.dumps(self.value)
++
++        original_root = ROOT
++        original_evidence = R1_EVIDENCE
++        original_ledger = REVIEW_LEDGER
++        with TemporaryDirectory() as temporary_root:
++            root = Path(temporary_root)
++            protected_paths = (
++                "tests/test_v02_regression_evaluation.py",
++                "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md",
++                "acceptance/human/R1-regression-evaluation/binding.md",
++                "acceptance/human/R1-regression-evaluation/checklist.md",
++            )
++            manifest_inputs = []
++            for path in protected_paths:
++                candidate = root / path
++                candidate.parent.mkdir(parents=True, exist_ok=True)
++                candidate.write_text(path, encoding="utf-8")
++                manifest_inputs.append({"path": path, "sha256": hashlib.sha256(candidate.read_bytes()).hexdigest()})
++
++            campaign = (
++                "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/"
++                "R1-regression-evaluation/reviews/synthetic-hard-link-replay"
++            )
++            manifest = root / campaign / "frozen-inputs.json"
++            manifest.parent.mkdir(parents=True, exist_ok=True)
++            manifest.write_text(json.dumps({"inputs": manifest_inputs}), encoding="utf-8")
++            manifest_sha = hashlib.sha256(manifest.read_bytes()).hexdigest()
++            reports = []
++            for lane, identity, wrapper in (
++                ("ablation-boundary", "synthetic-luna", "/synthetic/run-l3.sh"),
++                ("identity-contract", "synthetic-sol", "/synthetic/run-l4.sh"),
++            ):
++                report = root / campaign / "reports" / f"{lane}.md"
++                report.parent.mkdir(parents=True, exist_ok=True)
++                report.write_text(
++                    "\n".join(
++                        (
++                            f"- Lane: `{lane}`",
++                            f"- Reviewer identity: `{identity}`",
++                            f"- Wrapper: `{wrapper}`",
++                            "- Review mode: zero-write",
++                            f"Frozen input manifest SHA-256: {manifest_sha}",
++                            "Verdict: PASS",
++                            "",
++                        )
++                    ),
++                    encoding="utf-8",
++                )
++                reports.append(
++                    {
++                        "lane": lane,
++                        "reviewer_identity": identity,
++                        "wrapper": wrapper,
++                        "verdict": "PASS",
++                        "zero_write": True,
++                        "report_path": str(report.relative_to(root)),
++                        "sha256": hashlib.sha256(report.read_bytes()).hexdigest(),
++                    }
++                )
++
++            evidence = {
++                "evidence_id": "EV-R1-ACCEPTED-2",
++                "acceptance_self_check": "pass",
++                "source_identity": {"protected_test_sha256": hashlib.sha256(Path(__file__).read_bytes()).hexdigest()},
++                "independent_ai_reviews": {
++                    "contract_version": 9,
++                    "disposition": "PASS",
++                    "frozen_input_manifest": str(manifest.relative_to(root)),
++                    "frozen_input_manifest_sha256": manifest_sha,
++                    "frozen_head": "synthetic-head",
++                    "reports": reports,
++                },
++            }
++            try:
++                globals()["ROOT"] = root
++                globals()["R1_EVIDENCE"] = MemoryJSON(evidence)
++                globals()["REVIEW_LEDGER"] = MemoryJSON(
++                    {"frozen_input_manifest_sha256": manifest_sha, "frozen_head": "synthetic-head"}
++                )
++                self.test_independent_review_gate_is_fail_closed_for_pending_and_accepted_evidence()
++
++                shared_content = "\n".join(
++                    (
++                        "- Lane: `ablation-boundary`",
++                        "- Lane: `identity-contract`",
++                        "- Reviewer identity: `synthetic-luna`",
++                        "- Reviewer identity: `synthetic-sol`",
++                        "- Wrapper: `/synthetic/run-l3.sh`",
++                        "- Wrapper: `/synthetic/run-l4.sh`",
++                        "- Review mode: zero-write",
++                        f"Frozen input manifest SHA-256: {manifest_sha}",
++                        "Verdict: PASS",
++                        "",
++                    )
++                )
++                source_report = root / reports[0]["report_path"]
++                replay_report = root / reports[1]["report_path"]
++                source_report.write_text(shared_content, encoding="utf-8")
++                replay_report.unlink()
++                os.link(source_report, replay_report)
++                shared_sha = hashlib.sha256(source_report.read_bytes()).hexdigest()
++                for report in reports:
++                    report["sha256"] = shared_sha
++
++                with self.assertRaises(AssertionError):
++                    self.test_independent_review_gate_is_fail_closed_for_pending_and_accepted_evidence()
++            finally:
++                globals()["ROOT"] = original_root
++                globals()["R1_EVIDENCE"] = original_evidence
++                globals()["REVIEW_LEDGER"] = original_ledger
++
+ 
+ if __name__ == "__main__":
+     unittest.main()
+
+exec
+/bin/zsh -lc "wc -l .agents/skills/quality-gate-triage/SKILL.md && sed -n '1,420p' .agents/skills/quality-gate-triage/SKILL.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "sed -n '1,120p' tests/test_v02_calibration_disclosure.py" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+      44 .agents/skills/quality-gate-triage/SKILL.md
+---
+name: quality-gate-triage
+description: Use when a quality gate, CI check, static guard, test suite, or local verification command fails and the failure needs root-cause triage plus durable prevention.
+---
+
+# Quality Gate Triage
+
+Classify the failing gate, isolate the smallest reproducible failure, fix the root cause, and decide whether the failure class needs a reusable guard or a narrower fixture.
+
+## Procedure
+
+1. Identify the failing command, profile, stage, severity, and touched files.
+2. Classify the failure as product, implementation, contract, data, runtime, visual, accessibility, security, infrastructure, flaky, or guard-logic failure.
+3. Reproduce the smallest failure before editing broad code paths.
+4. Fix the source-of-truth layer first. Do not silence the guard before deciding whether it is wrong.
+5. If the guard is wrong, narrow parser logic, include/exclude scope, trigger conditions, or fixture assumptions.
+6. If the failure class can recur, create or update a guard card before promoting a new blocking guard.
+7. Add red proof and green proof when practical. For runtime, screenshot, and paper-figure work, use a replayable artifact or synthetic broken case when source fixtures are not natural.
+8. Bind the guard to a repair Skill, docs, adapter inputs, and QA evidence when applicable.
+9. Run the narrow guard/test first, then the wider profile or project gate.
+
+## New Guard Checklist
+
+- Failure class is stable beyond the current file or screenshot.
+- Scope is narrow and has include/exclude or trigger rules.
+- Red proof catches the old or synthetic bad case.
+- Green proof protects recommended and legal boundary cases.
+- Failure output contains path, rule, reason, and repair guidance.
+- Cost level is appropriate for the target loop.
+- Evidence output exists for blocking or release gates when practical.
+- The guard card is filled before the guard becomes enforced.
+
+## Output
+
+Report:
+
+- failing guard and command;
+- failure class;
+- root cause;
+- source fix;
+- guard/test change;
+- red/green or negative proof;
+- evidence path;
+- remaining false-positive or lifecycle risk.
+
+ succeeded in 0ms:
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import unittest
+from pathlib import Path
+
+from matharc.v02.calibration_disclosure import CalibrationDisclosureError, CalibrationDisclosurePolicy
+
+
+ROOT = Path(__file__).parents[1]
+FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json"
+R1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json"
+R1_HISTORICAL_EVIDENCE = (
+    ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json"
+)
+R1_FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json"
+Q1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
+
+
+class CalibrationDisclosureTests(unittest.TestCase):
+    def load(self) -> tuple[dict, CalibrationDisclosurePolicy]:
+        payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+        return payload, CalibrationDisclosurePolicy.from_dict(payload)
+
+    def test_three_uncalibrated_records_are_digest_bound_and_non_public(self) -> None:
+        payload, policy = self.load()
+        self.assertEqual(payload, policy.to_dict())
+        self.assertFalse(policy.public_release_allowed)
+        self.assertEqual(3, len(policy.records))
+        self.assertTrue(all(record.calibration_status.value == "UNCALIBRATED" for record in policy.records))
+        self.assertTrue(all(record.communication_readiness.value == "NOT_READY" for record in policy.records))
+
+    def test_policy_pins_historical_r1_evidence_and_fixture_content(self) -> None:
+        _, policy = self.load()
+        r1_evidence = json.loads(R1_HISTORICAL_EVIDENCE.read_text(encoding="utf-8"))
+        r1_fixture = json.loads(R1_FIXTURE.read_text(encoding="utf-8"))
+        self.assertEqual("EV-R1-ACCEPTED-1", r1_evidence["evidence_id"])
+        self.assertEqual(
+            hashlib.sha256(R1_HISTORICAL_EVIDENCE.read_bytes()).hexdigest(),
+            policy.r1_evidence_sha256,
+        )
+        self.assertEqual(
+            hashlib.sha256(R1_FIXTURE.read_bytes()).hexdigest(), policy.r1_fixture_sha256
+        )
+        self.assertEqual(r1_fixture["fixture_content_sha256"], policy.r1_fixture_content_sha256)
+        self.assertEqual([record.case_id for record in policy.records], r1_fixture["case_ids"])
+
+    def test_current_q1_acceptance_is_blocked_until_q1_is_reaccepted(self) -> None:
+        r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
+        q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+        self.assertIn(
+            r1_evidence["evidence_id"],
+            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
+        )
+        self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+        self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+        self.assertEqual("BLOCKED", q1_evidence["proposed_state"])
+        self.assertEqual("R1-independent-review-contract-v4", q1_evidence["invalidation"]["cause"])
+
+    def test_science_priority_remains_separate_from_communication_readiness(self) -> None:
+        _, policy = self.load()
+        self.assertEqual("HIGH", policy.records[0].scientific_priority.value)
+        self.assertEqual("NOT_READY", policy.records[0].communication_readiness.value)
+
+    def test_identity_status_priority_and_disclosure_tampering_fail_closed(self) -> None:
+        payload, _ = self.load()
+        for mutate in (
+            lambda p: p.update({"topic_id": "foreign-topic"}),
+            lambda p: p.update({"r1_evidence_sha256": "0" * 64}),
+            lambda p: p.update({"r1_fixture_content_sha256": "0" * 64}),
+            lambda p: p["records"][0].update({"calibration_status": "CALIBRATED"}),
+            lambda p: p["records"][0].update({"communication_readiness": "PUBLIC_READY"}),
+            lambda p: p["records"][0].update({"scientific_priority": "NOT_READY"}),
+            lambda p: p["records"][0].update({"disclosure_limits": []}),
+            lambda p: p.update({"public_release_allowed": True}),
+            lambda p: p["records"].pop(),
+            lambda p: p.update({"unexpected": "field"}),
+        ):
+            candidate = copy.deepcopy(payload)
+            mutate(candidate)
+            with self.subTest(mutate=mutate), self.assertRaises(CalibrationDisclosureError):
+                CalibrationDisclosurePolicy.from_dict(candidate)
+
+    def test_digests_are_not_recomputable_by_a_fixture_consumer(self) -> None:
+        payload, _ = self.load()
+        candidate = copy.deepcopy(payload)
+        candidate["records"][0]["predicted_difficulty"] = "LOW"
+        with self.assertRaises(CalibrationDisclosureError):
+            CalibrationDisclosurePolicy.from_dict(candidate)
+
+    def test_is_not_a_claim_novelty_or_statistical_performance_engine(self) -> None:
+        source = (ROOT / "matharc/v02/calibration_disclosure.py").read_text(encoding="utf-8")
+        self.assertNotIn("ResearchTrace", source)
+        self.assertNotIn("ClaimStatus", source)
+        self.assertNotIn("NoveltyAudit", source)
+        self.assertNotIn("http", source.lower())
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+codex
+根因已确认：`tests/test_v02_calibration_disclosure.py` 的当前 R1 身份集合遗漏了已由冻结证据升级到的 `EV-R1-REOPENED-5`，而 Q1 断言和公开发布限制仍应保持原样。现在只在这个集合中加入 `-5`，不改其他逻辑或证据。
+apply patch
+patch: completed
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/tests/test_v02_calibration_disclosure.py
+diff --git a/tests/test_v02_calibration_disclosure.py b/tests/test_v02_calibration_disclosure.py
+index f1abfc951640d05025c58b041442cf9f496608ed..25ad2b01557b7cc3133368afa1f05949a5b5f4f4
+--- a/tests/test_v02_calibration_disclosure.py
++++ b/tests/test_v02_calibration_disclosure.py
+@@ -52,7 +52,13 @@
+         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+         self.assertIn(
+             r1_evidence["evidence_id"],
+-            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
++            {
++                "EV-R1-REOPENED-2",
++                "EV-R1-REOPENED-3",
++                "EV-R1-REOPENED-4",
++                "EV-R1-REOPENED-5",
++                "EV-R1-ACCEPTED-2",
++            },
+         )
+         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+
+diff --git a/tests/test_v02_calibration_disclosure.py b/tests/test_v02_calibration_disclosure.py
+index f1abfc951640d05025c58b041442cf9f496608ed..25ad2b01557b7cc3133368afa1f05949a5b5f4f4
+--- a/tests/test_v02_calibration_disclosure.py
++++ b/tests/test_v02_calibration_disclosure.py
+@@ -52,7 +52,13 @@
+         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+         self.assertIn(
+             r1_evidence["evidence_id"],
+-            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
++            {
++                "EV-R1-REOPENED-2",
++                "EV-R1-REOPENED-3",
++                "EV-R1-REOPENED-4",
++                "EV-R1-REOPENED-5",
++                "EV-R1-ACCEPTED-2",
++            },
+         )
+         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+
+codex
+补丁已应用，变更仅是 allowlist 的一项新增。接下来先核对目标文件的实际 diff 和工作树归属，然后按用户给定顺序运行完整 unittest 命令与 `git diff --check`。
+exec
+/bin/zsh -lc 'test -d agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns && echo return-directory-present' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+return-directory-present
+
+exec
+/bin/zsh -lc 'git status --short && git diff -- tests/test_v02_calibration_disclosure.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+ M acceptance/human/R1-regression-evaluation/binding.md
+ M acceptance/human/R1-regression-evaluation/checklist.md
+ M agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
+ M agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json
+ M tests/test_v02_calibration_disclosure.py
+ M tests/test_v02_regression_evaluation.py
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry5/
+diff --git a/tests/test_v02_calibration_disclosure.py b/tests/test_v02_calibration_disclosure.py
+index f1abfc9..25ad2b0 100644
+--- a/tests/test_v02_calibration_disclosure.py
++++ b/tests/test_v02_calibration_disclosure.py
+@@ -52,7 +52,13 @@ class CalibrationDisclosureTests(unittest.TestCase):
+         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+         self.assertIn(
+             r1_evidence["evidence_id"],
+-            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
++            {
++                "EV-R1-REOPENED-2",
++                "EV-R1-REOPENED-3",
++                "EV-R1-REOPENED-4",
++                "EV-R1-REOPENED-5",
++                "EV-R1-ACCEPTED-2",
++            },
+         )
+         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+
+diff --git a/tests/test_v02_calibration_disclosure.py b/tests/test_v02_calibration_disclosure.py
+index f1abfc951640d05025c58b041442cf9f496608ed..25ad2b01557b7cc3133368afa1f05949a5b5f4f4
+--- a/tests/test_v02_calibration_disclosure.py
++++ b/tests/test_v02_calibration_disclosure.py
+@@ -52,7 +52,13 @@
+         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+         self.assertIn(
+             r1_evidence["evidence_id"],
+-            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
++            {
++                "EV-R1-REOPENED-2",
++                "EV-R1-REOPENED-3",
++                "EV-R1-REOPENED-4",
++                "EV-R1-REOPENED-5",
++                "EV-R1-ACCEPTED-2",
++            },
+         )
+         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+
+exec
+/bin/zsh -lc 'PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_regression_evaluation tests.test_v02_calibration_disclosure tests.test_v02_release_decision' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 33ms:
+test_accepted_review_gate_rejects_byte_identical_hard_linked_dual_declaration_reports (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_accepted_review_gate_rejects_byte_identical_hard_linked_dual_declaration_reports) ... ok
+test_accepted_review_gate_rejects_one_report_replayed_as_two_lanes (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_accepted_review_gate_rejects_one_report_replayed_as_two_lanes) ... ok
+test_expected_outcomes_are_only_hits_misses_and_gaps (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_expected_outcomes_are_only_hits_misses_and_gaps) ... ok
+test_independent_review_gate_is_fail_closed_for_pending_and_accepted_evidence (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_independent_review_gate_is_fail_closed_for_pending_and_accepted_evidence) ... ok
+test_is_passive_and_does_not_import_authorization_or_trace (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_is_passive_and_does_not_import_authorization_or_trace) ... ok
+test_tampering_identity_digest_and_ablation_fails_closed (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_tampering_identity_digest_and_ablation_fails_closed) ... ok
+test_three_cases_four_routes_and_deterministic_ablation (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_three_cases_four_routes_and_deterministic_ablation) ... ok
+test_current_q1_acceptance_is_blocked_until_q1_is_reaccepted (tests.test_v02_calibration_disclosure.CalibrationDisclosureTests.test_current_q1_acceptance_is_blocked_until_q1_is_reaccepted) ... ok
+test_digests_are_not_recomputable_by_a_fixture_consumer (tests.test_v02_calibration_disclosure.CalibrationDisclosureTests.test_digests_are_not_recomputable_by_a_fixture_consumer) ... ok
+test_identity_status_priority_and_disclosure_tampering_fail_closed (tests.test_v02_calibration_disclosure.CalibrationDisclosureTests.test_identity_status_priority_and_disclosure_tampering_fail_closed) ... ok
+test_is_not_a_claim_novelty_or_statistical_performance_engine (tests.test_v02_calibration_disclosure.CalibrationDisclosureTests.test_is_not_a_claim_novelty_or_statistical_performance_engine) ... ok
+test_policy_pins_historical_r1_evidence_and_fixture_content (tests.test_v02_calibration_disclosure.CalibrationDisclosureTests.test_policy_pins_historical_r1_evidence_and_fixture_content) ... ok
+test_science_priority_remains_separate_from_communication_readiness (tests.test_v02_calibration_disclosure.CalibrationDisclosureTests.test_science_priority_remains_separate_from_communication_readiness) ... ok
+test_three_uncalibrated_records_are_digest_bound_and_non_public (tests.test_v02_calibration_disclosure.CalibrationDisclosureTests.test_three_uncalibrated_records_are_digest_bound_and_non_public) ... ok
+test_delivery_claim_requires_a_remote_ref_readback (tests.test_v02_release_decision.SourceLevelReleaseDecisionTests.test_delivery_claim_requires_a_remote_ref_readback) ... ok
+test_release_decision_pins_historical_q1_artifacts (tests.test_v02_release_decision.SourceLevelReleaseDecisionTests.test_release_decision_pins_historical_q1_artifacts) ... ok
+test_release_evidence_is_fail_closed_when_q1_is_reopened (tests.test_v02_release_decision.SourceLevelReleaseDecisionTests.test_release_evidence_is_fail_closed_when_q1_is_reopened) ... ok
+test_release_scope_is_limited_to_repository_source_delivery (tests.test_v02_release_decision.SourceLevelReleaseDecisionTests.test_release_scope_is_limited_to_repository_source_delivery) ... ok
+
+----------------------------------------------------------------------
+Ran 18 tests in 0.018s
+
+OK
+
+diff --git a/tests/test_v02_calibration_disclosure.py b/tests/test_v02_calibration_disclosure.py
+index f1abfc951640d05025c58b041442cf9f496608ed..25ad2b01557b7cc3133368afa1f05949a5b5f4f4
+--- a/tests/test_v02_calibration_disclosure.py
++++ b/tests/test_v02_calibration_disclosure.py
+@@ -52,7 +52,13 @@
+         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+         self.assertIn(
+             r1_evidence["evidence_id"],
+-            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
++            {
++                "EV-R1-REOPENED-2",
++                "EV-R1-REOPENED-3",
++                "EV-R1-REOPENED-4",
++                "EV-R1-REOPENED-5",
++                "EV-R1-ACCEPTED-2",
++            },
+         )
+         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+
+codex
+完整三模块 unittest 已通过：18 个测试全部 OK，包含 v9 的硬链接/双声明负测以及当前 Q1 阻断状态。现在执行指定的 `git diff --check`，之后写结构化返回并做最终只读状态核对。
+exec
+/bin/zsh -lc 'git diff --check' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+diff --git a/tests/test_v02_calibration_disclosure.py b/tests/test_v02_calibration_disclosure.py
+index f1abfc951640d05025c58b041442cf9f496608ed..25ad2b01557b7cc3133368afa1f05949a5b5f4f4
+--- a/tests/test_v02_calibration_disclosure.py
++++ b/tests/test_v02_calibration_disclosure.py
+@@ -52,7 +52,13 @@
+         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+         self.assertIn(
+             r1_evidence["evidence_id"],
+-            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
++            {
++                "EV-R1-REOPENED-2",
++                "EV-R1-REOPENED-3",
++                "EV-R1-REOPENED-4",
++                "EV-R1-REOPENED-5",
++                "EV-R1-ACCEPTED-2",
++            },
+         )
+         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+
+codex
+两条指定命令均已通过。验收条件满足：源代码写入范围只有目标测试文件，其他工作树改动均为任务开始前存在或冻结的 R1/attempts 内容；我现在写入要求的成功返回对象，不提交任何内容。
+apply patch
+patch: completed
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..07e490f7549717735dbe771e4860e5df07491933
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json
+@@ -0,0 +1,6 @@
++{
++  "proposed_state": "VERIFIED",
++  "acceptance_self_check": "pass",
++  "failure_class": "none",
++  "failure_origin": "none"
++}
+diff --git a/tests/test_v02_calibration_disclosure.py b/tests/test_v02_calibration_disclosure.py
+index f1abfc951640d05025c58b041442cf9f496608ed..25ad2b01557b7cc3133368afa1f05949a5b5f4f4
+--- a/tests/test_v02_calibration_disclosure.py
++++ b/tests/test_v02_calibration_disclosure.py
+@@ -52,7 +52,13 @@
+         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+         self.assertIn(
+             r1_evidence["evidence_id"],
+-            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
++            {
++                "EV-R1-REOPENED-2",
++                "EV-R1-REOPENED-3",
++                "EV-R1-REOPENED-4",
++                "EV-R1-REOPENED-5",
++                "EV-R1-ACCEPTED-2",
++            },
+         )
+         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..07e490f7549717735dbe771e4860e5df07491933
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json
+@@ -0,0 +1,6 @@
++{
++  "proposed_state": "VERIFIED",
++  "acceptance_self_check": "pass",
++  "failure_class": "none",
++  "failure_origin": "none"
++}
+diff --git a/tests/test_v02_calibration_disclosure.py b/tests/test_v02_calibration_disclosure.py
+index f1abfc951640d05025c58b041442cf9f496608ed..25ad2b01557b7cc3133368afa1f05949a5b5f4f4
+--- a/tests/test_v02_calibration_disclosure.py
++++ b/tests/test_v02_calibration_disclosure.py
+@@ -52,7 +52,13 @@
+         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+         self.assertIn(
+             r1_evidence["evidence_id"],
+-            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
++            {
++                "EV-R1-REOPENED-2",
++                "EV-R1-REOPENED-3",
++                "EV-R1-REOPENED-4",
++                "EV-R1-REOPENED-5",
++                "EV-R1-ACCEPTED-2",
++            },
+         )
+         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+
+codex
+返回文件已写入 `VERIFIED/pass/none/none`。最后只做读回确认，并分别记录业务项目与 Harness SSOT 的 git 状态；不会再修改源文件或执行提交/远程动作。
+exec
+/bin/zsh -lc "sed -n '1,40p' agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+{
+  "proposed_state": "VERIFIED",
+  "acceptance_self_check": "pass",
+  "failure_class": "none",
+  "failure_origin": "none"
+}
+
+exec
+/bin/zsh -lc "nl -ba /Users/vsiyo/.codex/memories/MEMORY.md | sed -n '1,20p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc 'readlink -f develop/Harness' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	# Task Group: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research publication gates, Erdős–Szekeres audit, and CI delivery
+     2	scope: Use when auditing a mathematical-research repository for publication readiness, hardening MathArc's claim/LaTeX/signoff gates, or merging a validated feature branch while preserving unrelated worktree content.
+     3	applies_to: cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research; reuse_rule=publication integrity checks and MathArc gate behavior are reusable in this checkout; external-repository artifacts, GitHub billing state, SHAs, and untracked content need fresh verification.
+     4	
+     5	## Task 1: Audit the Erdős–Szekeres publication case, success
+     6	
+     7	### rollout_summary_files
+     8	
+     9	- rollout_summaries/2026-08-30T18-08-56-aeS5-matharc_erdos_szekeres_publication_gates_ci_merge.md (cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/31/rollout-2026-08-31T02-46-43-01a053dc-3a51-7c33-a69f-f45a477c3a11_01a053fe-cf0c-7d62-97c5-f0e32db921d6.jsonl, updated_at=2026-08-30T19:29:36+00:00, thread_id=01a053dc-3a51-7c33-a69f-f45a477c3a11, external case audited without changing this workspace)
+    10	
+    11	### keywords
+    12	
+    13	- Erdős–Szekeres, `ES(7)=33`, `manuscript_state: NONE`, `scientific_closure: BLOCKED`, `evidence_integrity: INCOMPLETE`, `reproduce_local_dynamics.sh`, `rebuild_local_dynamics_result.json`, `unzip -t`, Base64, `78930d89405d4fe`
+    14	
+    15	## Task 2: Harden publication gates and merge the branch, partial
+    16	
+    17	### rollout_summary_files
+    18	
+    19	- rollout_summaries/2026-08-30T18-08-56-aeS5-matharc_erdos_szekeres_publication_gates_ci_merge.md (cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/31/rollout-2026-08-31T02-46-43-01a053dc-3a51-7c33-a69f-f45a477c3a11_01a053fe-cf0c-7d62-97c5-f0e32db921d6.jsonl, updated_at=2026-08-30T19:29:36+00:00, thread_id=01a053dc-3a51-7c33-a69f-f45a477c3a11, local gates and remote merge verified; GitHub CI jobs blocked by billing)
+    20	
+
+ succeeded in 0ms:
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/develop/Harness
+
+exec
+/bin/zsh -lc 'git status --short --branch && git diff --name-only -- tests/test_v02_calibration_disclosure.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+## main...origin/main
+ M acceptance/human/R1-regression-evaluation/binding.md
+ M acceptance/human/R1-regression-evaluation/checklist.md
+ M agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
+ M agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json
+ M tests/test_v02_calibration_disclosure.py
+ M tests/test_v02_regression_evaluation.py
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry5/
+tests/test_v02_calibration_disclosure.py
+
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json
+new file mode 100644
+index 0000000000000000000000000000000000000000..07e490f7549717735dbe771e4860e5df07491933
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json
+@@ -0,0 +1,6 @@
++{
++  "proposed_state": "VERIFIED",
++  "acceptance_self_check": "pass",
++  "failure_class": "none",
++  "failure_origin": "none"
++}
+diff --git a/tests/test_v02_calibration_disclosure.py b/tests/test_v02_calibration_disclosure.py
+index f1abfc951640d05025c58b041442cf9f496608ed..25ad2b01557b7cc3133368afa1f05949a5b5f4f4
+--- a/tests/test_v02_calibration_disclosure.py
++++ b/tests/test_v02_calibration_disclosure.py
+@@ -52,7 +52,13 @@
+         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+         self.assertIn(
+             r1_evidence["evidence_id"],
+-            {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-ACCEPTED-2"},
++            {
++                "EV-R1-REOPENED-2",
++                "EV-R1-REOPENED-3",
++                "EV-R1-REOPENED-4",
++                "EV-R1-REOPENED-5",
++                "EV-R1-ACCEPTED-2",
++            },
+         )
+         self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
+         self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
+

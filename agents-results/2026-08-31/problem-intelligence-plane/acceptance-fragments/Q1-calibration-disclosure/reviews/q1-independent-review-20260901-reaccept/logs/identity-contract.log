@@ -1,0 +1,1974 @@
+Reading additional input from stdin...
+2026-09-01T00:12:18.072435Z  WARN codex_core_plugins::manager: remote installed plugin bundle sync failed error=chatgpt authentication required for remote plugin catalog; api key auth is not supported
+2026-09-01T00:12:18.206635Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-01T00:12:18.206656Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+OpenAI Codex v0.151.0
+--------
+workdir: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+model: gpt-5.6-sol
+provider: sub2api
+approval: never
+sandbox: danger-full-access
+reasoning effort: max
+reasoning summaries: none
+session id: 01a05a4f-3f3f-7ce3-972a-dc2ba5d40079
+--------
+user
+Read-only independent review for Q1-calibration-disclosure contract v4.
+
+Project root: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+Frozen manifest: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json
+Read only the files listed in that manifest plus the Q1 acceptance contract, human binding/checklist, and Q1 candidate evidence. Do not modify code, tests, SSOT, acceptance artifacts, Git, or any existing file. Verify the manifest's real SHA-256 values before assessing the candidate.
+
+Audit identity and acceptance integrity: current R1 evidence is consumed rather than historical evidence; implementation/fixture/protected-test hashes are real; the contract/binding/checklist version and hashes align; the current candidate keeps public_release_allowed=false and makes no research/public-delivery decision. This review cannot accept mathematics or public research.
+
+Write exactly one terminal report only to agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/reports/identity-contract.md. The report must state reviewer identity, wrapper, zero_write=true, frozen manifest digest, files verified, findings ordered by severity, commands actually run, and terminal Verdict: PASS or FAIL. Stop after that write.
+warning: Skill descriptions were shortened to fit the skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.
+2026-09-01T00:12:19.938818Z  WARN codex_rmcp_client::rmcp_client: stored OAuth refresh credentials could not be bound to their issuer for MCP server `figma`; using the stored access token without refresh
+2026-09-01T00:12:20.277283Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-09-01T00:12:20.279742Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-09-01T00:12:28.079446Z  WARN codex_core_plugins::manager: failed to warm featured plugin ids cache error=failed to send remote featured plugin request to https://chatgpt.com/backend-api/plugins/featured?platform=codex: error sending request for url (https://chatgpt.com/backend-api/plugins/featured?platform=codex)
+codex
+I’m applying the project’s acceptance-verification workflow because this is a frozen, read-only contract review. I’ll first load the required Harness guidance and memory pointers, then inspect only the frozen inputs plus the explicitly permitted contract/binding/checklist/candidate evidence, verify every declared SHA-256, and write the single terminal report.
+exec
+/bin/zsh -lc "printf '%s\\n' '--- memory matches ---'; rg -n -i 'MathArc_Research|Q1-calibration|calibration-disclosure|independent review|acceptance' /Users/vsiyo/.codex/memories/MEMORY.md | head -80; printf '%s\\n' '--- skill ---'; sed -n '1,240p' /Users/vsiyo/.codex/skills/verify-acceptance-release/SKILL.md; printf '%s\\n' '--- harness guide ---'; sed -n '1,260p' develop/Harness/fullstack-ai-harness.md; printf '%s\\n' '--- overlay ---'; sed -n '1,260p' .harness/overlays/project-harness-adapter.yaml" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- memory matches ---
+1:# Task Group: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research publication gates, Erdős–Szekeres audit, and CI delivery
+3:applies_to: cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research; reuse_rule=publication integrity checks and MathArc gate behavior are reusable in this checkout; external-repository artifacts, GitHub billing state, SHAs, and untracked content need fresh verification.
+9:- rollout_summaries/2026-08-30T18-08-56-aeS5-matharc_erdos_szekeres_publication_gates_ci_merge.md (cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/31/rollout-2026-08-31T02-46-43-01a053dc-3a51-7c33-a69f-f45a477c3a11_01a053fe-cf0c-7d62-97c5-f0e32db921d6.jsonl, updated_at=2026-08-30T19:29:36+00:00, thread_id=01a053dc-3a51-7c33-a69f-f45a477c3a11, external case audited without changing this workspace)
+19:- rollout_summaries/2026-08-30T18-08-56-aeS5-matharc_erdos_szekeres_publication_gates_ci_merge.md (cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/31/rollout-2026-08-31T02-46-43-01a053dc-3a51-7c33-a69f-f45a477c3a11_01a053fe-cf0c-7d62-97c5-f0e32db921d6.jsonl, updated_at=2026-08-30T19:29:36+00:00, thread_id=01a053dc-3a51-7c33-a69f-f45a477c3a11, local gates and remote merge verified; GitHub CI jobs blocked by billing)
+44:- Symptom: full discovery has a failure from missing `/Users/vsiyo/Desktop/创业项目/AI4Math/registry.yaml`, or GitHub workflows never start under billing lock. Fix: report each as an unrelated environment baseline or CI-execution blocker; YAML acceptance/local tests do not establish remote CI execution. [Task 2]
+195:- MathArc_Research, Harness_Engineering, detached worktree, GitHub API, subtree migration, `git rm -r --sparse`, Python 3.12, unittest, `b3eb751`, `a83b865`, `feat/matharc-discovery-plane-v04`
+210:- Symptom: local source is stale or sparse checkout blocks bootstrap-file deletion. Fix: use the authoritative remote and a clean detached worktree; use `git rm -r --sparse`, then scan for stale `Projects/MathArc_Research` references before final push. [Task 1]
+317:- Symptom: local rehearsal or old health response is promoted to external acceptance. Fix: report implementation, local tests, authenticated real API E2E, deployment readback, and release as separate tiers. [Task 3]
+347:- when the user corrected "不是只回填管理员啊，之前可能的业务数据都需要回填" -> inventory retained backups and make complete business-data conservation part of migration acceptance [Task 2]
+360:- Symptom: staging is restored admin-only. Cause: acceptance scope was under-read. Fix: inventory the retained backup and compare before/after counts for all recoverable business entities. [Task 2]
+441:- Full acceptance requires exact final paths/page count, external-deck and deck-writing checks, overflow checks, full-size visual review, hash-bound ledgers, and confirming authoritative inputs did not change before promotion. [Task 1]
+501:- when editing an English manuscript, the user explicitly required language polishing rather than scientific review: preserve data, experimental design, statistics, logic, and conclusions; do not promise acceptance or plagiarism reduction -> flag uncertain scientific content for author confirmation rather than silently changing it [Task 1]
+553:scope: Use when guiding a macOS user through importing one `vless://` Reality node in the current Clash Verge Rev UI. This is screenshot-sensitive UI guidance, not a connectivity acceptance run.
+648:- Symptom: screenshots, HTML, or generated prototypes appear to establish a page. Fix: treat them as derived visualization/acceptance evidence; route/source truth determines whether the page exists and is active [Task 1]
+691:- rollout_summaries/2026-08-29T14-21-13-pruk-refresh_cb_stage2_ssot_source_acceptance.md (cwd=/Users/vsiyo/Desktop/创业项目/自媒体创作Agent, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/29/rollout-2026-08-29T22-21-13-01a04de5-6133-7d30-ade9-e4a5e71d675c.jsonl, updated_at=2026-08-31T12:37:28+00:00, thread_id=01a04de5-6133-7d30-ade9-e4a5e71d675c, authoritative bundle refreshed and dedicated-branch push read back; formal status remains partial)
+710:- when the user asked to “推进...代码开发到100%完成，尽量并行，lw-luna可以用了” -> maximize safe `lw-luna` lanes while preserving formal SSOT acceptance gates; worker timeouts or empty returns stay BLOCKED, not silently retried under another executor [Task 1]
+722:- Stage-2 remains `9.4% (3/32)`, with F1/F2/F3 blocked on Stage-1 C1/C3/DC2. The candidate reported 117 focused tests, compileall, and diff checks, but real database/AI/Feishu write-edit-readback, authenticated browser/device, deployment, and formal DC acceptance are absent. Server facts and active Binding must resolve tenant, authority, capability, and document target; browser authority claims and global credential fallbacks fail closed. [Task 1]
+728:- Source/static implementation evidence and formal acceptance are parallel facts: Stage-2 remains 3/32 accepted (A/A1/K), while the refreshed source records `studioOrdinaryRoutes + studioTrackRoutes` as the personal open range. Personal body writes remain `personal_web/internal`; organization writes remain `organization_lark/lark` through active Binding. [Task 4]
+735:- Symptom: pasted reports claim that PRs, files, real acceptance, or `main`-only branch state are complete. Cause: report claims were not reconciled against live GitHub. Fix: query refs/PR metadata, inspect exact paths, and calculate divergence before reporting status. [Task 1]
+736:- Symptom: candidate code or focused tests are called 100% complete. Fix: require F1/F2/F3 convergence, real Feishu readback, authenticated browser/device, production/deployment, and DC acceptance. A timed-out `lw-luna` lane with no structured return remains BLOCKED. [Task 1]
+807:# Task Group: /Users/vsiyo/Desktop/Athlete_Platform/Athlete-OS_repo coach-athlete loop, CTA, SSOT, and acceptance workflow
+808:scope: Use when auditing the coach-athlete minimum business loop or continuing the bounded CB/r58 SSOT qualification; keep same-object runtime proof, mobile visual evidence, qualification, and formal acceptance separate.
+823:- when the user says “请继续”, continue the legal next SSOT/verification action while preserving actual execution identity and unverified boundaries; do not restart with a recap or promote partial evidence to acceptance [Task 1]
+861:- ProjectNavigator is navigation assistance, not source, test, deployment, or acceptance proof. When unavailable or stale, use `rg`, source, manifests, tests, and guards directly. The real Navigator Skill SSOT is `/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Projects/Athlete-OS_repo/skills/athlete-os-project-navigator-mcp/`, with the project-side path as a symlink.
+870:scope: Use when revising pages in the governed AthleteOS English investor deck or repairing its full release-validation evidence; keep page-scoped visual review distinct from global artifact acceptance.
+881:- AthleteOS, `v0.2.0-en`, pages 13-16, `build_pitch_deck.mjs`, `deck-manifest.en.json`, 16pt, commercial acceptance, defensibility flywheel
+907:- Focused pitch runtime tests had stale/fallback-contract failures even though release and visual gates passed. Report artifact/release acceptance separately; do not claim the whole runtime suite is green [Task 1]
+941:scope: Use when scoping the three-stage C/B identity and organization rollout, or exposing organization identity through a public Session and organization workspace; keep planning, authenticated-browser acceptance, and release evidence separate.
+942:applies_to: cwd=/Users/vsiyo/Desktop/创业项目/自媒体创作Agent; reuse_rule=stage boundaries, SSOT machine authority, public-session field allowlisting, and authenticated acceptance criteria are reusable; release names, QA credentials, organization data, and current evidence are time-specific.
+958:- rollout_summaries/2026-08-15T09-09-50-jONG-media_c_b_stage1_ssot_and_organization_identity_projection.md (cwd=/Users/vsiyo/Desktop/创业项目/自媒体创作Agent, rollout_path=/Users/vsiyo/.codex/archived_sessions/rollout-2026-08-15T17-09-50-01a004af-44ed-7a33-9f7a-031bf43efc88.jsonl, updated_at=2026-08-18T17:30:47+00:00, release and scoped verification passed; authenticated organization browser acceptance blocked by `invalid_credentials`)
+968:- for authentication work, preserve the established boundary: do not read or print credentials, do not fabricate a Session, and do not call static release checks or unauthenticated pages authenticated acceptance [Task 2]
+984:scope: Use when batching a dirty AthleteOS worktree into semantic commits and delivering `develop` to GitHub; local CI is the requested acceptance gate.
+1127:- Collaborator `liu221-ops` was invited with write permission; the invitation remained pending acceptance at rollout end, so do not claim the classmate has accepted it without a fresh check. [Task 1]
+1174:- Symptom: a write worker is ready to launch but current remote B8 scope conflicts with its older acceptance contract. Fix: do not dispatch; reread the live `.ssot/manifest.json`, `nodes/B8.json`, generated views, acceptance contract, and hashes, reconcile one-file versus synchronized source/active-plugin authority, then relock before dispatch. Run SSH-based protected tests from the orchestration Mac, not the remote host. [Task 2]
+1332:- Existing authority supports diagnostics, paid pilots, annual licenses/services, and private deployment. It supports process feasibility and public benchmarks, not adoption, production acceptance, quantified ROI, mature commercialization, or market leadership; retain `positioning`, `hypothesis`, `target`, `sourced`, and `verified` distinctions. [Task 1]
+1447:- Account restrictions use `credentials.model_mapping`; group list visibility uses `models_list_config`; OpenAI passthrough accounts short-circuit `IsModelSupported`. Focused `GPT56ProMax` Go tests and `useModelWhitelist.spec.ts` passed, but commit/push, announcement, deploy, and live end-to-end acceptance did not occur [Task 1]
+1599:# Task Group: OpenClaw Media SSOT implementation and acceptance
+1600:scope: Use for remote OpenClaw Media M2/W1/E1/C1/C2 work or Media Web contextual-launch/production repairs, including SSH boundaries, provider-secret handling, clean-room evidence, and live acceptance.
+1623:## Task 3: Audit E1 Mac-to-remote Media acceptance, blocked
+1647:- rollout_summaries/2026-08-03T16-27-19-BXxu-media_agent_clean_room_reinstall_and_ssot_acceptance.md (cwd=/Users/vsiyo/Documents/Codex/2026-08-04/s-s, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/04/rollout-2026-08-04T00-27-19-019fc873-7c3d-7650-9fa2-5d353480b790.jsonl, updated_at=2026-08-04T19:51:26+00:00, thread_id=019fc873-7c3d-7650-9fa2-5d353480b790, product chain materially complete; formal E1 remains blocked)
+1737:- when requesting a read-only audit, the user required distinguishing source/test/mock/Linux evidence from real Mac/production evidence and bounded evidence output -> never promote mock browser, screenshots, typed projections, or focused Linux tests to E1 or production acceptance [Task 3][Task 4]
+1738:- when the user asks whether the product is really complete or asks to remove/reinstall the CLI/Agent, distinguish source implementation, non-clean-Mac technical evidence, and formal clean-Mac release acceptance; proactively use uninstall, fresh HOME/venv, dependency-negative checks, launchd readback, and restoration state [Task 5]
+1748:- when the user said `请根据这个ssot对于代码进100%的开发工作` -> retain the SSOT's formal acceptance gates; local implementation, focused tests, or a running worker are not 100% completion [Task 12]
+1756:- W1 source/mock acceptance covers the three Media Agent tabs, archive list/detail/delete-plan/delete/readback wrappers, explicit states, AbortController/generation guards, sensitive-field exclusion, same-origin credentials, CSRF, idempotency, AbortSignal, and default fetch receiver. The bounded verdict is `W1_ACCEPTED` only for source plus mock browser (`MOCK_BROWSER_ACCEPTED`, `production=false`), not production, E1, or Mac [Task 4]
+1759:- Fresh-HOME wheel acceptance caught a stale artifact whose declared Python range included 3.13 but whose packaged `doctor.py` accepted only 3.12. Rebuild the canonical wheel, inspect it with `unzip -p`, and run its CLI in a fresh venv. The rebuilt wheel passed `260 passed in 5.14s`; `UV_CACHE_DIR=/Users/vsiyo/.cache/uv --offline` made the 57-dependency clean-room install fast and deterministic [Task 5]
+1778:- The C1 local-candidate contract requires frozen hashes, C5 validation, isolated loopback Vite, redacted browser evidence, 1440x1000 and 390x844 viewports, receipt validation, and `MPE2E_AUTH_WEB_MODE=local-candidate`; backend validation showed `39 failed, 39 passed, 7 skipped`, so neither backend nor C1 acceptance is established. [Task 12]
+1798:- Symptom: source/mock evidence is described as production/Mac acceptance in an external overview. Fix: preserve `W1_ACCEPTED`/`MOCK_BROWSER_ACCEPTED` versus `E1_BLOCKED`, state the snapshot date, and do not infer a remote re-audit from the document-writing rollout. [Task 11]
+1812:- rollout_summaries/2026-08-02T17-44-14-xYbn-media_web_luna_role_ssot_and_document_rendering.md (cwd=/Users/vsiyo/Documents/Codex/2026-08-03/qing, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/03/rollout-2026-08-03T01-44-14-019fc393-8b1d-7c30-be85-d2d3e49801d9.jsonl, updated_at=2026-08-04T19:55:19+00:00, thread_id=019fc393-8b1d-7c30-be85-d2d3e49801d9, foundation drafts untrusted; no A3/page/production acceptance)
+1832:- rollout_summaries/2026-08-04T19-13-10-B3yH-media_web_a3_foundation_partial.md (cwd=/Users/vsiyo, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/05/rollout-2026-08-05T03-13-10-019fce31-aec2-7fa3-b1d3-8c659016357b.jsonl, updated_at=2026-08-07T18:10:00+00:00, thread_id=019fce31-aec2-7fa3-b1d3-8c659016357b, implementation and focused verification, not formal A3 acceptance)
+1854:- Symptom: a created worker session, A3 green test, or generated files are treated as full project completion. Cause: the 14 page lanes and formal acceptance were not independently proven. Fix: report planned, active, completed, failed, and main-thread routes separately; retain A3 `partial` until its formal gates and B01-B14/C-M1/D1-D3 evidence exist [Task 3]
+1933:- Preserve local Docker work with `git stash push --include-untracked`, fast-forward only after ancestry is confirmed with `git merge --ff-only upstream/main`, restore the stash, compare restored Docker-file hashes, and retain the temporary stash until all acceptance checks complete [Task 2]
+1978:- Required production acceptance remains: immutable `linux/amd64` candidate, required test matrix, controlled deployment, health/UI checks, authenticated normal plus compaction/continuation flow, `response.completed`, bounded `replay_items`/`body_bytes`, and Goal completion for the affected task [Task 2]
+2002:- when large CLI/MCP architecture discussion begins, the user corrected: `别搞啊，先给出ssot。` -> write the single authority, scope, acceptance conditions, and open decisions before implementation or further design expansion [Task 1]
+2027:- rollout_summaries/2026-08-03T16-00-30-lpwu-social_profile_v2_ssot_hard_cutover.md (cwd=/Users/vsiyo/Desktop/创业项目/语言精调器, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/04/rollout-2026-08-04T00-00-30-019fc85a-ed4b-74d2-ab58-75bbc83b53ca.jsonl, updated_at=2026-08-07T05:04:25+00:00, thread_id=019fc85a-ed4b-74d2-ab58-75bbc83b53ca, hard cutover and production/SSOT acceptance recorded)
+2037:- Historical rollout preference: `尽可能多的开并行luna线程完成开发工作` led to maximum safe bounded lanes with explicit write ownership, versions, resource isolation, and acceptance commands. The current default is Luna for ordinary Codex operations and bounded parallel development unless a user, nearest `AGENTS.md`, or authoritative contract selects another model; serialize or isolate shared mutable resources. [ad-hoc note] [Task 1]
+2109:- rollout_summaries/2026-08-10T14-24-30-PyH6-creator_capability_ssot_governance_acceptance_binding.md (cwd=/Users/vsiyo/Desktop/创业项目/序章Agent, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/10/rollout-2026-08-10T22-24-30-019fec0f-8d6c-7ce2-a529-7334464f8d50.jsonl, updated_at=2026-08-10T17:15:33+00:00, thread_id=019fec0f-8d6c-7ce2-a529-7334464f8d50, governance and acceptance artifacts verified; business implementation remains blocked)
+2133:- when wide Creator Capability material is supplied, turn it into an executable SSOT, acceptance contract, test plan, and human checklist; extend the existing `xuzhangsfriends-mvp-blockers` authority rather than creating a second SSOT [Task 6]
+2149:- Creator governance extends the existing SSOT to `A -> AA -> AB -> B1..B7 -> C -> DA -> DB -> DC`; A is accepted, while AA and later work remain blocked pending responsible-owner decisions for OP-01 through OP-10, acceptance-owner designation, and contract approval. Do not invent machine, human, sandbox, or production runs when evidence indexes are empty [Task 6]
+2150:- Production-grade Creator Capability requires `execution_manifest`, a `ServiceCase` state machine, authorization/evidence/version chains, revocation/deletion propagation, anti-fabrication, real external sandbox evidence, and separated Creator Fidelity, Domain Utility, Groundedness, Safety, and product-completeness acceptance. Style similarity is not domain correctness [Task 6]
+2161:- Symptom: human acceptance binding or Chinese readability fails after an SSOT upgrade. Cause: invalid checklist metadata/binding fields, bare English engineering terms, or stale node/problem IDs in one linked artifact. Fix: repair Chinese metadata, use `中文名称（英文标识）` in business prose, then cross-search the SSOT, `openproblem.md`, acceptance contract, and checklist before binding again [Task 6]
+2252:- Mark a document with `authority: current_workspace_snapshot` when its facts come from a dirty local worktree; it is not proof of remote `develop` HEAD, production release, or complete acceptance [Task 1]
+2279:- when the user says "代码协作功能而非审计", keep bounded workers implementation-first and use audits as acceptance evidence, not as the main task [Task 1]
+2332:- Deployment acceptance used five `/health` requests (all HTTP 200, about 1.8-3.7 ms), `/` and `/Api_subscribe` HTTP 200, healthy Postgres/Redis, and recent-log scans with no fatal/timeout/DB/Redis/migration errors [Task 2]
+2578:- `PASS 56 / GAP 0 / FAIL 0` combines static checks, unit tests, controlled samples, and runtime evidence for a historical engineering acceptance; it does not prove algorithm quality or educational effect. An observed case where an intermediate error still ended in a correct answer and a smooth/full-score diagnosis is a research gap, not a capability showcase [Task 1]
+2638:- Symptom: `coverage fail: 0/355 source items disposed, unresolved=355, opaque=33, errors=401`. Cause: opaque/free-form OpenAPI payloads had no approved schema or mapping. Fix: add approved schemas/contract mappings, or explicitly label the output visual-only; never call it backend-complete or Flutter acceptance. [Task 1]
+2643:scope: Use when moving a local Codex Skill into Harness or maintaining the global SSOT planning, acceptance, implementation, and release-verification Skill contracts.
+2674:- report-to-ssot-development-paths, explicit-edges, `READY_INDEPENDENT_DELIVERABLES`, `LOGICAL_LANE_TARGET`, `一页一线`, design-acceptance-contract, implement-acceptance-locked-change, verify-acceptance-release, 86/86, `agents/openai.yaml`
+2691:- `design-acceptance-contract`, `implement-acceptance-locked-change`, and `verify-acceptance-release` use `LOGICAL_LANE_TARGET = READY_INDEPENDENT_DELIVERABLES`; slots only schedule waves. Exact `$design-acceptance-contract`, `$implement-acceptance-locked-change`, and `$verify-acceptance-release` names in generated `agents/openai.yaml` prompts are regression-protected. Validation was 42 + 32 + 6 + 6 = 86 passing tests, four `quick_validate.py` checks, and Python compilation [Task 3]
+2700:- Symptom: shell-generated `agents/openai.yaml` contains `Use -acceptance-contract`. Cause: `$skill-name` expanded by the shell. Fix: quote generation arguments and add exact-Skill-name regression tests [Task 3]
+2711:- rollout_summaries/2026-07-28T05-45-23-fTFS-hongru_static_demo_shell_capability_recovery_ssot.md (cwd=/root/Hongru_Edu_Apps, rollout_path=/Users/vsiyo/.codex/sessions/2026/07/28/rollout-2026-07-28T13-45-23-019fa741-9da5-7cf3-979b-a8a28fc942b8.jsonl, updated_at=2026-07-28T17:29:11+00:00, thread_id=019fa741-9da5-7cf3-979b-a8a28fc942b8, demo shell verified; independent acceptance and recovery remain pending)
+2736:- Evidence lives in `agents-results/2026-07-28/backend-capability-recovery-static-demo-shell/`. `run_demo_shell_build_guard.sh`, `run_demo_shell_zero_network_acceptance.sh`, and `run_demo_shell_independent_audit.sh` passed 7 unit tests, 8 desktop/mobile zero-network scenarios, static/release/evidence/dependency checks, Gitleaks, and reproducibility. CSP is `connect-src 'none'`; release manifest hash was `a10497dc7496e3b7ee6e4289926ed8c4911048e01be77206ad2f68d08ecc017c` [Task 1]
+2737:- D13 is `VERIFIED`, not `ACCEPTED`: independent owner/product acceptance is required. Recovery is a subsequent slice; `origin/main` and HEAD matched `951c42f9eac605e50f3e0db71779fb2e9d491169`, but 3 tracked and 85 untracked changes meant the new shell was not recoverable from GitHub alone [Task 1][Task 2]
+2744:- Symptom: `VERIFIED` shell evidence is treated as permission to revoke access or delete backend/logs. Fix: maintain explicit authorization, backup, access inventory, retention/deletion decisions, and independent acceptance gates; active access can be revoked/rotated, but existing downloads cannot be remotely recalled [Task 2]
+2813:- Symptom: research-derived numbers or public policy become commercial proof. Cause: accessibility, industry averages, or meeting material was promoted beyond its evidence. Fix: retain the source limitation and state missing payment, delivery-cost, acceptance, renewal, or formal-policy evidence [Task 1]
+2875:- when the user asks whether named `ssot-development-paths.md` files have contradictions or work that cannot proceed in parallel, provide a practical separation of true conflicts, sequencing constraints, shared-resource contention, and mere non-acceptance; list only decisions that genuinely require the user [Task 1]
+2876:- when Android is "not scheduled/not authorized this turn," preserve the existing Android acceptance contract as mandatory and blocking; do not treat lack of scheduling as a waiver or fabricate emulator/substitute evidence [Task 1]
+2930:- when the user asks `为什么生成式 AI 能力 0/12 完整落地 是哪个阶段？` or `C-M1 BLOCKED 还有啥block？`, separate engineering-node progress, M1-M6 capability maturity, release/runtime evidence, and formal acceptance rather than giving one percentage [Task 1]
+2937:- The authoritative ledger is `agents-results/*2026-07-21/*athleteos-ai-capability-platform-ssot/implementation-progress.md`: A1, B1-B10, and IF2-RF were `ACCEPTED`, while C-M1/D1/D2/D3 remained `BLOCKED`; the deletion manifest was `inventory` and `DEL-02_ACCEPTANCE=5/1/2` [Task 1]
+2940:- The local SSOT consistency guard failed because `LOCAL_SOURCE_TREE_DIGEST` no longer matched the canonical source tree and Revision 22 was not parsed as the required single NC11-to-NC12 row. Regenerate and independently review acceptance evidence before treating the current tree as locally accepted [Task 1]
+2942:- D2 plan generation was committed as `8f1541507 feat(ai): materialize executable D2 staging plans`; it requires `--staging-context` and had targeted tests pass, but real provider acceptance must bind the running immutable image, source digest, DB revision, outer HTTP hashes, provider hashes, and exact API/DB readback [Task 3]
+--- skill ---
+---
+name: verify-acceptance-release
+description: Independently verify completed decision-scoped software changes against approved acceptance fragments through the maximum safe number of isolated evidence-review lanes, reuse unaffected evidence after local invalidation, then make one serial release decision. Use for release review, final SSOT acceptance, pre-merge or pre-deploy gates, post-fix rereview, and checks for test weakening, architecture bypasses, incomplete external sandbox proof, or missing monitoring and rollback evidence.
+---
+
+# Verify Acceptance Release
+
+## Goal
+
+Decide what the evidence actually proves without sharing the implementation role's authority or silently repairing the definition of done. Operate read-only by default.
+
+## Independence Boundary
+
+- Use a different session, context, or authorized human reviewer from the implementation role whenever practical.
+- Review the original request, every decision-scoped acceptance fragment in the requested release scope, its decision semantic key, accepted version, and invalidation keys, task-local `acceptance/index.md`, project-level `acceptance/index.md`, declared human `binding.md` and `checklist.md`, approval evidence, protected-test hashes, implementation diff identity, and raw test/runtime evidence.
+- Do not edit implementation or tests during review. If the user explicitly requests fixes, return findings to `$implement-acceptance-locked-change`, then rereview only the changed findings and affected evidence.
+- Reuse a prior review when contract, source diff, protected-test hashes, environment identity, and evidence identity are unchanged.
+
+## Decision-Scoped Verification And Local Reuse
+
+When an SSOT governs the change, validate the `.ssot` machine source and select review work from explicit decision, acceptance, implementation, evidence, and resource edges. Do not wait for an entire SSOT stage before reviewing a completed decision-scoped acceptance fragment. Fragment-level review may establish reusable evidence and findings, but it cannot declare the whole release `READY`.
+
+Bind every review lane to the fragment hash, decision semantic key, accepted version, and invalidation keys it evaluates. When an upstream decision or contract changes, reverify only evidence lanes whose invalidation keys match and any downstream synthesis that consumed them. Do not rerun every evidence lane or discard unrelated signed human results. Unchanged decision refs and evidence identities remain reusable.
+
+After all blocking fragments and shared convergence outputs in the declared release scope are accepted, one release-review owner makes one final serial release decision. Global completeness belongs only at that final synthesis boundary; it must not block earlier fragment review.
+
+## Maximum-Safe Parallel Verification
+
+Pin the selected fragment versions/hashes, decision refs, protected-test baselines, source diff, runtime identity, evidence identities, required roles, and one release-review owner serially. Then inventory all independent review surfaces and calculate:
+
+```text
+LOGICAL_LANE_TARGET = READY_INDEPENDENT_DELIVERABLES
+ACTUAL_CONCURRENCY = min(LOGICAL_LANE_TARGET, AVAILABLE_WRITABLE_L2_SLOTS)
+WAVE_COUNT = ceil(LOGICAL_LANE_TARGET / AVAILABLE_WRITABLE_L2_SLOTS)
+```
+
+If `AVAILABLE_WRITABLE_L2_SLOTS` is zero, mark dispatch `BLOCKED`; do not divide by zero, silently downgrade the sandbox, or serialize review through an unregistered executor.
+
+Use separate logical lanes for every independently reviewable protected-test partition, AC evidence partition, static/unit/integration/E2E/non-functional evidence set, implementation module or diff region, human-acceptance binding/run, external sandbox, exploratory result, production signal, and rollback control. These are categories, not a fixed lane count: split them further whenever inputs and conclusions are isolated. Reuse hash-identical accepted review results rather than launching duplicate lanes.
+
+Worker capacity changes waves only. Do not merge review lanes because they share a feature, layer, role, repository, deadline, reviewer, or output decision. Group only a proven `write-write`, `mutable-read-write`, `single-migration`, `single-generated-artifact`, or `inseparable-transaction` conflict, and record the exact resource-level reason. Read-only access to the same frozen source or evidence is parallel-safe.
+
+Review lanes have read-only authority even though their process receives a writable sandbox. They must not edit implementation, tests, the contract, human results, existing evidence, or SSOT status. Give each lane a unique return/evidence path, such as `acceptance/release/runs/<run-id>/evidence/review-lanes/<lane-id>.md`; only the release-review owner writes the final `result.md`, rebuilds indexes, reconciles AC/H dispositions, and makes one serial decision after all required lanes return. A lane may report a finding but may not repair it or independently declare the release `READY`.
+
+Use `$codex-explicit-worker-orchestration` for every dispatched review lane.
+Resolve and inspect the project-approved L2 wrapper first, then launch one bounded
+task per wrapper invocation:
+
+If the user or project adapter prioritizes an absolute `run-lw-luna.sh`, use it
+for eligible writable lanes and do not remap it to `run-l2.sh` or another model.
+
+```bash
+/absolute/path/run-l2.sh "<bounded acceptance-review lane packet>"
+```
+
+The inspected wrapper must end in `exec codex exec`, and its durable registration
+must preserve:
+
+```text
+codex exec -C /absolute/project/root --skip-git-repo-check --sandbox danger-full-access
+```
+
+Record `writable sandbox` on every lane. Do not use `.`, a relative root, `$PWD`,
+an unresolved variable, or an unrecorded wrapper invocation in place of this
+contract. Never use `spawn_agent`, a chat-internal subagent, or a same-process
+collaboration API as a substitute or fallback. Full filesystem capability does
+not authorize writes outside the unique lane-return path. Each packet must include
+task/node ID, direct parent, pinned identity tuple, exact read scope, the sole
+allowed return path, forbidden writes, selected requirements/evidence, commands,
+stop condition, and finding schema. The outer coordinator records command, PID,
+Codex session, log, return path, timestamps, and exit code for each process.
+
+When an SSOT governs release verification, express each ready review surface as a numbered sibling after only its own evidence-freeze predecessor. Add scoped synthesis nodes for evidence that must converge and one final serial release successor for the declared release scope. Do not hide all independent review work in one node, make it wait for unrelated decisions, or let parallel reviewers mutate `ACCEPTED` state.
+
+## Review Workflow
+
+1. Validate every selected acceptance fragment and confirm it was approved by the named authority before its implementation completed. Check current SSOT decision refs and invalidation keys, then dispatch the maximum conflict-free set of ready evidence-review lanes across fragments.
+2. Verify every protected acceptance test still exists and matches its approved hash. Treat deleted tests, weakened assertions, broad skips, unapproved snapshot updates, and fixture-specific production branches as blocking findings.
+3. Reconcile every `AC-*` item in each fragment with fresh or still-valid evidence. Confirm the test layer is strong enough for the claim; screenshots do not prove database side effects, and mocks do not prove a real external integration.
+4. Review implementation quality: module boundaries, reuse, transaction behavior, errors, dependencies, unrelated changes, hidden fallbacks, swallowed failures, hard-coding, and observability.
+5. Review the five machine layers proportionately: static, unit, integration/contract, critical E2E, and applicable non-functional checks.
+6. Verify real sandbox evidence for release-critical external services in addition to mock contracts. Record account/role, environment, timestamp, resource identity, and cleanup state.
+7. Run the acceptance artifact `check`, then read `acceptance/human-acceptance-log.json` for the exact release task IDs. Treat `PENDING`, `REJECTED`, and `INVALIDATED` blocking entries as `NOT READY`; ignore non-blocking sampling entries for the release decision. Resolve each project-level human workspace from the contract. Verify `binding.md` matches the exact task ID, SSOT path/node, contract version/hash, checklist hash, role, and blocking status. Read its stable checklist and the selected immutable `runs/<run-id>/result.md`; verify the run's contract, binding, and checklist snapshots and hashes before evaluating each signed `H-*` decision. An AI reviewer may prepare or observe the checklist but must not impersonate the product owner for blocking decisions. Queueing happens immediately after machine-green proof, but human execution belongs to a separate terminal phase and must not interrupt intermediate machine development.
+8. Check exploratory findings, rollback readiness, and production monitoring for high-risk changes. Define the metric, threshold, window, owner, and response action; “monitor logs” is not a release control.
+9. Create a new task-local `acceptance/release/runs/<run-id>/` review directory for each reviewed fragment or scoped synthesis. Bind the result to decision refs/invalidation keys, contract version/hash, source identity, runtime identity, and every accepted upstream run ID plus result hash. Never overwrite an earlier review or release decision.
+10. Rebuild and validate all affected task indexes and the project index. In an existing SSOT, reference selected machine, human, and release run IDs and hashes only from the affected nodes. Only each designated acceptance owner may move its node to `ACCEPTED`; only the release-review owner may issue the final release decision.
+11. Write findings first using [`references/release-review-template.md`](references/release-review-template.md). Do not use test counts or code coverage as a completion claim.
+
+## Decision States
+
+- `READY`: all blocking ACs have adequate evidence, protected tests are intact, the generated human log has no unresolved blocking entry in release scope, required human items are explicitly accepted, and release controls are ready.
+- `CONDITIONAL`: machine evidence passes, but named non-blocking follow-up or time-bounded production evidence remains. State the exact condition and owner.
+- `NOT READY`: any blocking AC, protected-test integrity check, required human acceptance, rollback control, or environment evidence is missing or failed.
+- `BLOCKED`: the review cannot obtain required credentials, environment, device, approval, or authoritative input. Do not convert lack of evidence into a pass.
+
+## Output
+
+Report severity-ordered findings with file/evidence references, the AC/H traceability disposition, protected-test integrity, machine-layer results, human acceptance status, external sandbox evidence, monitoring and rollback readiness, final decision, and residual risk.
+--- harness guide ---
+# Fullstack AI Harness
+
+Use this entry before non-trivial implementation. Classify the task by impact layer, read the matching harness, identify the authority source, implement narrowly, and finish with evidence.
+
+## Routing
+
+- Frontend UI, interaction, design system, responsiveness: use `product-frontend-harness` first for user-visible semantic changes, then the frontend or app profile harness.
+- Backend route, service, domain logic, jobs: backend harness.
+- Database schema, migration, seed, indexes: database harness.
+- API contracts, OpenAPI, generated SDK: API contract harness.
+- CI, static guards, flaky tests, regression triage: quality harness.
+- Cross-project process or skill improvement: governance harness.
+
+## Closeout
+
+Every task should report business project changes, Harness SSOT changes, verification commands, evidence location, and any reusable guard or QA harness candidate.
+--- overlay ---
+project:
+  name: matharc-research
+  profile: core
+design:
+  token_sources: []
+  theme_sources: []
+  page_shell_sources: []
+  component_sources: []
+quality:
+  static_guards: []
+  formatting: []
+qa:
+  screenshot: []
+  integration: []
+  evidence_root: agents-results
+skills:
+  enabled: []
+
+codex
+The review rules require a fresh, hash-bound evidence check and a severity-ordered terminal verdict. The Harness adapter has no extra project-specific guards or test commands, so I’m now resolving the frozen manifest and its exact allowed input set before opening any candidate material.
+exec
+/bin/zsh -lc "MANIFEST='agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json'; printf '%s\\n' '--- manifest path ---'; realpath \""'$MANIFEST"; printf '"'%s\\n' '--- manifest sha256 ---'; shasum -a 256 \""'$MANIFEST"; printf '"'%s\\n' '--- manifest ---'; sed -n '1,320p' \""'$MANIFEST"' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- manifest path ---
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json
+--- manifest sha256 ---
+359984a62589023373cff985a5e1b1ad78cc25335e5ea0ec28a78e913f0dca8b  agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json
+--- manifest ---
+{
+  "schema_version": 1,
+  "node_id": "Q1",
+  "contract_version": 4,
+  "source_identity": "8a6d908541b770461a081b43d8ced627befd0912+q1-v4-reaccept",
+  "files": {
+    "r1_evidence": {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json", "sha256": "672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71"},
+    "q1_policy": {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json", "sha256": "f519e824ef92274ae2f9f3749ef84dc71beece3fb1c4523c98a765db98cf17bf"},
+    "implementation": {"path": "matharc/v02/calibration_disclosure.py", "sha256": "bd5ead52e02730203ae0e1a45405c9eeaedc74b22d9fa616f417fdc6f3cb5e83"},
+    "protected_test": {"path": "tests/test_v02_calibration_disclosure.py", "sha256": "7a38001d211c2b8ef5b6b45e8f8fa87f7b0ce9785559cc475eb511d250af5026"},
+    "contract": {"path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md", "sha256": "e2db06e4a9d863bc1963e19d5aac1c17bc070adb84df45d95c41ac1df39efc73"},
+    "candidate_evidence": {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json", "sha256": "6e27b1665ef04f8bd4481fbd5e20388114799c9bad8b735224b5b19fd13cd197"}
+  },
+  "required_invariants": [
+    "R1 evidence must be EV-R1-ACCEPTED-2 and byte-identical to the pinned digest",
+    "all three records must remain UNCALIBRATED and NOT_READY",
+    "policy public_release_allowed must remain false",
+    "the policy must not confer proof, literature, novelty, calibration-performance, production, or public-release authority"
+  ]
+}
+
+exec
+/bin/zsh -lc "printf '%s\\n' '--- Q1 contract ---'; sed -n '1,360p' agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md; printf '%s\\n' '--- candidate evidence ---'; sed -n '1,420p' agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- Q1 contract ---
+# Acceptance Contract: Q1-calibration-disclosure
+
+- Task ID: Q1-calibration-disclosure
+- Contract version: 4
+- Contract status: APPROVED
+- Test baseline: LOCKED
+- Acceptance owner: 研究负责人
+- Approval evidence: 用户已要求持续完成、验收通过并逐阶段推送 GitHub；R1 合同版本 9 已以两份独立持久化 PASS 报告和 H-01 接受。Q1 合同版本 4 明确重新绑定当前 R1 身份并保留全部未校准及禁止公开边界。
+- Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/Q1.json
+- SSOT node: Q1
+- SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+- Readiness mode: FORMAL
+- Decision refs: decision.problem-intelligence.amendment@2
+- Assumption IDs: none
+- Invalidation keys: validation.problem-intelligence.calibration-disclosure
+- Baseline identity: origin/main@8a6d908541b770461a081b43d8ced627befd0912
+- Human acceptance workspace: acceptance/human/Q1-calibration-disclosure
+
+## User and scenario
+
+研究负责人需要基于当前已接受 R1 三例固定回归夹具，记录困难度、研究优先级和传播边界，而不把该记录伪装为已校准预测、数学结论或公开发布授权。
+
+## Problem
+
+R1 固定了三例和四路检索增量，但没有机器可核验的困难度记录或披露限制。缺少该对象时，研究优先级可能被误当作传播准备度，小样本记录也可能被误读为统计性能或发布结论。
+
+## Expected outcome
+
+存在一个严格序列化的 Q1 政策夹具，逐字节绑定已接受的 R1 evidence 与回归夹具身份及内容摘要；三例均为 `UNCALIBRATED`，每例独立保留科学优先级与 `NOT_READY` 传播状态，并统一禁止数学证明、开放状态确认、新颖性接受、统计性能和公开发布结论。
+
+## Non-goals
+
+不进行网络检索、数学证明、开放状态确认、外部文献核验、统计校准、准确率/召回率/泛化计算、ResearchTrace/ClaimStatus 写入、新颖性授权、预算授权或生产发布。
+
+## Normal path
+
+```gherkin
+Given a byte-locked current accepted R1 evidence record and its fixed three-case regression fixture
+When the Q1 disclosure policy is loaded
+Then it validates every source identity, case identity, uncalibrated label, priority, readiness, disclosure limit, and policy digest
+And it returns a passive non-public policy record
+```
+
+## Exception paths
+
+- R1 evidence ID、R1 evidence 摘要、夹具字节摘要、夹具内容摘要、主题或案例顺序漂移时必须拒绝。
+- 缺少或多出字段、案例、限制项，或写入未知困难度/校准状态/科学优先级/传播状态时必须拒绝。
+- 任意记录改为 `CALIBRATED`、`PUBLIC_READY`，或移除限制项时必须拒绝；不得降级为可发布结果。
+- 策略摘要不一致时必须拒绝；失败时不产生部分政策或任何授权。
+
+## Invariants
+
+- Q1 只接受 `union-closed` 的 R1 固定三例及其既定顺序。
+- 所有当前预测均为 `UNCALIBRATED`；传播准备度恒为 `NOT_READY`，不能由科学优先级提升。
+- 每例的限制集合完整、去重且排序稳定，且 `public_release_allowed` 恒为 `false`。
+- Q1 是只读、纯本地、被动的政策记录，不导入授权、声明、新颖性审计或网络能力。
+
+## Data impact
+
+仅新增不可变的本地 JSON 政策夹具和内存值对象；不修改数据库、运行时状态、R1 来源或外部系统。
+
+## Permissions
+
+研究负责人维护困难度和科学优先级的人工声明；研究负责人和仓库所有者保留后续 A5 发布决定权。Q1 本身无权发布或确认数学结论。
+
+## Performance and reliability
+
+固定三例政策加载应在 1 秒内完成；重复加载同一字节必须得到相同政策摘要；任一完整性校验失败均 fail closed。
+
+## Acceptance criteria
+
+| ID | Requirement | Verification layer | Mode | Blocking |
+| --- | --- | --- | --- | --- |
+| AC-01 | 三例、主题、R1 evidence、R1 夹具字节和内容身份被严格闭合 | Unit | Automatic | Yes |
+| AC-02 | 未校准标记、科学优先级与传播准备度保持双轨分离 | Unit | Automatic | Yes |
+| AC-03 | 身份、状态、优先级、限制、字段或摘要篡改均 fail closed | Unit | Automatic | Yes |
+| AC-04 | 工件不授权公开发布，不依赖声明、新颖性或统计性能能力 | Static/Unit | Automatic | Yes |
+
+## Human acceptance
+
+| ID | Summary | Checklist path | Required role | Blocking |
+| --- | --- | --- | --- | --- |
+| H-01 | 研究负责人确认三例的优先级和披露措辞没有越过未校准、小样本与数学结论边界 | acceptance/human/Q1-calibration-disclosure/checklist.md#h-01 | 研究负责人 | Yes |
+
+## Protected acceptance tests
+
+| Path | SHA-256 | Covers |
+| --- | --- | --- |
+| tests/test_v02_calibration_disclosure.py | 7a38001d211c2b8ef5b6b45e8f8fa87f7b0ce9785559cc475eb511d250af5026 | AC-01, AC-02, AC-03, AC-04 |
+
+## Requirements-test traceability
+
+| Requirement | Verification | Evidence target | Mode | Blocking |
+| --- | --- | --- | --- | --- |
+| AC-01 | fixed-source and three-record unit tests | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+| AC-02 | priority/readiness unit test | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+| AC-03 | identity, status, disclosure and digest tamper tests | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+| AC-04 | static dependency boundary test | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+| H-01 | human checklist | acceptance/human/Q1-calibration-disclosure/checklist.md#h-01 | Human | Yes |
+
+## Exploratory testing
+
+检查高科学优先级但仍不可传播的记录、合法的零外部结论、字段顺序变化、未知字段、错误类型和重新计算摘要后的来源漂移；探索结果不能升级校准、开放状态或发布结论。
+
+## Production monitoring and rollback
+
+不适用。Q1 是本地政策工件，不进入生产；若 R1 夹具、校准证据或定义变更，废止当前政策夹具并重新验收，不能沿用其优先级或披露结论。
+
+## Risks and open decisions
+
+三个固定案例不构成校准样本，也不构成统计性能、泛化、外部文献或独立数学审阅。是否公开任何范围仍由 A5 的独立发布决定处理。R1 身份、固定夹具或本合同的保护测试任一变化均使 Q1 失效，并要求 A5 重新验收。
+--- candidate evidence ---
+{
+  "evidence_id": "EV-Q1-ACCEPTED-2",
+  "task_id": "Q1",
+  "consumed_evidence": ["EV-R1-ACCEPTED-2"],
+  "source_identity": {
+    "implementation_base": "8a6d908541b770461a081b43d8ced627befd0912",
+    "r1_evidence_sha256": "672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71",
+    "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+    "r1_fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
+    "q1_policy_fixture_sha256": "f519e824ef92274ae2f9f3749ef84dc71beece3fb1c4523c98a765db98cf17bf",
+    "q1_policy_digest_sha256": "f11f61ab1b780ff61ed9b1211063d30d6b3632b92e05b95735b9bde9f55ca3e7",
+    "q1_implementation_sha256": "bd5ead52e02730203ae0e1a45405c9eeaedc74b22d9fa616f417fdc6f3cb5e83",
+    "protected_test_sha256": "7a38001d211c2b8ef5b6b45e8f8fa87f7b0ce9785559cc475eb511d250af5026"
+  },
+  "acceptance_self_check": "pass",
+  "acceptance_commands": [
+    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_calibration_disclosure tests.test_v02_regression_evaluation",
+    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest discover -s tests -p 'test_v02*.py'",
+    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest discover -s tests",
+    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m py_compile matharc/v02/calibration_disclosure.py tests/test_v02_calibration_disclosure.py",
+    "git diff --check"
+  ],
+  "test_summary": {
+    "focused": "pending final execution",
+    "v02": "pending final execution",
+    "full": "pending final execution"
+  },
+  "acceptance_matrix": {
+    "current_r1_evidence_fixture_content_topic_and_case_identity": "pass",
+    "all_three_records_are_uncalibrated_and_non_public": "pass",
+    "scientific_priority_and_communication_readiness_are_separate": "pass",
+    "identity_status_priority_limit_field_and_digest_tampering_fail_closed": "pass",
+    "no_claim_novelty_authorization_or_network_dependency": "pass"
+  },
+  "independent_ai_reviews": {
+    "frozen_input_manifest": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json",
+    "disposition": "PENDING",
+    "reports": [],
+    "review_boundary": "The reviews are implementation and policy-boundary review only; they are not mathematical proof, external literature verification, statistical validation, production evidence or public-release acceptance."
+  },
+  "acceptance_record": {
+    "accepted_at": "2026-09-01",
+    "accepted_by": "用户（研究负责人/仓库所有者）",
+    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T093000Z-local-a1c004/result.md",
+    "human_acceptance_result": "acceptance/human/Q1-calibration-disclosure/runs/20260901T093100Z-local-a1c104/result.md",
+    "authority_basis": "用户已要求验收通过、持续完成并在每个阶段推送 GitHub；Q1 合同版本 4 的锁定合同、当前 R1 身份专项、人工 H-01 和独立 AI 边界审阅均须通过。",
+    "scope": "Q1 对当前 R1 固定三例的困难度、未校准预测和分级披露策略的本地验收",
+    "ai_review_boundary": "AI 审阅仅提供设计和代码边界复核；它们不构成独立数学证明、外部文献结论、统计性能、生产验收或公开发布决定。"
+  },
+  "proposed_state": "ACCEPTED",
+  "unverified_items": [
+    "Independent mathematical proof review",
+    "Live external literature retrieval",
+    "Reported-open status confirmation",
+    "Novelty acceptance",
+    "Calibration quality, accuracy, recall, statistical performance or generalization",
+    "Production or device behavior",
+    "Public release authorization, which remains exclusively for A5"
+  ]
+}
+
+exec
+/bin/zsh -lc "printf '%s\\n' '--- candidate-area filenames (binding/checklist candidates) ---'; rg --files agents-results/2026-08-31/problem-intelligence-plane | rg -i '(binding|checklist|human|Q1|q1)' | sort" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- candidate-area filenames (binding/checklist candidates) ---
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/index.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260831T164137Z-local-a51e32/evidence/verification-summary.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260831T164137Z-local-a51e32/result.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260831T164758Z-local-c11a53/evidence/verification-summary.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260831T164758Z-local-c11a53/result.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T093000Z-local-a1c004/result.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/logs/identity-contract.log
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/logs/policy-boundary.log
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/prompts/identity-contract.txt
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/prompts/policy-boundary.txt
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/ledger/r1-v9-q1-companion-test.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/logs/r1-v9-q1-companion-test-primary.log
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/logs/r1-v9-q1-companion-test-primary.validation.log
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-q1-companion-test/returns/r1-v9-q1-companion-test-primary.json
+agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json
+agents-results/2026-08-31/problem-intelligence-plane/evidence/history/Q1-accepted-1.json
+agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json
+
+exec
+/bin/zsh -lc "MANIFEST='agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json'; jq -r '.files[] | [.path,.sha256] | @tsv' \""'$MANIFEST" | while IFS=$'"'\\t' read -r p h; do printf '%s\\t' \""'$p"; if [ -f "$p" ]; then actual=$(shasum -a 256 "$p" | awk '"'{print "'$1}'"'); if [ \""'$actual" = "$h" ]; then printf '"'MATCH\\t%s\\n' \""'$actual"; else printf '"'MISMATCH\\t%s\\tdeclared=%s\\n' \""'$actual" "$h"; fi; else printf '"'MISSING\\n'; fi; done" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json	MATCH	672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71
+agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json	MATCH	f519e824ef92274ae2f9f3749ef84dc71beece3fb1c4523c98a765db98cf17bf
+matharc/v02/calibration_disclosure.py	MATCH	bd5ead52e02730203ae0e1a45405c9eeaedc74b22d9fa616f417fdc6f3cb5e83
+tests/test_v02_calibration_disclosure.py	MATCH	7a38001d211c2b8ef5b6b45e8f8fa87f7b0ce9785559cc475eb511d250af5026
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md	MATCH	e2db06e4a9d863bc1963e19d5aac1c17bc070adb84df45d95c41ac1df39efc73
+agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json	MATCH	6e27b1665ef04f8bd4481fbd5e20388114799c9bad8b735224b5b19fd13cd197
+
+exec
+/bin/zsh -lc "printf '%s\\n' '--- human acceptance files ---'; rg --files acceptance/human/Q1-calibration-disclosure 2>/dev/null | sort; printf '%s\\n' '--- explicit existence ---'; for p in acceptance/human/Q1-calibration-disclosure/binding.md acceptance/human/Q1-calibration-disclosure/checklist.md; do if [ -f \""'$p" ]; then shasum -a 256 "$p"; else printf '"'MISSING %s\\n' \""'$p"; fi; done' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- human acceptance files ---
+acceptance/human/Q1-calibration-disclosure/binding.md
+acceptance/human/Q1-calibration-disclosure/checklist.md
+acceptance/human/Q1-calibration-disclosure/runs/20260831T164150Z-local-b22e52/evidence/acceptance-contract.md
+acceptance/human/Q1-calibration-disclosure/runs/20260831T164150Z-local-b22e52/evidence/binding.md
+acceptance/human/Q1-calibration-disclosure/runs/20260831T164150Z-local-b22e52/evidence/checklist.md
+acceptance/human/Q1-calibration-disclosure/runs/20260831T164150Z-local-b22e52/result.md
+acceptance/human/Q1-calibration-disclosure/runs/20260831T164758Z-local-d22b64/evidence/acceptance-contract.md
+acceptance/human/Q1-calibration-disclosure/runs/20260831T164758Z-local-d22b64/evidence/binding.md
+acceptance/human/Q1-calibration-disclosure/runs/20260831T164758Z-local-d22b64/evidence/checklist.md
+acceptance/human/Q1-calibration-disclosure/runs/20260831T164758Z-local-d22b64/result.md
+--- explicit existence ---
+484582683dea54f92acb18ec37c00fc17f41d0e5f96a9ce6458858a8e6ad2378  acceptance/human/Q1-calibration-disclosure/binding.md
+0a25e57af95eafe3093db314eb720303bda3d6d5d6737ca62d8e44fbcbf77e81  acceptance/human/Q1-calibration-disclosure/checklist.md
+
+codex
+All six manifest entries exist and their declared digests match byte-for-byte. The candidate points to the stable human workspace at `acceptance/human/Q1-calibration-disclosure`; I’ll inspect only its `binding.md` and `checklist.md`, together with the four remaining frozen evidence/source files, and keep run-result artifacts outside this review scope.
+exec
+/bin/zsh -lc "printf '%s\\n' '--- Q1 policy fixture ---'; sed -n '1,420p' agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "printf '%s\\n' '--- R1 evidence ---'; sed -n '1,420p' agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- Q1 policy fixture ---
+{
+  "schema_version": "1.0",
+  "policy_id": "Q1-UNCALIBRATED-DISCLOSURE-V2",
+  "topic_id": "union-closed",
+  "r1_evidence_id": "EV-R1-ACCEPTED-2",
+  "r1_evidence_sha256": "672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71",
+  "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+  "r1_fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
+  "r1_implementation_base": "2e47f5040d3a833e10de07286d68f017efec5d42",
+  "records": [
+    {
+      "case_id": "P-FRANKL-Q6",
+      "predicted_difficulty": "HIGH",
+      "calibration_status": "UNCALIBRATED",
+      "scientific_priority": "HIGH",
+      "communication_readiness": "NOT_READY",
+      "disclosure_limits": [
+        "NO_MATHEMATICAL_PROOF",
+        "NO_NOVELTY_ACCEPTANCE",
+        "NO_OPEN_STATUS_CONFIRMATION",
+        "NO_PUBLIC_RELEASE",
+        "NO_STATISTICAL_PERFORMANCE"
+      ]
+    },
+    {
+      "case_id": "P-ARXIV-2601-22401-COLLISION",
+      "predicted_difficulty": "MEDIUM",
+      "calibration_status": "UNCALIBRATED",
+      "scientific_priority": "HIGH",
+      "communication_readiness": "NOT_READY",
+      "disclosure_limits": [
+        "NO_MATHEMATICAL_PROOF",
+        "NO_NOVELTY_ACCEPTANCE",
+        "NO_OPEN_STATUS_CONFIRMATION",
+        "NO_PUBLIC_RELEASE",
+        "NO_STATISTICAL_PERFORMANCE"
+      ]
+    },
+    {
+      "case_id": "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+      "predicted_difficulty": "MEDIUM",
+      "calibration_status": "UNCALIBRATED",
+      "scientific_priority": "MEDIUM",
+      "communication_readiness": "NOT_READY",
+      "disclosure_limits": [
+        "NO_MATHEMATICAL_PROOF",
+        "NO_NOVELTY_ACCEPTANCE",
+        "NO_OPEN_STATUS_CONFIRMATION",
+        "NO_PUBLIC_RELEASE",
+        "NO_STATISTICAL_PERFORMANCE"
+      ]
+    }
+  ],
+  "public_release_allowed": false,
+  "policy_digest_sha256": "f11f61ab1b780ff61ed9b1211063d30d6b3632b92e05b95735b9bde9f55ca3e7"
+}
+
+ succeeded in 0ms:
+--- R1 evidence ---
+{
+  "evidence_id": "EV-R1-ACCEPTED-2",
+  "task_id": "R1",
+  "consumed_evidence": ["EV-A4-ACCEPTED-1"],
+  "source_identity": {
+    "implementation_base": "2e47f5040d3a833e10de07286d68f017efec5d42",
+    "a4_evidence_sha256": "85a3e6335bf8e5c886bef328e87f853c8eadc132a793b55ff39a962caae618dd",
+    "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
+    "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+    "protected_test_sha256": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6"
+  },
+  "acceptance_self_check": "pass",
+  "acceptance_commands": [
+    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_regression_evaluation tests.test_v02_novelty_audit tests.test_v02_dogfood_archives",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_v02*.py'",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
+    "PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile matharc/v02/regression_evaluation.py tests/test_v02_regression_evaluation.py",
+    "git diff --check"
+  ],
+  "test_summary": {
+    "focused": "31 passed",
+    "v02": "227 passed, 8 skipped",
+    "full": "394 passed, 10 skipped",
+    "nonblocking_observation": "Existing ResourceWarning messages in Codex runtime tests did not fail the full suite and are outside the R1 changed scope."
+  },
+  "acceptance_matrix": {
+    "three_accepted_a4_case_ids_and_four_ordered_routes": "pass",
+    "full_route_incremental_and_leave_one_route_out_calculations_are_deterministic": "pass",
+    "a4_t2_topic_case_route_query_source_and_content_digest_drift_fail_closed": "pass",
+    "only_hit_miss_gap_and_bounded_manual_minutes_are_exposed": "pass",
+    "no_trace_claim_or_authorization_dependency": "pass"
+  },
+  "independent_ai_reviews": {
+    "contract_version": 9,
+    "disposition": "PASS",
+    "historical_evidence": "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json",
+    "superseded_retry_2": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry2/dispatch.json",
+    "superseded_retry_3": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/dispatch.json",
+    "superseded_retry_4": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry4/dispatch.json",
+    "frozen_input_manifest": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/frozen-inputs.json",
+    "frozen_input_manifest_sha256": "cbc5faeb3d55e7d0a80dfc33fb240ab6536876fd641af42f43ea367b49e0085b",
+    "frozen_head": "95ce4faf0d941345e8265dde1eb13a189e8454b3 plus R1-v9 candidate",
+    "reports": [
+      {"lane": "ablation-boundary", "reviewer_identity": "r1-ablation-boundary-l3-luna-retry8", "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/reports/ablation-boundary.md", "sha256": "ff2a785aa223ae537a15a0e8b196dc7539a6299c16605f8a67cd82537b0665ee"},
+      {"lane": "identity-contract", "reviewer_identity": "r1-identity-contract-l4-sol-retry8", "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/reports/identity-contract.md", "sha256": "4d39bcc4eec4f0c677cf35a79abd83287b989379702b478a5aa2361037b6959b"}
+    ],
+    "failure_rule": "Missing, stalled, transport-limited, nonterminal, non-PASS, duplicate-reviewer, duplicate-wrapper, duplicate-path, symlink, byte-identical report, or frozen-identity-mismatched review blocks R1 acceptance."
+  },
+  "acceptance_record": {
+    "accepted_at": "2026-09-01",
+    "accepted_by": "用户（评测负责人、研究负责人和仓库所有者）",
+    "authority_basis": "retry-2 报告在合同版本 4 下已形成持久化 PASS，但正式接受门禁揭示 Markdown 定界符兼容、R1/Q1 生命周期转换、已接受分支合同版本比对、旧清单/报告重标回放以及同一文件冒充双报告缺口。合同版本 9 更新了受保护测试并增加硬链接与自报字段完整性门禁，因此必须重新冻结并复审。 v9 invalidates retry5 because its review artifacts predate this guard and cannot count as acceptance evidence.",
+    "human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260901T080000Z-r1v9-retry8/result.md",
+    "scope": "R1 对固定 A4 三例档案的四路检索回归、路线消融和保守小样本披露边界的合同版本 9 重新验收",
+    "ai_review_boundary": "新审阅只复核实现、身份与披露边界；不构成独立数学证明、外部文献结论、统计验证、生产验收或公开发布决定。"
+  },
+  "proposed_state": "ACCEPTED",
+  "unverified_items": [
+    "Live external literature retrieval",
+    "Independent mathematical proof review",
+    "Production or device behavior",
+    "Statistical performance, accuracy, recall, or generalization beyond the fixed three-case fixture"
+  ]
+}
+
+exec
+/bin/zsh -lc "printf '%s\\n' '--- implementation ---'; sed -n '1,500p' matharc/v02/calibration_disclosure.py" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- implementation ---
+"""Fail-closed Q1 records for uncalibrated difficulty and disclosure policy."""
+
+from __future__ import annotations
+
+import re
+from dataclasses import dataclass
+from enum import Enum
+from typing import Any, Mapping, TypeVar
+
+from .schema import digest_json
+
+
+_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+_CASE_IDS = (
+    "P-FRANKL-Q6",
+    "P-ARXIV-2601-22401-COLLISION",
+    "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+)
+_R1_EVIDENCE_ID = "EV-R1-ACCEPTED-2"
+_R1_EVIDENCE_DIGEST = "672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71"
+_R1_FIXTURE_DIGEST = "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c"
+_R1_FIXTURE_CONTENT_DIGEST = "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9"
+_R1_IMPLEMENTATION_BASE = "2e47f5040d3a833e10de07286d68f017efec5d42"
+
+
+class CalibrationDisclosureError(ValueError):
+    """Raised when a Q1 disclosure policy violates its fixed safety boundary."""
+
+
+class CalibrationStatus(str, Enum):
+    UNCALIBRATED = "UNCALIBRATED"
+
+
+class DifficultyBand(str, Enum):
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+
+
+class ScientificPriority(str, Enum):
+    LOW = "LOW"
+    MEDIUM = "MEDIUM"
+    HIGH = "HIGH"
+
+
+class CommunicationReadiness(str, Enum):
+    NOT_READY = "NOT_READY"
+
+
+class DisclosureLimit(str, Enum):
+    NO_STATISTICAL_PERFORMANCE = "NO_STATISTICAL_PERFORMANCE"
+    NO_MATHEMATICAL_PROOF = "NO_MATHEMATICAL_PROOF"
+    NO_OPEN_STATUS_CONFIRMATION = "NO_OPEN_STATUS_CONFIRMATION"
+    NO_NOVELTY_ACCEPTANCE = "NO_NOVELTY_ACCEPTANCE"
+    NO_PUBLIC_RELEASE = "NO_PUBLIC_RELEASE"
+
+
+_REQUIRED_LIMITS = tuple(sorted(item.value for item in DisclosureLimit))
+_EnumValue = TypeVar("_EnumValue", bound=Enum)
+
+
+def _fields(value: Mapping[str, Any], expected: set[str], label: str) -> None:
+    unknown = set(value) - expected
+    missing = expected - set(value)
+    if unknown or missing:
+        raise CalibrationDisclosureError(
+            f"{label} fields mismatch: missing={sorted(missing)}, unknown={sorted(unknown)}"
+        )
+
+
+def _text(value: object, label: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise CalibrationDisclosureError(f"{label} must be non-empty text")
+    return value
+
+
+def _sha256(value: object, label: str) -> str:
+    if not isinstance(value, str) or not _SHA256.fullmatch(value):
+        raise CalibrationDisclosureError(f"{label} must be a lowercase SHA-256 digest")
+    return value
+
+
+def _string_list(value: object, label: str) -> tuple[str, ...]:
+    if not isinstance(value, list) or any(not isinstance(item, str) or not item for item in value):
+        raise CalibrationDisclosureError(f"{label} must be a text array")
+    result = tuple(value)
+    if result != tuple(sorted(result)) or len(result) != len(set(result)):
+        raise CalibrationDisclosureError(f"{label} must be unique and sorted")
+    return result
+
+
+def _enum(value: object, enum_type: type[_EnumValue], label: str) -> _EnumValue:
+    try:
+        return enum_type(value)
+    except (TypeError, ValueError) as exc:
+        raise CalibrationDisclosureError(f"{label} has an unsupported value") from exc
+
+
+@dataclass(frozen=True, slots=True)
+class DifficultyRecord:
+    """One manually declared difficulty record; it never infers research conclusions."""
+
+    case_id: str
+    predicted_difficulty: DifficultyBand
+    calibration_status: CalibrationStatus
+    scientific_priority: ScientificPriority
+    communication_readiness: CommunicationReadiness
+    disclosure_limits: tuple[str, ...]
+
+    def __post_init__(self) -> None:
+        if self.case_id not in _CASE_IDS:
+            raise CalibrationDisclosureError("unknown Q1 case_id")
+        if self.calibration_status is not CalibrationStatus.UNCALIBRATED:
+            raise CalibrationDisclosureError("all current Q1 predictions must be UNCALIBRATED")
+        if self.communication_readiness is not CommunicationReadiness.NOT_READY:
+            raise CalibrationDisclosureError("uncalibrated predictions are not communication-ready")
+        if self.disclosure_limits != _REQUIRED_LIMITS:
+            raise CalibrationDisclosureError("each record must retain every required disclosure limit")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "case_id": self.case_id,
+            "predicted_difficulty": self.predicted_difficulty.value,
+            "calibration_status": self.calibration_status.value,
+            "scientific_priority": self.scientific_priority.value,
+            "communication_readiness": self.communication_readiness.value,
+            "disclosure_limits": list(self.disclosure_limits),
+        }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "DifficultyRecord":
+        _fields(
+            value,
+            {
+                "case_id",
+                "predicted_difficulty",
+                "calibration_status",
+                "scientific_priority",
+                "communication_readiness",
+                "disclosure_limits",
+            },
+            "difficulty record",
+        )
+        return cls(
+            case_id=_text(value["case_id"], "case_id"),
+            predicted_difficulty=_enum(value["predicted_difficulty"], DifficultyBand, "predicted_difficulty"),
+            calibration_status=_enum(value["calibration_status"], CalibrationStatus, "calibration_status"),
+            scientific_priority=_enum(value["scientific_priority"], ScientificPriority, "scientific_priority"),
+            communication_readiness=_enum(
+                value["communication_readiness"], CommunicationReadiness, "communication_readiness"
+            ),
+            disclosure_limits=_string_list(value["disclosure_limits"], "disclosure_limits"),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class CalibrationDisclosurePolicy:
+    """A pinned Q1 policy that can only expose uncalibrated, non-public records."""
+
+    policy_id: str
+    topic_id: str
+    r1_evidence_id: str
+    r1_evidence_sha256: str
+    r1_fixture_sha256: str
+    r1_fixture_content_sha256: str
+    r1_implementation_base: str
+    records: tuple[DifficultyRecord, ...]
+
+    def __post_init__(self) -> None:
+        _text(self.policy_id, "policy_id")
+        if self.topic_id != "union-closed":
+            raise CalibrationDisclosureError("Q1 policy must remain bound to union-closed")
+        if (
+            self.r1_evidence_id != _R1_EVIDENCE_ID
+            or self.r1_evidence_sha256 != _R1_EVIDENCE_DIGEST
+            or self.r1_fixture_sha256 != _R1_FIXTURE_DIGEST
+            or self.r1_fixture_content_sha256 != _R1_FIXTURE_CONTENT_DIGEST
+            or self.r1_implementation_base != _R1_IMPLEMENTATION_BASE
+        ):
+            raise CalibrationDisclosureError("R1 source identity drift")
+        if tuple(record.case_id for record in self.records) != _CASE_IDS:
+            raise CalibrationDisclosureError("Q1 records must match the accepted R1 case order")
+
+    @property
+    def policy_digest_sha256(self) -> str:
+        return digest_json(
+            {
+                "schema_version": "1.0",
+                "policy_id": self.policy_id,
+                "topic_id": self.topic_id,
+                "r1_evidence_id": self.r1_evidence_id,
+                "r1_evidence_sha256": self.r1_evidence_sha256,
+                "r1_fixture_sha256": self.r1_fixture_sha256,
+                "r1_fixture_content_sha256": self.r1_fixture_content_sha256,
+                "r1_implementation_base": self.r1_implementation_base,
+                "records": [record.to_dict() for record in self.records],
+                "public_release_allowed": False,
+            }
+        )
+
+    @property
+    def public_release_allowed(self) -> bool:
+        return False
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "schema_version": "1.0",
+            "policy_id": self.policy_id,
+            "topic_id": self.topic_id,
+            "r1_evidence_id": self.r1_evidence_id,
+            "r1_evidence_sha256": self.r1_evidence_sha256,
+            "r1_fixture_sha256": self.r1_fixture_sha256,
+            "r1_fixture_content_sha256": self.r1_fixture_content_sha256,
+            "r1_implementation_base": self.r1_implementation_base,
+            "records": [record.to_dict() for record in self.records],
+            "public_release_allowed": False,
+            "policy_digest_sha256": self.policy_digest_sha256,
+        }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "CalibrationDisclosurePolicy":
+        _fields(
+            value,
+            {
+                "schema_version",
+                "policy_id",
+                "topic_id",
+                "r1_evidence_id",
+                "r1_evidence_sha256",
+                "r1_fixture_sha256",
+                "r1_fixture_content_sha256",
+                "r1_implementation_base",
+                "records",
+                "public_release_allowed",
+                "policy_digest_sha256",
+            },
+            "calibration disclosure policy",
+        )
+        if value["schema_version"] != "1.0":
+            raise CalibrationDisclosureError("unsupported calibration disclosure schema")
+        if value["public_release_allowed"] is not False:
+            raise CalibrationDisclosureError("Q1 may not authorize a public release")
+        records = value["records"]
+        if not isinstance(records, list) or any(not isinstance(item, Mapping) for item in records):
+            raise CalibrationDisclosureError("records must be an array of objects")
+        policy = cls(
+            policy_id=_text(value["policy_id"], "policy_id"),
+            topic_id=_text(value["topic_id"], "topic_id"),
+            r1_evidence_id=_text(value["r1_evidence_id"], "r1_evidence_id"),
+            r1_evidence_sha256=_sha256(value["r1_evidence_sha256"], "r1_evidence_sha256"),
+            r1_fixture_sha256=_sha256(value["r1_fixture_sha256"], "r1_fixture_sha256"),
+            r1_fixture_content_sha256=_sha256(
+                value["r1_fixture_content_sha256"], "r1_fixture_content_sha256"
+            ),
+            r1_implementation_base=_text(value["r1_implementation_base"], "r1_implementation_base"),
+            records=tuple(DifficultyRecord.from_dict(item) for item in records),
+        )
+        if _sha256(value["policy_digest_sha256"], "policy_digest_sha256") != policy.policy_digest_sha256:
+            raise CalibrationDisclosureError("policy digest mismatch")
+        return policy
+
+exec
+/bin/zsh -lc "printf '%s\\n' '--- protected test ---'; sed -n '1,620p' tests/test_v02_calibration_disclosure.py" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- protected test ---
+from __future__ import annotations
+
+import copy
+import hashlib
+import json
+import unittest
+from pathlib import Path
+
+from matharc.v02.calibration_disclosure import CalibrationDisclosureError, CalibrationDisclosurePolicy
+
+
+ROOT = Path(__file__).parents[1]
+FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json"
+R1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json"
+R1_FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json"
+Q1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
+
+
+class CalibrationDisclosureTests(unittest.TestCase):
+    def load(self) -> tuple[dict, CalibrationDisclosurePolicy]:
+        payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+        return payload, CalibrationDisclosurePolicy.from_dict(payload)
+
+    def test_three_uncalibrated_records_are_digest_bound_and_non_public(self) -> None:
+        payload, policy = self.load()
+        self.assertEqual(payload, policy.to_dict())
+        self.assertFalse(policy.public_release_allowed)
+        self.assertEqual(3, len(policy.records))
+        self.assertTrue(all(record.calibration_status.value == "UNCALIBRATED" for record in policy.records))
+        self.assertTrue(all(record.communication_readiness.value == "NOT_READY" for record in policy.records))
+
+    def test_policy_pins_current_accepted_r1_evidence_and_fixture_content(self) -> None:
+        _, policy = self.load()
+        r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
+        r1_fixture = json.loads(R1_FIXTURE.read_text(encoding="utf-8"))
+        self.assertEqual("EV-R1-ACCEPTED-2", r1_evidence["evidence_id"])
+        self.assertEqual(
+            hashlib.sha256(R1_EVIDENCE.read_bytes()).hexdigest(),
+            policy.r1_evidence_sha256,
+        )
+        self.assertEqual(
+            hashlib.sha256(R1_FIXTURE.read_bytes()).hexdigest(), policy.r1_fixture_sha256
+        )
+        self.assertEqual(r1_fixture["fixture_content_sha256"], policy.r1_fixture_content_sha256)
+        self.assertEqual([record.case_id for record in policy.records], r1_fixture["case_ids"])
+
+    def test_current_q1_acceptance_requires_and_records_current_r1_identity(self) -> None:
+        r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
+        q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+        self.assertEqual("EV-R1-ACCEPTED-2", r1_evidence["evidence_id"])
+        self.assertEqual("EV-Q1-ACCEPTED-2", q1_evidence["evidence_id"])
+        self.assertEqual("pass", q1_evidence["acceptance_self_check"])
+        self.assertEqual("ACCEPTED", q1_evidence["proposed_state"])
+        self.assertEqual(
+            hashlib.sha256(R1_EVIDENCE.read_bytes()).hexdigest(),
+            q1_evidence["source_identity"]["r1_evidence_sha256"],
+        )
+        policy = CalibrationDisclosurePolicy.from_dict(json.loads(FIXTURE.read_text(encoding="utf-8")))
+        self.assertEqual(policy.policy_digest_sha256, q1_evidence["source_identity"]["q1_policy_digest_sha256"])
+
+    def test_science_priority_remains_separate_from_communication_readiness(self) -> None:
+        _, policy = self.load()
+        self.assertEqual("HIGH", policy.records[0].scientific_priority.value)
+        self.assertEqual("NOT_READY", policy.records[0].communication_readiness.value)
+
+    def test_identity_status_priority_and_disclosure_tampering_fail_closed(self) -> None:
+        payload, _ = self.load()
+        for mutate in (
+            lambda p: p.update({"topic_id": "foreign-topic"}),
+            lambda p: p.update({"r1_evidence_sha256": "0" * 64}),
+            lambda p: p.update({"r1_fixture_content_sha256": "0" * 64}),
+            lambda p: p["records"][0].update({"calibration_status": "CALIBRATED"}),
+            lambda p: p["records"][0].update({"communication_readiness": "PUBLIC_READY"}),
+            lambda p: p["records"][0].update({"scientific_priority": "NOT_READY"}),
+            lambda p: p["records"][0].update({"disclosure_limits": []}),
+            lambda p: p.update({"public_release_allowed": True}),
+            lambda p: p["records"].pop(),
+            lambda p: p.update({"unexpected": "field"}),
+        ):
+            candidate = copy.deepcopy(payload)
+            mutate(candidate)
+            with self.subTest(mutate=mutate), self.assertRaises(CalibrationDisclosureError):
+                CalibrationDisclosurePolicy.from_dict(candidate)
+
+    def test_digests_are_not_recomputable_by_a_fixture_consumer(self) -> None:
+        payload, _ = self.load()
+        candidate = copy.deepcopy(payload)
+        candidate["records"][0]["predicted_difficulty"] = "LOW"
+        with self.assertRaises(CalibrationDisclosureError):
+            CalibrationDisclosurePolicy.from_dict(candidate)
+
+    def test_is_not_a_claim_novelty_or_statistical_performance_engine(self) -> None:
+        source = (ROOT / "matharc/v02/calibration_disclosure.py").read_text(encoding="utf-8")
+        self.assertNotIn("ResearchTrace", source)
+        self.assertNotIn("ClaimStatus", source)
+        self.assertNotIn("NoveltyAudit", source)
+        self.assertNotIn("http", source.lower())
+
+
+if __name__ == "__main__":
+    unittest.main()
+
+exec
+/bin/zsh -lc "printf '%s\\n' '--- human binding ---'; sed -n '1,360p' acceptance/human/Q1-calibration-disclosure/binding.md; printf '%s\\n' '--- human checklist ---'; sed -n '1,460p' acceptance/human/Q1-calibration-disclosure/checklist.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- human binding ---
+# Human Acceptance Binding: Q1-calibration-disclosure
+
+- Task ID: Q1-calibration-disclosure
+- Binding status: ACTIVE
+- SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+- SSOT node: Q1
+- Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md
+- Contract version: 4
+- Contract SHA-256: e2db06e4a9d863bc1963e19d5aac1c17bc070adb84df45d95c41ac1df39efc73
+- Human checklist: acceptance/human/Q1-calibration-disclosure/checklist.md
+- Checklist SHA-256: 0a25e57af95eafe3093db314eb720303bda3d6d5d6737ca62d8e44fbcbf77e81
+
+## Item bindings
+
+| Item | Required role | Blocking |
+| --- | --- | --- |
+| H-01 | 研究负责人 | Yes |
+--- human checklist ---
+# 人工验收清单：Q1-calibration-disclosure
+
+- 任务编号：Q1-calibration-disclosure
+- 人工验收绑定：acceptance/human/Q1-calibration-disclosure/binding.md
+- 验收合同：agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md
+- 合同版本：4
+- 清单状态：已批准
+- 所需人工角色：研究负责人
+- 清单负责人：用户
+- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段推送 GitHub；R1 合同版本 9 已重新接受，Q1 必须重新绑定当前 R1 身份
+- 执行结果：acceptance/human/Q1-calibration-disclosure/runs/<run-id>/result.md
+
+## H-01
+
+- 验收问题：三例困难度和科学优先级是否被清楚地限制为未校准的内部研究记录，且没有把高优先级写成可传播、可公开或已经得到数学确认？
+- 必须人工判断的原因：研究优先级与对外沟通边界的语义解释不能由字段一致性测试完全替代。
+- 前置条件：Q1 专项机器测试已通过；打开当前 R1 接受证据、固定政策夹具和 R1 范围说明。
+- 验收步骤：
+  1. 检查三例均标为 `UNCALIBRATED`，传播准备度均为 `NOT_READY`。
+  2. 检查高科学优先级的两例没有被描述成准确、已解决、开放已确认或可公开。
+  3. 检查每例均保留数学证明、新颖性接受、开放状态确认、统计性能和公开发布的禁止项。
+- 预期观察：优先级与传播状态清楚分离；措辞只限固定 R1 三例和本地披露策略；没有统计性能、数学证明、外部文献或发布授权结论。
+- 是否阻塞发布：是
+- 结果记录规则：将签署后的观察和结论写入新的 `acceptance/human/Q1-calibration-disclosure/runs/<run-id>/result.md`；不得通过修改这份已批准清单来记录某次执行结果。
+
+exec
+/bin/zsh -lc "sed -n '1,90p' /Users/vsiyo/.codex/memories/MEMORY.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+# Task Group: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research publication gates, Erdős–Szekeres audit, and CI delivery
+scope: Use when auditing a mathematical-research repository for publication readiness, hardening MathArc's claim/LaTeX/signoff gates, or merging a validated feature branch while preserving unrelated worktree content.
+applies_to: cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research; reuse_rule=publication integrity checks and MathArc gate behavior are reusable in this checkout; external-repository artifacts, GitHub billing state, SHAs, and untracked content need fresh verification.
+
+## Task 1: Audit the Erdős–Szekeres publication case, success
+
+### rollout_summary_files
+
+- rollout_summaries/2026-08-30T18-08-56-aeS5-matharc_erdos_szekeres_publication_gates_ci_merge.md (cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/31/rollout-2026-08-31T02-46-43-01a053dc-3a51-7c33-a69f-f45a477c3a11_01a053fe-cf0c-7d62-97c5-f0e32db921d6.jsonl, updated_at=2026-08-30T19:29:36+00:00, thread_id=01a053dc-3a51-7c33-a69f-f45a477c3a11, external case audited without changing this workspace)
+
+### keywords
+
+- Erdős–Szekeres, `ES(7)=33`, `manuscript_state: NONE`, `scientific_closure: BLOCKED`, `evidence_integrity: INCOMPLETE`, `reproduce_local_dynamics.sh`, `rebuild_local_dynamics_result.json`, `unzip -t`, Base64, `78930d89405d4fe`
+
+## Task 2: Harden publication gates and merge the branch, partial
+
+### rollout_summary_files
+
+- rollout_summaries/2026-08-30T18-08-56-aeS5-matharc_erdos_szekeres_publication_gates_ci_merge.md (cwd=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/31/rollout-2026-08-31T02-46-43-01a053dc-3a51-7c33-a69f-f45a477c3a11_01a053fe-cf0c-7d62-97c5-f0e32db921d6.jsonl, updated_at=2026-08-30T19:29:36+00:00, thread_id=01a053dc-3a51-7c33-a69f-f45a477c3a11, local gates and remote merge verified; GitHub CI jobs blocked by billing)
+
+### keywords
+
+- `matharc/publication/claim_map.py`, `matharc/publication/latex.py`, `PublicationBundle.readiness`, `INDEPENDENTLY_AUDITED`, `\\matharcclaim`, recursive `\\input`, `.bib`, `.bbl`, `tests/test_publication_gates.py`, `check_matharc_workflows.py`, PEP 668, billing lock, `836dc686`
+
+## User preferences
+
+- when the user corrected `manuscript_state: REVIEWABLE` to `NONE` -> require an actual openable `.tex` or `.pdf`, not metadata such as `PDF_PREFLIGHT.txt`, before calling a manuscript reviewable [Task 1]
+- when the user identifies several truncated artifacts as one connector-channel failure -> report the systemic cause and recovery route through the original environment/normal `git push`, not three isolated artifact symptoms [Task 1]
+- when the user requests a minimal replay block -> include commands, expected/actual output, exit code, and environment details [Task 1]
+- when hardening publication workflow -> fail closed on parser ambiguity, missing artifacts, incomplete human signoff, and unverifiable evidence; validate on a feature branch and preserve unrelated untracked `.ssot/` content [Task 2]
+- when explicitly requesting merge into `main` and remote-branch deletion -> perform both and verify live remote SHA rather than stopping at a local merge [Task 2]
+
+## Reusable knowledge
+
+- A publication audit must search for actual `.tex`/`.pdf`, reconstruct every declared chunked artifact, compare declared size/SHA, and record unverifiable preflight claims separately. In the case audit, no manuscript existed; the ZIP and Base64 forms were truncated, so disposition was `scientific_closure: BLOCKED`, `evidence_integrity: INCOMPLETE`, `manuscript_state: NONE`, `technical_preflight: FAIL`, `human_signoff: PENDING`, `submission_route: UNDECIDED`. [Task 1]
+- `cd src && bash reproduce_local_dynamics.sh` emitted archived values but did not cold-replay because `rebuild_local_dynamics_result.json` was missing. Generated numerical output is not proof-replay evidence when declared archive/expected records are missing. [Task 1]
+- MathArc now rejects non-adjacent legacy claim pairs and duplicates; supports `\\matharcclaim{id}{revision}`; recursively collects `\\input`/`\\include` with cycle detection; blocks `.bib` without `.bbl`; and requires `INDEPENDENTLY_AUDITED` evidence plus nonempty human signoff before release-candidate readiness. Local publication tests passed 7/7, workflow policy and syntax compilation passed. [Task 2]
+- `codex/publication-gates-hardening-20260831` was merged via PR #1; local and remote `main` matched `836dc6860f8f997e4e128bcd745c96b98c6b9b29`, and the remote feature branch was deleted. Untracked `agents-results/2026-08-31/problem-intelligence-plane/.ssot/` was preserved. [Task 2]
+
+## Failures and how to do differently
+
+- Symptom: `manuscript_state` is inferred from preflight metadata or produced numbers. Fix: inspect actual manuscript/artifact integrity first; missing paths, corrupt ZIPs, or incomplete archives are evidence-integrity blockers. [Task 1]
+- Symptom: `mypy`/`ruff` are unavailable under externally managed Python (PEP 668), and a temporary venv lacks `ensurepip`. Fix: use a functioning project/bootstrap environment; do not claim checks passed. [Task 2]
+- Symptom: full discovery has a failure from missing `/Users/vsiyo/Desktop/创业项目/AI4Math/registry.yaml`, or GitHub workflows never start under billing lock. Fix: report each as an unrelated environment baseline or CI-execution blocker; YAML acceptance/local tests do not establish remote CI execution. [Task 2]
+
+# Task Group: /Users/vsiyo/Desktop/创业项目/自媒体创作Agent OpenClaw Media authentication UX and contract boundaries
+scope: Use when clarifying or implementing the P1/P2 personal-versus-organization entry flow, current-session reuse, or Media login security boundaries.
+applies_to: cwd=/Users/vsiyo/Desktop/创业项目/自媒体创作Agent; reuse_rule=the current contract and phase-one interaction boundary are reusable while checkout state, implementation status, and future auth-contract decisions need fresh verification.
+
+## Task 1: Define P1/P2 authentication entry flow, design clarified
+
+### rollout_summary_files
+
+- rollout_summaries/2026-08-30T10-04-53-PTRd-media_auth_p1_p2_entry_flow_design.md (cwd=/Users/vsiyo/Desktop/创业项目/自媒体创作Agent, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/30/rollout-2026-08-30T18-04-53-01a05221-116b-7952-a60f-e0e3b4686ae7.jsonl, updated_at=2026-08-30T10:30:43+00:00, thread_id=01a05221-116b-7952-a60f-e0e3b4686ae7, design only; no implementation or validation)
+
+### keywords
+
+- OpenClaw Media, P1, P2, authentication, `openclaw_session`, `GET /openclaw/auth/entry-state`, `WorkspaceResolver`, Feishu, `rememberMe: false`, multi-account
+
+## User preferences
+
+- when the user clarified: "进入P1这个然后点击右边变成P2，如果有保存的登陆状态，直接选择即可，对于左边也同理" -> model P1 as an explicit personal/organization chooser and P2 as the selected branch's symmetric authentication/session state [Task 1]
+- when visual references support a proposed interaction and the user asks whether it was understood -> restate the interaction model and distinguish the design clarification from authoritative product/security instructions before editing [Task 1]
+
+## Reusable knowledge
+
+- The contract has one server-managed HttpOnly `openclaw_session`, `absoluteLifetimeSeconds: 28800`, and `rememberMe: false`. Phase-one "saved login state" therefore means only the current browser's valid server session; do not use `localStorage`, `sessionStorage`, or `document.cookie` for persistent or multi-account state. [Task 1]
+- P1 must remain visible and require an explicit card choice even when a cookie exists. P2 then checks the selected mode: personal requires `personal_web/internal`; organization requires `organization_lark/lark` with active membership, workspace, and Feishu binding. [Task 1]
+- A matching session may show masked identity and a deliberate continue action. Missing, expired, revoked, or mismatched sessions fall back to password login or, only when needed, Feishu OAuth/QR, without account or tenant enumeration. [Task 1]
+- Keep the strict `/openclaw/media/api/session` response unchanged. The proposed read-only phase-one surface is `GET /openclaw/auth/entry-state?mode=personal|organization`; any future activation/switch mutation must preserve same-origin checks, `X-OpenClaw-CSRF`, and appropriate session rotation. [Task 1]
+- Relevant authority and checks: `openclaw-bot-center/contracts/media_web_business_pages.openapi.yaml`, `openclaw-bot-center/contracts/media-auth-route-contract.json`, `openclaw-tag-router/openclaw_app/adapters/http_api.py`, `openclaw-tag-router/openclaw_app/account/workspace_resolution.py`, `npm run qa:media-login-contract`, and `npm run build:media`. [Task 1]
+
+## Failures and how to do differently
+
+- This rollout is design clarification only. Do not claim code, tests, SSOT, commit, deployment, or feature completion until a later implementation provides that evidence. [Task 1]
+- Symptom: "saved login" is interpreted as a multi-account picker. Cause: conflating current-session reuse with persistence. Fix: keep phase one to the opaque current server session; multi-account support requires a new contract covering storage, revocation, expiry, and security policy. [Task 1]
+- Symptom: UX needs extra entry data. Fix: add a separate approved read-only surface rather than widening the strict `/openclaw/media/api/session` response. [Task 1]
+
+# Task Group: /Users/vsiyo/Desktop/照片筛选 archive SSOT implementation, Obsidian cleanup, and single-main delivery
+scope: Use when continuing the archive-tool SSOT, validating local archive/restore behavior, repairing orphan Obsidian snapshots, or consolidating this private repository to one authoritative main branch.
+applies_to: cwd=/Users/vsiyo/Desktop/照片筛选; reuse_rule=archive code/test and recoverable cleanup procedures are reusable; Aliyun/physical-disk readback, current branches, SHAs, and Trash visibility are time-specific.
+
+## Task 1: Implement archive capability from the existing SSOT, success
+
+### rollout_summary_files
+
+- rollout_summaries/2026-08-29T09-57-03-IFo2-photo_content_os_archive_ssot_branch_cleanup.md (cwd=/Users/vsiyo/Desktop/照片筛选, rollout_path=/Users/vsiyo/.codex/sessions/2026/08/29/rollout-2026-08-29T17-57-03-01a04cf3-8876-7123-91bf-4c224b7f4d66.jsonl, updated_at=2026-08-29T11:23:25+00:00, archive implementation and delivery succeeded)
+
+### keywords
+
+
+exec
+/bin/zsh -lc "printf '%s\\n' '--- candidate numbered ---'; nl -ba agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json; printf '%s\\n' '--- R1 numbered ---'; nl -ba agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json | sed -n '1,220p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "printf '%s\\n' '--- policy numbered ---'; nl -ba agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json; printf '%s\\n' '--- binding numbered ---'; nl -ba acceptance/human/Q1-calibration-disclosure/binding.md; printf '%s\\n' '--- checklist numbered ---'; nl -ba acceptance/human/Q1-calibration-disclosure/checklist.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "printf '%s\\n' '--- manifest numbered ---'; nl -ba agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json; printf '%s\\n' '--- contract numbered ---'; nl -ba agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md | sed -n '1,240p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- candidate numbered ---
+     1	{
+     2	  "evidence_id": "EV-Q1-ACCEPTED-2",
+     3	  "task_id": "Q1",
+     4	  "consumed_evidence": ["EV-R1-ACCEPTED-2"],
+     5	  "source_identity": {
+     6	    "implementation_base": "8a6d908541b770461a081b43d8ced627befd0912",
+     7	    "r1_evidence_sha256": "672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71",
+     8	    "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+     9	    "r1_fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
+    10	    "q1_policy_fixture_sha256": "f519e824ef92274ae2f9f3749ef84dc71beece3fb1c4523c98a765db98cf17bf",
+    11	    "q1_policy_digest_sha256": "f11f61ab1b780ff61ed9b1211063d30d6b3632b92e05b95735b9bde9f55ca3e7",
+    12	    "q1_implementation_sha256": "bd5ead52e02730203ae0e1a45405c9eeaedc74b22d9fa616f417fdc6f3cb5e83",
+    13	    "protected_test_sha256": "7a38001d211c2b8ef5b6b45e8f8fa87f7b0ce9785559cc475eb511d250af5026"
+    14	  },
+    15	  "acceptance_self_check": "pass",
+    16	  "acceptance_commands": [
+    17	    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_calibration_disclosure tests.test_v02_regression_evaluation",
+    18	    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest discover -s tests -p 'test_v02*.py'",
+    19	    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest discover -s tests",
+    20	    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m py_compile matharc/v02/calibration_disclosure.py tests/test_v02_calibration_disclosure.py",
+    21	    "git diff --check"
+    22	  ],
+    23	  "test_summary": {
+    24	    "focused": "pending final execution",
+    25	    "v02": "pending final execution",
+    26	    "full": "pending final execution"
+    27	  },
+    28	  "acceptance_matrix": {
+    29	    "current_r1_evidence_fixture_content_topic_and_case_identity": "pass",
+    30	    "all_three_records_are_uncalibrated_and_non_public": "pass",
+    31	    "scientific_priority_and_communication_readiness_are_separate": "pass",
+    32	    "identity_status_priority_limit_field_and_digest_tampering_fail_closed": "pass",
+    33	    "no_claim_novelty_authorization_or_network_dependency": "pass"
+    34	  },
+    35	  "independent_ai_reviews": {
+    36	    "frozen_input_manifest": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json",
+    37	    "disposition": "PENDING",
+    38	    "reports": [],
+    39	    "review_boundary": "The reviews are implementation and policy-boundary review only; they are not mathematical proof, external literature verification, statistical validation, production evidence or public-release acceptance."
+    40	  },
+    41	  "acceptance_record": {
+    42	    "accepted_at": "2026-09-01",
+    43	    "accepted_by": "用户（研究负责人/仓库所有者）",
+    44	    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T093000Z-local-a1c004/result.md",
+    45	    "human_acceptance_result": "acceptance/human/Q1-calibration-disclosure/runs/20260901T093100Z-local-a1c104/result.md",
+    46	    "authority_basis": "用户已要求验收通过、持续完成并在每个阶段推送 GitHub；Q1 合同版本 4 的锁定合同、当前 R1 身份专项、人工 H-01 和独立 AI 边界审阅均须通过。",
+    47	    "scope": "Q1 对当前 R1 固定三例的困难度、未校准预测和分级披露策略的本地验收",
+    48	    "ai_review_boundary": "AI 审阅仅提供设计和代码边界复核；它们不构成独立数学证明、外部文献结论、统计性能、生产验收或公开发布决定。"
+    49	  },
+    50	  "proposed_state": "ACCEPTED",
+    51	  "unverified_items": [
+    52	    "Independent mathematical proof review",
+    53	    "Live external literature retrieval",
+    54	    "Reported-open status confirmation",
+    55	    "Novelty acceptance",
+    56	    "Calibration quality, accuracy, recall, statistical performance or generalization",
+    57	    "Production or device behavior",
+    58	    "Public release authorization, which remains exclusively for A5"
+    59	  ]
+    60	}
+--- R1 numbered ---
+     1	{
+     2	  "evidence_id": "EV-R1-ACCEPTED-2",
+     3	  "task_id": "R1",
+     4	  "consumed_evidence": ["EV-A4-ACCEPTED-1"],
+     5	  "source_identity": {
+     6	    "implementation_base": "2e47f5040d3a833e10de07286d68f017efec5d42",
+     7	    "a4_evidence_sha256": "85a3e6335bf8e5c886bef328e87f853c8eadc132a793b55ff39a962caae618dd",
+     8	    "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
+     9	    "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+    10	    "protected_test_sha256": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6"
+    11	  },
+    12	  "acceptance_self_check": "pass",
+    13	  "acceptance_commands": [
+    14	    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_regression_evaluation tests.test_v02_novelty_audit tests.test_v02_dogfood_archives",
+    15	    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_v02*.py'",
+    16	    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
+    17	    "PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile matharc/v02/regression_evaluation.py tests/test_v02_regression_evaluation.py",
+    18	    "git diff --check"
+    19	  ],
+    20	  "test_summary": {
+    21	    "focused": "31 passed",
+    22	    "v02": "227 passed, 8 skipped",
+    23	    "full": "394 passed, 10 skipped",
+    24	    "nonblocking_observation": "Existing ResourceWarning messages in Codex runtime tests did not fail the full suite and are outside the R1 changed scope."
+    25	  },
+    26	  "acceptance_matrix": {
+    27	    "three_accepted_a4_case_ids_and_four_ordered_routes": "pass",
+    28	    "full_route_incremental_and_leave_one_route_out_calculations_are_deterministic": "pass",
+    29	    "a4_t2_topic_case_route_query_source_and_content_digest_drift_fail_closed": "pass",
+    30	    "only_hit_miss_gap_and_bounded_manual_minutes_are_exposed": "pass",
+    31	    "no_trace_claim_or_authorization_dependency": "pass"
+    32	  },
+    33	  "independent_ai_reviews": {
+    34	    "contract_version": 9,
+    35	    "disposition": "PASS",
+    36	    "historical_evidence": "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json",
+    37	    "superseded_retry_2": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry2/dispatch.json",
+    38	    "superseded_retry_3": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/dispatch.json",
+    39	    "superseded_retry_4": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry4/dispatch.json",
+    40	    "frozen_input_manifest": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/frozen-inputs.json",
+    41	    "frozen_input_manifest_sha256": "cbc5faeb3d55e7d0a80dfc33fb240ab6536876fd641af42f43ea367b49e0085b",
+    42	    "frozen_head": "95ce4faf0d941345e8265dde1eb13a189e8454b3 plus R1-v9 candidate",
+    43	    "reports": [
+    44	      {"lane": "ablation-boundary", "reviewer_identity": "r1-ablation-boundary-l3-luna-retry8", "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/reports/ablation-boundary.md", "sha256": "ff2a785aa223ae537a15a0e8b196dc7539a6299c16605f8a67cd82537b0665ee"},
+    45	      {"lane": "identity-contract", "reviewer_identity": "r1-identity-contract-l4-sol-retry8", "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/reports/identity-contract.md", "sha256": "4d39bcc4eec4f0c677cf35a79abd83287b989379702b478a5aa2361037b6959b"}
+    46	    ],
+    47	    "failure_rule": "Missing, stalled, transport-limited, nonterminal, non-PASS, duplicate-reviewer, duplicate-wrapper, duplicate-path, symlink, byte-identical report, or frozen-identity-mismatched review blocks R1 acceptance."
+    48	  },
+    49	  "acceptance_record": {
+    50	    "accepted_at": "2026-09-01",
+    51	    "accepted_by": "用户（评测负责人、研究负责人和仓库所有者）",
+    52	    "authority_basis": "retry-2 报告在合同版本 4 下已形成持久化 PASS，但正式接受门禁揭示 Markdown 定界符兼容、R1/Q1 生命周期转换、已接受分支合同版本比对、旧清单/报告重标回放以及同一文件冒充双报告缺口。合同版本 9 更新了受保护测试并增加硬链接与自报字段完整性门禁，因此必须重新冻结并复审。 v9 invalidates retry5 because its review artifacts predate this guard and cannot count as acceptance evidence.",
+    53	    "human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260901T080000Z-r1v9-retry8/result.md",
+    54	    "scope": "R1 对固定 A4 三例档案的四路检索回归、路线消融和保守小样本披露边界的合同版本 9 重新验收",
+    55	    "ai_review_boundary": "新审阅只复核实现、身份与披露边界；不构成独立数学证明、外部文献结论、统计验证、生产验收或公开发布决定。"
+    56	  },
+    57	  "proposed_state": "ACCEPTED",
+    58	  "unverified_items": [
+    59	    "Live external literature retrieval",
+    60	    "Independent mathematical proof review",
+    61	    "Production or device behavior",
+    62	    "Statistical performance, accuracy, recall, or generalization beyond the fixed three-case fixture"
+    63	  ]
+    64	}
+
+ succeeded in 0ms:
+--- policy numbered ---
+     1	{
+     2	  "schema_version": "1.0",
+     3	  "policy_id": "Q1-UNCALIBRATED-DISCLOSURE-V2",
+     4	  "topic_id": "union-closed",
+     5	  "r1_evidence_id": "EV-R1-ACCEPTED-2",
+     6	  "r1_evidence_sha256": "672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71",
+     7	  "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+     8	  "r1_fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
+     9	  "r1_implementation_base": "2e47f5040d3a833e10de07286d68f017efec5d42",
+    10	  "records": [
+    11	    {
+    12	      "case_id": "P-FRANKL-Q6",
+    13	      "predicted_difficulty": "HIGH",
+    14	      "calibration_status": "UNCALIBRATED",
+    15	      "scientific_priority": "HIGH",
+    16	      "communication_readiness": "NOT_READY",
+    17	      "disclosure_limits": [
+    18	        "NO_MATHEMATICAL_PROOF",
+    19	        "NO_NOVELTY_ACCEPTANCE",
+    20	        "NO_OPEN_STATUS_CONFIRMATION",
+    21	        "NO_PUBLIC_RELEASE",
+    22	        "NO_STATISTICAL_PERFORMANCE"
+    23	      ]
+    24	    },
+    25	    {
+    26	      "case_id": "P-ARXIV-2601-22401-COLLISION",
+    27	      "predicted_difficulty": "MEDIUM",
+    28	      "calibration_status": "UNCALIBRATED",
+    29	      "scientific_priority": "HIGH",
+    30	      "communication_readiness": "NOT_READY",
+    31	      "disclosure_limits": [
+    32	        "NO_MATHEMATICAL_PROOF",
+    33	        "NO_NOVELTY_ACCEPTANCE",
+    34	        "NO_OPEN_STATUS_CONFIRMATION",
+    35	        "NO_PUBLIC_RELEASE",
+    36	        "NO_STATISTICAL_PERFORMANCE"
+    37	      ]
+    38	    },
+    39	    {
+    40	      "case_id": "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+    41	      "predicted_difficulty": "MEDIUM",
+    42	      "calibration_status": "UNCALIBRATED",
+    43	      "scientific_priority": "MEDIUM",
+    44	      "communication_readiness": "NOT_READY",
+    45	      "disclosure_limits": [
+    46	        "NO_MATHEMATICAL_PROOF",
+    47	        "NO_NOVELTY_ACCEPTANCE",
+    48	        "NO_OPEN_STATUS_CONFIRMATION",
+    49	        "NO_PUBLIC_RELEASE",
+    50	        "NO_STATISTICAL_PERFORMANCE"
+    51	      ]
+    52	    }
+    53	  ],
+    54	  "public_release_allowed": false,
+    55	  "policy_digest_sha256": "f11f61ab1b780ff61ed9b1211063d30d6b3632b92e05b95735b9bde9f55ca3e7"
+    56	}
+--- binding numbered ---
+     1	# Human Acceptance Binding: Q1-calibration-disclosure
+     2	
+     3	- Task ID: Q1-calibration-disclosure
+     4	- Binding status: ACTIVE
+     5	- SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+     6	- SSOT node: Q1
+     7	- Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md
+     8	- Contract version: 4
+     9	- Contract SHA-256: e2db06e4a9d863bc1963e19d5aac1c17bc070adb84df45d95c41ac1df39efc73
+    10	- Human checklist: acceptance/human/Q1-calibration-disclosure/checklist.md
+    11	- Checklist SHA-256: 0a25e57af95eafe3093db314eb720303bda3d6d5d6737ca62d8e44fbcbf77e81
+    12	
+    13	## Item bindings
+    14	
+    15	| Item | Required role | Blocking |
+    16	| --- | --- | --- |
+    17	| H-01 | 研究负责人 | Yes |
+--- checklist numbered ---
+     1	# 人工验收清单：Q1-calibration-disclosure
+     2	
+     3	- 任务编号：Q1-calibration-disclosure
+     4	- 人工验收绑定：acceptance/human/Q1-calibration-disclosure/binding.md
+     5	- 验收合同：agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md
+     6	- 合同版本：4
+     7	- 清单状态：已批准
+     8	- 所需人工角色：研究负责人
+     9	- 清单负责人：用户
+    10	- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段推送 GitHub；R1 合同版本 9 已重新接受，Q1 必须重新绑定当前 R1 身份
+    11	- 执行结果：acceptance/human/Q1-calibration-disclosure/runs/<run-id>/result.md
+    12	
+    13	## H-01
+    14	
+    15	- 验收问题：三例困难度和科学优先级是否被清楚地限制为未校准的内部研究记录，且没有把高优先级写成可传播、可公开或已经得到数学确认？
+    16	- 必须人工判断的原因：研究优先级与对外沟通边界的语义解释不能由字段一致性测试完全替代。
+    17	- 前置条件：Q1 专项机器测试已通过；打开当前 R1 接受证据、固定政策夹具和 R1 范围说明。
+    18	- 验收步骤：
+    19	  1. 检查三例均标为 `UNCALIBRATED`，传播准备度均为 `NOT_READY`。
+    20	  2. 检查高科学优先级的两例没有被描述成准确、已解决、开放已确认或可公开。
+    21	  3. 检查每例均保留数学证明、新颖性接受、开放状态确认、统计性能和公开发布的禁止项。
+    22	- 预期观察：优先级与传播状态清楚分离；措辞只限固定 R1 三例和本地披露策略；没有统计性能、数学证明、外部文献或发布授权结论。
+    23	- 是否阻塞发布：是
+    24	- 结果记录规则：将签署后的观察和结论写入新的 `acceptance/human/Q1-calibration-disclosure/runs/<run-id>/result.md`；不得通过修改这份已批准清单来记录某次执行结果。
+
+ succeeded in 0ms:
+--- manifest numbered ---
+     1	{
+     2	  "schema_version": 1,
+     3	  "node_id": "Q1",
+     4	  "contract_version": 4,
+     5	  "source_identity": "8a6d908541b770461a081b43d8ced627befd0912+q1-v4-reaccept",
+     6	  "files": {
+     7	    "r1_evidence": {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json", "sha256": "672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71"},
+     8	    "q1_policy": {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json", "sha256": "f519e824ef92274ae2f9f3749ef84dc71beece3fb1c4523c98a765db98cf17bf"},
+     9	    "implementation": {"path": "matharc/v02/calibration_disclosure.py", "sha256": "bd5ead52e02730203ae0e1a45405c9eeaedc74b22d9fa616f417fdc6f3cb5e83"},
+    10	    "protected_test": {"path": "tests/test_v02_calibration_disclosure.py", "sha256": "7a38001d211c2b8ef5b6b45e8f8fa87f7b0ce9785559cc475eb511d250af5026"},
+    11	    "contract": {"path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md", "sha256": "e2db06e4a9d863bc1963e19d5aac1c17bc070adb84df45d95c41ac1df39efc73"},
+    12	    "candidate_evidence": {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json", "sha256": "6e27b1665ef04f8bd4481fbd5e20388114799c9bad8b735224b5b19fd13cd197"}
+    13	  },
+    14	  "required_invariants": [
+    15	    "R1 evidence must be EV-R1-ACCEPTED-2 and byte-identical to the pinned digest",
+    16	    "all three records must remain UNCALIBRATED and NOT_READY",
+    17	    "policy public_release_allowed must remain false",
+    18	    "the policy must not confer proof, literature, novelty, calibration-performance, production, or public-release authority"
+    19	  ]
+    20	}
+--- contract numbered ---
+     1	# Acceptance Contract: Q1-calibration-disclosure
+     2	
+     3	- Task ID: Q1-calibration-disclosure
+     4	- Contract version: 4
+     5	- Contract status: APPROVED
+     6	- Test baseline: LOCKED
+     7	- Acceptance owner: 研究负责人
+     8	- Approval evidence: 用户已要求持续完成、验收通过并逐阶段推送 GitHub；R1 合同版本 9 已以两份独立持久化 PASS 报告和 H-01 接受。Q1 合同版本 4 明确重新绑定当前 R1 身份并保留全部未校准及禁止公开边界。
+     9	- Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/Q1.json
+    10	- SSOT node: Q1
+    11	- SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+    12	- Readiness mode: FORMAL
+    13	- Decision refs: decision.problem-intelligence.amendment@2
+    14	- Assumption IDs: none
+    15	- Invalidation keys: validation.problem-intelligence.calibration-disclosure
+    16	- Baseline identity: origin/main@8a6d908541b770461a081b43d8ced627befd0912
+    17	- Human acceptance workspace: acceptance/human/Q1-calibration-disclosure
+    18	
+    19	## User and scenario
+    20	
+    21	研究负责人需要基于当前已接受 R1 三例固定回归夹具，记录困难度、研究优先级和传播边界，而不把该记录伪装为已校准预测、数学结论或公开发布授权。
+    22	
+    23	## Problem
+    24	
+    25	R1 固定了三例和四路检索增量，但没有机器可核验的困难度记录或披露限制。缺少该对象时，研究优先级可能被误当作传播准备度，小样本记录也可能被误读为统计性能或发布结论。
+    26	
+    27	## Expected outcome
+    28	
+    29	存在一个严格序列化的 Q1 政策夹具，逐字节绑定已接受的 R1 evidence 与回归夹具身份及内容摘要；三例均为 `UNCALIBRATED`，每例独立保留科学优先级与 `NOT_READY` 传播状态，并统一禁止数学证明、开放状态确认、新颖性接受、统计性能和公开发布结论。
+    30	
+    31	## Non-goals
+    32	
+    33	不进行网络检索、数学证明、开放状态确认、外部文献核验、统计校准、准确率/召回率/泛化计算、ResearchTrace/ClaimStatus 写入、新颖性授权、预算授权或生产发布。
+    34	
+    35	## Normal path
+    36	
+    37	```gherkin
+    38	Given a byte-locked current accepted R1 evidence record and its fixed three-case regression fixture
+    39	When the Q1 disclosure policy is loaded
+    40	Then it validates every source identity, case identity, uncalibrated label, priority, readiness, disclosure limit, and policy digest
+    41	And it returns a passive non-public policy record
+    42	```
+    43	
+    44	## Exception paths
+    45	
+    46	- R1 evidence ID、R1 evidence 摘要、夹具字节摘要、夹具内容摘要、主题或案例顺序漂移时必须拒绝。
+    47	- 缺少或多出字段、案例、限制项，或写入未知困难度/校准状态/科学优先级/传播状态时必须拒绝。
+    48	- 任意记录改为 `CALIBRATED`、`PUBLIC_READY`，或移除限制项时必须拒绝；不得降级为可发布结果。
+    49	- 策略摘要不一致时必须拒绝；失败时不产生部分政策或任何授权。
+    50	
+    51	## Invariants
+    52	
+    53	- Q1 只接受 `union-closed` 的 R1 固定三例及其既定顺序。
+    54	- 所有当前预测均为 `UNCALIBRATED`；传播准备度恒为 `NOT_READY`，不能由科学优先级提升。
+    55	- 每例的限制集合完整、去重且排序稳定，且 `public_release_allowed` 恒为 `false`。
+    56	- Q1 是只读、纯本地、被动的政策记录，不导入授权、声明、新颖性审计或网络能力。
+    57	
+    58	## Data impact
+    59	
+    60	仅新增不可变的本地 JSON 政策夹具和内存值对象；不修改数据库、运行时状态、R1 来源或外部系统。
+    61	
+    62	## Permissions
+    63	
+    64	研究负责人维护困难度和科学优先级的人工声明；研究负责人和仓库所有者保留后续 A5 发布决定权。Q1 本身无权发布或确认数学结论。
+    65	
+    66	## Performance and reliability
+    67	
+    68	固定三例政策加载应在 1 秒内完成；重复加载同一字节必须得到相同政策摘要；任一完整性校验失败均 fail closed。
+    69	
+    70	## Acceptance criteria
+    71	
+    72	| ID | Requirement | Verification layer | Mode | Blocking |
+    73	| --- | --- | --- | --- | --- |
+    74	| AC-01 | 三例、主题、R1 evidence、R1 夹具字节和内容身份被严格闭合 | Unit | Automatic | Yes |
+    75	| AC-02 | 未校准标记、科学优先级与传播准备度保持双轨分离 | Unit | Automatic | Yes |
+    76	| AC-03 | 身份、状态、优先级、限制、字段或摘要篡改均 fail closed | Unit | Automatic | Yes |
+    77	| AC-04 | 工件不授权公开发布，不依赖声明、新颖性或统计性能能力 | Static/Unit | Automatic | Yes |
+    78	
+    79	## Human acceptance
+    80	
+    81	| ID | Summary | Checklist path | Required role | Blocking |
+    82	| --- | --- | --- | --- | --- |
+    83	| H-01 | 研究负责人确认三例的优先级和披露措辞没有越过未校准、小样本与数学结论边界 | acceptance/human/Q1-calibration-disclosure/checklist.md#h-01 | 研究负责人 | Yes |
+    84	
+    85	## Protected acceptance tests
+    86	
+    87	| Path | SHA-256 | Covers |
+    88	| --- | --- | --- |
+    89	| tests/test_v02_calibration_disclosure.py | 7a38001d211c2b8ef5b6b45e8f8fa87f7b0ce9785559cc475eb511d250af5026 | AC-01, AC-02, AC-03, AC-04 |
+    90	
+    91	## Requirements-test traceability
+    92	
+    93	| Requirement | Verification | Evidence target | Mode | Blocking |
+    94	| --- | --- | --- | --- | --- |
+    95	| AC-01 | fixed-source and three-record unit tests | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+    96	| AC-02 | priority/readiness unit test | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+    97	| AC-03 | identity, status, disclosure and digest tamper tests | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+    98	| AC-04 | static dependency boundary test | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+    99	| H-01 | human checklist | acceptance/human/Q1-calibration-disclosure/checklist.md#h-01 | Human | Yes |
+   100	
+   101	## Exploratory testing
+   102	
+   103	检查高科学优先级但仍不可传播的记录、合法的零外部结论、字段顺序变化、未知字段、错误类型和重新计算摘要后的来源漂移；探索结果不能升级校准、开放状态或发布结论。
+   104	
+   105	## Production monitoring and rollback
+   106	
+   107	不适用。Q1 是本地政策工件，不进入生产；若 R1 夹具、校准证据或定义变更，废止当前政策夹具并重新验收，不能沿用其优先级或披露结论。
+   108	
+   109	## Risks and open decisions
+   110	
+   111	三个固定案例不构成校准样本，也不构成统计性能、泛化、外部文献或独立数学审阅。是否公开任何范围仍由 A5 的独立发布决定处理。R1 身份、固定夹具或本合同的保护测试任一变化均使 Q1 失效，并要求 A5 重新验收。
+
+exec
+/bin/zsh -lc "printf '%s\\n' '--- implementation numbered ---'; nl -ba matharc/v02/calibration_disclosure.py | sed -n '1,320p'; printf '%s\\n' '--- protected test numbered ---'; nl -ba tests/test_v02_calibration_disclosure.py | sed -n '1,280p'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+--- implementation numbered ---
+     1	"""Fail-closed Q1 records for uncalibrated difficulty and disclosure policy."""
+     2	
+     3	from __future__ import annotations
+     4	
+     5	import re
+     6	from dataclasses import dataclass
+     7	from enum import Enum
+     8	from typing import Any, Mapping, TypeVar
+     9	
+    10	from .schema import digest_json
+    11	
+    12	
+    13	_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+    14	_CASE_IDS = (
+    15	    "P-FRANKL-Q6",
+    16	    "P-ARXIV-2601-22401-COLLISION",
+    17	    "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+    18	)
+    19	_R1_EVIDENCE_ID = "EV-R1-ACCEPTED-2"
+    20	_R1_EVIDENCE_DIGEST = "672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71"
+    21	_R1_FIXTURE_DIGEST = "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c"
+    22	_R1_FIXTURE_CONTENT_DIGEST = "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9"
+    23	_R1_IMPLEMENTATION_BASE = "2e47f5040d3a833e10de07286d68f017efec5d42"
+    24	
+    25	
+    26	class CalibrationDisclosureError(ValueError):
+    27	    """Raised when a Q1 disclosure policy violates its fixed safety boundary."""
+    28	
+    29	
+    30	class CalibrationStatus(str, Enum):
+    31	    UNCALIBRATED = "UNCALIBRATED"
+    32	
+    33	
+    34	class DifficultyBand(str, Enum):
+    35	    LOW = "LOW"
+    36	    MEDIUM = "MEDIUM"
+    37	    HIGH = "HIGH"
+    38	
+    39	
+    40	class ScientificPriority(str, Enum):
+    41	    LOW = "LOW"
+    42	    MEDIUM = "MEDIUM"
+    43	    HIGH = "HIGH"
+    44	
+    45	
+    46	class CommunicationReadiness(str, Enum):
+    47	    NOT_READY = "NOT_READY"
+    48	
+    49	
+    50	class DisclosureLimit(str, Enum):
+    51	    NO_STATISTICAL_PERFORMANCE = "NO_STATISTICAL_PERFORMANCE"
+    52	    NO_MATHEMATICAL_PROOF = "NO_MATHEMATICAL_PROOF"
+    53	    NO_OPEN_STATUS_CONFIRMATION = "NO_OPEN_STATUS_CONFIRMATION"
+    54	    NO_NOVELTY_ACCEPTANCE = "NO_NOVELTY_ACCEPTANCE"
+    55	    NO_PUBLIC_RELEASE = "NO_PUBLIC_RELEASE"
+    56	
+    57	
+    58	_REQUIRED_LIMITS = tuple(sorted(item.value for item in DisclosureLimit))
+    59	_EnumValue = TypeVar("_EnumValue", bound=Enum)
+    60	
+    61	
+    62	def _fields(value: Mapping[str, Any], expected: set[str], label: str) -> None:
+    63	    unknown = set(value) - expected
+    64	    missing = expected - set(value)
+    65	    if unknown or missing:
+    66	        raise CalibrationDisclosureError(
+    67	            f"{label} fields mismatch: missing={sorted(missing)}, unknown={sorted(unknown)}"
+    68	        )
+    69	
+    70	
+    71	def _text(value: object, label: str) -> str:
+    72	    if not isinstance(value, str) or not value.strip():
+    73	        raise CalibrationDisclosureError(f"{label} must be non-empty text")
+    74	    return value
+    75	
+    76	
+    77	def _sha256(value: object, label: str) -> str:
+    78	    if not isinstance(value, str) or not _SHA256.fullmatch(value):
+    79	        raise CalibrationDisclosureError(f"{label} must be a lowercase SHA-256 digest")
+    80	    return value
+    81	
+    82	
+    83	def _string_list(value: object, label: str) -> tuple[str, ...]:
+    84	    if not isinstance(value, list) or any(not isinstance(item, str) or not item for item in value):
+    85	        raise CalibrationDisclosureError(f"{label} must be a text array")
+    86	    result = tuple(value)
+    87	    if result != tuple(sorted(result)) or len(result) != len(set(result)):
+    88	        raise CalibrationDisclosureError(f"{label} must be unique and sorted")
+    89	    return result
+    90	
+    91	
+    92	def _enum(value: object, enum_type: type[_EnumValue], label: str) -> _EnumValue:
+    93	    try:
+    94	        return enum_type(value)
+    95	    except (TypeError, ValueError) as exc:
+    96	        raise CalibrationDisclosureError(f"{label} has an unsupported value") from exc
+    97	
+    98	
+    99	@dataclass(frozen=True, slots=True)
+   100	class DifficultyRecord:
+   101	    """One manually declared difficulty record; it never infers research conclusions."""
+   102	
+   103	    case_id: str
+   104	    predicted_difficulty: DifficultyBand
+   105	    calibration_status: CalibrationStatus
+   106	    scientific_priority: ScientificPriority
+   107	    communication_readiness: CommunicationReadiness
+   108	    disclosure_limits: tuple[str, ...]
+   109	
+   110	    def __post_init__(self) -> None:
+   111	        if self.case_id not in _CASE_IDS:
+   112	            raise CalibrationDisclosureError("unknown Q1 case_id")
+   113	        if self.calibration_status is not CalibrationStatus.UNCALIBRATED:
+   114	            raise CalibrationDisclosureError("all current Q1 predictions must be UNCALIBRATED")
+   115	        if self.communication_readiness is not CommunicationReadiness.NOT_READY:
+   116	            raise CalibrationDisclosureError("uncalibrated predictions are not communication-ready")
+   117	        if self.disclosure_limits != _REQUIRED_LIMITS:
+   118	            raise CalibrationDisclosureError("each record must retain every required disclosure limit")
+   119	
+   120	    def to_dict(self) -> dict[str, Any]:
+   121	        return {
+   122	            "case_id": self.case_id,
+   123	            "predicted_difficulty": self.predicted_difficulty.value,
+   124	            "calibration_status": self.calibration_status.value,
+   125	            "scientific_priority": self.scientific_priority.value,
+   126	            "communication_readiness": self.communication_readiness.value,
+   127	            "disclosure_limits": list(self.disclosure_limits),
+   128	        }
+   129	
+   130	    @classmethod
+   131	    def from_dict(cls, value: Mapping[str, Any]) -> "DifficultyRecord":
+   132	        _fields(
+   133	            value,
+   134	            {
+   135	                "case_id",
+   136	                "predicted_difficulty",
+   137	                "calibration_status",
+   138	                "scientific_priority",
+   139	                "communication_readiness",
+   140	                "disclosure_limits",
+   141	            },
+   142	            "difficulty record",
+   143	        )
+   144	        return cls(
+   145	            case_id=_text(value["case_id"], "case_id"),
+   146	            predicted_difficulty=_enum(value["predicted_difficulty"], DifficultyBand, "predicted_difficulty"),
+   147	            calibration_status=_enum(value["calibration_status"], CalibrationStatus, "calibration_status"),
+   148	            scientific_priority=_enum(value["scientific_priority"], ScientificPriority, "scientific_priority"),
+   149	            communication_readiness=_enum(
+   150	                value["communication_readiness"], CommunicationReadiness, "communication_readiness"
+   151	            ),
+   152	            disclosure_limits=_string_list(value["disclosure_limits"], "disclosure_limits"),
+   153	        )
+   154	
+   155	
+   156	@dataclass(frozen=True, slots=True)
+   157	class CalibrationDisclosurePolicy:
+   158	    """A pinned Q1 policy that can only expose uncalibrated, non-public records."""
+   159	
+   160	    policy_id: str
+   161	    topic_id: str
+   162	    r1_evidence_id: str
+   163	    r1_evidence_sha256: str
+   164	    r1_fixture_sha256: str
+   165	    r1_fixture_content_sha256: str
+   166	    r1_implementation_base: str
+   167	    records: tuple[DifficultyRecord, ...]
+   168	
+   169	    def __post_init__(self) -> None:
+   170	        _text(self.policy_id, "policy_id")
+   171	        if self.topic_id != "union-closed":
+   172	            raise CalibrationDisclosureError("Q1 policy must remain bound to union-closed")
+   173	        if (
+   174	            self.r1_evidence_id != _R1_EVIDENCE_ID
+   175	            or self.r1_evidence_sha256 != _R1_EVIDENCE_DIGEST
+   176	            or self.r1_fixture_sha256 != _R1_FIXTURE_DIGEST
+   177	            or self.r1_fixture_content_sha256 != _R1_FIXTURE_CONTENT_DIGEST
+   178	            or self.r1_implementation_base != _R1_IMPLEMENTATION_BASE
+   179	        ):
+   180	            raise CalibrationDisclosureError("R1 source identity drift")
+   181	        if tuple(record.case_id for record in self.records) != _CASE_IDS:
+   182	            raise CalibrationDisclosureError("Q1 records must match the accepted R1 case order")
+   183	
+   184	    @property
+   185	    def policy_digest_sha256(self) -> str:
+   186	        return digest_json(
+   187	            {
+   188	                "schema_version": "1.0",
+   189	                "policy_id": self.policy_id,
+   190	                "topic_id": self.topic_id,
+   191	                "r1_evidence_id": self.r1_evidence_id,
+   192	                "r1_evidence_sha256": self.r1_evidence_sha256,
+   193	                "r1_fixture_sha256": self.r1_fixture_sha256,
+   194	                "r1_fixture_content_sha256": self.r1_fixture_content_sha256,
+   195	                "r1_implementation_base": self.r1_implementation_base,
+   196	                "records": [record.to_dict() for record in self.records],
+   197	                "public_release_allowed": False,
+   198	            }
+   199	        )
+   200	
+   201	    @property
+   202	    def public_release_allowed(self) -> bool:
+   203	        return False
+   204	
+   205	    def to_dict(self) -> dict[str, Any]:
+   206	        return {
+   207	            "schema_version": "1.0",
+   208	            "policy_id": self.policy_id,
+   209	            "topic_id": self.topic_id,
+   210	            "r1_evidence_id": self.r1_evidence_id,
+   211	            "r1_evidence_sha256": self.r1_evidence_sha256,
+   212	            "r1_fixture_sha256": self.r1_fixture_sha256,
+   213	            "r1_fixture_content_sha256": self.r1_fixture_content_sha256,
+   214	            "r1_implementation_base": self.r1_implementation_base,
+   215	            "records": [record.to_dict() for record in self.records],
+   216	            "public_release_allowed": False,
+   217	            "policy_digest_sha256": self.policy_digest_sha256,
+   218	        }
+   219	
+   220	    @classmethod
+   221	    def from_dict(cls, value: Mapping[str, Any]) -> "CalibrationDisclosurePolicy":
+   222	        _fields(
+   223	            value,
+   224	            {
+   225	                "schema_version",
+   226	                "policy_id",
+   227	                "topic_id",
+   228	                "r1_evidence_id",
+   229	                "r1_evidence_sha256",
+   230	                "r1_fixture_sha256",
+   231	                "r1_fixture_content_sha256",
+   232	                "r1_implementation_base",
+   233	                "records",
+   234	                "public_release_allowed",
+   235	                "policy_digest_sha256",
+   236	            },
+   237	            "calibration disclosure policy",
+   238	        )
+   239	        if value["schema_version"] != "1.0":
+   240	            raise CalibrationDisclosureError("unsupported calibration disclosure schema")
+   241	        if value["public_release_allowed"] is not False:
+   242	            raise CalibrationDisclosureError("Q1 may not authorize a public release")
+   243	        records = value["records"]
+   244	        if not isinstance(records, list) or any(not isinstance(item, Mapping) for item in records):
+   245	            raise CalibrationDisclosureError("records must be an array of objects")
+   246	        policy = cls(
+   247	            policy_id=_text(value["policy_id"], "policy_id"),
+   248	            topic_id=_text(value["topic_id"], "topic_id"),
+   249	            r1_evidence_id=_text(value["r1_evidence_id"], "r1_evidence_id"),
+   250	            r1_evidence_sha256=_sha256(value["r1_evidence_sha256"], "r1_evidence_sha256"),
+   251	            r1_fixture_sha256=_sha256(value["r1_fixture_sha256"], "r1_fixture_sha256"),
+   252	            r1_fixture_content_sha256=_sha256(
+   253	                value["r1_fixture_content_sha256"], "r1_fixture_content_sha256"
+   254	            ),
+   255	            r1_implementation_base=_text(value["r1_implementation_base"], "r1_implementation_base"),
+   256	            records=tuple(DifficultyRecord.from_dict(item) for item in records),
+   257	        )
+   258	        if _sha256(value["policy_digest_sha256"], "policy_digest_sha256") != policy.policy_digest_sha256:
+   259	            raise CalibrationDisclosureError("policy digest mismatch")
+   260	        return policy
+--- protected test numbered ---
+     1	from __future__ import annotations
+     2	
+     3	import copy
+     4	import hashlib
+     5	import json
+     6	import unittest
+     7	from pathlib import Path
+     8	
+     9	from matharc.v02.calibration_disclosure import CalibrationDisclosureError, CalibrationDisclosurePolicy
+    10	
+    11	
+    12	ROOT = Path(__file__).parents[1]
+    13	FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json"
+    14	R1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json"
+    15	R1_FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json"
+    16	Q1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
+    17	
+    18	
+    19	class CalibrationDisclosureTests(unittest.TestCase):
+    20	    def load(self) -> tuple[dict, CalibrationDisclosurePolicy]:
+    21	        payload = json.loads(FIXTURE.read_text(encoding="utf-8"))
+    22	        return payload, CalibrationDisclosurePolicy.from_dict(payload)
+    23	
+    24	    def test_three_uncalibrated_records_are_digest_bound_and_non_public(self) -> None:
+    25	        payload, policy = self.load()
+    26	        self.assertEqual(payload, policy.to_dict())
+    27	        self.assertFalse(policy.public_release_allowed)
+    28	        self.assertEqual(3, len(policy.records))
+    29	        self.assertTrue(all(record.calibration_status.value == "UNCALIBRATED" for record in policy.records))
+    30	        self.assertTrue(all(record.communication_readiness.value == "NOT_READY" for record in policy.records))
+    31	
+    32	    def test_policy_pins_current_accepted_r1_evidence_and_fixture_content(self) -> None:
+    33	        _, policy = self.load()
+    34	        r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
+    35	        r1_fixture = json.loads(R1_FIXTURE.read_text(encoding="utf-8"))
+    36	        self.assertEqual("EV-R1-ACCEPTED-2", r1_evidence["evidence_id"])
+    37	        self.assertEqual(
+    38	            hashlib.sha256(R1_EVIDENCE.read_bytes()).hexdigest(),
+    39	            policy.r1_evidence_sha256,
+    40	        )
+    41	        self.assertEqual(
+    42	            hashlib.sha256(R1_FIXTURE.read_bytes()).hexdigest(), policy.r1_fixture_sha256
+    43	        )
+    44	        self.assertEqual(r1_fixture["fixture_content_sha256"], policy.r1_fixture_content_sha256)
+    45	        self.assertEqual([record.case_id for record in policy.records], r1_fixture["case_ids"])
+    46	
+    47	    def test_current_q1_acceptance_requires_and_records_current_r1_identity(self) -> None:
+    48	        r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
+    49	        q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+    50	        self.assertEqual("EV-R1-ACCEPTED-2", r1_evidence["evidence_id"])
+    51	        self.assertEqual("EV-Q1-ACCEPTED-2", q1_evidence["evidence_id"])
+    52	        self.assertEqual("pass", q1_evidence["acceptance_self_check"])
+    53	        self.assertEqual("ACCEPTED", q1_evidence["proposed_state"])
+    54	        self.assertEqual(
+    55	            hashlib.sha256(R1_EVIDENCE.read_bytes()).hexdigest(),
+    56	            q1_evidence["source_identity"]["r1_evidence_sha256"],
+    57	        )
+    58	        policy = CalibrationDisclosurePolicy.from_dict(json.loads(FIXTURE.read_text(encoding="utf-8")))
+    59	        self.assertEqual(policy.policy_digest_sha256, q1_evidence["source_identity"]["q1_policy_digest_sha256"])
+    60	
+    61	    def test_science_priority_remains_separate_from_communication_readiness(self) -> None:
+    62	        _, policy = self.load()
+    63	        self.assertEqual("HIGH", policy.records[0].scientific_priority.value)
+    64	        self.assertEqual("NOT_READY", policy.records[0].communication_readiness.value)
+    65	
+    66	    def test_identity_status_priority_and_disclosure_tampering_fail_closed(self) -> None:
+    67	        payload, _ = self.load()
+    68	        for mutate in (
+    69	            lambda p: p.update({"topic_id": "foreign-topic"}),
+    70	            lambda p: p.update({"r1_evidence_sha256": "0" * 64}),
+    71	            lambda p: p.update({"r1_fixture_content_sha256": "0" * 64}),
+    72	            lambda p: p["records"][0].update({"calibration_status": "CALIBRATED"}),
+    73	            lambda p: p["records"][0].update({"communication_readiness": "PUBLIC_READY"}),
+    74	            lambda p: p["records"][0].update({"scientific_priority": "NOT_READY"}),
+    75	            lambda p: p["records"][0].update({"disclosure_limits": []}),
+    76	            lambda p: p.update({"public_release_allowed": True}),
+    77	            lambda p: p["records"].pop(),
+    78	            lambda p: p.update({"unexpected": "field"}),
+    79	        ):
+    80	            candidate = copy.deepcopy(payload)
+    81	            mutate(candidate)
+    82	            with self.subTest(mutate=mutate), self.assertRaises(CalibrationDisclosureError):
+    83	                CalibrationDisclosurePolicy.from_dict(candidate)
+    84	
+    85	    def test_digests_are_not_recomputable_by_a_fixture_consumer(self) -> None:
+    86	        payload, _ = self.load()
+    87	        candidate = copy.deepcopy(payload)
+    88	        candidate["records"][0]["predicted_difficulty"] = "LOW"
+    89	        with self.assertRaises(CalibrationDisclosureError):
+    90	            CalibrationDisclosurePolicy.from_dict(candidate)
+    91	
+    92	    def test_is_not_a_claim_novelty_or_statistical_performance_engine(self) -> None:
+    93	        source = (ROOT / "matharc/v02/calibration_disclosure.py").read_text(encoding="utf-8")
+    94	        self.assertNotIn("ResearchTrace", source)
+    95	        self.assertNotIn("ClaimStatus", source)
+    96	        self.assertNotIn("NoveltyAudit", source)
+    97	        self.assertNotIn("http", source.lower())
+    98	
+    99	
+   100	if __name__ == "__main__":
+   101	    unittest.main()
+
+codex
+The frozen material is internally coherent so far: R1 is explicitly `EV-R1-ACCEPTED-2`, while the historical R1 record is named separately; Q1 binds that current digest and the contract/binding/checklist all say version 4. I’m running the protected Q1 test and an independent parser/hash assertion now, then I’ll decide whether any candidate-status discrepancy is material to this identity-contract lane.
+exec
+/bin/zsh -lc "set -eu
+MANIFEST='agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json'
+printf '%s\\n' '--- pre-run git status (tracked/untracked summary) ---'
+git status --porcelain=v1 --untracked-files=no
+printf '%s\\n' '--- manifest-declared hash verification ---'
+jq -r '.files[] | [.path,.sha256] | @tsv' \""'$MANIFEST" | while IFS=$'"'\\t' read -r path declared; do
+  test -f \""'$path"
+  test ! -L "$path"
+  actual=$(shasum -a 256 "$path" | awk '"'{print "'$1}'"')
+  test \""'$actual" = "$declared"
+  printf '"'PASS %s %s\\n' \""'$path" "$actual"
+done
+printf '"'%s\\n' '--- contract/binding/checklist linkage assertions ---'
+rg -n -- '- Contract version: 4|- 合同版本：4|- Contract SHA-256: e2db06e4a9d863bc1963e19d5aac1c17bc070adb84df45d95c41ac1df39efc73|- Checklist SHA-256: 0a25e57af95eafe3093db314eb720303bda3d6d5d6737ca62d8e44fbcbf77e81' \\
+  agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md \\
+  acceptance/human/Q1-calibration-disclosure/binding.md \\
+  acceptance/human/Q1-calibration-disclosure/checklist.md
+printf '%s\\n' '--- current-R1 and candidate boundary assertions ---'
+jq -e '
+  .evidence_id == \"EV-R1-ACCEPTED-2\" and
+  .independent_ai_reviews.historical_evidence == \"agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json\"
+' agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json >/dev/null
+jq -e '
+  .evidence_id == \"EV-Q1-ACCEPTED-2\" and
+  .consumed_evidence == [\"EV-R1-ACCEPTED-2\"] and
+  .source_identity.r1_evidence_sha256 == \"672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71\" and
+  .proposed_state == \"ACCEPTED\" and
+  .independent_ai_reviews.review_boundary | contains(\"not mathematical proof\")
+' agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json >/dev/null
+jq -e '.public_release_allowed == false and ([.records[].calibration_status] | unique) == [\"UNCALIBRATED\"] and ([.records[].communication_readiness] | unique) == [\"NOT_READY\"]' agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json >/dev/null
+printf '%s\\n' 'PASS identity/current-R1/non-public assertions'
+printf '%s\\n' '--- independent policy parser/digest assertions ---'
+PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 - <<'PY'
+import hashlib
+import json
+from pathlib import Path
+from matharc.v02.calibration_disclosure import CalibrationDisclosurePolicy
+root = Path.cwd()
+fixture = root / 'agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json'
+candidate = json.loads((root / 'agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json').read_text())
+payload = json.loads(fixture.read_text())
+policy = CalibrationDisclosurePolicy.from_dict(payload)
+assert payload == policy.to_dict()
+assert policy.policy_digest_sha256 == payload['policy_digest_sha256']
+assert policy.policy_digest_sha256 == candidate['source_identity']['q1_policy_digest_sha256']
+assert policy.public_release_allowed is False
+assert len(policy.records) == 3
+assert all(record.calibration_status.value == 'UNCALIBRATED' for record in policy.records)
+assert all(record.communication_readiness.value == 'NOT_READY' for record in policy.records)
+assert hashlib.sha256(fixture.read_bytes()).hexdigest() == 'f519e824ef92274ae2f9f3749ef84dc71beece3fb1c4523c98a765db98cf17bf'
+print('PASS policy parse/digest/status assertions')
+print('policy_digest_sha256=' + policy.policy_digest_sha256)
+PY
+printf '%s\\n' '--- protected Q1 test ---'
+PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_calibration_disclosure
+printf '%s\\n' '--- post-run git status (tracked/untracked summary) ---'
+git status --porcelain=v1 --untracked-files=no
+printf '%s\\n' '--- post-run frozen hashes ---'
+jq -r '.files[] | [.path,.sha256] | @tsv' \""'$MANIFEST" | while IFS=$'"'\\t' read -r path declared; do actual="'$(shasum -a 256 "$path" | awk '"'{print "'$1}'"'); test \""'$actual" = "$declared"; printf '"'PASS %s\\n' \""'$path"; done' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ exited 127 in 28ms:
+zsh:9: command not found: shasum
+zsh:9: command not found: awk
+
+codex
+The first verification harness stopped before touching any files because this shell instance lacked `shasum`/`awk` on `PATH`; the earlier direct hash pass had succeeded. I’m correcting the command to use absolute system tool paths, preserving the observed pre-run dirty worktree as baseline, and will rerun the checks without writing anything.
+exec
+/bin/zsh -lc "printf 'PATH=%s\\n' \""'$PATH"; command -v jq || true; command -v shasum || true; command -v awk || true; command -v /usr/bin/shasum || true; command -v /usr/bin/awk || true; ls -l /usr/bin/shasum /usr/bin/awk /opt/homebrew/bin/jq 2>&1 || true' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+PATH=/Users/vsiyo/Desktop/Opensource_Tool/npm-global/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/opt/homebrew/opt/python@3.12/libexec/bin:/Users/vsiyo/.antigravity/antigravity/bin:/Users/vsiyo/Desktop/Opensource_Tool/npm-global/bin:/Users/vsiyo/Desktop/Opensource_Tool/npm-global/bin:/opt/homebrew/bin:/opt/homebrew/sbin:/Users/vsiyo/.elan/bin:/usr/local/bin:/System/Cryptexes/App/usr/bin:/usr/bin:/bin:/usr/sbin:/sbin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/local/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/bin:/var/run/com.apple.security.cryptexd/codex.system/bootstrap/usr/appleinternal/bin:/Library/Apple/usr/bin:/Users/vsiyo/.codex/tmp/arg0/codex-arg0E5KSy6:/Users/vsiyo/Desktop/Opensource_Tool/npm-global/lib/node_modules/@openai/codex/node_modules/@openai/codex-darwin-arm64/vendor/aarch64-apple-darwin/codex-path:/opt/homebrew/opt/python@3.12/libexec/bin:/Users/vsiyo/.antigravity/antigravity/bin:/Users/vsiyo/Desktop/Opensource_Tool/npm-global/bin:/Users/vsiyo/.codex/tmp/arg0/codex-arg0KgLqIH:/Users/vsiyo/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/override:/Users/vsiyo/.local/bin:/Applications/Obsidian.app/Contents/MacOS:/Users/vsiyo/.maestro/bin:/Users/vsiyo/.cache/codex-runtimes/codex-primary-runtime/dependencies/bin/fallback:/Applications/ChatGPT.app/Contents/Resources:/Users/vsiyo/.maestro/bin
+/opt/homebrew/bin/jq
+/usr/bin/shasum
+/usr/bin/awk
+/usr/bin/shasum
+/usr/bin/awk
+lrwxr-xr-x@ 1 vsiyo  admin      25 Aug 20  2025 /opt/homebrew/bin/jq -> ../Cellar/jq/1.8.1/bin/jq
+-rwxr-xr-x  1 root   wheel  302368 Sep 25  2025 /usr/bin/awk
+-rwxr-xr-x  2 root   wheel    9979 Sep 25  2025 /usr/bin/shasum
+

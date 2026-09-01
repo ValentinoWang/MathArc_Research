@@ -1,14 +1,20 @@
 {
-  "evidence_id": "EV-A5-REOPENED-2",
+  "evidence_id": "EV-A5-ACCEPTED-4",
   "task_id": "A5",
-  "consumed_evidence": ["EV-Q1-ACCEPTED-1"],
+  "consumed_evidence": ["EV-Q1-ACCEPTED-2"],
   "source_identity": {
-    "q1_evidence_sha256": "103d46d965a6bad218196ef41a399390fc372d238beb11c4b53511681603334c",
-    "q1_policy_fixture_sha256": "abec04146d058c28899ffc1ac3a61d93d14c0468696b65b6558f9f6fbcab8426",
-    "q1_policy_digest_sha256": "46622020c1f86981de9b2b3372f04d29abad119d823ca571998798b806006cda",
-    "q1_implementation_sha256": "b4988a67c0a13918a0ce775c01be687423822c8e069c1ebb03a09c4c9b4c6535",
-    "q1_protected_test_sha256": "0a55a78158faa4f28b47d02b983fbdbd32217155b8d8ca17e659646dd7d7ec9d",
-    "accepted_upstream_remote_main": "9d727862a5566b32fdeec3af017dc466a5f9dd12"
+    "implementation_base": "20d41af66b03d037b7e390ce31800fcc9d573a3e",
+    "q1_evidence_sha256": "38fea80f74cda3b1e91b87e92b15337692e1162b3ccc9701804c74cb48468774",
+    "q1_policy_fixture_sha256": "566533a91201ee353ef80efd13e7e039e21692b4ef5334a8a55e940cccf58064",
+    "q1_policy_digest_sha256": "05f843c5c4c3956c50b211ed7e41dd4e05e2705fa74759ba8d4b4e2bb0c5748c",
+    "q1_implementation_sha256": "1a56ac0e25023e7103adc4c18e9ce50157bb6f58dee57247aba22ada5a352b50",
+    "q1_protected_test_sha256": "89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db",
+    "q1_node_sha256": "b889b6190d030ef0a53028fa953b83766fbb46f3ec0f25480f3ba1f7b4a28952",
+    "q1_execution_contract_sha256": "bea478adc7da2f5f21c01990a2bcf6820ac4b469f7a131d1e9552f527dd7c31b",
+    "q1_frozen_inputs_sha256": "e0f14cd0ff4074cf745d14b23013dedd2e64683379b116c9d145b4209142e1d9",
+    "q1_final_ledger_sha256": "53bd3643f9dafe03aa821a8fc61678f71e804b371b09b86a3435b09430e739b4",
+    "q1_identity_review_sha256": "87da2960befb8b50514cdad1d17cb569a60e4745c0d52d5478ee3558fd9f63de",
+    "q1_policy_review_sha256": "91c33fdcabdf3c74ea542b336d2ecd52ff3d4d6c3e04368911c405679b078f19"
   },
   "release_scope": {
     "evidence_level": "source",
@@ -28,11 +34,11 @@
     ]
   },
   "release_decision": {
-    "status": "BLOCKED_UPSTREAM_R1_REVIEW",
-    "github_source_delivery_authorized": false,
+    "status": "ACCEPTED_SOURCE_SCOPE",
+    "github_source_delivery_authorized": true,
     "mathematical_result_publication_authorized": false,
     "q1_public_release_allowed": false,
-    "reason": "Q1 was invalidated when R1 was reopened for its missing durable independent AI review reports. Historical source-delivery evidence is retained, but no current GitHub source delivery decision is authorized until R1 and Q1 are reaccepted."
+    "reason": "Current Q1 v5 identity is accepted and independently reviewed. The joint A5 decision authorizes only the bounded repository-source delivery after the final main ref is pushed and read back."
   },
   "delivery_requirements": {
     "remote_ref_readback": "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
@@ -41,21 +47,24 @@
   "acceptance_record": {
     "accepted_at": "2026-09-01",
     "accepted_by": "用户（研究负责人和仓库所有者）",
-    "authority_basis": "用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；本切片仅记录受限的仓库源级发布决定。",
-    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T010700Z-local-a5c007/result.md",
-    "machine_acceptance_result_sha256": "c4ace31d4d0307d354c65201ce004fbe8bd0b0d7dc46e8a5f0e5b6dbda4b9242",
-    "human_acceptance_result": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T010800Z-local-a5c008/result.md",
-    "human_acceptance_result_sha256": "3572323d59d6e94cdd990f5fc24204a30d3aeb61bf75bf9271bb6286d90437e9",
-    "release_review_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T010900Z-local-a5c009/result.md",
-    "release_review_result_sha256": "f333f921450d3deb7b2766a8fde29b01c20934b79a36c82daa9762f024fb8192"
+    "authority_basis": "用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；本切片只接受受限的仓库源级交付决定。",
+    "machine": {
+      "result_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T160000Z-local-a5f001/result.md",
+      "result_sha256": "9e1f9439a4996415027732aecb427c4b9c8d84143b9365fd74b79c231e92181f",
+      "status": "PASS"
+    },
+    "human": {
+      "result_path": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T160100Z-local-a5f002/result.md",
+      "result_sha256": "8fba125e0e5373a311143b535e4b1ff9546d368c16672580a021f34031c22ab4",
+      "status": "PASS"
+    },
+    "release_review": {
+      "result_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T160200Z-local-a5f003/result.md",
+      "result_sha256": "e99b4aa45d6280b199c45052cf153a53c6b961c5e874124e305fca93c8e33100",
+      "status": "PASS"
+    }
   },
-  "invalidation": {
-    "invalidated_at": "2026-09-01",
-    "cause": "Q1-invalidated-by-R1-review-contract-v4",
-    "basis": "R1 合同版本 4 使两份持久化独立 AI PASS 报告成为阻断条件，当前 Q1 已随之失效，因此 A5 的历史发布决定不得继续作为当前 GitHub 源码交付授权。",
-    "required_reacceptance": "先接受 R1，再重新核验或版本化 Q1，并在新的上游身份上重新执行 A5 的机器、人工与发布复审。"
-  },
-  "proposed_state": "BLOCKED",
+  "proposed_state": "ACCEPTED",
   "unverified_items": [
     "Independent mathematical proof review",
     "Live external literature retrieval",

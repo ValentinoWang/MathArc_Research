@@ -1,0 +1,23 @@
+{
+  "artifact_dir": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-review-integrity-remediation",
+  "attempts": [],
+  "automatic_executor_switch": false,
+  "automatic_l4_fallback": false,
+  "final_decision": "running",
+  "l3_escalation_limit": 1,
+  "l3_wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh",
+  "ledger_path": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-review-integrity-remediation/ledger/r1-v9-review-integrity-remediation.json",
+  "primary_executor": "lw-luna",
+  "primary_retry_limit": 1,
+  "primary_wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+  "project_root": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research",
+  "schema_version": 2,
+  "spawn_agent_fallback": false,
+  "started_at": "2026-08-31T23:32:20.027141+00:00",
+  "task_file": "/private/tmp/matharc-r1-v9-remediation-task.txt",
+  "task_id": "r1-v9-review-integrity-remediation",
+  "task_sha256": "13934a99503f99cedd66f48deeb3bd889ae15f3dc3bce5b57e3f03ad2d122a98",
+  "validation_command_file": "/private/tmp/matharc-r1-v9-remediation-validation.sh",
+  "validation_command_sha256": "98cbd32046076109012eb6636b66ba986dc91ff86294231e518df3baed84a9fd",
+  "validation_execution_mode": "prelaunch-bytes-via-stdin"
+}

@@ -1,42 +1,55 @@
 {
-  "ledger_id": "Q1-FINAL-RECONCILIATION-20260901",
+  "ledger_id": "Q1-FINAL-RECONCILIATION-20260901-V5",
   "task_id": "Q1-calibration-disclosure",
   "status": "PASS",
-  "frozen_source_commit": "b35e02c2f12d1180ffca1c6af3d29b543c5929da",
+  "campaign_id": "Q1-final-reconciliation-20260901-v5",
+  "frozen_source_commit": "20d41af66b03d037b7e390ce31800fcc9d573a3e",
   "q1_evidence": {
     "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json",
-    "sha256": "9cabc04c839042af524b8a9977df9fd59ae937f3826ef00ed9875484ec7e56d5"
+    "sha256": "38fea80f74cda3b1e91b87e92b15337692e1162b3ccc9701804c74cb48468774"
   },
   "source_identity": {
-    "r1_evidence_sha256": "aa9a8def4e4b6b0155f1007ec1c5ae672b5bc9f697f28c3aae829e95ff12e9f6",
-    "q1_policy_fixture_sha256": "8a06da36b77810acb3ff3217a4a2a8b114bc4adec9d6131ca1d207566ad6cb2b",
-    "q1_implementation_sha256": "9ab6da778bb5c59d87e28f4f196b3670e6126134970b7c14c2ebe52929be33a7",
+    "r1_evidence_sha256": "073fecdfae5f7ca8c8adc946959b3fd030b60d3c8960b22230d2256b7679114c",
+    "q1_policy_fixture_sha256": "566533a91201ee353ef80efd13e7e039e21692b4ef5334a8a55e940cccf58064",
+    "q1_implementation_sha256": "1a56ac0e25023e7103adc4c18e9ce50157bb6f58dee57247aba22ada5a352b50",
     "protected_test_sha256": "89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db"
+  },
+  "frozen_inputs": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/frozen-inputs-v5.json",
+    "sha256": "e0f14cd0ff4074cf745d14b23013dedd2e64683379b116c9d145b4209142e1d9"
+  },
+  "q1_node": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/Q1.json",
+    "sha256": "b889b6190d030ef0a53028fa953b83766fbb46f3ec0f25480f3ba1f7b4a28952"
+  },
+  "q1_execution_contract": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/execution-contracts/Q1.json",
+    "sha256": "bea478adc7da2f5f21c01990a2bcf6820ac4b469f7a131d1e9552f527dd7c31b"
   },
   "selected_acceptance_runs": {
     "machine": {
-      "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T123000Z-local-f1a401/result.md",
-      "sha256": "48da555788cf217e37446b83ac2717ada13ca88e41da86f8f2e4bf3091d9f989"
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T140000Z-local-a1e001/result.md",
+      "sha256": "be814484f9f91962151e8fa96d91a55f1ce3b9bf150c7490ce9e2fd15a6dc15a"
     },
     "human": {
-      "path": "acceptance/human/Q1-calibration-disclosure/runs/20260901T123100Z-local-f1a501/result.md",
-      "sha256": "f1d062430e07b9b7484ddcc00b35d0d5b38396b6a4f18f0291960d8e90d33127"
+      "path": "acceptance/human/Q1-calibration-disclosure/runs/20260901T140300Z-local-a1e002/result.md",
+      "sha256": "2cbe0dacecd74fe176e7487b4723f7a89dd34c57c4d11fc87fbe6a31294f293e"
     }
   },
   "independent_reviews": [
     {
       "lane": "identity-contract",
-      "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/final-reports-v2/identity-contract-final.md",
-      "sha256": "fe76fd370e1ecc2087d0b2feac3b653597db3ca9c209942fc668827747d33256",
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/final-reports-v5/identity-contract-final.md",
+      "sha256": "87da2960befb8b50514cdad1d17cb569a60e4745c0d52d5478ee3558fd9f63de",
       "verdict": "PASS"
     },
     {
       "lane": "policy-boundary",
-      "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/final-reports-v2/policy-boundary-final.md",
-      "sha256": "4d8bde9c06fcb2ef69f02472a66a3ecddc0e48f3812bda21558d1bbe371e04af",
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/final-reports-v5/policy-boundary-final.md",
+      "sha256": "91c33fdcabdf3c74ea542b336d2ecd52ff3d4d6c3e04368911c405679b078f19",
       "verdict": "PASS"
     }
   ],
   "acceptance_boundary": "Local Q1 disclosure-policy acceptance only; this ledger does not establish mathematics, literature or open-status verification, novelty, calibration performance, production/device behavior, or public-release authorization.",
-  "self_reference_rule": "This detached ledger one-way pins Q1 evidence and reports. Q1.json intentionally does not pin this ledger or report digests."
+  "self_reference_rule": "This detached ledger one-way pins the frozen v5 inputs, Q1 node and execution contract, Q1 evidence, selected runs, and distinct reports. Q1.json intentionally does not pin this ledger or report digests."
 }

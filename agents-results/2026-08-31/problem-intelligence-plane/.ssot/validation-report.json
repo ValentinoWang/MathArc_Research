@@ -1,130 +1,17 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-08-31T19:32:13.463220+00:00",
+  "generated_at": "2026-09-01T02:09:31.496344+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
-    "commit": "47e0b203855213f5f02b99252edd1276b114f94e",
+    "commit": "480c64bc92ecab178f202daead187acd9656cd1d",
     "dirty": true,
     "dirty_files": [
-      ".pre-commit-config.yaml",
-      "AGENTS.md",
-      "Core/harnesses/fullstack-ai-harness.md",
-      "Core/harnesses/product-frontend-harness.md",
-      "Core/skills/business-plan-commercial-story/SKILL.md",
-      "Core/skills/business-plan-facts-evidence/SKILL.md",
-      "Core/skills/business-plan-facts-evidence/scripts/test_validate_business_plan_sources.py",
-      "Core/skills/business-plan-facts-evidence/scripts/validate_business_plan_sources.py",
-      "Core/skills/business-plan-release-qa/SKILL.md",
-      "Core/skills/business-plan-release-qa/scripts/find_external_copy_review_candidates.py",
-      "Core/skills/business-plan-release-qa/tests/test_find_external_copy_review_candidates.py",
-      "Core/skills/business-plan/SKILL.md",
-      "Core/skills/codex-explicit-worker-orchestration/SKILL.md",
-      "Core/skills/design-acceptance-contract/SKILL.md",
-      "Core/skills/design-acceptance-contract/references/acceptance-contract-template.md",
-      "Core/skills/mainline-attribution-discipline/SKILL.md",
-      "Core/skills/product-context-discovery/SKILL.md",
-      "Core/skills/product-context-discovery/agents/openai.yaml",
-      "Core/skills/role-fit-ux/SKILL.md",
-      "Core/skills/role-fit-ux/agents/openai.yaml",
-      "Core/skills/screen-contract-ui/SKILL.md",
-      "Core/skills/screen-contract-ui/assets/schemas/product-context.schema.json",
-      "Core/skills/screen-contract-ui/assets/schemas/resolved-surface-contract.schema.json",
-      "Core/skills/screen-contract-ui/assets/schemas/role-context.schema.json",
-      "Core/skills/screen-contract-ui/assets/schemas/role-fit-contract.schema.json",
-      "Core/skills/screen-contract-ui/assets/schemas/screen-contract.schema.json",
-      "Core/skills/screen-contract-ui/assets/schemas/surface-definition.schema.json",
-      "Core/skills/screen-contract-ui/assets/schemas/ui-change.schema.json",
-      "Core/skills/screen-contract-ui/scripts/screen_contract_pipeline.py",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/canonical/product-context.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/canonical/resolved-surface-contract.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/canonical/role-context.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/canonical/role-fit-contract.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/canonical/screen-contract.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/canonical/surface-definition.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/canonical/ui-change.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/failing/direct-human-surface-reference.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/failing/missing-product-role-entity.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/failing/missing-role-fit-element-decision.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/failing/omitted-role-context-reference.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/failing/omitted-screen-contract-reference.json",
-      "Core/skills/screen-contract-ui/tests/fixtures/product-aware/failing/stale-entity-digest.json",
-      "Core/skills/screen-contract-ui/tests/test_screen_contract_pipeline.py",
-      "Harness_Product_Aware_Frontend_Design_Development_Spec_v0.2.0.md",
-      "Projects/Athlete-OS_repo/PROJECT.md",
-      "Projects/Athlete-OS_repo/skills/ai-harness-maintenance/SKILL.md",
-      "Projects/Athlete-OS_repo/skills/athlete-os-acceptance-e2e-adapter/SKILL.md",
-      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-modification/SKILL.md",
-      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-modification/references/frontend-ia-route-shell.md",
-      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/SKILL.md",
-      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/agents/openai.yaml",
-      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/references/backend-variable-leakage-review.md",
-      "Projects/Athlete-OS_repo/skills/athlete-os-frontend-quality-gates/references/impeccable-localization.md",
-      "Projects/Athlete-OS_repo/source-provenance.json",
-      "README.md",
-      "acceptance/human/C1-product-aware-contract/binding.md",
-      "acceptance/human/C1-product-aware-contract/checklist.md",
-      "acceptance/human/I1-product-aware-core/binding.md",
-      "acceptance/human/I1-product-aware-core/checklist.md",
-      "acceptance/human/PZ-source-integrity/binding.md",
-      "acceptance/human/PZ-source-integrity/checklist.md",
-      "acceptance/index.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-C1-Q1.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-D1-C1.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-D1-D2.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-F-D1.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-F-PZ.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-I1-Q2.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-PZ-QZ.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-Q1-I1.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-Q2-DC.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/edges/E-QZ-C1.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/manifest.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/C1.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/D1.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/D2.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/DC.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/F.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/I1.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/PZ.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/Q1.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/Q2.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/nodes/QZ.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/planning-compiler.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/validation-report.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/.ssot/view-sources/00-main.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/C1-product-aware-contract/acceptance-contract.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/C1-product-aware-contract/acceptance/index.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/C1-product-aware-contract/acceptance/machine/static/runs/20260901T023808Z-static-test-c1b02e/evidence/c1-static-contract.log",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/C1-product-aware-contract/acceptance/machine/static/runs/20260901T023808Z-static-test-c1b02e/result.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/C1-product-aware-contract/acceptance/machine/unit/runs/20260901T023808Z-static-test-c1a01f/evidence/test_screen_contract_pipeline.log",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/C1-product-aware-contract/acceptance/machine/unit/runs/20260901T023808Z-static-test-c1a01f/result.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/I1-product-aware-core/acceptance-contract.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/I1-product-aware-core/acceptance/index.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/I1-product-aware-core/acceptance/machine/static/runs/20260901T024000Z-static-test-1b20be/evidence/i1-static.log",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/I1-product-aware-core/acceptance/machine/static/runs/20260901T024000Z-static-test-1b20be/result.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/I1-product-aware-core/acceptance/machine/unit/runs/20260901T024000Z-static-test-1a10af/evidence/i1-unit.log",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/I1-product-aware-core/acceptance/machine/unit/runs/20260901T024000Z-static-test-1a10af/result.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance-contract.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/index.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/evidence/list-profiles.log",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/evidence/list-skills-flutter.log",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/evidence/list-skills-project-athlete-os.log",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/evidence/list-skills-project-hongru-digital-education.log",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/evidence/source-audit.log",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/static/runs/20260901T020447Z-static-test-24ac87/result.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/unit/runs/20260901T020447Z-static-test-6e2d4f/evidence/test_harnessctl_source_audit.log",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/acceptance-fragments/PZ-source-integrity/acceptance/machine/unit/runs/20260901T020447Z-static-test-6e2d4f/result.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/implementation-progress.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/ssot-archive.json",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/ssot-development-paths.md",
-      "registry.yaml",
-      "templates/AGENTS-harness-snippet.md",
-      "templates/project-harness-adapter.template.yaml",
-      "tools/harnessctl.py",
-      "tools/tests/test_harnessctl_source_audit.py",
-      "tools/tests/test_product_aware_frontend_core.py"
+      "Core/harnesses/human-acceptance-blocking-integrity-guard-card.md",
+      "Core/skills/design-acceptance-contract/references/manual-acceptance-log-contract.md",
+      "Core/skills/design-acceptance-contract/scripts/manage_acceptance_artifacts.py",
+      "Core/skills/design-acceptance-contract/tests/test_manage_acceptance_artifacts.py"
     ],
-    "dirty_diff_sha256": "0093d31666b805f2e77674139aff45e5caee10797383ba3d74df0a33affd9778",
+    "dirty_diff_sha256": "dd99897aa13b47567fdf807755a2a0d17fdf1378bff2bcbeec6b8ad3c1c0e5cb",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
     "skill_sha256": "23d9638a5bd3fae1638480a1c170eac691ab6975678d752f8bd4cdf40c536d41",
@@ -132,37 +19,37 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "ecb751529073f0e9ae3b761ba28e1ccb60ef1cc9",
+    "project_commit": "20d41af66b03d037b7e390ce31800fcc9d573a3e",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "41e82703f94a450b236510669390ca5d1bfd83a6c4828a8b73dd7d100e7bde12",
+    "project_dirty_diff_sha256": "ae55341261bf41a2ec4b21ff4debca4b2610597cf1b5afc0455e7351fcd2f656",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "9ef5565cd11dfbaf2e60e1b94f9a3a55cb18a9149bcf45d06c027a0effb4bd7f",
-    "content_sha256": "9ef5565cd11dfbaf2e60e1b94f9a3a55cb18a9149bcf45d06c027a0effb4bd7f",
-    "manifest_sha256": "4d6343ca6e467d6544ce0723736c25282868283d481e1d57591ced4b44c7c224",
-    "manifest_identity_sha256": "4d6343ca6e467d6544ce0723736c25282868283d481e1d57591ced4b44c7c224"
+    "sha256": "e7d8ba7757daba627563aa3125e89fcc7d71b2f99ef6ec1d1b55b5c2c9dfcff9",
+    "content_sha256": "e7d8ba7757daba627563aa3125e89fcc7d71b2f99ef6ec1d1b55b5c2c9dfcff9",
+    "manifest_sha256": "0b9ca96ef1f962a7369641ad6c991497a27ad590ca5cec1b6eb17092479a84d4",
+    "manifest_identity_sha256": "0b9ca96ef1f962a7369641ad6c991497a27ad590ca5cec1b6eb17092479a84d4"
   },
   "checks": [
     {
       "id": "runtime-skill-provenance",
       "command": [
-        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/private/tmp/matharc-publication-ci-20260901/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/tools/harnessctl.py",
         "doctor",
         "--project",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
         "--check-runtime-skills"
       ],
-      "exit_code": 1,
-      "result": "failed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 34\nruntime_skill_check: enabled\nWARN Harness source dirty files: 45\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/develop/Harness/product-frontend-harness.md\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.agents/skills/product-context-discovery\nFAIL target link missing: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.agents/skills/role-fit-ux\n"
+      "exit_code": 0,
+      "result": "passed",
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 34\nruntime_skill_check: enabled\nWARN Harness source dirty files: 4\ndoctor: ok\n"
     },
     {
       "id": "complexity",
       "command": [
-        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/private/tmp/matharc-publication-ci-20260901/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/planning-compiler.json"
       ],
@@ -173,7 +60,7 @@
     {
       "id": "render",
       "command": [
-        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/private/tmp/matharc-publication-ci-20260901/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
         "--check",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
@@ -185,29 +72,29 @@
     {
       "id": "machine-program",
       "command": [
-        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/private/tmp/matharc-publication-ci-20260901/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "SSOT program check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json (nodes=17, formal_ready=1, conditional_ready=0)\n"
+      "output": "SSOT program check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json (nodes=17, formal_ready=0, conditional_ready=0)\n"
     },
     {
       "id": "parallelism-analysis",
       "command": [
-        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/private/tmp/matharc-publication-ci-20260901/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "{\n  \"actor_pools\": {\n    \"codex-primary\": {\n      \"actor\": \"codex\",\n      \"capacity\": 1\n    },\n    \"human-review\": {\n      \"actor\": \"human\",\n      \"capacity\": 1\n    }\n  },\n  \"critical_path_edges\": 15,\n  \"current_ready_nodes\": [\n    \"R1\"\n  ],\n  \"current_ready_width\": 1,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"CHARTER\",\n      \"unlocks\": [\n        \"F1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"F1\",\n      \"unlocks\": [\n        \"D1\",\n        \"D2\"\n      ],\n      \"waits_for\": [\n        \"CHARTER\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D1\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D2\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A1\",\n      \"unlocks\": [\n        \"L1\"\n      ],\n      \"waits_for\": [\n        \"D1\",\n        \"D2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L1\",\n      \"unlocks\": [\n        \"L2\"\n      ],\n      \"waits_for\": [\n        \"A1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L2\",\n      \"unlocks\": [\n        \"A2\"\n      ],\n      \"waits_for\": [\n        \"L1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A2\",\n      \"unlocks\": [\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"L2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"S2\"\n      ],\n      \"waits_for\": [\n        \"A2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S2\",\n      \"unlocks\": [\n        \"A3\"\n      ],\n      \"waits_for\": [\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A3\",\n      \"unlocks\": [\n        \"T1\"\n      ],\n      \"waits_for\": [\n        \"S2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T1\",\n      \"unlocks\": [\n        \"T2\"\n      ],\n      \"waits_for\": [\n        \"A3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T2\",\n      \"unlocks\": [\n        \"A4\"\n      ],\n      \"waits_for\": [\n        \"T1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A4\",\n      \"unlocks\": [\n        \"R1\"\n      ],\n      \"waits_for\": [\n        \"T2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"R1\",\n      \"unlocks\": [\n        \"Q1\"\n      ],\n      \"waits_for\": [\n        \"A4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"Q1\",\n      \"unlocks\": [\n        \"A5\"\n      ],\n      \"waits_for\": [\n        \"R1\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 2,\n  \"resource_verified_width\": 1,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n"
+      "output": "{\n  \"actor_pools\": {\n    \"codex-primary\": {\n      \"actor\": \"codex\",\n      \"capacity\": 1\n    },\n    \"human-review\": {\n      \"actor\": \"human\",\n      \"capacity\": 1\n    }\n  },\n  \"critical_path_edges\": 15,\n  \"current_ready_nodes\": [],\n  \"current_ready_width\": 0,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"CHARTER\",\n      \"unlocks\": [\n        \"F1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"F1\",\n      \"unlocks\": [\n        \"D1\",\n        \"D2\"\n      ],\n      \"waits_for\": [\n        \"CHARTER\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D1\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D2\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A1\",\n      \"unlocks\": [\n        \"L1\"\n      ],\n      \"waits_for\": [\n        \"D1\",\n        \"D2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L1\",\n      \"unlocks\": [\n        \"L2\"\n      ],\n      \"waits_for\": [\n        \"A1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L2\",\n      \"unlocks\": [\n        \"A2\"\n      ],\n      \"waits_for\": [\n        \"L1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A2\",\n      \"unlocks\": [\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"L2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"S2\"\n      ],\n      \"waits_for\": [\n        \"A2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S2\",\n      \"unlocks\": [\n        \"A3\"\n      ],\n      \"waits_for\": [\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A3\",\n      \"unlocks\": [\n        \"T1\"\n      ],\n      \"waits_for\": [\n        \"S2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T1\",\n      \"unlocks\": [\n        \"T2\"\n      ],\n      \"waits_for\": [\n        \"A3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T2\",\n      \"unlocks\": [\n        \"A4\"\n      ],\n      \"waits_for\": [\n        \"T1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A4\",\n      \"unlocks\": [\n        \"R1\"\n      ],\n      \"waits_for\": [\n        \"T2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"R1\",\n      \"unlocks\": [\n        \"Q1\"\n      ],\n      \"waits_for\": [\n        \"A4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"Q1\",\n      \"unlocks\": [\n        \"A5\"\n      ],\n      \"waits_for\": [\n        \"R1\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 2,\n  \"resource_verified_width\": 0,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n"
     },
     {
       "id": "structure",
       "command": [
-        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/private/tmp/matharc-publication-ci-20260901/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md"
       ],
@@ -218,7 +105,7 @@
     {
       "id": "chinese-readability",
       "command": [
-        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/private/tmp/matharc-publication-ci-20260901/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_chinese_readability.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md"
@@ -230,7 +117,7 @@
     {
       "id": "archive-check",
       "command": [
-        "/opt/homebrew/opt/python@3.13/bin/python3.13",
+        "/private/tmp/matharc-publication-ci-20260901/bin/python",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
         "--source",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
@@ -255,10 +142,8 @@
       }
     },
     "critical_path_edges": 15,
-    "current_ready_nodes": [
-      "R1"
-    ],
-    "current_ready_width": 1,
+    "current_ready_nodes": [],
+    "current_ready_width": 0,
     "frontier_transitions": [
       {
         "accepted_node": "CHARTER",
@@ -407,9 +292,9 @@
     ],
     "manifest": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
     "maximum_antichain_width": 2,
-    "resource_verified_width": 1,
+    "resource_verified_width": 0,
     "scheduling_model": "event-driven",
     "static_waves_are_authority": false
   },
-  "result": "fail"
+  "result": "pass"
 }

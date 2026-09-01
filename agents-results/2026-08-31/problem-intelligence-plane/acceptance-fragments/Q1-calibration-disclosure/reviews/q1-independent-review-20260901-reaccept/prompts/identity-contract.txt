@@ -1,0 +1,9 @@
+Read-only independent review for Q1-calibration-disclosure contract v4.
+
+Project root: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+Frozen manifest: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json
+Read only the files listed in that manifest plus the Q1 acceptance contract, human binding/checklist, and Q1 candidate evidence. Do not modify code, tests, SSOT, acceptance artifacts, Git, or any existing file. Verify the manifest's real SHA-256 values before assessing the candidate.
+
+Audit identity and acceptance integrity: current R1 evidence is consumed rather than historical evidence; implementation/fixture/protected-test hashes are real; the contract/binding/checklist version and hashes align; the current candidate keeps public_release_allowed=false and makes no research/public-delivery decision. This review cannot accept mathematics or public research.
+
+Write exactly one terminal report only to agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/reports/identity-contract.md. The report must state reviewer identity, wrapper, zero_write=true, frozen manifest digest, files verified, findings ordered by severity, commands actually run, and terminal Verdict: PASS or FAIL. Stop after that write.

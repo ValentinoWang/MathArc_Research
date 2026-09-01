@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "node_id": "Q1",
+  "contract_version": 4,
+  "source_identity": "8a6d908541b770461a081b43d8ced627befd0912+q1-v4-reaccept",
+  "files": {
+    "r1_evidence": {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json", "sha256": "672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71"},
+    "q1_policy": {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json", "sha256": "f519e824ef92274ae2f9f3749ef84dc71beece3fb1c4523c98a765db98cf17bf"},
+    "implementation": {"path": "matharc/v02/calibration_disclosure.py", "sha256": "bd5ead52e02730203ae0e1a45405c9eeaedc74b22d9fa616f417fdc6f3cb5e83"},
+    "protected_test": {"path": "tests/test_v02_calibration_disclosure.py", "sha256": "7a38001d211c2b8ef5b6b45e8f8fa87f7b0ce9785559cc475eb511d250af5026"},
+    "contract": {"path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md", "sha256": "e2db06e4a9d863bc1963e19d5aac1c17bc070adb84df45d95c41ac1df39efc73"},
+    "candidate_evidence": {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json", "sha256": "6e27b1665ef04f8bd4481fbd5e20388114799c9bad8b735224b5b19fd13cd197"}
+  },
+  "required_invariants": [
+    "R1 evidence must be EV-R1-ACCEPTED-2 and byte-identical to the pinned digest",
+    "all three records must remain UNCALIBRATED and NOT_READY",
+    "policy public_release_allowed must remain false",
+    "the policy must not confer proof, literature, novelty, calibration-performance, production, or public-release authority"
+  ]
+}

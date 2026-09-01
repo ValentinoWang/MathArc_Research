@@ -77,7 +77,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
 
-当前计划状态是“治理已对账、决定版本 2 已接受、L1/L2/A2/S1/S2/A3/T1/T2/A4/R1/Q1 已接受；A5 已就绪”。Q1 的当前提交身份由两份独立、零写入、持久化通过（`PASS`）的 AI 复审报告和单向最终对账台账绑定；A5 现在可以作范围受限的仓库源级交付决定。该决定不构成数学结论、外部状态、新颖性、校准表现或生产发布报告。
+当前计划状态是“治理已对账、决定版本 2 已接受，全部 17 个节点已接受”。Q1 的当前提交身份由两份独立、零写入、持久化通过（`PASS`）的 AI 复审报告和单向最终对账台账绑定；A5 的联合决定只授权范围受限的仓库源级交付。该决定不构成数学结论、外部状态、新颖性、校准表现、生产发布或公开研究结论。
 
 ## 七、权威边界与剩余不确定性路由
 
@@ -221,7 +221,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | A4 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 三例档案、重放、恢复、去重和失败模式验收通过 | evidence:A4 | R1 |
 | R1 | P4 | 1/1/1/1/2 | ACCEPTED | 0 | 评测负责人 | EG-PLAN | 合同版本 9 的两份独立冻结输入复审与 H-01 已通过 | evidence:R1-accepted-2 | Q1 |
 | Q1 | P4 | 1/1/1/1/2 | ACCEPTED | 2 | 研究负责人 | EG-PLAN | 当前提交身份、未校准双轨和禁止公开边界经机器、人工和两份独立 AI 复审通过 | evidence:Q1-accepted-2 | A5 |
-| A5 | P4 | 1/1/1/1/2 | READY | 1 | 研究负责人和仓库所有者 | EG-PLAN | Q1 已重新接受，等待范围受限的仓库源级发布决定 | evidence:A5-reacceptance-required | 无 |
+| A5 | P4 | 1/1/1/1/2 | ACCEPTED | 2 | 研究负责人和仓库所有者 | EG-PLAN | 受限仓库源级交付已由机器、联合 H-01 和发布复核按 Q1 v5 身份闭环接受；远端回读仍是 GitHub 交付声明前提 | evidence:A5-accepted-4 | 无 |
 
 ### 语义节点登记表
 
@@ -243,7 +243,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
 | R1 | implementation.problem-intelligence.regression | implementation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
 | Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
-| A5 | release.problem-intelligence.v0 | release-decision | governance | READY | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
+| A5 | release.problem-intelligence.v0 | release-decision | governance | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
 
 ### 依赖边表
 
@@ -271,7 +271,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 
 | Frontier | Task ID | Eligibility | Unsatisfied hard dependencies | Active assumptions | Resource decision |
 |---|---|---|---|---|---|
-| A5 | 范围受限的仓库源级发布决定 | ready | none | 16/17 已接受；Q1 当前身份已重新接受 |
+| none | 无待处理正式节点 | complete | none | 17/17 已接受；GitHub 交付声明仍等待最终 main 推送和远端 ref 回读 |
 
 ### 波前指标
 
@@ -314,7 +314,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
 
-并行宽度的逻辑目标由独立交付物决定；Q1 的两条相互独立、零写入复审已完成并在单向台账中对账。当前正式前沿是 A5 的串行发布决定，不能越过其范围和远端回读要求。
+并行宽度的逻辑目标由独立交付物决定；Q1 的两条相互独立、零写入复审已完成并在单向台账中对账，A5 的机器、联合人工和发布复核运行已完成。最终推送和远端回读属于交付证明，不扩大 A5 的范围。
 
 ### 假设与冲突登记
 
@@ -442,7 +442,7 @@ F1
                                                         v
                                       T1 --> T2 --> A4 --> R1 --> Q1 --> A5
 
-D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；S1、S2、A3、T1、T2、A4、R1 和 Q1 已接受，A5 作为唯一剩余的硬依赖后继已就绪。
+D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；S1、S2、A3、T1、T2、A4、R1、Q1 和 A5 均已接受。
 S1 的独立纸面 dry-run 已通过；它不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
 ```
 
@@ -471,4 +471,4 @@ flowchart LR
 
 ### 结论与当前停止点
 
-当前已接受节点为 D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2、A4、R1 和 Q1；A5 是唯一尚未完成的范围受限仓库源级发布决定。A5 的最终范围仍限于已验收的仓库源、测试、SSOT 记录和验收证据；Q1 保持固定三例、`UNCALIBRATED` 和 `NOT_READY` 的披露政策。不得把本状态标记为部署完成、公开研究结论、数学结论或外部文献确认。
+当前全部 17 个节点已接受。A5 的最终范围仍限于已验收的仓库源、测试、SSOT 记录和验收证据，GitHub 交付需最终 main 推送和远端 ref 回读；Q1 保持固定三例、`UNCALIBRATED` 和 `NOT_READY` 的披露政策。不得把本状态标记为部署完成、公开研究结论、数学结论或外部文献确认。

@@ -1,0 +1,1328 @@
+Reading additional input from stdin...
+2026-09-01T01:11:58.975918Z  WARN codex_core_plugins::manager: remote installed plugin bundle sync failed error=chatgpt authentication required for remote plugin catalog; api key auth is not supported
+2026-09-01T01:11:59.147500Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-01T01:11:59.147527Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+OpenAI Codex v0.151.0
+--------
+workdir: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+model: gpt-5.6-luna
+provider: sub2api
+approval: never
+sandbox: danger-full-access
+reasoning effort: max
+reasoning summaries: none
+session id: 01a05a85-e326-7051-aaa2-fc85b8b00086
+--------
+user
+Perform a bounded, zero-write independent policy-boundary review of the frozen A5 candidate in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research.
+
+Frozen candidate inputs: main HEAD ea3a76b98273a120f4acb5b8926877a32ff063fd plus the current uncommitted A5 candidate. Read only: evidence/A5.json, evidence/Q1.json, the A5 acceptance contract, human binding/checklist, selected A5 machine/human/release results, and tests/test_v02_release_decision.py. Verify the source-only release scope and all prohibitions. Confirm github_source_delivery_authorized is distinct from actual delivery, requires final remote main readback, and cannot be read as authorization of mathematics, external literature/open-status, novelty, calibration/performance, production/device, or public research conclusions.
+
+You may write only one final Markdown report at: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/reviews/a5-final-review-20260901/final-reports/policy-boundary.md
+Do not modify any other file, do not create temporary project files, and do not search outside the stated inputs. State PASS or FAIL, concrete findings (severity/path) first, commands actually run, and the exact residual boundary. When the checks are complete, write the report and stop.
+warning: Skill descriptions were shortened to fit the skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.
+2026-09-01T01:12:01.172766Z  WARN codex_rmcp_client::rmcp_client: stored OAuth refresh credentials could not be bound to their issuer for MCP server `figma`; using the stored access token without refresh
+2026-09-01T01:12:03.671031Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-09-01T01:12:03.672802Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-09-01T01:12:08.979721Z  WARN codex_core_plugins::manager: failed to warm featured plugin ids cache error=failed to send remote featured plugin request to https://chatgpt.com/backend-api/plugins/featured?platform=codex: route-aware request timed out
+codex
+I’ll inspect only the frozen A5 inputs named in the request, first resolving the acceptance and result paths within the specified candidate bundle. I’ll run read-only checks, then write exactly the requested Markdown report and stop; no other project files or temporary artifacts will be touched.
+exec
+/bin/zsh -lc pwd in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+
+exec
+/bin/zsh -lc 'git rev-parse HEAD' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+ea3a76b98273a120f4acb5b8926877a32ff063fd
+
+exec
+/bin/zsh -lc 'ls -la agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+total 16
+drwxr-xr-x@ 5 vsiyo  staff   160 Sep  1 09:11 .
+drwxr-xr-x@ 5 vsiyo  staff   160 Sep  1 01:02 ..
+drwxr-xr-x@ 5 vsiyo  staff   160 Sep  1 01:06 acceptance
+-rw-r--r--@ 1 vsiyo  staff  6994 Sep  1 09:07 acceptance-contract.md
+drwxr-xr-x@ 3 vsiyo  staff    96 Sep  1 09:11 reviews
+
+exec
+/bin/zsh -lc 'git diff --name-only' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+acceptance/human-acceptance-log.json
+acceptance/human-acceptance-log.md
+acceptance/human/A5-problem-intelligence-v0-release/binding.md
+acceptance/human/A5-problem-intelligence-v0-release/checklist.md
+acceptance/index.md
+agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/A5.json
+agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/index.md
+agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json
+agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md
+tests/test_v02_release_decision.py
+
+exec
+/bin/zsh -lc 'ls -la tests/test_v02_release_decision.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc 'git status --short' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+-rw-r--r--@ 1 vsiyo  staff  4956 Sep  1 09:07 tests/test_v02_release_decision.py
+
+ succeeded in 0ms:
+ M acceptance/human-acceptance-log.json
+ M acceptance/human-acceptance-log.md
+ M acceptance/human/A5-problem-intelligence-v0-release/binding.md
+ M acceptance/human/A5-problem-intelligence-v0-release/checklist.md
+ M acceptance/index.md
+ M agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+ M agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/A5.json
+ M agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md
+ M agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+ M agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/index.md
+ M agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json
+ M agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md
+ M tests/test_v02_release_decision.py
+?? acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T130000Z-local-a5d001/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T130200Z-local-a5d003/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/reviews/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/final-reports/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/reports/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry5/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/logs/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/prompts/
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/retry7-logs/
+
+exec
+/bin/zsh -lc 'ls -la evidence' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc 'git diff --stat' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ exited 1 in 0ms:
+ls: evidence: No such file or directory
+
+ succeeded in 0ms:
+ acceptance/human-acceptance-log.json               | 16 +++---
+ acceptance/human-acceptance-log.md                 |  6 +-
+ .../A5-problem-intelligence-v0-release/binding.md  |  8 +--
+ .../checklist.md                                   |  4 +-
+ acceptance/index.md                                |  1 +
+ .../problem-intelligence-plane/.ssot/manifest.json |  2 +-
+ .../problem-intelligence-plane/.ssot/nodes/A5.json |  4 +-
+ .../.ssot/view-sources/00-main.md                  | 14 ++---
+ .../acceptance-contract.md                         | 18 +++---
+ .../acceptance/index.md                            |  2 +
+ .../problem-intelligence-plane/evidence/A5.json    | 53 +++++++++---------
+ .../ssot-development-paths.md                      | 22 ++++----
+ tests/test_v02_release_decision.py                 | 65 +++++++++-------------
+ 13 files changed, 105 insertions(+), 110 deletions(-)
+
+codex
+The repository is exactly at the frozen main HEAD `ea3a76b98273a120f4acb5b8926877a32ff063fd`, with the A5 candidate uncommitted across the expected evidence, contract, human binding/checklist, selected acceptance artifacts, and decision test. I’m narrowing the read set now to the exact A5/Q1 and A5 acceptance paths; I will not inspect the other dirty files or unrelated review bundles.
+exec
+/bin/zsh -lc 'ls -la acceptance/human/A5-problem-intelligence-v0-release/binding.md acceptance/human/A5-problem-intelligence-v0-release/checklist.md' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc 'ls -la agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+-rw-r--r--@ 1 vsiyo  staff   795 Sep  1 09:07 acceptance/human/A5-problem-intelligence-v0-release/binding.md
+-rw-r--r--@ 1 vsiyo  staff  2404 Sep  1 09:07 acceptance/human/A5-problem-intelligence-v0-release/checklist.md
+
+ succeeded in 0ms:
+-rw-r--r--@ 1 vsiyo  staff  3617 Sep  1 09:09 agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json
+-rw-r--r--@ 1 vsiyo  staff  4267 Sep  1 08:59 agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json
+
+exec
+/bin/zsh -lc 'find agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance -type f -print' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T010900Z-local-a5c009/result.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T010600Z-local-a5c006/result.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T130200Z-local-a5d003/result.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/index.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T010100Z-local-a5c001/result.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T130000Z-local-a5d001/result.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T010700Z-local-a5c007/result.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T010700Z-local-a5c007/evidence/verification-summary.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T010400Z-local-a5c004/result.md
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T010400Z-local-a5c004/evidence/verification-summary.md
+
+exec
+/bin/zsh -lc 'find acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002 -type f -print' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002/result.md
+acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002/evidence/binding.md
+acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002/evidence/acceptance-contract.md
+acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002/evidence/checklist.md
+
+exec
+/bin/zsh -lc 'find agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/reviews -maxdepth 3 -print' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/reviews
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/reviews/a5-final-review-20260901
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/reviews/a5-final-review-20260901/final-reports
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/reviews/a5-final-review-20260901/logs
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/reviews/a5-final-review-20260901/logs/policy-boundary.log
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/reviews/a5-final-review-20260901/logs/ssot-consistency.log
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/reviews/a5-final-review-20260901/logs/identity-integrity.log
+
+exec
+/bin/zsh -lc 'nl -ba "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json"' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	{
+     2	  "evidence_id": "EV-A5-ACCEPTED-3",
+     3	  "task_id": "A5",
+     4	  "consumed_evidence": ["EV-Q1-ACCEPTED-2"],
+     5	  "source_identity": {
+     6	    "implementation_base": "ea3a76b98273a120f4acb5b8926877a32ff063fd",
+     7	    "q1_evidence_sha256": "9cabc04c839042af524b8a9977df9fd59ae937f3826ef00ed9875484ec7e56d5",
+     8	    "q1_policy_fixture_sha256": "8a06da36b77810acb3ff3217a4a2a8b114bc4adec9d6131ca1d207566ad6cb2b",
+     9	    "q1_policy_digest_sha256": "ace81f46e9d1292738d0bcc77cb1cac1e4ffba2df1ab235ec56920102c85f1e5",
+    10	    "q1_implementation_sha256": "9ab6da778bb5c59d87e28f4f196b3670e6126134970b7c14c2ebe52929be33a7",
+    11	    "q1_protected_test_sha256": "89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db"
+    12	  },
+    13	  "release_scope": {
+    14	    "evidence_level": "source",
+    15	    "topic_id": "union-closed",
+    16	    "fixed_case_count": 3,
+    17	    "allowed": [
+    18	      "accepted repository source, tests, SSOT records, and acceptance evidence",
+    19	      "GitHub main ref delivery after the A5 decision commit"
+    20	    ],
+    21	    "prohibited": [
+    22	      "mathematical proof or theorem acceptance",
+    23	      "live external literature retrieval or open-status confirmation",
+    24	      "novelty acceptance",
+    25	      "calibration quality, accuracy, recall, statistical performance, or generalization",
+    26	      "production, deployed-service, device, or monitoring evidence",
+    27	      "public communication of any research conclusion"
+    28	    ]
+    29	  },
+    30	  "release_decision": {
+    31	    "status": "ACCEPTED_SOURCE_SCOPE",
+    32	    "github_source_delivery_authorized": true,
+    33	    "mathematical_result_publication_authorized": false,
+    34	    "q1_public_release_allowed": false,
+    35	    "reason": "Current Q1 identity is accepted. The joint A5 decision authorizes only the bounded repository-source delivery after the final main ref is pushed and read back."
+    36	  },
+    37	  "delivery_requirements": {
+    38	    "remote_ref_readback": "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
+    39	    "pre_push_delivery_claim": false
+    40	  },
+    41	  "acceptance_record": {
+    42	    "accepted_at": "2026-09-01",
+    43	    "accepted_by": "用户（研究负责人和仓库所有者）",
+    44	    "authority_basis": "用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；本切片只接受受限的仓库源级交付决定。",
+    45	    "machine": {
+    46	      "result_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T130000Z-local-a5d001/result.md",
+    47	      "result_sha256": "be8f41cc6ecbbaa7e9f0bb5f9a91ca0371e66f5e112e45bd55e99cbdf9bb88e6",
+    48	      "status": "PASS"
+    49	    },
+    50	    "human": {
+    51	      "result_path": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002/result.md",
+    52	      "result_sha256": "6cec6243a6207068d55c70b506391b0a4d849d891f0b8f31cf4f9ecd468ef48e",
+    53	      "status": "PASS"
+    54	    },
+    55	    "release_review": {
+    56	      "result_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T130200Z-local-a5d003/result.md",
+    57	      "result_sha256": "c30d058407967d00b5aa69294383487a1abecdec35f20973ef098c91f57a3c2c",
+    58	      "status": "PASS"
+    59	    }
+    60	  },
+    61	  "proposed_state": "ACCEPTED",
+    62	  "unverified_items": [
+    63	    "Independent mathematical proof review",
+    64	    "Live external literature retrieval",
+    65	    "Reported-open status confirmation",
+    66	    "Novelty acceptance",
+    67	    "Calibration quality, accuracy, recall, statistical performance, or generalization",
+    68	    "Production, deployed-service, device, or monitoring behavior",
+    69	    "Public communication of any research conclusion"
+    70	  ]
+    71	}
+
+exec
+/bin/zsh -lc 'nl -ba "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc 'nl -ba "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md"' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	{
+     2	  "evidence_id": "EV-Q1-ACCEPTED-2",
+     3	  "task_id": "Q1",
+     4	  "consumed_evidence": ["EV-R1-ACCEPTED-2"],
+     5	  "source_identity": {
+     6	    "implementation_base": "b35e02c2f12d1180ffca1c6af3d29b543c5929da",
+     7	    "r1_evidence_sha256": "aa9a8def4e4b6b0155f1007ec1c5ae672b5bc9f697f28c3aae829e95ff12e9f6",
+     8	    "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+     9	    "r1_fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
+    10	    "q1_policy_fixture_sha256": "8a06da36b77810acb3ff3217a4a2a8b114bc4adec9d6131ca1d207566ad6cb2b",
+    11	    "q1_policy_digest_sha256": "ace81f46e9d1292738d0bcc77cb1cac1e4ffba2df1ab235ec56920102c85f1e5",
+    12	    "q1_implementation_sha256": "9ab6da778bb5c59d87e28f4f196b3670e6126134970b7c14c2ebe52929be33a7",
+    13	    "protected_test_sha256": "89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db"
+    14	  },
+    15	  "acceptance_self_check": "pass",
+    16	  "acceptance_commands": [
+    17	    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_calibration_disclosure tests.test_v02_regression_evaluation",
+    18	    "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m py_compile matharc/v02/calibration_disclosure.py tests/test_v02_calibration_disclosure.py",
+    19	    "git diff --check"
+    20	  ],
+    21	  "test_summary": {
+    22	    "focused": "15 passed",
+    23	    "scope_note": "The complete v0.2 and full suites are deferred to A5 because their current red proof is the intentional old-Q1-hash rejection in the downstream A5 protected test. A5 owns that replacement and the final whole-repository green run."
+    24	  },
+    25	  "acceptance_matrix": {
+    26	    "current_r1_evidence_fixture_content_topic_and_case_identity": "pass",
+    27	    "all_three_records_are_uncalibrated_and_non_public": "pass",
+    28	    "scientific_priority_and_communication_readiness_are_separate": "pass",
+    29	    "identity_status_priority_limit_field_and_digest_tampering_fail_closed": "pass",
+    30	    "no_claim_novelty_authorization_or_network_dependency": "pass"
+    31	  },
+    32	  "independent_ai_reviews": {
+    33	    "historical_reviews": "The retry1 reports and their frozen manifest remain audit history only because they pinned an earlier Q1 candidate digest.",
+    34	    "final_reconciliation_record": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/q1-final-acceptance-ledger.json",
+    35	    "binding_model": "The detached ledger pins this final Q1.json byte identity, fresh machine and human result hashes, and distinct independent reports one way. Q1.json does not contain the ledger digest or report digests, so the acceptance chain has no self-reference.",
+    36	    "review_boundary": "Independent reviews are implementation and policy-boundary review only; they are not mathematical proof, external literature verification, statistical validation, production evidence or public-release acceptance."
+    37	  },
+    38	  "acceptance_record": {
+    39	    "accepted_at": "2026-09-01",
+    40	    "accepted_by": "用户（研究负责人/仓库所有者）",
+    41	    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T123000Z-local-f1a401/result.md",
+    42	    "human_acceptance_result": "acceptance/human/Q1-calibration-disclosure/runs/20260901T123100Z-local-f1a501/result.md",
+    43	    "authority_basis": "用户已要求验收通过、持续完成并在每个阶段推送 GitHub；Q1 合同版本 4 的锁定合同、当前 R1 身份专项、人工 H-01 和独立 AI 边界审阅均须通过。",
+    44	    "scope": "Q1 对当前 R1 固定三例的困难度、未校准预测和分级披露策略的本地验收",
+    45	    "ai_review_boundary": "AI 审阅仅提供设计和代码边界复核；它们不构成独立数学证明、外部文献结论、统计性能、生产验收或公开发布决定。"
+    46	  },
+    47	  "proposed_state": "ACCEPTED",
+    48	  "unverified_items": [
+    49	    "Independent mathematical proof review",
+    50	    "Live external literature retrieval",
+    51	    "Reported-open status confirmation",
+    52	    "Novelty acceptance",
+    53	    "Calibration quality, accuracy, recall, statistical performance or generalization",
+    54	    "Production or device behavior",
+    55	    "Public release authorization, which remains exclusively for A5"
+    56	  ]
+    57	}
+
+ succeeded in 0ms:
+     1	# Acceptance Contract: A5-problem-intelligence-v0-release
+     2	
+     3	- Task ID: A5-problem-intelligence-v0-release
+     4	- Contract version: 3
+     5	- Contract status: APPROVED
+     6	- Test baseline: LOCKED
+     7	- Acceptance owner: 研究负责人和仓库所有者
+     8	- Approval evidence: 用户已明确要求验收通过、持续完成，并在每个阶段提交和推送 GitHub；Q1 当前身份已由机器、H-01 和两条独立 AI 复审重新接受。
+     9	- Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/A5.json
+    10	- SSOT node: A5
+    11	- SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+    12	- Readiness mode: FORMAL
+    13	- Decision refs: decision.problem-intelligence.amendment@2
+    14	- Assumption IDs: none
+    15	- Invalidation keys: release.problem-intelligence.v0
+    16	- Baseline identity: origin/main@ea3a76b98273a120f4acb5b8926877a32ff063fd
+    17	- Human acceptance workspace: acceptance/human/A5-problem-intelligence-v0-release
+    18	
+    19	## User and scenario
+    20	
+    21	研究负责人和仓库所有者需要将已接受的问题情报平面 v0 的仓库源级范围提交并交付到 GitHub `main`，同时防止该交付被误读为数学结论、外部资料结论或生产发布。
+    22	
+    23	## Problem
+    24	
+    25	Q1 仅产生三例固定档案的本地 `UNCALIBRATED`、`NOT_READY` 披露策略，且明确不授权公开发布。若没有独立 A5 记录，代码推送可能被误表述为校准完成、开放状态确认、新颖性接受或数学成果发布。
+    26	
+    27	## Expected outcome
+    28	
+    29	存在一个由 A5 独占写入的发布决定记录：它哈希绑定已接受 Q1 证据、政策夹具、实现和保护测试；仅授权已接受的仓库源、测试、SSOT 记录和验收证据交付到 GitHub `main`。它必须明确保留 Q1 的 `public_release_allowed=false`，并要求推送后的远端 ref 回读才可声称 GitHub 交付完成。
+    30	
+    31	## Non-goals
+    32	
+    33	不接受数学证明或定理；不执行实时外部文献检索或开放状态确认；不接受新颖性；不声明校准质量、准确率、召回率、统计性能或泛化；不产生生产、已部署服务、设备或监控证据；不授权公开传播任何研究结论。
+    34	
+    35	## Normal path
+    36	
+    37	```gherkin
+    38	Given a byte-locked current accepted Q1 evidence record and its fixed uncalibrated policy
+    39	When the joint source-level release decision is reviewed
+    40	Then A5 records only the accepted repository source scope and every excluded claim
+    41	And GitHub delivery may be claimed only after the final local HEAD equals origin/main by remote ref readback
+    42	```
+    43	
+    44	## Exception paths
+    45	
+    46	- Q1 evidence、政策夹具、政策摘要、实现或保护测试哈希漂移时，拒绝 A5 记录。
+    47	- 三例范围、`UNCALIBRATED`/`NOT_READY` 双轨或 Q1 的 `public_release_allowed=false` 不成立时，拒绝 A5。
+    48	- 任一禁止声明被移除，或研究结论发布授权变为真时，拒绝 A5。
+    49	- 推送失败、远端 `main` 与最终本地 HEAD 不一致，或远端身份无法读取时，不得声称 GitHub 交付完成；保留本地验收记录并修复传输后重新回读。
+    50	
+    51	## Invariants
+    52	
+    53	- A5 的证据等级恒为 `source`，写入权限仅限独立发布决定记录。
+    54	- A5 不能把 Q1 的 `public_release_allowed=false` 转换为研究结论公开授权。
+    55	- 允许范围只包含 `union-closed` 的固定三例本地/仓库工件和其 GitHub 源码交付，不包含任何外部或生产事实。
+    56	- 远端 SHA 相等是 GitHub 交付声明的必要条件，不是数学、文献、新颖性、统计或生产验证的替代品。
+    57	
+    58	## Data impact
+    59	
+    60	仅创建不可变的 A5 证据、机器/发布运行记录和项目级人工验收记录；不修改业务数据、外部系统、生产环境或既有 Q1 政策。
+    61	
+    62	## Permissions
+    63	
+    64	研究负责人和仓库所有者共同接受范围受限的 A5 决定。自动化只验证哈希、结构和范围边界，不能代替两种角色的发布语义判断。GitHub 推送由仓库所有者已授权的本地工作流执行。
+    65	
+    66	## Performance and reliability
+    67	
+    68	本地静态验证应在 1 秒内完成。发布决定没有服务运行时；GitHub 交付必须在单次推送后立即回读 `refs/heads/main`。远端分歧、缺少回读或身份漂移均 fail closed。
+    69	
+    70	## Acceptance criteria
+    71	
+    72	| ID | Requirement | Verification layer | Mode | Blocking |
+    73	| --- | --- | --- | --- | --- |
+    74	| AC-01 | A5 严格绑定已接受 Q1 证据、政策、实现和保护测试身份 | Unit | Automatic | Yes |
+    75	| AC-02 | 仅允许仓库源级交付，完整列出数学、文献、新颖性、校准、生产和研究结论禁止项 | Unit | Automatic | Yes |
+    76	| AC-03 | A5 要求 GitHub `main` 的推送后远端 SHA 回读，推送前不声称交付 | Unit/Release | Automatic | Yes |
+    77	| AC-04 | 发布决定的合同、分根验收记录、SSOT、快照与严格验证均通过 | Contract/SSOT | Automatic | Yes |
+    78	
+    79	## Human acceptance
+    80	
+    81	| ID | Summary | Checklist path | Required role | Blocking |
+    82	| --- | --- | --- | --- | --- |
+    83	| H-01 | 联合确认允许的只是仓库源级交付，任何研究结论及外部、统计和生产声明仍被禁止 | acceptance/human/A5-problem-intelligence-v0-release/checklist.md#h-01 | 研究负责人和仓库所有者 | Yes |
+    84	
+    85	## Protected acceptance tests
+    86	
+    87	| Path | SHA-256 | Covers |
+    88	| --- | --- | --- |
+    89	| tests/test_v02_release_decision.py | 15ce8bb5d33e2291b7bef161ab393ee44143370e6507f62c48817be83f54b031 | AC-01, AC-02, AC-03 |
+    90	| tests/test_v02_calibration_disclosure.py | 89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db | AC-01, AC-02 |
+    91	
+    92	## Requirements-test traceability
+    93	
+    94	| Requirement | Verification | Evidence target | Mode | Blocking |
+    95	| --- | --- | --- | --- | --- |
+    96	| AC-01 | release decision and Q1 policy unit tests | tests/test_v02_release_decision.py, tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+    97	| AC-02 | source-level scope and prohibitions unit test | tests/test_v02_release_decision.py | Automatic | Yes |
+    98	| AC-03 | remote-readback invariant unit test plus final `git ls-remote` command | tests/test_v02_release_decision.py; release run result | Automatic | Yes |
+    99	| AC-04 | contract/index checker, SSOT validator, snapshot check and archive audit | acceptance and SSOT validation outputs | Automatic | Yes |
+   100	| H-01 | joint human checklist | acceptance/human/A5-problem-intelligence-v0-release/checklist.md#h-01 | Human | Yes |
+   101	
+   102	## Exploratory testing
+   103	
+   104	检查任一 Q1 身份摘要、范围计数、允许/禁止列表、研究结论授权或远端回读要求被篡改时的拒绝行为；探索结果不能扩大 A5 范围。
+   105	
+   106	## Production monitoring and rollback
+   107	
+   108	不适用。A5 不部署服务。若 Q1/R1 身份或披露边界变化，或 GitHub 远端回读失败，废止本次 A5 决定并从受影响的 Q1/A5 证据重新验收；不回滚或修改外部系统。
+   109	
+   110	## Risks and open decisions
+   111	
+   112	GitHub 源码交付并不回答数学真伪、文献完整性、新颖性、统计性能或生产可用性。任何面向公众的研究结论需要独立的后续授权与相应证据，不能引用 A5 代替。
+
+exec
+/bin/zsh -lc 'nl -ba "acceptance/human/A5-problem-intelligence-v0-release/binding.md"' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	# Human Acceptance Binding: A5-problem-intelligence-v0-release
+     2	
+     3	- Task ID: A5-problem-intelligence-v0-release
+     4	- Binding status: ACTIVE
+     5	- SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+     6	- SSOT node: A5
+     7	- Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+     8	- Contract version: 3
+     9	- Contract SHA-256: 772e009f138b378b54c273488b07172330c19258a1fd05abed2b91a09c835784
+    10	- Human checklist: acceptance/human/A5-problem-intelligence-v0-release/checklist.md
+    11	- Checklist SHA-256: f8c0f77b917605213fe594bbb60c07225b24e62ca441177f4b3a2b80b4833eae
+    12	
+    13	## Item bindings
+    14	
+    15	| Item | Required role | Blocking |
+    16	| --- | --- | --- |
+    17	| H-01 | 研究负责人和仓库所有者 | Yes |
+
+exec
+/bin/zsh -lc 'nl -ba "acceptance/human/A5-problem-intelligence-v0-release/checklist.md"' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	# 人工验收清单：A5-problem-intelligence-v0-release
+     2	
+     3	- 任务编号：A5-problem-intelligence-v0-release
+     4	- 人工验收绑定：acceptance/human/A5-problem-intelligence-v0-release/binding.md
+     5	- 验收合同：agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+     6	- 合同版本：3
+     7	- 清单状态：已批准
+     8	- 所需人工角色：研究负责人和仓库所有者
+     9	- 清单负责人：用户
+    10	- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；Q1 当前身份已由机器、H-01 和两条独立 AI 复审重新接受
+    11	- 执行结果：acceptance/human/A5-problem-intelligence-v0-release/runs/<run-id>/result.md
+    12	
+    13	不要重复由自动化检查负责的哈希、字段、远端 ref 或测试断言。本清单只判断发布范围的研究语义。
+    14	
+    15	## H-01
+    16	
+    17	- 验收问题：本次决定是否明确只交付已接受的仓库源、测试、SSOT 和验收记录，而没有把三例未校准记录描述为数学结论、外部文献结论、已确认开放状态、新颖性、统计性能、生产能力或可公开的研究成果？
+    18	- 必须人工判断的原因：仓库源码交付与研究结论公开之间的语义边界需要研究负责人和仓库所有者共同判断，不能由字段一致性测试完全替代。
+    19	- 前置条件：A5 机器测试、合同检查、SSOT 严格验证和 Obsidian 快照检查已通过；打开 Q1 政策、A5 证据与本清单。
+    20	- 验收步骤：
+    21	  1. 检查 A5 的允许范围仅为仓库源级交付，并明确绑定 `union-closed` 的固定三例。
+    22	  2. 检查 Q1 的三例仍为 `UNCALIBRATED` 和 `NOT_READY`，且 A5 仍保留 `q1_public_release_allowed=false`。
+    23	  3. 检查数学证明、外部资料、开放状态、新颖性、校准/统计性能、生产/设备和研究结论公开均在禁止列表中。
+    24	  4. 检查 GitHub 交付被限定为 A5 提交推送后的远端 `main` SHA 回读，不把回读写成任何更高层证据。
+    25	- 预期观察：范围受限、禁止项完整、联合角色清楚；源码交付与研究结论公开没有混淆。
+    26	- 是否阻塞发布：是
+    27	- 结果记录规则：将签署后的观察和结论写入新的 `acceptance/human/A5-problem-intelligence-v0-release/runs/<run-id>/result.md`；不得通过修改这份已批准清单来记录某次执行结果。
+
+exec
+/bin/zsh -lc 'nl -ba "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002/result.md"' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc 'nl -ba "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T130000Z-local-a5d001/result.md"' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	# Acceptance Run: 20260901T130100Z-local-a5d002
+     2	
+     3	- Run ID: 20260901T130100Z-local-a5d002
+     4	- Task ID: A5-problem-intelligence-v0-release
+     5	- Lane: human
+     6	- Status: PASS
+     7	- Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+     8	- Contract version: 3
+     9	- Contract SHA-256: 772e009f138b378b54c273488b07172330c19258a1fd05abed2b91a09c835784
+    10	- Human acceptance binding: acceptance/human/A5-problem-intelligence-v0-release/binding.md
+    11	- Binding SHA-256: c5a9ed5efb86802f269c33ba31d5b69f46c2d6f8fb7ba81a5e430243ef87ea44
+    12	- Human checklist: acceptance/human/A5-problem-intelligence-v0-release/checklist.md
+    13	- Checklist SHA-256: f8c0f77b917605213fe594bbb60c07225b24e62ca441177f4b3a2b80b4833eae
+    14	- Contract snapshot: evidence/acceptance-contract.md
+    15	- Binding snapshot: evidence/binding.md
+    16	- Checklist snapshot: evidence/checklist.md
+    17	- Source identity: ea3a76b98273a120f4acb5b8926877a32ff063fd+a5-v3-current-q1
+    18	- Runtime identity: user-acceptance
+    19	- Executor or reviewer: 用户
+    20	- Started at: 2026-09-01T13:01:00Z
+    21	- Completed at: 2026-09-01T13:02:00Z
+    22	- Evidence directory: evidence/
+    23	
+    24	## Scope
+    25	
+    26	H-01 only: authorize the current accepted repository source, tests, SSOT records, and acceptance evidence for GitHub main delivery after the final commit and remote ref readback.
+    27	
+    28	## Requirement disposition
+    29	
+    30	| Requirement | Result | Notes |
+    31	| --- | --- | --- |
+    32	| H-01 | PASS | The user, as research lead and repository owner, accepts only the bounded repository-source delivery scope; all mathematical, external, novelty, calibration/performance, production/device, and public research-result claims remain prohibited. |
+    33	
+    34	## Conclusion
+    35	
+    36	Roles: 研究负责人 and 仓库所有者. Decision: ACCEPTED_SOURCE_SCOPE based on the user's explicit instruction to fully complete, accept, push each stage, and deliver on main. GitHub delivery itself remains pending until the final A5 commit has been pushed and `refs/heads/main` is read back.
+
+ succeeded in 0ms:
+     1	# Acceptance Run: 20260901T130000Z-local-a5d001
+     2	
+     3	- Run ID: 20260901T130000Z-local-a5d001
+     4	- Task ID: A5-problem-intelligence-v0-release
+     5	- Lane: machine/static
+     6	- Status: PASS
+     7	- Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+     8	- Contract version: 3
+     9	- Contract SHA-256: 772e009f138b378b54c273488b07172330c19258a1fd05abed2b91a09c835784
+    10	- Source identity: ea3a76b98273a120f4acb5b8926877a32ff063fd+a5-v3-current-q1
+    11	- Runtime identity: python-3.13
+    12	- Executor or reviewer: local-acceptance
+    13	- Started at: 2026-09-01T13:00:00Z
+    14	- Completed at: 2026-09-01T13:01:00Z
+    15	- Evidence directory: evidence/
+    16	
+    17	## Procedure
+    18	
+    19	Ran `PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_release_decision tests.test_v02_calibration_disclosure`, Python compilation of both protected test modules, and `git diff --check`.
+    20	
+    21	## Requirement disposition
+    22	
+    23	| Requirement | Result | Notes |
+    24	| --- | --- | --- |
+    25	| AC-01 | PASS | Current accepted Q1 evidence, policy, implementation, and protected-test identities are byte-bound. |
+    26	| AC-02 | PASS | The sole accepted scope is repository-source delivery; every research, external, statistical, and production claim remains prohibited. |
+    27	| AC-03 | PASS | Source authorization is distinct from a delivery claim; remote main readback remains mandatory after the final push. |
+    28	
+    29	## Conclusion
+    30	
+    31	PASS for the bounded A5 source-scope contract only. This run neither performs a GitHub delivery nor establishes mathematical, literature, novelty, calibration-performance, production, device, or public research-release evidence.
+
+exec
+/bin/zsh -lc 'nl -ba "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T130200Z-local-a5d003/result.md"' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	# Release Review: 20260901T130200Z-local-a5d003
+     2	
+     3	- Run ID: 20260901T130200Z-local-a5d003
+     4	- Task ID: A5-problem-intelligence-v0-release
+     5	- Lane: release
+     6	- Status: PASS
+     7	- Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+     8	- Contract version: 3
+     9	- Contract SHA-256: 772e009f138b378b54c273488b07172330c19258a1fd05abed2b91a09c835784
+    10	- Source identity: ea3a76b98273a120f4acb5b8926877a32ff063fd+a5-v3-current-q1
+    11	- Runtime identity: local-release-review
+    12	- Executor or reviewer: release-review-owner
+    13	- Started at: 2026-09-01T13:02:00Z
+    14	- Completed at: 2026-09-01T13:03:00Z
+    15	- Evidence directory: evidence/
+    16	
+    17	## Inputs
+    18	
+    19	- Machine static result: `20260901T130000Z-local-a5d001`.
+    20	- Human H-01 result: `20260901T130100Z-local-a5d002`.
+    21	- Current Q1 evidence: `EV-Q1-ACCEPTED-2` with `public_release_allowed=false`.
+    22	
+    23	## Decision
+    24	
+    25	PASS / ACCEPTED_SOURCE_SCOPE. The machine and joint human records agree that A5 authorizes only repository-source delivery after final GitHub main ref readback. It does not authorize public research conclusions, mathematics, literature/open-status verification, novelty, calibration performance, production, or device claims.
+
+exec
+/bin/zsh -lc 'nl -ba "tests/test_v02_release_decision.py"' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	from __future__ import annotations
+     2	
+     3	import hashlib
+     4	import json
+     5	import unittest
+     6	from pathlib import Path
+     7	
+     8	from matharc.v02.calibration_disclosure import CalibrationDisclosurePolicy
+     9	
+    10	
+    11	ROOT = Path(__file__).parents[1]
+    12	Q1_POLICY = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json"
+    13	Q1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
+    14	A5_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json"
+    15	Q1_IMPLEMENTATION = ROOT / "matharc/v02/calibration_disclosure.py"
+    16	PROTECTED_TEST = ROOT / "tests/test_v02_calibration_disclosure.py"
+    17	
+    18	
+    19	class SourceLevelReleaseDecisionTests(unittest.TestCase):
+    20	    def load(self) -> dict:
+    21	        return json.loads(A5_EVIDENCE.read_text(encoding="utf-8"))
+    22	
+    23	    def test_release_decision_pins_current_accepted_q1_artifacts(self) -> None:
+    24	        evidence = self.load()
+    25	        policy = CalibrationDisclosurePolicy.from_dict(
+    26	            json.loads(Q1_POLICY.read_text(encoding="utf-8"))
+    27	        )
+    28	        self.assertFalse(policy.public_release_allowed)
+    29	        self.assertEqual(["EV-Q1-ACCEPTED-2"], evidence["consumed_evidence"])
+    30	        self.assertEqual(
+    31	            hashlib.sha256(Q1_EVIDENCE.read_bytes()).hexdigest(),
+    32	            evidence["source_identity"]["q1_evidence_sha256"],
+    33	        )
+    34	        self.assertEqual(
+    35	            hashlib.sha256(Q1_POLICY.read_bytes()).hexdigest(), evidence["source_identity"]["q1_policy_fixture_sha256"])
+    36	        self.assertEqual(policy.policy_digest_sha256, evidence["source_identity"]["q1_policy_digest_sha256"])
+    37	        self.assertEqual(
+    38	            hashlib.sha256(Q1_IMPLEMENTATION.read_bytes()).hexdigest(), evidence["source_identity"]["q1_implementation_sha256"]
+    39	        )
+    40	        self.assertEqual(
+    41	            hashlib.sha256(PROTECTED_TEST.read_bytes()).hexdigest(), evidence["source_identity"]["q1_protected_test_sha256"]
+    42	        )
+    43	
+    44	    def test_release_evidence_has_only_current_acceptance_fields(self) -> None:
+    45	        evidence = self.load()
+    46	        self.assertEqual(
+    47	            {
+    48	                "evidence_id", "task_id", "consumed_evidence", "source_identity", "release_scope",
+    49	                "release_decision", "delivery_requirements", "acceptance_record", "proposed_state", "unverified_items",
+    50	            },
+    51	            set(evidence),
+    52	        )
+    53	        self.assertEqual("EV-A5-ACCEPTED-3", evidence["evidence_id"])
+    54	        self.assertEqual("A5", evidence["task_id"])
+    55	        self.assertEqual("ACCEPTED", evidence["proposed_state"])
+    56	
+    57	    def test_release_scope_is_limited_to_repository_source_delivery(self) -> None:
+    58	        evidence = self.load()
+    59	        self.assertEqual("ACCEPTED_SOURCE_SCOPE", evidence["release_decision"]["status"])
+    60	        self.assertTrue(evidence["release_decision"]["github_source_delivery_authorized"])
+    61	        self.assertFalse(evidence["release_decision"]["mathematical_result_publication_authorized"])
+    62	        self.assertFalse(evidence["release_decision"]["q1_public_release_allowed"])
+    63	        self.assertEqual("source", evidence["release_scope"]["evidence_level"])
+    64	        self.assertEqual("union-closed", evidence["release_scope"]["topic_id"])
+    65	        self.assertEqual(3, evidence["release_scope"]["fixed_case_count"])
+    66	        self.assertEqual(
+    67	            ["accepted repository source, tests, SSOT records, and acceptance evidence", "GitHub main ref delivery after the A5 decision commit"],
+    68	            evidence["release_scope"]["allowed"],
+    69	        )
+    70	        self.assertEqual(
+    71	            [
+    72	                "mathematical proof or theorem acceptance",
+    73	                "live external literature retrieval or open-status confirmation",
+    74	                "novelty acceptance",
+    75	                "calibration quality, accuracy, recall, statistical performance, or generalization",
+    76	                "production, deployed-service, device, or monitoring evidence",
+    77	                "public communication of any research conclusion",
+    78	            ],
+    79	            evidence["release_scope"]["prohibited"],
+    80	        )
+    81	
+    82	    def test_fresh_machine_human_and_release_records_are_byte_bound(self) -> None:
+    83	        evidence = self.load()
+    84	        for key in ("machine", "human", "release_review"):
+    85	            selected = evidence["acceptance_record"][key]
+    86	            path = ROOT / selected["result_path"]
+    87	            self.assertTrue(path.is_file(), key)
+    88	            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), selected["result_sha256"], key)
+    89	            self.assertEqual("PASS", selected["status"], key)
+    90	
+    91	    def test_delivery_claim_requires_a_remote_ref_readback(self) -> None:
+    92	        evidence = self.load()
+    93	        self.assertEqual("git ls-remote origin refs/heads/main must equal the final local HEAD after push", evidence["delivery_requirements"]["remote_ref_readback"])
+    94	        self.assertFalse(evidence["delivery_requirements"]["pre_push_delivery_claim"])
+    95	
+    96	
+    97	if __name__ == "__main__":
+    98	    unittest.main()
+
+codex
+The current A5 record explicitly separates `ACCEPTED_SOURCE_SCOPE` from delivery: authorization is a boolean, the only allowed delivery is repository-source material, `pre_push_delivery_claim` is false, and remote `refs/heads/main` readback is required after the final push. The selected machine, human, and release records repeat that boundary. I’m checking byte identities, the main-to-candidate diff, and the protected assertions next; any remote delivery status will remain outside this frozen local review.
+exec
+/bin/zsh -lc 'git diff --no-ext-diff --unified=80 -- agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md acceptance/human/A5-problem-intelligence-v0-release/binding.md acceptance/human/A5-problem-intelligence-v0-release/checklist.md tests/test_v02_release_decision.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+diff --git a/acceptance/human/A5-problem-intelligence-v0-release/binding.md b/acceptance/human/A5-problem-intelligence-v0-release/binding.md
+index 27496a0..a752a4b 100644
+--- a/acceptance/human/A5-problem-intelligence-v0-release/binding.md
++++ b/acceptance/human/A5-problem-intelligence-v0-release/binding.md
+@@ -1,17 +1,17 @@
+ # Human Acceptance Binding: A5-problem-intelligence-v0-release
+ 
+ - Task ID: A5-problem-intelligence-v0-release
+-- Binding status: INVALIDATED_PENDING_R1_Q1_REACCEPTANCE
++- Binding status: ACTIVE
+ - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+ - SSOT node: A5
+ - Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+-- Contract version: 2
+-- Contract SHA-256: 8167f6376df307b6a479b482e300c21c36013bc5827c36827b4ed7a51526e4d9
++- Contract version: 3
++- Contract SHA-256: 772e009f138b378b54c273488b07172330c19258a1fd05abed2b91a09c835784
+ - Human checklist: acceptance/human/A5-problem-intelligence-v0-release/checklist.md
+-- Checklist SHA-256: 79d7e0e6467eb8110ceb0cd1fe1866b99cdd10e7db0c97b0a65d3e851b85d8fa
++- Checklist SHA-256: f8c0f77b917605213fe594bbb60c07225b24e62ca441177f4b3a2b80b4833eae
+ 
+ ## Item bindings
+ 
+ | Item | Required role | Blocking |
+ | --- | --- | --- |
+ | H-01 | 研究负责人和仓库所有者 | Yes |
+diff --git a/acceptance/human/A5-problem-intelligence-v0-release/checklist.md b/acceptance/human/A5-problem-intelligence-v0-release/checklist.md
+index 5573a8c..5ceee9e 100644
+--- a/acceptance/human/A5-problem-intelligence-v0-release/checklist.md
++++ b/acceptance/human/A5-problem-intelligence-v0-release/checklist.md
+@@ -1,27 +1,27 @@
+ # 人工验收清单：A5-problem-intelligence-v0-release
+ 
+ - 任务编号：A5-problem-intelligence-v0-release
+ - 人工验收绑定：acceptance/human/A5-problem-intelligence-v0-release/binding.md
+ - 验收合同：agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+-- 合同版本：1
++- 合同版本：3
+ - 清单状态：已批准
+ - 所需人工角色：研究负责人和仓库所有者
+ - 清单负责人：用户
+-- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub
++- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；Q1 当前身份已由机器、H-01 和两条独立 AI 复审重新接受
+ - 执行结果：acceptance/human/A5-problem-intelligence-v0-release/runs/<run-id>/result.md
+ 
+ 不要重复由自动化检查负责的哈希、字段、远端 ref 或测试断言。本清单只判断发布范围的研究语义。
+ 
+ ## H-01
+ 
+ - 验收问题：本次决定是否明确只交付已接受的仓库源、测试、SSOT 和验收记录，而没有把三例未校准记录描述为数学结论、外部文献结论、已确认开放状态、新颖性、统计性能、生产能力或可公开的研究成果？
+ - 必须人工判断的原因：仓库源码交付与研究结论公开之间的语义边界需要研究负责人和仓库所有者共同判断，不能由字段一致性测试完全替代。
+ - 前置条件：A5 机器测试、合同检查、SSOT 严格验证和 Obsidian 快照检查已通过；打开 Q1 政策、A5 证据与本清单。
+ - 验收步骤：
+   1. 检查 A5 的允许范围仅为仓库源级交付，并明确绑定 `union-closed` 的固定三例。
+   2. 检查 Q1 的三例仍为 `UNCALIBRATED` 和 `NOT_READY`，且 A5 仍保留 `q1_public_release_allowed=false`。
+   3. 检查数学证明、外部资料、开放状态、新颖性、校准/统计性能、生产/设备和研究结论公开均在禁止列表中。
+   4. 检查 GitHub 交付被限定为 A5 提交推送后的远端 `main` SHA 回读，不把回读写成任何更高层证据。
+ - 预期观察：范围受限、禁止项完整、联合角色清楚；源码交付与研究结论公开没有混淆。
+ - 是否阻塞发布：是
+ - 结果记录规则：将签署后的观察和结论写入新的 `acceptance/human/A5-problem-intelligence-v0-release/runs/<run-id>/result.md`；不得通过修改这份已批准清单来记录某次执行结果。
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+index 8afb1dd..4935a0d 100644
+--- a/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
++++ b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+@@ -1,112 +1,112 @@
+ # Acceptance Contract: A5-problem-intelligence-v0-release
+ 
+ - Task ID: A5-problem-intelligence-v0-release
+-- Contract version: 2
+-- Contract status: INVALIDATED_PENDING_UPSTREAM
++- Contract version: 3
++- Contract status: APPROVED
+ - Test baseline: LOCKED
+ - Acceptance owner: 研究负责人和仓库所有者
+-- Approval evidence: 历史接受记录保留；R1 的合同版本 4 复审加固使 Q1 与 A5 当前生命周期阻断，须在上游重新接受后重新执行 A5 决定
++- Approval evidence: 用户已明确要求验收通过、持续完成，并在每个阶段提交和推送 GitHub；Q1 当前身份已由机器、H-01 和两条独立 AI 复审重新接受。
+ - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/A5.json
+ - SSOT node: A5
+ - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+ - Readiness mode: FORMAL
+ - Decision refs: decision.problem-intelligence.amendment@2
+ - Assumption IDs: none
+ - Invalidation keys: release.problem-intelligence.v0
+-- Baseline identity: origin/main@9d727862a5566b32fdeec3af017dc466a5f9dd12
++- Baseline identity: origin/main@ea3a76b98273a120f4acb5b8926877a32ff063fd
+ - Human acceptance workspace: acceptance/human/A5-problem-intelligence-v0-release
+ 
+ ## User and scenario
+ 
+-研究负责人和仓库所有者需要将已接受的问题情报平面 v0 的仓库源级范围提交并交付到 GitHub `main`，同时防止该交付被误读为数学结论、外部资料结论或生产发布。当前 A5 因 R1/Q1 重新验收而阻断。
++研究负责人和仓库所有者需要将已接受的问题情报平面 v0 的仓库源级范围提交并交付到 GitHub `main`，同时防止该交付被误读为数学结论、外部资料结论或生产发布。
+ 
+ ## Problem
+ 
+ Q1 仅产生三例固定档案的本地 `UNCALIBRATED`、`NOT_READY` 披露策略，且明确不授权公开发布。若没有独立 A5 记录，代码推送可能被误表述为校准完成、开放状态确认、新颖性接受或数学成果发布。
+ 
+ ## Expected outcome
+ 
+ 存在一个由 A5 独占写入的发布决定记录：它哈希绑定已接受 Q1 证据、政策夹具、实现和保护测试；仅授权已接受的仓库源、测试、SSOT 记录和验收证据交付到 GitHub `main`。它必须明确保留 Q1 的 `public_release_allowed=false`，并要求推送后的远端 ref 回读才可声称 GitHub 交付完成。
+ 
+ ## Non-goals
+ 
+ 不接受数学证明或定理；不执行实时外部文献检索或开放状态确认；不接受新颖性；不声明校准质量、准确率、召回率、统计性能或泛化；不产生生产、已部署服务、设备或监控证据；不授权公开传播任何研究结论。
+ 
+ ## Normal path
+ 
+ ```gherkin
+-Given a byte-locked historical Q1 evidence record and its fixed uncalibrated policy
++Given a byte-locked current accepted Q1 evidence record and its fixed uncalibrated policy
+ When the joint source-level release decision is reviewed
+ Then A5 records only the accepted repository source scope and every excluded claim
+ And GitHub delivery may be claimed only after the final local HEAD equals origin/main by remote ref readback
+ ```
+ 
+ ## Exception paths
+ 
+ - Q1 evidence、政策夹具、政策摘要、实现或保护测试哈希漂移时，拒绝 A5 记录。
+ - 三例范围、`UNCALIBRATED`/`NOT_READY` 双轨或 Q1 的 `public_release_allowed=false` 不成立时，拒绝 A5。
+ - 任一禁止声明被移除，或研究结论发布授权变为真时，拒绝 A5。
+ - 推送失败、远端 `main` 与最终本地 HEAD 不一致，或远端身份无法读取时，不得声称 GitHub 交付完成；保留本地验收记录并修复传输后重新回读。
+ 
+ ## Invariants
+ 
+ - A5 的证据等级恒为 `source`，写入权限仅限独立发布决定记录。
+ - A5 不能把 Q1 的 `public_release_allowed=false` 转换为研究结论公开授权。
+ - 允许范围只包含 `union-closed` 的固定三例本地/仓库工件和其 GitHub 源码交付，不包含任何外部或生产事实。
+ - 远端 SHA 相等是 GitHub 交付声明的必要条件，不是数学、文献、新颖性、统计或生产验证的替代品。
+ 
+ ## Data impact
+ 
+ 仅创建不可变的 A5 证据、机器/发布运行记录和项目级人工验收记录；不修改业务数据、外部系统、生产环境或既有 Q1 政策。
+ 
+ ## Permissions
+ 
+ 研究负责人和仓库所有者共同接受范围受限的 A5 决定。自动化只验证哈希、结构和范围边界，不能代替两种角色的发布语义判断。GitHub 推送由仓库所有者已授权的本地工作流执行。
+ 
+ ## Performance and reliability
+ 
+ 本地静态验证应在 1 秒内完成。发布决定没有服务运行时；GitHub 交付必须在单次推送后立即回读 `refs/heads/main`。远端分歧、缺少回读或身份漂移均 fail closed。
+ 
+ ## Acceptance criteria
+ 
+ | ID | Requirement | Verification layer | Mode | Blocking |
+ | --- | --- | --- | --- | --- |
+ | AC-01 | A5 严格绑定已接受 Q1 证据、政策、实现和保护测试身份 | Unit | Automatic | Yes |
+ | AC-02 | 仅允许仓库源级交付，完整列出数学、文献、新颖性、校准、生产和研究结论禁止项 | Unit | Automatic | Yes |
+ | AC-03 | A5 要求 GitHub `main` 的推送后远端 SHA 回读，推送前不声称交付 | Unit/Release | Automatic | Yes |
+ | AC-04 | 发布决定的合同、分根验收记录、SSOT、快照与严格验证均通过 | Contract/SSOT | Automatic | Yes |
+ 
+ ## Human acceptance
+ 
+ | ID | Summary | Checklist path | Required role | Blocking |
+ | --- | --- | --- | --- | --- |
+ | H-01 | 联合确认允许的只是仓库源级交付，任何研究结论及外部、统计和生产声明仍被禁止 | acceptance/human/A5-problem-intelligence-v0-release/checklist.md#h-01 | 研究负责人和仓库所有者 | Yes |
+ 
+ ## Protected acceptance tests
+ 
+ | Path | SHA-256 | Covers |
+ | --- | --- | --- |
+-| tests/test_v02_release_decision.py | 202cc472dcfb959a94f89b4701f0f54c72682d9cacce13f5f09263a6376695fc | AC-01, AC-02, AC-03 |
+-| tests/test_v02_calibration_disclosure.py | 2888174c1e9ff3b739fcf57f557decb73e63a0828eda812fb4cc245cb512fd83 | AC-01, AC-02 |
++| tests/test_v02_release_decision.py | 15ce8bb5d33e2291b7bef161ab393ee44143370e6507f62c48817be83f54b031 | AC-01, AC-02, AC-03 |
++| tests/test_v02_calibration_disclosure.py | 89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db | AC-01, AC-02 |
+ 
+ ## Requirements-test traceability
+ 
+ | Requirement | Verification | Evidence target | Mode | Blocking |
+ | --- | --- | --- | --- | --- |
+ | AC-01 | release decision and Q1 policy unit tests | tests/test_v02_release_decision.py, tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+ | AC-02 | source-level scope and prohibitions unit test | tests/test_v02_release_decision.py | Automatic | Yes |
+ | AC-03 | remote-readback invariant unit test plus final `git ls-remote` command | tests/test_v02_release_decision.py; release run result | Automatic | Yes |
+ | AC-04 | contract/index checker, SSOT validator, snapshot check and archive audit | acceptance and SSOT validation outputs | Automatic | Yes |
+ | H-01 | joint human checklist | acceptance/human/A5-problem-intelligence-v0-release/checklist.md#h-01 | Human | Yes |
+ 
+ ## Exploratory testing
+ 
+ 检查任一 Q1 身份摘要、范围计数、允许/禁止列表、研究结论授权或远端回读要求被篡改时的拒绝行为；探索结果不能扩大 A5 范围。
+ 
+ ## Production monitoring and rollback
+ 
+ 不适用。A5 不部署服务。若 Q1/R1 身份或披露边界变化，或 GitHub 远端回读失败，废止本次 A5 决定并从受影响的 Q1/A5 证据重新验收；不回滚或修改外部系统。
+ 
+ ## Risks and open decisions
+ 
+-GitHub 源码交付并不回答数学真伪、文献完整性、新颖性、统计性能或生产可用性。任何面向公众的研究结论需要独立的后续授权与相应证据，不能引用 A5 代替。当前 A5 仅保留历史可审计性，R1 和 Q1 重新接受后才可再次执行发布决定。
++GitHub 源码交付并不回答数学真伪、文献完整性、新颖性、统计性能或生产可用性。任何面向公众的研究结论需要独立的后续授权与相应证据，不能引用 A5 代替。
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json b/agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json
+index b60ff37..7e86041 100644
+--- a/agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json
++++ b/agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json
+@@ -1,68 +1,71 @@
+ {
+-  "evidence_id": "EV-A5-REOPENED-2",
++  "evidence_id": "EV-A5-ACCEPTED-3",
+   "task_id": "A5",
+-  "consumed_evidence": ["EV-Q1-ACCEPTED-1"],
++  "consumed_evidence": ["EV-Q1-ACCEPTED-2"],
+   "source_identity": {
+-    "q1_evidence_sha256": "103d46d965a6bad218196ef41a399390fc372d238beb11c4b53511681603334c",
+-    "q1_policy_fixture_sha256": "abec04146d058c28899ffc1ac3a61d93d14c0468696b65b6558f9f6fbcab8426",
+-    "q1_policy_digest_sha256": "46622020c1f86981de9b2b3372f04d29abad119d823ca571998798b806006cda",
+-    "q1_implementation_sha256": "b4988a67c0a13918a0ce775c01be687423822c8e069c1ebb03a09c4c9b4c6535",
+-    "q1_protected_test_sha256": "0a55a78158faa4f28b47d02b983fbdbd32217155b8d8ca17e659646dd7d7ec9d",
+-    "accepted_upstream_remote_main": "9d727862a5566b32fdeec3af017dc466a5f9dd12"
++    "implementation_base": "ea3a76b98273a120f4acb5b8926877a32ff063fd",
++    "q1_evidence_sha256": "9cabc04c839042af524b8a9977df9fd59ae937f3826ef00ed9875484ec7e56d5",
++    "q1_policy_fixture_sha256": "8a06da36b77810acb3ff3217a4a2a8b114bc4adec9d6131ca1d207566ad6cb2b",
++    "q1_policy_digest_sha256": "ace81f46e9d1292738d0bcc77cb1cac1e4ffba2df1ab235ec56920102c85f1e5",
++    "q1_implementation_sha256": "9ab6da778bb5c59d87e28f4f196b3670e6126134970b7c14c2ebe52929be33a7",
++    "q1_protected_test_sha256": "89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db"
+   },
+   "release_scope": {
+     "evidence_level": "source",
+     "topic_id": "union-closed",
+     "fixed_case_count": 3,
+     "allowed": [
+       "accepted repository source, tests, SSOT records, and acceptance evidence",
+       "GitHub main ref delivery after the A5 decision commit"
+     ],
+     "prohibited": [
+       "mathematical proof or theorem acceptance",
+       "live external literature retrieval or open-status confirmation",
+       "novelty acceptance",
+       "calibration quality, accuracy, recall, statistical performance, or generalization",
+       "production, deployed-service, device, or monitoring evidence",
+       "public communication of any research conclusion"
+     ]
+   },
+   "release_decision": {
+-    "status": "BLOCKED_UPSTREAM_R1_REVIEW",
+-    "github_source_delivery_authorized": false,
++    "status": "ACCEPTED_SOURCE_SCOPE",
++    "github_source_delivery_authorized": true,
+     "mathematical_result_publication_authorized": false,
+     "q1_public_release_allowed": false,
+-    "reason": "Q1 was invalidated when R1 was reopened for its missing durable independent AI review reports. Historical source-delivery evidence is retained, but no current GitHub source delivery decision is authorized until R1 and Q1 are reaccepted."
++    "reason": "Current Q1 identity is accepted. The joint A5 decision authorizes only the bounded repository-source delivery after the final main ref is pushed and read back."
+   },
+   "delivery_requirements": {
+     "remote_ref_readback": "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
+     "pre_push_delivery_claim": false
+   },
+   "acceptance_record": {
+     "accepted_at": "2026-09-01",
+     "accepted_by": "用户（研究负责人和仓库所有者）",
+-    "authority_basis": "用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；本切片仅记录受限的仓库源级发布决定。",
+-    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T010700Z-local-a5c007/result.md",
+-    "machine_acceptance_result_sha256": "c4ace31d4d0307d354c65201ce004fbe8bd0b0d7dc46e8a5f0e5b6dbda4b9242",
+-    "human_acceptance_result": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T010800Z-local-a5c008/result.md",
+-    "human_acceptance_result_sha256": "3572323d59d6e94cdd990f5fc24204a30d3aeb61bf75bf9271bb6286d90437e9",
+-    "release_review_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T010900Z-local-a5c009/result.md",
+-    "release_review_result_sha256": "f333f921450d3deb7b2766a8fde29b01c20934b79a36c82daa9762f024fb8192"
++    "authority_basis": "用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；本切片只接受受限的仓库源级交付决定。",
++    "machine": {
++      "result_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T130000Z-local-a5d001/result.md",
++      "result_sha256": "be8f41cc6ecbbaa7e9f0bb5f9a91ca0371e66f5e112e45bd55e99cbdf9bb88e6",
++      "status": "PASS"
++    },
++    "human": {
++      "result_path": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002/result.md",
++      "result_sha256": "6cec6243a6207068d55c70b506391b0a4d849d891f0b8f31cf4f9ecd468ef48e",
++      "status": "PASS"
++    },
++    "release_review": {
++      "result_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T130200Z-local-a5d003/result.md",
++      "result_sha256": "c30d058407967d00b5aa69294383487a1abecdec35f20973ef098c91f57a3c2c",
++      "status": "PASS"
++    }
+   },
+-  "invalidation": {
+-    "invalidated_at": "2026-09-01",
+-    "cause": "Q1-invalidated-by-R1-review-contract-v4",
+-    "basis": "R1 合同版本 4 使两份持久化独立 AI PASS 报告成为阻断条件，当前 Q1 已随之失效，因此 A5 的历史发布决定不得继续作为当前 GitHub 源码交付授权。",
+-    "required_reacceptance": "先接受 R1，再重新核验或版本化 Q1，并在新的上游身份上重新执行 A5 的机器、人工与发布复审。"
+-  },
+-  "proposed_state": "BLOCKED",
++  "proposed_state": "ACCEPTED",
+   "unverified_items": [
+     "Independent mathematical proof review",
+     "Live external literature retrieval",
+     "Reported-open status confirmation",
+     "Novelty acceptance",
+     "Calibration quality, accuracy, recall, statistical performance, or generalization",
+     "Production, deployed-service, device, or monitoring behavior",
+     "Public communication of any research conclusion"
+   ]
+ }
+diff --git a/tests/test_v02_release_decision.py b/tests/test_v02_release_decision.py
+index fe843ac..26e5a29 100644
+--- a/tests/test_v02_release_decision.py
++++ b/tests/test_v02_release_decision.py
+@@ -1,109 +1,98 @@
+ from __future__ import annotations
+ 
+ import hashlib
+ import json
+ import unittest
+ from pathlib import Path
+ 
+ from matharc.v02.calibration_disclosure import CalibrationDisclosurePolicy
+ 
+ 
+ ROOT = Path(__file__).parents[1]
+ Q1_POLICY = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json"
+ Q1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
+-Q1_HISTORICAL_EVIDENCE = (
+-    ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/Q1-accepted-1.json"
+-)
+ A5_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json"
++Q1_IMPLEMENTATION = ROOT / "matharc/v02/calibration_disclosure.py"
++PROTECTED_TEST = ROOT / "tests/test_v02_calibration_disclosure.py"
+ 
+ 
+ class SourceLevelReleaseDecisionTests(unittest.TestCase):
+     def load(self) -> dict:
+         return json.loads(A5_EVIDENCE.read_text(encoding="utf-8"))
+ 
+-    def test_release_decision_pins_historical_q1_artifacts(self) -> None:
++    def test_release_decision_pins_current_accepted_q1_artifacts(self) -> None:
+         evidence = self.load()
+         policy = CalibrationDisclosurePolicy.from_dict(
+             json.loads(Q1_POLICY.read_text(encoding="utf-8"))
+         )
+         self.assertFalse(policy.public_release_allowed)
+-        self.assertEqual("EV-Q1-ACCEPTED-1", evidence["consumed_evidence"][0])
++        self.assertEqual(["EV-Q1-ACCEPTED-2"], evidence["consumed_evidence"])
+         self.assertEqual(
+-            hashlib.sha256(Q1_HISTORICAL_EVIDENCE.read_bytes()).hexdigest(),
++            hashlib.sha256(Q1_EVIDENCE.read_bytes()).hexdigest(),
+             evidence["source_identity"]["q1_evidence_sha256"],
+         )
+         self.assertEqual(
+-            hashlib.sha256(Q1_POLICY.read_bytes()).hexdigest(),
+-            evidence["source_identity"]["q1_policy_fixture_sha256"],
+-        )
++            hashlib.sha256(Q1_POLICY.read_bytes()).hexdigest(), evidence["source_identity"]["q1_policy_fixture_sha256"])
+         self.assertEqual(policy.policy_digest_sha256, evidence["source_identity"]["q1_policy_digest_sha256"])
+         self.assertEqual(
+-            "b4988a67c0a13918a0ce775c01be687423822c8e069c1ebb03a09c4c9b4c6535",
+-            evidence["source_identity"]["q1_implementation_sha256"],
++            hashlib.sha256(Q1_IMPLEMENTATION.read_bytes()).hexdigest(), evidence["source_identity"]["q1_implementation_sha256"]
+         )
+         self.assertEqual(
+-            "0a55a78158faa4f28b47d02b983fbdbd32217155b8d8ca17e659646dd7d7ec9d",
+-            evidence["source_identity"]["q1_protected_test_sha256"],
++            hashlib.sha256(PROTECTED_TEST.read_bytes()).hexdigest(), evidence["source_identity"]["q1_protected_test_sha256"]
+         )
+ 
+-    def test_release_evidence_is_fail_closed_when_q1_is_reopened(self) -> None:
++    def test_release_evidence_has_only_current_acceptance_fields(self) -> None:
+         evidence = self.load()
+         self.assertEqual(
+             {
+-                "evidence_id",
+-                "task_id",
+-                "consumed_evidence",
+-                "source_identity",
+-                "release_scope",
+-                "release_decision",
+-                "delivery_requirements",
+-                "acceptance_record",
+-                "invalidation",
+-                "proposed_state",
+-                "unverified_items",
++                "evidence_id", "task_id", "consumed_evidence", "source_identity", "release_scope",
++                "release_decision", "delivery_requirements", "acceptance_record", "proposed_state", "unverified_items",
+             },
+             set(evidence),
+         )
+-        self.assertEqual("EV-A5-REOPENED-2", evidence["evidence_id"])
++        self.assertEqual("EV-A5-ACCEPTED-3", evidence["evidence_id"])
+         self.assertEqual("A5", evidence["task_id"])
+-        self.assertEqual("BLOCKED", evidence["proposed_state"])
+-        self.assertEqual("Q1-invalidated-by-R1-review-contract-v4", evidence["invalidation"]["cause"])
++        self.assertEqual("ACCEPTED", evidence["proposed_state"])
+ 
+     def test_release_scope_is_limited_to_repository_source_delivery(self) -> None:
+         evidence = self.load()
+-        self.assertEqual("BLOCKED_UPSTREAM_R1_REVIEW", evidence["release_decision"]["status"])
+-        self.assertFalse(evidence["release_decision"]["github_source_delivery_authorized"])
++        self.assertEqual("ACCEPTED_SOURCE_SCOPE", evidence["release_decision"]["status"])
++        self.assertTrue(evidence["release_decision"]["github_source_delivery_authorized"])
+         self.assertFalse(evidence["release_decision"]["mathematical_result_publication_authorized"])
+         self.assertFalse(evidence["release_decision"]["q1_public_release_allowed"])
++        self.assertEqual("source", evidence["release_scope"]["evidence_level"])
+         self.assertEqual("union-closed", evidence["release_scope"]["topic_id"])
+         self.assertEqual(3, evidence["release_scope"]["fixed_case_count"])
+         self.assertEqual(
+-            [
+-                "accepted repository source, tests, SSOT records, and acceptance evidence",
+-                "GitHub main ref delivery after the A5 decision commit",
+-            ],
++            ["accepted repository source, tests, SSOT records, and acceptance evidence", "GitHub main ref delivery after the A5 decision commit"],
+             evidence["release_scope"]["allowed"],
+         )
+         self.assertEqual(
+             [
+                 "mathematical proof or theorem acceptance",
+                 "live external literature retrieval or open-status confirmation",
+                 "novelty acceptance",
+                 "calibration quality, accuracy, recall, statistical performance, or generalization",
+                 "production, deployed-service, device, or monitoring evidence",
+                 "public communication of any research conclusion",
+             ],
+             evidence["release_scope"]["prohibited"],
+         )
+ 
++    def test_fresh_machine_human_and_release_records_are_byte_bound(self) -> None:
++        evidence = self.load()
++        for key in ("machine", "human", "release_review"):
++            selected = evidence["acceptance_record"][key]
++            path = ROOT / selected["result_path"]
++            self.assertTrue(path.is_file(), key)
++            self.assertEqual(hashlib.sha256(path.read_bytes()).hexdigest(), selected["result_sha256"], key)
++            self.assertEqual("PASS", selected["status"], key)
++
+     def test_delivery_claim_requires_a_remote_ref_readback(self) -> None:
+         evidence = self.load()
+-        self.assertEqual(
+-            "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
+-            evidence["delivery_requirements"]["remote_ref_readback"],
+-        )
++        self.assertEqual("git ls-remote origin refs/heads/main must equal the final local HEAD after push", evidence["delivery_requirements"]["remote_ref_readback"])
+         self.assertFalse(evidence["delivery_requirements"]["pre_push_delivery_claim"])
+ 
+ 
+ if __name__ == "__main__":
+     unittest.main()
+
+exec
+/bin/zsh -lc 'shasum -a 256 agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md acceptance/human/A5-problem-intelligence-v0-release/binding.md acceptance/human/A5-problem-intelligence-v0-release/checklist.md agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T130000Z-local-a5d001/result.md acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002/result.md agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T130200Z-local-a5d003/result.md tests/test_v02_release_decision.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+662b2e562bab96ee7fa0b37d4da6aee7e6aa73c0490101c53569ccba9f46b02d  agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json
+9cabc04c839042af524b8a9977df9fd59ae937f3826ef00ed9875484ec7e56d5  agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json
+772e009f138b378b54c273488b07172330c19258a1fd05abed2b91a09c835784  agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
+c5a9ed5efb86802f269c33ba31d5b69f46c2d6f8fb7ba81a5e430243ef87ea44  acceptance/human/A5-problem-intelligence-v0-release/binding.md
+f8c0f77b917605213fe594bbb60c07225b24e62ca441177f4b3a2b80b4833eae  acceptance/human/A5-problem-intelligence-v0-release/checklist.md
+be8f41cc6ecbbaa7e9f0bb5f9a91ca0371e66f5e112e45bd55e99cbdf9bb88e6  agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T130000Z-local-a5d001/result.md
+6cec6243a6207068d55c70b506391b0a4d849d891f0b8f31cf4f9ecd468ef48e  acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T130100Z-local-a5d002/result.md
+c30d058407967d00b5aa69294383487a1abecdec35f20973ef098c91f57a3c2c  agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T130200Z-local-a5d003/result.md
+15ce8bb5d33e2291b7bef161ab393ee44143370e6507f62c48817be83f54b031  tests/test_v02_release_decision.py
+
+exec
+/bin/zsh -lc 'git diff --check -- agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md acceptance/human/A5-problem-intelligence-v0-release/binding.md acceptance/human/A5-problem-intelligence-v0-release/checklist.md tests/test_v02_release_decision.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+exec
+/bin/zsh -lc 'git show ea3a76b98273a120f4acb5b8926877a32ff063fd:tests/test_v02_release_decision.py | nl -ba' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	from __future__ import annotations
+     2	
+     3	import hashlib
+     4	import json
+     5	import unittest
+     6	from pathlib import Path
+     7	
+     8	from matharc.v02.calibration_disclosure import CalibrationDisclosurePolicy
+     9	
+    10	
+    11	ROOT = Path(__file__).parents[1]
+    12	Q1_POLICY = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json"
+    13	Q1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
+    14	Q1_HISTORICAL_EVIDENCE = (
+    15	    ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/Q1-accepted-1.json"
+    16	)
+    17	A5_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json"
+    18	
+    19	
+    20	class SourceLevelReleaseDecisionTests(unittest.TestCase):
+    21	    def load(self) -> dict:
+    22	        return json.loads(A5_EVIDENCE.read_text(encoding="utf-8"))
+    23	
+    24	    def test_release_decision_pins_historical_q1_artifacts(self) -> None:
+    25	        evidence = self.load()
+    26	        policy = CalibrationDisclosurePolicy.from_dict(
+    27	            json.loads(Q1_POLICY.read_text(encoding="utf-8"))
+    28	        )
+    29	        self.assertFalse(policy.public_release_allowed)
+    30	        self.assertEqual("EV-Q1-ACCEPTED-1", evidence["consumed_evidence"][0])
+    31	        self.assertEqual(
+    32	            hashlib.sha256(Q1_HISTORICAL_EVIDENCE.read_bytes()).hexdigest(),
+    33	            evidence["source_identity"]["q1_evidence_sha256"],
+    34	        )
+    35	        self.assertEqual(
+    36	            hashlib.sha256(Q1_POLICY.read_bytes()).hexdigest(),
+    37	            evidence["source_identity"]["q1_policy_fixture_sha256"],
+    38	        )
+    39	        self.assertEqual(policy.policy_digest_sha256, evidence["source_identity"]["q1_policy_digest_sha256"])
+    40	        self.assertEqual(
+    41	            "b4988a67c0a13918a0ce775c01be687423822c8e069c1ebb03a09c4c9b4c6535",
+    42	            evidence["source_identity"]["q1_implementation_sha256"],
+    43	        )
+    44	        self.assertEqual(
+    45	            "0a55a78158faa4f28b47d02b983fbdbd32217155b8d8ca17e659646dd7d7ec9d",
+    46	            evidence["source_identity"]["q1_protected_test_sha256"],
+    47	        )
+    48	
+    49	    def test_release_evidence_is_fail_closed_when_q1_is_reopened(self) -> None:
+    50	        evidence = self.load()
+    51	        self.assertEqual(
+    52	            {
+    53	                "evidence_id",
+    54	                "task_id",
+    55	                "consumed_evidence",
+    56	                "source_identity",
+    57	                "release_scope",
+    58	                "release_decision",
+    59	                "delivery_requirements",
+    60	                "acceptance_record",
+    61	                "invalidation",
+    62	                "proposed_state",
+    63	                "unverified_items",
+    64	            },
+    65	            set(evidence),
+    66	        )
+    67	        self.assertEqual("EV-A5-REOPENED-2", evidence["evidence_id"])
+    68	        self.assertEqual("A5", evidence["task_id"])
+    69	        self.assertEqual("BLOCKED", evidence["proposed_state"])
+    70	        self.assertEqual("Q1-invalidated-by-R1-review-contract-v4", evidence["invalidation"]["cause"])
+    71	
+    72	    def test_release_scope_is_limited_to_repository_source_delivery(self) -> None:
+    73	        evidence = self.load()
+    74	        self.assertEqual("BLOCKED_UPSTREAM_R1_REVIEW", evidence["release_decision"]["status"])
+    75	        self.assertFalse(evidence["release_decision"]["github_source_delivery_authorized"])
+    76	        self.assertFalse(evidence["release_decision"]["mathematical_result_publication_authorized"])
+    77	        self.assertFalse(evidence["release_decision"]["q1_public_release_allowed"])
+    78	        self.assertEqual("union-closed", evidence["release_scope"]["topic_id"])
+    79	        self.assertEqual(3, evidence["release_scope"]["fixed_case_count"])
+    80	        self.assertEqual(
+    81	            [
+    82	                "accepted repository source, tests, SSOT records, and acceptance evidence",
+    83	                "GitHub main ref delivery after the A5 decision commit",
+    84	            ],
+    85	            evidence["release_scope"]["allowed"],
+    86	        )
+    87	        self.assertEqual(
+    88	            [
+    89	                "mathematical proof or theorem acceptance",
+    90	                "live external literature retrieval or open-status confirmation",
+    91	                "novelty acceptance",
+    92	                "calibration quality, accuracy, recall, statistical performance, or generalization",
+    93	                "production, deployed-service, device, or monitoring evidence",
+    94	                "public communication of any research conclusion",
+    95	            ],
+    96	            evidence["release_scope"]["prohibited"],
+    97	        )
+    98	
+    99	    def test_delivery_claim_requires_a_remote_ref_readback(self) -> None:
+   100	        evidence = self.load()
+   101	        self.assertEqual(
+   102	            "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
+   103	            evidence["delivery_requirements"]["remote_ref_readback"],
+   104	        )
+   105	        self.assertFalse(evidence["delivery_requirements"]["pre_push_delivery_claim"])
+   106	
+   107	
+   108	if __name__ == "__main__":
+   109	    unittest.main()
+
+exec
+/bin/zsh -lc 'git show ea3a76b98273a120f4acb5b8926877a32ff063fd:agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json | nl -ba' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     1	{
+     2	  "evidence_id": "EV-A5-REOPENED-2",
+     3	  "task_id": "A5",
+     4	  "consumed_evidence": ["EV-Q1-ACCEPTED-1"],
+     5	  "source_identity": {
+     6	    "q1_evidence_sha256": "103d46d965a6bad218196ef41a399390fc372d238beb11c4b53511681603334c",
+     7	    "q1_policy_fixture_sha256": "abec04146d058c28899ffc1ac3a61d93d14c0468696b65b6558f9f6fbcab8426",
+     8	    "q1_policy_digest_sha256": "46622020c1f86981de9b2b3372f04d29abad119d823ca571998798b806006cda",
+     9	    "q1_implementation_sha256": "b4988a67c0a13918a0ce775c01be687423822c8e069c1ebb03a09c4c9b4c6535",
+    10	    "q1_protected_test_sha256": "0a55a78158faa4f28b47d02b983fbdbd32217155b8d8ca17e659646dd7d7ec9d",
+    11	    "accepted_upstream_remote_main": "9d727862a5566b32fdeec3af017dc466a5f9dd12"
+    12	  },
+    13	  "release_scope": {
+    14	    "evidence_level": "source",
+    15	    "topic_id": "union-closed",
+    16	    "fixed_case_count": 3,
+    17	    "allowed": [
+    18	      "accepted repository source, tests, SSOT records, and acceptance evidence",
+    19	      "GitHub main ref delivery after the A5 decision commit"
+    20	    ],
+    21	    "prohibited": [
+    22	      "mathematical proof or theorem acceptance",
+    23	      "live external literature retrieval or open-status confirmation",
+    24	      "novelty acceptance",
+    25	      "calibration quality, accuracy, recall, statistical performance, or generalization",
+    26	      "production, deployed-service, device, or monitoring evidence",
+    27	      "public communication of any research conclusion"
+    28	    ]
+    29	  },
+    30	  "release_decision": {
+    31	    "status": "BLOCKED_UPSTREAM_R1_REVIEW",
+    32	    "github_source_delivery_authorized": false,
+    33	    "mathematical_result_publication_authorized": false,
+    34	    "q1_public_release_allowed": false,
+    35	    "reason": "Q1 was invalidated when R1 was reopened for its missing durable independent AI review reports. Historical source-delivery evidence is retained, but no current GitHub source delivery decision is authorized until R1 and Q1 are reaccepted."
+    36	  },
+    37	  "delivery_requirements": {
+    38	    "remote_ref_readback": "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
+    39	    "pre_push_delivery_claim": false
+    40	  },
+    41	  "acceptance_record": {
+    42	    "accepted_at": "2026-09-01",
+    43	    "accepted_by": "用户（研究负责人和仓库所有者）",
+    44	    "authority_basis": "用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；本切片仅记录受限的仓库源级发布决定。",
+    45	    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T010700Z-local-a5c007/result.md",
+    46	    "machine_acceptance_result_sha256": "c4ace31d4d0307d354c65201ce004fbe8bd0b0d7dc46e8a5f0e5b6dbda4b9242",
+    47	    "human_acceptance_result": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T010800Z-local-a5c008/result.md",
+    48	    "human_acceptance_result_sha256": "3572323d59d6e94cdd990f5fc24204a30d3aeb61bf75bf9271bb6286d90437e9",
+    49	    "release_review_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T010900Z-local-a5c009/result.md",
+    50	    "release_review_result_sha256": "f333f921450d3deb7b2766a8fde29b01c20934b79a36c82daa9762f024fb8192"
+    51	  },
+    52	  "invalidation": {
+    53	    "invalidated_at": "2026-09-01",
+    54	    "cause": "Q1-invalidated-by-R1-review-contract-v4",
+    55	    "basis": "R1 合同版本 4 使两份持久化独立 AI PASS 报告成为阻断条件，当前 Q1 已随之失效，因此 A5 的历史发布决定不得继续作为当前 GitHub 源码交付授权。",
+    56	    "required_reacceptance": "先接受 R1，再重新核验或版本化 Q1，并在新的上游身份上重新执行 A5 的机器、人工与发布复审。"
+    57	  },
+    58	  "proposed_state": "BLOCKED",
+    59	  "unverified_items": [
+    60	    "Independent mathematical proof review",
+    61	    "Live external literature retrieval",
+    62	    "Reported-open status confirmation",
+    63	    "Novelty acceptance",
+    64	    "Calibration quality, accuracy, recall, statistical performance, or generalization",
+    65	    "Production, deployed-service, device, or monitoring behavior",
+    66	    "Public communication of any research conclusion"
+    67	  ]
+    68	}
+
+codex
+The byte checks are consistent: the live Q1 evidence hash, contract hash, binding/checklist hashes, all three selected result hashes, and the release-decision test hash match their recorded bindings. The candidate diff is the intended reopen/reaccept transition from the prior blocked upstream state, and it retains all six prohibitions plus the source-only evidence level. I’m running the selected protected decision test and a read-only JSON/identity assertion before writing the report.
+exec
+/bin/zsh -lc 'git diff --check -- agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md acceptance/human/A5-problem-intelligence-v0-release/binding.md acceptance/human/A5-problem-intelligence-v0-release/checklist.md tests/test_v02_release_decision.py' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+exec
+/bin/zsh -lc "env PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -c 'import json, hashlib; from pathlib import Path; root=Path(\".\"); a5=json.loads((root/\"agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json\").read_text()); q1=json.loads((root/\"agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json\").read_text()); assert a5[\"source_identity\"][\"implementation_base\"] == \"ea3a76b98273a120f4acb5b8926877a32ff063fd\"; assert a5[\"release_decision\"][\"status\"] == \"ACCEPTED_SOURCE_SCOPE\"; assert a5[\"release_decision\"][\"github_source_delivery_authorized\"] is True; assert a5[\"release_decision\"][\"mathematical_result_publication_authorized\"] is False; assert a5[\"release_decision\"][\"q1_public_release_allowed\"] is False; assert a5[\"delivery_requirements\"][\"pre_push_delivery_claim\"] is False; assert a5[\"delivery_requirements\"][\"remote_ref_readback\"] == \"git ls-remote origin refs/heads/main must equal the final local HEAD after push\"; assert a5[\"release_scope\"][\"evidence_level\"] == \"source\"; assert a5[\"release_scope\"][\"fixed_case_count\"] == 3; assert len(a5[\"release_scope\"][\"prohibited\"]) == 6; assert q1[\"evidence_id\"] == \"EV-Q1-ACCEPTED-2\"; print(\"read-only policy/identity assertions: PASS\")'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+read-only policy/identity assertions: PASS
+
+exec
+/bin/zsh -lc 'env PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_release_decision' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 9ms:

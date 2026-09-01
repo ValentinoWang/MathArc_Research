@@ -1,0 +1,9 @@
+R1 v9 retry-7 ablation review. Work read-only except write exactly `agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/reports/ablation-boundary.md`. Do not inspect unrelated files, skills, history, or broad repository trees. Do not stage, commit, delete, or remotely mutate.
+
+Execute only these checks, in this order:
+1. `shasum -a 256 agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/frozen-inputs.json` and verify it is `cbc5faeb3d55e7d0a80dfc33fb240ab6536876fd641af42f43ea367b49e0085b`.
+2. `PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_regression_evaluation`.
+3. `git diff --check`.
+4. Read only `matharc/v02/regression_evaluation.py`, the R1 fixture, `tests/test_v02_regression_evaluation.py`, and the R1 v9 contract.
+
+Then immediately write a short report with exactly one occurrence each of these lines: `- Lane: \`ablation-boundary\``, `- Reviewer identity: \`r1-ablation-boundary-l3-luna-retry7\``, `- Wrapper: \`/Users/vsiyo/.codex/workers/run-l3.sh\``. State the frozen SHA above, zero-write scope, AC-01 to AC-05 result, P0/P1 result, and residual risk. Last nonblank line must be exactly `Verdict: PASS` only when there is no P0/P1; otherwise exactly `Verdict: FAIL`. This lane cannot accept R1, Q1, or A5.

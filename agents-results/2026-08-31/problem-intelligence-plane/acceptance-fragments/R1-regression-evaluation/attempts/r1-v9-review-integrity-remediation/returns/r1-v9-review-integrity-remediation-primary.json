@@ -1,0 +1,65 @@
+{
+  "task_id": "r1-v9-review-integrity-remediation",
+  "attempt_role": "primary",
+  "proposed_state": "BLOCKED",
+  "acceptance_self_check": "partial",
+  "failure_class": "scope-conflict",
+  "failure_origin": "scope",
+  "implementation": {
+    "state": "implemented",
+    "review_gate": "requires distinct canonical report paths, non-symlink regular files, different observed SHA-256 values, and exact-once lane, reviewer identity, and wrapper markers",
+    "negative_proof": "byte-identical dual-declaration report hard-linked into both expected paths is rejected"
+  },
+  "r1_evidence_state": {
+    "evidence_id": "EV-R1-REOPENED-5",
+    "acceptance_self_check": "blocked",
+    "proposed_state": "READY",
+    "independent_review_contract_version": 9,
+    "disposition": "BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS",
+    "required_lanes": ["ablation-boundary", "identity-contract"],
+    "retry5_invalidated": true
+  },
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_regression_evaluation",
+      "result": "PASS: 7 tests"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_calibration_disclosure tests.test_v02_release_decision",
+      "result": "FAIL: 11 tests run, 10 passed, 1 failed; tests/test_v02_calibration_disclosure.py:53 rejects EV-R1-REOPENED-5 because its unchanged allowlist ends at EV-R1-REOPENED-4"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "validation_command_file": {
+    "path": "/private/tmp/matharc-r1-v9-remediation-validation.sh",
+    "sha256": "98cbd32046076109012eb6636b66ba986dc91ff86294231e518df3baed84a9fd"
+  },
+  "artifact_sha256": {
+    "tests/test_v02_regression_evaluation.py": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6",
+    "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md": "c18a39ced16d18356598ec7889394d4494ee87f34d14b582e397d15c99e4896f",
+    "acceptance/human/R1-regression-evaluation/binding.md": "815ff5a4534511ea5d996cbff7869223365c61841d714f678dce34bad74bc89d",
+    "acceptance/human/R1-regression-evaluation/checklist.md": "d7a89e055f43e192d899b86f9acf707457abad034db8a29094d660108afffdde",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json": "503ea00811372f92c991a73470be20d23d0b70eb63bb10cdadcf8565a026d720"
+  },
+  "changed_files": [
+    "tests/test_v02_regression_evaluation.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md",
+    "acceptance/human/R1-regression-evaluation/binding.md",
+    "acceptance/human/R1-regression-evaluation/checklist.md",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json"
+  ],
+  "scope_checks": {
+    "tracked_diff_only_allowed_files": true,
+    "retry5_touched": false,
+    "implementation_code_touched": false,
+    "ssot_nodes_touched": false,
+    "q1_a5_evidence_touched": false,
+    "existing_acceptance_run_touched": false,
+    "committed": false,
+    "remote_refs_changed": false
+  },
+  "blocker": "The required companion test is outside the five allowed write paths and still hard-codes EV-R1-REOPENED-2, EV-R1-REOPENED-3, EV-R1-REOPENED-4. Updating R1.json to the required EV-R1-REOPENED-5 therefore makes that mandated command fail; no forbidden file was changed."
+}

@@ -1,0 +1,39 @@
+TASK_ID=r1-v9-review-integrity-remediation
+ATTEMPT_ROLE=primary
+PRIMARY_EXECUTOR=lw-luna
+PRIMARY_WRAPPER=/Users/vsiyo/.codex/workers/run-lw-luna.sh
+ATTEMPT_EXECUTOR=lw-luna
+ATTEMPT_WRAPPER=/Users/vsiyo/.codex/workers/run-lw-luna.sh
+PROJECT_ROOT=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+TASK_SOURCE_SHA256=13934a99503f99cedd66f48deeb3bd889ae15f3dc3bce5b57e3f03ad2d122a98
+STRUCTURED_RETURN_PATH=/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/attempts/r1-v9-review-integrity-remediation/returns/r1-v9-review-integrity-remediation-primary.json
+VALIDATION_COMMAND_FILE=/private/tmp/matharc-r1-v9-remediation-validation.sh
+VALIDATION_COMMAND_SHA256=98cbd32046076109012eb6636b66ba986dc91ff86294231e518df3baed84a9fd
+
+Execute exactly the bounded task below. Preserve its frozen inputs, write scope, forbidden scope, and acceptance commands. Full filesystem access is process capability only and does not expand task authority.
+
+Write one JSON object to STRUCTURED_RETURN_PATH before exit. It must include proposed_state, acceptance_self_check, failure_class, and failure_origin. proposed_state must be IMPLEMENTED, VERIFIED, FAILED, or BLOCKED; acceptance_self_check must be pass, fail, or partial. failure_class must be none, implementation, runtime, verification, transport, architecture-conflict, authority-conflict, interface-freeze, permission, product-decision, or scope-conflict. failure_origin must identify one of: none, environment, app-server, browser, database, test-infrastructure, provider-network, provider-transport, worker-transport, product-behavior, implementation, architecture-complexity, control-plane, test-oracle, authority, scope, or unknown-origin. Use none only for a successful attempt.
+
+BOUNDED_TASK_BEGIN
+Implement the bounded R1 v9 review-integrity remediation in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research. You are the only write owner for this task. Current tracked HEAD is 95ce4faf0d941345e8265dde1eb13a189e8454b3; an untracked retry5 review directory belongs to a stalled prior review and must not be edited, staged, removed, or used as candidate evidence.
+
+Finding to repair: tests/test_v02_regression_evaluation.py accepts two different report paths that are hard links to the same byte content if that content embeds both lanes' self-declarations. The identity-contract adversarial probe demonstrated SHARED_INODE_REPLAY_ACCEPTED=YES. This violates the two independent durable reports requirement.
+
+Allowed project writes only:
+- tests/test_v02_regression_evaluation.py
+- agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
+- acceptance/human/R1-regression-evaluation/binding.md
+- acceptance/human/R1-regression-evaluation/checklist.md
+- agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json
+
+Do not modify implementation code, .ssot nodes, Q1/A5 evidence, any existing acceptance run, retry5, Git state, or remote refs. Preserve Q1/A5 as BLOCKED. Use only ASCII.
+
+Required result:
+1. Make the accepted R1 review gate fail closed unless the two report paths are distinct, non-symlink regular files, have different SHA-256 values, and their self-declared lane, reviewer identity and wrapper markers each occur exactly once. Preserve terminal PASS and frozen-input hash checks.
+2. Add a deterministic protected negative test that builds a byte-identical report containing both lanes' declarations, hard-links it into the two expected report paths, updates the synthetic evidence hashes, and asserts the gate rejects it. The test should demonstrate the exact previously accepted attack is rejected.
+3. Bump the R1 acceptance contract from v8 to v9. Describe this stable failure class and guard. Keep all acceptance scope/limitations unchanged. Update its protected-test hash after edits.
+4. Refresh binding/checklist to v9 and correct hashes. R1.json must remain blocked/reopened, use a new evidence id EV-R1-REOPENED-5, set independent review contract_version 9, retain the existing required two lanes/failure rule and explain v9 invalidates retry5. Recompute and store the protected test SHA. Do not claim acceptance.
+5. Run /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_regression_evaluation, /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_calibration_disclosure tests.test_v02_release_decision, and git diff --check. Report exact commands/results in your structured return. Do not commit.
+
+Success requires all requested tests pass, diff scope only in the allowed five paths, and no touched retry5 paths.
+BOUNDED_TASK_END

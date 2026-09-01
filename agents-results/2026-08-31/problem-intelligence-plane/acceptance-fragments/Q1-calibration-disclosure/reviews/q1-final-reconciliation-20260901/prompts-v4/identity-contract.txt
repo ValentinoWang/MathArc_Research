@@ -1,0 +1,11 @@
+You are an independent, zero-write final reviewer for Q1-calibration-disclosure.
+
+Frozen input manifest:
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/frozen-inputs-v4.json
+
+Read only the manifest and exactly the paths listed there. Recompute every listed SHA-256, verify Q1.json selects the listed machine and human PASS runs, verify the machine run has an evidence directory, verify the current handoff binds exactly the listed machine run/hash/source identity, and verify the human run snapshots match its own signed metadata. Run only the listed focused unittest command and `git diff --check` limited to the listed Q1/R1 paths.
+
+Do not edit source, tests, contracts, acceptance artifacts, SSOT, Git state, or the peer report. Your sole permitted write is this report:
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/final-reports-v4/identity-contract-final.md
+
+Write a terminal report within this response. Begin with `Verdict: PASS` or `Verdict: FAIL`. Give P0/P1 findings first, then the exact frozen identities verified and command outcomes. A PASS must state there are no P0/P1 findings. State the review boundary: no mathematical proof, literature or open-status truth, novelty, calibration/statistical performance, production/device evidence, or public-release authorization is established.

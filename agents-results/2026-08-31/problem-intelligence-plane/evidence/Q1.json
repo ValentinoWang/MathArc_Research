@@ -3,13 +3,13 @@
   "task_id": "Q1",
   "consumed_evidence": ["EV-R1-ACCEPTED-2"],
   "source_identity": {
-    "implementation_base": "b35e02c2f12d1180ffca1c6af3d29b543c5929da",
-    "r1_evidence_sha256": "aa9a8def4e4b6b0155f1007ec1c5ae672b5bc9f697f28c3aae829e95ff12e9f6",
+    "implementation_base": "20d41af66b03d037b7e390ce31800fcc9d573a3e",
+    "r1_evidence_sha256": "073fecdfae5f7ca8c8adc946959b3fd030b60d3c8960b22230d2256b7679114c",
     "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
     "r1_fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
-    "q1_policy_fixture_sha256": "8a06da36b77810acb3ff3217a4a2a8b114bc4adec9d6131ca1d207566ad6cb2b",
-    "q1_policy_digest_sha256": "ace81f46e9d1292738d0bcc77cb1cac1e4ffba2df1ab235ec56920102c85f1e5",
-    "q1_implementation_sha256": "9ab6da778bb5c59d87e28f4f196b3670e6126134970b7c14c2ebe52929be33a7",
+    "q1_policy_fixture_sha256": "566533a91201ee353ef80efd13e7e039e21692b4ef5334a8a55e940cccf58064",
+    "q1_policy_digest_sha256": "05f843c5c4c3956c50b211ed7e41dd4e05e2705fa74759ba8d4b4e2bb0c5748c",
+    "q1_implementation_sha256": "1a56ac0e25023e7103adc4c18e9ce50157bb6f58dee57247aba22ada5a352b50",
     "protected_test_sha256": "89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db"
   },
   "acceptance_self_check": "pass",
@@ -38,9 +38,9 @@
   "acceptance_record": {
     "accepted_at": "2026-09-01",
     "accepted_by": "用户（研究负责人/仓库所有者）",
-    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T123000Z-local-f1a401/result.md",
-    "human_acceptance_result": "acceptance/human/Q1-calibration-disclosure/runs/20260901T123100Z-local-f1a501/result.md",
-    "authority_basis": "用户已要求验收通过、持续完成并在每个阶段推送 GitHub；Q1 合同版本 4 的锁定合同、当前 R1 身份专项、人工 H-01 和独立 AI 边界审阅均须通过。",
+    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T140000Z-local-a1e001/result.md",
+    "human_acceptance_result": "acceptance/human/Q1-calibration-disclosure/runs/20260901T140300Z-local-a1e002/result.md",
+    "authority_basis": "用户已要求验收通过、持续完成并在每个阶段推送 GitHub；R1 人工运行 ID 合规修复后，Q1 合同版本 4 重新绑定当前 R1 身份，并以新的机器、H-01 和两路独立 AI 边界审阅重新接受。",
     "scope": "Q1 对当前 R1 固定三例的困难度、未校准预测和分级披露策略的本地验收",
     "ai_review_boundary": "AI 审阅仅提供设计和代码边界复核；它们不构成独立数学证明、外部文献结论、统计性能、生产验收或公开发布决定。"
   },
