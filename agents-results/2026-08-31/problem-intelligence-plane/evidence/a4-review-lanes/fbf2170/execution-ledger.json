@@ -1,0 +1,68 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-fbf2170-independent-review",
+  "frozen_candidate": "fbf217074d7b8efe251bd9ebe30d20d0104e1f3e",
+  "parent": "f7603d642a241b925926f9535fbdf25508901473",
+  "launch_barrier": {
+    "started_at": "2026-09-02T04:59:49+08:00",
+    "actual_concurrency": 2,
+    "overlapping_execution": true
+  },
+  "lanes": [
+    {
+      "lane": "replay-crash",
+      "reviewer_source": "gpt-5.6-luna",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+      "wrapper_sha256": "a88abe5cdbb376cb1d9e37706f202f60c48292c3ed337b1e31c1820720b1742c",
+      "sandbox": "danger-full-access with zero-write task authority",
+      "pid": 46910,
+      "codex_session_id": "01a05ec5-6678-7e12-8084-c76db6a39e18",
+      "finished_at": "2026-09-02T05:22:10+08:00",
+      "exit_code": 0,
+      "prompt_sha256": "f9ffa952043e8cfd6031f0abb419eba8c3a3668909d65fee80c9a552ade5371e",
+      "prompt_cleanup_state": "deleted after ledger registration",
+      "log": "logs/replay-crash.log",
+      "log_sha256": "31be8e5c12bc74fb8479c6e6a174fefaf69dfe8e3202b4e545cb75758df1ff89",
+      "return": "returns/replay-crash.md",
+      "return_sha256": "5bf3fe3ff9e8b4563349814584ff4125578115e831c1d5a27464238c8bce02bf",
+      "verdict": "FAIL"
+    },
+    {
+      "lane": "state-adversarial",
+      "reviewer_source": "gpt-5.6-sol",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+      "wrapper_sha256": "e3bf39774813e38819f266544f96dd1767d7eeea0a4cd6c2b8c6f7cc6ec417ee",
+      "sandbox": "danger-full-access with zero-write task authority",
+      "pid": 46911,
+      "codex_session_id": "01a05ec5-66ad-7df2-b47c-cdeac0022bbd",
+      "finished_at": "2026-09-02T05:19:53+08:00",
+      "exit_code": 0,
+      "prompt_sha256": "125916dce4a8a3567eaf80c897c789d7c88aa65b1d827bf432e4941de13cccdd",
+      "prompt_cleanup_state": "deleted after ledger registration",
+      "log": "logs/state-adversarial.log",
+      "log_sha256": "7869cf1068e5eb2c510cf05957c89186c59905f61c499067e7974b77e9c1aaa8",
+      "return": "returns/state-adversarial.md",
+      "return_sha256": "17f911218cb638e928a1e37f1ea82c0af3d999dbc8be8751ec47b780b64c5b65",
+      "verdict": "FAIL"
+    }
+  ],
+  "protected_test_hashes": {
+    "tests/test_v02_topic_observation.py": "a6ac5fdb82f832e4eb14402d9727fcc5027a7574fb5d9765002d3016741fc9eb",
+    "tests/test_v02_dogfood_archives.py": "e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873"
+  },
+  "synthesis": {
+    "decision": "NOT_READY",
+    "blocking_findings": [
+      "authenticated rollback of a previously valid state/literature/auth tuple",
+      "same logical source with an alternate observation ID fails on restart",
+      "stale in-memory literature snapshot can be trusted by public state reads",
+      "interrupted durable transition has no recovery path"
+    ],
+    "acceptance_authority": false
+  },
+  "cleanup": {
+    "runtime_handles": "closed",
+    "codex_transcripts": "retained",
+    "temporary_prompts": "deleted"
+  }
+}
