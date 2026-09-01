@@ -1,15 +1,15 @@
 {
-  "evidence_id": "EV-R1-REOPENED-5",
+  "evidence_id": "EV-R1-ACCEPTED-3",
   "task_id": "R1",
   "consumed_evidence": ["EV-A4-ACCEPTED-2"],
   "source_identity": {
-    "implementation_base": "329b270460abf146561499fd5aa7ec4e62737eb1",
+    "implementation_base": "ea39bc29058aea2b940ac9f947e8236d601fb5a7",
     "a4_evidence_sha256": "13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7",
     "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
     "r1_fixture_sha256": "9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429",
     "protected_test_sha256": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6"
   },
-  "acceptance_self_check": "blocked",
+  "acceptance_self_check": "pass",
   "acceptance_commands": [
     "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_regression_evaluation tests.test_v02_novelty_audit tests.test_v02_dogfood_archives",
     "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_v02*.py'",
@@ -18,7 +18,7 @@
     "git diff --check"
   ],
   "test_summary": {
-    "focused": "31 passed",
+    "focused": "7 passed",
     "v02": "227 passed, 8 skipped",
     "full": "394 passed, 10 skipped",
     "nonblocking_observation": "Existing ResourceWarning messages in Codex runtime tests did not fail the full suite and are outside the R1 changed scope."
@@ -32,26 +32,26 @@
   },
   "independent_ai_reviews": {
     "contract_version": 9,
-    "disposition": "BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS",
+    "disposition": "PASS",
     "historical_evidence": "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json",
     "superseded_retry_2": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry2/dispatch.json",
     "superseded_retry_3": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/dispatch.json",
     "superseded_retry_4": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry4/dispatch.json",
-    "frozen_input_manifest": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/frozen-inputs.json",
-    "frozen_input_manifest_sha256": "cbc5faeb3d55e7d0a80dfc33fb240ab6536876fd641af42f43ea367b49e0085b",
-    "frozen_head": "95ce4faf0d941345e8265dde1eb13a189e8454b3 plus R1-v9 candidate",
+    "frozen_input_manifest": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-main-ea39bc2/frozen-inputs.json",
+    "frozen_input_manifest_sha256": "8b61173e4ffd5f53deede4889f4bd026941294b71d6503c0ec84630492d810a4",
+    "frozen_head": "ea39bc29058aea2b940ac9f947e8236d601fb5a7",
     "reports": [
-      {"lane": "ablation-boundary", "reviewer_identity": "r1-ablation-boundary-l3-luna-retry8", "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/reports/ablation-boundary.md", "sha256": "ff2a785aa223ae537a15a0e8b196dc7539a6299c16605f8a67cd82537b0665ee"},
-      {"lane": "identity-contract", "reviewer_identity": "r1-identity-contract-l4-sol-retry8", "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/reports/identity-contract.md", "sha256": "4d39bcc4eec4f0c677cf35a79abd83287b989379702b478a5aa2361037b6959b"}
+      {"lane": "ablation-boundary", "reviewer_identity": "r1-ablation-boundary-main-ea39bc2-luna", "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-main-ea39bc2/reports/ablation-boundary.md", "sha256": "70728e7c38ed6a19da99dcff37fdab7838ce3cec888d2e8fd153c092f890646d"},
+      {"lane": "identity-contract", "reviewer_identity": "r1-identity-contract-main-ea39bc2-sol", "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-main-ea39bc2/reports/identity-contract.md", "sha256": "ff74a4115b610fa71e9fed75e41ea226a614e9872002aff675bc47c717bb84bd"}
     ],
     "failure_rule": "Missing, stalled, transport-limited, nonterminal, non-PASS, duplicate-reviewer, duplicate-wrapper, duplicate-path, symlink, byte-identical report, or frozen-identity-mismatched review blocks R1 acceptance."
   },
   "acceptance_record": {
-    "status": "BLOCKED",
-    "reason": "A4 is formally accepted under EV-A4-ACCEPTED-2. R1 is reopened on the re-bound fixture and awaits two fresh independent durable PASS reports.",
-    "historical_human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260901T080000Z-local-a1a008/result.md"
+    "status": "ACCEPTED",
+    "reason": "Current HEAD, A4 identity, fixed three-case/four-route fixture, protected tests, frozen manifest, and two independent durable PASS reviews are bound.",
+    "human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260901T102745Z-local-r1a002/result.md"
   },
-  "proposed_state": "BLOCKED",
+  "proposed_state": "ACCEPTED",
   "unverified_items": [
     "Live external literature retrieval",
     "Independent mathematical proof review",

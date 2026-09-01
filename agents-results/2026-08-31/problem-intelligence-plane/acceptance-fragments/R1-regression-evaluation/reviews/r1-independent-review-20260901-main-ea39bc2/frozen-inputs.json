@@ -1,0 +1,23 @@
+{
+  "review_campaign_id": "R1-independent-review-20260901-main-ea39bc2",
+  "frozen_head": "ea39bc29058aea2b940ac9f947e8236d601fb5a7",
+  "remote_head": "ea39bc29058aea2b940ac9f947e8236d601fb5a7",
+  "scope": "Fresh R1 v9 review against accepted A4; Q1 and A5 remain blocked.",
+  "required_verdict": "PASS only if every frozen input matches, no P0/P1 exists in the assigned lane, and the assigned report self-binds lane, reviewer identity, wrapper, manifest SHA, zero-write mode, and terminal PASS.",
+  "review_boundary": "No source, test, contract, evidence, Q1, A5, release, network, mathematical-proof, statistical, production, device, or remote decision writes.",
+  "inputs": [
+    {"path": "matharc/v02/regression_evaluation.py", "sha256": "667a89bfe61f87b3679f5d0892cdf1e49051c41b9d47cf26d622ea96eaa77edd"},
+    {"path": "tests/test_v02_regression_evaluation.py", "sha256": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6"},
+    {"path": "tests/test_v02_calibration_disclosure.py", "sha256": "e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57"},
+    {"path": "tests/test_v02_release_decision.py", "sha256": "bbb32c14950b63c8294608e4699b9ced7df51043288433fb65b8a1d18dcad167"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json", "sha256": "9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/A4.json", "sha256": "13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json", "sha256": "84fde4a8f71b5f87160151f3eb3bfd432bb465c146733db6c3193d100e6bfa15"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json", "sha256": "a56efb2c662857d5e863d8ce59abaef8044319ecd3802ee19c32a01a058472f4"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json", "sha256": "73bccc95dc5640eff2e03c60b31cffc6b1053d1c87c2b2b0e2dc4dfeff843517"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md", "sha256": "6faa8116278e8fe64d26f39bfcd0277d6dfac74fea0aa74a11aacb8046fd85ee"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json", "sha256": "cda88cec2023cfb14f2a78e182df65c65428e80e5f27ccb08b4d680864ee9c61"},
+    {"path": "acceptance/human/R1-regression-evaluation/binding.md", "sha256": "ec6336739a676253620abeb24c0df22fefec99796ad113390b1f161b428c874b"},
+    {"path": "acceptance/human/R1-regression-evaluation/checklist.md", "sha256": "d7a89e055f43e192d899b86f9acf707457abad034db8a29094d660108afffdde"}
+  ]
+}

@@ -1,8 +1,18 @@
 {
-  "frozen_candidate": "main@2e47f5040d3a833e10de07286d68f017efec5d42 plus R1 uncommitted candidate",
+  "frozen_candidate": "main@ea39bc29058aea2b940ac9f947e8236d601fb5a7",
+  "frozen_input_manifest_sha256": "8b61173e4ffd5f53deede4889f4bd026941294b71d6503c0ec84630492d810a4",
+  "frozen_head": "ea39bc29058aea2b940ac9f947e8236d601fb5a7",
+  "accepted": {
+    "campaign_id": "R1-independent-review-20260901-main-ea39bc2",
+    "disposition": "PASS",
+    "reports": {
+      "ablation-boundary": "70728e7c38ed6a19da99dcff37fdab7838ce3cec888d2e8fd153c092f890646d",
+      "identity-contract": "ff74a4115b610fa71e9fed75e41ea226a614e9872002aff675bc47c717bb84bd"
+    }
+  },
   "review_lanes": [
     {"lane": "ablation-boundary", "mode": "zero-write", "result": "transport-limited-no-durable-return", "counted_as_pass": false},
     {"lane": "identity-contract", "mode": "zero-write", "result": "transport-limited-no-durable-return", "counted_as_pass": false}
   ],
-  "fallback_evidence": "Acceptance owner reran focused, v02, and full local regression commands directly."
+  "fallback_evidence": "Two independent durable PASS reports are bound to the same frozen manifest; acceptance owner reran focused R1 tests."
 }

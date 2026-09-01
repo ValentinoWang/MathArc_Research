@@ -1,8 +1,8 @@
 {
   "review_campaign_id": "R1-independent-review-20260901",
-  "frozen_head": "95ce4faf0d941345e8265dde1eb13a189e8454b3 plus R1-v9 candidate",
-  "frozen_input_manifest": "../r1-independent-review-20260901-retry6/frozen-inputs.json",
-  "frozen_input_manifest_sha256": "cbc5faeb3d55e7d0a80dfc33fb240ab6536876fd641af42f43ea367b49e0085b",
+  "frozen_head": "ea39bc29058aea2b940ac9f947e8236d601fb5a7",
+  "frozen_input_manifest": "../r1-independent-review-20260901-main-ea39bc2/frozen-inputs.json",
+  "frozen_input_manifest_sha256": "8b61173e4ffd5f53deede4889f4bd026941294b71d6503c0ec84630492d810a4",
   "launch_barrier": "retry-8 registered both isolated PTY worker processes before either completed",
   "attempt_1": {
     "frozen_head": "ad28c1d8225f0305095ee3b88c6bef13952ee92b",
@@ -44,6 +44,14 @@
       "../r1-independent-review-20260901-retry6/reports/ablation-boundary.md",
       "../r1-independent-review-20260901-retry6/reports/identity-contract.md"
     ]
+  },
+  "accepted_current": {
+    "review_campaign_id": "R1-independent-review-20260901-main-ea39bc2",
+    "reports": {
+      "ablation-boundary": "70728e7c38ed6a19da99dcff37fdab7838ce3cec888d2e8fd153c092f890646d",
+      "identity-contract": "ff74a4115b610fa71e9fed75e41ea226a614e9872002aff675bc47c717bb84bd"
+    },
+    "disposition": "PASS"
   },
   "disposition": "PASS",
   "next_action": "R1 acceptance is supported by the v9 report-integrity gate and a fresh H-01 human run; Q1 must be reaccepted separately."

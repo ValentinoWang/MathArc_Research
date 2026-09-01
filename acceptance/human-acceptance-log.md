@@ -63,10 +63,10 @@
 
 | 时间 | 任务 | 业务闭环 | 角色 | 分钟 | 清单 | 最新记录 |
 | --- | --- | --- | --- | ---: | --- | --- |
-| - | R1-regression-evaluation | R1-regression-evaluation | - | - | acceptance/human/R1-regression-evaluation/checklist.md | acceptance/human/R1-regression-evaluation/runs/20260901T080000Z-local-a1a008/result.md |
+| - | - | - | - | - | - | - |
 
 ### 已通过
 
 | 时间 | 任务 | 业务闭环 | 角色 | 分钟 | 清单 | 最新记录 |
 | --- | --- | --- | --- | ---: | --- | --- |
-| - | - | - | - | - | - | - |
+| 2026-09-01T10:27:45Z | R1-regression-evaluation | R1-regression-evaluation | 评测负责人 | - | acceptance/human/R1-regression-evaluation/checklist.md | acceptance/human/R1-regression-evaluation/runs/20260901T102745Z-local-r1a002/result.md |
