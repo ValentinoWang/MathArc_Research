@@ -172,6 +172,18 @@ class LiteratureBase:
                     self._record(conflict)
                     return ImportResult(ImportDisposition.CONFLICT, conflict, reason="same identity has a different digest")
 
+        for existing in self._observations.values():
+            if (
+                existing.observation_id != observation.observation_id
+                and existing.idempotency_key == observation.idempotency_key
+            ):
+                rejected = self._rejected(observation)
+                return ImportResult(
+                    ImportDisposition.REJECTED,
+                    rejected,
+                    reason="observation idempotency key already names another record",
+                )
+
         if self.budget is not None and self.budget.exhausted():
             pending = self._pending(observation)
             self._record(pending)
@@ -261,10 +273,18 @@ class LiteratureBase:
             raise ValueError("unsupported literature observation schema")
         if not isinstance(payload["observations"], list):
             raise ValueError("invalid literature observation manifest")
+        observation_keys: dict[str, str] = {}
         for item in payload["observations"]:
             observation = SourceObservation.from_dict(item)
             if observation.observation_id in self._observations:
                 raise ValueError("duplicate observation id")
+            existing_observation_id = observation_keys.get(observation.idempotency_key)
+            if (
+                existing_observation_id is not None
+                and existing_observation_id != observation.observation_id
+            ):
+                raise ValueError("duplicate observation idempotency key")
+            observation_keys[observation.idempotency_key] = observation.observation_id
             self._observations[observation.observation_id] = observation
         self._validate_observed_artifacts()
 
@@ -276,6 +296,12 @@ class LiteratureBase:
                 or existing.status is not ObservationStatus.PENDING
             ):
                 raise ValueError(f"refusing to overwrite observation id: {observation.observation_id}")
+        for existing in self._observations.values():
+            if (
+                existing.observation_id != observation.observation_id
+                and existing.idempotency_key == observation.idempotency_key
+            ):
+                raise ValueError("refusing to record duplicate observation idempotency key")
         self._observations[observation.observation_id] = observation
         payload = {
             "schema_version": "1.0",

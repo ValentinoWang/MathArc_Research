@@ -1,0 +1,90 @@
+{
+  "status": "IMPLEMENTED",
+  "task_id": "A4-authenticated-replay-v2",
+  "pinned_parent": "f7603d642a241b925926f9535fbdf25508901473",
+  "root_cause": "Recomputable JSON and set digests did not bind persisted topic history to the literature snapshot used when it was saved. The global referenced-literature equality also treated legitimate preexisting inventory as an error before incremental reconciliation could run.",
+  "design": {
+    "removed_invariant": "Removed unconditional referenced-literature/global-literature set equality from topic state recovery.",
+    "authenticated_commitment": {
+      "algorithm": "HMAC-SHA256",
+      "message": "A domain-separated, length-prefixed concatenation of the exact persisted state bytes and canonical literature observation/artifact snapshot bytes.",
+      "snapshot_contents": "All LiteratureBase observation records and artifact metadata needed for integrity; artifact created_at is excluded as provenance-only so canonical dogfood replay remains stable.",
+      "state_field": "literature_snapshot_sha256",
+      "authentication_sidecar": ".topic-observation-state.auth.json",
+      "signing_key": ".topic-observation-signing.key",
+      "key_boundary": "The 32-byte key is outside mutable JSON and is created atomically with restrictive mode 0600; the authentication sidecar is also written atomically with mode 0600.",
+      "verification": "Missing, malformed, replaced, mode-invalid, schema-invalid, digest-invalid, snapshot-mismatched, or MAC-invalid authentication state fails closed; MAC comparison uses hmac.compare_digest."
+    },
+    "schema_and_recovery": {
+      "state_schema_version": "1.5",
+      "recovery_contract": "topic-observation-state-recovery-v3",
+      "legacy_versions": ["1.0", "1.1", "1.2", "1.3", "1.4"],
+      "legacy_behavior": "Legacy state bytes are not migrated or rewritten on load and require explicit replay into a new state root."
+    },
+    "literature_identity": "LiteratureBase rejects persisted distinct observation IDs that reuse one idempotency key, while preserving valid idempotent replay of an existing observed record."
+  },
+  "threat_boundary": "This prevents data-path JSON or artifact writers that do not have signing authority from recomputing accepted history. It does not protect against a fully compromised same-user host or process that can read, replace, or use the signing key.",
+  "changed_files": [
+    "matharc/v02/topic_observation.py",
+    "matharc/v02/literature_base.py",
+    "tests/test_v02_topic_observation_integrity.py",
+    "tests/test_v02_literature_base_integrity.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/authenticated-replay-v2/returns/implementation.json"
+  ],
+  "validation": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_topic_observation_integrity",
+      "result": "PASS; exit 0; Ran 7 tests in 0.055s; OK"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature_base_integrity",
+      "result": "PASS; exit 0; Ran 3 tests in 0.006s; OK"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives tests.test_v02_literature_base",
+      "result": "PASS; exit 0; Ran 59 tests in 1.674s; OK"
+    },
+    {
+      "command": ".venv/bin/mypy --strict matharc/v02/topic_observation.py matharc/v02/literature_base.py",
+      "result": "PASS; exit 0; Success: no issues found in 2 source files"
+    },
+    {
+      "command": "git diff --check -- matharc/v02/topic_observation.py matharc/v02/literature_base.py tests/test_v02_topic_observation_integrity.py tests/test_v02_literature_base_integrity.py",
+      "result": "PASS; exit 0"
+    }
+  ],
+  "test_counts": {
+    "tests.test_v02_topic_observation_integrity": {"passed": 7, "failed": 0},
+    "tests.test_v02_literature_base_integrity": {"passed": 3, "failed": 0},
+    "protected_combined_suite": {"passed": 59, "failed": 0},
+    "mypy_source_files": {"checked": 2, "errors": 0}
+  },
+  "protected_files": {
+    "tests/test_v02_topic_observation.py": "a6ac5fdb82f832e4eb14402d9727fcc5027a7574fb5d9765002d3016741fc9eb",
+    "tests/test_v02_dogfood_archives.py": "e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873",
+    "protected_diff": "none"
+  },
+  "unverified_items": [
+    "This is an implementation result only and does not claim A4 acceptance, formal acceptance rebinding, human acceptance, production evidence, or device evidence.",
+    "No commit, push, release, or remote merge was performed.",
+    "No broader project CI beyond the commands required for this repair was run."
+  ],
+  "git": {
+    "business_project": {
+      "head": "f7603d642a241b925926f9535fbdf25508901473",
+      "branch": "main",
+      "tracked_diff_paths": [
+        "matharc/v02/literature_base.py",
+        "matharc/v02/topic_observation.py"
+      ],
+      "untracked_worktree_paths": [
+        "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/authenticated-replay-v2/logs/implementation.log",
+        "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/authenticated-replay-v2/prompts/implementation.txt",
+        "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/authenticated-replay-v2/returns/implementation.json",
+        "tests/test_v02_literature_base_integrity.py",
+        "tests/test_v02_topic_observation_integrity.py"
+      ]
+    },
+    "harness_ssot": "develop/Harness is a regular directory in the same MathArc_Research git root (readlink returned no target); no separate Harness SSOT worktree was modified."
+  }
+}

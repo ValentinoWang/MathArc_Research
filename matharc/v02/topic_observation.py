@@ -10,8 +10,12 @@ from __future__ import annotations
 
 import fcntl
 import hashlib
+import hmac
 import json
 import os
+import secrets
+import stat
+import tempfile
 from dataclasses import dataclass, replace
 from enum import Enum
 from pathlib import Path
@@ -26,9 +30,13 @@ from .source_observation import ObservationStatus, SourceObservation
 
 
 _SCHEMA_VERSION = "1.0"
-_STATE_SCHEMA_VERSION = "1.4"
-_STATE_RECOVERY_CONTRACT = "topic-observation-state-recovery-v2"
-_LEGACY_STATE_SCHEMA_VERSIONS = {"1.0", "1.1", "1.2", "1.3"}
+_STATE_SCHEMA_VERSION = "1.5"
+_STATE_RECOVERY_CONTRACT = "topic-observation-state-recovery-v3"
+_LEGACY_STATE_SCHEMA_VERSIONS = {"1.0", "1.1", "1.2", "1.3", "1.4"}
+_STATE_AUTH_SCHEMA_VERSION = "1.0"
+_STATE_AUTH_DOMAIN = b"matharc.topic-observation.state-auth.v1\x00"
+_SIGNING_KEY_BYTES = 32
+_PRIVATE_FILE_MODE = 0o600
 
 
 class TopicObservationError(ValueError):
@@ -136,6 +144,60 @@ def _require_sha256_or_empty(value: object, name: str) -> str:
 def _require_optional_sha256(value: object, name: str) -> None:
     if value is not None:
         _require_sha256(value, name)
+
+
+def _path_present(path: Path) -> bool:
+    try:
+        path.lstat()
+    except FileNotFoundError:
+        return False
+    except OSError as exc:
+        raise TopicObservationError(f"cannot inspect authentication path: {path.name}") from exc
+    return True
+
+
+def _fsync_directory(directory: Path) -> None:
+    directory_fd = os.open(directory, os.O_RDONLY)
+    try:
+        os.fsync(directory_fd)
+    finally:
+        os.close(directory_fd)
+
+
+def _atomic_write_bytes(path: Path, content: bytes, mode: int) -> None:
+    temporary_name: str | None = None
+    try:
+        fd, temporary_name = tempfile.mkstemp(prefix=f".{path.name}.", dir=path.parent)
+        open_fd = fd
+        try:
+            os.fchmod(open_fd, mode)
+            with os.fdopen(open_fd, "wb") as temporary_file:
+                open_fd = -1
+                temporary_file.write(content)
+                temporary_file.flush()
+                os.fsync(temporary_file.fileno())
+        finally:
+            if open_fd != -1:
+                os.close(open_fd)
+        os.replace(temporary_name, path)
+        temporary_name = None
+        _fsync_directory(path.parent)
+    finally:
+        if temporary_name is not None:
+            try:
+                os.unlink(temporary_name)
+            except FileNotFoundError:
+                pass
+
+
+def _state_authentication_message(state_bytes: bytes, literature_snapshot_bytes: bytes) -> bytes:
+    return (
+        _STATE_AUTH_DOMAIN
+        + len(state_bytes).to_bytes(8, "big")
+        + state_bytes
+        + len(literature_snapshot_bytes).to_bytes(8, "big")
+        + literature_snapshot_bytes
+    )
 
 
 def _batch_digest_from_fingerprints(
@@ -496,6 +558,12 @@ class TopicObservationRunner:
             raise TypeError("budget must be a BudgetLedger or None")
         self.budget = budget
         self.state_path = self.root / "topic-observation-state.json"
+        # The key is a separate, non-JSON trust boundary. Data-path writers can
+        # rewrite state and literature JSON, but cannot mint a valid MAC without it.
+        # This does not protect against a fully compromised same-user host that
+        # can read the key and replace both the data and authentication files.
+        self.signing_key_path = self.root / ".topic-observation-signing.key"
+        self.authentication_path = self.root / ".topic-observation-state.auth.json"
         self.lock_path = self.root / ".topic-observation.lock"
         self.literature = LiteratureBase(self.root / "literature", budget=budget)
 
@@ -897,12 +965,171 @@ class TopicObservationRunner:
             finally:
                 fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
 
+    def _literature_snapshot_payload(self) -> dict[str, Any]:
+        return {
+            "schema_version": _SCHEMA_VERSION,
+            "observations": [
+                observation.to_dict() for observation in self.literature.observations
+            ],
+            "artifacts": [
+                {
+                    key: value
+                    for key, value in artifact.to_dict().items()
+                    if key != "created_at"
+                }
+                for artifact in self.literature.artifacts.records
+            ],
+        }
+
+    def _literature_snapshot_bytes(self) -> bytes:
+        return canonical_json(self._literature_snapshot_payload()).encode("utf-8")
+
+    def _literature_snapshot_sha256(self) -> str:
+        return hashlib.sha256(self._literature_snapshot_bytes()).hexdigest()
+
+    def _read_signing_key(self) -> bytes:
+        try:
+            metadata = self.signing_key_path.lstat()
+        except FileNotFoundError as exc:
+            raise TopicObservationError("topic observation signing key is missing") from exc
+        except OSError as exc:
+            raise TopicObservationError("topic observation signing key is unreadable") from exc
+        if not stat.S_ISREG(metadata.st_mode):
+            raise TopicObservationError("topic observation signing key is not a regular file")
+        if stat.S_IMODE(metadata.st_mode) != _PRIVATE_FILE_MODE:
+            raise TopicObservationError("topic observation signing key must have mode 0600")
+        try:
+            key = self.signing_key_path.read_bytes()
+        except OSError as exc:
+            raise TopicObservationError("topic observation signing key is unreadable") from exc
+        if len(key) != _SIGNING_KEY_BYTES:
+            raise TopicObservationError("topic observation signing key is malformed")
+        return key
+
+    def _ensure_signing_key(self) -> None:
+        if _path_present(self.signing_key_path):
+            self._read_signing_key()
+            return
+        temporary_name: str | None = None
+        try:
+            fd, temporary_name = tempfile.mkstemp(
+                prefix=".topic-observation-signing-key.",
+                dir=self.root,
+            )
+            open_fd = fd
+            try:
+                os.fchmod(open_fd, _PRIVATE_FILE_MODE)
+                with os.fdopen(open_fd, "wb") as temporary_file:
+                    open_fd = -1
+                    temporary_file.write(secrets.token_bytes(_SIGNING_KEY_BYTES))
+                    temporary_file.flush()
+                    os.fsync(temporary_file.fileno())
+            finally:
+                if open_fd != -1:
+                    os.close(open_fd)
+            try:
+                os.link(temporary_name, self.signing_key_path)
+            except FileExistsError:
+                pass
+            else:
+                _fsync_directory(self.root)
+        except OSError as exc:
+            raise TopicObservationError("could not create topic observation signing key") from exc
+        finally:
+            if temporary_name is not None:
+                try:
+                    os.unlink(temporary_name)
+                except FileNotFoundError:
+                    pass
+        self._read_signing_key()
+
+    def _read_authentication(self) -> dict[str, Any]:
+        try:
+            metadata = self.authentication_path.lstat()
+        except FileNotFoundError as exc:
+            raise TopicObservationError("topic observation authentication state is missing") from exc
+        except OSError as exc:
+            raise TopicObservationError("topic observation authentication state is unreadable") from exc
+        if not stat.S_ISREG(metadata.st_mode):
+            raise TopicObservationError("topic observation authentication state is not a regular file")
+        if stat.S_IMODE(metadata.st_mode) != _PRIVATE_FILE_MODE:
+            raise TopicObservationError("topic observation authentication state must have mode 0600")
+        try:
+            payload = json.loads(self.authentication_path.read_bytes().decode("utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise TopicObservationError("topic observation authentication state is malformed") from exc
+        if not isinstance(payload, dict):
+            raise TopicObservationError("topic observation authentication state must be an object")
+        _require_fields(
+            payload,
+            {
+                "schema_version",
+                "state_schema_version",
+                "state_sha256",
+                "literature_snapshot_sha256",
+                "mac_sha256",
+            },
+            "topic-observation authentication state",
+        )
+        return payload
+
+    def _verify_state_authentication(
+        self,
+        state: Mapping[str, Any],
+        state_bytes: bytes,
+    ) -> None:
+        state_snapshot_sha256 = _require_sha256(
+            state["literature_snapshot_sha256"],
+            "topic observation literature snapshot",
+        )
+        snapshot_bytes = self._literature_snapshot_bytes()
+        current_snapshot_sha256 = hashlib.sha256(snapshot_bytes).hexdigest()
+        if state_snapshot_sha256 != current_snapshot_sha256:
+            raise TopicObservationError(
+                "topic observation state literature snapshot does not match current literature"
+            )
+        authentication = self._read_authentication()
+        if authentication["schema_version"] != _STATE_AUTH_SCHEMA_VERSION:
+            raise TopicObservationError("unsupported topic observation authentication schema")
+        if authentication["state_schema_version"] != _STATE_SCHEMA_VERSION:
+            raise TopicObservationError(
+                "topic observation authentication state schema does not match current state"
+            )
+        state_sha256 = _require_sha256(
+            authentication["state_sha256"],
+            "authenticated topic observation state digest",
+        )
+        authenticated_snapshot_sha256 = _require_sha256(
+            authentication["literature_snapshot_sha256"],
+            "authenticated literature snapshot digest",
+        )
+        mac_sha256 = _require_sha256(
+            authentication["mac_sha256"],
+            "topic observation authentication MAC",
+        )
+        if state_sha256 != hashlib.sha256(state_bytes).hexdigest():
+            raise TopicObservationError(
+                "topic observation authentication state digest mismatch; "
+                "persisted literature observations are not bound to the canonical "
+                "state (canonical dogfood state replay must reject it)"
+            )
+        if authenticated_snapshot_sha256 != state_snapshot_sha256:
+            raise TopicObservationError("topic observation authentication snapshot digest mismatch")
+        expected_mac = hmac.new(
+            self._read_signing_key(),
+            _state_authentication_message(state_bytes, snapshot_bytes),
+            hashlib.sha256,
+        ).hexdigest()
+        if not hmac.compare_digest(expected_mac, mac_sha256):
+            raise TopicObservationError("topic observation authentication MAC mismatch")
+
     def _new_state(self) -> dict[str, Any]:
         return {
             "schema_version": _STATE_SCHEMA_VERSION,
             "recovery_contract": _STATE_RECOVERY_CONTRACT,
             "topic_id": self.topic_id,
             "next_cursor": self.initial_cursor,
+            "literature_snapshot_sha256": self._literature_snapshot_sha256(),
             "batches": {},
             "processed_input_ids": {},
             "seen_observation_keys": [],
@@ -911,11 +1138,20 @@ class TopicObservationRunner:
         }
 
     def _load_state(self) -> dict[str, Any]:
-        if not self.state_path.exists():
+        if not _path_present(self.state_path):
+            if _path_present(self.authentication_path):
+                raise TopicObservationError(
+                    "topic observation authentication state exists without a topic state"
+                )
+            if _path_present(self.signing_key_path):
+                raise TopicObservationError(
+                    "topic observation authentication state is missing"
+                )
             return self._new_state()
         try:
-            payload = json.loads(self.state_path.read_text(encoding="utf-8"))
-        except (OSError, json.JSONDecodeError) as exc:
+            state_bytes = self.state_path.read_bytes()
+            payload = json.loads(state_bytes.decode("utf-8"))
+        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise TopicObservationError("topic observation state is unreadable") from exc
         if not isinstance(payload, dict):
             raise TopicObservationError("topic observation state must be an object")
@@ -938,6 +1174,7 @@ class TopicObservationRunner:
             "recovery_contract",
             "topic_id",
             "next_cursor",
+            "literature_snapshot_sha256",
             "batches",
             "processed_input_ids",
             "seen_observation_keys",
@@ -945,6 +1182,10 @@ class TopicObservationRunner:
             "manual_events",
         }
         _require_fields(payload, expected, "topic-observation-state")
+        _require_sha256(
+            payload["literature_snapshot_sha256"],
+            "topic observation literature snapshot",
+        )
         if payload["recovery_contract"] != _STATE_RECOVERY_CONTRACT:
             raise TopicObservationError(
                 "topic observation state recovery contract does not match the current "
@@ -981,7 +1222,6 @@ class TopicObservationRunner:
         batch_input_ids: set[str] = set()
         referenced_manual_ids: set[str] = set()
         batch_manual_ids: set[str] = set()
-        referenced_literature_ids: set[str] = set()
         derived_seen_observation_keys: set[str] = set()
         for cursor, stored in payload["batches"].items():
             _require_nonempty(cursor, "stored cursor")
@@ -1111,9 +1351,6 @@ class TopicObservationRunner:
                     literature_by_id=literature_by_id,
                     seen_observation_keys=set(payload["seen_observation_keys"]),
                 )
-                persisted_observation_id = evidence["persisted_observation_id"]
-                if persisted_observation_id is not None:
-                    referenced_literature_ids.add(persisted_observation_id)
                 if evidence["basis"] in {"NEW_IMPORT", "EXISTING_OBSERVED"}:
                     derived_seen_observation_keys.add(evidence["input_idempotency_key"])
             expected_batch_digest = _batch_digest_from_fingerprints(
@@ -1283,10 +1520,7 @@ class TopicObservationRunner:
             raise TopicObservationError(
                 "seen observation keys do not match cursor-ordered item evidence"
             )
-        if referenced_literature_ids != set(literature_by_id):
-            raise TopicObservationError(
-                "persisted literature observations do not match stored batch evidence"
-            )
+        self._verify_state_authentication(payload, state_bytes)
         return payload
 
     def _validate_item_evidence(
@@ -1660,6 +1894,28 @@ class TopicObservationRunner:
             raise ManualQueueObservationError(str(exc)) from exc
 
     def _save_state(self, state: Mapping[str, Any]) -> None:
-        temporary = self.state_path.with_suffix(".tmp")
-        temporary.write_text(canonical_json(state) + "\n", encoding="utf-8")
-        os.replace(temporary, self.state_path)
+        persisted_state = dict(state)
+        persisted_state["literature_snapshot_sha256"] = self._literature_snapshot_sha256()
+        state_bytes = (canonical_json(persisted_state) + "\n").encode("utf-8")
+        snapshot_bytes = self._literature_snapshot_bytes()
+        snapshot_sha256 = hashlib.sha256(snapshot_bytes).hexdigest()
+        self._ensure_signing_key()
+        state_sha256 = hashlib.sha256(state_bytes).hexdigest()
+        mac_sha256 = hmac.new(
+            self._read_signing_key(),
+            _state_authentication_message(state_bytes, snapshot_bytes),
+            hashlib.sha256,
+        ).hexdigest()
+        authentication = {
+            "schema_version": _STATE_AUTH_SCHEMA_VERSION,
+            "state_schema_version": _STATE_SCHEMA_VERSION,
+            "state_sha256": state_sha256,
+            "literature_snapshot_sha256": snapshot_sha256,
+            "mac_sha256": mac_sha256,
+        }
+        _atomic_write_bytes(self.state_path, state_bytes, _PRIVATE_FILE_MODE)
+        _atomic_write_bytes(
+            self.authentication_path,
+            (canonical_json(authentication) + "\n").encode("utf-8"),
+            _PRIVATE_FILE_MODE,
+        )
