@@ -5,8 +5,10 @@
   "source_identity": {
     "approved_baseline": "b4c6d3676428a2fb1f43a81978f8c9364b8ab8fa",
     "head": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
-    "remote_main": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
-    "repair_commit": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80"
+    "remote_main": "b70bac26f01046cba5d219395e48b8c5a8515815",
+    "repair_commit": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
+    "implementation_candidate": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
+    "delivery_readback": "b70bac26f01046cba5d219395e48b8c5a8515815"
   },
   "contract": {"path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A4-topic-observation-dogfood/acceptance-contract.md", "version": 2, "sha256": "4b7ac7ea035d59be7c87fef9867b97529f8b00f68c207d7460963cd625095c84"},
   "human_binding": {"path": "acceptance/human/A4-topic-observation-dogfood/binding.md", "sha256": "7b299dff38c8c36b9041c8f121b28dc0b70a6539c894081bd4111dab17b4cc78"},
@@ -34,7 +36,7 @@
   "acceptance_release_record": {
     "run_root": "acceptance/release/runs/A4-formal-20260901-current",
     "formal_acceptance_result": "acceptance/release/runs/A4-formal-20260901-current/result.md",
-    "formal_acceptance_result_sha256": "dda990cd5920fc47a981e0c50f2e704b3b25816d4ceb2997ea83378391f32b60",
+    "formal_acceptance_result_sha256": "4274154df28e06d3f396be57671294ac35c72b26b64cfbb4652dcae837249182",
     "status": "ACCEPTED",
     "human_acceptance": "acceptance/human/A4-topic-observation-dogfood/runs/20260901T141500Z-local-a4f002/result.md",
     "human_acceptance_sha256": "e09f6b8cf4b40604e621a72f01b01c81d7ccae82f04aa327bc61ebc9d605ad9d",
