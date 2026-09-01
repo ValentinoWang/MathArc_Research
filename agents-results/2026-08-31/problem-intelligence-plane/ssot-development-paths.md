@@ -136,7 +136,7 @@ main_thread_policy: orchestration-only
 main_thread_source_write: false
 planning source: .ssot/planning-compiler.json
 machine source: .ssot/manifest.json
-current project HEAD: 5af1d9ff6fde02d86633cca50cf815ef04661d4a
+current project HEAD: 41ed37fc9fe66badf7d63bbd3a46d67061253dc7
 ```
 
 ### 发布、基线与候选
