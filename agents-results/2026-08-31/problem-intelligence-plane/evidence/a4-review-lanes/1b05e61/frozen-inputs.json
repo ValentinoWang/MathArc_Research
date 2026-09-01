@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-1b05e61-post-fix-review",
+  "direct_parent": "A4-caac896-replay-integrity",
+  "frozen_source": {
+    "head": "1b05e6105b0d7c98a5b6e037ebd66b916c3a921e",
+    "remote_main": "1b05e6105b0d7c98a5b6e037ebd66b916c3a921e",
+    "parent": "caac896db393550817da9e57c56f03f46277cb54",
+    "tree": "8c35023d729d40b7828e1c82bcfdc35b64dad922"
+  },
+  "decision_ref": "decision.problem-intelligence.amendment@2",
+  "invalidation_key": "acceptance.problem-intelligence.dogfood",
+  "boundary": "offline, fixed repository sources, non-mathematical-proof, non-public-release",
+  "files": {
+    "matharc/v02/topic_observation.py": "f191c010e6388bc5de07f979c9ca90ab10c83a3d74db7a31827e9f3c7887dfd3",
+    "matharc/v02/dogfood_archives.py": "3be729235ac138f9358654c60d5462dbacb731e46dbec496e0ed895f46c031a8",
+    "tests/test_v02_topic_observation.py": "a6ac5fdb82f832e4eb14402d9727fcc5027a7574fb5d9765002d3016741fc9eb",
+    "tests/test_v02_dogfood_archives.py": "e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873",
+    "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A4-topic-observation-dogfood/acceptance-contract.md": "4b7ac7ea035d59be7c87fef9867b97529f8b00f68c207d7460963cd625095c84",
+    "agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/A4.json": "8dfe33ef6a3f2cc8666e2d948694ce89344f437710dd51eeda63071e6cd4e1d8",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/A4.json": "0e22f563f17c00506ba7d482e8addb37b5e72ce52194c5e4d876ad8abbfc153b",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c"
+  },
+  "known_identity_state": {
+    "contract_version": 2,
+    "contract_baseline": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
+    "contract_topic_test_sha256": "1b505da5b1757b66a37ce859a8745fd20ac34c651ee1c7f53f9102bc18cfaa56",
+    "formal_acceptance_current_for_frozen_source": false,
+    "reason": "the repair changed implementation and additively strengthened the protected topic-observation test after the v2 acceptance tuple"
+  }
+}

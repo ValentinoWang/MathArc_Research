@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-1b05e61-post-fix-review",
+  "frozen_source": "1b05e6105b0d7c98a5b6e037ebd66b916c3a921e",
+  "frozen_inputs_sha256": "9fb431f51ed31713114a26f18eebea1284c33035893b81f1ceb62f64017cc0e3",
+  "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+  "dispatch_mode": "parallel-explicit-codex-workers",
+  "launch_barrier_pids": [21893, 21894],
+  "lanes": [
+    {
+      "lane": "replay-closure",
+      "pid": 21893,
+      "session_id": "01a05e90-be3e-7f41-b27f-093013f984d3",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh",
+      "wrapper_sha256": "67b6c79390710c106431e22cb542b346737d60dd0338e8f7c2f14e2fc73268df",
+      "prompt": "prompts/replay-closure.txt",
+      "prompt_sha256": "44bdf5f904228d22eada33a42867c6ebbc45e3a54cee3fe5b39b4b9a7391de77",
+      "authority": "zero-write-except-return",
+      "log": "logs/replay-closure.log",
+      "log_sha256": "a7058afcdb7a657a82bf4b537530e48785492bdb5161b6791762c3600571ab3d",
+      "return": "returns/replay-closure.md",
+      "return_sha256": "34e126bfbc286e431c0741d73c678dd777137897bf393f58bf75170bc71eca84",
+      "terminal_exit_code": 0,
+      "verdict": "FAIL",
+      "finding": "coordinated_literature_replacement_and_duplicate_identity_bypass"
+    },
+    {
+      "lane": "state-integrity",
+      "pid": 21894,
+      "session_id": "01a05e90-be3e-7861-ad8d-576ef3df126b",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+      "wrapper_sha256": "e3bf39774813e38819f266544f96dd1767d7eeea0a4cd6c2b8c6f7cc6ec417ee",
+      "prompt": "prompts/state-integrity.txt",
+      "prompt_sha256": "f344e00b0637825694fc2a42c1e606cefaf6270f3573af3f4579ca91cbdae668",
+      "authority": "zero-write-except-return",
+      "log": "logs/state-integrity.log",
+      "log_sha256": "3181e9089585b7726d799472854bf856ecc02ecb1e97c32973da9c25e067a0f2",
+      "return": "returns/state-integrity.md",
+      "return_sha256": "1039e3e697280ab96e4274a44f5bf0aee23b6c4cfa9390d3dc76c6b913f653da",
+      "terminal_exit_code": 0,
+      "verdict": "FAIL",
+      "finding": "manual_reference_laundering_and_preexisting_inventory_deadlock"
+    }
+  ],
+  "convergence": {
+    "state": "REPAIR_REQUIRED",
+    "reason": "Both independent lanes reproduced stable AC-02 failures. The exact parent attack is closed, but the set-equality repair permits coordinated replacements and rejects a legitimate partial preexisting inventory.",
+    "acceptance_authority": false
+  },
+  "cleanup": {
+    "processes_exited": true,
+    "process_handles_released": true,
+    "codex_transcripts_retained": true,
+    "prompts_logs_and_returns_retained": true
+  }
+}
