@@ -2,7 +2,7 @@ PYTHON ?= python3
 PIP := $(PYTHON) -m pip
 export PYTHONPATH := $(CURDIR)$(if $(PYTHONPATH),:$(PYTHONPATH))
 
-.PHONY: bootstrap bootstrap-full ci-preflight formal-preflight test test-full typecheck architecture workflow-policy quality demo validate serve codex-status acceptance v02-demo v02-validate v02-acceptance frankl-replay console-browser-gate ci ci-full clean-ci baseline smoke-claude
+.PHONY: bootstrap bootstrap-full ci-preflight formal-preflight test test-full typecheck architecture workflow-policy publication-gate quality demo validate serve codex-status acceptance v02-demo v02-validate v02-acceptance frankl-replay console-browser-gate ci ci-full clean-ci baseline smoke-claude
 
 bootstrap:
 	$(PIP) install -e ".[research,dev]"
@@ -31,7 +31,10 @@ architecture:
 workflow-policy:
 	$(PYTHON) scripts/check_matharc_workflows.py
 
-quality: typecheck architecture workflow-policy
+publication-gate:
+	$(PYTHON) scripts/publication_audit_fixture.py
+
+quality: typecheck architecture workflow-policy publication-gate
 
 demo:
 	$(PYTHON) -m matharc demo --out-dir artifacts/demo

@@ -22,10 +22,11 @@ const BLUEPRINT_PATH = resolve(ROOT, "docs/prototypes/console-dev-blueprint.html
 const BLUEPRINT_SOURCE = readFileSync(BLUEPRINT_PATH, "utf8");
 const WIDTHS = [1240, 1366, 1440, 1536, 1728, 1920];
 const CAMPAIGNS = ["c7", "q6"];
-const LIVE_VIEWS = new Set(["source", "dag", "proofchain", "tools", "reasoning", "admin_roles", "campaign", "routes", "disclosure"]);
+const LIVE_VIEWS = new Set(["source", "dag", "proofchain", "tools", "reasoning", "admin_roles", "campaign", "routes", "disclosure", "novelty"]);
 const PROCESS_SCOPED = new Set([
   "campaign", "exploration", "conjecture", "routes", "dag", "proofchain", "tools", "reasoning", "novelty", "disclosure",
 ]);
+const FAIL_CLOSED_M2_VIEWS = new Set(["admin_roster", "admin_cost", "acct_overview", "acct_usage", "acct_billing", "acct_limits"]);
 
 const VIEW_CASES = [
   ...[
@@ -93,16 +94,29 @@ const PYTHON = process.env.PYTHON || "python3";
 const WORKSPACE_SERVER_PROGRAM = String.raw`
 import json
 import sys
+import subprocess
 from pathlib import Path
 
-from matharc.v02.budget import BudgetLedger
-from matharc.v02.campaign import ResearchCampaign
+from matharc.v02.console_export import ConsoleLocalProjectionConfig
+from matharc.v02.difficulty_ledger import DifficultyLedger, DifficultyOutcome, DifficultyPrediction, OrdinalLevel, DIFFICULTY_DIMENSIONS
 from matharc.v02.falsification import (
     KillTestKind, KillTestSpec, RouteEvaluationOutcome, RouteEvaluationRecord,
     attach_kill_test_spec, record_route_evaluation,
 )
 from matharc.v02.review import (
     ReviewerProfile, ReviewerRoster, nominate_for_review, set_reviewer_roster,
+)
+from matharc.v02.problem_gates import (
+    CandidateProblem, GATE_IDS, GateEvidence, GateVerdict, ProblemGateStore,
+    ProblemStatementVersion, ResultGraph,
+)
+from matharc.v02.topic_portfolio import (
+    CriterionVerdict, TOPIC_CRITERIA, TopicCandidate, TopicCriterion,
+    TopicPortfolio, TopicPortfolioStore, TopicState,
+)
+from matharc.operations import (
+    Account, CreditDirection, CreditEntry, OperationsDomainStore,
+    SeatAllocation, UpstreamConfiguration,
 )
 from matharc.v02.schema import (
     ClaimRecord, ClaimStatus, ResearchRoute, RouteStatus, TheoremContract,
@@ -112,7 +126,6 @@ from matharc.v02.trace import ResearchTrace, save_trace
 from matharc.v02.workspace import ResearchWorkspace
 from matharc.v02.workspace_bundle import write_full_workspace_bundle
 from matharc.v02.workspace_server import make_server
-from matharc.v02.workers import StaticProposalWorker
 
 root = Path(sys.argv[1])
 dashboard = Path(sys.argv[2])
@@ -124,13 +137,66 @@ reviewer = ReviewerProfile(
 )
 
 write_full_workspace_bundle(workspace_root)
-workspace = ResearchWorkspace.load(workspace_root)
-campaign = ResearchCampaign(
-    workspace.trace, [StaticProposalWorker("prover", {})],
-    budget=BudgetLedger(wall_seconds_limit=0.0),
+fake_claude = root / "fake-claude.py"
+fake_claude.write_text("""#!/usr/bin/env python3
+import json
+print(json.dumps({"result": {"status": "blocked", "public_reasoning": {
+    "objective": "browser fixture", "premises": ["CLI invocation"],
+    "proposed_move": "record a bounded campaign round", "observation": "fixture",
+    "falsification": "replay the emitted event", "decision": "blocked"
+}, "claim_boundary": "browser gate fixture"}}))
+""", encoding="utf-8")
+fake_claude.chmod(0o755)
+completed = subprocess.run(
+    [sys.executable, "-m", "matharc.v02.cli", "run", "--workspace-root", str(workspace_root),
+     "--role", "prover", "--rounds", "1", "--max-rounds-without-gain", "1",
+     "--wall-seconds-budget", "1", "--claude-executable", str(fake_claude)],
+    cwd=root, capture_output=True, text=True, check=False,
 )
-workspace.record_campaign_result(campaign, campaign.run())
-workspace.save()
+if completed.returncode != 0:
+    raise RuntimeError(f"CLI campaign fixture failed: {completed.stderr or completed.stdout}")
+if "campaign_artifact_id" not in json.loads(completed.stdout):
+    raise RuntimeError("CLI campaign fixture did not emit a campaign artifact")
+workspace = ResearchWorkspace.load(workspace_root)
+
+# M3 fixture: every local-completion view receives a real, independently
+# persisted projection.  The browser gate must prove these records render;
+# not_configured is covered by the unit boundary tests instead.
+topic_root = root / "topic-portfolio"
+criteria = tuple(
+    TopicCriterion(item, CriterionVerdict.DECLARED, (f"E-{index}",), "fixture evidence")
+    for index, item in enumerate(TOPIC_CRITERIA, start=1)
+)
+TopicPortfolioStore(str(topic_root)).create(
+    TopicPortfolio(
+        "PORT-BROWSER", 3,
+        (TopicCandidate("TOPIC-1", "Fixture topic", TopicState.ACTIVE, 1, criteria, ("OBS-1",)),),
+    )
+)
+
+problem_root = root / "candidate-problems"
+statement = ProblemStatementVersion("P-BROWSER", 1, "Fixture candidate problem")
+gates = tuple(
+    GateEvidence(item, GateVerdict.PASSED, f"G-{index}", "2026-01-01T00:00:00Z")
+    for index, item in enumerate(GATE_IDS, start=1)
+)
+candidate = CandidateProblem("P-BROWSER", statement.statement_version_id, gates)
+ProblemGateStore(str(problem_root)).replace(
+    (statement,), (candidate,), ResultGraph((statement.statement_version_id,), ())
+)
+
+difficulty_root = root / "difficulty-ledger"
+difficulty = DifficultyLedger(str(difficulty_root))
+dimensions = tuple((item, OrdinalLevel.MEDIUM) for item in DIFFICULTY_DIMENSIONS)
+difficulty.add_prediction(DifficultyPrediction("D-BROWSER", "P-BROWSER", dimensions, ("E-1",), "2026-01-01T00:00:00Z"))
+difficulty.record_outcome(DifficultyOutcome("O-BROWSER", "D-BROWSER", dimensions, "2026-01-01T00:00:01Z"))
+
+operations_root = root / "operations-domain"
+operations = OperationsDomainStore(operations_root)
+operations.create_account(Account("A-BROWSER", "Fixture account"))
+operations.record_credit(CreditEntry("C-BROWSER", "A-BROWSER", CreditDirection.GRANT, 7, "fixture grant"))
+operations.allocate_seat(SeatAllocation("S-BROWSER", "A-BROWSER", 2))
+operations.configure_upstream(UpstreamConfiguration("U-BROWSER", "Fixture provider", {"provider_kind": "fixture", "region": "local"}))
 
 trace = ResearchTrace("BROWSER-REVIEW", TheoremContract("K", "p", ("C",), "s"))
 trace.add_claim(
@@ -171,6 +237,14 @@ save_trace(trace, review_trace_path)
 server = make_server(
     workspace_root, host="127.0.0.1", port=0, dashboard_path=dashboard,
     sse_poll_seconds=0.02, sse_lifetime_seconds=0.35,
+    local_projection_config=ConsoleLocalProjectionConfig(
+        workspace_index_root=root,
+        topic_portfolio_root=topic_root,
+        problem_gate_root=problem_root,
+        difficulty_ledger_root=difficulty_root,
+        operations_domain_root=operations_root,
+        novelty_audit_path=Path.cwd() / "agents-results/2026-08-31/problem-intelligence-plane/evidence/s2-fixtures/q6-candidate-audit.json",
+    ),
     review_trace_path=review_trace_path, review_write_token=review_token,
 )
 print(json.dumps({
@@ -178,6 +252,7 @@ print(json.dumps({
     "workspace_root": str(workspace_root), "review_trace_path": str(review_trace_path),
     "review_token": review_token, "reviewer_id": reviewer.reviewer_id,
     "reviewer_profile_digest": reviewer.digest_sha256,
+    "cli_executable": str(fake_claude),
 }), flush=True)
 server.serve_forever(poll_interval=0.02)
 `;
@@ -185,20 +260,22 @@ server.serve_forever(poll_interval=0.02)
 const RECORD_CAMPAIGN_PROGRAM = String.raw`
 import json
 import sys
+import subprocess
 from pathlib import Path
 
-from matharc.v02.budget import BudgetLedger
-from matharc.v02.campaign import ResearchCampaign
 from matharc.v02.workspace import ResearchWorkspace
-from matharc.v02.workers import StaticProposalWorker
 
-workspace = ResearchWorkspace.load(Path(sys.argv[1]))
-campaign = ResearchCampaign(
-    workspace.trace, [StaticProposalWorker("prover", {})],
-    budget=BudgetLedger(wall_seconds_limit=0.0),
+completed = subprocess.run(
+    [sys.executable, "-m", "matharc.v02.cli", "run", "--workspace-root", sys.argv[1],
+     "--role", "prover", "--rounds", "1", "--max-rounds-without-gain", "1",
+     "--wall-seconds-budget", "1", "--claude-executable", sys.argv[2]],
+    cwd=Path(sys.argv[1]).parents[1], capture_output=True, text=True, check=False,
 )
-workspace.record_campaign_result(campaign, campaign.run())
-workspace.save()
+if completed.returncode != 0:
+    raise RuntimeError(f"CLI campaign mutation failed: {completed.stderr or completed.stdout}")
+if "campaign_artifact_id" not in json.loads(completed.stdout):
+    raise RuntimeError("CLI campaign mutation did not emit a campaign artifact")
+workspace = ResearchWorkspace.load(Path(sys.argv[1]))
 print(json.dumps({"tail": workspace.events.events[-1].sequence}))
 `;
 
@@ -298,11 +375,12 @@ async function startServer() {
   return {
     ...details,
     campaignMutation() {
-      return runPython(RECORD_CAMPAIGN_PROGRAM, [details.workspace_root], "could not record a live campaign result");
+      return runPython(RECORD_CAMPAIGN_PROGRAM, [details.workspace_root, details.cli_executable], "could not record a live campaign result");
     },
     reviewState() {
       return runPython(REVIEW_STATE_PROGRAM, [details.review_trace_path], "could not read review fixture state");
     },
+    diagnostics() { return stderr; },
     async close() {
       if (child.exitCode === null && !child.killed) child.kill("SIGTERM");
       await waitFor(
@@ -467,23 +545,67 @@ async function testDataBoundaryAndProvenance(page, server, exportPayload) {
     tools: exportPayload.workspace.trace.tool_calls.length,
     reasoning: exportPayload.workspace.trace.public_reasoning.length,
     admin_roles: Object.keys(exportPayload.role_policy.grants).length,
-    campaign: exportPayload.campaign.report.rounds.length,
+    campaign: exportPayload.local_console.workspace_index.workspaces.length,
+    routes: exportPayload.routes.routes.length,
+    disclosure: exportPayload.disclosure.records.state.length,
+    novelty: exportPayload.novelty.audit.route_results.length,
   };
   for (const [view, count] of Object.entries(expected)) {
     await renderCase(page, "c7", { name: `${view}-live`, view });
     const text = await page.locator("body").innerText();
     assert(await page.locator("#view-data-boundary").evaluate(node => node.dataset.source === "live"), `${view} retained a demo label after a declared live export`);
     assert(text.includes(String(count)), `${view} has no browser-visible numeric value derived from its real JSON count ${count}`);
+    if (view === "routes") assert(!text.includes("分层枚举路线"), "routes live renderer leaked its demonstration route name");
+    if (view === "disclosure") assert(!text.includes("六外部元素桥接构造"), "disclosure live renderer leaked its demonstration result name");
+    if (view === "novelty") {
+      assert(!text.includes("检索协议 版本 2"), "novelty live renderer leaked SEARCH_PROTO demonstration constants");
+      assert(text.includes(exportPayload.novelty.audit.audit_id), "novelty live renderer omitted the persisted audit id");
+    }
   }
-  for (const view of ["portfolio", "difficulty", "acct_usage"]) {
+  for (const view of ["acct_usage"]) {
     await renderCase(page, "c7", { name: `${view}-unwired`, view });
-    assert(await page.locator("#view-data-boundary").evaluate(node => node.dataset.source === "demo"), `${view} is not declared live but its demo label disappeared`);
+    const boundary = await page.locator("#view-data-boundary").getAttribute("data-source");
+    assert(boundary === "demo" || (FAIL_CLOSED_M2_VIEWS.has(view) && boundary === "unavailable"), `${view} is not declared live but its demo label disappeared`);
+  }
+}
+
+async function testM3LocalProjections(page, exportPayload) {
+  const local = exportPayload.local_console;
+  assert(local.workspace_index.state === "live", "M3 workspace index projection was not live");
+  assert(local.topic_portfolio.state === "live", "M3 topic portfolio projection was not live");
+  assert(local.candidate_problems.state === "live", "M3 candidate problem projection was not live");
+  assert(local.difficulty_ledger.state === "live", "M3 difficulty projection was not live");
+  assert(local.operations.state === "live", "M3 operations projection was not live");
+  const cases = [
+    ["campaign", local.workspace_index.workspaces.length],
+    ["topics", local.topic_portfolio.candidates.length],
+    ["portfolio", local.candidate_problems.candidates.length],
+    ["dossier", local.candidate_problems.statements.length],
+    ["frontier", local.candidate_problems.graph.nodes.length],
+    ["difficulty", local.difficulty_ledger.predictions.length],
+    ["admin_users", local.operations.accounts.length],
+    ["admin_upstream", local.operations.upstreams.length],
+  ];
+  for (const [view, count] of cases) {
+    await renderCase(page, "c7", { name: `m3-${view}`, view });
+    const text = await page.locator("body").innerText();
+    assert(
+      await page.locator("#view-data-boundary").evaluate(node => node.dataset.source === "live"),
+      `M3 ${view} lost its live data-boundary marker`,
+    );
+    assert(text.includes(String(count)), `M3 ${view} omitted browser-visible projection count ${count}`);
   }
 }
 
 async function testM1SseAndReconnect(page, server, eventCursors) {
   const initial = await (await fetch(`${server.origin}/api/console`)).json();
   const initialTail = initial.workspace.events.events.at(-1).sequence;
+  await renderCase(page, "c7", { name: "proofchain-before-sse", view: "proofchain" });
+  const beforeSse = await page.locator("body").innerText();
+  // The 52 x 2 x 6 visual sweep can outlive the short-lived fixture stream.
+  // Re-establish the real stream at the M1 boundary so this assertion does
+  // not depend on the page-load connection surviving the sweep.
+  await page.evaluate(() => window.MathArcConsole.connectEvents("/events"));
   await waitFor(
     () => eventCursors.includes(initialTail),
     `M1 did not connect to /events with initial cursor ${initialTail}`,
@@ -501,6 +623,15 @@ async function testM1SseAndReconnect(page, server, eventCursors) {
   assert(
     refreshedPayload.workspace.events.events.at(-1).sequence === mutation.tail,
     "M1 event refresh did not load the workspace state containing the emitted event",
+  );
+  const refreshedDigest = String(refreshedPayload.provenance.state_digest_sha256).slice(0, 12);
+  await waitFor(
+    async () => {
+      const body = await page.locator("body").innerText();
+      const provenance = await page.locator("#console-provenance").innerText();
+      return body !== beforeSse && body.includes(String(mutation.tail)) && provenance.includes(refreshedDigest);
+    },
+    `M1 SSE refresh did not render the newly emitted event ${mutation.tail} in the page`,
   );
   await renderCase(page, "c7", { name: "campaign-after-sse", view: "campaign" });
   assert((await page.locator("#nowtask").innerText()).includes("真实报告"), "M1 event refresh did not render the live campaign report");
@@ -589,7 +720,13 @@ async function main() {
 
   const playwright = loadPlaywright();
   const server = await startServer();
-  const exportPayload = await (await fetch(`${server.origin}/api/console`)).json();
+  let exportResponse;
+  try {
+    exportResponse = await fetch(`${server.origin}/api/console`);
+  } catch (error) {
+    fail(`initial console export fetch failed: ${error.message}; fixture stderr: ${server.diagnostics()}`);
+  }
+  const exportPayload = await exportResponse.json();
   const browser = await playwright.chromium.launch({ headless: true });
   const page = await browser.newPage({ viewport: { width: WIDTHS[0], height: 1080 } });
   const pageErrors = [];
@@ -620,6 +757,7 @@ async function main() {
     await testStartFlow(page);
     await testTampers(page);
     await testDataBoundaryAndProvenance(page, server, exportPayload);
+    await testM3LocalProjections(page, exportPayload);
     const m1 = await testM1SseAndReconnect(page, server, eventCursors);
     const m2 = await testM2ReviewWorkflow(page, server);
     assert(pageErrors.length === 0, `page errors: ${pageErrors.join("\n")}`);

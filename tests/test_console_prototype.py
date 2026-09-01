@@ -17,6 +17,12 @@ from matharc.v02.workers import StaticProposalWorker
 
 
 class ConsolePrototypeTests(unittest.TestCase):
+    def test_browser_gate_runs_campaign_through_cli_and_asserts_sse_dom_refresh(self) -> None:
+        gate = (Path(__file__).resolve().parents[1] / "scripts/console_browser_gate.mjs").read_text(encoding="utf-8")
+        self.assertIn('"-m", "matharc.v02.cli", "run"', gate)
+        self.assertNotIn("ResearchCampaign", gate)
+        self.assertIn("M1 SSE refresh did not render the newly emitted event", gate)
+
     def test_bridge_has_explicit_provenance_and_memory_only_review_token(self) -> None:
         page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
         self.assertIn('const endpoints = url ? [url] : ["console.json", "/api/console"]', page)
@@ -39,6 +45,67 @@ class ConsolePrototypeTests(unittest.TestCase):
         self.assertIn("S.consolePayload = null", page)
         self.assertIn("latestLoad", page)
         self.assertIn("same-origin /api/review service", page)
+        self.assertIn('admin_roster: {n:"评审名册",     b:()=>S.consolePayload ||', page)
+        self.assertIn('novelty:["novelty_projection","live_if_configured"]', page)
+        self.assertIn("const validateLiveNovelty", page)
+
+    def test_routes_and_disclosure_have_live_renderers_and_fail_closed_fallback(self) -> None:
+        page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
+        live_section = page[page.index("const DEMO_VIEWS ="):page.index("/* M2 reads only the review service.")]
+        self.assertIn("V.routes = () =>", live_section)
+        self.assertIn("V.disclosure = () =>", live_section)
+        self.assertIn('projectionUnavailable("路线与证伪"', live_section)
+        self.assertIn('projectionUnavailable("分级披露"', live_section)
+        self.assertIn("payload.routes", live_section)
+        self.assertIn("payload.disclosure", live_section)
+
+    def test_loaded_export_without_route_disclosure_projection_fails_closed(self) -> None:
+        node = shutil.which("node")
+        if node is None:
+            self.skipTest("node is required for the projection boundary regression")
+        script = textwrap.dedent(
+            r"""
+            const fs = require("fs");
+            const vm = require("vm");
+            const page = fs.readFileSync(process.argv[1], "utf8");
+            const start = page.indexOf("const projectionUnavailable =");
+            const end = page.indexOf("/* M2 reads only the review service.", start);
+            if (start < 0 || end < 0) throw new Error("projection renderer source was not found");
+            const context = {
+              S: { consolePayload: { routes: null, disclosure: null } },
+              V: { routes: () => ({ task: "DEMO-routes" }), disclosure: () => ({ task: "DEMO-disclosure" }) },
+              DEMO_VIEWS: { routes: () => ({ task: "DEMO-routes" }), disclosure: () => ({ task: "DEMO-disclosure" }) },
+              livePayloadFor: () => null,
+              liveCard: (...values) => values.join("|"), liveEsc: value => String(value),
+              card: (...values) => values.join("|"), split: (...values) => values.join("|"),
+              liveEnumPill: () => "", liveEnumText: () => "",
+              Math, String,
+            };
+            vm.runInNewContext(page.slice(start, end), context);
+            for (const view of ["routes", "disclosure"]) {
+              const result = context.V[view]();
+              if (!result.task.includes("实时投影不可用") || result.task.includes("DEMO-")) {
+                throw new Error(`${view} rendered demo data after a loaded export lost its projection`);
+              }
+            }
+            """
+        )
+        completed = subprocess.run(
+            [node, "-e", script, str(Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html")],
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+
+    def test_novelty_live_renderer_has_no_demo_protocol_fallback_when_export_loaded(self) -> None:
+        page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
+        start = page.index('V.novelty = () => {', page.index('const DEMO_VIEWS ='))
+        end = page.index('/* M2 reads only', start)
+        live_source = page[start:end]
+        self.assertNotIn("SEARCH_PROTO", live_source)
+        self.assertIn("实时投影不可用", live_source)
+        self.assertIn("缺少已验证的 novelty audit projection", live_source)
 
     def test_configured_console_never_substitutes_demo_for_unconfigured_local_views(self) -> None:
         node = shutil.which("node")
@@ -52,7 +119,10 @@ class ConsolePrototypeTests(unittest.TestCase):
             const start = page.indexOf("/* Local-completion projections");
             const end = page.indexOf("window.MathArcConsole", start);
             if (start < 0 || end < 0) throw new Error("local projection source was not found");
-            const names = ["campaign", "topics", "portfolio", "dossier", "frontier", "difficulty", "admin_users", "admin_upstream"];
+            const names = [
+              "campaign", "topics", "portfolio", "dossier", "frontier", "difficulty", "admin_users", "admin_upstream",
+              "admin_roster", "admin_cost", "acct_overview", "acct_usage", "acct_billing", "acct_limits",
+            ];
             const V = Object.fromEntries(names.map(name => [name, () => ({ task: `DEMO-${name}` })]));
             const local_console = Object.fromEntries([
               "workspace_index", "exploration_sessions", "topic_portfolio", "candidate_problems", "difficulty_ledger", "operations",

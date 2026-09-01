@@ -41,7 +41,7 @@
     {
       "view_id": "main",
       "source": "view-sources/00-main.md",
-      "source_sha256": "d298a39ca060c9b34a76aed3916ba7b8c51ef3a562c50127b2353b90760ab632",
+      "source_sha256": "cd41d68d184e4cd89c5c6393adf11645b339a54b0268496c446b48a3ca79650f",
       "output": "../ssot-development-paths.md"
     }
   ],
@@ -71,7 +71,7 @@
       "semantic_key": "authority.v03-implementation-status",
       "authority_path": "docs/V03_IMPLEMENTATION_STATUS.md",
       "authority_commit": "b3eb7512c5b03a9beb8b0eb5f946597c723d07be",
-      "authority_sha256": "a2436a810f92ef192ab16ce6e452828998a387e23ad7e294f093b38d80d8012e",
+      "authority_sha256": "06f10dcdaaf73d859697164feefe0677b67ceb53afead6c67c1fba6bcbc8e2a5",
       "required_state": "ACCEPTED",
       "consumers": [
         "F1",
@@ -123,8 +123,8 @@
   ],
   "validation_report": {
     "path": "validation-report.json",
-    "sha256": "62b0c63f9f9f84aa9ca445bced3cbc2cdfb3e99a1f769a9f5953868b9a1d9113",
-    "manifest_identity_sha256": "0b9ca96ef1f962a7369641ad6c991497a27ad590ca5cec1b6eb17092479a84d4",
-    "bundle_content_sha256": "75754ad894090857ecf93dcb9ec73117aee8fa96aaecd3ddae8372223790639b"
+    "sha256": "377c149cb5714bdf7b452b543f80dcf813484ecf0b54318ef86355dd4658e5d5",
+    "manifest_identity_sha256": "935fdddb2a576133253f80c6faafa3f8c3db71add6ee8c61a7f9fc0bbc831b05",
+    "bundle_content_sha256": "ec27f460b9f1640e0de6d136aaca3c5a3aae3bc62520c739b9aeb1104d566887"
   }
 }

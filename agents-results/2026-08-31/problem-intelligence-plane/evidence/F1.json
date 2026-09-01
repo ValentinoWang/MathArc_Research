@@ -1,0 +1,29 @@
+{
+  "evidence_id": "EV-F1-SOURCE",
+  "task_id": "F1",
+  "evidence_level": "source",
+  "source_identity": {
+    "head": "fe9de3fd86e3670dc3a0c10621afa48fc4740fa8",
+    "observed_at": "2026-09-01"
+  },
+  "authority_records": [
+    {
+      "path": "docs/DEV_PATH_V03.md",
+      "commit": "b3eb7512c5b03a9beb8b0eb5f946597c723d07be",
+      "sha256": "a711ba1292bdbc9a2e312d5c639566d1e176526f9dbe32d55648b4011babb471"
+    },
+    {
+      "path": "docs/V03_IMPLEMENTATION_STATUS.md",
+      "commit": "b3eb7512c5b03a9beb8b0eb5f946597c723d07be",
+      "sha256": "a2436a810f92ef192ab16ce6e452828998a387e23ad7e294f093b38d80d8012e"
+    },
+    {
+      "path": "docs/DISCOVERY_PLANE_V04.md",
+      "commit": "0fb8f15f04451834719c929a264260278e1f6727",
+      "sha256": "449aff96d31989e85582c04118541cb24368aae180cb0067c638b18ab6f05143"
+    }
+  ],
+  "acceptance_self_check": "pass",
+  "proposed_state": "ACCEPTED",
+  "scope": "权威事实对账绑定路径、提交身份和缺口；不替代后续决定节点或专项验收。"
+}

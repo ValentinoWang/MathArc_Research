@@ -1,18 +1,18 @@
 {
-  "evidence_id": "EV-Q1-ACCEPTED-2",
+  "evidence_id": "EV-Q1-BLOCKED-1",
   "task_id": "Q1",
-  "consumed_evidence": ["EV-R1-ACCEPTED-2"],
+  "consumed_evidence": ["EV-R1-BLOCKED-1"],
   "source_identity": {
     "implementation_base": "20d41af66b03d037b7e390ce31800fcc9d573a3e",
-    "r1_evidence_sha256": "073fecdfae5f7ca8c8adc946959b3fd030b60d3c8960b22230d2256b7679114c",
+    "r1_evidence_sha256": "cca0b29854ff81d3840fe025d1ae088ee8322b60c1cfc52c9c33e7b92d4ee0f0",
     "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
     "r1_fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
     "q1_policy_fixture_sha256": "566533a91201ee353ef80efd13e7e039e21692b4ef5334a8a55e940cccf58064",
     "q1_policy_digest_sha256": "05f843c5c4c3956c50b211ed7e41dd4e05e2705fa74759ba8d4b4e2bb0c5748c",
     "q1_implementation_sha256": "1a56ac0e25023e7103adc4c18e9ce50157bb6f58dee57247aba22ada5a352b50",
-    "protected_test_sha256": "89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db"
+    "protected_test_sha256": "d2a1f5c7623784e4eddb8349c2b8cb9fcf4bbb18a24db6a858a47c092b9c75f0"
   },
-  "acceptance_self_check": "pass",
+  "acceptance_self_check": "blocked",
   "acceptance_commands": [
     "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m unittest -v tests.test_v02_calibration_disclosure tests.test_v02_regression_evaluation",
     "PYTHONDONTWRITEBYTECODE=1 /opt/homebrew/bin/python3.13 -m py_compile matharc/v02/calibration_disclosure.py tests/test_v02_calibration_disclosure.py",
@@ -33,18 +33,15 @@
     "historical_reviews": "The retry1 reports and their frozen manifest remain audit history only because they pinned an earlier Q1 candidate digest.",
     "final_reconciliation_record": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/q1-final-acceptance-ledger.json",
     "binding_model": "The detached ledger pins this final Q1.json byte identity, fresh machine and human result hashes, and distinct independent reports one way. Q1.json does not contain the ledger digest or report digests, so the acceptance chain has no self-reference.",
-    "review_boundary": "Independent reviews are implementation and policy-boundary review only; they are not mathematical proof, external literature verification, statistical validation, production evidence or public-release acceptance."
+    "review_boundary": "Historical reviews are retained for audit only; they cannot accept Q1 while the hard R1 dependency is blocked."
   },
   "acceptance_record": {
-    "accepted_at": "2026-09-01",
-    "accepted_by": "用户（研究负责人/仓库所有者）",
-    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T140000Z-local-a1e001/result.md",
-    "human_acceptance_result": "acceptance/human/Q1-calibration-disclosure/runs/20260901T140300Z-local-a1e002/result.md",
-    "authority_basis": "用户已要求验收通过、持续完成并在每个阶段推送 GitHub；R1 人工运行 ID 合规修复后，Q1 合同版本 4 重新绑定当前 R1 身份，并以新的机器、H-01 和两路独立 AI 边界审阅重新接受。",
-    "scope": "Q1 对当前 R1 固定三例的困难度、未校准预测和分级披露策略的本地验收",
-    "ai_review_boundary": "AI 审阅仅提供设计和代码边界复核；它们不构成独立数学证明、外部文献结论、统计性能、生产验收或公开发布决定。"
+    "status": "BLOCKED",
+    "reason": "R1 is BLOCKED because A4 has no formal acceptance result; Q1 cannot be revalidated from the historical R1-bound policy.",
+    "historical_machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T140000Z-local-a1e001/result.md",
+    "historical_human_acceptance_result": "acceptance/human/Q1-calibration-disclosure/runs/20260901T140300Z-local-a1e002/result.md"
   },
-  "proposed_state": "ACCEPTED",
+  "proposed_state": "BLOCKED",
   "unverified_items": [
     "Independent mathematical proof review",
     "Live external literature retrieval",

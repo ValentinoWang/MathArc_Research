@@ -1,10 +1,12 @@
 from __future__ import annotations
 
+import json
 import tempfile
 import unittest
 from matharc.v02.trace import ResearchTrace, TraceValidationError
 from pathlib import Path
 
+from scripts.publication_audit_fixture import run_fixture, write_publication_fixture
 from matharc.publication.claim_map import check_bidirectional_claims, parse_latex_claims, parse_latex_claims_text
 from matharc.publication.gates import audit_publication
 from matharc.publication.latex import bibliography_errors, collect_latex_sources
@@ -13,6 +15,38 @@ from matharc.v02.workspace_demo import write_workspace_demo
 
 
 class PublicationGateTests(unittest.TestCase):
+    def test_technical_preflight_fixture_passes_without_optional_dependencies(self) -> None:
+        report = run_fixture()
+        self.assertTrue(report.valid, report.to_dict())
+        self.assertEqual("TECHNICAL_PREFLIGHT_PASS", report.readiness)
+        self.assertEqual([], list(report.errors))
+
+    def test_technical_preflight_output_preserves_non_authorizing_boundary(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            output = Path(directory) / "audit.json"
+            report = run_fixture(output)
+            self.assertTrue(report.valid)
+            payload = json.loads(output.read_text(encoding="utf-8"))
+            self.assertEqual("publication-audit-technical-preflight", payload["fixture_kind"])
+            self.assertFalse(payload["authorizes_real_publication"])
+            self.assertEqual(report.to_dict(), payload["audit"])
+
+    def test_technical_preflight_fixture_rejects_claim_map_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            paths = write_publication_fixture(directory)
+            paths.claim_map.write_text(
+                json.dumps({"claims": {"C-TARGET": 1}}) + "\n", encoding="utf-8"
+            )
+            report = audit_publication(
+                paths.workspace,
+                paths.bundle,
+                latex=paths.latex,
+                claim_map=paths.claim_map,
+                abstract=paths.abstract,
+            )
+            self.assertFalse(report.valid)
+            self.assertIn("claim C-TARGET revision mismatch", " ".join(report.errors))
+
     def test_invalid_proved_trace_is_rejected_by_domain_loader(self) -> None:
         payload = {
             "schema_version": "2.0", "run_id": "evil",

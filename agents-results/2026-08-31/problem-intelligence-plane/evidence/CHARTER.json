@@ -1,0 +1,24 @@
+{
+  "evidence_id": "EV-CHARTER-SOURCE",
+  "task_id": "CHARTER",
+  "evidence_level": "source",
+  "source_identity": {
+    "head": "fe9de3fd86e3670dc3a0c10621afa48fc4740fa8",
+    "observed_at": "2026-09-01"
+  },
+  "authority_records": [
+    {
+      "path": "docs/DEV_PATH_V03.md",
+      "commit": "b3eb7512c5b03a9beb8b0eb5f946597c723d07be",
+      "sha256": "a711ba1292bdbc9a2e312d5c639566d1e176526f9dbe32d55648b4011babb471"
+    },
+    {
+      "path": "docs/DISCOVERY_PLANE_V04.md",
+      "commit": "0fb8f15f04451834719c929a264260278e1f6727",
+      "sha256": "449aff96d31989e85582c04118541cb24368aae180cb0067c638b18ab6f05143"
+    }
+  ],
+  "acceptance_self_check": "pass",
+  "proposed_state": "ACCEPTED",
+  "scope": "治理准入仅确认问题情报能力作为当前路线图的 amendment 候选；不授权实现、发布或研究结论。"
+}

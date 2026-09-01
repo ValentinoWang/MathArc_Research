@@ -36,7 +36,7 @@ Two independent AI review lanes examined the API/ledger and prototype/security s
 
 The reviewers were stopped after these source changes and did not emit final-version PASS reports. Therefore this record treats the final result as automated-gate evidence, not as completed independent-AI acceptance.
 
-Browser automation was not run because the installed browser-control plugin lacks its required `scripts/browser-client.mjs` runtime. This is an environment limitation; it was not bypassed.
+The repository's browser gate is `node scripts/console_browser_gate.mjs`, which is designed to drive the embedded prototype through Playwright and a local workspace HTTP fixture. It was invoked against the current candidate, but this invocation did not reach Chromium/page checks: the initial `fetch(.../api/console)` failed with Node `TypeError: fetch failed` (the previously recorded `/tmp/matharc-console-ci.zumGSg/bin/python` environment was no longer present). This is a failed/pending browser-gate run, not evidence of a browser-control-plugin limitation; no browser PASS or production/device acceptance is claimed. Rerun the gate after the shared console export/CLI changes settle.
 
 ## Post-review hardening
 
@@ -116,5 +116,7 @@ make ci-full PYTHON=/tmp/matharc-console-ci.zumGSg/bin/python
 # SMT: 20 executed, 0 skipped
 ```
 
-Focused evidence also passed: 29 topic/export/server/operations tests, 15
-prototype/observatory tests, and `node scripts/console_browser_gate.mjs`.
+Focused evidence also passed: 29 topic/export/server/operations tests and 15
+prototype/observatory tests. The separate `node scripts/console_browser_gate.mjs`
+invocation is recorded above as failed/pending rerun; it is not included in the
+passed-evidence count.

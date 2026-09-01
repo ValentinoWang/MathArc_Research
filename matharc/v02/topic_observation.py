@@ -25,9 +25,9 @@ from .source_observation import ObservationStatus, SourceObservation
 
 
 _SCHEMA_VERSION = "1.0"
-_STATE_SCHEMA_VERSION = "1.3"
+_STATE_SCHEMA_VERSION = "1.4"
 _STATE_RECOVERY_CONTRACT = "topic-observation-state-recovery-v2"
-_LEGACY_STATE_SCHEMA_VERSIONS = {"1.0", "1.1", "1.2"}
+_LEGACY_STATE_SCHEMA_VERSIONS = {"1.0", "1.1", "1.2", "1.3"}
 
 
 class TopicObservationError(ValueError):
@@ -90,6 +90,7 @@ _ITEM_EVIDENCE_FIELDS = {
     "import_disposition",
     "prior_cursor",
     "prior_input_id",
+    "input_projection_binding_sha256",
 }
 _INPUT_PROJECTION_FIELDS = {
     "input_id",
@@ -173,6 +174,28 @@ def _input_projection_digest(
                 input_projections[input_id]
                 for input_id in sorted(input_projections)
             ],
+        }
+    )
+
+
+def _input_projection_binding_digest(
+    *,
+    topic_id: str,
+    cursor: str,
+    next_cursor: str,
+    batch_digest_sha256: str,
+    input_projection: Mapping[str, Any],
+) -> str:
+    """Bind one disposition record to its immutable batch input projection."""
+
+    return digest_json(
+        {
+            "schema_version": _SCHEMA_VERSION,
+            "topic_id": topic_id,
+            "cursor": cursor,
+            "next_cursor": next_cursor,
+            "batch_digest_sha256": batch_digest_sha256,
+            "input_projection": input_projection,
         }
     )
 
@@ -527,6 +550,7 @@ class TopicObservationRunner:
 
             results: list[TopicItemResult] = []
             disposition_evidence: dict[str, dict[str, Any]] = {}
+            batch_digest_sha256 = batch.batch_digest_sha256
             for item in batch.inputs:
                 item_result, evidence = self._process_input(state, batch, item)
                 results.append(item_result)
@@ -540,7 +564,14 @@ class TopicObservationRunner:
             input_projections = {
                 item.input_id: item.input_projection for item in batch.inputs
             }
-            batch_digest_sha256 = batch.batch_digest_sha256
+            for input_id, evidence in disposition_evidence.items():
+                evidence["input_projection_binding_sha256"] = _input_projection_binding_digest(
+                    topic_id=batch.topic_id,
+                    cursor=batch.cursor,
+                    next_cursor=batch.next_cursor,
+                    batch_digest_sha256=batch_digest_sha256,
+                    input_projection=input_projections[input_id],
+                )
             batches[batch.cursor] = {
                 "batch_digest_sha256": batch_digest_sha256,
                 "result_digest_sha256": digest_json(batch_result.to_dict()),
@@ -934,7 +965,10 @@ class TopicObservationRunner:
             _require_nonempty(input_id, "processed input id")
             _require_sha256(fingerprint, "processed input fingerprint")
 
-        manual_queue = self._load_manual_queue(payload["manual_queue"])
+        manual_queue = self._load_manual_queue(
+            payload["manual_queue"],
+            enclosing_topic_id=payload["topic_id"],
+        )
         manual_events = self._load_manual_events(payload["manual_events"])
         literature_by_id = {
             observation.observation_id: observation
@@ -1064,6 +1098,8 @@ class TopicObservationRunner:
                     input_observation_ids[input_id],
                     canonical_projections[input_id],
                     cursor=cursor,
+                    next_cursor=result.next_cursor,
+                    batch_digest_sha256=stored["batch_digest_sha256"],
                     all_stored_batches=payload["batches"],
                     processed_input_ids=payload["processed_input_ids"],
                     manual_queue=manual_queue,
@@ -1142,6 +1178,8 @@ class TopicObservationRunner:
         input_projection: Mapping[str, Any],
         *,
         cursor: str,
+        next_cursor: str,
+        batch_digest_sha256: str,
         all_stored_batches: Mapping[str, Any],
         processed_input_ids: Mapping[str, str],
         manual_queue: list[ManualReviewItem],
@@ -1176,6 +1214,21 @@ class TopicObservationRunner:
             raise TopicObservationError("stored input content size conflicts with input projection")
         if evidence["input_risk_flags"] != input_projection["risk_flags"]:
             raise TopicObservationError("stored input risk flags conflict with input projection")
+        _require_sha256(
+            evidence["input_projection_binding_sha256"],
+            "stored input projection binding",
+        )
+        expected_projection_binding = _input_projection_binding_digest(
+            topic_id=self.topic_id,
+            cursor=cursor,
+            next_cursor=next_cursor,
+            batch_digest_sha256=batch_digest_sha256,
+            input_projection=input_projection,
+        )
+        if evidence["input_projection_binding_sha256"] != expected_projection_binding:
+            raise TopicObservationError(
+                "stored disposition evidence is not bound to its batch input projection"
+            )
         _require_nonempty(evidence["input_observation_id"], "stored input observation id")
         _require_sha256(evidence["input_idempotency_key"], "stored input idempotency key")
         _require_sha256_or_empty(
@@ -1363,6 +1416,14 @@ class TopicObservationRunner:
                         "input-id conflict result observation conflicts with input projection"
                     )
             elif manual.reason is ManualReviewReason.BUDGET_EXHAUSTED:
+                # Risk checks run before budget checks, so a budget-blocked
+                # disposition can never originate from a high-risk input
+                # projection. Keep this derivation bound to the persisted
+                # input rather than trusting the queue reason.
+                if input_projection["risk_flags"]:
+                    raise TopicObservationError(
+                        "budget manual disposition conflicts with input projection"
+                    )
                 if persisted_id is not None and import_disposition != ImportDisposition.PENDING.value:
                     raise TopicObservationError(
                         "budget manual disposition lacks budget-blocked import evidence"
@@ -1433,15 +1494,29 @@ class TopicObservationRunner:
             raise ManualQueueObservationError(str(exc)) from exc
 
     @staticmethod
-    def _load_manual_queue(value: object) -> list[ManualReviewItem]:
+    def _load_manual_queue(
+        value: object,
+        *,
+        enclosing_topic_id: str,
+    ) -> list[ManualReviewItem]:
         try:
+            _require_nonempty(enclosing_topic_id, "enclosing topic_id")
             if not isinstance(value, list):
                 raise TopicObservationError("topic observation state has invalid manual queue")
             manual_queue: list[ManualReviewItem] = []
             for item in value:
                 if not isinstance(item, dict):
                     raise TopicObservationError("manual queue entry is malformed")
-                manual_queue.append(ManualReviewItem.from_dict(item))
+                manual = ManualReviewItem.from_dict(item)
+                if manual.topic_id != enclosing_topic_id:
+                    if manual.reason is ManualReviewReason.CURSOR_CONFLICT:
+                        raise ManualQueueObservationError(
+                            "cursor conflict manual topic_id does not match enclosing state topic"
+                        )
+                    raise ManualQueueObservationError(
+                        "manual queue topic_id does not match enclosing state topic"
+                    )
+                manual_queue.append(manual)
             manual_ids = [item.manual_id for item in manual_queue]
             if len(manual_ids) != len(set(manual_ids)):
                 raise TopicObservationError("manual queue manual_ids must be unique")

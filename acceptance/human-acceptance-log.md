@@ -2,8 +2,8 @@
 
 本文件由验收事实确定性生成，禁止手工修改。人工验收集中在机器开发完成后的独立末端阶段；入队不会打断中间开发。
 
-- 事实时间：2026-09-01T16:02:00Z
-- 来源事实 SHA-256：bd32a2c032b02135456d18c37a0b4e1c113c2f5c5e71949b96681f672db98e20
+- 事实时间：2026-09-01T17:01:01Z
+- 来源事实 SHA-256：e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
 - 生成命令：`manage_acceptance_artifacts.py log --project-root <project-root>`
 
 ## 阻塞发布项
@@ -18,13 +18,14 @@
 
 | 时间 | 任务 | 业务闭环 | 角色 | 分钟 | 清单 | 最新记录 |
 | --- | --- | --- | --- | ---: | --- | --- |
-| - | - | - | - | - | - | - |
+| 2026-09-01T17:01:00Z | A5-problem-intelligence-v0-release | A5-v5-source-release | 研究负责人和仓库所有者 | 3 | acceptance/human/A5-problem-intelligence-v0-release/checklist.md | acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T170100Z-local-b00002/result.md |
+| 2026-09-01T17:00:00Z | Q1-calibration-disclosure | Q1-reacceptance | 研究负责人 | 3 | acceptance/human/Q1-calibration-disclosure/checklist.md | acceptance/human/Q1-calibration-disclosure/runs/20260901T170000Z-local-b00001/result.md |
 
 ### 已失效需重验
 
 | 时间 | 任务 | 业务闭环 | 角色 | 分钟 | 清单 | 最新记录 |
 | --- | --- | --- | --- | ---: | --- | --- |
-| 2026-09-01T16:01:00Z | A5-problem-intelligence-v0-release | A5-v5-source-release | 研究负责人和仓库所有者 | 3 | acceptance/human/A5-problem-intelligence-v0-release/checklist.md | acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T160100Z-local-a5f002/result.md |
+| - | - | - | - | - | - | - |
 
 ### 准备中
 
@@ -36,7 +37,7 @@
 
 | 时间 | 任务 | 业务闭环 | 角色 | 分钟 | 清单 | 最新记录 |
 | --- | --- | --- | --- | ---: | --- | --- |
-| 2026-09-01T14:02:00Z | Q1-calibration-disclosure | Q1-reacceptance | 研究负责人 | 3 | acceptance/human/Q1-calibration-disclosure/checklist.md | acceptance/human/Q1-calibration-disclosure/runs/20260901T140300Z-local-a1e002/result.md |
+| - | - | - | - | - | - | - |
 
 ## 非阻塞抽查项
 

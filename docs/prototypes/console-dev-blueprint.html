@@ -277,7 +277,7 @@ html{scroll-behavior:smooth;}
   </ul>
 
   <h3><span class="no">4.3</span>事件账本（<code>event_log.py</code>）</h3>
-  <p>只可追加、哈希链式：<code>validate()</code> 四项检查（序号连续、前哈希咬合、事件哈希相符、事件编号唯一），<code>previous</code> 按声明值前进；<code>to_dict()</code> 携带 <code>schema_version:"1.0"</code> 与链头；<code>public_summary()</code> 导出时把载荷换成其摘要。文档串自我定位：<b>不是区块链</b>，只为检出删除、重排、插入、篡改。事件类型共 18 个，全部由工作区 <code>_seal_transition</code> 封存，载荷形如 <code>{details, state_digest_after}</code>。</p>
+  <p>只可追加、哈希链式：<code>validate()</code> 四项检查（序号连续、前哈希咬合、事件哈希相符、事件编号唯一），<code>previous</code> 按声明值前进；<code>to_dict()</code> 携带 <code>schema_version:"1.0"</code> 与链头；<code>public_summary()</code> 导出时把载荷换成其摘要。文档串自我定位：<b>不是区块链</b>，只为检出删除、重排、插入、篡改。事件类型共 21 个，权威枚举为 <code>matharc/v02/event_log.py:EVENT_TYPES</code>，全部由工作区 <code>_seal_transition</code> 封存，载荷形如 <code>{details, state_digest_after}</code>。</p>
 
   <h3><span class="no">4.4</span>工具与证伪（<code>exact_tools.py</code> / <code>smt_tools.py</code> / <code>lrat_tools.py</code> / <code>falsification.py</code>）</h3>
   <p>精确工具白名单由注册表决定，<code>default_exact_tool_registry()</code> 当前恰五个模板：<code>polynomial_identity / induction_certificate / smt_universal_no_counterexample / smt_existential_witness / cnf_lrat_unsat</code>。信任语义非对称：<code>unknown</code>（含超时）记 <code>ToolStatus.ERROR</code> 永不产证据；sat 模型须过模块内独立纯 Python 求值器，二检不一致记错误；unsat 记求解器信任的精确计算并附局限声明。证伪测试是另一套注册表：<code>KillTestKind</code> 四类（enumeration / property_random / sat_search / instance_eval），只走负向通道——<b>有限枚举不在精确工具白名单里</b>。</p>
@@ -462,7 +462,7 @@ html{scroll-behavior:smooth;}
   <div class="tw"><table>
     <thead><tr><th>前端表</th><th>后端枚举</th><th>基数</th></tr></thead>
     <tbody>
-      <tr><td><code>ETYPE</code></td><td><code>event_type</code>（封存于 <code>_seal_transition</code>）</td><td>18（演示链用其 14）</td></tr>
+      <tr><td><code>ETYPE</code></td><td><code>event_type</code>（封存于 <code>_seal_transition</code>；权威源：<code>event_log.py:EVENT_TYPES</code>）</td><td>21（演示链用其 14）</td></tr>
       <tr><td><code>TSTATUS</code></td><td><code>ToolStatus</code></td><td>5</td></tr>
       <tr><td><code>VERDICTS / DECISIONS</code></td><td><code>ObligationVerdictKind / ReviewDecision</code></td><td>4 / 3</td></tr>
       <tr><td><code>ASSURE</code></td><td><code>RequiredAssurance</code></td><td>3</td></tr>

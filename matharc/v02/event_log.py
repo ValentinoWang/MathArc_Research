@@ -10,6 +10,32 @@ from .schema import canonical_json, digest_json, utc_now
 
 GENESIS_HASH = "0" * 64
 
+# Canonical event vocabulary for workspace transitions.  Keep this ordered so
+# documentation and UI projections can bind to one stable source of truth.
+EVENT_TYPES: tuple[str, ...] = (
+    "WORKSPACE_CREATED",
+    "CLAIM_ADDED",
+    "ROUTE_ADDED",
+    "OBJECT_ADDED",
+    "OBJECT_VERIFIED",
+    "CLAIM_OBJECTS_LINKED",
+    "SOURCE_CLAIM_ADDED",
+    "SOURCE_CLAIM_VERIFIED",
+    "CLAIM_SOURCES_LINKED",
+    "EVIDENCE_ADDED",
+    "TOOL_CALL_ADDED",
+    "PUBLIC_REASONING_ADDED",
+    "FAILURE_RECORDED",
+    "CLAIM_PROMOTED",
+    "CAMPAIGN_RECORDED",
+    "CAMPAIGN_COMPLETED",
+    "CLAIM_PROMOTION_REJECTED",
+    "CAMPAIGN_ROUND_COMPLETED",
+    "REVIEW_GAP_RECORDED",
+    "ROUTE_FAILURE_RECORDED",
+    "CLAIM_COUNTEREXAMPLE_RECORDED",
+)
+
 
 @dataclass(slots=True)
 class ResearchEvent:

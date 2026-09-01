@@ -8,6 +8,7 @@ import unittest
 from pathlib import Path
 
 from matharc.v02.console_export import (
+    ConsoleLocalProjectionConfig,
     build_console_export,
     write_console_export,
 )
@@ -43,11 +44,42 @@ class ConsoleExportTests(unittest.TestCase):
             self.assertTrue(payload["workspace"]["audit"]["valid"])
             self.assertFalse(payload["campaign"]["available"])
             self.assertEqual(payload["view_contract"]["source_registry_projection"], "live")
+            self.assertEqual(payload["view_contract"]["admin_roster"], "not_configured_fail_closed")
+            self.assertEqual(payload["view_contract"]["accounting"], "not_configured_fail_closed")
+            for view in ("acct_overview", "acct_usage", "acct_billing", "acct_limits"):
+                self.assertEqual(payload["view_contract"][view], "not_configured_fail_closed")
+            self.assertEqual(payload["view_contract"]["admin_cost"], "not_configured_fail_closed")
             source_claims = payload["source_topic"]["source_claims"]
             self.assertEqual(source_claims[0]["source_claim_id"], "SRC-INDUCTION")
             self.assertEqual(source_claims[0]["status"], "VERIFIED")
+            self.assertEqual(payload["routes"]["state"], "live")
+            self.assertEqual(payload["disclosure"]["state"], "live")
+            self.assertEqual(len(payload["routes"]["routes"]), len(payload["workspace"]["trace"]["routes"]))
+            self.assertEqual(len(payload["disclosure"]["records"]["state"]), len(payload["workspace"]["trace"]["claims"]))
             self.assertNotIn("workspace_root", payload["provenance"])
             self.assertEqual(before, (root / "workspace.json").read_bytes())
+            self.assertEqual(payload["novelty"]["state"], "not_configured")
+
+    def test_configured_novelty_audit_is_exported_and_missing_record_fails_closed(self) -> None:
+        fixture = Path(__file__).parents[1] / "agents-results/2026-08-31/problem-intelligence-plane/evidence/s2-fixtures/q6-candidate-audit.json"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "workspace"
+            write_full_workspace_bundle(root)
+            payload = build_console_export(
+                root,
+                local_projection_config=ConsoleLocalProjectionConfig(novelty_audit_path=fixture),
+            )
+            self.assertEqual(payload["view_contract"]["novelty_projection"], "live_if_configured")
+            self.assertEqual(payload["novelty"]["state"], "live")
+            self.assertEqual(payload["novelty"]["audit"]["audit_id"], "NOVELTY-Q6-1")
+            self.assertEqual(payload["novelty"]["authorization"]["status"], "CONTRACT_ONLY")
+            with self.assertRaisesRegex(ValueError, "novelty audit record is missing"):
+                build_console_export(
+                    root,
+                    local_projection_config=ConsoleLocalProjectionConfig(
+                        novelty_audit_path=Path(directory) / "missing.json"
+                    ),
+                )
 
     def test_campaign_and_json_output_are_explicit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

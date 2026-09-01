@@ -77,7 +77,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
 
-当前计划状态是“治理已对账、决定版本 2 已接受，全部 17 个节点已接受”。Q1 的当前提交身份由两份独立、零写入、持久化通过（`PASS`）的 AI 复审报告和单向最终对账台账绑定；A5 的联合决定只授权范围受限的仓库源级交付。该决定不构成数学结论、外部状态、新颖性、校准表现、生产发布或公开研究结论。
+当前计划状态是“治理已对账、决定版本 2 已接受；A4 仅完成独立复核，正式验收尚未执行”。A4 的发布运行记录（release run）没有正式验收结果，故 R1、Q1、A5 保持阻塞，不得沿用下游接受声明。该决定不构成数学结论、外部状态、新颖性、校准表现、生产发布或公开研究结论。
 
 ## 七、权威边界与剩余不确定性路由
 
@@ -136,14 +136,14 @@ main_thread_policy: orchestration-only
 main_thread_source_write: false
 planning source: .ssot/planning-compiler.json
 machine source: .ssot/manifest.json
-current project HEAD: 797b20fe91776602037ad22ae667086099def189
+current project HEAD: fe9de3fd86e3670dc3a0c10621afa48fc4740fa8
 ```
 
 ### 发布、基线与候选
 
 | Macro phase | Release ID | User value | Independent acceptance | Independent failure | Development baseline | Promotion baseline | Release candidate |
 |---|---|---|---|---|---|---|---|
-| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:797b20fe91776602037ad22ae667086099def189` | `main:797b20fe91776602037ad22ae667086099def189` | `candidate:pi-r1-v2` |
+| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:fe9de3fd86e3670dc3a0c10621afa48fc4740fa8` | `main:fe9de3fd86e3670dc3a0c10621afa48fc4740fa8` | `candidate:pi-r1-v2` |
 | P1 共享文献资料底座 | PI-R2 | 公开资料可追溯导入 | 观察、去重、预算和信任门 | 资料停留待审 | `candidate:pi-r1-v1` | `accepted:pi-r1-v1` | `candidate:pi-r2-v1` |
 | P2 问题状态与新颖性审计 | PI-R3 | 状态与新颖性分离 | 四路检索和失效负测 | 冻结完整预算 | `candidate:pi-r2-v1` | `accepted:pi-r2-v1` | `candidate:pi-r3-v1` |
 | P3 一次性主题观测 | PI-R4 | 三例真实闭环 | 重放、恢复、去重和人工审计 | 进入人工通道 | `candidate:pi-r3-v1` | `accepted:pi-r3-v1` | `candidate:pi-r4-v1` |
@@ -218,10 +218,10 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | A3 | P2 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 未审计结果不得授权的专项证据通过 | source:accepted | T1 |
 | T1 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 游标重放、去重和人工通道专项及独立 AI 复审通过 | source:accepted | T2 |
 | T2 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 三个固定来源档案、重放、预算和人工闭环均通过独立 AI 复审 | source:accepted | A4 |
-| A4 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 三例档案、重放、恢复、去重和失败模式验收通过 | evidence:A4 | R1 |
-| R1 | P4 | 1/1/1/1/2 | ACCEPTED | 0 | 评测负责人 | EG-PLAN | 合同版本 9 的两份独立冻结输入复审与 H-01 已通过 | evidence:R1-accepted-2 | Q1 |
-| Q1 | P4 | 1/1/1/1/2 | ACCEPTED | 2 | 研究负责人 | EG-PLAN | 当前提交身份、未校准双轨和禁止公开边界经机器、人工和两份独立 AI 复审通过 | evidence:Q1-accepted-2 | A5 |
-| A5 | P4 | 1/1/1/1/2 | ACCEPTED | 2 | 研究负责人和仓库所有者 | EG-PLAN | 受限仓库源级交付已由机器、联合 H-01 和发布复核按 Q1 v5 身份闭环接受；远端回读仍是 GitHub 交付声明前提 | evidence:A5-accepted-4 | 无 |
+| A4 | P3 | 1/1/1/1/2 | VERIFIED | 0 | 验收负责人 | EG-PLAN | 独立复核通过但正式 acceptance 尚未执行 | evidence:A4 | R1 |
+| R1 | P4 | 1/1/1/1/2 | BLOCKED | 0 | 评测负责人 | EG-PLAN | 等待 A4 正式验收 | evidence:R1-accepted-2 | Q1 |
+| Q1 | P4 | 1/1/1/1/2 | BLOCKED | 2 | 研究负责人 | EG-PLAN | 等待 R1 重新验收 | evidence:Q1-accepted-2 | A5 |
+| A5 | P4 | 1/1/1/1/2 | BLOCKED | 2 | 研究负责人和仓库所有者 | EG-PLAN | 等待 Q1 重新验收和发布复核 | evidence:A5-accepted-4 | 无 |
 
 ### 语义节点登记表
 
@@ -240,10 +240,10 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | A3 | acceptance.problem-intelligence.status-novelty | validation | novelty-audit | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | S2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.status-novelty | evidence-only | 验收负责人 |
 | T1 | implementation.problem-intelligence.topic-observation | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A3 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.topic-observation | implementation | 主题观测负责人 |
 | T2 | implementation.problem-intelligence.dogfood-archives | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.dogfood-archives | implementation | 主题观测负责人 |
-| A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
-| R1 | implementation.problem-intelligence.regression | implementation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
-| Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
-| A5 | release.problem-intelligence.v0 | release-decision | governance | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
+| A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | VERIFIED | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
+| R1 | implementation.problem-intelligence.regression | implementation | evaluation | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
+| Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
+| A5 | release.problem-intelligence.v0 | release-decision | governance | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
 
 ### 依赖边表
 
@@ -271,7 +271,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 
 | Frontier | Task ID | Eligibility | Unsatisfied hard dependencies | Active assumptions | Resource decision |
 |---|---|---|---|---|---|
-| none | 无待处理正式节点 | complete | none | 17/17 已接受；GitHub 交付声明仍等待最终 main 推送和远端 ref 回读 |
+| A4 → R1 | A4 / R1 | blocked | A4 正式验收结果 | none | A4 release run 仅有独立复核 returns，等待正式验收 |
 
 ### 波前指标
 
@@ -314,7 +314,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
 
-并行宽度的逻辑目标由独立交付物决定；Q1 的两条相互独立、零写入复审已完成并在单向台账中对账，A5 的机器、联合人工和发布复核运行已完成。最终推送和远端回读属于交付证明，不扩大 A5 的范围。
+并行宽度的逻辑目标由独立交付物决定；当前图上的唯一正式就绪交付物是 `DL-A4`，其对应节点 A4 等待正式验收结果。Q1、A5 的历史复核材料不解锁当前依赖链；最终推送和远端回读属于交付证明，不扩大 A5 的范围。
 
 ### 假设与冲突登记
 
@@ -343,7 +343,7 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 | External dependency ID | Authority path | Last-change commit | SHA-256 | Required state | Consumers |
 |---|---|---|---|---|---|
 | EXT-DEV-PATH | docs/DEV_PATH_V03.md | b3eb7512c5b03a9beb8b0eb5f946597c723d07be | a711ba1292bdbc9a2e312d5c639566d1e176526f9dbe32d55648b4011babb471 | ACCEPTED | CHARTER,F1,D1,D2,A1 |
-| EXT-V03-STATUS | docs/V03_IMPLEMENTATION_STATUS.md | b3eb7512c5b03a9beb8b0eb5f946597c723d07be | a2436a810f92ef192ab16ce6e452828998a387e23ad7e294f093b38d80d8012e | ACCEPTED | F1,D1,D2 |
+| EXT-V03-STATUS | docs/V03_IMPLEMENTATION_STATUS.md | b3eb7512c5b03a9beb8b0eb5f946597c723d07be | 06f10dcdaaf73d859697164feefe0677b67ceb53afead6c67c1fba6bcbc8e2a5 | ACCEPTED | F1,D1,D2 |
 | EXT-DISCOVERY-V04 | docs/DISCOVERY_PLANE_V04.md | 0fb8f15f04451834719c929a264260278e1f6727 | 449aff96d31989e85582c04118541cb24368aae180cb0067c638b18ab6f05143 | ACCEPTED | CHARTER,F1,D1,D2,A1 |
 | EXT-SOURCE-REGISTRY | matharc/v02/source_registry.py | 0fb8f15f04451834719c929a264260278e1f6727 | e697f0894d8ac35a19c39ade521a8dfa6d4e42f7c291261a6e0004702c1b3c22 | ACCEPTED | L1,L2 |
 | EXT-BUDGET-V02 | matharc/v02/budget.py | 0fb8f15f04451834719c929a264260278e1f6727 | 24f9b7714324a3120c0addefcd391bc4f00000a84c06692875873a7804beec1e | ACCEPTED | L1,L2,T1,R1 |
@@ -401,10 +401,8 @@ current project HEAD: 797b20fe91776602037ad22ae667086099def189
 
 | Evidence ID | Task ID | Evidence level | Source revision | Artifact hashes | Environment | Runtime release | Actor role | Account/tenant | Device/browser | Mock/fixture | Observed at | Acceptance contract |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| EV-CHARTER-SOURCE | CHARTER | source | 836dc6860f8f997e4e128bcd745c96b98c6b9b29 | five authority SHA-256 values | local repository | n/a | 仓库所有者 | n/a | n/a | false | 2026-08-31 | CHARTER |
-| EV-F1-SOURCE | F1 | source | 836dc6860f8f997e4e128bcd745c96b98c6b9b29 | planning compiler | local repository | n/a | 规划编排者 | n/a | n/a | false | 2026-08-31 | F1 |
-| EV-PLAN-STATIC | A1 | static-test | pending checker run | manifest and node hashes | local repository | n/a | 验收负责人 | n/a | n/a | false | pending | PI-R1 |
-| EV-PI-FIXTURE | A2 | fixture/mock | not created | pending | isolated fixture | n/a | 验收负责人 | n/a | n/a | true | pending | PI-R2 |
+| EV-CHARTER-SOURCE | CHARTER | source | fe9de3fd86e3670dc3a0c10621afa48fc4740fa8 | docs/DEV_PATH_V03.md + docs/DISCOVERY_PLANE_V04.md SHA-256 values | local repository | n/a | 仓库所有者 | n/a | n/a | false | 2026-09-01 | CHARTER |
+| EV-F1-SOURCE | F1 | source | fe9de3fd86e3670dc3a0c10621afa48fc4740fa8 | docs/DEV_PATH_V03.md + docs/V03_IMPLEMENTATION_STATUS.md + docs/DISCOVERY_PLANE_V04.md SHA-256 values | local repository | n/a | 规划编排者 | n/a | n/a | false | 2026-09-01 | F1 |
 
 ### 验收合同与最终顺序
 
@@ -442,7 +440,7 @@ F1
                                                         v
                                       T1 --> T2 --> A4 --> R1 --> Q1 --> A5
 
-D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；S1、S2、A3、T1、T2、A4、R1、Q1 和 A5 均已接受。
+D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；A4 为 `VERIFIED` 但未正式接受，R1、Q1 和 A5 因此阻塞。
 S1 的独立纸面 dry-run 已通过；它不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
 ```
 
@@ -471,4 +469,4 @@ flowchart LR
 
 ### 结论与当前停止点
 
-当前全部 17 个节点已接受。A5 的最终范围仍限于已验收的仓库源、测试、SSOT 记录和验收证据，GitHub 交付需最终 main 推送和远端 ref 回读；Q1 保持固定三例、`UNCALIBRATED` 和 `NOT_READY` 的披露政策。不得把本状态标记为部署完成、公开研究结论、数学结论或外部文献确认。
+当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2 已接受；A4 为 `VERIFIED` 但正式 acceptance 尚未执行，R1、Q1、A5 为 `BLOCKED`。不得把本状态标记为部署完成、公开研究结论、数学结论或外部文献确认。

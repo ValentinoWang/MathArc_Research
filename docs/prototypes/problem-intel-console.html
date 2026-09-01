@@ -1144,7 +1144,7 @@ const VMETA = {
   disclosure:{n:"能对外说什么"},
   acct_overview:{n:"总览"},
   admin_roles:  {n:"角色与权限",   b:()=>ROLES.length},
-  admin_roster: {n:"评审名册",     b:()=>ROSTER.list.length},
+  admin_roster: {n:"评审名册",     b:()=>S.consolePayload || (S.consolePayloadState && (S.consolePayloadState.status === "loaded" || S.consolePayloadState.status === "unavailable")) ? "—" : ROSTER.list.length},
   admin_queue:  {n:"评审队列",     b:()=>QUEUE.filter(q=>q.life==="ACTIVE").length},
   admin_cost:   {n:"成本与模型用量"},
   admin_upstream:{n:"上游接入"},
@@ -4019,8 +4019,22 @@ function render(){
      so a real provenance header cannot make an unconnected demo look live. */
   const dataBoundary = $("#view-data-boundary");
   if(dataBoundary){
-    const connected = S.view === "admin_queue" ? ReviewConsole.view().source === "live" : !!livePayloadFor(S.view);
-    const unavailable = consolePayloadWasLoaded() && (S.view === "routes" || S.view === "disclosure") && !connected;
+    const localProjectionKeys = {
+      campaign: ["workspace_index", "exploration_sessions"],
+      topics: ["topic_portfolio"],
+      portfolio: ["candidate_problems"], dossier: ["candidate_problems"],
+      frontier: ["candidate_problems"], difficulty: ["difficulty_ledger"],
+      admin_users: ["operations"], admin_upstream: ["operations"],
+    };
+    const localPayload = S.consolePayload && S.consolePayload.local_console;
+    const localConnected = (localProjectionKeys[S.view] || []).some(key => {
+      const projection = localPayload && localPayload[key];
+      return projection && (projection.state === "live" || (key === "exploration_sessions" && projection.state === "live_with_stale_records"));
+    });
+    const connected = S.view === "admin_queue" ? ReviewConsole.view().source === "live" : !!livePayloadFor(S.view) || localConnected;
+    const unavailable = consolePayloadWasLoaded()
+      && ((S.view === "routes" || S.view === "disclosure" || S.view === "novelty") || FAIL_CLOSED_M2_VIEWS.has(S.view))
+      && !connected;
     dataBoundary.textContent = connected ? "真实数据" : unavailable ? "实时投影不可用" : "演示数据";
     dataBoundary.dataset.source = connected ? "live" : unavailable ? "unavailable" : "demo";
   }
@@ -4237,18 +4251,19 @@ function syncThemeBtn(){
    export contract stop rendering demonstration constants. Every other view
    retains its visible demonstration boundary until a matching backend model
    exists. */
-const DEMO_VIEWS = Object.fromEntries(["source","dag","proofchain","tools","reasoning","admin_roles","campaign","routes","disclosure"].map(id=>[id,V[id]]));
+const DEMO_VIEWS = Object.fromEntries(["source","dag","proofchain","tools","reasoning","admin_roles","campaign","routes","disclosure","novelty"].map(id=>[id,V[id]]));
 const LIVE_VIEW_CONTRACTS = {
   source:["source_registry_projection","live"], dag:["verification_publication","live"],
   proofchain:["verification_publication","live"], tools:["verification_publication","live"],
   reasoning:["verification_publication","live"], admin_roles:["verification_publication","live"],
   campaign:["campaign_observatory","live_if_current_workspace_campaign_is_registered"],
   routes:["routes_projection","live"], disclosure:["disclosure_projection","live"],
+  novelty:["novelty_projection","live_if_configured"],
 };
 const livePayloadFor = view => {
   const payload = S.consolePayload, contract = LIVE_VIEW_CONTRACTS[view];
   if(!payload || !contract || !payload.view_contract || payload.view_contract[contract[0]] !== contract[1]) return null;
-  if((view === "routes" || view === "disclosure") && !consoleProjectionState(view).ok) return null;
+  if((view === "routes" || view === "disclosure" || view === "novelty") && !consoleProjectionState(view).ok) return null;
   return payload;
 };
 const liveWorkspace = view => { const payload = livePayloadFor(view); return payload && payload.workspace; };
@@ -4331,7 +4346,29 @@ const LIVE_ENUM_UI = Object.freeze({
   campaign_reason: Object.freeze({
     campaign_report_not_recorded:{cls:"gap",label:"尚未登记攻克报告"}, campaign_report_stale:{cls:"gap",label:"攻克报告已过期"},
   }),
+  novelty_conclusion: Object.freeze({
+    UNASSESSED:{cls:"gap",label:"尚未评估"}, NO_PRIOR_RESULT_FOUND:{cls:"ok",label:"未发现先前结果"},
+    PRIOR_RESULT_FOUND:{cls:"err",label:"发现先前结果"}, INCONCLUSIVE:{cls:"gap",label:"无法定论"},
+  }),
+  novelty_status: Object.freeze({
+    PENDING_HUMAN_AUDIT:{cls:"gap",label:"待人工审计"}, PENDING_SOURCE_VERIFICATION:{cls:"gap",label:"待来源核验"},
+    CONTRACT_ONLY:{cls:"skip",label:"仅契约记录"}, AUDITED:{cls:"ok",label:"已审计"}, STALE:{cls:"err",label:"已失效"},
+  }),
+  novelty_verdict: Object.freeze({
+    APPROVED:{cls:"ok",label:"已批准"}, REJECTED:{cls:"err",label:"已拒绝"}, NEEDS_FOLLOW_UP:{cls:"gap",label:"需跟进"},
+  }),
+  novelty_invalidation: Object.freeze({
+    INVALID_INPUT:{cls:"err",label:"输入无效"}, MISSING_ROUTE:{cls:"gap",label:"缺少路线"}, INCOMPLETE_ROUTE:{cls:"gap",label:"路线未完成"},
+    MISSING_HUMAN_AUDIT:{cls:"gap",label:"缺少人工审计"}, HUMAN_AUDIT_NOT_APPROVED:{cls:"gap",label:"人工审计未批准"},
+    UNASSESSED_CONCLUSION:{cls:"gap",label:"结论未评估"}, ROUTE_NOT_INDEPENDENT:{cls:"err",label:"路线不独立"},
+    TEMPORAL_ORDER_VIOLATION:{cls:"err",label:"时间顺序无效"}, SOURCE_SUPPORT_NOT_VERIFIED:{cls:"gap",label:"来源未核验"}, CONTRACT_ONLY_RECORD:{cls:"skip",label:"仅契约记录"},
+  }),
+  novelty_route: Object.freeze({
+    FORWARD_CITATION:{cls:"acc",label:"前向引用追踪"}, ALIAS_AND_EQUIVALENCE:{cls:"acc",label:"别名与等价"},
+    STRUCTURAL_SEMANTIC:{cls:"acc",label:"结构语义检索"}, REVIEW_AND_EXPERT_LEAD:{cls:"acc",label:"综述与专家线索"},
+  }),
 });
+/* event_type keys mirror matharc/v02/event_log.py:EVENT_TYPES; guarded by tests/test_event_type_contract.py. */
 const LIVE_ENUM_KEYS = Object.freeze({
   claim_status:["PROPOSED","OPEN","CANDIDATE","PROVED","REFUTED","BLOCKED","RETRACTED"],
   evidence_status:["PROPOSED","ACCEPTED","REJECTED","STALE"],
@@ -4346,6 +4383,11 @@ const LIVE_ENUM_KEYS = Object.freeze({
   release_state:["PROVED_AND_AUDITED","PROVED_WITH_AUDIT_DEBT","REFUTED","REFUTED_EXACT","CANDIDATE_UNVERIFIED","BLOCKED_EXACT","OPEN_RESEARCH"],
   event_type:["WORKSPACE_CREATED","CLAIM_ADDED","ROUTE_ADDED","OBJECT_ADDED","OBJECT_VERIFIED","CLAIM_OBJECTS_LINKED","SOURCE_CLAIM_ADDED","SOURCE_CLAIM_VERIFIED","CLAIM_SOURCES_LINKED","EVIDENCE_ADDED","TOOL_CALL_ADDED","PUBLIC_REASONING_ADDED","FAILURE_RECORDED","CLAIM_PROMOTED","CAMPAIGN_RECORDED","CAMPAIGN_COMPLETED","CLAIM_PROMOTION_REJECTED","CAMPAIGN_ROUND_COMPLETED","REVIEW_GAP_RECORDED","ROUTE_FAILURE_RECORDED","CLAIM_COUNTEREXAMPLE_RECORDED"],
   campaign_reason:["campaign_report_not_recorded","campaign_report_stale"],
+  novelty_conclusion:["UNASSESSED","NO_PRIOR_RESULT_FOUND","PRIOR_RESULT_FOUND","INCONCLUSIVE"],
+  novelty_status:["PENDING_HUMAN_AUDIT","PENDING_SOURCE_VERIFICATION","CONTRACT_ONLY","AUDITED","STALE"],
+  novelty_verdict:["APPROVED","REJECTED","NEEDS_FOLLOW_UP"],
+  novelty_invalidation:["INVALID_INPUT","MISSING_ROUTE","INCOMPLETE_ROUTE","MISSING_HUMAN_AUDIT","HUMAN_AUDIT_NOT_APPROVED","UNASSESSED_CONCLUSION","ROUTE_NOT_INDEPENDENT","TEMPORAL_ORDER_VIOLATION","SOURCE_SUPPORT_NOT_VERIFIED","CONTRACT_ONLY_RECORD"],
+  novelty_route:["FORWARD_CITATION","ALIAS_AND_EQUIVALENCE","STRUCTURAL_SEMANTIC","REVIEW_AND_EXPERT_LEAD"],
 });
 const assertExactEnumKeys = (domain, map, expected) => {
   const actual = Object.keys(map).sort(), wanted = [...expected].sort();
@@ -4412,7 +4454,7 @@ const validateLiveRoute = route => {
   if(!hasExactLiveKeys(route, [
     "route_id","name","hypothesis","mechanism_signature","kill_test","status","claim_ids","parent_route_id",
     "rationale","expected_discriminator","created_by","created_at","updated_at","kill_test_spec",
-    "kill_test_spec_digest_sha256","evaluations",
+    "kill_test_spec_digest_sha256","evaluations","derived_from_failure","transformation_id",
   ])) return false;
   if(!liveString(route.route_id) || !liveString(route.name) || !liveString(route.hypothesis)
     || !liveStringArray(route.mechanism_signature) || typeof route.kill_test !== "string"
@@ -4420,7 +4462,9 @@ const validateLiveRoute = route => {
     || (route.parent_route_id !== null && typeof route.parent_route_id !== "string")
     || typeof route.rationale !== "string" || typeof route.expected_discriminator !== "string"
     || typeof route.created_by !== "string" || !liveString(route.created_at) || !liveString(route.updated_at)
-    || !Array.isArray(route.evaluations)) return false;
+    || !Array.isArray(route.evaluations)
+    || (route.derived_from_failure !== null && typeof route.derived_from_failure !== "string")
+    || (route.transformation_id !== null && typeof route.transformation_id !== "string")) return false;
   const spec = route.kill_test_spec;
   if(spec === null){
     if(route.kill_test_spec_digest_sha256 !== null || route.evaluations.length) return false;
@@ -4487,8 +4531,22 @@ const validateLiveDisclosure = (projection, provenance) => {
   }
   return {ok:true, reason:""};
 };
+const validateLiveNovelty = (projection, provenance) => {
+  if(projection === undefined) return {ok:false, reason:"projection_missing"};
+  if(!hasExactLiveKeys(projection, ["schema_version","state","provenance","audit","authorization","decision_boundary"])) return {ok:false, reason:"projection_malformed"};
+  if(projection.schema_version !== "1.0" || projection.state !== "live" || !sameLiveProvenance(projection.provenance, provenance) || typeof projection.decision_boundary !== "string") return {ok:false, reason:"projection_stale"};
+  const audit = projection.audit;
+  if(!isLiveObject(audit) || !hasExactLiveKeys(audit, ["schema_version","audit_id","candidate","route_results","conclusion","human_audit","created_at","sealed_at","purpose","audit_digest_sha256"]) || !liveString(audit.audit_id) || !liveEnum("novelty_conclusion", audit.conclusion) || !liveString(audit.created_at) || !liveString(audit.sealed_at) || !liveEnum("novelty_status", projection.authorization && projection.authorization.status)) return {ok:false, reason:"projection_malformed"};
+  const candidate = audit.candidate;
+  if(!isLiveObject(candidate) || !liveString(candidate.candidate_id) || !liveHash(candidate.candidate_fingerprint_sha256) || !liveString(candidate.scope) || !liveString(candidate.version) || !Array.isArray(candidate.source_support) || !liveHash(candidate.candidate_digest_sha256)) return {ok:false, reason:"projection_malformed"};
+  if(!Array.isArray(audit.route_results) || !audit.route_results.length || !audit.route_results.every(route => isLiveObject(route) && liveEnum("novelty_route", route.route) && liveString(route.query_scope) && Array.isArray(route.queries) && route.queries.length && Array.isArray(route.hits) && Array.isArray(route.unresolved_items) && liveString(route.searched_at) && typeof route.completed === "boolean" && liveHash(route.route_result_digest_sha256))) return {ok:false, reason:"projection_malformed"};
+  const auth = projection.authorization;
+  if(!hasExactLiveKeys(auth, ["status","complete_research_budget","public_qualitative_conclusion","invalidations"]) || typeof auth.complete_research_budget !== "boolean" || typeof auth.public_qualitative_conclusion !== "boolean" || !Array.isArray(auth.invalidations) || !auth.invalidations.every(value => liveEnum("novelty_invalidation", value))) return {ok:false, reason:"projection_malformed"};
+  if(audit.human_audit !== null && (!isLiveObject(audit.human_audit) || !liveString(audit.human_audit.reviewer_id) || !liveString(audit.human_audit.reviewed_at) || !liveEnum("novelty_verdict", audit.human_audit.verdict) || !liveEnum("novelty_conclusion", audit.human_audit.conclusion) || !liveString(audit.human_audit.rationale))) return {ok:false, reason:"projection_malformed"};
+  return {ok:true, reason:""};
+};
 const validateConsolePayload = payload => {
-  const required = ["schema_version","view_contract","provenance","workspace","source_topic","campaign","local_console","role_policy","unsupported"];
+  const required = ["schema_version","view_contract","provenance","workspace","source_topic","campaign","novelty","local_console","role_policy","unsupported"];
   /* Preserve the pre-live bridge's deliberately tiny harness payload. Real
      exports always carry the full workspace contract below; this branch is
      limited to the old test/transport shape and exposes no live view. */
@@ -4501,11 +4559,12 @@ const validateConsolePayload = payload => {
   if(!hasLiveKeys(payload, required, ["routes","disclosure"]) || payload.schema_version !== "1.0"
     || !sameLiveProvenance(payload.provenance, payload.provenance) || !validateLiveWorkspace(payload, payload.provenance)
     || !isLiveObject(payload.view_contract) || !isLiveObject(payload.source_topic) || !isLiveObject(payload.local_console)
-    || !isLiveObject(payload.role_policy) || !isLiveObject(payload.unsupported) || !isLiveObject(payload.campaign)
+    || !isLiveObject(payload.role_policy) || !isLiveObject(payload.unsupported) || !isLiveObject(payload.campaign) || !isLiveObject(payload.novelty)
     || typeof payload.campaign.available !== "boolean") return {ok:false, reason:"payload_malformed", projections:{}};
   const projections = {
     routes: validateRouteProjection(payload.routes, payload.provenance),
     disclosure: validateLiveDisclosure(payload.disclosure, payload.provenance),
+    novelty: validateLiveNovelty(payload.novelty, payload.provenance),
   };
   return {ok:true, reason:"", projections};
 };
@@ -4513,6 +4572,9 @@ const consolePayloadWasLoaded = () => {
   const state = S.consolePayloadState || {};
   return state.status === "loaded" || state.status === "unavailable";
 };
+const FAIL_CLOSED_M2_VIEWS = new Set([
+  "admin_roster", "admin_cost", "acct_overview", "acct_usage", "acct_billing", "acct_limits",
+]);
 const consoleProjectionState = view => (S.consolePayloadState && S.consolePayloadState.projections || {})[view]
   || {ok:false, reason:"projection_missing"};
 const liveDerivedPill = (ok, positive, negative) => `<span class="pill ${ok ? "ok" : "gap"}">${ok ? positive : negative}</span>`;
@@ -4680,6 +4742,48 @@ V.campaign = () => {
     return `<div class="cev open"><div class="cev-h"><span class="seq">${String(round.round_index || index + 1).padStart(2,"0")}</span><span class="subj">${focus ? `聚焦命题：${liveEsc(focus)}` : "轮次记录"}</span>${liveDerivedPill(gain, "有语义增益", "无语义增益")}</div><div class="cev-b"><dl class="kv"><dt>账本 event_sequence 范围</dt><dd>${range ? `<span class="mono">${rangeText}</span> <span class="note">${range.source}</span>` : `<span class="pill gap">未提供范围</span> <span class="note">导出未携带轮次索引事件或显式范围，控制台不会按时间猜测。</span>`}</dd><dt>工作者记录</dt><dd>${Array.isArray(round.workers) ? `${round.workers.length} 条` : "未提供"}</dd><dt>新建对象</dt><dd>${Array.isArray(round.creations) ? `${round.creations.length} 条` : "未提供"}</dd><dt>成本增量</dt><dd class="hash">${liveEsc(round.cost_delta == null ? "未提供" : JSON.stringify(round.cost_delta))}</dd></dl></div></div>`;
   }).join("") || `<p class="note">报告没有轮次条目。</p>`;
   return { task:`攻克进程 · <b>真实报告</b> · ${rounds.length} 轮`, rail:liveCard("报告边界","只读快照", `<p class="note">报告由受治理的 campaign 运行时产生。每轮与账本的对应只使用导出提供的 event_sequence 范围或携带同一 round_index 的检查点事件；缺失时明确显示不可归属。</p>`), main:liveCard("轮次记录",`停止原因：${liveStopReason(report.stop_reason)}`, `<div class="chain plain">${roundCards}</div>`), side:liveCard("预算","报告快照", `<pre class="hash">${liveEsc(JSON.stringify(report.budget, null, 2))}</pre>`)};
+};
+const projectionUnavailable = (title, detail) => ({
+  task: `${title} · <b>实时投影不可用</b>`,
+  rail: liveCard("数据边界", "不以演示替代", `<p class="note">${liveEsc(detail)}</p>`),
+  main: liveCard(title, "不可用", `<div class="banner gap"><div>真实导出未提供通过校验的 ${liveEsc(title)} 投影，控制台不会显示演示数据。</div></div>`),
+  side: null,
+});
+V.routes = () => {
+  const payload = livePayloadFor("routes");
+  if (!payload) return S.consolePayload ? projectionUnavailable("路线与证伪", "routes projection 缺失、过期或未通过结构校验。") : DEMO_VIEWS.routes();
+  const routes = (payload.routes && payload.routes.routes) || [];
+  const selected = routes[Math.min(Math.max(S.rt, 0), Math.max(routes.length - 1, 0))];
+  const claims = (payload.workspace && payload.workspace.trace && payload.workspace.trace.claims) || [];
+  const claimNames = ids => (ids || []).map(id => { const claim = claims.find(item => item.claim_id === id); return claim ? `${liveEsc(id)} · ${liveEsc(claim.statement)}` : liveEsc(id); }).join("；") || "—";
+  const rows = routes.map((route, index) => `<button class="pk${route === selected ? " on" : ""}" data-act="rt" data-i="${index}" style="grid-template-columns:1fr max-content"><span><span class="t">${liveEsc(route.name)}</span><span class="s">${liveEsc(route.route_id)} · ${(route.mechanism_signature || []).map(liveEsc).join(" / ") || "未提供机制"}</span></span>${liveEnumPill("route_status", route.status)}</button>`).join("") || `<p class="note">工作区没有路线记录。</p>`;
+  const detail = selected ? `<div class="scroll"><div class="dt"><div class="row" style="flex-wrap:wrap;gap:8px">${liveEnumPill("route_status", selected.status)}<span class="pill acc">${liveEsc(selected.route_id)}</span></div><div><span class="lbl">假设</span><p class="note" style="color:var(--ink);margin-top:4px">${liveEsc(selected.hypothesis)}</p></div><div><span class="lbl">证伪测试</span><p class="note" style="color:var(--ink);margin-top:4px">${liveEsc(selected.kill_test)}</p></div><dl class="kv"><dt>服务命题</dt><dd>${claimNames(selected.claim_ids)}</dd><dt>创建者</dt><dd class="mono">${liveEsc(selected.created_by)}</dd><dt>更新时间</dt><dd class="mono">${liveEsc(selected.updated_at)}</dd><dt>预期判据</dt><dd>${liveEsc(selected.expected_discriminator)}</dd></dl>${selected.kill_test_spec ? `<div class="banner acc"><div><b>结构化测试已声明。</b>范围：${liveEsc(selected.kill_test_spec.tested_scope)} · ${liveEnumText("kill_test_kind", selected.kill_test_spec.kind)}</div></div>` : `<div class="banner gap"><div>尚未声明结构化证伪测试；不会由前端补造执行结果。</div></div>`}<div class="divider"></div><span class="lbl">执行记录</span>${(selected.evaluations || []).map(item => `<div class="li"><span>${liveEnumPill("route_evaluation_outcome", item.outcome)}</span><span class="note">${liveEsc(item.evaluation_id)} · ${liveEsc(item.tested_scope)}</span></div>`).join("") || `<p class="note">没有路线执行记录。</p>`}</div></div>` : `<p class="note">没有可选路线。</p>`;
+  return { task:`路线与证伪 · <b>真实投影</b> · ${routes.length} 条`, rail:liveCard("数据边界", "只读路线记录", `<p class="note">路线、结构化证伪测试与执行记录均来自当前工作区导出。页面不把路线失败解释为命题失败。</p>`), main: split(card("路线", `${routes.length} 条`, `<div class="scroll">${rows}</div>`, "pane"), card(selected ? liveEsc(selected.name) : "路线详情", "真实记录", detail, "pane")) + liveCard("投影来源", "当前工作区", `<p class="note">运行：<span class="mono">${liveEsc(payload.provenance.run_id)}</span> · 链头：<span class="hash">${liveEsc(payload.provenance.event_head_hash)}</span></p>`), side:liveCard("解释边界", "不推断命题结论", `<p class="note">路线状态只描述路线本身；命题是否成立仍由独立证据与晋升门决定。</p>`) };
+};
+V.disclosure = () => {
+  const payload = livePayloadFor("disclosure");
+  if (!payload) return S.consolePayload ? projectionUnavailable("分级披露", "disclosure projection 缺失、过期或未通过结构校验。") : DEMO_VIEWS.disclosure();
+  const projection = payload.disclosure, records = projection.records || {}, levels = projection.levels || [];
+  const states = records.state || [], evidence = records.evidence || [], reviews = records.reviews || [], promotions = records.promotions || [];
+  const levelRows = levels.map(level => `<button class="tier" data-act="tier" data-i="${Math.max(0, Number(level.level) - 1)}" style="${S.tier === Number(level.level) - 1 ? "background:var(--surface-2)" : ""}"><div class="col" style="gap:5px"><b style="font-size:13px">第 ${liveEsc(level.level)} 级 · ${liveEsc(level.key)}</b><span class="mono" style="font-size:10px;color:var(--muted)">${level.state === "available" ? "可描述" : "不可用"}</span></div><div><div class="note">${(level.allowed || []).map(liveEsc).join(" ")}</div>${S.tier === Number(level.level) - 1 ? `<div class="note" style="margin-top:7px;color:var(--gap)">${(level.forbidden || []).map(liveEsc).join(" ")}</div>` : ""}</div><span class="pill ${level.state === "available" ? "ok" : "gap"}"><span class="dot"></span>${level.state === "available" ? "可用" : "不可用"}</span></button>`).join("");
+  const stateRows = states.map(item => `<tr><td class="mono">${liveEsc(item.claim_id)}@${liveEsc(item.revision)}</td><td>${liveEnumPill("claim_status", item.status)}</td><td>${liveEsc(item.statement)}</td><td>${(item.route_ids || []).map(liveEsc).join("；") || "—"}</td></tr>`).join("") || `<tr><td colspan="4" class="mut">没有命题状态记录。</td></tr>`;
+  return { task:`分级披露 · <b>真实投影</b> · ${states.length} 条命题状态`, rail:liveCard("披露边界", "只读措辞矩阵", `<p class="note">${liveEsc(projection.decision_boundary)}</p><div class="divider"></div><p class="note">此页只描述导出中的持久化记录，不把晋升事件推断为证明、新颖性、开放状态或公开授权。</p>`), main:liveCard("四级发布梯度", "由记录决定", `<div class="body tight" style="gap:0">${levelRows || `<p class="note">没有披露等级记录。</p>`}</div>`) + liveCard("当前命题状态", `${states.length} 条`, `<div class="tw"><table><thead><tr><th>命题版本</th><th>状态</th><th>陈述</th><th>路线</th></tr></thead><tbody>${stateRows}</tbody></table></div>`), side:liveCard("记录计数", "不等于结论", `<dl class="kv"><dt>证据</dt><dd>${evidence.length}</dd><dt>评审</dt><dd>${reviews.length}</dd><dt>晋升事件</dt><dd>${promotions.length}</dd></dl>`) };
+};
+V.novelty = () => {
+  const payload = livePayloadFor("novelty"), projection = payload && payload.novelty;
+  if(!projection) {
+    if(!S.consolePayload) return DEMO_VIEWS.novelty();
+    return {task:"新颖性审计 · <b>实时投影不可用</b>", rail:liveCard("数据边界","不以演示替代", `<p class="note">服务端未提供通过校验的新颖性审计记录。</p>`), main:liveCard("新颖性审计","未配置", `<div class="banner gap"><div>缺少已验证的 novelty audit projection，控制台不会显示检索协议或演示路线。</div></div>`), side:null};
+  }
+  const audit = projection.audit, candidate = audit.candidate, routes = audit.route_results || [], auth = projection.authorization;
+  const routeRows = routes.map(route => `<tr><td>${liveEnumPill("novelty_route", route.route)}</td><td>${liveEsc(route.query_scope)}</td><td>${route.hits.length}</td><td>${route.completed ? `<span class="pill ok">已完成</span>` : `<span class="pill gap">未完成</span>`}</td><td>${route.unresolved_items.length || "—"}</td></tr>`).join("");
+  const human = audit.human_audit;
+  return {task:`新颖性审计 · <b>真实审计记录</b> · ${liveEsc(audit.audit_id)}`,
+    rail:liveCard("审计边界","只读记录", `<p class="note">${liveEsc(projection.decision_boundary)}</p><div class="divider"></div><p class="note">不以记录推断数学正确性、开放状态或公开优先权。</p>`),
+    main:liveCard("受审候选结果", `${liveEsc(candidate.candidate_id)} · ${liveEsc(candidate.version)}`, `<div class="body"><div class="stmtbox"><p class="stmt">候选结果指纹：<span class="hash">${liveEsc(candidate.candidate_fingerprint_sha256)}</span></p><p class="note">范围：${liveEsc(candidate.scope)}</p></div></div>`)
+      + liveCard("新颖性检索路线", `${routes.length} 条已记录路线`, `<div class="tw"><table><thead><tr><th>路线</th><th>查询范围</th><th>命中</th><th>状态</th><th>未决项</th></tr></thead><tbody>${routeRows || `<tr><td colspan="5" class="mut">没有路线记录。</td></tr>`}</tbody></table></div>`)
+      + liveCard("审计结论", liveEnumText("novelty_conclusion", audit.conclusion), `<div class="row">${liveEnumPill("novelty_conclusion", audit.conclusion)} ${liveEnumPill("novelty_status", auth.status)}</div>${human ? `<p class="note" style="margin-top:8px">${liveEnumText("novelty_verdict", human.verdict)} · ${liveEsc(human.reviewer_id)} · ${liveEsc(human.rationale)}</p>` : `<p class="note" style="margin-top:8px">尚无人工审计条目。</p>`}`),
+    side:liveCard("授权边界","不会自动放行", `<dl class="kv"><dt>完整预算</dt><dd>${auth.complete_research_budget ? "允许" : "不允许"}</dd><dt>公开结论</dt><dd>${auth.public_qualitative_conclusion ? "允许" : "不允许"}</dd><dt>失效原因</dt><dd>${(auth.invalidations || []).map(value => liveEnumText("novelty_invalidation", value)).join("、") || "无"}</dd></dl>`) };
 };
 /* M2 reads only the review service. It deliberately does not derive review
    state from console.json or the workspace observatory, whose authority is
@@ -4956,6 +5060,9 @@ const DEMO_LOCAL_VIEWS = {
   campaign: V.campaign, topics: V.topics, portfolio: V.portfolio,
   dossier: V.dossier, frontier: V.frontier, difficulty: V.difficulty,
   admin_users: V.admin_users, admin_upstream: V.admin_upstream,
+  admin_roster: V.admin_roster, admin_cost: V.admin_cost,
+  acct_overview: V.acct_overview, acct_usage: V.acct_usage,
+  acct_billing: V.acct_billing, acct_limits: V.acct_limits,
 };
 const localConsole = () => S.consolePayload && S.consolePayload.local_console;
 const localPart = key => {
@@ -4968,10 +5075,15 @@ const localEmpty = (title, detail) => ({
   main: liveCard(title, "未配置", `<div class="banner gap"><div>此视图要求一个已验证的本地记录投影。服务端未提供该配置，因此控制台不显示演示计数。</div></div>`),
   side: null,
 });
-const localOrDemo = (view, title, detail) => localConsole()
+const localOrDemo = (view, title, detail) => (localConsole() || ((S.consolePayloadState || {}).status === "loaded" || (S.consolePayloadState || {}).status === "unavailable"))
   ? localEmpty(title, detail)
   : DEMO_LOCAL_VIEWS[view]();
 V.campaign = () => {
+  /* Prefer the authoritative campaign report when the workspace has one.
+     The local index is a separate M3 projection and must not mask M1 live
+     report updates delivered through the SSE refresh path. */
+  const liveCampaign = S.consolePayload && S.consolePayload.campaign;
+  if (liveCampaign && liveCampaign.available) return DEMO_LOCAL_VIEWS.campaign();
   const index = localPart("workspace_index"), sessions = localPart("exploration_sessions");
   /* The existing campaign projection already fails closed when its registered
      report is absent. Preserve it unless the optional local index is present. */
@@ -5015,6 +5127,16 @@ V.admin_upstream = () => {
   const operations = localPart("operations"); if (!operations) return localOrDemo("admin_upstream", "管理端 · 上游接入", "本地上游元数据记录未配置。");
   return {task:"管理端 · 上游接入 · <b>未配置</b>", rail:liveCard("凭据边界", "不落盘", `<p class="note">本地运营域拒绝持久化 token、secret、password、credential 或 API key。</p>`), main:liveCard("上游元数据", `${(operations.upstreams||[]).length} 条`, `<div class="tw"><table><thead><tr><th>提供方</th><th>状态</th><th>元数据</th></tr></thead><tbody>${(operations.upstreams||[]).map(item=>`<tr><td>${liveEsc(item.provider_label)}</td><td class="mono">${liveEsc(item.status)}</td><td class="hash">${liveEsc(JSON.stringify(item.metadata))}</td></tr>`).join("") || `<tr><td colspan="3" class="mut">未配置上游。</td></tr>`}</tbody></table></div>`), side:liveCard("连接状态", "not_configured", `<p class="note">没有真实上游连接、模型路由或付费凭据。</p>`)};
 };
+/* These M2 surfaces have no exported authoritative read model yet. Keep them
+   explicitly unavailable whenever a console payload is loaded; a future
+   server projection must be wired here before any account/cost values render.
+ */
+V.admin_roster = () => localOrDemo("admin_roster", "评审名册", "真实评审名册投影未配置。");
+V.admin_cost = () => localOrDemo("admin_cost", "成本与模型用量", "真实成本与模型用量投影未配置。");
+V.acct_overview = () => localOrDemo("acct_overview", "账户总览", "真实账户余额与计费周期投影未配置。");
+V.acct_usage = () => localOrDemo("acct_usage", "积分明细", "真实账户用量明细投影未配置。");
+V.acct_billing = () => localOrDemo("acct_billing", "充值与套餐", "真实账单与套餐投影未配置。");
+V.acct_limits = () => localOrDemo("acct_limits", "预算与限额", "真实账户限额投影未配置。");
 }
 window.MathArcConsole = ConsoleBridge;
 ConsoleBridge.loadExport().then(loaded => { if (loaded && location.protocol !== "file:") ConsoleBridge.connectEvents("/events"); });

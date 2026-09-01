@@ -15,6 +15,7 @@ from .console_topic import TopicStoreConfig, console_topic_projection
 from .difficulty_ledger import DifficultyLedger
 from .exploration_session import ExplorationSessionStore
 from .falsification import get_kill_test_spec, iter_route_evaluations
+from .novelty_audit import NoveltyAuditRecord
 from .problem_gates import ProblemGateStore
 from .review import ReviewRecord
 from .topic_portfolio import TopicPortfolioStore
@@ -41,6 +42,7 @@ class ConsoleLocalProjectionConfig:
     problem_gate_root: Path | None = None
     difficulty_ledger_root: Path | None = None
     operations_domain_root: Path | None = None
+    novelty_audit_path: Path | None = None
 
     def projection(self, workspace_provenance: Mapping[str, str]) -> dict[str, Any]:
         result: dict[str, Any] = {
@@ -50,6 +52,7 @@ class ConsoleLocalProjectionConfig:
             "candidate_problems": {"state": "not_configured"},
             "difficulty_ledger": {"state": "not_configured"},
             "operations": {"state": "not_configured"},
+            "novelty_audit": {"state": "not_configured"},
         }
         if self.workspace_index_root is not None:
             result["workspace_index"] = {
@@ -85,6 +88,34 @@ class ConsoleLocalProjectionConfig:
             result["difficulty_ledger"] = {"state": "live", "predictions": [item.to_dict() for item in predictions], "outcomes": [item.to_dict() for item in outcomes], "summary": ledger.summary().to_dict()}
         if self.operations_domain_root is not None:
             result["operations"] = {"state": "live", **OperationsDomainStore(self.operations_domain_root).snapshot()}
+        if self.novelty_audit_path is not None:
+            path = self.novelty_audit_path.resolve()
+            if not path.is_file():
+                raise ValueError("configured novelty audit record is missing")
+            try:
+                payload = json.loads(path.read_text(encoding="utf-8"))
+                if isinstance(payload, Mapping) and "record" in payload:
+                    payload = payload["record"]
+                record = NoveltyAuditRecord.from_dict(payload)
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError, TypeError, ValueError) as exc:
+                raise ValueError("configured novelty audit record is invalid") from exc
+            authorization = record.authorization()
+            result["novelty_audit"] = {
+                "state": "live",
+                "schema_version": "1.0",
+                "provenance": dict(workspace_provenance),
+                "audit": record.to_dict(),
+                "authorization": {
+                    "status": authorization.status.value,
+                    "complete_research_budget": authorization.complete_research_budget,
+                    "public_qualitative_conclusion": authorization.public_qualitative_conclusion,
+                    "invalidations": [item.value for item in authorization.invalidations],
+                },
+                "decision_boundary": (
+                    "This projection reports a persisted novelty-audit record only; "
+                    "it does not infer mathematical correctness or public priority."
+                ),
+            }
         return result
 
 
@@ -370,6 +401,11 @@ def build_console_export(
         workspace_payload["events"]["events"], workspace.events.events, strict=True
     ):
         event["canonical_unsigned_json"] = canonical_json(source_event.unsigned_dict())
+    local_console = (
+        local_projection_config.projection(provenance)
+        if local_projection_config is not None
+        else ConsoleLocalProjectionConfig().projection(provenance)
+    )
     return {
         "schema_version": _SCHEMA_VERSION,
         "view_contract": {
@@ -379,6 +415,7 @@ def build_console_export(
             "source_registry_projection": "live",
             "routes_projection": "live",
             "disclosure_projection": "live",
+            "novelty_projection": "live_if_configured",
             "topic_observation": (
                 "live_preexisting_single_topic_store"
                 if resolved_topic_store is not None
@@ -386,6 +423,16 @@ def build_console_export(
             ),
             "external_search": "not_configured",
             "operations": "isolated_local_ledger_only",
+            # No authoritative read models exist yet for these M2 surfaces.
+            # The prototype must therefore fail closed instead of presenting
+            # its bundled demonstration account/cost constants as live data.
+            "admin_roster": "not_configured_fail_closed",
+            "accounting": "not_configured_fail_closed",
+            "acct_overview": "not_configured_fail_closed",
+            "acct_usage": "not_configured_fail_closed",
+            "acct_billing": "not_configured_fail_closed",
+            "acct_limits": "not_configured_fail_closed",
+            "admin_cost": "not_configured_fail_closed",
         },
         "provenance": provenance,
         "workspace": workspace_payload,
@@ -393,11 +440,8 @@ def build_console_export(
         "routes": console_routes_projection(workspace, provenance),
         "disclosure": console_disclosure_projection(workspace, provenance),
         "campaign": campaign_snapshot(workspace),
-        "local_console": (
-            local_projection_config.projection(provenance)
-            if local_projection_config is not None
-            else ConsoleLocalProjectionConfig().projection(provenance)
-        ),
+        "novelty": local_console["novelty_audit"],
+        "local_console": local_console,
         "role_policy": RolePolicy.default().to_dict(),
         "unsupported": {
             "external_search": "not_configured",

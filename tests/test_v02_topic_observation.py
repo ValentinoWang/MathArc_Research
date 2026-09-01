@@ -241,6 +241,29 @@ class TopicObservationTests(unittest.TestCase):
             with self.assertRaisesRegex(ManualQueueObservationError, "cursor conflict"):
                 TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
 
+    def test_manual_queue_loader_binds_non_cursor_topic_to_enclosing_state(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            runner = TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0")
+            runner.run(batch("c0", "c1", input_for("A", risk_flags=("possible-resolution",))))
+
+            state_path = Path(directory) / "topic-observation-state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            queue_item = state["manual_queue"][0]
+            queue_item["topic_id"] = "foreign-topic"
+            identity = "|".join(
+                queue_item[field]
+                for field in ("topic_id", "cursor", "input_id", "reason", "detail")
+            )
+            queue_item["manual_id"] = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+            stored = state["batches"]["c0"]
+            stored["result"]["item_results"][0]["manual_id"] = queue_item["manual_id"]
+            stored["disposition_evidence"]["A"]["manual_id"] = queue_item["manual_id"]
+            stored["result_digest_sha256"] = digest_json(stored["result"])
+            state_path.write_text(json.dumps(state), encoding="utf-8")
+
+            with self.assertRaisesRegex(ManualQueueObservationError, "manual queue topic_id"):
+                TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
+
     def test_malformed_manual_queue_entries_are_topic_observation_errors(self) -> None:
         mutations = {
             "missing field": lambda entry: entry.pop("detail"),
@@ -502,6 +525,26 @@ class TopicObservationTests(unittest.TestCase):
             with self.assertRaisesRegex(TopicObservationError, "projection|fingerprint"):
                 TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
 
+    def test_disposition_evidence_rejects_cross_batch_projection_binding_swap(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            runner = TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0")
+            runner.run(batch("c0", "c1", input_for("A")))
+            runner.run(batch("c1", "c2", input_for("B")))
+
+            state_path = Path(directory) / "topic-observation-state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            stored_a = state["batches"]["c0"]
+            stored_b = state["batches"]["c1"]
+            binding_a = stored_a["disposition_evidence"]["A"]["input_projection_binding_sha256"]
+            binding_b = stored_b["disposition_evidence"]["B"]["input_projection_binding_sha256"]
+            self.assertNotEqual(binding_a, binding_b)
+            stored_a["disposition_evidence"]["A"]["input_projection_binding_sha256"] = binding_b
+            stored_a["result_digest_sha256"] = digest_json(stored_a["result"])
+            state_path.write_text(json.dumps(state), encoding="utf-8")
+
+            with self.assertRaisesRegex(TopicObservationError, "not bound to its batch input projection"):
+                TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
+
     def test_input_projection_rejects_forged_high_risk_manual_result_and_reason(self) -> None:
         for forged_evidence_risk_flags in (True, False):
             with self.subTest(forged_evidence_risk_flags=forged_evidence_risk_flags), tempfile.TemporaryDirectory() as directory:
@@ -547,6 +590,40 @@ class TopicObservationTests(unittest.TestCase):
                 with self.assertRaisesRegex(TopicObservationError, "projection|risk|manual disposition"):
                     TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
 
+    def test_input_projection_rejects_cross_batch_manual_reason_swap(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            runner = TopicObservationRunner(
+                directory,
+                topic_id="union-closed",
+                initial_cursor="c0",
+                budget=BudgetLedger(cost_usd_limit=0.0),
+            )
+            runner.run(batch("c0", "c1", input_for("A", risk_flags=("possible-resolution",))))
+            runner.run(batch("c1", "c2", input_for("B")))
+
+            state_path = Path(directory) / "topic-observation-state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            stored = state["batches"]["c0"]
+            queue_item = next(item for item in state["manual_queue"] if item["cursor"] == "c0")
+            budget_item = next(item for item in state["manual_queue"] if item["cursor"] == "c1")
+            queue_item["reason"] = budget_item["reason"]
+            queue_item["detail"] = budget_item["detail"]
+            identity = "|".join(
+                queue_item[field]
+                for field in ("topic_id", "cursor", "input_id", "reason", "detail")
+            )
+            queue_item["manual_id"] = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+            stored["result"]["item_results"][0]["manual_id"] = queue_item["manual_id"]
+            stored["disposition_evidence"]["A"].update(
+                manual_id=queue_item["manual_id"],
+                manual_reason=queue_item["reason"],
+            )
+            stored["result_digest_sha256"] = digest_json(stored["result"])
+            state_path.write_text(json.dumps(state), encoding="utf-8")
+
+            with self.assertRaisesRegex(TopicObservationError, "budget manual disposition conflicts with input projection"):
+                TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
+
     def test_legacy_topic_state_requires_recovery_contract_and_is_preserved(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             runner = TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0")
@@ -554,7 +631,7 @@ class TopicObservationTests(unittest.TestCase):
             state_path = Path(directory) / "topic-observation-state.json"
             current = json.loads(state_path.read_text(encoding="utf-8"))
 
-            for legacy_version in ("1.0", "1.1", "1.2"):
+            for legacy_version in ("1.0", "1.1", "1.2", "1.3"):
                 with self.subTest(legacy_version=legacy_version):
                     legacy = dict(current)
                     legacy["schema_version"] = legacy_version

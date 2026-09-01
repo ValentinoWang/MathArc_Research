@@ -1,12 +1,12 @@
 {
-  "evidence_id": "EV-A4-ACCEPTED-1",
+  "evidence_id": "EV-A4-VERIFIED-1",
   "task_id": "A4",
   "consumed_evidence": ["EV-T2-ACCEPTED-1"],
   "source_identity": {
-    "head": "46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe",
+    "head": "fe9de3fd86e3670dc3a0c10621afa48fc4740fa8",
     "candidate_diff_sha256": "d8d847924653bb6df547094e525b61378d234b727f8f20d93418771c2b1fefd6"
   },
-  "acceptance_self_check": "pass",
+  "acceptance_self_check": "partial",
   "acceptance_commands": [
     "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives",
     "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_v02*.py'",
@@ -31,17 +31,22 @@
     "state_integrity": "acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-state-integrity.md",
     "archive_boundary": "acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-archive-boundary.md",
     "transport_limited_regression_scope": "acceptance/release/runs/A4-post-cursor-topic-20260831/ledger/review-lanes.json",
-    "disposition": "Two independent review lanes found no P0/P1. The regression lane produced focused command output but no durable return after two provider-transport stalls; the acceptance owner reran v02 and full discovery directly."
+    "disposition": "Two independent review lanes returned VERIFIED findings, but both explicitly state they do not accept A4. The regression lane has no durable return after two provider-transport stalls."
   },
-  "acceptance_record": {
-    "accepted_at": "2026-08-31",
-    "accepted_by": "用户（研究负责人/仓库所有者）",
-    "authority_basis": "用户已明确要求验收通过，并要求在每个阶段通过验收后提交 GitHub 远端；A4 专项、v02、全库回归和两条独立 AI 复核均通过。",
-    "scope": "A4 对 T2 三例真实档案、主题状态重放、恢复、去重、预算和人工队列失败模式的本地验收",
-    "ai_review_boundary": "AI 复核只构成实现质量证据，不构成独立数学证明、外部文献结论或生产验收。"
+  "acceptance_release_record": {
+    "run_root": "acceptance/release/runs/A4-post-cursor-topic-20260831",
+    "review_lanes": "acceptance/release/runs/A4-post-cursor-topic-20260831/ledger/review-lanes.json",
+    "verified_returns": [
+      "acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-state-integrity.md",
+      "acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-archive-boundary.md"
+    ],
+    "formal_acceptance_result": null,
+    "status": "NOT_PERFORMED",
+    "boundary": "现有 release run 只包含独立复核 lane 结果，不构成 A4 正式验收或发布授权。"
   },
-  "proposed_state": "ACCEPTED",
+  "proposed_state": "VERIFIED",
   "unverified_items": [
+    "Formal A4 acceptance result under acceptance/release",
     "Live external literature retrieval",
     "Independent mathematical proof review",
     "Production/device behavior",

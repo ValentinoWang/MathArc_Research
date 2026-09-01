@@ -20,6 +20,11 @@ def workspace_replay_digest(workspace_root: str | Path) -> str:
         raise ValueError("refusing an invalid research workspace")
     payload = {
         "schema_version": "1.0",
+        # The replay state can be byte-identical for two independently
+        # materialized workspaces (for example, the deterministic demo).
+        # Bind operations to the selected workspace identity as well, so a
+        # ledger cannot be reused by a sibling workspace with the same state.
+        "workspace_root": str(Path(workspace_root).resolve()),
         "run_id": workspace.trace.run_id,
         "state_digest_sha256": workspace.state_digest(),
         "event_head_hash": workspace.events.head_hash,

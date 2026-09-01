@@ -4,7 +4,7 @@
   "stage": "P4",
   "work_kind": "release-decision",
   "domain_lane": "governance",
-  "execution_state": "ACCEPTED",
+  "execution_state": "BLOCKED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
