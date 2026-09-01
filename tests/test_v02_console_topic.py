@@ -49,6 +49,21 @@ class ConsoleTopicTests(unittest.TestCase):
                 TopicStoreConfig(root, "union-closed", "c0").open_read_only()
             self.assertFalse(root.exists())
 
+    def test_topic_stores_reject_research_workspace_and_descendants(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            workspace = Path(directory) / "workspace"
+            workspace.mkdir()
+            (workspace / "workspace.json").write_text("{}", encoding="utf-8")
+            nested = workspace / "topic-store"
+
+            for root in (workspace, nested):
+                with self.subTest(root=root):
+                    with self.assertRaisesRegex(ValueError, "outside a research workspace"):
+                        TopicStoreConfig(root, "union-closed", "c0").open_read_only()
+                    with self.assertRaisesRegex(ValueError, "outside a research workspace"):
+                        TopicObservationRunner(root, topic_id="union-closed", initial_cursor="c0")
+                    self.assertFalse(nested.exists())
+
 
 if __name__ == "__main__":
     unittest.main()

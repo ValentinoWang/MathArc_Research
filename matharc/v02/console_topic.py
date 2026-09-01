@@ -7,6 +7,7 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
+from .local_store import external_root
 from .source_registry import SourceRegistry
 from .topic_observation import TopicObservationRunner
 
@@ -20,7 +21,7 @@ class TopicStoreConfig:
     initial_cursor: str
 
     def open_read_only(self) -> TopicObservationRunner:
-        root = self.root.resolve()
+        root = external_root(self.root)
         required = (
             root,
             root / "topic-observation-state.json",

@@ -115,9 +115,10 @@ from matharc.v02.topic_portfolio import (
     TopicPortfolio, TopicPortfolioStore, TopicState,
 )
 from matharc.operations import (
-    Account, CreditDirection, CreditEntry, OperationsDomainStore,
+    Account, CreditDirection, CreditEntry,
     SeatAllocation, UpstreamConfiguration,
 )
+from matharc.v02.operations_ledger import WorkspaceBoundOperationsLedger
 from matharc.v02.schema import (
     ClaimRecord, ClaimStatus, ResearchRoute, RouteStatus, TheoremContract,
     ToolCallRecord, ToolStatus,
@@ -192,7 +193,15 @@ difficulty.add_prediction(DifficultyPrediction("D-BROWSER", "P-BROWSER", dimensi
 difficulty.record_outcome(DifficultyOutcome("O-BROWSER", "D-BROWSER", dimensions, "2026-01-01T00:00:01Z"))
 
 operations_root = root / "operations-domain"
-operations = OperationsDomainStore(operations_root)
+operations = WorkspaceBoundOperationsLedger(
+    operations_root,
+    {
+        "run_id": workspace.trace.run_id,
+        "state_digest_sha256": workspace.state_digest(),
+        "event_head_hash": workspace.events.head_hash,
+        "workspace_root": str(workspace_root.resolve()),
+    },
+)
 operations.create_account(Account("A-BROWSER", "Fixture account"))
 operations.record_credit(CreditEntry("C-BROWSER", "A-BROWSER", CreditDirection.GRANT, 7, "fixture grant"))
 operations.allocate_seat(SeatAllocation("S-BROWSER", "A-BROWSER", 2))

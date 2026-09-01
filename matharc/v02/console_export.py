@@ -8,8 +8,6 @@ from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
-from matharc.operations import OperationsDomainStore
-
 from .authorization import RolePolicy
 from .console_topic import TopicStoreConfig, console_topic_projection
 from .difficulty_ledger import DifficultyLedger
@@ -20,6 +18,7 @@ from .problem_gates import ProblemGateStore
 from .review import ReviewRecord
 from .topic_portfolio import TopicPortfolioStore
 from .topic_observation import TopicObservationRunner
+from .operations_ledger import WorkspaceBoundOperationsLedger
 from .schema import canonical_json
 from .workspace import ResearchWorkspace
 from .workspace_index import WorkspaceIndex
@@ -44,7 +43,12 @@ class ConsoleLocalProjectionConfig:
     operations_domain_root: Path | None = None
     novelty_audit_path: Path | None = None
 
-    def projection(self, workspace_provenance: Mapping[str, str]) -> dict[str, Any]:
+    def projection(
+        self,
+        workspace_provenance: Mapping[str, str],
+        *,
+        workspace_root: str | Path | None = None,
+    ) -> dict[str, Any]:
         result: dict[str, Any] = {
             "workspace_index": {"state": "not_configured"},
             "exploration_sessions": {"state": "not_configured"},
@@ -83,11 +87,41 @@ class ConsoleLocalProjectionConfig:
             statements, candidates, graph = ProblemGateStore(str(self.problem_gate_root)).load()
             result["candidate_problems"] = {"state": "live", "statements": [item.to_dict() for item in statements], "candidates": [item.to_dict() for item in candidates], "graph": graph.to_dict()}
         if self.difficulty_ledger_root is not None:
-            ledger = DifficultyLedger(str(self.difficulty_ledger_root))
-            predictions, outcomes = ledger.records()
-            result["difficulty_ledger"] = {"state": "live", "predictions": [item.to_dict() for item in predictions], "outcomes": [item.to_dict() for item in outcomes], "summary": ledger.summary().to_dict()}
+            difficulty_ledger = DifficultyLedger(str(self.difficulty_ledger_root))
+            predictions, outcomes = difficulty_ledger.records()
+            result["difficulty_ledger"] = {"state": "live", "predictions": [item.to_dict() for item in predictions], "outcomes": [item.to_dict() for item in outcomes], "summary": difficulty_ledger.summary().to_dict()}
         if self.operations_domain_root is not None:
-            result["operations"] = {"state": "live", **OperationsDomainStore(self.operations_domain_root).snapshot()}
+            ledger_root = Path(self.operations_domain_root).resolve()
+            ledger_path = ledger_root / "operations-domain.json"
+            if not ledger_path.is_file():
+                raise ValueError("configured operations ledger is missing")
+            operations_provenance = dict(workspace_provenance)
+            if workspace_root is not None:
+                operations_provenance["workspace_root"] = str(Path(workspace_root).resolve())
+            try:
+                operations_ledger = WorkspaceBoundOperationsLedger(
+                    ledger_root, operations_provenance
+                )
+                operations_snapshot = operations_ledger.snapshot()
+            except ValueError as exc:
+                # A workspace event invalidates a frozen ledger snapshot. Keep
+                # the export readable while refusing sibling-workspace reuse.
+                if workspace_root is None:
+                    raise
+                try:
+                    persisted = json.loads(ledger_path.read_text(encoding="utf-8"))
+                    persisted_provenance = persisted["workspace_provenance"]
+                    persisted_root = persisted_provenance["workspace_root"]
+                except (OSError, UnicodeDecodeError, json.JSONDecodeError, KeyError, TypeError):
+                    raise exc
+                if persisted_root != operations_provenance["workspace_root"]:
+                    raise
+                result["operations"] = {
+                    "state": "stale",
+                    "reason": "workspace_provenance_mismatch",
+                }
+            else:
+                result["operations"] = {"state": "live", **operations_snapshot}
         if self.novelty_audit_path is not None:
             path = self.novelty_audit_path.resolve()
             if not path.is_file():
@@ -402,9 +436,9 @@ def build_console_export(
     ):
         event["canonical_unsigned_json"] = canonical_json(source_event.unsigned_dict())
     local_console = (
-        local_projection_config.projection(provenance)
+        local_projection_config.projection(provenance, workspace_root=root)
         if local_projection_config is not None
-        else ConsoleLocalProjectionConfig().projection(provenance)
+        else ConsoleLocalProjectionConfig().projection(provenance, workspace_root=root)
     )
     return {
         "schema_version": _SCHEMA_VERSION,

@@ -136,7 +136,7 @@ main_thread_policy: orchestration-only
 main_thread_source_write: false
 planning source: .ssot/planning-compiler.json
 machine source: .ssot/manifest.json
-current pushed baseline: main@6a7ee857ba0162d0afe55f0a23302a6a92d4c9dc
+current pushed baseline: main@fed4ab595aba28edd6b811a8400950c023dab1cb
 current worktree: clean
 ```
 
@@ -144,7 +144,7 @@ current worktree: clean
 
 | Macro phase | Release ID | User value | Independent acceptance | Independent failure | Development baseline | Promotion baseline | Release candidate |
 |---|---|---|---|---|---|---|---|
-| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:6a7ee857ba0162d0afe55f0a23302a6a92d4c9dc` | `main:6a7ee857ba0162d0afe55f0a23302a6a92d4c9dc` | `candidate:pi-r1-v2` |
+| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:fed4ab595aba28edd6b811a8400950c023dab1cb` | `main:fed4ab595aba28edd6b811a8400950c023dab1cb` | `candidate:pi-r1-v2` |
 | P1 共享文献资料底座 | PI-R2 | 公开资料可追溯导入 | 观察、去重、预算和信任门 | 资料停留待审 | `candidate:pi-r1-v1` | `accepted:pi-r1-v1` | `candidate:pi-r2-v1` |
 | P2 问题状态与新颖性审计 | PI-R3 | 状态与新颖性分离 | 四路检索和失效负测 | 冻结完整预算 | `candidate:pi-r2-v1` | `accepted:pi-r2-v1` | `candidate:pi-r3-v1` |
 | P3 一次性主题观测 | PI-R4 | 三例真实闭环 | 重放、恢复、去重和人工审计 | 进入人工通道 | `candidate:pi-r3-v1` | `accepted:pi-r3-v1` | `candidate:pi-r4-v1` |
@@ -321,8 +321,8 @@ current worktree: clean
 
 | 记录类型 | ID | 状态 | 内容 | 影响范围 | 失效或解决方式 |
 |---|---|---|---|---|---|
-| assumption | ASM-ACTIVATION-ROUTE | ACTIVE | 可在修订批准前生成只读、可撤销的资料观察隔离草稿 | L1 | D1、D2 和 A1 接受后重算 |
-| authority-conflict | C-AUTHORITY-BOUNDARY | OPEN / BLOCKING | 延期发现文档不能越过当前唯一工程决策入口解锁实现 | D1、D2、A1、PI-R1 | 仓库所有者明确权威优先级并关闭冲突 |
+| assumption | ASM-ACTIVATION-ROUTE | CONFIRMED | 修订批准前的只读、可撤销资料观察隔离草稿路径已被确认；正式消费者统一绑定修订批准记录 | L1 | D1、D2 和 A1 接受后重算 |
+| authority-conflict | C-AUTHORITY-BOUNDARY | RESOLVED | 延期发现文档不得越过当前唯一工程决策入口解锁实现；权威优先级已由仓库所有者确认 | D1、D2、A1、PI-R1 | 后续权威变化重新开启冲突记录 |
 
 ### 跨切面适用性表
 

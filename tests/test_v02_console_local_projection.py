@@ -1,14 +1,17 @@
 from __future__ import annotations
 
 import json
+import shutil
 import tempfile
 import threading
 import unittest
 from pathlib import Path
 from urllib.request import urlopen
 
+from matharc.operations import Account, OperationsDomainStore
 from matharc.v02.console_export import ConsoleLocalProjectionConfig, build_console_export
 from matharc.v02.exploration_session import ExplorationSessionStore
+from matharc.v02.operations_ledger import WorkspaceBoundOperationsLedger
 from matharc.v02.workspace_bundle import write_full_workspace_bundle
 from matharc.v02.workspace_server import make_server
 
@@ -67,6 +70,42 @@ class ConsoleLocalProjectionTests(unittest.TestCase):
             self.assertNotIn(str(root.resolve()), rendered)
             self.assertNotIn(str(invalid.resolve()), rendered)
             self.assertEqual(local["workspace_index"]["invalid_candidates"], [{"reason": "invalid_workspace"}])
+
+    def test_operations_projection_requires_workspace_bound_ledger(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace = root / "workspace"
+            write_full_workspace_bundle(workspace)
+            operations_root = root / "operations"
+            OperationsDomainStore(operations_root).create_account(Account("A", "unbound"))
+            config = ConsoleLocalProjectionConfig(operations_domain_root=operations_root)
+            with self.assertRaisesRegex(ValueError, "provenance"):
+                build_console_export(workspace, local_projection_config=config)
+
+    def test_operations_projection_is_bound_and_rejects_sibling_workspace_reuse(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            workspace_a = root / "workspace-a"
+            workspace_b = root / "workspace-b"
+            write_full_workspace_bundle(workspace_a)
+            shutil.copytree(workspace_a, workspace_b)
+            provenance = build_console_export(workspace_a)["provenance"]
+            operations_root = root / "operations"
+            ledger = WorkspaceBoundOperationsLedger(
+                operations_root,
+                {**provenance, "workspace_root": str(workspace_a.resolve())},
+            )
+            ledger.create_account(Account("A", "bound"))
+            config = ConsoleLocalProjectionConfig(operations_domain_root=operations_root)
+            before = (operations_root / "operations-domain.json").read_bytes()
+            projected = build_console_export(workspace_a, local_projection_config=config)
+            self.assertEqual(before, (operations_root / "operations-domain.json").read_bytes())
+            self.assertEqual(projected["local_console"]["operations"]["state"], "live")
+            self.assertEqual(
+                projected["local_console"]["operations"]["provenance"], provenance
+            )
+            with self.assertRaisesRegex(ValueError, "another workspace"):
+                build_console_export(workspace_b, local_projection_config=config)
 
 
 if __name__ == "__main__": unittest.main()

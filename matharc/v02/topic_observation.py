@@ -20,6 +20,7 @@ from contextlib import contextmanager
 
 from .budget import BudgetLedger
 from .literature_base import ImportDisposition, LiteratureBase
+from .local_store import external_root
 from .schema import canonical_json, digest_json
 from .source_observation import ObservationStatus, SourceObservation
 
@@ -487,7 +488,7 @@ class TopicObservationRunner:
         initial_cursor: str,
         budget: BudgetLedger | None = None,
     ) -> None:
-        self.root = Path(root)
+        self.root = external_root(root)
         self.root.mkdir(parents=True, exist_ok=True)
         self.topic_id = _require_nonempty(topic_id, "topic_id")
         self.initial_cursor = _require_nonempty(initial_cursor, "initial_cursor")

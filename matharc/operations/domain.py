@@ -17,6 +17,12 @@ from urllib.parse import parse_qsl, urlsplit
 class OperationsDomainError(ValueError): pass
 
 
+_WORKSPACE_PROVENANCE_KEYS = frozenset(
+    {"run_id", "state_digest_sha256", "event_head_hash"}
+)
+_WORKSPACE_PROVENANCE_OPTIONAL_KEYS = frozenset({"workspace_root"})
+
+
 _SENSITIVE_METADATA_TOKENS = (
     "secret", "token", "password", "credential", "api_key", "apikey", "authorization",
 )
@@ -31,6 +37,14 @@ def _text(value: object, label: str) -> str:
 def _strict(value: object, expected: set[str], label: str) -> Mapping[str, Any]:
     if not isinstance(value, Mapping) or set(value) != expected: raise OperationsDomainError(f"{label} has an invalid schema")
     return value
+
+
+def _workspace_provenance(value: object) -> dict[str, str]:
+    if not isinstance(value, Mapping) or not _WORKSPACE_PROVENANCE_KEYS.issubset(value) or set(value) - (_WORKSPACE_PROVENANCE_KEYS | _WORKSPACE_PROVENANCE_OPTIONAL_KEYS):
+        raise OperationsDomainError("workspace provenance has an invalid schema")
+    if any(not isinstance(item, str) or not item.strip() for item in value.values()):
+        raise OperationsDomainError("workspace provenance must contain non-empty text")
+    return {key: value[key] for key in sorted(value)}
 def _metadata(value: object) -> dict[str, str]:
     if not isinstance(value, Mapping) or any(not isinstance(key, str) or not isinstance(item, str) for key, item in value.items()): raise OperationsDomainError("upstream metadata must be a text object")
     if set(value) - _PUBLIC_METADATA_KEYS:
@@ -117,7 +131,14 @@ class OperationsDomainStore:
     external tamper-evidence root for an actor that can rewrite the whole file.
     """
     _FILENAME = "operations-domain.json"
-    def __init__(self, root: str | Path) -> None: self.root = _external_root(root); self.path = self.root / self._FILENAME
+    def __init__(self, root: str | Path, *, workspace_provenance: Mapping[str, str] | None = None) -> None:
+        self.root = _external_root(root)
+        self.path = self.root / self._FILENAME
+        self.workspace_provenance = (
+            _workspace_provenance(workspace_provenance)
+            if workspace_provenance is not None
+            else None
+        )
     @contextmanager
     def _lock(self) -> Iterator[None]:
         self.root.mkdir(parents=True, exist_ok=True); descriptor = os.open(self.root / ".operations-domain.lock", os.O_CREAT | os.O_RDWR, 0o600)
@@ -127,7 +148,21 @@ class OperationsDomainStore:
         if not self.path.exists(): return [], [], [], []
         try: raw = json.loads(self.path.read_text(encoding="utf-8"))
         except (OSError, json.JSONDecodeError) as exc: raise OperationsDomainError("operations domain is unreadable") from exc
-        data = _strict(raw, {"schema_version", "accounts", "credits", "seats", "upstreams", "state_digest_sha256"}, "operations domain")
+        base_keys = {
+            "schema_version", "accounts", "credits", "seats", "upstreams",
+            "state_digest_sha256",
+        }
+        if self.workspace_provenance is not None and isinstance(raw, Mapping) and set(raw) == base_keys:
+            raise OperationsDomainError("workspace-bound operations domain requires provenance")
+        expected_keys = set(base_keys)
+        if self.workspace_provenance is not None:
+            expected_keys.add("workspace_provenance")
+        data = _strict(raw, expected_keys, "operations domain")
+        persisted_provenance = data.get("workspace_provenance")
+        if self.workspace_provenance is None and persisted_provenance is not None:
+            raise OperationsDomainError("workspace-bound operations domain requires provenance")
+        if self.workspace_provenance is not None and _workspace_provenance(persisted_provenance) != self.workspace_provenance:
+            raise OperationsDomainError("operations domain belongs to another workspace")
         unsigned = dict(data); declared = unsigned.pop("state_digest_sha256")
         if data["schema_version"] != "1.0" or declared != _digest(unsigned) or not all(isinstance(data[key], list) for key in ("accounts", "credits", "seats", "upstreams")): raise OperationsDomainError("operations domain integrity check failed")
         accounts = [Account.from_dict(item) for item in data["accounts"]]; credits = [CreditEntry.from_dict(item) for item in data["credits"]]; seats = [SeatAllocation.from_dict(item) for item in data["seats"]]; upstreams = [UpstreamConfiguration.from_dict(item) for item in data["upstreams"]]
@@ -147,6 +182,8 @@ class OperationsDomainStore:
         # Credit ordering is the append-only debit/grant history.  Sorting for
         # display would change its semantics and can fabricate an underflow.
         payload: dict[str, Any] = {"schema_version": "1.0", "accounts": [item.to_dict() for item in sorted(accounts, key=lambda item: item.account_id)], "credits": [item.to_dict() for item in credits], "seats": [item.to_dict() for item in sorted(seats, key=lambda item: item.allocation_id)], "upstreams": [item.to_dict() for item in sorted(upstreams, key=lambda item: item.configuration_id)]}
+        if self.workspace_provenance is not None:
+            payload["workspace_provenance"] = dict(self.workspace_provenance)
         payload["state_digest_sha256"] = _digest(payload); temporary = self.path.with_suffix(".tmp"); temporary.write_text(_canonical(payload) + "\n", encoding="utf-8"); os.replace(temporary, self.path)
     @staticmethod
     def _add(items: list[_Record], item: _Record, attr: str) -> _Record:
@@ -180,4 +217,13 @@ class OperationsDomainStore:
             "seats": [item.to_dict() for item in seats],
             "upstreams": [item.to_dict() for item in upstreams],
         }
-        return {"schema_version": "1.0", "accounts": persisted["accounts"], "credit_balances": dict(sorted(balances.items())), "seat_allocations": persisted["seats"], "upstreams": persisted["upstreams"], "external_identity": "not_configured", "external_payment": "not_configured", "external_upstream": "not_configured", "state_digest_sha256": _digest(persisted)}
+        if self.workspace_provenance is not None:
+            persisted["workspace_provenance"] = dict(self.workspace_provenance)
+        result = {"schema_version": "1.0", "accounts": persisted["accounts"], "credit_balances": dict(sorted(balances.items())), "seat_allocations": persisted["seats"], "upstreams": persisted["upstreams"], "external_identity": "not_configured", "external_payment": "not_configured", "external_upstream": "not_configured", "state_digest_sha256": _digest(persisted)}
+        if self.workspace_provenance is not None:
+            result["provenance"] = {
+                key: value
+                for key, value in self.workspace_provenance.items()
+                if key in _WORKSPACE_PROVENANCE_KEYS
+            }
+        return result
