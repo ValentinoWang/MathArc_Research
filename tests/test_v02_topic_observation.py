@@ -18,6 +18,8 @@ from matharc.v02.topic_observation import (
     TopicObservationInput,
     TopicObservationRunner,
     TopicRunStatus,
+    _input_projection_binding_digest,
+    _input_projection_digest,
 )
 
 
@@ -523,6 +525,55 @@ class TopicObservationTests(unittest.TestCase):
             state_path.write_text(json.dumps(state), encoding="utf-8")
 
             with self.assertRaisesRegex(TopicObservationError, "projection|fingerprint"):
+                TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
+
+    def test_full_cross_batch_rewrite_cannot_reuse_a_successful_observation(self) -> None:
+        """A rewritten state must not turn one observed source into two imports."""
+        with tempfile.TemporaryDirectory() as directory:
+            runner = TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0")
+            runner.run(batch("c0", "c1", input_for("A")))
+            runner.run(batch("c1", "c2", input_for("B")))
+
+            state_path = Path(directory) / "topic-observation-state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            stored_a = state["batches"]["c0"]
+            stored_b = state["batches"]["c1"]
+            source_b = input_for("B")
+            swapped = TopicObservationInput("A", source_b.observation, source_b.content)
+
+            # Rewrite every digest-bearing field for batch c0 to be internally
+            # coherent with B. The cursor-ordered replay check must still reject
+            # the second successful import of B's idempotency key.
+            stored_a["input_projections"]["A"] = swapped.input_projection
+            stored_a["input_fingerprints"]["A"] = swapped.fingerprint_sha256
+            stored_a["input_observation_ids"]["A"] = source_b.observation.observation_id
+            evidence = dict(stored_b["disposition_evidence"]["B"])
+            evidence["input_id"] = "A"
+            stored_a["disposition_evidence"]["A"] = evidence
+            stored_a["result"]["item_results"][0]["observation_id"] = source_b.observation.observation_id
+            state["processed_input_ids"]["A"] = swapped.fingerprint_sha256
+            state["seen_observation_keys"] = [
+                stored_b["disposition_evidence"]["B"]["input_idempotency_key"]
+            ]
+            stored_a["batch_digest_sha256"] = batch("c0", "c1", swapped).batch_digest_sha256
+            stored_a["input_projection_digest_sha256"] = _input_projection_digest(
+                topic_id="union-closed",
+                cursor="c0",
+                next_cursor="c1",
+                batch_digest_sha256=stored_a["batch_digest_sha256"],
+                input_projections=stored_a["input_projections"],
+            )
+            evidence["input_projection_binding_sha256"] = _input_projection_binding_digest(
+                topic_id="union-closed",
+                cursor="c0",
+                next_cursor="c1",
+                batch_digest_sha256=stored_a["batch_digest_sha256"],
+                input_projection=swapped.input_projection,
+            )
+            stored_a["result_digest_sha256"] = digest_json(stored_a["result"])
+            state_path.write_text(json.dumps(state), encoding="utf-8")
+
+            with self.assertRaisesRegex(TopicObservationError, "successful import repeats"):
                 TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
 
     def test_disposition_evidence_rejects_cross_batch_projection_binding_swap(self) -> None:

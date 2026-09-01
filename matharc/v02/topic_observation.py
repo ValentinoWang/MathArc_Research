@@ -977,8 +977,10 @@ class TopicObservationRunner:
         }
 
         validated_batches: dict[str, TopicBatchResult] = {}
+        validated_batch_records: dict[str, dict[str, Any]] = {}
         batch_input_ids: set[str] = set()
         referenced_manual_ids: set[str] = set()
+        batch_manual_ids: set[str] = set()
         derived_seen_observation_keys: set[str] = set()
         for cursor, stored in payload["batches"].items():
             _require_nonempty(cursor, "stored cursor")
@@ -1066,6 +1068,7 @@ class TopicObservationRunner:
                             "stored manual review result does not match exactly one manual queue entry"
                         )
                     referenced_manual_ids.add(matching_manuals[0].manual_id)
+                    batch_manual_ids.add(matching_manuals[0].manual_id)
             result_input_ids = tuple(item.input_id for item in result.item_results)
             expected_input_ids = tuple(sorted(input_fingerprints))
             if result_input_ids != expected_input_ids:
@@ -1127,6 +1130,11 @@ class TopicObservationRunner:
             if stored["input_projection_digest_sha256"] != expected_projection_digest:
                 raise TopicObservationError("stored input projection digest does not match its batch")
             validated_batches[cursor] = result
+            validated_batch_records[cursor] = {
+                "input_fingerprints": input_fingerprints,
+                "disposition_evidence": disposition_evidence,
+                "result": result,
+            }
             batch_input_ids.update(input_fingerprints)
 
         event_ids: set[str] = set()
@@ -1152,6 +1160,33 @@ class TopicObservationRunner:
                 raise ManualQueueObservationError("manual queue entry is referenced more than once")
             referenced_manual_ids.add(manual_id)
 
+        for manual in manual_queue:
+            if manual.reason is not ManualReviewReason.CURSOR_CONFLICT:
+                continue
+            if manual.manual_id in batch_manual_ids:
+                raise ManualQueueObservationError(
+                    "cursor conflict manual entry must not be attached to a batch result"
+                )
+            if manual.manual_id not in event_ids:
+                raise ManualQueueObservationError(
+                    "cursor conflict manual entry must match a manual event"
+                )
+            if manual.cursor in validated_batches:
+                expected_detail = "A cursor was replayed with different batch content."
+            else:
+                if manual.cursor == payload["next_cursor"]:
+                    raise ManualQueueObservationError(
+                        "cursor conflict manual entry names the current cursor"
+                    )
+                expected_detail = (
+                    f"Expected cursor {payload['next_cursor']!r}, "
+                    f"received {manual.cursor!r}."
+                )
+            if manual.detail != expected_detail:
+                raise ManualQueueObservationError(
+                    "cursor conflict manual entry detail does not match its state"
+                )
+
         queue_ids = {manual.manual_id for manual in manual_queue}
         if referenced_manual_ids != queue_ids:
             raise ManualQueueObservationError("manual queue contains an orphaned entry")
@@ -1161,13 +1196,89 @@ class TopicObservationRunner:
             raise TopicObservationError("stored batch inputs do not match processed state")
         cursor = self.initial_cursor
         visited: set[str] = set()
+        cursor_order: list[str] = []
         while cursor in validated_batches:
             if cursor in visited:
                 raise TopicObservationError("stored batch cursor chain contains a cycle")
             visited.add(cursor)
+            cursor_order.append(cursor)
             cursor = validated_batches[cursor].next_cursor
         if cursor != payload["next_cursor"] or visited != set(validated_batches):
             raise TopicObservationError("stored batch cursor chain conflicts with state")
+
+        # A batch digest proves only the bytes currently stored in that batch.
+        # Replaying the cursor chain additionally proves that successful imports
+        # cannot silently move between batches or repeat an observation key.
+        first_inputs: dict[str, tuple[str, str]] = {}
+        ordered_seen_observation_keys: set[str] = set()
+        completed_cursors: set[str] = set()
+        for batch_cursor in cursor_order:
+            record = validated_batch_records[batch_cursor]
+            fingerprints = record["input_fingerprints"]
+            result = record["result"]
+            evidence_by_input = record["disposition_evidence"]
+            result_by_input = {item.input_id: item for item in result.item_results}
+            for input_id in sorted(fingerprints):
+                fingerprint = fingerprints[input_id]
+                item_result = result_by_input[input_id]
+                evidence = evidence_by_input[input_id]
+                first = first_inputs.get(input_id)
+                if first is None:
+                    if evidence["basis"] == "PROCESSED_INPUT_REPLAY":
+                        raise TopicObservationError(
+                            "processed duplicate evidence has no preceding input"
+                        )
+                    if payload["processed_input_ids"].get(input_id) != fingerprint:
+                        raise TopicObservationError(
+                            "first stored batch input fingerprint conflicts with processed state"
+                        )
+                    first_inputs[input_id] = (batch_cursor, fingerprint)
+                elif fingerprint == first[1]:
+                    if (
+                        item_result.status is not TopicItemStatus.DUPLICATE
+                        or evidence["basis"] != "PROCESSED_INPUT_REPLAY"
+                    ):
+                        raise TopicObservationError(
+                            "replayed input disposition does not match its prior batch"
+                        )
+                    prior_cursor = evidence["prior_cursor"]
+                    prior_record = validated_batch_records.get(prior_cursor)
+                    if prior_cursor not in completed_cursors or prior_record is None:
+                        raise TopicObservationError(
+                            "processed duplicate evidence must reference a preceding batch"
+                        )
+                    if prior_record["input_fingerprints"].get(input_id) != fingerprint:
+                        raise TopicObservationError(
+                            "processed duplicate evidence prior input conflicts"
+                        )
+                else:
+                    if (
+                        item_result.status is not TopicItemStatus.MANUAL_REVIEW
+                        or evidence["basis"] != "MANUAL_QUEUE"
+                        or evidence["manual_reason"] != ManualReviewReason.INPUT_ID_CONFLICT.value
+                    ):
+                        raise TopicObservationError(
+                            "changed input fingerprint must enter input-id conflict review"
+                        )
+
+                basis = evidence["basis"]
+                observation_key = evidence["input_idempotency_key"]
+                if basis in {"NEW_IMPORT", "EXISTING_OBSERVED"}:
+                    if observation_key in ordered_seen_observation_keys:
+                        raise TopicObservationError(
+                            "successful import repeats a prior seen observation key"
+                        )
+                    ordered_seen_observation_keys.add(observation_key)
+                elif basis == "SEEN_OBSERVATION_KEY":
+                    if observation_key not in ordered_seen_observation_keys:
+                        raise TopicObservationError(
+                            "seen observation key has no preceding successful import"
+                        )
+            completed_cursors.add(batch_cursor)
+        if ordered_seen_observation_keys != set(payload["seen_observation_keys"]):
+            raise TopicObservationError(
+                "seen observation keys do not match cursor-ordered item evidence"
+            )
         return payload
 
     def _validate_item_evidence(
@@ -1374,6 +1485,10 @@ class TopicObservationRunner:
                     "stored manual item evidence does not match exactly one manual queue entry"
                 )
             manual = matching_manuals[0]
+            if manual.reason is ManualReviewReason.CURSOR_CONFLICT:
+                raise ManualQueueObservationError(
+                    "cursor conflict manual disposition cannot be attached to a batch item"
+                )
             if evidence["manual_reason"] != manual.reason.value:
                 raise ManualQueueObservationError("stored manual item evidence reason conflicts with queue")
             if manual.reason is ManualReviewReason.HIGH_RISK_EVENT:
