@@ -1,0 +1,42 @@
+{
+  "ledger_id": "Q1-FINAL-RECONCILIATION-20260901",
+  "task_id": "Q1-calibration-disclosure",
+  "status": "PASS",
+  "frozen_source_commit": "b35e02c2f12d1180ffca1c6af3d29b543c5929da",
+  "q1_evidence": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json",
+    "sha256": "9cabc04c839042af524b8a9977df9fd59ae937f3826ef00ed9875484ec7e56d5"
+  },
+  "source_identity": {
+    "r1_evidence_sha256": "aa9a8def4e4b6b0155f1007ec1c5ae672b5bc9f697f28c3aae829e95ff12e9f6",
+    "q1_policy_fixture_sha256": "8a06da36b77810acb3ff3217a4a2a8b114bc4adec9d6131ca1d207566ad6cb2b",
+    "q1_implementation_sha256": "9ab6da778bb5c59d87e28f4f196b3670e6126134970b7c14c2ebe52929be33a7",
+    "protected_test_sha256": "89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db"
+  },
+  "selected_acceptance_runs": {
+    "machine": {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T123000Z-local-f1a401/result.md",
+      "sha256": "48da555788cf217e37446b83ac2717ada13ca88e41da86f8f2e4bf3091d9f989"
+    },
+    "human": {
+      "path": "acceptance/human/Q1-calibration-disclosure/runs/20260901T123100Z-local-f1a501/result.md",
+      "sha256": "f1d062430e07b9b7484ddcc00b35d0d5b38396b6a4f18f0291960d8e90d33127"
+    }
+  },
+  "independent_reviews": [
+    {
+      "lane": "identity-contract",
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/final-reports-v2/identity-contract-final.md",
+      "sha256": "fe76fd370e1ecc2087d0b2feac3b653597db3ca9c209942fc668827747d33256",
+      "verdict": "PASS"
+    },
+    {
+      "lane": "policy-boundary",
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-final-reconciliation-20260901/final-reports-v2/policy-boundary-final.md",
+      "sha256": "4d8bde9c06fcb2ef69f02472a66a3ecddc0e48f3812bda21558d1bbe371e04af",
+      "verdict": "PASS"
+    }
+  ],
+  "acceptance_boundary": "Local Q1 disclosure-policy acceptance only; this ledger does not establish mathematics, literature or open-status verification, novelty, calibration performance, production/device behavior, or public-release authorization.",
+  "self_reference_rule": "This detached ledger one-way pins Q1 evidence and reports. Q1.json intentionally does not pin this ledger or report digests."
+}

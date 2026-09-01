@@ -13,7 +13,7 @@
 - Decision refs: decision.problem-intelligence.amendment@2
 - Assumption IDs: none
 - Invalidation keys: validation.problem-intelligence.calibration-disclosure
-- Baseline identity: origin/main@b35e02c2f12d1180ffca1c6af3d29b543c5929da
+- Baseline identity: origin/main@8a6d908541b770461a081b43d8ced627befd0912
 - Human acceptance workspace: acceptance/human/Q1-calibration-disclosure
 
 ## User and scenario

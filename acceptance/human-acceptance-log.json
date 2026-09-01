@@ -1,0 +1,86 @@
+{
+  "blocking_entries": [
+    {
+      "blocking": true,
+      "checklist_path": "acceptance/human/Q1-calibration-disclosure/checklist.md",
+      "estimated_minutes": 3,
+      "handoff_path": "acceptance/human/Q1-calibration-disclosure/handoff.json",
+      "invalidation_keys": [
+        "validation.problem-intelligence.calibration-disclosure"
+      ],
+      "latest_run": {
+        "completed_at": "2026-09-01T12:32:00Z",
+        "result_path": "acceptance/human/Q1-calibration-disclosure/runs/20260901T123100Z-local-f1a501/result.md",
+        "result_sha256": "f1d062430e07b9b7484ddcc00b35d0d5b38396b6a4f18f0291960d8e90d33127",
+        "run_id": "20260901T123100Z-local-f1a501",
+        "source_identity": "b35e02c2f12d1180ffca1c6af3d29b543c5929da+q1-v4-final",
+        "started_at": "2026-09-01T12:31:00Z",
+        "status": "PASS"
+      },
+      "loop_name": "Q1-reacceptance",
+      "ready_at": "2026-09-01T00:31:00Z",
+      "release_slice": "PI-R5",
+      "required_role": "研究负责人",
+      "scope_hints": [
+        "no public release authority",
+        "three fixed uncalibrated records"
+      ],
+      "status": "PASSED",
+      "summary": "Current R1-bound uncalibrated disclosure policy is machine green; H-01 is limited to the research-owner boundary decision.",
+      "task_id": "Q1-calibration-disclosure"
+    }
+  ],
+  "generated_at": "2026-09-01T12:32:00Z",
+  "non_blocking_entries": [
+    {
+      "blocking": false,
+      "checklist_path": "acceptance/human/R1-regression-evaluation/checklist.md",
+      "estimated_minutes": null,
+      "handoff_path": null,
+      "invalidation_keys": [],
+      "latest_run": {
+        "completed_at": "2026-09-01T08:00:00+08:00",
+        "result_path": "acceptance/human/R1-regression-evaluation/runs/20260901T080000Z-local-r1a008/result.md",
+        "result_sha256": "76c42cdcb232e8485bbc68260ffee29a2f74d42ac6003dfc36de09fb77508f72",
+        "run_id": "20260901T080000Z-local-r1a008",
+        "source_identity": "95ce4faf0d941345e8265dde1eb13a189e8454b3+r1-v9-retry6",
+        "started_at": "2026-09-01T07:58:00+08:00",
+        "status": "PASS"
+      },
+      "loop_name": "R1-regression-evaluation",
+      "ready_at": null,
+      "release_slice": null,
+      "required_role": null,
+      "scope_hints": [],
+      "status": "PREPARING",
+      "summary": "人工验收工作区已建立，尚未完成机器验收递交。",
+      "task_id": "R1-regression-evaluation"
+    },
+    {
+      "blocking": false,
+      "checklist_path": "acceptance/human/A5-problem-intelligence-v0-release/checklist.md",
+      "estimated_minutes": null,
+      "handoff_path": null,
+      "invalidation_keys": [],
+      "latest_run": {
+        "completed_at": "2026-08-31T17:11:30Z",
+        "result_path": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T010800Z-local-a5c008/result.md",
+        "result_sha256": "3572323d59d6e94cdd990f5fc24204a30d3aeb61bf75bf9271bb6286d90437e9",
+        "run_id": "20260901T010800Z-local-a5c008",
+        "source_identity": "9d727862a5566b32fdeec3af017dc466a5f9dd12+a5-release-candidate",
+        "started_at": "2026-08-31T17:10:35.203752Z",
+        "status": "PASS"
+      },
+      "loop_name": "A5-problem-intelligence-v0-release",
+      "ready_at": null,
+      "release_slice": null,
+      "required_role": null,
+      "scope_hints": [],
+      "status": "PREPARING",
+      "summary": "人工验收工作区已建立，尚未完成机器验收递交。",
+      "task_id": "A5-problem-intelligence-v0-release"
+    }
+  ],
+  "schema_version": 1,
+  "source_facts_sha256": "3bb4e5662d035a0302ead437645d6ebf7f1695c012ce837f12e75a043dcc05b6"
+}

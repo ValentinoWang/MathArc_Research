@@ -6,7 +6,7 @@
 - SSOT node: Q1
 - Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md
 - Contract version: 4
-- Contract SHA-256: 2c4acb235a042800c14b5af2e6d2ae47f6b87e5e284cad9e5c114ce728806b5e
+- Contract SHA-256: e2db06e4a9d863bc1963e19d5aac1c17bc070adb84df45d95c41ac1df39efc73
 - Human checklist: acceptance/human/Q1-calibration-disclosure/checklist.md
 - Checklist SHA-256: 0a25e57af95eafe3093db314eb720303bda3d6d5d6737ca62d8e44fbcbf77e81
 

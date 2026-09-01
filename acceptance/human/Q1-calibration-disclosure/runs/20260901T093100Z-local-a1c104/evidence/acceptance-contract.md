@@ -13,7 +13,7 @@
 - Decision refs: decision.problem-intelligence.amendment@2
 - Assumption IDs: none
 - Invalidation keys: validation.problem-intelligence.calibration-disclosure
-- Baseline identity: origin/main@b35e02c2f12d1180ffca1c6af3d29b543c5929da
+- Baseline identity: origin/main@8a6d908541b770461a081b43d8ced627befd0912
 - Human acceptance workspace: acceptance/human/Q1-calibration-disclosure
 
 ## User and scenario
@@ -86,7 +86,7 @@ And it returns a passive non-public policy record
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_calibration_disclosure.py | 89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db | AC-01, AC-02, AC-03, AC-04 |
+| tests/test_v02_calibration_disclosure.py | 7a38001d211c2b8ef5b6b45e8f8fa87f7b0ce9785559cc475eb511d250af5026 | AC-01, AC-02, AC-03, AC-04 |
 
 ## Requirements-test traceability
 
