@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-01T08:36:06.454816+00:00",
+  "generated_at": "2026-09-01T09:12:21.818210+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "86d7c2cc7bdb0ed6f6628c8ad40250119ccb84a2",
@@ -14,17 +14,17 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "41ed37fc9fe66badf7d63bbd3a46d67061253dc7",
+    "project_commit": "329b270460abf146561499fd5aa7ec4e62737eb1",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "a53b8662439e092d274f30f36aaa7236a92b3030f96b64a3f296b9663f4cb1de",
+    "project_dirty_diff_sha256": "588c51afe0787774fdccdd65a9e3e15f5daa31173978e08acef71ba6f0d16f3d",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "b7bfa8c01cd0b1f8cabdb0f4c1856a6c58228de91a1f0e4ec2b0fbe167f5bda8",
-    "content_sha256": "b7bfa8c01cd0b1f8cabdb0f4c1856a6c58228de91a1f0e4ec2b0fbe167f5bda8",
-    "manifest_sha256": "35ab005378bc094373fa601cc509e3e5a7e19db00e73a9c7b993d23d26603d36",
-    "manifest_identity_sha256": "35ab005378bc094373fa601cc509e3e5a7e19db00e73a9c7b993d23d26603d36"
+    "sha256": "a4094960ed3c37222845f7e7f79a12dd156881365c8c476cb32eec9c60ed61d3",
+    "content_sha256": "a4094960ed3c37222845f7e7f79a12dd156881365c8c476cb32eec9c60ed61d3",
+    "manifest_sha256": "1ea4b331355a0568fde2b26f1c652752f4b6db3739bde39bd9b4201ad6b4dbd0",
+    "manifest_identity_sha256": "1ea4b331355a0568fde2b26f1c652752f4b6db3739bde39bd9b4201ad6b4dbd0"
   },
   "checks": [
     {

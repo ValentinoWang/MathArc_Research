@@ -42,8 +42,8 @@ Q1_POLICY_REVIEW = ROOT / (
 
 # The blocked A5 record must remain byte-bound to the current Q1 identity.
 EXPECTED_Q1_IDENTITY = {
-    "implementation_base": "20d41af66b03d037b7e390ce31800fcc9d573a3e",
-    "q1_evidence_sha256": "4f0dec79412813e94ba64a005ab3990b456578a71b8325fffb51a9c8a0fd5e8f",
+    "implementation_base": "329b270460abf146561499fd5aa7ec4e62737eb1",
+    "q1_evidence_sha256": "a56efb2c662857d5e863d8ce59abaef8044319ecd3802ee19c32a01a058472f4",
     "q1_policy_fixture_sha256": "566533a91201ee353ef80efd13e7e039e21692b4ef5334a8a55e940cccf58064",
     "q1_policy_digest_sha256": "05f843c5c4c3956c50b211ed7e41dd4e05e2705fa74759ba8d4b4e2bb0c5748c",
     "q1_implementation_sha256": "1a56ac0e25023e7103adc4c18e9ce50157bb6f58dee57247aba22ada5a352b50",
@@ -77,9 +77,9 @@ class SourceLevelReleaseDecisionTests(unittest.TestCase):
             json.loads(Q1_POLICY.read_text(encoding="utf-8"))
         )
         self.assertFalse(policy.public_release_allowed)
-        self.assertEqual(["EV-Q1-BLOCKED-1"], evidence["consumed_evidence"])
+        self.assertEqual(["EV-Q1-REOPENED-2"], evidence["consumed_evidence"])
         observed = {
-            "implementation_base": "20d41af66b03d037b7e390ce31800fcc9d573a3e",
+            "implementation_base": "329b270460abf146561499fd5aa7ec4e62737eb1",
             "q1_evidence_sha256": hashlib.sha256(Q1_EVIDENCE.read_bytes()).hexdigest(),
             "q1_policy_fixture_sha256": hashlib.sha256(Q1_POLICY.read_bytes()).hexdigest(),
             "q1_policy_digest_sha256": policy.policy_digest_sha256,

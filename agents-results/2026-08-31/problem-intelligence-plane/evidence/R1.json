@@ -1,13 +1,13 @@
 {
-  "evidence_id": "EV-R1-BLOCKED-1",
+  "evidence_id": "EV-R1-REOPENED-5",
   "task_id": "R1",
-  "consumed_evidence": ["EV-A4-VERIFIED-1"],
+  "consumed_evidence": ["EV-A4-ACCEPTED-2"],
   "source_identity": {
-    "implementation_base": "2e47f5040d3a833e10de07286d68f017efec5d42",
-    "a4_evidence_sha256": "f876e26f0438a1bb25434fddc96518125f7e69234af5919482545e8e5cdbfc29",
+    "implementation_base": "329b270460abf146561499fd5aa7ec4e62737eb1",
+    "a4_evidence_sha256": "13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7",
     "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
-    "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
-    "protected_test_sha256": "cfe0b0451b1a96a07eeb2d7e64fe6b80cff2498948373a740025e83978a6060f"
+    "r1_fixture_sha256": "9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429",
+    "protected_test_sha256": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6"
   },
   "acceptance_self_check": "blocked",
   "acceptance_commands": [
@@ -32,7 +32,7 @@
   },
   "independent_ai_reviews": {
     "contract_version": 9,
-    "disposition": "BLOCKED_UPSTREAM_A4_ACCEPTANCE",
+    "disposition": "BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS",
     "historical_evidence": "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json",
     "superseded_retry_2": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry2/dispatch.json",
     "superseded_retry_3": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/dispatch.json",
@@ -48,7 +48,7 @@
   },
   "acceptance_record": {
     "status": "BLOCKED",
-    "reason": "A4 has VERIFIED implementation evidence but no formal acceptance result; the hard dependency therefore cannot unlock R1.",
+    "reason": "A4 is formally accepted under EV-A4-ACCEPTED-2. R1 is reopened on the re-bound fixture and awaits two fresh independent durable PASS reports.",
     "historical_human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260901T080000Z-local-a1a008/result.md"
   },
   "proposed_state": "BLOCKED",

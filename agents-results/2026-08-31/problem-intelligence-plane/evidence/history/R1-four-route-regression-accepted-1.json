@@ -1,0 +1,50 @@
+{
+  "fixture_kind": "r1-four-route-regression",
+  "schema_version": "1.0",
+  "topic_id": "union-closed",
+  "a4_evidence_id": "EV-A4-ACCEPTED-1",
+  "a4_evidence_digest": "85a3e6335bf8e5c886bef328e87f853c8eadc132a793b55ff39a962caae618dd",
+  "a4_source_head": "46d924fbfc4daa00eb02d3ffaf06cb17a78be4fe",
+  "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
+  "fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
+  "route_order": ["FORWARD_CITATION", "ALIAS_AND_EQUIVALENCE", "STRUCTURAL_SEMANTIC", "REVIEW_AND_EXPERT_LEAD"],
+  "case_ids": ["P-FRANKL-Q6", "P-ARXIV-2601-22401-COLLISION", "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS"],
+  "cases": [
+    {
+      "case_id": "P-FRANKL-Q6",
+      "expected_status": "OPEN_REPORTED",
+      "manual_minutes": 12,
+      "expected_outcomes": ["gap", "hit", "miss"],
+      "routes": [
+        {"route": "FORWARD_CITATION", "query_scope": "Frankl q=6 cited sources", "queries": ["frankl q=6 citations"], "source_ids": ["r1-frankl-q6-forward-source"], "hits": ["frankl-boundary"], "unresolved": []},
+        {"route": "ALIAS_AND_EQUIVALENCE", "query_scope": "Frankl q=6 aliases", "queries": ["union closed q six outside balance"], "source_ids": ["r1-frankl-q6-alias-source"], "hits": [], "unresolved": ["alias corpus incomplete"]},
+        {"route": "STRUCTURAL_SEMANTIC", "query_scope": "six-set union closure structure", "queries": ["six-set union closure outside parts"], "source_ids": ["r1-frankl-q6-structural-source"], "hits": ["frankl-structure"], "unresolved": []},
+        {"route": "REVIEW_AND_EXPERT_LEAD", "query_scope": "Frankl q=6 reviews and experts", "queries": ["Frankl conjecture q=6 review"], "source_ids": ["r1-frankl-q6-review-source"], "hits": [], "unresolved": ["expert comparison pending"]}
+      ]
+    },
+    {
+      "case_id": "P-ARXIV-2601-22401-COLLISION",
+      "expected_status": "RESOLVED_REPORTED",
+      "manual_minutes": 28,
+      "expected_outcomes": ["hit", "miss"],
+      "routes": [
+        {"route": "FORWARD_CITATION", "query_scope": "Erdos 397 cited chain", "queries": ["Erdos 397 citation chain"], "source_ids": ["r1-erdos-397-forward-source"], "hits": ["erdos-397-resolution"], "unresolved": []},
+        {"route": "ALIAS_AND_EQUIVALENCE", "query_scope": "Erdos 397 alternate wording", "queries": ["infinitely many solutions Erdos 397"], "source_ids": ["r1-erdos-397-alias-source"], "hits": ["erdos-397-alias"], "unresolved": []},
+        {"route": "STRUCTURAL_SEMANTIC", "query_scope": "binomial product equation", "queries": ["binomial coefficient product equation"], "source_ids": ["r1-erdos-397-structural-source"], "hits": [], "unresolved": ["structural match requires review"]},
+        {"route": "REVIEW_AND_EXPERT_LEAD", "query_scope": "Erdos problem reviews", "queries": ["Erdos problems 397 review"], "source_ids": ["r1-erdos-397-review-source"], "hits": ["erdos-397-review"], "unresolved": []}
+      ]
+    },
+    {
+      "case_id": "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+      "expected_status": "OPEN_REPORTED",
+      "manual_minutes": 7,
+      "expected_outcomes": ["gap", "miss"],
+      "routes": [
+        {"route": "FORWARD_CITATION", "query_scope": "four-or-more outside parts citations", "queries": ["four outside parts Frankl citation"], "source_ids": ["r1-q6-residual-forward-source"], "hits": [], "unresolved": ["no pinned citation"]},
+        {"route": "ALIAS_AND_EQUIVALENCE", "query_scope": "four-or-more residual aliases", "queries": ["Frankl q=6 four small outside parts"], "source_ids": ["r1-q6-residual-alias-source"], "hits": [], "unresolved": ["alias gap"]},
+        {"route": "STRUCTURAL_SEMANTIC", "query_scope": "residual small outside parts structure", "queries": ["union closed residual outside parts"], "source_ids": ["r1-q6-residual-structural-source"], "hits": ["q6-residual-boundary"], "unresolved": []},
+        {"route": "REVIEW_AND_EXPERT_LEAD", "query_scope": "residual expert leads", "queries": ["Frankl q=6 residual expert"], "source_ids": ["r1-q6-residual-review-source"], "hits": [], "unresolved": ["expert lead absent"]}
+      ]
+    }
+  ]
+}

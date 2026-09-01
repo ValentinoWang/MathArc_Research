@@ -1,16 +1,16 @@
 {
-  "evidence_id": "EV-Q1-BLOCKED-1",
+  "evidence_id": "EV-Q1-REOPENED-2",
   "task_id": "Q1",
-  "consumed_evidence": ["EV-R1-BLOCKED-1"],
+  "consumed_evidence": ["EV-R1-REOPENED-5"],
   "source_identity": {
-    "implementation_base": "20d41af66b03d037b7e390ce31800fcc9d573a3e",
-    "r1_evidence_sha256": "cca0b29854ff81d3840fe025d1ae088ee8322b60c1cfc52c9c33e7b92d4ee0f0",
-    "r1_fixture_sha256": "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+    "implementation_base": "329b270460abf146561499fd5aa7ec4e62737eb1",
+    "r1_evidence_sha256": "84fde4a8f71b5f87160151f3eb3bfd432bb465c146733db6c3193d100e6bfa15",
+    "r1_fixture_sha256": "9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429",
     "r1_fixture_content_sha256": "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9",
     "q1_policy_fixture_sha256": "566533a91201ee353ef80efd13e7e039e21692b4ef5334a8a55e940cccf58064",
     "q1_policy_digest_sha256": "05f843c5c4c3956c50b211ed7e41dd4e05e2705fa74759ba8d4b4e2bb0c5748c",
     "q1_implementation_sha256": "1a56ac0e25023e7103adc4c18e9ce50157bb6f58dee57247aba22ada5a352b50",
-    "protected_test_sha256": "d2a1f5c7623784e4eddb8349c2b8cb9fcf4bbb18a24db6a858a47c092b9c75f0"
+    "protected_test_sha256": "e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57"
   },
   "acceptance_self_check": "blocked",
   "acceptance_commands": [
@@ -37,7 +37,7 @@
   },
   "acceptance_record": {
     "status": "BLOCKED",
-    "reason": "R1 is BLOCKED because A4 has no formal acceptance result; Q1 cannot be revalidated from the historical R1-bound policy.",
+    "reason": "R1 has reopened against accepted A4 evidence and a new fixed fixture identity. The historical Q1 policy cannot be revalidated until R1 is formally accepted and Q1 is re-bound.",
     "historical_machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T140000Z-local-a1e001/result.md",
     "historical_human_acceptance_result": "acceptance/human/Q1-calibration-disclosure/runs/20260901T140300Z-local-a1e002/result.md"
   },

@@ -3,11 +3,11 @@
 - 任务编号：Q1-calibration-disclosure
 - 人工验收绑定：acceptance/human/Q1-calibration-disclosure/binding.md
 - 验收合同：agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md
-- 合同版本：4
+- 合同版本：5
 - 清单状态：已批准
 - 所需人工角色：研究负责人
 - 清单负责人：用户
-- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段推送 GitHub；R1 合同版本 9 已重新接受，Q1 必须重新绑定当前 R1 身份
+- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段推送 GitHub；A4 已正式接受，R1 正在重新验收，Q1 必须在 R1 新身份接受后重新绑定
 - 执行结果：acceptance/human/Q1-calibration-disclosure/runs/<run-id>/result.md
 
 ## H-01

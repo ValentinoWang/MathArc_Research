@@ -15,6 +15,7 @@
 - Invalidation keys: implementation.problem-intelligence.regression
 - Baseline identity: origin/main@2e47f5040d3a833e10de07286d68f017efec5d42
 - Human acceptance workspace: acceptance/human/R1-regression-evaluation
+- UI Change declaration: none
 
 ## User and scenario
 

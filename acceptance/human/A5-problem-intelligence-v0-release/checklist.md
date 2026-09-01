@@ -3,11 +3,11 @@
 - 任务编号：A5-problem-intelligence-v0-release
 - 人工验收绑定：acceptance/human/A5-problem-intelligence-v0-release/binding.md
 - 验收合同：agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
-- 合同版本：5
+- 合同版本：6
 - 清单状态：已批准
 - 所需人工角色：研究负责人和仓库所有者
 - 清单负责人：用户
-- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；Q1 v5 当前身份已由机器、H-01 和两条独立 AI 复审重新接受
+- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；A4 已正式接受，Q1 必须在 R1 新身份接受后重新验收
 - 执行结果：acceptance/human/A5-problem-intelligence-v0-release/runs/<run-id>/result.md
 
 不要重复由自动化检查负责的哈希、字段、远端 ref 或测试断言。本清单只判断发布范围的研究语义。

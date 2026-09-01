@@ -1,11 +1,11 @@
 # Acceptance Contract: Q1-calibration-disclosure
 
 - Task ID: Q1-calibration-disclosure
-- Contract version: 4
+- Contract version: 5
 - Contract status: APPROVED
 - Test baseline: LOCKED
 - Acceptance owner: 研究负责人
-- Approval evidence: 用户已要求持续完成、验收通过并逐阶段推送 GitHub；R1 合同版本 9 已以两份独立持久化 PASS 报告和 H-01 接受。Q1 合同版本 4 明确重新绑定当前 R1 身份并保留全部未校准及禁止公开边界。
+- Approval evidence: 用户已要求持续完成、验收通过并逐阶段推送 GitHub；A4 已在离线固定来源边界内正式接受，R1 正在重新验收。Q1 合同版本 5 将旧 R1 夹具明确存为历史只读审计对象，并要求 R1 接受后重新绑定当前身份；所有未校准及禁止公开边界保持不变。
 - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/Q1.json
 - SSOT node: Q1
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
@@ -15,6 +15,7 @@
 - Invalidation keys: validation.problem-intelligence.calibration-disclosure
 - Baseline identity: origin/main@20d41af66b03d037b7e390ce31800fcc9d573a3e
 - Human acceptance workspace: acceptance/human/Q1-calibration-disclosure
+- UI Change declaration: none
 
 ## User and scenario
 
@@ -86,7 +87,7 @@ And it returns a passive non-public policy record
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_calibration_disclosure.py | 89d52c973a0d5e026da855aef85a57db8656e6cc5b593b98f09ff6d2541318db | AC-01, AC-02, AC-03, AC-04 |
+| tests/test_v02_calibration_disclosure.py | e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57 | AC-01, AC-02, AC-03, AC-04 |
 
 ## Requirements-test traceability
 
@@ -108,4 +109,4 @@ And it returns a passive non-public policy record
 
 ## Risks and open decisions
 
-三个固定案例不构成校准样本，也不构成统计性能、泛化、外部文献或独立数学审阅。是否公开任何范围仍由 A5 的独立发布决定处理。R1 身份、固定夹具或本合同的保护测试任一变化均使 Q1 失效，并要求 A5 重新验收。
+三个固定案例不构成校准样本，也不构成统计性能、泛化、外部文献或独立数学审阅。是否公开任何范围仍由 A5 的独立发布决定处理。R1 身份、固定夹具或本合同的保护测试任一变化均使 Q1 失效，并要求 A5 重新验收。版本 5 将历史 R1 fixture 固定在 `evidence/history/R1-four-route-regression-accepted-1.json`，防止下游验证把历史 Q1 政策误读为当前 R1 夹具；当前 Q1 只能保持重新验收状态，直到新的 R1 接受证据产生。

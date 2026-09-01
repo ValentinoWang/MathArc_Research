@@ -92,10 +92,10 @@ class RegressionEvaluationTests(unittest.TestCase):
         if not is_acceptance_claim:
             self.assertIn(
                 evidence["evidence_id"],
-                {"EV-R1-BLOCKED-1", "EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-REOPENED-5"},
+                {"EV-R1-REOPENED-2", "EV-R1-REOPENED-3", "EV-R1-REOPENED-4", "EV-R1-REOPENED-5"},
             )
             self.assertEqual("blocked", evidence["acceptance_self_check"])
-            self.assertIn(reviews["disposition"], {"BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS", "BLOCKED_UPSTREAM_A4_ACCEPTANCE"})
+            self.assertEqual("BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS", reviews["disposition"])
             self.assertEqual(
                 "NOT_A_PASS_REPAIR_REQUIRED",
                 json.loads(REVIEW_LEDGER.read_text(encoding="utf-8"))["attempt_1"]["disposition"],

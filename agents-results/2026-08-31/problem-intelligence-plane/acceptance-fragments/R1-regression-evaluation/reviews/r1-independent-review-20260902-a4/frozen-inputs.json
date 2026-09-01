@@ -1,0 +1,20 @@
+{
+  "review_campaign_id": "R1-independent-review-20260902-a4",
+  "frozen_head": "329b270460abf146561499fd5aa7ec4e62737eb1",
+  "remote_head": "329b270460abf146561499fd5aa7ec4e62737eb1",
+  "scope": "R1 contract-v9 acceptance after formal A4 acceptance; Q1 and A5 remain blocked.",
+  "inputs": [
+    {"path":"matharc/v02/regression_evaluation.py","sha256":"667a89bfe61f87b3679f5d0892cdf1e49051c41b9d47cf26d622ea96eaa77edd"},
+    {"path":"tests/test_v02_regression_evaluation.py","sha256":"cfe0b0451b1a96a07eeb2d7e64fe6b80cff2498948373a740025e83978a6060f"},
+    {"path":"tests/test_v02_calibration_disclosure.py","sha256":"d2a1f5c7623784e4eddb8349c2b8cb9fcf4bbb18a24db6a858a47c092b9c75f0"},
+    {"path":"tests/test_v02_release_decision.py","sha256":"0dba7cdca27689ccde6203a4af8e7cfbbc83909ba0b2cb4ac1c4d86576a6786b"},
+    {"path":"agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json","sha256":"9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429"},
+    {"path":"agents-results/2026-08-31/problem-intelligence-plane/evidence/A4.json","sha256":"13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7"},
+    {"path":"agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md","sha256":"c18a39ced16d18356598ec7889394d4494ee87f34d14b582e397d15c99e4896f"},
+    {"path":"agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json","sha256":"cda88cec2023cfb14f2a78e182df65c65428e80e5f27ccb08b4d680864ee9c61"},
+    {"path":"acceptance/human/R1-regression-evaluation/binding.md","sha256":"815ff5a4534511ea5d996cbff7869223365c61841d714f678dce34bad74bc89d"},
+    {"path":"acceptance/human/R1-regression-evaluation/checklist.md","sha256":"d7a89e055f43e192d899b86f9acf707457abad034db8a29094d660108afffdde"}
+  ],
+  "required_verdict": "PASS only when every frozen input matches, no P0/P1 finding exists, and each lane writes its single report.",
+  "review_boundary": "Zero-write review; no source/test/contract/evidence edits; no Q1/A5 acceptance, proof, external-literature, statistical, production, device, or remote decision."
+}

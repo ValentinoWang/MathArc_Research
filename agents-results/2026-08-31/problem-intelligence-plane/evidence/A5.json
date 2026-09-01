@@ -1,14 +1,14 @@
 {
   "evidence_id": "EV-A5-BLOCKED-1",
   "task_id": "A5",
-  "consumed_evidence": ["EV-Q1-BLOCKED-1"],
+  "consumed_evidence": ["EV-Q1-REOPENED-2"],
   "source_identity": {
-    "implementation_base": "20d41af66b03d037b7e390ce31800fcc9d573a3e",
-    "q1_evidence_sha256": "4f0dec79412813e94ba64a005ab3990b456578a71b8325fffb51a9c8a0fd5e8f",
+    "implementation_base": "329b270460abf146561499fd5aa7ec4e62737eb1",
+    "q1_evidence_sha256": "a56efb2c662857d5e863d8ce59abaef8044319ecd3802ee19c32a01a058472f4",
     "q1_policy_fixture_sha256": "566533a91201ee353ef80efd13e7e039e21692b4ef5334a8a55e940cccf58064",
     "q1_policy_digest_sha256": "05f843c5c4c3956c50b211ed7e41dd4e05e2705fa74759ba8d4b4e2bb0c5748c",
     "q1_implementation_sha256": "1a56ac0e25023e7103adc4c18e9ce50157bb6f58dee57247aba22ada5a352b50",
-    "q1_protected_test_sha256": "d2a1f5c7623784e4eddb8349c2b8cb9fcf4bbb18a24db6a858a47c092b9c75f0",
+    "q1_protected_test_sha256": "e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57",
     "q1_node_sha256": "851b6ac813282d7b5df64ec09dd548e31f0056a272ccba960d59fc2a3b373ab8",
     "q1_execution_contract_sha256": "bea478adc7da2f5f21c01990a2bcf6820ac4b469f7a131d1e9552f527dd7c31b",
     "q1_frozen_inputs_sha256": "e0f14cd0ff4074cf745d14b23013dedd2e64683379b116c9d145b4209142e1d9",
@@ -35,7 +35,7 @@
     "github_source_delivery_authorized": false,
     "mathematical_result_publication_authorized": false,
     "q1_public_release_allowed": false,
-    "reason": "Q1 is BLOCKED because R1 is blocked by the missing formal A4 acceptance; no source delivery or release decision is authorized."
+    "reason": "Q1 is reopened because R1 is being reaccepted on the A4-bound fixture; no source delivery or release decision is authorized."
   },
   "delivery_requirements": {
     "remote_ref_readback": "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
