@@ -121,7 +121,14 @@ def main(argv: list[str] | None = None) -> int:
         # PEP 660 editable installs. A regular local install exercises the
         # same packaged source while keeping the clean-checkout gate portable.
         _run(
-            [str(python), "-m", "pip", "install", ".[research,dev,formal]"],
+            [
+                str(python),
+                "-m",
+                "pip",
+                "install",
+                "--use-deprecated=legacy-resolver",
+                ".[research,dev,formal]",
+            ],
             cwd=clean_root,
         )
         env = dict(os.environ)
