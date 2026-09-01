@@ -32,11 +32,29 @@ class WorkspaceIndexResult:
     invalid_candidates: tuple[dict[str, str], ...]
 
     def to_dict(self) -> dict[str, Any]:
+        """Return the local inspection record, including filesystem locations."""
         return {
             "schema_version": "1.0",
             "scan_root": self.scan_root,
             "workspaces": [item.to_dict() for item in self.workspaces],
             "invalid_candidates": [dict(item) for item in self.invalid_candidates],
+        }
+
+    def console_dict(self) -> dict[str, Any]:
+        """Return the console-safe projection without host filesystem paths."""
+        return {
+            "schema_version": "1.0",
+            "workspaces": [
+                {
+                    "run_id": item.run_id,
+                    "state_digest_sha256": item.state_digest_sha256,
+                    "event_head_hash": item.event_head_hash,
+                }
+                for item in self.workspaces
+            ],
+            "invalid_candidates": [
+                {"reason": "invalid_workspace"} for _ in self.invalid_candidates
+            ],
         }
 
 

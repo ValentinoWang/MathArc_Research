@@ -40,6 +40,47 @@ class ConsolePrototypeTests(unittest.TestCase):
         self.assertIn("latestLoad", page)
         self.assertIn("same-origin /api/review service", page)
 
+    def test_configured_console_never_substitutes_demo_for_unconfigured_local_views(self) -> None:
+        node = shutil.which("node")
+        if node is None:
+            self.skipTest("node is required for the local projection boundary regression")
+        script = textwrap.dedent(
+            r"""
+            const fs = require("fs");
+            const vm = require("vm");
+            const page = fs.readFileSync(process.argv[1], "utf8");
+            const start = page.indexOf("/* Local-completion projections");
+            const end = page.indexOf("window.MathArcConsole", start);
+            if (start < 0 || end < 0) throw new Error("local projection source was not found");
+            const names = ["campaign", "topics", "portfolio", "dossier", "frontier", "difficulty", "admin_users", "admin_upstream"];
+            const V = Object.fromEntries(names.map(name => [name, () => ({ task: `DEMO-${name}` })]));
+            const local_console = Object.fromEntries([
+              "workspace_index", "exploration_sessions", "topic_portfolio", "candidate_problems", "difficulty_ledger", "operations",
+            ].map(key => [key, { state: "not_configured" }]));
+            const context = {
+              S: { consolePayload: { local_console } }, V,
+              liveCard: (...values) => values.join("|"), liveEsc: value => String(value),
+            };
+            vm.runInNewContext(page.slice(start, end), context);
+            for (const name of names.slice(1)) {
+              const task = context.V[name]().task;
+              if (!task.includes("未配置") || task.includes(`DEMO-${name}`)) {
+                throw new Error(`${name} substituted a demo for a configured not_configured projection`);
+              }
+            }
+            if (context.V.campaign().task !== "DEMO-campaign") {
+              throw new Error("campaign did not preserve its existing registered-report projection");
+            }
+            """
+        )
+        completed = subprocess.run(
+            [node, "-e", script, str(Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html")],
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
+
     def test_registered_campaign_export_renders_live_report_not_demo(self) -> None:
         node = shutil.which("node")
         if node is None:

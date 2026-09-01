@@ -4764,7 +4764,7 @@ const DEMO_LOCAL_VIEWS = {
 const localConsole = () => S.consolePayload && S.consolePayload.local_console;
 const localPart = key => {
   const value = localConsole() && localConsole()[key];
-  return value && value.state === "live" ? value : null;
+  return value && (value.state === "live" || (key === "exploration_sessions" && value.state === "live_with_stale_records")) ? value : null;
 };
 const localEmpty = (title, detail) => ({
   task: `${title} · <b>未配置</b>`,
@@ -4772,46 +4772,51 @@ const localEmpty = (title, detail) => ({
   main: liveCard(title, "未配置", `<div class="banner gap"><div>此视图要求一个已验证的本地记录投影。服务端未提供该配置，因此控制台不显示演示计数。</div></div>`),
   side: null,
 });
+const localOrDemo = (view, title, detail) => localConsole()
+  ? localEmpty(title, detail)
+  : DEMO_LOCAL_VIEWS[view]();
 V.campaign = () => {
   const index = localPart("workspace_index"), sessions = localPart("exploration_sessions");
+  /* The existing campaign projection already fails closed when its registered
+     report is absent. Preserve it unless the optional local index is present. */
   if (!index && !sessions) return DEMO_LOCAL_VIEWS.campaign();
-  const workspaces = index ? index.workspaces || [] : [], records = sessions ? sessions.sessions || [] : [];
+  const workspaces = index ? index.workspaces || [] : [], records = sessions ? sessions.sessions || [] : [], stale = sessions ? sessions.stale_sessions || [] : [];
   return { task:`攻克进程 · <b>本地索引</b> · ${workspaces.length} 个工作区`,
-    rail:liveCard("读取范围", "只读目录扫描", `<p class="note">索引只读取通过工作区审计的记录；探索会话在研究工作区之外保存，不能改变任何研究状态。</p>`),
-    main:liveCard("工作区", `${workspaces.length} 个可验证工作区`, `<div class="tw"><table><thead><tr><th>运行</th><th>状态摘要</th><th>事件链头</th></tr></thead><tbody>${workspaces.map(item=>`<tr><td class="mono">${liveEsc(item.run_id)}</td><td class="hash">${liveEsc(item.state_digest_sha256)}</td><td class="hash">${liveEsc(item.event_head_hash)}</td></tr>`).join("") || `<tr><td colspan="3" class="mut">未发现可验证工作区。</td></tr>`}</tbody></table></div>`)+liveCard("探索会话", `${records.length} 个会话`, `<div class="tw"><table><thead><tr><th>会话</th><th>绑定运行</th><th>猜想/实验记录</th></tr></thead><tbody>${records.map(item=>`<tr><td class="mono">${liveEsc(item.session_id)}</td><td class="mono">${liveEsc(item.workspace_provenance.run_id)}</td><td>${(item.entries||[]).length}</td></tr>`).join("") || `<tr><td colspan="3" class="mut">未配置探索会话。</td></tr>`}</tbody></table></div>`),
+    rail:liveCard("读取范围", "只读目录扫描", `<p class="note">索引只读取通过工作区审计的记录；探索会话在研究工作区之外保存，不能改变任何研究状态。${stale.length ? ` ${stale.length} 条会话与当前工作区不匹配，已隔离。` : ""}</p>`),
+    main:liveCard("工作区", `${workspaces.length} 个可验证工作区`, `<div class="tw"><table><thead><tr><th>运行</th><th>状态摘要</th><th>事件链头</th></tr></thead><tbody>${workspaces.map(item=>`<tr><td class="mono">${liveEsc(item.run_id)}</td><td class="hash">${liveEsc(item.state_digest_sha256)}</td><td class="hash">${liveEsc(item.event_head_hash)}</td></tr>`).join("") || `<tr><td colspan="3" class="mut">未发现可验证工作区。</td></tr>`}</tbody></table></div>`)+liveCard("探索会话", `${records.length} 个当前会话`, `<div class="tw"><table><thead><tr><th>会话</th><th>绑定运行</th><th>猜想/实验记录</th></tr></thead><tbody>${records.map(item=>`<tr><td class="mono">${liveEsc(item.session_id)}</td><td class="mono">${liveEsc(item.workspace_provenance.run_id)}</td><td>${(item.entries||[]).length}</td></tr>`).join("") || `<tr><td colspan="3" class="mut">没有与当前工作区匹配的探索会话。</td></tr>`}</tbody></table></div>`),
     side:liveCard("写入边界", "无 HTTP 写口", `<p class="note">控制台只能读取探索记录。新建猜想与实验必须由独立的受控工具写入。</p>`)};
 };
 V.topics = () => {
-  const portfolio = localPart("topic_portfolio"); if (!portfolio) return DEMO_LOCAL_VIEWS.topics();
+  const portfolio = localPart("topic_portfolio"); if (!portfolio) return localOrDemo("topics", "候选主题", "本地主题组合未配置。");
   const candidates = portfolio.candidates || [];
   return {task:`候选主题 · <b>本地组合</b> · ${candidates.length} 个`, rail:liveCard("五项标准", "人工证据声明", `<p class="note">每项标准都是人工声明及其证据引用；控制台不自动聚类、检索或判定研究状态。</p>`), main:liveCard("主题组合", `席位 ${portfolio.seat_limit}`, `<div class="tw"><table><thead><tr><th>主题</th><th>状态</th><th>席位</th><th>五项声明</th></tr></thead><tbody>${candidates.map(item=>`<tr><td>${liveEsc(item.name)}<br><span class="hash">${liveEsc(item.topic_id)}</span></td><td>${liveEsc(item.state)}</td><td>${item.slot == null ? "—" : item.slot}</td><td>${(item.criteria||[]).filter(criterion=>criterion.verdict === "DECLARED").length} / 5</td></tr>`).join("") || `<tr><td colspan="4" class="mut">组合为空。</td></tr>`}</tbody></table></div>`), side:liveCard("外部检索", "未配置", `<p class="note">真实文献提供方和实时统计未配置。</p>`)};
 };
 V.portfolio = () => {
-  const problems = localPart("candidate_problems"); if (!problems) return DEMO_LOCAL_VIEWS.portfolio();
+  const problems = localPart("candidate_problems"); if (!problems) return localOrDemo("portfolio", "候选问题", "本地候选问题门控记录未配置。");
   const candidates = problems.candidates || [];
   return {task:`候选问题 · <b>九门记录</b> · ${candidates.length} 个`, rail:liveCard("开工规则", "逐项门控", `<p class="note">只有九道门均为 PASSED 的候选问题显示为可开始；这不推断开放、已解、新颖性或证明状态。</p>`), main:liveCard("候选问题", "持久化人工证据", `<div class="tw"><table><thead><tr><th>问题</th><th>陈述版本</th><th>通过门数</th><th>可开始</th></tr></thead><tbody>${candidates.map(item=>{const passed=(item.gates||[]).filter(gate=>gate.verdict === "PASSED").length; return `<tr><td class="mono">${liveEsc(item.problem_id)}</td><td class="mono">${liveEsc(item.statement_version_id)}</td><td>${passed} / 9</td><td>${item.ready_to_start ? `<span class="pill ok">可以开工</span>` : `<span class="pill gap">受阻</span>`}</td></tr>`;}).join("") || `<tr><td colspan="4" class="mut">没有候选问题。</td></tr>`}</tbody></table></div>`), side:liveCard("安全边界", "不生成攻克", `<p class="note">此投影不编译 campaign，也不改变研究轨迹。</p>`)};
 };
 V.dossier = () => {
-  const problems = localPart("candidate_problems"); if (!problems) return DEMO_LOCAL_VIEWS.dossier();
+  const problems = localPart("candidate_problems"); if (!problems) return localOrDemo("dossier", "问题档案", "本地陈述版本记录未配置。");
   const statements = problems.statements || [];
   return {task:`问题档案 · <b>陈述版本</b> · ${statements.length} 个`, rail:liveCard("版本冻结", "摘要绑定", `<p class="note">每个陈述版本带规范化摘要。摘要变更将使服务端投影拒绝加载。</p>`), main:liveCard("陈述版本", "只读档案", `<div class="tw"><table><thead><tr><th>版本</th><th>陈述</th><th>摘要</th></tr></thead><tbody>${statements.map(item=>`<tr><td class="mono">${liveEsc(item.problem_id)}@${item.version}</td><td>${liveEsc(item.statement)}</td><td class="hash">${liveEsc(item.digest_sha256)}</td></tr>`).join("") || `<tr><td colspan="3" class="mut">没有版本记录。</td></tr>`}</tbody></table></div>`), side:liveCard("研究状态", "不推断", `<p class="note">本档案不声称问题开放、已解决、已证明或已发表。</p>`)};
 };
 V.frontier = () => {
-  const problems = localPart("candidate_problems"); if (!problems) return DEMO_LOCAL_VIEWS.frontier();
+  const problems = localPart("candidate_problems"); if (!problems) return localOrDemo("frontier", "已知结果与缺口", "本地结果关系图未配置。");
   const graph = problems.graph || {nodes:[], edges:[]};
   return {task:`已知结果与缺口 · <b>关系图</b> · ${(graph.nodes||[]).length} 节点`, rail:liveCard("图约束", "引用完整性", `<p class="note">边仅表达由人工证据引用的关系；存储会拒绝未知节点、自环和有向环。</p>`), main:liveCard("结果图", `${(graph.edges||[]).length} 条边`, `<div class="tw"><table><thead><tr><th>来源</th><th>关系</th><th>目标</th><th>证据引用</th></tr></thead><tbody>${(graph.edges||[]).map(item=>`<tr><td class="mono">${liveEsc(item.source_version_id)}</td><td>${liveEsc(item.relation)}</td><td class="mono">${liveEsc(item.target_version_id)}</td><td class="hash">${liveEsc(item.evidence_ref)}</td></tr>`).join("") || `<tr><td colspan="4" class="mut">图中尚无关系。</td></tr>`}</tbody></table></div>`), side:liveCard("解释边界", "非证明图", `<p class="note">图不替代数学证明、文献核验或晋升决策。</p>`)};
 };
 V.difficulty = () => {
-  const ledger = localPart("difficulty_ledger"); if (!ledger) return DEMO_LOCAL_VIEWS.difficulty();
+  const ledger = localPart("difficulty_ledger"); if (!ledger) return localOrDemo("difficulty", "难度评估", "本地难度台账未配置。");
   const summary = ledger.summary || {}, counts = summary.per_dimension_counts || {};
   return {task:`难度评估 · <b>${liveEsc(summary.status || "UNCALIBRATED")}</b>`, rail:liveCard("校准规则", "按维度，不合成总分", `<p class="note">四个序数维度独立记录。每个维度少于 20 个明确观察结果时，状态必须为 UNCALIBRATED。</p>`), main:liveCard("校准台账", `${(ledger.predictions||[]).length} 条预测`, `<div class="tw"><table><thead><tr><th>维度</th><th>已观察结果</th></tr></thead><tbody>${Object.keys(counts).sort().map(key=>`<tr><td class="mono">${liveEsc(key)}</td><td>${liveEsc(counts[key])}</td></tr>`).join("")}</tbody></table></div>`), side:liveCard("禁止项", "无总分", `<p class="note">此页不输出总难度、开放状态、新颖性、证明或论文就绪度。</p>`)};
 };
 V.admin_users = () => {
-  const operations = localPart("operations"); if (!operations) return DEMO_LOCAL_VIEWS.admin_users();
+  const operations = localPart("operations"); if (!operations) return localOrDemo("admin_users", "管理端", "本地运营账户记录未配置。");
   return {task:`管理端 · <b>本地账户</b> · ${(operations.accounts||[]).length} 个`, rail:liveCard("身份与支付", "未配置", `<p class="note">账户记录不是认证会话；身份和支付提供方均为 not_configured。</p>`), main:liveCard("账户与席位", "隔离运营域", `<div class="tw"><table><thead><tr><th>账户</th><th>积分余额</th></tr></thead><tbody>${(operations.accounts||[]).map(item=>`<tr><td>${liveEsc(item.label)}</td><td>${liveEsc((operations.credit_balances||{})[item.account_id] || 0)}</td></tr>`).join("") || `<tr><td colspan="2" class="mut">没有本地账户。</td></tr>`}</tbody></table></div>`), side:liveCard("研究隔离", "不影响重放", `<p class="note">运营记录不进入研究工作区或研究结论。</p>`)};
 };
 V.admin_upstream = () => {
-  const operations = localPart("operations"); if (!operations) return DEMO_LOCAL_VIEWS.admin_upstream();
+  const operations = localPart("operations"); if (!operations) return localOrDemo("admin_upstream", "管理端 · 上游接入", "本地上游元数据记录未配置。");
   return {task:"管理端 · 上游接入 · <b>未配置</b>", rail:liveCard("凭据边界", "不落盘", `<p class="note">本地运营域拒绝持久化 token、secret、password、credential 或 API key。</p>`), main:liveCard("上游元数据", `${(operations.upstreams||[]).length} 条`, `<div class="tw"><table><thead><tr><th>提供方</th><th>状态</th><th>元数据</th></tr></thead><tbody>${(operations.upstreams||[]).map(item=>`<tr><td>${liveEsc(item.provider_label)}</td><td class="mono">${liveEsc(item.status)}</td><td class="hash">${liveEsc(JSON.stringify(item.metadata))}</td></tr>`).join("") || `<tr><td colspan="3" class="mut">未配置上游。</td></tr>`}</tbody></table></div>`), side:liveCard("连接状态", "not_configured", `<p class="note">没有真实上游连接、模型路由或付费凭据。</p>`)};
 };
 }

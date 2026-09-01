@@ -2,8 +2,9 @@
 
 from __future__ import annotations
 
+import json
 from dataclasses import dataclass
-from typing import Any, Mapping
+from typing import Any, Mapping, cast
 
 from .local_store import (
     LocalStoreError,
@@ -31,9 +32,12 @@ def _json_object(value: object, label: str) -> dict[str, Any]:
     if not isinstance(value, Mapping):
         raise LocalStoreError(f"{label} must be an object")
     try:
-        return __import__("json").loads(canonical_json(dict(value)))
+        decoded = json.loads(canonical_json(dict(value)))
     except (TypeError, ValueError) as exc:
         raise LocalStoreError(f"{label} must be JSON-safe") from exc
+    if not isinstance(decoded, dict) or not all(isinstance(key, str) for key in decoded):
+        raise LocalStoreError(f"{label} must be an object")
+    return cast(dict[str, Any], decoded)
 
 
 @dataclass(frozen=True, slots=True)

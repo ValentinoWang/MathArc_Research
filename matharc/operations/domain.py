@@ -10,10 +10,18 @@ import hashlib
 import json
 import os
 from pathlib import Path
-from typing import Any, Iterator, Mapping
+from typing import Any, Iterator, Mapping, TypeVar
+from urllib.parse import parse_qsl, urlsplit
 
 
 class OperationsDomainError(ValueError): pass
+
+
+_SENSITIVE_METADATA_TOKENS = (
+    "secret", "token", "password", "credential", "api_key", "apikey", "authorization",
+)
+_PUBLIC_METADATA_KEYS = frozenset({"documentation_url", "provider_kind", "region"})
+_Record = TypeVar("_Record")
 
 def _canonical(value: object) -> str: return json.dumps(value, ensure_ascii=False, sort_keys=True, separators=(",", ":"))
 def _digest(value: object) -> str: return hashlib.sha256(_canonical(value).encode("utf-8")).hexdigest()
@@ -25,8 +33,36 @@ def _strict(value: object, expected: set[str], label: str) -> Mapping[str, Any]:
     return value
 def _metadata(value: object) -> dict[str, str]:
     if not isinstance(value, Mapping) or any(not isinstance(key, str) or not isinstance(item, str) for key, item in value.items()): raise OperationsDomainError("upstream metadata must be a text object")
-    if any(token in key.lower() for key in value for token in ("secret", "token", "password", "credential", "api_key", "apikey")): raise OperationsDomainError("upstream credentials must not be persisted")
+    if set(value) - _PUBLIC_METADATA_KEYS:
+        raise OperationsDomainError("upstream metadata field is not approved for console projection")
+    for key, item in value.items():
+        if any(token in key.lower() for token in _SENSITIVE_METADATA_TOKENS):
+            raise OperationsDomainError("upstream credentials must not be persisted")
+        _safe_metadata_value(item)
     return dict(sorted(value.items()))
+
+
+def _safe_metadata_value(value: str) -> None:
+    """Reject credential-bearing URLs even when their field name appears harmless."""
+    parsed = urlsplit(value)
+    if not parsed.scheme or not parsed.netloc:
+        return
+    if parsed.username is not None or parsed.password is not None:
+        raise OperationsDomainError("upstream credentials must not be persisted")
+    if any(
+        any(token in key.lower() for token in _SENSITIVE_METADATA_TOKENS)
+        for key, _ in parse_qsl(parsed.query, keep_blank_values=True)
+    ):
+        raise OperationsDomainError("upstream credentials must not be persisted")
+
+
+def _external_root(root: str | Path) -> Path:
+    """Keep the independently owned operations store outside research state."""
+    resolved = Path(root).resolve()
+    for candidate in (resolved, *resolved.parents):
+        if (candidate / "workspace.json").is_file():
+            raise OperationsDomainError("operations state must be outside a research workspace")
+    return resolved
 
 @dataclass(frozen=True, slots=True)
 class Account:
@@ -75,9 +111,13 @@ class UpstreamConfiguration:
         data = _strict(value, {"configuration_id", "provider_label", "metadata", "status"}, "upstream configuration"); return cls(_text(data["configuration_id"], "configuration_id"), _text(data["provider_label"], "provider_label"), _metadata(data["metadata"]), UpstreamStatus(data["status"]))
 
 class OperationsDomainStore:
-    """Lock-safe, idempotent local records for accounts, credits, seats and upstream metadata."""
+    """Lock-safe local records with API-append-only credit history.
+
+    State digests detect accidental or partial-file changes.  They are not an
+    external tamper-evidence root for an actor that can rewrite the whole file.
+    """
     _FILENAME = "operations-domain.json"
-    def __init__(self, root: str | Path) -> None: self.root = Path(root).resolve(); self.path = self.root / self._FILENAME
+    def __init__(self, root: str | Path) -> None: self.root = _external_root(root); self.path = self.root / self._FILENAME
     @contextmanager
     def _lock(self) -> Iterator[None]:
         self.root.mkdir(parents=True, exist_ok=True); descriptor = os.open(self.root / ".operations-domain.lock", os.O_CREAT | os.O_RDWR, 0o600)
@@ -109,7 +149,7 @@ class OperationsDomainStore:
         payload: dict[str, Any] = {"schema_version": "1.0", "accounts": [item.to_dict() for item in sorted(accounts, key=lambda item: item.account_id)], "credits": [item.to_dict() for item in credits], "seats": [item.to_dict() for item in sorted(seats, key=lambda item: item.allocation_id)], "upstreams": [item.to_dict() for item in sorted(upstreams, key=lambda item: item.configuration_id)]}
         payload["state_digest_sha256"] = _digest(payload); temporary = self.path.with_suffix(".tmp"); temporary.write_text(_canonical(payload) + "\n", encoding="utf-8"); os.replace(temporary, self.path)
     @staticmethod
-    def _add(items: list[Any], item: Any, attr: str) -> Any:
+    def _add(items: list[_Record], item: _Record, attr: str) -> _Record:
         prior = next((value for value in items if getattr(value, attr) == getattr(item, attr)), None)
         if prior is not None:
             if prior == item: return prior
@@ -133,4 +173,11 @@ class OperationsDomainStore:
             accounts, credits, seats, upstreams = self._load(); result = self._add(upstreams, configuration, "configuration_id"); self._save(accounts, credits, seats, upstreams); return result
     def snapshot(self) -> dict[str, Any]:
         accounts, credits, seats, upstreams = self._load(); balances = self._balances(credits)
-        return {"schema_version": "1.0", "accounts": [item.to_dict() for item in accounts], "credit_balances": dict(sorted(balances.items())), "seat_allocations": [item.to_dict() for item in seats], "upstreams": [item.to_dict() for item in upstreams], "external_identity": "not_configured", "external_payment": "not_configured", "external_upstream": "not_configured", "state_digest_sha256": _digest({"accounts": [item.to_dict() for item in accounts], "credits": [item.to_dict() for item in credits], "seats": [item.to_dict() for item in seats], "upstreams": [item.to_dict() for item in upstreams]})}
+        persisted = {
+            "schema_version": "1.0",
+            "accounts": [item.to_dict() for item in accounts],
+            "credits": [item.to_dict() for item in credits],
+            "seats": [item.to_dict() for item in seats],
+            "upstreams": [item.to_dict() for item in upstreams],
+        }
+        return {"schema_version": "1.0", "accounts": persisted["accounts"], "credit_balances": dict(sorted(balances.items())), "seat_allocations": persisted["seats"], "upstreams": persisted["upstreams"], "external_identity": "not_configured", "external_payment": "not_configured", "external_upstream": "not_configured", "state_digest_sha256": _digest(persisted)}

@@ -37,7 +37,7 @@ class ConsoleLocalProjectionConfig:
     difficulty_ledger_root: Path | None = None
     operations_domain_root: Path | None = None
 
-    def projection(self) -> dict[str, Any]:
+    def projection(self, workspace_provenance: Mapping[str, str]) -> dict[str, Any]:
         result: dict[str, Any] = {
             "workspace_index": {"state": "not_configured"},
             "exploration_sessions": {"state": "not_configured"},
@@ -47,16 +47,35 @@ class ConsoleLocalProjectionConfig:
             "operations": {"state": "not_configured"},
         }
         if self.workspace_index_root is not None:
-            result["workspace_index"] = {"state": "live", **WorkspaceIndex.scan(self.workspace_index_root).to_dict()}
+            result["workspace_index"] = {
+                "state": "live",
+                **WorkspaceIndex.scan(self.workspace_index_root).console_dict(),
+            }
         if self.exploration_session_root is not None:
-            result["exploration_sessions"] = {"state": "live", "sessions": [item.to_dict() for item in ExplorationSessionStore(self.exploration_session_root).list()]}
+            current_sessions = []
+            stale_sessions = []
+            for session in ExplorationSessionStore(str(self.exploration_session_root)).list():
+                if dict(session.workspace_provenance) == dict(workspace_provenance):
+                    current_sessions.append(session.to_dict())
+                else:
+                    stale_sessions.append(
+                        {
+                            "session_id": session.session_id,
+                            "reason": "workspace_provenance_mismatch",
+                        }
+                    )
+            result["exploration_sessions"] = {
+                "state": "live" if not stale_sessions else "live_with_stale_records",
+                "sessions": current_sessions,
+                "stale_sessions": stale_sessions,
+            }
         if self.topic_portfolio_root is not None:
-            result["topic_portfolio"] = {"state": "live", **TopicPortfolioStore(self.topic_portfolio_root).load().to_dict()}
+            result["topic_portfolio"] = {"state": "live", **TopicPortfolioStore(str(self.topic_portfolio_root)).load().to_dict()}
         if self.problem_gate_root is not None:
-            statements, candidates, graph = ProblemGateStore(self.problem_gate_root).load()
+            statements, candidates, graph = ProblemGateStore(str(self.problem_gate_root)).load()
             result["candidate_problems"] = {"state": "live", "statements": [item.to_dict() for item in statements], "candidates": [item.to_dict() for item in candidates], "graph": graph.to_dict()}
         if self.difficulty_ledger_root is not None:
-            ledger = DifficultyLedger(self.difficulty_ledger_root)
+            ledger = DifficultyLedger(str(self.difficulty_ledger_root))
             predictions, outcomes = ledger.records()
             result["difficulty_ledger"] = {"state": "live", "predictions": [item.to_dict() for item in predictions], "outcomes": [item.to_dict() for item in outcomes], "summary": ledger.summary().to_dict()}
         if self.operations_domain_root is not None:
@@ -185,9 +204,9 @@ def build_console_export(
         "source_topic": console_topic_projection(workspace.sources, topic_store=resolved_topic_store),
         "campaign": campaign_snapshot(workspace),
         "local_console": (
-            local_projection_config.projection()
+            local_projection_config.projection(provenance)
             if local_projection_config is not None
-            else ConsoleLocalProjectionConfig().projection()
+            else ConsoleLocalProjectionConfig().projection(provenance)
         ),
         "role_policy": RolePolicy.default().to_dict(),
         "unsupported": {

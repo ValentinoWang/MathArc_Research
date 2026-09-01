@@ -24,7 +24,8 @@ class ConsoleLocalProjectionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory); workspace = root / "workspace"; write_full_workspace_bundle(workspace)
             sessions = root / "sessions"; store = ExplorationSessionStore(sessions)
-            store.create("S-1", {"run_id": "R", "state_digest_sha256": "a" * 64, "event_head_hash": "b" * 64})
+            provenance = build_console_export(workspace)["provenance"]
+            store.create("S-1", provenance)
             config = ConsoleLocalProjectionConfig(workspace_index_root=root, exploration_session_root=sessions)
             payload = build_console_export(workspace, local_projection_config=config)
             self.assertEqual(payload["local_console"]["workspace_index"]["state"], "live")
@@ -38,6 +39,34 @@ class ConsoleLocalProjectionTests(unittest.TestCase):
                 self.assertEqual(served["local_console"]["exploration_sessions"]["state"], "live")
             finally:
                 server.shutdown(); server.server_close(); thread.join(timeout=2)
+
+    def test_mismatched_session_is_stale_and_index_hides_host_paths(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); workspace = root / "workspace"; write_full_workspace_bundle(workspace)
+            sessions = root / "sessions"; store = ExplorationSessionStore(sessions)
+            store.create(
+                "S-other",
+                {"run_id": "OTHER-RUN", "state_digest_sha256": "a" * 64, "event_head_hash": "b" * 64},
+            )
+            invalid = root / "invalid"; invalid.mkdir()
+            (invalid / "workspace.json").write_text("{not json", encoding="utf-8")
+            payload = build_console_export(
+                workspace,
+                local_projection_config=ConsoleLocalProjectionConfig(
+                    workspace_index_root=root, exploration_session_root=sessions
+                ),
+            )
+            local = payload["local_console"]
+            self.assertEqual(local["exploration_sessions"]["state"], "live_with_stale_records")
+            self.assertEqual(local["exploration_sessions"]["sessions"], [])
+            self.assertEqual(
+                local["exploration_sessions"]["stale_sessions"],
+                [{"session_id": "S-other", "reason": "workspace_provenance_mismatch"}],
+            )
+            rendered = json.dumps(local, sort_keys=True)
+            self.assertNotIn(str(root.resolve()), rendered)
+            self.assertNotIn(str(invalid.resolve()), rendered)
+            self.assertEqual(local["workspace_index"]["invalid_candidates"], [{"reason": "invalid_workspace"}])
 
 
 if __name__ == "__main__": unittest.main()
