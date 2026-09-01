@@ -1,0 +1,93 @@
+Objective
+
+Repair the blocking A4 authenticated replay findings against the frozen parent
+cb1251d2a17315ae28efc1e14be1bba818c685f0. This is an implementation-only
+remediation. Do not accept A4, edit human acceptance, update the SSOT, commit,
+push, fetch, or use the network.
+
+Authority and scope
+
+- Direct parent/node: A4-topic-observation-dogfood / A4.
+- Approved behavior boundary: AC-02 replay, recovery, deduplication, budget,
+  manual-queue binding, and fail-closed tamper handling.
+- Decision ref: decision.problem-intelligence.amendment@2.
+- Invalidation key: acceptance.problem-intelligence.dogfood.
+- Frozen source: HEAD and origin/main must both equal
+  cb1251d2a17315ae28efc1e14be1bba818c685f0 before edits.
+- Protected tests are immutable:
+  tests/test_v02_topic_observation.py sha256
+  a6ac5fdb82f832e4eb14402d9727fcc5027a7574fb5d9765002d3016741fc9eb
+  and tests/test_v02_dogfood_archives.py sha256
+  e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873.
+
+Allowed writes
+
+- matharc/v02/topic_observation.py
+- matharc/v02/literature_base.py
+- matharc/v02/source_observation.py
+- tests/test_v02_topic_observation_integrity.py
+- tests/test_v02_literature_base_integrity.py
+- the exact STRUCTURED_RETURN_PATH supplied by the supervisor
+
+Forbidden writes
+
+- tests/test_v02_topic_observation.py
+- tests/test_v02_dogfood_archives.py
+- every acceptance contract, binding, checklist, result, .ssot file, evidence
+  synthesis, existing log, existing review return, lockfile, and generated view
+- all paths outside the allowed write list and STRUCTURED_RETURN_PATH
+
+Blocking findings to close
+
+1. Restoring a previously valid state + authentication + literature tuple after
+   advancing c1 -> c2 must not make a fresh runner accept c1. The freshness
+   commitment must live in the signing-authority boundary, not in another
+   attacker-restorable data-path sidecar. Define and test the exact threat
+   boundary. Do not claim protection from a same-user compromise that can read
+   or mutate the signing authority.
+2. A crash after literature persistence but before state/auth persistence, and
+   a crash between state and auth replacement, must be recoverable on restart.
+   Use a durable transaction/journal or equivalent protocol. Recovery must
+   restore or complete one authenticated committed generation and must not
+   silently accept a mixed tuple. Cover first-write and later-generation edges.
+3. next_cursor and manual_queue must reload current persisted LiteratureBase
+   state under the runner lock before authenticating; a long-lived runner must
+   not validate a stale in-memory snapshot.
+4. EXISTING_OBSERVED must permit the persisted observation ID to differ from
+   the input observation ID when logical identity, content digest, artifact,
+   and idempotency binding all match. Restart must accept the recorded result.
+5. The topic state path must enforce the same non-symlink regular-file and 0600
+   policy as the authentication/signing boundary. Avoid lstat/read pathname
+   TOCTOU where practical by reading from the verified file descriptor.
+6. Source identity must preserve case-sensitive URI path semantics and use an
+   unambiguous structured encoding instead of delimiter concatenation. Preserve
+   normal URI host/scheme normalization. Add collision tests for path case and
+   embedded vertical bars. Update any state schema/recovery contract needed so
+   old incompatible state is not silently reinterpreted.
+
+Design constraints
+
+- Crash > corrupt. Fail closed when recovery material is missing, malformed,
+  permission-invalid, symlinked, inconsistent, or unauthenticated.
+- Reuse existing atomic-write, canonical JSON, ArtifactStore, and writer-lock
+  patterns. Keep the protocol local and bounded; no database or platform rewrite.
+- Persisted authority/journal state must be private, deterministic to validate,
+  and explicitly versioned. A high-water counter stored beside auth with the
+  same attacker-restorable authority is insufficient.
+- Preserve valid preexisting inventory and deterministic idempotency behavior.
+- Artifact created_at remains provenance-only; do not expand scope to that P3.
+- Do not edit historical implementation logs to fix whitespace.
+- Add direct red/green regression tests for every numbered finding above.
+- No skipping, expectedFailure, conditional bypass, hard-coded fixture branch,
+  or weakening of existing assertions.
+
+Required checks before returning
+
+Run the exact validation file supplied by the supervisor or its commands in the
+same order. Inspect git diff and confirm all changed paths are allowed. Confirm
+the protected hashes still match. The structured JSON return must include:
+task_id, pinned_parent, proposed_state, acceptance_self_check, failure_class,
+failure_origin, root_cause, design, changed_files, validation results, protected
+hashes, remaining risks, unverified_items, and explicit confirmation that no
+acceptance/SSOT/commit/push action was performed. Only return IMPLEMENTED/pass/
+none/none when every required command passes.

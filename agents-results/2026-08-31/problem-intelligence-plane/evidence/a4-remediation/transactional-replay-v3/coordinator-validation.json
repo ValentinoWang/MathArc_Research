@@ -1,0 +1,72 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-transactional-replay-v3",
+  "validated_at": "2026-09-01T22:05:29Z",
+  "pinned_parent": "cb1251d2a17315ae28efc1e14be1bba818c685f0",
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_authority_exercised": false,
+  "state_contract": {
+    "schema_version": "1.6",
+    "recovery_contract": "topic-observation-state-recovery-v4",
+    "transaction_schema_version": "1.0",
+    "transaction_recovery_contract": "topic-observation-transaction-recovery-v1"
+  },
+  "coordinator_remediation": {
+    "failure_class": "concurrent-writer-crash-recovery-overwrite",
+    "severity": "P1",
+    "resolution": [
+      "Topic observation now holds the literature writer lock across recovery, snapshot, imports, target capture, authenticated commit, verification, and journal removal.",
+      "The literature lock is reentrant across LiteratureBase instances in one thread while remaining exclusive across threads and processes.",
+      "An independent LiteratureBase writer fails closed while a durable topic transaction journal is pending, then may retry after recovery."
+    ],
+    "regression_test": "tests.test_v02_topic_observation_integrity.TopicObservationIntegrityTests.test_crash_blocks_concurrent_literature_writer_until_recovery"
+  },
+  "file_identities": {
+    "matharc/v02/topic_observation.py": "fcb3e1fb6684132a0c06ef27adfeae9e00bfae247a406a933c258ecd432eca55",
+    "matharc/v02/literature_base.py": "3e7b36fc627d6c012f519b33cadb391d8880dc6809e6fb546e66d9f1b35a7d97",
+    "matharc/v02/source_observation.py": "733ce581fb21023d2930cade9e70880453d9f6f05ea3b08f5e15b5c1652b2880",
+    "tests/test_v02_topic_observation_integrity.py": "245ea44f481fa8586e4e032f7cceaa9c81b4e65b8d8c8705b112460ebb0db61f",
+    "tests/test_v02_literature_base_integrity.py": "43104d71f3e954598144b52fa0a2d5248a994abc7125cbfc71ac41424c4c8c62"
+  },
+  "protected_test_identities": {
+    "tests/test_v02_topic_observation.py": "a6ac5fdb82f832e4eb14402d9727fcc5027a7574fb5d9765002d3016741fc9eb",
+    "tests/test_v02_dogfood_archives.py": "e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873"
+  },
+  "verification": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_topic_observation_integrity tests.test_v02_literature_base_integrity",
+      "result": "PASS",
+      "tests_run": 18,
+      "skipped": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives tests.test_v02_literature_base tests.test_v02_source_observation tests.test_v02_topic_observation_integrity tests.test_v02_literature_base_integrity",
+      "result": "PASS",
+      "tests_run": 86,
+      "skipped": 0
+    },
+    {
+      "command": ".venv/bin/python -m mypy --strict matharc/v02/topic_observation.py matharc/v02/literature_base.py matharc/v02/source_observation.py",
+      "result": "PASS",
+      "files_checked": 3
+    },
+    {
+      "command": "make ci-full PYTHON=.venv/bin/python",
+      "result": "PASS",
+      "tests_run": 544,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "skip_policy": "Both skips are the exact authoritative non-SMT whitelist for absent v0.1 Codex agent API/service surfaces; this is not a zero-skip claim.",
+      "smt_discovered": 20,
+      "smt_executed": 20,
+      "smt_skipped": 0,
+      "browser_gate": "52 cases x 2 campaigns x 6 widths"
+    }
+  ],
+  "remaining_boundaries": [
+    "Formal A4 acceptance requires independent zero-write review and a new human acceptance run bound to the pushed implementation commit.",
+    "The two contract-whitelisted v0.1 skips remain visible and are not represented as zero-skip evidence.",
+    "No mathematical proof, public release, deployment, or production claim is made by this implementation evidence."
+  ]
+}

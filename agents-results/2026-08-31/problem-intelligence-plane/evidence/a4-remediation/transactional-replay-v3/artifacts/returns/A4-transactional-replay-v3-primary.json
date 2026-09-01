@@ -1,0 +1,129 @@
+{
+  "task_id": "A4-transactional-replay-v3",
+  "pinned_parent": "cb1251d2a17315ae28efc1e14be1bba818c685f0",
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_self_check": "pass",
+  "failure_class": "none",
+  "failure_origin": "none",
+  "root_cause": [
+    "Freshness was previously coupled to restorable data-path state rather than a signing-authority boundary.",
+    "Multi-file persistence had no durable protocol for crashes after literature persistence or between state and authentication replacement.",
+    "Long-lived runners could authenticate against a stale in-memory LiteratureBase snapshot.",
+    "EXISTING_OBSERVED validation required the input observation ID to equal the persisted record ID even when the logical and content bindings matched.",
+    "Topic state validation used weaker pathname checks than the authentication/signing boundary and was exposed to symlink and mode-policy gaps.",
+    "Source identity lowercased case-sensitive URI paths and used delimiter concatenation, allowing identity collisions."
+  ],
+  "design": [
+    "Source logical identity and idempotency keys use canonical structured JSON; URI scheme and host are normalized while path case is preserved, and embedded delimiters remain unambiguous.",
+    "Topic persistence uses a private, explicitly versioned transaction journal with PREPARED and COMMIT_INTENT phases. It records complete old and target state, authentication, and literature snapshots.",
+    "A freshly generated private signing key is atomically replaced last and acts as the commit authority. Recovery accepts only a complete rollback or complete target generation whose key digest matches the journal; same-user access to the signing authority remains outside the threat boundary.",
+    "Restart preparation and public next_cursor/manual_queue reads reload LiteratureBase while holding the runner lock, and authenticated state validation rejects mixed or stale tuples.",
+    "EXISTING_OBSERVED permits a different persisted observation ID only when logical identity, content digest, artifact, and idempotency bindings match, preserving deterministic replay across restart.",
+    "State, authentication, signing-key, journal, and literature file reads enforce descriptor-based regular-file and private-mode checks, with O_NOFOLLOW where available; incompatible state remains fail-closed."
+  ],
+  "changed_files": [
+    "matharc/v02/source_observation.py",
+    "matharc/v02/topic_observation.py",
+    "tests/test_v02_topic_observation_integrity.py",
+    "tests/test_v02_literature_base_integrity.py"
+  ],
+  "validation_results": {
+    "command_file": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/transactional-replay-v3/validation.sh",
+    "command_sha256": "5881984643ad998509322e7a06788aafc54af93377d33c40388404e9a8053e31",
+    "exit_code": 0,
+    "ordered_checks": [
+      {
+        "step": 1,
+        "check": "Frozen HEAD and origin/main parent",
+        "result": "pass",
+        "details": "Both resolve to cb1251d2a17315ae28efc1e14be1bba818c685f0."
+      },
+      {
+        "step": 2,
+        "check": "Integrity regression suites",
+        "result": "pass",
+        "details": "17 tests passed."
+      },
+      {
+        "step": 3,
+        "check": "Protected topic, dogfood archive, and literature suites",
+        "result": "pass",
+        "details": "59 tests passed."
+      },
+      {
+        "step": 4,
+        "check": "Strict mypy for the three v02 source modules",
+        "result": "pass",
+        "details": "No issues found in 3 source files."
+      },
+      {
+        "step": 5,
+        "check": "git diff --check for the allowed implementation/test paths",
+        "result": "pass"
+      },
+      {
+        "step": 6,
+        "check": "Protected test hashes",
+        "result": "pass",
+        "details": "Both actual hashes match the frozen values below."
+      },
+      {
+        "step": 7,
+        "check": "Changed-path scope gate",
+        "result": "pass",
+        "details": "Only the four allowed modified files are changed; supervisor-supplied task.txt and validation.sh remain preserved, and the return artifact is under the permitted artifacts path."
+      }
+    ]
+  },
+  "protected_hashes": {
+    "tests/test_v02_topic_observation.py": {
+      "expected": "a6ac5fdb82f832e4eb14402d9727fcc5027a7574fb5d9765002d3016741fc9eb",
+      "actual": "a6ac5fdb82f832e4eb14402d9727fcc5027a7574fb5d9765002d3016741fc9eb",
+      "match": true
+    },
+    "tests/test_v02_dogfood_archives.py": {
+      "expected": "e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873",
+      "actual": "e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873",
+      "match": true
+    }
+  },
+  "business_project_git_status": {
+    "head": "cb1251d2a17315ae28efc1e14be1bba818c685f0",
+    "origin_main": "cb1251d2a17315ae28efc1e14be1bba818c685f0",
+    "modified_paths": [
+      "matharc/v02/source_observation.py",
+      "matharc/v02/topic_observation.py",
+      "tests/test_v02_literature_base_integrity.py",
+      "tests/test_v02_topic_observation_integrity.py"
+    ],
+    "preserved_supervisor_untracked_paths": [
+      "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/transactional-replay-v3/task.txt",
+      "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/transactional-replay-v3/validation.sh"
+    ]
+  },
+  "harness_ssot_git_status": {
+    "repo": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering",
+    "head": "fa6060013c547ee92bb1ab70a86bf10d71f0cd59",
+    "status": "dirty with unrelated existing changes; preserved",
+    "changed_by_task": []
+  },
+  "remaining_risks": [
+    "A same-user compromise that can read or mutate the signing authority remains explicitly outside the protection claim.",
+    "This artifact proves implementation and local automated validation only; it does not prove formal A4 acceptance, deployment, production, or device behavior."
+  ],
+  "unverified_items": [
+    "Formal acceptance and human acceptance were not performed by this implementation attempt.",
+    "No deployment, production, or device verification was requested or run."
+  ],
+  "explicit_confirmation": {
+    "acceptance_action_performed": false,
+    "acceptance_contract_edited": false,
+    "human_acceptance_edited": false,
+    "ssot_action_performed": false,
+    "commit_performed": false,
+    "push_performed": false,
+    "fetch_performed": false,
+    "network_used": false
+  },
+  "confirmation": "No acceptance, SSOT, commit, push, fetch, or network action was performed."
+}

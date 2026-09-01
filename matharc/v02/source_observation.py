@@ -12,8 +12,9 @@ from dataclasses import dataclass
 from datetime import datetime
 from enum import Enum
 from typing import Any, Mapping
+from urllib.parse import urlsplit, urlunsplit
 
-from .schema import utc_now
+from .schema import canonical_json, utc_now
 
 
 class ObservationStatus(str, Enum):
@@ -45,6 +46,43 @@ _MEDIA_TYPES = frozenset(
         "text/plain",
     }
 )
+
+
+def _normalize_uri_for_identity(value: str) -> str:
+    """Normalize URI authority without erasing case-sensitive resource paths."""
+
+    candidate = value.strip()
+    parsed = urlsplit(candidate)
+    scheme = parsed.scheme.lower()
+    if parsed.netloc:
+        authority = parsed.netloc
+        userinfo = ""
+        host_port = authority
+        if "@" in host_port:
+            userinfo, host_port = host_port.rsplit("@", 1)
+            userinfo += "@"
+        if host_port.startswith("["):
+            closing = host_port.find("]")
+            if closing <= 1:
+                raise ValueError("canonical_uri has an invalid IPv6 authority")
+            host_port = host_port[: closing + 1].lower() + host_port[closing + 1 :]
+        elif ":" in host_port:
+            host, port = host_port.rsplit(":", 1)
+            host_port = host.lower() + ":" + port
+        else:
+            host_port = host_port.lower()
+        normalized_netloc = userinfo + host_port
+    else:
+        normalized_netloc = parsed.netloc
+    return urlunsplit(
+        (
+            scheme,
+            normalized_netloc,
+            parsed.path.rstrip("/"),
+            parsed.query,
+            parsed.fragment,
+        )
+    )
 
 
 @dataclass(frozen=True, slots=True)
@@ -98,12 +136,21 @@ class SourceObservation:
 
     @property
     def logical_identity(self) -> str:
-        normalized_uri = self.canonical_uri.strip().rstrip("/").lower()
-        return f"{normalized_uri}|{self.pinned_version.strip()}"
+        return canonical_json(
+            {
+                "canonical_uri": _normalize_uri_for_identity(self.canonical_uri),
+                "pinned_version": self.pinned_version.strip(),
+            }
+        )
 
     @property
     def idempotency_key(self) -> str:
-        payload = f"{self.logical_identity}|{self.content_digest_sha256}"
+        payload = canonical_json(
+            {
+                "content_digest_sha256": self.content_digest_sha256,
+                "logical_identity": self.logical_identity,
+            }
+        )
         return hashlib.sha256(payload.encode("utf-8")).hexdigest()
 
     def conflicts_with(self, other: "SourceObservation") -> bool:

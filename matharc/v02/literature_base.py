@@ -6,6 +6,7 @@ import fcntl
 import hashlib
 import json
 import os
+import threading
 from contextlib import contextmanager
 from dataclasses import dataclass
 from enum import Enum
@@ -15,6 +16,75 @@ from typing import Any, Iterator
 from .artifact_store import ArtifactRecord, ArtifactStore
 from .budget import BudgetLedger
 from .source_observation import LicenseStatus, ObservationStatus, SourceObservation
+
+
+TOPIC_OBSERVATION_TRANSACTION_PATH_NAME = ".topic-observation-transaction.json"
+_WRITER_LOCK_STATE = threading.local()
+
+
+def _thread_lock_paths(name: str) -> set[str]:
+    paths = getattr(_WRITER_LOCK_STATE, name, None)
+    if paths is None:
+        paths = set()
+        setattr(_WRITER_LOCK_STATE, name, paths)
+    return paths
+
+
+def _literature_root_key(root: Path) -> str:
+    return str(root.resolve(strict=False))
+
+
+def _topic_transaction_pending(root: Path) -> bool:
+    try:
+        (root.parent / TOPIC_OBSERVATION_TRANSACTION_PATH_NAME).lstat()
+    except FileNotFoundError:
+        return False
+    except OSError:
+        return True
+    return True
+
+
+@contextmanager
+def literature_writer_lock(
+    root: str | Path,
+    *,
+    allow_topic_transaction: bool = False,
+) -> Iterator[None]:
+    """Serialize all writers, including a topic transaction spanning many imports."""
+
+    literature_root = Path(root)
+    literature_root.mkdir(parents=True, exist_ok=True)
+    root_key = _literature_root_key(literature_root)
+    held_paths = _thread_lock_paths("held_paths")
+    authorized_paths = _thread_lock_paths("authorized_paths")
+    if root_key in held_paths:
+        added_authority = allow_topic_transaction and root_key not in authorized_paths
+        if added_authority:
+            authorized_paths.add(root_key)
+        try:
+            yield
+        finally:
+            if added_authority:
+                authorized_paths.remove(root_key)
+        return
+
+    lock_path = literature_root / ".observations.lock"
+    lock_path.touch(exist_ok=True)
+    with lock_path.open("a+", encoding="utf-8") as lock_file:
+        fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
+        held_paths.add(root_key)
+        if allow_topic_transaction:
+            authorized_paths.add(root_key)
+        try:
+            yield
+        finally:
+            authorized_paths.discard(root_key)
+            held_paths.remove(root_key)
+            fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+
+
+def _topic_transaction_authorized(root: Path) -> bool:
+    return _literature_root_key(root) in _thread_lock_paths("authorized_paths")
 
 
 class ImportDisposition(str, Enum):
@@ -62,6 +132,14 @@ class LiteratureBase:
         source_filename: str = "",
     ) -> ImportResult:
         with self._writer_lock():
+            if _topic_transaction_pending(self.root) and not _topic_transaction_authorized(
+                self.root
+            ):
+                return ImportResult(
+                    ImportDisposition.REJECTED,
+                    self._rejected(observation),
+                    reason="topic observation transaction recovery is pending",
+                )
             try:
                 self._reload_state()
             except (KeyError, ValueError) as exc:
@@ -253,13 +331,8 @@ class LiteratureBase:
 
     @contextmanager
     def _writer_lock(self) -> Iterator[None]:
-        self.lock_path.touch(exist_ok=True)
-        with self.lock_path.open("a+", encoding="utf-8") as lock_file:
-            fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
-            try:
-                yield
-            finally:
-                fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+        with literature_writer_lock(self.root):
+            yield
 
     def _reload_state(self) -> None:
         self.artifacts = ArtifactStore.load(self.root / "artifacts")

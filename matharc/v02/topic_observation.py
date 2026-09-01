@@ -8,6 +8,8 @@ models.
 
 from __future__ import annotations
 
+import base64
+import binascii
 import fcntl
 import hashlib
 import hmac
@@ -23,20 +25,30 @@ from typing import Any, Iterator, Mapping
 from contextlib import contextmanager
 
 from .budget import BudgetLedger
-from .literature_base import ImportDisposition, LiteratureBase
+from .literature_base import (
+    TOPIC_OBSERVATION_TRANSACTION_PATH_NAME,
+    ImportDisposition,
+    LiteratureBase,
+    literature_writer_lock,
+)
 from .local_store import external_root
 from .schema import canonical_json, digest_json
 from .source_observation import ObservationStatus, SourceObservation
 
 
 _SCHEMA_VERSION = "1.0"
-_STATE_SCHEMA_VERSION = "1.5"
-_STATE_RECOVERY_CONTRACT = "topic-observation-state-recovery-v3"
-_LEGACY_STATE_SCHEMA_VERSIONS = {"1.0", "1.1", "1.2", "1.3", "1.4"}
+_STATE_SCHEMA_VERSION = "1.6"
+_STATE_RECOVERY_CONTRACT = "topic-observation-state-recovery-v4"
+_LEGACY_STATE_SCHEMA_VERSIONS = {"1.0", "1.1", "1.2", "1.3", "1.4", "1.5"}
 _STATE_AUTH_SCHEMA_VERSION = "1.0"
 _STATE_AUTH_DOMAIN = b"matharc.topic-observation.state-auth.v1\x00"
 _SIGNING_KEY_BYTES = 32
 _PRIVATE_FILE_MODE = 0o600
+_TRANSACTION_SCHEMA_VERSION = "1.0"
+_TRANSACTION_RECOVERY_CONTRACT = "topic-observation-transaction-recovery-v1"
+_TRANSACTION_PREPARED = "PREPARED"
+_TRANSACTION_COMMIT_INTENT = "COMMIT_INTENT"
+_TRANSACTION_PATH_NAME = TOPIC_OBSERVATION_TRANSACTION_PATH_NAME
 
 
 class TopicObservationError(ValueError):
@@ -146,14 +158,86 @@ def _require_optional_sha256(value: object, name: str) -> None:
         _require_sha256(value, name)
 
 
-def _path_present(path: Path) -> bool:
+def _read_verified_file(
+    path: Path,
+    *,
+    label: str,
+    expected_mode: int | None,
+    missing_ok: bool,
+) -> tuple[bytes, int] | None:
+    """Read one file through an identity-checked descriptor."""
+
+    flags = os.O_RDONLY | getattr(os, "O_NOFOLLOW", 0)
     try:
-        path.lstat()
-    except FileNotFoundError:
-        return False
+        file_descriptor = os.open(path, flags)
+    except FileNotFoundError as exc:
+        if missing_ok:
+            return None
+        raise TopicObservationError(f"{label} is missing") from exc
     except OSError as exc:
-        raise TopicObservationError(f"cannot inspect authentication path: {path.name}") from exc
-    return True
+        raise TopicObservationError(f"{label} is unreadable") from exc
+
+    open_descriptor = file_descriptor
+    try:
+        metadata = os.fstat(file_descriptor)
+        if not stat.S_ISREG(metadata.st_mode):
+            raise TopicObservationError(f"{label} is not a regular file")
+        mode = stat.S_IMODE(metadata.st_mode)
+        if expected_mode is not None and mode != expected_mode:
+            raise TopicObservationError(f"{label} must have mode {expected_mode:04o}")
+        with os.fdopen(file_descriptor, "rb") as file:
+            open_descriptor = -1
+            return file.read(), mode
+    except TopicObservationError:
+        raise
+    except OSError as exc:
+        raise TopicObservationError(f"{label} is unreadable") from exc
+    finally:
+        if open_descriptor != -1:
+            os.close(open_descriptor)
+
+
+def _encoded_file_snapshot(content: bytes, mode: int) -> dict[str, Any]:
+    return {
+        "sha256": hashlib.sha256(content).hexdigest(),
+        "size_bytes": len(content),
+        "mode": mode,
+        "content_b64": base64.b64encode(content).decode("ascii"),
+    }
+
+
+def _decode_file_snapshot(value: object, name: str) -> tuple[bytes, int]:
+    if not isinstance(value, dict):
+        raise TopicObservationError(f"{name} snapshot is malformed")
+    _require_fields(value, {"sha256", "size_bytes", "mode", "content_b64"}, f"{name} snapshot")
+    digest = _require_sha256(value["sha256"], f"{name} snapshot digest")
+    size_bytes = value["size_bytes"]
+    if isinstance(size_bytes, bool) or not isinstance(size_bytes, int) or size_bytes < 0:
+        raise TopicObservationError(f"{name} snapshot size is invalid")
+    mode = value["mode"]
+    if isinstance(mode, bool) or not isinstance(mode, int) or mode < 0 or mode > 0o7777:
+        raise TopicObservationError(f"{name} snapshot mode is invalid")
+    content_b64 = value["content_b64"]
+    if not isinstance(content_b64, str):
+        raise TopicObservationError(f"{name} snapshot content is invalid")
+    try:
+        content = base64.b64decode(content_b64.encode("ascii"), validate=True)
+    except (UnicodeEncodeError, binascii.Error, ValueError) as exc:
+        raise TopicObservationError(f"{name} snapshot content is invalid") from exc
+    if len(content) != size_bytes or hashlib.sha256(content).hexdigest() != digest:
+        raise TopicObservationError(f"{name} snapshot digest mismatch")
+    return content, mode
+
+
+def _validate_snapshot_path(value: object, name: str) -> str:
+    if not isinstance(value, str) or not value:
+        raise TopicObservationError(f"{name} snapshot path is invalid")
+    path = Path(value)
+    if path.is_absolute() or not path.parts or "." in path.parts or ".." in path.parts:
+        raise TopicObservationError(f"{name} snapshot path is invalid")
+    if "\x00" in value:
+        raise TopicObservationError(f"{name} snapshot path is invalid")
+    return path.as_posix()
 
 
 def _fsync_directory(directory: Path) -> None:
@@ -565,24 +649,31 @@ class TopicObservationRunner:
         self.signing_key_path = self.root / ".topic-observation-signing.key"
         self.authentication_path = self.root / ".topic-observation-state.auth.json"
         self.lock_path = self.root / ".topic-observation.lock"
-        self.literature = LiteratureBase(self.root / "literature", budget=budget)
+        self.transaction_path = self.root / _TRANSACTION_PATH_NAME
+        self._active_transaction: dict[str, Any] | None = None
+        with self._storage_lock():
+            self._prepare_locked()
 
     @property
     def manual_queue(self) -> tuple[ManualReviewItem, ...]:
-        state = self._load_state()
-        return tuple(ManualReviewItem.from_dict(item) for item in state["manual_queue"])
+        with self._storage_lock():
+            self._prepare_locked()
+            state = self._load_state()
+            return tuple(ManualReviewItem.from_dict(item) for item in state["manual_queue"])
 
     @property
     def next_cursor(self) -> str:
-        return _require_nonempty(self._load_state()["next_cursor"], "next_cursor")
+        with self._storage_lock():
+            self._prepare_locked()
+            return _require_nonempty(self._load_state()["next_cursor"], "next_cursor")
 
     def run(self, batch: TopicObservationBatch) -> TopicBatchResult:
         if not isinstance(batch, TopicObservationBatch):
             raise TypeError("batch must be a TopicObservationBatch")
         if batch.topic_id != self.topic_id:
             raise TopicObservationError("batch topic_id does not match runner topic_id")
-        with self._writer_lock():
-            self.literature = LiteratureBase(self.root / "literature", budget=self.budget)
+        with self._storage_lock():
+            self._prepare_locked()
             state = self._load_state()
             batches = state["batches"]
             previous = batches.get(batch.cursor)
@@ -597,11 +688,16 @@ class TopicObservationRunner:
                     detail="A cursor was replayed with different batch content.",
                 )
                 self._record_manual_event(state, manual)
-                self._save_state(state)
-                return TopicBatchResult(
-                    self.topic_id, batch.cursor, state["next_cursor"], TopicRunStatus.CURSOR_BLOCKED,
-                    (TopicItemResult("cursor", TopicItemStatus.MANUAL_REVIEW, "cursor", manual.manual_id),),
-                )
+                transaction = self._begin_transaction()
+                self._active_transaction = transaction
+                try:
+                    self._save_state(state)
+                    return TopicBatchResult(
+                        self.topic_id, batch.cursor, state["next_cursor"], TopicRunStatus.CURSOR_BLOCKED,
+                        (TopicItemResult("cursor", TopicItemStatus.MANUAL_REVIEW, "cursor", manual.manual_id),),
+                    )
+                finally:
+                    self._active_transaction = None
             if batch.cursor != state["next_cursor"]:
                 manual = self._add_manual(
                     state,
@@ -611,59 +707,69 @@ class TopicObservationRunner:
                     detail=f"Expected cursor {state['next_cursor']!r}, received {batch.cursor!r}.",
                 )
                 self._record_manual_event(state, manual)
-                self._save_state(state)
-                return TopicBatchResult(
-                    self.topic_id, batch.cursor, state["next_cursor"], TopicRunStatus.CURSOR_BLOCKED,
-                    (TopicItemResult("cursor", TopicItemStatus.MANUAL_REVIEW, "cursor", manual.manual_id),),
-                )
+                transaction = self._begin_transaction()
+                self._active_transaction = transaction
+                try:
+                    self._save_state(state)
+                    return TopicBatchResult(
+                        self.topic_id, batch.cursor, state["next_cursor"], TopicRunStatus.CURSOR_BLOCKED,
+                        (TopicItemResult("cursor", TopicItemStatus.MANUAL_REVIEW, "cursor", manual.manual_id),),
+                    )
+                finally:
+                    self._active_transaction = None
 
+            transaction = self._begin_transaction()
+            self._active_transaction = transaction
             results: list[TopicItemResult] = []
             disposition_evidence: dict[str, dict[str, Any]] = {}
-            batch_digest_sha256 = batch.batch_digest_sha256
-            for item in batch.inputs:
-                item_result, evidence = self._process_input(state, batch, item)
-                results.append(item_result)
-                disposition_evidence[item.input_id] = evidence
-            status = TopicRunStatus.MANUAL_REVIEW if any(
-                item.status is TopicItemStatus.MANUAL_REVIEW for item in results
-            ) else TopicRunStatus.APPLIED
-            batch_result = TopicBatchResult(
-                self.topic_id, batch.cursor, batch.next_cursor, status, tuple(results)
-            )
-            input_projections = {
-                item.input_id: item.input_projection for item in batch.inputs
-            }
-            for input_id, evidence in disposition_evidence.items():
-                evidence["input_projection_binding_sha256"] = _input_projection_binding_digest(
-                    topic_id=batch.topic_id,
-                    cursor=batch.cursor,
-                    next_cursor=batch.next_cursor,
-                    batch_digest_sha256=batch_digest_sha256,
-                    input_projection=input_projections[input_id],
+            try:
+                batch_digest_sha256 = batch.batch_digest_sha256
+                for item in batch.inputs:
+                    item_result, evidence = self._process_input(state, batch, item)
+                    results.append(item_result)
+                    disposition_evidence[item.input_id] = evidence
+                status = TopicRunStatus.MANUAL_REVIEW if any(
+                    item.status is TopicItemStatus.MANUAL_REVIEW for item in results
+                ) else TopicRunStatus.APPLIED
+                batch_result = TopicBatchResult(
+                    self.topic_id, batch.cursor, batch.next_cursor, status, tuple(results)
                 )
-            batches[batch.cursor] = {
-                "batch_digest_sha256": batch_digest_sha256,
-                "result_digest_sha256": digest_json(batch_result.to_dict()),
-                "input_fingerprints": {
-                    item.input_id: item.fingerprint_sha256 for item in batch.inputs
-                },
-                "input_projection_digest_sha256": _input_projection_digest(
-                    topic_id=batch.topic_id,
-                    cursor=batch.cursor,
-                    next_cursor=batch.next_cursor,
-                    batch_digest_sha256=batch_digest_sha256,
-                    input_projections=input_projections,
-                ),
-                "input_projections": input_projections,
-                "input_observation_ids": {
-                    item.input_id: item.observation_id for item in results
-                },
-                "disposition_evidence": disposition_evidence,
-                "result": batch_result.to_dict(),
-            }
-            state["next_cursor"] = batch.next_cursor
-            self._save_state(state)
-            return batch_result
+                input_projections = {
+                    item.input_id: item.input_projection for item in batch.inputs
+                }
+                for input_id, evidence in disposition_evidence.items():
+                    evidence["input_projection_binding_sha256"] = _input_projection_binding_digest(
+                        topic_id=batch.topic_id,
+                        cursor=batch.cursor,
+                        next_cursor=batch.next_cursor,
+                        batch_digest_sha256=batch_digest_sha256,
+                        input_projection=input_projections[input_id],
+                    )
+                batches[batch.cursor] = {
+                    "batch_digest_sha256": batch_digest_sha256,
+                    "result_digest_sha256": digest_json(batch_result.to_dict()),
+                    "input_fingerprints": {
+                        item.input_id: item.fingerprint_sha256 for item in batch.inputs
+                    },
+                    "input_projection_digest_sha256": _input_projection_digest(
+                        topic_id=batch.topic_id,
+                        cursor=batch.cursor,
+                        next_cursor=batch.next_cursor,
+                        batch_digest_sha256=batch_digest_sha256,
+                        input_projections=input_projections,
+                    ),
+                    "input_projections": input_projections,
+                    "input_observation_ids": {
+                        item.input_id: item.observation_id for item in results
+                    },
+                    "disposition_evidence": disposition_evidence,
+                    "result": batch_result.to_dict(),
+                }
+                state["next_cursor"] = batch.next_cursor
+                self._save_state(state)
+                return batch_result
+            finally:
+                self._active_transaction = None
 
     def _process_input(
         self,
@@ -965,6 +1071,411 @@ class TopicObservationRunner:
             finally:
                 fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
 
+    @contextmanager
+    def _storage_lock(self) -> Iterator[None]:
+        with self._writer_lock():
+            with literature_writer_lock(
+                self.root / "literature",
+                allow_topic_transaction=True,
+            ):
+                yield
+
+    def _prepare_locked(self) -> None:
+        recovered = self._recover_transaction_files()
+        self.literature = LiteratureBase(self.root / "literature", budget=self.budget)
+        if recovered:
+            self._load_state()
+            self._remove_transaction()
+
+    def _private_file_snapshot(
+        self,
+        path: Path,
+        *,
+        label: str,
+    ) -> dict[str, Any] | None:
+        result = _read_verified_file(
+            path,
+            label=label,
+            expected_mode=_PRIVATE_FILE_MODE,
+            missing_ok=True,
+        )
+        if result is None:
+            return None
+        content, mode = result
+        return _encoded_file_snapshot(content, mode)
+
+    def _literature_file_snapshots(self) -> list[dict[str, Any]]:
+        literature_root = self.root / "literature"
+        try:
+            root_metadata = literature_root.lstat()
+        except FileNotFoundError:
+            return []
+        except OSError as exc:
+            raise TopicObservationError("topic observation literature root is unreadable") from exc
+        if stat.S_ISLNK(root_metadata.st_mode) or not stat.S_ISDIR(root_metadata.st_mode):
+            raise TopicObservationError("topic observation literature root is not a directory")
+
+        snapshots: list[dict[str, Any]] = []
+        for current, directories, files in os.walk(literature_root, followlinks=False):
+            current_path = Path(current)
+            for directory_name in directories:
+                directory_path = current_path / directory_name
+                try:
+                    metadata = directory_path.lstat()
+                except OSError as exc:
+                    raise TopicObservationError("topic observation literature directory is unreadable") from exc
+                if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISDIR(metadata.st_mode):
+                    raise TopicObservationError("topic observation literature directory is not regular")
+            for file_name in files:
+                file_path = current_path / file_name
+                relative_path = file_path.relative_to(literature_root).as_posix()
+                if relative_path == ".observations.lock":
+                    continue
+                result = _read_verified_file(
+                    file_path,
+                    label=f"topic observation literature file {relative_path}",
+                    expected_mode=None,
+                    missing_ok=False,
+                )
+                if result is None:
+                    raise TopicObservationError("topic observation literature file disappeared")
+                content, mode = result
+                snapshots.append(
+                    {
+                        "path": relative_path,
+                        **_encoded_file_snapshot(content, mode),
+                    }
+                )
+        snapshots.sort(key=lambda item: item["path"])
+        return snapshots
+
+    @staticmethod
+    def _validated_literature_file_snapshots(value: object) -> list[dict[str, Any]]:
+        if not isinstance(value, list):
+            raise TopicObservationError("topic observation literature transaction snapshot is malformed")
+        validated: list[dict[str, Any]] = []
+        paths: list[str] = []
+        for item in value:
+            if not isinstance(item, dict):
+                raise TopicObservationError("topic observation literature transaction file is malformed")
+            _require_fields(
+                item,
+                {"path", "sha256", "size_bytes", "mode", "content_b64"},
+                "topic observation literature transaction file",
+            )
+            path = _validate_snapshot_path(item["path"], "topic observation literature")
+            if path != item["path"] or path == ".observations.lock":
+                raise TopicObservationError("topic observation literature transaction path is invalid")
+            file_snapshot = dict(item)
+            file_snapshot.pop("path")
+            content, mode = _decode_file_snapshot(
+                file_snapshot,
+                "topic observation literature transaction",
+            )
+            validated.append(
+                {
+                    "path": path,
+                    **_encoded_file_snapshot(content, mode),
+                }
+            )
+            paths.append(path)
+        if paths != sorted(paths) or len(paths) != len(set(paths)):
+            raise TopicObservationError(
+                "topic observation literature transaction paths must be sorted and unique"
+            )
+        return validated
+
+    @staticmethod
+    def _validated_private_snapshot(
+        value: object,
+        *,
+        name: str,
+        required: bool,
+    ) -> dict[str, Any] | None:
+        if value is None:
+            if required:
+                raise TopicObservationError(f"{name} transaction snapshot is missing")
+            return None
+        content, mode = _decode_file_snapshot(value, name)
+        if mode != _PRIVATE_FILE_MODE:
+            raise TopicObservationError(f"{name} transaction snapshot must have mode 0600")
+        return _encoded_file_snapshot(content, mode)
+
+    def _read_transaction(self) -> dict[str, Any] | None:
+        result = _read_verified_file(
+            self.transaction_path,
+            label="topic observation transaction journal",
+            expected_mode=_PRIVATE_FILE_MODE,
+            missing_ok=True,
+        )
+        if result is None:
+            return None
+        raw, _ = result
+        try:
+            payload = json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise TopicObservationError("topic observation transaction journal is malformed") from exc
+        if not isinstance(payload, dict):
+            raise TopicObservationError("topic observation transaction journal must be an object")
+        try:
+            canonical_bytes = (canonical_json(payload) + "\n").encode("utf-8")
+        except (TypeError, ValueError) as exc:
+            raise TopicObservationError("topic observation transaction journal is not canonical") from exc
+        if raw != canonical_bytes:
+            raise TopicObservationError("topic observation transaction journal is not canonical")
+
+        phase = payload.get("phase")
+        common_fields = {
+            "schema_version",
+            "recovery_contract",
+            "phase",
+            "old_key_sha256",
+            "old_state",
+            "old_authentication",
+            "old_literature_files",
+            "old_literature_files_sha256",
+        }
+        if phase == _TRANSACTION_PREPARED:
+            _require_fields(payload, common_fields, "topic observation transaction journal")
+        elif phase == _TRANSACTION_COMMIT_INTENT:
+            _require_fields(
+                payload,
+                common_fields
+                | {
+                    "target_key_sha256",
+                    "target_state",
+                    "target_authentication",
+                    "target_literature_files",
+                    "target_literature_files_sha256",
+                },
+                "topic observation transaction journal",
+            )
+        else:
+            raise TopicObservationError("topic observation transaction journal has an invalid phase")
+        if payload["schema_version"] != _TRANSACTION_SCHEMA_VERSION:
+            raise TopicObservationError("unsupported topic observation transaction schema")
+        if payload["recovery_contract"] != _TRANSACTION_RECOVERY_CONTRACT:
+            raise TopicObservationError("topic observation transaction recovery contract is invalid")
+        old_key = payload["old_key_sha256"]
+        if old_key is not None:
+            _require_sha256(old_key, "old topic observation signing key digest")
+        old_state = self._validated_private_snapshot(
+            payload["old_state"], name="old topic observation state", required=False
+        )
+        old_authentication = self._validated_private_snapshot(
+            payload["old_authentication"],
+            name="old topic observation authentication",
+            required=False,
+        )
+        old_literature_files = self._validated_literature_file_snapshots(
+            payload["old_literature_files"]
+        )
+        if payload["old_literature_files_sha256"] != digest_json(old_literature_files):
+            raise TopicObservationError("old topic observation literature transaction digest mismatch")
+        if (old_state is None) != (old_authentication is None) or (
+            old_state is None and old_key is not None
+        ) or (old_state is not None and old_key is None):
+            raise TopicObservationError("old topic observation transaction tuple is incomplete")
+
+        if phase == _TRANSACTION_COMMIT_INTENT:
+            target_key = payload["target_key_sha256"]
+            if not isinstance(target_key, str):
+                raise TopicObservationError("target topic observation signing key digest is missing")
+            _require_sha256(target_key, "target topic observation signing key digest")
+            if target_key == old_key:
+                raise TopicObservationError("topic observation transaction did not advance signing authority")
+            target_state = self._validated_private_snapshot(
+                payload["target_state"], name="target topic observation state", required=True
+            )
+            target_authentication = self._validated_private_snapshot(
+                payload["target_authentication"],
+                name="target topic observation authentication",
+                required=True,
+            )
+            target_literature_files = self._validated_literature_file_snapshots(
+                payload["target_literature_files"]
+            )
+            if payload["target_literature_files_sha256"] != digest_json(target_literature_files):
+                raise TopicObservationError(
+                    "target topic observation literature transaction digest mismatch"
+                )
+            if target_state is None or target_authentication is None:
+                raise TopicObservationError("target topic observation transaction tuple is incomplete")
+        return payload
+
+    def _begin_transaction(self) -> dict[str, Any]:
+        old_state = self._private_file_snapshot(
+            self.state_path,
+            label="topic observation state",
+        )
+        old_authentication = self._private_file_snapshot(
+            self.authentication_path,
+            label="topic observation authentication state",
+        )
+        current_key = _read_verified_file(
+            self.signing_key_path,
+            label="topic observation signing key",
+            expected_mode=_PRIVATE_FILE_MODE,
+            missing_ok=True,
+        )
+        old_key_sha256 = (
+            hashlib.sha256(current_key[0]).hexdigest() if current_key is not None else None
+        )
+        old_literature_files = self._literature_file_snapshots()
+        transaction = {
+            "schema_version": _TRANSACTION_SCHEMA_VERSION,
+            "recovery_contract": _TRANSACTION_RECOVERY_CONTRACT,
+            "phase": _TRANSACTION_PREPARED,
+            "old_key_sha256": old_key_sha256,
+            "old_state": old_state,
+            "old_authentication": old_authentication,
+            "old_literature_files": old_literature_files,
+            "old_literature_files_sha256": digest_json(old_literature_files),
+        }
+        if (old_state is None) != (old_authentication is None) or (
+            old_state is None and old_key_sha256 is not None
+        ) or (old_state is not None and old_key_sha256 is None):
+            raise TopicObservationError("topic observation transaction source tuple is incomplete")
+        self._write_transaction(transaction)
+        return transaction
+
+    def _write_transaction(self, payload: Mapping[str, Any]) -> None:
+        _atomic_write_bytes(
+            self.transaction_path,
+            (canonical_json(payload) + "\n").encode("utf-8"),
+            _PRIVATE_FILE_MODE,
+        )
+
+    def _restore_private_snapshot(
+        self,
+        path: Path,
+        value: object,
+        *,
+        name: str,
+    ) -> None:
+        if value is None:
+            try:
+                os.unlink(path)
+            except FileNotFoundError:
+                return
+            except OSError as exc:
+                raise TopicObservationError(f"could not remove {name}") from exc
+            _fsync_directory(path.parent)
+            return
+        content, mode = _decode_file_snapshot(value, name)
+        if mode != _PRIVATE_FILE_MODE:
+            raise TopicObservationError(f"{name} must have mode 0600")
+        _atomic_write_bytes(path, content, mode)
+
+    def _restore_literature_files(self, value: object) -> None:
+        target = self._validated_literature_file_snapshots(value)
+        literature_root = self.root / "literature"
+        try:
+            root_metadata = literature_root.lstat()
+        except FileNotFoundError:
+            literature_root.mkdir(parents=True, exist_ok=True)
+            root_metadata = literature_root.lstat()
+        except OSError as exc:
+            raise TopicObservationError("topic observation literature root is unreadable") from exc
+        if stat.S_ISLNK(root_metadata.st_mode) or not stat.S_ISDIR(root_metadata.st_mode):
+            raise TopicObservationError("topic observation literature root is not a directory")
+        current = self._literature_file_snapshots()
+        target_paths = {item["path"] for item in target}
+        for item in current:
+            if item["path"] not in target_paths:
+                path = literature_root / item["path"]
+                try:
+                    os.unlink(path)
+                except FileNotFoundError:
+                    continue
+                except OSError as exc:
+                    raise TopicObservationError("could not remove stale literature file") from exc
+        for item in target:
+            relative_path = Path(item["path"])
+            path = literature_root / relative_path
+            parent_path = literature_root
+            for component in relative_path.parts[:-1]:
+                parent_path = parent_path / component
+                try:
+                    metadata = parent_path.lstat()
+                except FileNotFoundError:
+                    parent_path.mkdir()
+                    metadata = parent_path.lstat()
+                except OSError as exc:
+                    raise TopicObservationError(
+                        "topic observation literature parent is unreadable"
+                    ) from exc
+                if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISDIR(metadata.st_mode):
+                    raise TopicObservationError("topic observation literature parent is not a directory")
+            file_snapshot = dict(item)
+            file_snapshot.pop("path")
+            content, mode = _decode_file_snapshot(
+                file_snapshot,
+                "topic observation literature transaction",
+            )
+            _atomic_write_bytes(path, content, mode)
+        _fsync_directory(literature_root)
+
+    def _recover_transaction_files(self) -> bool:
+        payload = self._read_transaction()
+        if payload is None:
+            return False
+        phase = payload["phase"]
+        current_key = _read_verified_file(
+            self.signing_key_path,
+            label="topic observation signing key",
+            expected_mode=_PRIVATE_FILE_MODE,
+            missing_ok=True,
+        )
+        current_key_sha256 = (
+            hashlib.sha256(current_key[0]).hexdigest() if current_key is not None else None
+        )
+        old_key_sha256 = payload["old_key_sha256"]
+        use_target = False
+        if phase == _TRANSACTION_PREPARED:
+            if current_key_sha256 != old_key_sha256:
+                raise TopicObservationError(
+                    "topic observation transaction signing authority does not match prepared generation"
+                )
+        else:
+            target_key_sha256 = payload["target_key_sha256"]
+            if current_key_sha256 == target_key_sha256:
+                use_target = True
+            elif current_key_sha256 != old_key_sha256:
+                raise TopicObservationError(
+                    "topic observation transaction signing authority is neither old nor committed generation"
+                )
+
+        if use_target:
+            literature_files = payload["target_literature_files"]
+            state = payload["target_state"]
+            authentication = payload["target_authentication"]
+        else:
+            literature_files = payload["old_literature_files"]
+            state = payload["old_state"]
+            authentication = payload["old_authentication"]
+        self._restore_literature_files(literature_files)
+        self._restore_private_snapshot(
+            self.state_path,
+            state,
+            name="topic observation state",
+        )
+        self._restore_private_snapshot(
+            self.authentication_path,
+            authentication,
+            name="topic observation authentication state",
+        )
+        return True
+
+    def _remove_transaction(self) -> None:
+        try:
+            os.unlink(self.transaction_path)
+        except FileNotFoundError:
+            return
+        except OSError as exc:
+            raise TopicObservationError("could not remove topic observation transaction journal") from exc
+        _fsync_directory(self.root)
+
     def _literature_snapshot_payload(self) -> dict[str, Any]:
         return {
             "schema_version": _SCHEMA_VERSION,
@@ -988,75 +1499,32 @@ class TopicObservationRunner:
         return hashlib.sha256(self._literature_snapshot_bytes()).hexdigest()
 
     def _read_signing_key(self) -> bytes:
-        try:
-            metadata = self.signing_key_path.lstat()
-        except FileNotFoundError as exc:
-            raise TopicObservationError("topic observation signing key is missing") from exc
-        except OSError as exc:
-            raise TopicObservationError("topic observation signing key is unreadable") from exc
-        if not stat.S_ISREG(metadata.st_mode):
-            raise TopicObservationError("topic observation signing key is not a regular file")
-        if stat.S_IMODE(metadata.st_mode) != _PRIVATE_FILE_MODE:
-            raise TopicObservationError("topic observation signing key must have mode 0600")
-        try:
-            key = self.signing_key_path.read_bytes()
-        except OSError as exc:
-            raise TopicObservationError("topic observation signing key is unreadable") from exc
+        result = _read_verified_file(
+            self.signing_key_path,
+            label="topic observation signing key",
+            expected_mode=_PRIVATE_FILE_MODE,
+            missing_ok=False,
+        )
+        if result is None:
+            raise TopicObservationError("topic observation signing key is missing")
+        key, _ = result
         if len(key) != _SIGNING_KEY_BYTES:
             raise TopicObservationError("topic observation signing key is malformed")
         return key
 
-    def _ensure_signing_key(self) -> None:
-        if _path_present(self.signing_key_path):
-            self._read_signing_key()
-            return
-        temporary_name: str | None = None
-        try:
-            fd, temporary_name = tempfile.mkstemp(
-                prefix=".topic-observation-signing-key.",
-                dir=self.root,
-            )
-            open_fd = fd
-            try:
-                os.fchmod(open_fd, _PRIVATE_FILE_MODE)
-                with os.fdopen(open_fd, "wb") as temporary_file:
-                    open_fd = -1
-                    temporary_file.write(secrets.token_bytes(_SIGNING_KEY_BYTES))
-                    temporary_file.flush()
-                    os.fsync(temporary_file.fileno())
-            finally:
-                if open_fd != -1:
-                    os.close(open_fd)
-            try:
-                os.link(temporary_name, self.signing_key_path)
-            except FileExistsError:
-                pass
-            else:
-                _fsync_directory(self.root)
-        except OSError as exc:
-            raise TopicObservationError("could not create topic observation signing key") from exc
-        finally:
-            if temporary_name is not None:
-                try:
-                    os.unlink(temporary_name)
-                except FileNotFoundError:
-                    pass
-        self._read_signing_key()
-
     def _read_authentication(self) -> dict[str, Any]:
+        result = _read_verified_file(
+            self.authentication_path,
+            label="topic observation authentication state",
+            expected_mode=_PRIVATE_FILE_MODE,
+            missing_ok=False,
+        )
+        if result is None:
+            raise TopicObservationError("topic observation authentication state is missing")
+        raw, _ = result
         try:
-            metadata = self.authentication_path.lstat()
-        except FileNotFoundError as exc:
-            raise TopicObservationError("topic observation authentication state is missing") from exc
-        except OSError as exc:
-            raise TopicObservationError("topic observation authentication state is unreadable") from exc
-        if not stat.S_ISREG(metadata.st_mode):
-            raise TopicObservationError("topic observation authentication state is not a regular file")
-        if stat.S_IMODE(metadata.st_mode) != _PRIVATE_FILE_MODE:
-            raise TopicObservationError("topic observation authentication state must have mode 0600")
-        try:
-            payload = json.loads(self.authentication_path.read_bytes().decode("utf-8"))
-        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+            payload = json.loads(raw.decode("utf-8"))
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise TopicObservationError("topic observation authentication state is malformed") from exc
         if not isinstance(payload, dict):
             raise TopicObservationError("topic observation authentication state must be an object")
@@ -1138,20 +1606,36 @@ class TopicObservationRunner:
         }
 
     def _load_state(self) -> dict[str, Any]:
-        if not _path_present(self.state_path):
-            if _path_present(self.authentication_path):
+        state_result = _read_verified_file(
+            self.state_path,
+            label="topic observation state",
+            expected_mode=_PRIVATE_FILE_MODE,
+            missing_ok=True,
+        )
+        if state_result is None:
+            if _read_verified_file(
+                self.authentication_path,
+                label="topic observation authentication state",
+                expected_mode=_PRIVATE_FILE_MODE,
+                missing_ok=True,
+            ) is not None:
                 raise TopicObservationError(
                     "topic observation authentication state exists without a topic state"
                 )
-            if _path_present(self.signing_key_path):
+            if _read_verified_file(
+                self.signing_key_path,
+                label="topic observation signing key",
+                expected_mode=_PRIVATE_FILE_MODE,
+                missing_ok=True,
+            ) is not None:
                 raise TopicObservationError(
                     "topic observation authentication state is missing"
                 )
             return self._new_state()
+        state_bytes, _ = state_result
         try:
-            state_bytes = self.state_path.read_bytes()
             payload = json.loads(state_bytes.decode("utf-8"))
-        except (OSError, UnicodeDecodeError, json.JSONDecodeError) as exc:
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
             raise TopicObservationError("topic observation state is unreadable") from exc
         if not isinstance(payload, dict):
             raise TopicObservationError("topic observation state must be an object")
@@ -1654,7 +2138,10 @@ class TopicObservationRunner:
                 ImportDisposition(import_disposition)
             except (TypeError, ValueError) as exc:
                 raise TopicObservationError("stored item evidence import disposition is invalid") from exc
-        if basis != "MANUAL_QUEUE" and result.observation_id != projection_observation.observation_id:
+        if (
+            basis not in {"MANUAL_QUEUE", "EXISTING_OBSERVED"}
+            and result.observation_id != projection_observation.observation_id
+        ):
             raise TopicObservationError(
                 "stored result observation identity conflicts with input projection"
             )
@@ -1894,15 +2381,18 @@ class TopicObservationRunner:
             raise ManualQueueObservationError(str(exc)) from exc
 
     def _save_state(self, state: Mapping[str, Any]) -> None:
+        transaction = self._active_transaction
+        if transaction is None:
+            raise TopicObservationError("topic observation state save requires an active transaction")
         persisted_state = dict(state)
         persisted_state["literature_snapshot_sha256"] = self._literature_snapshot_sha256()
         state_bytes = (canonical_json(persisted_state) + "\n").encode("utf-8")
         snapshot_bytes = self._literature_snapshot_bytes()
         snapshot_sha256 = hashlib.sha256(snapshot_bytes).hexdigest()
-        self._ensure_signing_key()
+        target_key = secrets.token_bytes(_SIGNING_KEY_BYTES)
         state_sha256 = hashlib.sha256(state_bytes).hexdigest()
         mac_sha256 = hmac.new(
-            self._read_signing_key(),
+            target_key,
             _state_authentication_message(state_bytes, snapshot_bytes),
             hashlib.sha256,
         ).hexdigest()
@@ -1913,9 +2403,26 @@ class TopicObservationRunner:
             "literature_snapshot_sha256": snapshot_sha256,
             "mac_sha256": mac_sha256,
         }
+        target_literature_files = self._literature_file_snapshots()
+        target_transaction = {
+            **transaction,
+            "phase": _TRANSACTION_COMMIT_INTENT,
+            "target_key_sha256": hashlib.sha256(target_key).hexdigest(),
+            "target_state": _encoded_file_snapshot(state_bytes, _PRIVATE_FILE_MODE),
+            "target_authentication": _encoded_file_snapshot(
+                (canonical_json(authentication) + "\n").encode("utf-8"),
+                _PRIVATE_FILE_MODE,
+            ),
+            "target_literature_files": target_literature_files,
+            "target_literature_files_sha256": digest_json(target_literature_files),
+        }
+        self._write_transaction(target_transaction)
         _atomic_write_bytes(self.state_path, state_bytes, _PRIVATE_FILE_MODE)
         _atomic_write_bytes(
             self.authentication_path,
             (canonical_json(authentication) + "\n").encode("utf-8"),
             _PRIVATE_FILE_MODE,
         )
+        _atomic_write_bytes(self.signing_key_path, target_key, _PRIVATE_FILE_MODE)
+        self._verify_state_authentication(persisted_state, state_bytes)
+        self._remove_transaction()
