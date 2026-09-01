@@ -3,7 +3,7 @@ from __future__ import annotations
 import argparse
 import json
 from pathlib import Path
-from typing import Any
+from typing import Any, Mapping
 
 from .benchmark import compare_agents, load_results
 from .budget import BudgetLedger
@@ -412,7 +412,7 @@ def main(argv: list[str] | None = None) -> None:
                 # workspace.save() publishes this trace atomically with its manifest.
                 persist_path = None
 
-        def checkpoint_workspace(round_record: dict[str, Any]) -> None:
+        def checkpoint_workspace(round_record: Mapping[str, Any]) -> None:
             if workspace is None:
                 return
             round_index = round_record["round_index"]
