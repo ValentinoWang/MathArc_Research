@@ -92,7 +92,7 @@ class DogfoodArchiveTests(unittest.TestCase):
 
     def test_unknown_case_missing_provenance_and_tampered_archive_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
-            fixture_root = Path(directory) / "fixtures"
+            fixture_root = Path(directory) / "s1-fixtures"
             fixture_root.mkdir()
             for path in S1_FIXTURES.glob("*.json"):
                 (fixture_root / path.name).write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
@@ -124,6 +124,27 @@ class DogfoodArchiveTests(unittest.TestCase):
             archive.write_text(json.dumps(payload), encoding="utf-8")
             with self.assertRaisesRegex(DogfoodArchiveError, "budget snapshot"):
                 DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+
+    def test_contract_boundary_and_fixture_directory_are_immutable(self) -> None:
+        for field, value, message in (
+            ("non_claim_boundary", "authorizes public mathematical claims", "non-claim boundary identity drift"),
+            ("source_fixture_directory", "/tmp/evil", "source fixture directory identity drift"),
+        ):
+            with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
+                fixture_root = Path(directory) / "s1-fixtures"
+                fixture_root.mkdir()
+                for path in S1_FIXTURES.glob("*.json"):
+                    shutil.copy2(path, fixture_root / path.name)
+                contract_root = Path(directory) / "t2-fixtures"
+                contract_root.mkdir()
+                contract = json.loads(T2_FIXTURE.read_text(encoding="utf-8"))
+                contract[field] = value
+                (contract_root / T2_FIXTURE.name).write_text(
+                    json.dumps(contract), encoding="utf-8"
+                )
+                shutil.copytree(T2_FIXTURE.parent / "sources", contract_root / "sources")
+                with self.assertRaisesRegex(DogfoodArchiveError, message):
+                    DogfoodArchiveRunner(Path(directory) / "run", fixture_root).run()
 
     def test_recomputed_budget_digests_cannot_accept_budget_snapshot_drift(self) -> None:
         def archive_digest(payload: dict) -> str:

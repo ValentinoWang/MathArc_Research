@@ -14,6 +14,12 @@ _SCHEMA_VERSION = "1.2"
 _RECOVERY_CONTRACT = "dogfood-archive-recovery-v1"
 _LEGACY_SCHEMA_VERSIONS = {"1.0", "1.1"}
 _TOPIC_ID = "union-closed"
+_EXPECTED_SOURCE_FIXTURE_DIRECTORY = "../s1-fixtures"
+_EXPECTED_NON_CLAIM_BOUNDARY = (
+    "All outputs are source observations and reported-status review boundaries. "
+    "They do not create a mathematical claim, research trace, public conclusion, "
+    "or research-budget authorization."
+)
 _S1_NAMES = ("frankl-q6.json", "resolved-collision.json", "confirmed-open.json")
 _CASE_ORDER = ("P-FRANKL-Q6", "P-ARXIV-2601-22401-COLLISION", "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS")
 _ROLES = {"P-FRANKL-Q6": "frankl-q6-constrained-residual", "P-ARXIV-2601-22401-COLLISION": "database-open-literature-resolved-collision", "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS": "frankl-q6-four-or-more-small-outside-parts-residual"}
@@ -94,6 +100,12 @@ class DogfoodArchiveRunner:
         if not isinstance(contract, dict): raise DogfoodArchiveError("T2 contract must be an object")
         _fields(contract, {"fixture_kind", "topic_id", "source_fixture_directory", "fixture_sha256", "source_artifacts", "expected_budget_snapshot", "expected_budget_digest_sha256", "non_claim_boundary", "cases"}, "T2 contract")
         if contract["fixture_kind"] != "t2-dogfood-archive-contract" or contract["topic_id"] != _TOPIC_ID: raise DogfoodArchiveError("incompatible T2 contract identity")
+        if contract["source_fixture_directory"] != _EXPECTED_SOURCE_FIXTURE_DIRECTORY:
+            raise DogfoodArchiveError("T2 source fixture directory identity drift")
+        if (self.contract_path.parent / contract["source_fixture_directory"]).resolve() != self.fixture_root.resolve():
+            raise DogfoodArchiveError("T2 source fixture directory does not match runner input")
+        if contract["non_claim_boundary"] != _EXPECTED_NON_CLAIM_BOUNDARY:
+            raise DogfoodArchiveError("T2 non-claim boundary identity drift")
         if not isinstance(contract["cases"], list) or len(contract["cases"]) != 3: raise DogfoodArchiveError("T2 contract must define exactly three cases")
         case_fields = {"problem_id", "case_role", "expected_topic_status", "expected_problem_status", "expected_manual_reason", "expected_novelty_status", "expected_promotion_allowed"}
         ids = []
