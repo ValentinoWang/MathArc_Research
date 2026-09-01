@@ -358,7 +358,7 @@ html{scroll-behavior:smooth;}
     <thead><tr><th>视图</th><th>后端现状</th><th>状态</th></tr></thead>
     <tbody>
       <tr><td>角色与权限</td><td><code>authorization.py</code> 的策略投影已由控制台读取，矩阵逐项展示；不含身份令牌</td><td><span class="chip c-done">已落地</span></td></tr>
-      <tr><td>评审名册 / 评审队列</td><td><code>review.py</code> + 评审服务已有；控制台补评审提交界面走唯一写口</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>评审名册 / 评审队列</td><td><code>review.py</code> + 评审服务已由控制台读取；送审包、逐项义务判定与唯一 <code>POST /api/review</code> 写口均已接线，令牌只驻留内存</td><td><span class="chip c-done">已落地</span></td></tr>
       <tr><td>积分 / 充值 / 席位 / 上游 / 用户 / 登录</td><td>运营域整体无后端；<code>BudgetLedger</code> 只管研究预算，不是计费。与研究内核物理隔离地新建，接线前全部保留演示标注</td><td><span class="chip c-new">需新建</span></td></tr>
     </tbody>
   </table></div>
@@ -413,8 +413,8 @@ html{scroll-behavior:smooth;}
         <td class="mut">同一工作区：前端复算链头 = 后端 <code>validate()</code> 链头；工具台账逐字段与 <code>to_dict</code> 相等；相关视图演示标注删除</td></tr>
       <tr><td>M1 live 观察站（已落地）</td><td>SSE 接证明链与轮次；<code>/api/campaign</code>；攻克中合并刷新</td>
         <td class="mut">跑一次 <code>cli run</code>，控制台不刷新即见新事件；断线重连按 <code>after</code> 游标续传无缺口</td></tr>
-      <tr><td>M2 评审闭环</td><td>评审队列/送审包接真服务；义务逐条判定 + 整体决定提交 <code>POST /api/review</code></td>
-        <td class="mut">APPROVE 含非 OK 义务被后端拒绝并在界面如实呈现；令牌仅存内存</td></tr>
+      <tr><td>M2 评审闭环（已落地）</td><td>评审队列/送审包已接真服务；义务逐条判定 + 整体决定经唯一 <code>POST /api/review</code> 提交</td>
+        <td class="mut">浏览器门禁以真实服务验证：APPROVE 含非 OK 义务被后端拒绝并在界面如实呈现；有效评审持久化后队列刷新，令牌仅存内存</td></tr>
       <tr><td>M3 选题最小闭环</td><td>资料核验读模型接 <code>SourceRegistry</code> 与单主题观察存储；主题/标准存储；外部适配器落地后才开检索侧</td>
         <td class="mut">五项核对状态机与后端一致；外部适配器未落地的视图仍无统计数字，且不推断开放/已解决/新颖性状态</td></tr>
       <tr><td>M4 运营域</td><td>积分/席位/计费/上游独立服务</td>
