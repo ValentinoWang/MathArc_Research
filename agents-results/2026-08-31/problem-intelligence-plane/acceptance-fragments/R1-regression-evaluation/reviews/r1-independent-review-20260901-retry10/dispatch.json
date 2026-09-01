@@ -1,0 +1,59 @@
+{
+  "review_campaign_id": "R1-independent-review-20260901-retry10",
+  "frozen_head": "359e1e2944ef29d0aee65de7de6e68437b76c94d",
+  "remote_head": "359e1e2944ef29d0aee65de7de6e68437b76c94d",
+  "frozen_input_manifest": "frozen-inputs.json",
+  "frozen_input_manifest_sha256": "9e2bc6cfcf6004f36ed3d6f952979334a1baa86f68baf48833bbcd1b29c83561",
+  "launch_attempt_1": {
+    "mode": "detached background shell",
+    "pids": [71343, 71344],
+    "result": "NO_WORKER_OUTPUT",
+    "counted_as_review": false,
+    "reason": "The short-lived parent shell exited before either codex worker established a durable execution context. The two empty log paths were subsequently reused by the controlled attempt and do not constitute lane evidence."
+  },
+  "launch_attempt_2": {
+    "mode": "controlled PTY session; parallel zero-write workers; one report path per lane",
+    "luna_pid": 71910,
+    "sol_pid": 71911,
+    "luna_exit_code": 0,
+    "sol_exit_code": 0,
+    "luna_prompt_sha256": "9c0e6388ed1e433ab6185974c5897bf8f29c641925aed981393ae0da3ef5840d",
+    "sol_prompt_sha256": "542946a31f3429e27cb016e191f8cb87f2d5dc591868892205192cfa04e604a9",
+    "luna_log_path": "logs/ablation.log",
+    "luna_log_sha256": "086869ec07483fb6a1b768b563793928c5f876770cfc9ca6e3563d0fe88da68e",
+    "sol_log_path": "logs/identity.log",
+    "sol_log_sha256": "0b542e01484f4b29ac04c6b8abfbbf5bdc9339a892137eb57792a8f6bd3f4721",
+    "lanes": [
+      {
+        "lane": "ablation-boundary",
+        "reviewer_identity": "r1-ablation-boundary-l3-luna-retry10",
+        "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh",
+        "report_path": "reports/ablation-boundary.md",
+        "report_sha256": "994db4ce942da750431d5ce6be43766adbbaeb5ab7156ede003ced3f86e7fe37",
+        "terminal_verdict": "PASS",
+        "result": "INVALID_FOR_ACCEPTANCE",
+        "counted_as_pass": false,
+        "reason": "The report lacks the contract-required exact self-binding markers `- Lane:`, `- Reviewer identity:`, and `- Wrapper:`. Controller modification would invalidate the assigned worker's zero-write report, so the artifact is retained but cannot count."
+      },
+      {
+        "lane": "identity-contract",
+        "reviewer_identity": "r1-identity-contract-l4-sol-retry10",
+        "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+        "report_path": "reports/identity-contract.md",
+        "report_sha256": "3f5b445b5bbb4dbb3090551c69b530faf0c02a878f66c6b821046990667fc805",
+        "terminal_verdict": "PASS",
+        "result": "LANE_LOCAL_PASS",
+        "counted_as_pass": false,
+        "reason": "The required pair is incomplete because the peer ablation report is invalid. This lane does not independently accept R1."
+      }
+    ]
+  },
+  "controller_integrity_check": "All 14 frozen inputs matched before review; workers exited 0; tracked source/test/contract/evidence files remained unchanged; only campaign artifacts were untracked. This observation does not retroactively repair the invalid ablation report.",
+  "convergence": {
+    "result": "BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS",
+    "counted_as_pass": false,
+    "reason": "One lane-local PASS report and one incorrectly formatted report do not satisfy the protected R1 v9 pair gate."
+  },
+  "scope_boundary": "Retry10 is failed review evidence only. It does not accept R1, transition Q1/A5, establish mathematical proof, confirm external literature, demonstrate statistical performance or production/device behavior, or authorize public release.",
+  "next_action": "Use a new frozen campaign with report templates containing the exact protected self-binding markers and distinct low-reasoning worker wrappers."
+}

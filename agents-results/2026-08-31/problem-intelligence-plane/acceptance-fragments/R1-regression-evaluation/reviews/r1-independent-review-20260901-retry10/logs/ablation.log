@@ -1,0 +1,939 @@
+Reading additional input from stdin...
+2026-09-01T09:29:39.291835Z  WARN codex_core_plugins::manager: remote installed plugin bundle sync failed error=chatgpt authentication required for remote plugin catalog; api key auth is not supported
+2026-09-01T09:29:39.446706Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-01T09:29:39.446751Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+OpenAI Codex v0.151.0
+--------
+workdir: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+model: gpt-5.6-luna
+provider: sub2api
+approval: never
+sandbox: danger-full-access
+reasoning effort: max
+reasoning summaries: none
+session id: 01a05c4d-8503-7bd0-8c69-527266c2b617
+--------
+user
+You are the independent zero-write R1 ablation-boundary reviewer. Review only frozen R1 candidate main@359e1e2944ef29d0aee65de7de6e68437b76c94d. Manifest: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/frozen-inputs.json; SHA-256 supplied by controller. Do not invoke skills, agents, network, release workflows, or remote actions. Your sole permitted write is reports/ablation-boundary.md in this campaign. Do not read or modify the peer report. Verify HEAD and every manifest file hash with a short Python or shell loop. Verify contract pins protected test SHA. Run exactly `env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_regression_evaluation`; inspect only regression_evaluation.py and four-route-regression.json for deterministic four-route ablation, tamper rejection, and no claim/authorization/research-trace/statistical/mathematical/production/device/public-release overclaim. Run git diff --check. Then IMMEDIATELY write exactly one report with apply_patch, containing one each of: Lane `ablation-boundary`; Reviewer identity `r1-ablation-boundary-l3-luna-retry10`; Wrapper `/Users/vsiyo/.codex/workers/run-l3.sh`; Review mode `zero-write`; Frozen head; Frozen input manifest SHA-256; Zero-write compliance; exact commands/results; P0/P1 findings; AC-01 through AC-06 dispositions; residual limits; boundary that this report does not accept R1 or transition Q1/A5. The final nonempty line must be exactly `Verdict: PASS` only if all checks pass and no P0/P1 exists; otherwise exactly `Verdict: FAIL`. Do not do any work after writing the report.
+2026-09-01T09:29:41.470440Z  WARN codex_rmcp_client::rmcp_client: stored OAuth refresh credentials could not be bound to their issuer for MCP server `figma`; using the stored access token without refresh
+warning: Skill descriptions were shortened to fit the skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.
+2026-09-01T09:29:42.640207Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-09-01T09:29:42.645793Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-09-01T09:29:49.492848Z  WARN codex_core_plugins::manager: failed to warm featured plugin ids cache error=failed to send remote featured plugin request to https://chatgpt.com/backend-api/plugins/featured?platform=codex: error sending request for url (https://chatgpt.com/backend-api/plugins/featured?platform=codex)
+codex
+I will verify the frozen commit, manifest declaration and hashes, protected test pin, the single mandated test command, scoped source/evidence behavior, and `git diff --check`. I will collect all report facts first, then use one `apply_patch` write for `reports/ablation-boundary.md` and perform no further work afterward.
+exec
+/bin/zsh -lc "sed -n '1,260p' agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/frozen-inputs.json" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+{
+  "review_campaign_id": "R1-independent-review-20260901-retry10",
+  "frozen_head": "359e1e2944ef29d0aee65de7de6e68437b76c94d",
+  "remote_head": "359e1e2944ef29d0aee65de7de6e68437b76c94d",
+  "scope": "Fresh R1 v9 reacceptance review against accepted A4; Q1 and A5 remain blocked.",
+  "required_verdict": "PASS only if every frozen input matches, no P0/P1 exists in the assigned lane, and the assigned regular report self-binds the lane, reviewer identity, wrapper, manifest SHA, zero-write mode, and terminal PASS.",
+  "review_boundary": "No writes except the assigned report. Do not invoke skills, agents, network, release workflows, or remote actions. Do not accept R1 or transition Q1/A5. Do not claim mathematical proof, external literature confirmation, statistical performance, production/device behavior, or public release.",
+  "inputs": [
+    {"path": "matharc/v02/regression_evaluation.py", "sha256": "667a89bfe61f87b3679f5d0892cdf1e49051c41b9d47cf26d622ea96eaa77edd"},
+    {"path": "tests/test_v02_regression_evaluation.py", "sha256": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6"},
+    {"path": "tests/test_v02_calibration_disclosure.py", "sha256": "e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57"},
+    {"path": "tests/test_v02_release_decision.py", "sha256": "bbb32c14950b63c8294608e4699b9ced7df51043288433fb65b8a1d18dcad167"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json", "sha256": "9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/A4.json", "sha256": "13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json", "sha256": "84fde4a8f71b5f87160151f3eb3bfd432bb465c146733db6c3193d100e6bfa15"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json", "sha256": "a56efb2c662857d5e863d8ce59abaef8044319ecd3802ee19c32a01a058472f4"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json", "sha256": "73bccc95dc5640eff2e03c60b31cffc6b1053d1c87c2b2b0e2dc4dfeff843517"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md", "sha256": "6faa8116278e8fe64d26f39bfcd0277d6dfac74fea0aa74a11aacb8046fd85ee"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json", "sha256": "cda88cec2023cfb14f2a78e182df65c65428e80e5f27ccb08b4d680864ee9c61"},
+    {"path": "acceptance/human/R1-regression-evaluation/binding.md", "sha256": "ec6336739a676253620abeb24c0df22fefec99796ad113390b1f161b428c874b"},
+    {"path": "acceptance/human/R1-regression-evaluation/checklist.md", "sha256": "d7a89e055f43e192d899b86f9acf707457abad034db8a29094d660108afffdde"},
+    {"path": "acceptance/human-acceptance-log.json", "sha256": "8778dd8df24a92d4fc6007ea79295fca2147f4fcd37feb56dbfdd55204af32dc"}
+  ]
+}
+
+exec
+/bin/zsh -lc 'git rev-parse --show-toplevel && git rev-parse HEAD && git status --short --untracked-files=all' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "if test -e reports/ablation-boundary.md; then printf 'exists\\n'; else printf 'absent\\n'; fi" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+absent
+
+ succeeded in 327ms:
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+359e1e2944ef29d0aee65de7de6e68437b76c94d
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/frozen-inputs.json
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/logs/ablation.log
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/logs/identity.log
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/prompts/ablation.txt
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/prompts/identity.txt
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/.gitkeep
+
+codex
+HEAD is exactly the frozen commit. The manifest is present as an untracked campaign input, the assigned report path is absent, and no report has been read. I am now checking the manifest’s own digest, all declared input digests, and the acceptance contract’s protected-test pin before the mandated test run.
+exec
+/bin/zsh -lc "python3 - <<'PY'
+import hashlib
+import json
+import subprocess
+from pathlib import Path
+
+manifest = Path(\"agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/frozen-inputs.json\")
+data = json.loads(manifest.read_text())
+print(\"HEAD\", subprocess.check_output([\"git\", \"rev-parse\", \"HEAD\"], text=True).strip())
+print(\"EXPECTED_HEAD\", data[\"frozen_head\"])
+manifest_hash = hashlib.sha256(manifest.read_bytes()).hexdigest()
+print(\"MANIFEST_SHA256\", manifest_hash)
+failed = False
+for item in data[\"inputs\"]:
+    path = Path(item[\"path\"])
+    actual = hashlib.sha256(path.read_bytes()).hexdigest() if path.is_file() else \"MISSING\"
+    status = \"PASS\" if actual == item[\"sha256\"] else \"FAIL\"
+    print(f\"{status} {item['sha256']} {actual} {item['path']}\")
+    failed |= status == \"FAIL\"
+raise SystemExit(1 if failed or data[\"frozen_head\"] "'!= subprocess.check_output(["git", "rev-parse", "HEAD"], text=True).strip() else 0)
+PY' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "rg -n -C 2 'protected|SHA-256|sha256|test_v02_regression_evaluation|4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6' agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+88-## Protected acceptance tests
+89-
+90:| Path | SHA-256 | Covers |
+91-| --- | --- | --- |
+92:| tests/test_v02_regression_evaluation.py | 4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6 | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
+93-
+94-## Requirements-test traceability
+--
+96-| Requirement | Verification | Evidence target | Mode | Blocking |
+97-| --- | --- | --- | --- | --- |
+98:| AC-01 | focused unit tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+99:| AC-02 | focused unit tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+100:| AC-03 | tamper/negative tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+101:| AC-04 | import/source guard | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+102:| AC-05 | frozen review ledger and report integrity gate | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+103:| AC-06 | distinct reviewer identity, wrapper, terminal verdict and report integrity gate | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+104-| H-01 | human checklist | acceptance/human/R1-regression-evaluation/checklist.md#h-01 | Human | Yes |
+105-
+--
+116-小样本只代表固定 A4 档案，不代表检索系统总体准确率、召回率或文献开放性；真实外部文献检索仍未由本合同覆盖。
+117-
+118:合同版本 9 保留版本 8 的夹具、主题和来源身份闭合，并将两份独立 AI 复审维持为硬性、可机读的接受条件。报告完整性检查对冻结清单摘要接受等价的 Markdown 定界表达，避免把无语义差异的反引号写法误判为证据缺失；Q1 生命周期测试明确允许 R1 已重新接受而 Q1 仍阻断的中间状态；已接受分支不仅核验当前合同版本，还必须读取报告绑定的冻结清单，逐项比对当前受保护测试、R1 合同、人工绑定和清单的 SHA-256，阻止旧合同的整套报告/清单被重标后回放。每份报告还必须位于该冻结清单同一 campaign 的 `reports/<lane>.md`，正文自报与证据元数据一致的 lane、审阅身份和包装器，并以 `Verdict: PASS` 作为唯一终态末行；这样同一文件、prompt 或伪造元数据不能冒充两份独立报告。缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。
+119-
+120:Version 9 guard: the accepted review gate rejects reports unless the two report paths are distinct non-symlink regular files, their observed SHA-256 values differ, and each report contains exactly one lane marker, reviewer identity marker, and wrapper marker matching its evidence metadata. The protected negative test constructs one byte-identical report containing both lanes' declarations, hard-links it into both expected report paths, updates both synthetic report hashes, and verifies rejection. This is a stable review-integrity failure class; retry5 artifacts created before this guard are invalidated and cannot count as acceptance evidence. The guard does not expand the acceptance scope or limitations.
+
+exec
+/bin/zsh -lc 'wc -l matharc/v02/regression_evaluation.py agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+     323 matharc/v02/regression_evaluation.py
+      50 agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json
+     373 total
+
+ succeeded in 183ms:
+HEAD 359e1e2944ef29d0aee65de7de6e68437b76c94d
+EXPECTED_HEAD 359e1e2944ef29d0aee65de7de6e68437b76c94d
+MANIFEST_SHA256 9e2bc6cfcf6004f36ed3d6f952979334a1baa86f68baf48833bbcd1b29c83561
+PASS 667a89bfe61f87b3679f5d0892cdf1e49051c41b9d47cf26d622ea96eaa77edd 667a89bfe61f87b3679f5d0892cdf1e49051c41b9d47cf26d622ea96eaa77edd matharc/v02/regression_evaluation.py
+PASS 4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6 4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6 tests/test_v02_regression_evaluation.py
+PASS e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57 e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57 tests/test_v02_calibration_disclosure.py
+PASS bbb32c14950b63c8294608e4699b9ced7df51043288433fb65b8a1d18dcad167 bbb32c14950b63c8294608e4699b9ced7df51043288433fb65b8a1d18dcad167 tests/test_v02_release_decision.py
+PASS 9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429 9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429 agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json
+PASS 13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7 13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7 agents-results/2026-08-31/problem-intelligence-plane/evidence/A4.json
+PASS 84fde4a8f71b5f87160151f3eb3bfd432bb465c146733db6c3193d100e6bfa15 84fde4a8f71b5f87160151f3eb3bfd432bb465c146733db6c3193d100e6bfa15 agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json
+PASS a56efb2c662857d5e863d8ce59abaef8044319ecd3802ee19c32a01a058472f4 a56efb2c662857d5e863d8ce59abaef8044319ecd3802ee19c32a01a058472f4 agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json
+PASS 73bccc95dc5640eff2e03c60b31cffc6b1053d1c87c2b2b0e2dc4dfeff843517 73bccc95dc5640eff2e03c60b31cffc6b1053d1c87c2b2b0e2dc4dfeff843517 agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json
+PASS 6faa8116278e8fe64d26f39bfcd0277d6dfac74fea0aa74a11aacb8046fd85ee 6faa8116278e8fe64d26f39bfcd0277d6dfac74fea0aa74a11aacb8046fd85ee agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
+PASS cda88cec2023cfb14f2a78e182df65c65428e80e5f27ccb08b4d680864ee9c61 cda88cec2023cfb14f2a78e182df65c65428e80e5f27ccb08b4d680864ee9c61 agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json
+PASS ec6336739a676253620abeb24c0df22fefec99796ad113390b1f161b428c874b ec6336739a676253620abeb24c0df22fefec99796ad113390b1f161b428c874b acceptance/human/R1-regression-evaluation/binding.md
+PASS d7a89e055f43e192d899b86f9acf707457abad034db8a29094d660108afffdde d7a89e055f43e192d899b86f9acf707457abad034db8a29094d660108afffdde acceptance/human/R1-regression-evaluation/checklist.md
+PASS 8778dd8df24a92d4fc6007ea79295fca2147f4fcd37feb56dbfdd55204af32dc 8778dd8df24a92d4fc6007ea79295fca2147f4fcd37feb56dbfdd55204af32dc acceptance/human-acceptance-log.json
+
+codex
+The manifest digest is `9e2bc6cfcf6004f36ed3d6f952979334a1baa86f68baf48833bbcd1b29c83561`; all 14 declared input hashes match, including the protected test, and the contract pins that same test SHA across AC-01 through AC-06. I will run the required unittest command exactly once while reviewing only the implementation and four-route fixture.
+exec
+/bin/zsh -lc "sed -n '1,380p' matharc/v02/regression_evaluation.py" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+"""Deterministic, non-authorizing route-ablation evaluation for R1 fixtures."""
+
+from __future__ import annotations
+
+import math
+import re
+from dataclasses import dataclass
+from typing import Any, Mapping
+
+from .schema import digest_json
+
+
+_SHA256 = re.compile(r"^[0-9a-f]{64}$")
+_GIT_SHA = re.compile(r"^[0-9a-f]{40}$")
+_ROUTES = (
+    "FORWARD_CITATION",
+    "ALIAS_AND_EQUIVALENCE",
+    "STRUCTURAL_SEMANTIC",
+    "REVIEW_AND_EXPERT_LEAD",
+)
+_CASE_IDS = (
+    "P-FRANKL-Q6",
+    "P-ARXIV-2601-22401-COLLISION",
+    "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+)
+_EXPECTED_STATUS_BY_CASE = {
+    "P-FRANKL-Q6": "OPEN_REPORTED",
+    "P-ARXIV-2601-22401-COLLISION": "RESOLVED_REPORTED",
+    "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS": "OPEN_REPORTED",
+}
+_A4_EVIDENCE_ID = "EV-A4-ACCEPTED-2"
+_A4_EVIDENCE_DIGEST = "13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7"
+_A4_SOURCE_HEAD = "5af1d9ff6fde02d86633cca50cf815ef04661d4a"
+_T2_FIXTURE_DIGEST = "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c"
+_FIXTURE_CONTENT_DIGEST = "7ac8f8ef52b7cb23f77d2150b23975f9f3f0cfcdc8e12005ea5c99f925fe1b6f"
+_OUTCOMES = {"hit", "miss", "gap"}
+
+
+class RegressionValidationError(ValueError):
+    """Raised when a fixed R1 evaluation fixture violates its contract."""
+
+
+def _fields(value: Mapping[str, Any], expected: set[str], label: str) -> None:
+    unknown = set(value) - expected
+    missing = expected - set(value)
+    if unknown or missing:
+        raise RegressionValidationError(f"{label} fields mismatch: missing={sorted(missing)}, unknown={sorted(unknown)}")
+
+
+def _text(value: object, label: str) -> str:
+    if not isinstance(value, str) or not value.strip():
+        raise RegressionValidationError(f"{label} must be non-empty text")
+    return value
+
+
+def _sha(value: object, label: str) -> str:
+    if not isinstance(value, str) or not _SHA256.fullmatch(value):
+        raise RegressionValidationError(f"{label} must be a SHA-256 digest")
+    return value
+
+
+def _git_sha(value: object, label: str) -> str:
+    if not isinstance(value, str) or not _GIT_SHA.fullmatch(value):
+        raise RegressionValidationError(f"{label} must be a Git object ID")
+    return value
+
+
+def _string_list(value: object, label: str, *, allow_empty: bool = False) -> tuple[str, ...]:
+    if not isinstance(value, list) or (not value and not allow_empty):
+        raise RegressionValidationError(f"{label} must be a non-empty array")
+    if any(not isinstance(item, str) or not item.strip() for item in value):
+        raise RegressionValidationError(f"{label} must contain non-empty text")
+    result = tuple(value)
+    if len(result) != len(set(result)) or result != tuple(sorted(result)):
+        raise RegressionValidationError(f"{label} must be unique and sorted")
+    return result
+
+
+def _normalized(value: str) -> str:
+    return " ".join(value.casefold().split())
+
+
+@dataclass(frozen=True, slots=True)
+class RouteResult:
+    route: str
+    query_scope: str
+    queries: tuple[str, ...]
+    source_ids: tuple[str, ...]
+    hit_ids: tuple[str, ...]
+    unresolved: tuple[str, ...]
+
+    def __post_init__(self) -> None:
+        if self.route not in _ROUTES:
+            raise RegressionValidationError("unsupported route")
+        _text(self.query_scope, "query_scope")
+        _string_list(list(self.queries), "queries")
+        _string_list(list(self.source_ids), "source_ids")
+        _string_list(list(self.hit_ids), "hits", allow_empty=True)
+        _string_list(list(self.unresolved), "unresolved", allow_empty=True)
+
+    @property
+    def digest_sha256(self) -> str:
+        return digest_json(self.to_dict())
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "route": self.route,
+            "query_scope": self.query_scope,
+            "queries": list(self.queries),
+            "source_ids": list(self.source_ids),
+            "hits": list(self.hit_ids),
+            "unresolved": list(self.unresolved),
+        }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "RouteResult":
+        _fields(value, {"route", "query_scope", "queries", "source_ids", "hits", "unresolved"}, "route")
+        return cls(
+            route=_text(value["route"], "route"),
+            query_scope=_text(value["query_scope"], "query_scope"),
+            queries=_string_list(value["queries"], "queries"),
+            source_ids=_string_list(value["source_ids"], "source_ids"),
+            hit_ids=_string_list(value["hits"], "hits", allow_empty=True),
+            unresolved=_string_list(value["unresolved"], "unresolved", allow_empty=True),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class RegressionCase:
+    case_id: str
+    expected_status: str
+    manual_minutes: float
+    outcome_labels: tuple[str, ...]
+    routes: tuple[RouteResult, ...]
+
+    def __post_init__(self) -> None:
+        if self.case_id not in _CASE_IDS:
+            raise RegressionValidationError("unknown case_id")
+        _text(self.expected_status, "expected_status")
+        if self.expected_status != _EXPECTED_STATUS_BY_CASE[self.case_id]:
+            raise RegressionValidationError("expected_status does not match the accepted A4 case")
+        if not isinstance(self.manual_minutes, (int, float)) or isinstance(self.manual_minutes, bool):
+            raise RegressionValidationError("manual_minutes must be numeric")
+        if not math.isfinite(self.manual_minutes) or not 0 <= self.manual_minutes <= 240:
+            raise RegressionValidationError("manual_minutes must be finite and within the R1 bound")
+        if not self.outcome_labels or set(self.outcome_labels) - _OUTCOMES:
+            raise RegressionValidationError("expected_outcomes must be drawn from hit, miss, gap")
+        if tuple(sorted(self.outcome_labels)) != self.outcome_labels:
+            raise RegressionValidationError("expected_outcomes must be sorted")
+        if len(self.routes) != len(_ROUTES) or tuple(route.route for route in self.routes) != _ROUTES:
+            raise RegressionValidationError("each case must retain exactly the four ordered routes")
+        scopes = tuple(_normalized(route.query_scope) for route in self.routes)
+        queries = tuple(_normalized(query) for route in self.routes for query in route.queries)
+        source_ids = tuple(source_id for route in self.routes for source_id in route.source_ids)
+        if (
+            len(scopes) != len(set(scopes))
+            or len(queries) != len(set(queries))
+            or len(source_ids) != len(set(source_ids))
+        ):
+            raise RegressionValidationError("route scopes, queries, and sources must be independent")
+
+    @property
+    def digest_sha256(self) -> str:
+        return digest_json(self.to_dict())
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "case_id": self.case_id,
+            "expected_status": self.expected_status,
+            "manual_minutes": self.manual_minutes,
+            "expected_outcomes": list(self.outcome_labels),
+            "routes": [route.to_dict() for route in self.routes],
+        }
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "RegressionCase":
+        _fields(value, {"case_id", "expected_status", "manual_minutes", "expected_outcomes", "routes"}, "case")
+        if not isinstance(value["routes"], list) or any(not isinstance(item, Mapping) for item in value["routes"]):
+            raise RegressionValidationError("routes must be an array of objects")
+        outcomes = _string_list(value["expected_outcomes"], "expected_outcomes")
+        return cls(
+            case_id=_text(value["case_id"], "case_id"),
+            expected_status=_text(value["expected_status"], "expected_status"),
+            manual_minutes=value["manual_minutes"],
+            outcome_labels=outcomes,
+            routes=tuple(RouteResult.from_dict(item) for item in value["routes"]),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class RouteAblation:
+    route: str
+    incremental_hits: tuple[str, ...]
+    leave_one_out_loss: tuple[str, ...]
+
+
+@dataclass(frozen=True, slots=True)
+class CaseEvaluation:
+    case_id: str
+    full_hit_ids: tuple[str, ...]
+    outcome_labels: tuple[str, ...]
+    manual_minutes: float
+    routes: tuple[RouteAblation, ...]
+
+    @property
+    def route_names(self) -> tuple[str, ...]:
+        return tuple(item.route for item in self.routes)
+
+
+@dataclass(frozen=True, slots=True)
+class RegressionEvaluation:
+    case_ids: tuple[str, ...]
+    cases: tuple[CaseEvaluation, ...]
+
+    @property
+    def digest_sha256(self) -> str:
+        return digest_json({
+            "case_ids": list(self.case_ids),
+            "cases": [
+                {
+                    "case_id": case.case_id,
+                    "full_hit_ids": list(case.full_hit_ids),
+                    "outcome_labels": list(case.outcome_labels),
+                    "manual_minutes": case.manual_minutes,
+                    "routes": [
+                        {
+                            "route": route.route,
+                            "incremental_hits": list(route.incremental_hits),
+                            "leave_one_out_loss": list(route.leave_one_out_loss),
+                        }
+                        for route in case.routes
+                    ],
+                }
+                for case in self.cases
+            ],
+        })
+
+    def case_by_id(self, case_id: str) -> CaseEvaluation:
+        for case in self.cases:
+            if case.case_id == case_id:
+                return case
+        raise RegressionValidationError("unknown evaluated case")
+
+
+@dataclass(frozen=True, slots=True)
+class RegressionSuite:
+    topic_id: str
+    a4_evidence_id: str
+    a4_evidence_digest: str
+    a4_source_head: str
+    t2_fixture_sha256: str
+    cases: tuple[RegressionCase, ...]
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "RegressionSuite":
+        _fields(value, {
+            "fixture_kind", "schema_version", "topic_id", "a4_evidence_id", "a4_evidence_digest",
+            "a4_source_head", "t2_fixture_sha256", "fixture_content_sha256", "route_order", "case_ids", "cases",
+        }, "suite")
+        if value["fixture_kind"] != "r1-four-route-regression" or value["schema_version"] != "1.0":
+            raise RegressionValidationError("unsupported regression fixture")
+        if value["route_order"] != list(_ROUTES):
+            raise RegressionValidationError("route_order must match the R1 contract")
+        if value["case_ids"] != list(_CASE_IDS):
+            raise RegressionValidationError("case_ids must match the accepted A4 archive order")
+        if not isinstance(value["cases"], list) or any(not isinstance(item, Mapping) for item in value["cases"]):
+            raise RegressionValidationError("cases must be an array of objects")
+        cases = tuple(RegressionCase.from_dict(item) for item in value["cases"])
+        if tuple(case.case_id for case in cases) != _CASE_IDS:
+            raise RegressionValidationError("cases must match the accepted A4 archive order")
+        declared_content_digest = _sha(value["fixture_content_sha256"], "fixture_content_sha256")
+        content = dict(value)
+        content.pop("fixture_content_sha256")
+        if (
+            declared_content_digest != _FIXTURE_CONTENT_DIGEST
+            or digest_json(content) != declared_content_digest
+        ):
+            raise RegressionValidationError("fixed regression fixture content drift")
+        suite = cls(
+            topic_id=_text(value["topic_id"], "topic_id"),
+            a4_evidence_id=_text(value["a4_evidence_id"], "a4_evidence_id"),
+            a4_evidence_digest=_sha(value["a4_evidence_digest"], "a4_evidence_digest"),
+            a4_source_head=_git_sha(value["a4_source_head"], "a4_source_head"),
+            t2_fixture_sha256=_sha(value["t2_fixture_sha256"], "t2_fixture_sha256"),
+            cases=cases,
+        )
+        if (
+            suite.topic_id != "union-closed"
+            or
+            suite.a4_evidence_id != _A4_EVIDENCE_ID
+            or suite.a4_evidence_digest != _A4_EVIDENCE_DIGEST
+            or suite.a4_source_head != _A4_SOURCE_HEAD
+            or suite.t2_fixture_sha256 != _T2_FIXTURE_DIGEST
+        ):
+            raise RegressionValidationError("accepted A4, T2, or topic identity drift")
+        source_ids = tuple(
+            source_id
+            for case in cases
+            for route in case.routes
+            for source_id in route.source_ids
+        )
+        if len(source_ids) != len(set(source_ids)):
+            raise RegressionValidationError("route source identities must be unique across the R1 fixture")
+        return suite
+
+    def evaluate(self) -> RegressionEvaluation:
+        evaluated: list[CaseEvaluation] = []
+        for case in self.cases:
+            route_sets = tuple(set(route.hit_ids) for route in case.routes)
+            full = set().union(*route_sets)
+            ablations = []
+            for index, route in enumerate(case.routes):
+                without = set().union(*(route_sets[:index] + route_sets[index + 1:]))
+                incremental = tuple(sorted(route_sets[index] - without))
+                ablations.append(RouteAblation(route.route, incremental, tuple(sorted(full - without))))
+            evaluated.append(CaseEvaluation(
+                case_id=case.case_id,
+                full_hit_ids=tuple(sorted(full)),
+                outcome_labels=case.outcome_labels,
+                manual_minutes=float(case.manual_minutes),
+                routes=tuple(ablations),
+            ))
+        return RegressionEvaluation(_CASE_IDS, tuple(evaluated))
+
+exec
+/bin/zsh -lc "sed -n '1,120p' agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+{
+  "fixture_kind": "r1-four-route-regression",
+  "schema_version": "1.0",
+  "topic_id": "union-closed",
+  "a4_evidence_id": "EV-A4-ACCEPTED-2",
+  "a4_evidence_digest": "13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7",
+  "a4_source_head": "5af1d9ff6fde02d86633cca50cf815ef04661d4a",
+  "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
+  "fixture_content_sha256": "7ac8f8ef52b7cb23f77d2150b23975f9f3f0cfcdc8e12005ea5c99f925fe1b6f",
+  "route_order": ["FORWARD_CITATION", "ALIAS_AND_EQUIVALENCE", "STRUCTURAL_SEMANTIC", "REVIEW_AND_EXPERT_LEAD"],
+  "case_ids": ["P-FRANKL-Q6", "P-ARXIV-2601-22401-COLLISION", "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS"],
+  "cases": [
+    {
+      "case_id": "P-FRANKL-Q6",
+      "expected_status": "OPEN_REPORTED",
+      "manual_minutes": 12,
+      "expected_outcomes": ["gap", "hit", "miss"],
+      "routes": [
+        {"route": "FORWARD_CITATION", "query_scope": "Frankl q=6 cited sources", "queries": ["frankl q=6 citations"], "source_ids": ["r1-frankl-q6-forward-source"], "hits": ["frankl-boundary"], "unresolved": []},
+        {"route": "ALIAS_AND_EQUIVALENCE", "query_scope": "Frankl q=6 aliases", "queries": ["union closed q six outside balance"], "source_ids": ["r1-frankl-q6-alias-source"], "hits": [], "unresolved": ["alias corpus incomplete"]},
+        {"route": "STRUCTURAL_SEMANTIC", "query_scope": "six-set union closure structure", "queries": ["six-set union closure outside parts"], "source_ids": ["r1-frankl-q6-structural-source"], "hits": ["frankl-structure"], "unresolved": []},
+        {"route": "REVIEW_AND_EXPERT_LEAD", "query_scope": "Frankl q=6 reviews and experts", "queries": ["Frankl conjecture q=6 review"], "source_ids": ["r1-frankl-q6-review-source"], "hits": [], "unresolved": ["expert comparison pending"]}
+      ]
+    },
+    {
+      "case_id": "P-ARXIV-2601-22401-COLLISION",
+      "expected_status": "RESOLVED_REPORTED",
+      "manual_minutes": 28,
+      "expected_outcomes": ["hit", "miss"],
+      "routes": [
+        {"route": "FORWARD_CITATION", "query_scope": "Erdos 397 cited chain", "queries": ["Erdos 397 citation chain"], "source_ids": ["r1-erdos-397-forward-source"], "hits": ["erdos-397-resolution"], "unresolved": []},
+        {"route": "ALIAS_AND_EQUIVALENCE", "query_scope": "Erdos 397 alternate wording", "queries": ["infinitely many solutions Erdos 397"], "source_ids": ["r1-erdos-397-alias-source"], "hits": ["erdos-397-alias"], "unresolved": []},
+        {"route": "STRUCTURAL_SEMANTIC", "query_scope": "binomial product equation", "queries": ["binomial coefficient product equation"], "source_ids": ["r1-erdos-397-structural-source"], "hits": [], "unresolved": ["structural match requires review"]},
+        {"route": "REVIEW_AND_EXPERT_LEAD", "query_scope": "Erdos problem reviews", "queries": ["Erdos problems 397 review"], "source_ids": ["r1-erdos-397-review-source"], "hits": ["erdos-397-review"], "unresolved": []}
+      ]
+    },
+    {
+      "case_id": "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+      "expected_status": "OPEN_REPORTED",
+      "manual_minutes": 7,
+      "expected_outcomes": ["gap", "miss"],
+      "routes": [
+        {"route": "FORWARD_CITATION", "query_scope": "four-or-more outside parts citations", "queries": ["four outside parts Frankl citation"], "source_ids": ["r1-q6-residual-forward-source"], "hits": [], "unresolved": ["no pinned citation"]},
+        {"route": "ALIAS_AND_EQUIVALENCE", "query_scope": "four-or-more residual aliases", "queries": ["Frankl q=6 four small outside parts"], "source_ids": ["r1-q6-residual-alias-source"], "hits": [], "unresolved": ["alias gap"]},
+        {"route": "STRUCTURAL_SEMANTIC", "query_scope": "residual small outside parts structure", "queries": ["union closed residual outside parts"], "source_ids": ["r1-q6-residual-structural-source"], "hits": ["q6-residual-boundary"], "unresolved": []},
+        {"route": "REVIEW_AND_EXPERT_LEAD", "query_scope": "residual expert leads", "queries": ["Frankl q=6 residual expert"], "source_ids": ["r1-q6-residual-review-source"], "hits": [], "unresolved": ["expert lead absent"]}
+      ]
+    }
+  ]
+}
+
+exec
+/bin/zsh -lc 'env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_regression_evaluation' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 72ms:
+test_accepted_review_gate_rejects_byte_identical_hard_linked_dual_declaration_reports (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_accepted_review_gate_rejects_byte_identical_hard_linked_dual_declaration_reports) ... ok
+test_accepted_review_gate_rejects_one_report_replayed_as_two_lanes (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_accepted_review_gate_rejects_one_report_replayed_as_two_lanes) ... ok
+test_expected_outcomes_are_only_hits_misses_and_gaps (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_expected_outcomes_are_only_hits_misses_and_gaps) ... ok
+test_independent_review_gate_is_fail_closed_for_pending_and_accepted_evidence (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_independent_review_gate_is_fail_closed_for_pending_and_accepted_evidence) ... ok
+test_is_passive_and_does_not_import_authorization_or_trace (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_is_passive_and_does_not_import_authorization_or_trace) ... ok
+test_tampering_identity_digest_and_ablation_fails_closed (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_tampering_identity_digest_and_ablation_fails_closed) ... ok
+test_three_cases_four_routes_and_deterministic_ablation (tests.test_v02_regression_evaluation.RegressionEvaluationTests.test_three_cases_four_routes_and_deterministic_ablation) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.025s
+
+OK
+
+codex
+The mandated suite passes all 7 tests, including deterministic four-route ablation and fail-closed tamper/identity/digest checks. The scoped implementation is passive: it validates fixed identifiers and digests, preserves the four ordered routes and three cases, computes set-union leave-one-out results, and exposes no authorization, trace, statistical, mathematical-proof, production, device, or public-release claim surface; I am doing the final pre-write whitespace and status checks now.
+exec
+/bin/zsh -lc "sed -n '1,130p' agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+# Acceptance Contract: R1-regression-evaluation
+
+- Task ID: R1-regression-evaluation
+- Contract version: 9
+- Contract status: APPROVED
+- Test baseline: LOCKED
+- Acceptance owner: 评测负责人
+- Approval evidence: 用户于 2026-09-01 批准修订 R1 验收，要求两条独立 AI 复审均产出持久化 PASS 报告；本次对报告 Markdown 哈希定界符和 R1/Q1 生命周期转换补充负测，缺失、停滞或非 PASS 报告均阻断接受; v9 adds the byte-identical hard-link replay guard and exact-once self-declaration checks.
+- Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json
+- SSOT node: R1
+- SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+- Readiness mode: FORMAL
+- Decision refs: decision.problem-intelligence.amendment@2
+- Assumption IDs: none
+- Invalidation keys: implementation.problem-intelligence.regression
+- Baseline identity: origin/main@2e47f5040d3a833e10de07286d68f017efec5d42
+- Human acceptance workspace: acceptance/human/R1-regression-evaluation
+- UI Change declaration: none
+
+## User and scenario
+
+评测负责人需要在已接受的 A4 三例档案上比较四条检索路线的具体增量，使用本地固定夹具记录命中、漏检、未决项和人工耗时。
+
+## Problem
+
+当前没有 R1 专用回归集或消融记录，不能证明四路结果被独立保留，也不能区分某一路的独有命中与其他路线重复命中。
+
+## Expected outcome
+
+存在一个严格可序列化的回归评估工件：固定绑定 A4/T2 身份和三例档案；每例恰有四路；可确定性计算全路覆盖、每路增量和留一路损失；仅报告 hit/miss/gap 与人工分钟，不输出准确率、召回率、泛化或公开结论。
+
+## Non-goals
+
+不进行网络检索、数学证明、生产部署、ResearchTrace/ClaimStatus 写入、预算授权、新颖性授权或统计性能推断。
+
+## Normal path
+
+```gherkin
+Given a hash-bound three-case fixture with four independent search routes per case
+When the regression suite is deserialized and evaluated
+Then deterministic full coverage, route increments, leave-one-route-out loss, gaps, and bounded human minutes are returned
+And the result remains a passive evaluation artifact
+```
+
+## Exception paths
+
+- 缺少/多出档案或路线、复制查询/来源、错误摘要、A4/T2 身份漂移必须拒绝加载。
+- 篡改命中、漏检、人工分钟或消融值必须因摘要或重算不一致而拒绝。
+- 零增量路线必须保留为合法结果，不能被当作缺失数据。
+- 不允许网络、持久运行时状态或外部服务；失败时不产生部分可接受结果。
+
+## Invariants
+
+- 三例身份、四路顺序、路线范围/查询/来源独立性、主题和固定夹具内容摘要在加载时闭合。
+- 每一路增量命中必须确实不在其余路线的命中集合中；留一路损失由全路与去一路集合重算。
+- hit、miss、gap 是封闭枚举；人工分钟为有限非负数并受上限约束。
+- 评估不导入 `ResearchTrace`、`ClaimStatus` 或 `authorize`，不产生授权字段。
+
+## Data impact
+
+只读加载固定 JSON，生成内存中的不可变评估结果；不修改业务数据库、运行时状态或来源文件。
+
+## Permissions
+
+评测负责人可创建和评估 R1 工件；验收负责人复核机器证据；研究负责人和仓库所有者保留发布决定权。
+
+## Performance and reliability
+
+本地三例四路评估应在 1 秒内完成；重复加载同一字节必须得到相同摘要和结果；任何校验失败均 fail closed。
+
+## Acceptance criteria
+
+| ID | Requirement | Verification layer | Mode | Blocking |
+| --- | --- | --- | --- | --- |
+| AC-01 | 三例固定绑定且每例恰有四路独立记录 | Unit | Automatic | Yes |
+| AC-02 | 全路、增量、留一路损失和 hit/miss/gap 确定性重算 | Unit | Automatic | Yes |
+| AC-03 | 摘要、身份、范围、来源、人工分钟或消融篡改 fail closed | Unit | Automatic | Yes |
+| AC-04 | 结果不含授权、声明或 ResearchTrace/ClaimStatus 依赖 | Static/Unit | Automatic | Yes |
+| AC-05 | 消融边界复审必须在冻结输入上由独立零写入审阅进程产出持久化 `PASS` 报告 | Review evidence/Unit | Automatic | Yes |
+| AC-06 | 身份与合同复审必须在同一冻结输入上由不同审阅身份的独立零写入审阅进程产出持久化 `PASS` 报告 | Review evidence/Unit | Automatic | Yes |
+
+## Human acceptance
+
+| ID | Summary | Checklist path | Required role | Blocking |
+| --- | --- | --- | --- | --- |
+| H-01 | 评测负责人确认结果只用于小样本路线比较，未包装成统计性能 | acceptance/human/R1-regression-evaluation/checklist.md#h-01 | 评测负责人 | Yes |
+
+## Protected acceptance tests
+
+| Path | SHA-256 | Covers |
+| --- | --- | --- |
+| tests/test_v02_regression_evaluation.py | 4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6 | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
+
+## Requirements-test traceability
+
+| Requirement | Verification | Evidence target | Mode | Blocking |
+| --- | --- | --- | --- | --- |
+| AC-01 | focused unit tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-02 | focused unit tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-03 | tamper/negative tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-04 | import/source guard | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-05 | frozen review ledger and report integrity gate | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-06 | distinct reviewer identity, wrapper, terminal verdict and report integrity gate | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| H-01 | human checklist | acceptance/human/R1-regression-evaluation/checklist.md#h-01 | Human | Yes |
+
+## Exploratory testing
+
+检查一条零增量路线、跨例重复命中、空未决项、边界人工分钟和 JSON 字段顺序变化；探索结果不改变发布判定。
+
+## Production monitoring and rollback
+
+不适用。R1 是本地评估工件，不进入生产运行；若夹具或算法变更，废止当前工件并以新版本重新验收。
+
+## Risks and open decisions
+
+小样本只代表固定 A4 档案，不代表检索系统总体准确率、召回率或文献开放性；真实外部文献检索仍未由本合同覆盖。
+
+合同版本 9 保留版本 8 的夹具、主题和来源身份闭合，并将两份独立 AI 复审维持为硬性、可机读的接受条件。报告完整性检查对冻结清单摘要接受等价的 Markdown 定界表达，避免把无语义差异的反引号写法误判为证据缺失；Q1 生命周期测试明确允许 R1 已重新接受而 Q1 仍阻断的中间状态；已接受分支不仅核验当前合同版本，还必须读取报告绑定的冻结清单，逐项比对当前受保护测试、R1 合同、人工绑定和清单的 SHA-256，阻止旧合同的整套报告/清单被重标后回放。每份报告还必须位于该冻结清单同一 campaign 的 `reports/<lane>.md`，正文自报与证据元数据一致的 lane、审阅身份和包装器，并以 `Verdict: PASS` 作为唯一终态末行；这样同一文件、prompt 或伪造元数据不能冒充两份独立报告。缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。
+
+Version 9 guard: the accepted review gate rejects reports unless the two report paths are distinct non-symlink regular files, their observed SHA-256 values differ, and each report contains exactly one lane marker, reviewer identity marker, and wrapper marker matching its evidence metadata. The protected negative test constructs one byte-identical report containing both lanes' declarations, hard-links it into both expected report paths, updates both synthetic report hashes, and verifies rejection. This is a stable review-integrity failure class; retry5 artifacts created before this guard are invalidated and cannot count as acceptance evidence. The guard does not expand the acceptance scope or limitations.
+
+exec
+/bin/zsh -lc 'git diff --check' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+exec
+/bin/zsh -lc 'git status --short --untracked-files=all' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/frozen-inputs.json
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/logs/ablation.log
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/logs/identity.log
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/prompts/ablation.txt
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/prompts/identity.txt
+?? agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/.gitkeep
+
+codex
+All pre-write checks are clean: `git diff --check` exits 0 with no output, and the worktree status remains limited to the pre-existing campaign inputs/logs/prompts and `.gitkeep`. I am writing the single campaign report now with the lane-local AC-06 boundary explicit; no tool or file operation will follow this write.
+apply patch
+patch: completed
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..f61e4a0756b05c42cc06351b97ef01549e6686b7
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md
+@@ -0,0 +1,73 @@
++# R1 Ablation Boundary Review
++
++Lane: ablation-boundary
++Reviewer identity: r1-ablation-boundary-l3-luna-retry10
++Wrapper: /Users/vsiyo/.codex/workers/run-l3.sh
++Review mode: zero-write
++
++Frozen head: `359e1e2944ef29d0aee65de7de6e68437b76c94d`
++Frozen input manifest: `agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/frozen-inputs.json`
++Frozen input manifest SHA-256: `9e2bc6cfcf6004f36ed3d6f952979334a1baa86f68baf48833bbcd1b29c83561`
++
++## Zero-write compliance
++
++PASS. All checks before this report write were read-only. No skills, agents, network, release workflow, or remote action was invoked. The only permitted write is this report.
++
++## Exact commands and results
++
++`git rev-parse --show-toplevel && git rev-parse HEAD && git status --short --untracked-files=all`
++
++Result: exit 0; repository root was `/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research`; HEAD matched the frozen head. The pre-write status contained only the six pre-existing campaign input/log/prompt/report-placeholder paths and no assigned report path.
++
++`python3 - <<'PY'` short JSON hash loop over the manifest `inputs` list, comparing each file SHA-256 and `git rev-parse HEAD` to `frozen_head` `PY`
++
++Result: exit 0; manifest SHA-256 was `9e2bc6cfcf6004f36ed3d6f952979334a1baa86f68baf48833bbcd1b29c83561`; all 14/14 manifest input hashes matched; HEAD matched `frozen_head`.
++
++`rg -n -C 2 'protected|SHA-256|sha256|test_v02_regression_evaluation|4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6' agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md`
++
++Result: exit 0; the contract protected-test row pins `tests/test_v02_regression_evaluation.py` to `4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6`, matching the manifest and verified file hash.
++
++`sed -n '1,380p' matharc/v02/regression_evaluation.py`
++
++Result: exit 0; reviewed the 323-line frozen evaluator.
++
++`sed -n '1,120p' agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json`
++
++Result: exit 0; reviewed the 50-line frozen three-case, four-route fixture.
++
++`env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_regression_evaluation`
++
++Result: exit 0; all 7 tests passed in 0.025s (`OK`): deterministic three-case/four-route ablation, expected outcome bounds, tamper/identity/digest fail-closed behavior, passive import guard, and byte-identical dual-lane replay rejection.
++
++`git diff --check`
++
++Result: exit 0 with no output.
++
++## Scoped review
++
++The evaluator fixes exactly three case IDs and exactly four ordered routes. It validates strict fields, route/query/source uniqueness, fixed A4/T2/topic identities, the fixture content digest, bounded finite manual minutes, and the closed `hit`/`miss`/`gap` outcome set. Evaluation uses route hit-set union, per-route incremental hits, and full-minus-without-route leave-one-out loss, so zero-increment routes remain represented.
++
++The frozen fixture records only local route queries, source IDs, hits, unresolved items, expected status, and manual minutes. The evaluator is passive and in-memory. Its imports contain no authorization, `ResearchTrace`, or `ClaimStatus` dependency and it creates no authorization field. The review makes no claim of external literature confirmation, statistical performance, mathematical proof, production behavior, device behavior, or public release.
++
++## P0/P1 findings
++
++None.
++
++## AC dispositions
++
++| Criterion | Disposition | Basis |
++| --- | --- | --- |
++| AC-01 | PASS | Frozen fixture and evaluator enforce the three fixed cases with exactly the four ordered independent routes; focused suite passed. |
++| AC-02 | PASS | Deterministic full coverage, incremental hits, leave-one-route-out loss, and bounded outcome labels are implemented and covered by the passing focused suite. |
++| AC-03 | PASS | Strict identity, field, source, content-digest, manual-minute, and ablation-recalculation rejection paths are present; tamper negative tests passed. |
++| AC-04 | PASS | Scoped source review and the passive-import test found no authorization, declaration, `ResearchTrace`, or `ClaimStatus` dependency. |
++| AC-05 | PASS | This persistent report supplies the assigned frozen-input ablation-boundary review evidence with the required self-binding metadata and terminal verdict. |
++| AC-06 | NOT ASSESSED BY THIS LANE | The separate identity-and-contract review is outside this assignment; its report was not read and this disposition does not substitute for it. |
++
++## Residual limits and boundary
++
++This is a small, fixed, local three-case A4 regression fixture. It does not establish retrieval accuracy, recall, generalization, literature availability, statistical performance, mathematical truth or proof, production or device behavior, or public-release readiness. It does not exercise network retrieval or external services. Human acceptance and the separate identity review remain independent evidence layers.
++
++This report is an ablation-boundary review only. It does not accept R1 and does not transition Q1 or A5.
++
++Verdict: PASS
+
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..f61e4a0756b05c42cc06351b97ef01549e6686b7
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md
+@@ -0,0 +1,73 @@
++# R1 Ablation Boundary Review
++
++Lane: ablation-boundary
++Reviewer identity: r1-ablation-boundary-l3-luna-retry10
++Wrapper: /Users/vsiyo/.codex/workers/run-l3.sh
++Review mode: zero-write
++
++Frozen head: `359e1e2944ef29d0aee65de7de6e68437b76c94d`
++Frozen input manifest: `agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/frozen-inputs.json`
++Frozen input manifest SHA-256: `9e2bc6cfcf6004f36ed3d6f952979334a1baa86f68baf48833bbcd1b29c83561`
++
++## Zero-write compliance
++
++PASS. All checks before this report write were read-only. No skills, agents, network, release workflow, or remote action was invoked. The only permitted write is this report.
++
++## Exact commands and results
++
++`git rev-parse --show-toplevel && git rev-parse HEAD && git status --short --untracked-files=all`
++
++Result: exit 0; repository root was `/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research`; HEAD matched the frozen head. The pre-write status contained only the six pre-existing campaign input/log/prompt/report-placeholder paths and no assigned report path.
++
++`python3 - <<'PY'` short JSON hash loop over the manifest `inputs` list, comparing each file SHA-256 and `git rev-parse HEAD` to `frozen_head` `PY`
++
++Result: exit 0; manifest SHA-256 was `9e2bc6cfcf6004f36ed3d6f952979334a1baa86f68baf48833bbcd1b29c83561`; all 14/14 manifest input hashes matched; HEAD matched `frozen_head`.
++
++`rg -n -C 2 'protected|SHA-256|sha256|test_v02_regression_evaluation|4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6' agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md`
++
++Result: exit 0; the contract protected-test row pins `tests/test_v02_regression_evaluation.py` to `4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6`, matching the manifest and verified file hash.
++
++`sed -n '1,380p' matharc/v02/regression_evaluation.py`
++
++Result: exit 0; reviewed the 323-line frozen evaluator.
++
++`sed -n '1,120p' agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json`
++
++Result: exit 0; reviewed the 50-line frozen three-case, four-route fixture.
++
++`env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_regression_evaluation`
++
++Result: exit 0; all 7 tests passed in 0.025s (`OK`): deterministic three-case/four-route ablation, expected outcome bounds, tamper/identity/digest fail-closed behavior, passive import guard, and byte-identical dual-lane replay rejection.
++
++`git diff --check`
++
++Result: exit 0 with no output.
++
++## Scoped review
++
++The evaluator fixes exactly three case IDs and exactly four ordered routes. It validates strict fields, route/query/source uniqueness, fixed A4/T2/topic identities, the fixture content digest, bounded finite manual minutes, and the closed `hit`/`miss`/`gap` outcome set. Evaluation uses route hit-set union, per-route incremental hits, and full-minus-without-route leave-one-out loss, so zero-increment routes remain represented.
++
++The frozen fixture records only local route queries, source IDs, hits, unresolved items, expected status, and manual minutes. The evaluator is passive and in-memory. Its imports contain no authorization, `ResearchTrace`, or `ClaimStatus` dependency and it creates no authorization field. The review makes no claim of external literature confirmation, statistical performance, mathematical proof, production behavior, device behavior, or public release.
++
++## P0/P1 findings
++
++None.
++
++## AC dispositions
++
++| Criterion | Disposition | Basis |
++| --- | --- | --- |
++| AC-01 | PASS | Frozen fixture and evaluator enforce the three fixed cases with exactly the four ordered independent routes; focused suite passed. |
++| AC-02 | PASS | Deterministic full coverage, incremental hits, leave-one-route-out loss, and bounded outcome labels are implemented and covered by the passing focused suite. |
++| AC-03 | PASS | Strict identity, field, source, content-digest, manual-minute, and ablation-recalculation rejection paths are present; tamper negative tests passed. |
++| AC-04 | PASS | Scoped source review and the passive-import test found no authorization, declaration, `ResearchTrace`, or `ClaimStatus` dependency. |
++| AC-05 | PASS | This persistent report supplies the assigned frozen-input ablation-boundary review evidence with the required self-binding metadata and terminal verdict. |
++| AC-06 | NOT ASSESSED BY THIS LANE | The separate identity-and-contract review is outside this assignment; its report was not read and this disposition does not substitute for it. |
++
++## Residual limits and boundary
++
++This is a small, fixed, local three-case A4 regression fixture. It does not establish retrieval accuracy, recall, generalization, literature availability, statistical performance, mathematical truth or proof, production or device behavior, or public-release readiness. It does not exercise network retrieval or external services. Human acceptance and the separate identity review remain independent evidence layers.
++
++This report is an ablation-boundary review only. It does not accept R1 and does not transition Q1 or A5.
++
++Verdict: PASS
+
+codex
+Written [ablation-boundary.md](/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md).
+
+Verified HEAD, manifest and 14/14 hashes, protected test pin, 7/7 tests, and `git diff --check`. Terminal verdict is `PASS`; the report does not accept R1 or transition Q1/A5. No post-write operations were performed.
+diff --git a/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..f61e4a0756b05c42cc06351b97ef01549e6686b7
+--- /dev/null
++++ b/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md
+@@ -0,0 +1,73 @@
++# R1 Ablation Boundary Review
++
++Lane: ablation-boundary
++Reviewer identity: r1-ablation-boundary-l3-luna-retry10
++Wrapper: /Users/vsiyo/.codex/workers/run-l3.sh
++Review mode: zero-write
++
++Frozen head: `359e1e2944ef29d0aee65de7de6e68437b76c94d`
++Frozen input manifest: `agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/frozen-inputs.json`
++Frozen input manifest SHA-256: `9e2bc6cfcf6004f36ed3d6f952979334a1baa86f68baf48833bbcd1b29c83561`
++
++## Zero-write compliance
++
++PASS. All checks before this report write were read-only. No skills, agents, network, release workflow, or remote action was invoked. The only permitted write is this report.
++
++## Exact commands and results
++
++`git rev-parse --show-toplevel && git rev-parse HEAD && git status --short --untracked-files=all`
++
++Result: exit 0; repository root was `/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research`; HEAD matched the frozen head. The pre-write status contained only the six pre-existing campaign input/log/prompt/report-placeholder paths and no assigned report path.
++
++`python3 - <<'PY'` short JSON hash loop over the manifest `inputs` list, comparing each file SHA-256 and `git rev-parse HEAD` to `frozen_head` `PY`
++
++Result: exit 0; manifest SHA-256 was `9e2bc6cfcf6004f36ed3d6f952979334a1baa86f68baf48833bbcd1b29c83561`; all 14/14 manifest input hashes matched; HEAD matched `frozen_head`.
++
++`rg -n -C 2 'protected|SHA-256|sha256|test_v02_regression_evaluation|4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6' agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md`
++
++Result: exit 0; the contract protected-test row pins `tests/test_v02_regression_evaluation.py` to `4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6`, matching the manifest and verified file hash.
++
++`sed -n '1,380p' matharc/v02/regression_evaluation.py`
++
++Result: exit 0; reviewed the 323-line frozen evaluator.
++
++`sed -n '1,120p' agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json`
++
++Result: exit 0; reviewed the 50-line frozen three-case, four-route fixture.
++
++`env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_regression_evaluation`
++
++Result: exit 0; all 7 tests passed in 0.025s (`OK`): deterministic three-case/four-route ablation, expected outcome bounds, tamper/identity/digest fail-closed behavior, passive import guard, and byte-identical dual-lane replay rejection.
++
++`git diff --check`
++
++Result: exit 0 with no output.
++
++## Scoped review
++
++The evaluator fixes exactly three case IDs and exactly four ordered routes. It validates strict fields, route/query/source uniqueness, fixed A4/T2/topic identities, the fixture content digest, bounded finite manual minutes, and the closed `hit`/`miss`/`gap` outcome set. Evaluation uses route hit-set union, per-route incremental hits, and full-minus-without-route leave-one-out loss, so zero-increment routes remain represented.
++
++The frozen fixture records only local route queries, source IDs, hits, unresolved items, expected status, and manual minutes. The evaluator is passive and in-memory. Its imports contain no authorization, `ResearchTrace`, or `ClaimStatus` dependency and it creates no authorization field. The review makes no claim of external literature confirmation, statistical performance, mathematical proof, production behavior, device behavior, or public release.
++
++## P0/P1 findings
++
++None.
++
++## AC dispositions
++
++| Criterion | Disposition | Basis |
++| --- | --- | --- |
++| AC-01 | PASS | Frozen fixture and evaluator enforce the three fixed cases with exactly the four ordered independent routes; focused suite passed. |
++| AC-02 | PASS | Deterministic full coverage, incremental hits, leave-one-route-out loss, and bounded outcome labels are implemented and covered by the passing focused suite. |
++| AC-03 | PASS | Strict identity, field, source, content-digest, manual-minute, and ablation-recalculation rejection paths are present; tamper negative tests passed. |
++| AC-04 | PASS | Scoped source review and the passive-import test found no authorization, declaration, `ResearchTrace`, or `ClaimStatus` dependency. |
++| AC-05 | PASS | This persistent report supplies the assigned frozen-input ablation-boundary review evidence with the required self-binding metadata and terminal verdict. |
++| AC-06 | NOT ASSESSED BY THIS LANE | The separate identity-and-contract review is outside this assignment; its report was not read and this disposition does not substitute for it. |
++
++## Residual limits and boundary
++
++This is a small, fixed, local three-case A4 regression fixture. It does not establish retrieval accuracy, recall, generalization, literature availability, statistical performance, mathematical truth or proof, production or device behavior, or public-release readiness. It does not exercise network retrieval or external services. Human acceptance and the separate identity review remain independent evidence layers.
++
++This report is an ablation-boundary review only. It does not accept R1 and does not transition Q1 or A5.
++
++Verdict: PASS
+
+tokens used
+65,492
+Written [ablation-boundary.md](/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/reports/ablation-boundary.md).
+
+Verified HEAD, manifest and 14/14 hashes, protected test pin, 7/7 tests, and `git diff --check`. Terminal verdict is `PASS`; the report does not accept R1 or transition Q1/A5. No post-write operations were performed.
