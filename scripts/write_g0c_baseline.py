@@ -5,6 +5,7 @@ import datetime as dt
 import hashlib
 import json
 import subprocess
+import sys
 from pathlib import Path
 from typing import Any
 
@@ -65,11 +66,15 @@ def main(argv: list[str] | None = None) -> int:
     ci_log = project_root / "artifacts/ci/ci-full.log"
     clean_log = project_root / "artifacts/ci/clean-ci.log"
 
-    ci_exit = _run_and_log(project_root, ["make", "ci-full"], ci_log)
+    # Preserve the interpreter selected for the baseline run.  Without this
+    # explicit override, Make falls back to the host default (often a Python
+    # without the formal extras), making a valid prepared environment fail.
+    python_override = f"PYTHON={sys.executable}"
+    ci_exit = _run_and_log(project_root, ["make", "ci-full", python_override], ci_log)
     if ci_exit != 0:
         print("G0-c baseline NOT written: make ci-full failed.")
         return ci_exit
-    clean_exit = _run_and_log(project_root, ["make", "clean-ci"], clean_log)
+    clean_exit = _run_and_log(project_root, ["make", "clean-ci", python_override], clean_log)
     if clean_exit != 0:
         print("G0-c baseline NOT written: make clean-ci failed.")
         return clean_exit
