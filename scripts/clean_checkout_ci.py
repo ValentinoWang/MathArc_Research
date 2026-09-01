@@ -117,8 +117,11 @@ def main(argv: list[str] | None = None) -> int:
             python = venv_dir / "bin" / "python"
             bindir = venv_dir / "bin"
 
+        # The Xcode Python bundled on macOS may ship pip versions predating
+        # PEP 660 editable installs. A regular local install exercises the
+        # same packaged source while keeping the clean-checkout gate portable.
         _run(
-            [str(python), "-m", "pip", "install", "-e", ".[research,dev,formal]"],
+            [str(python), "-m", "pip", "install", ".[research,dev,formal]"],
             cwd=clean_root,
         )
         env = dict(os.environ)
