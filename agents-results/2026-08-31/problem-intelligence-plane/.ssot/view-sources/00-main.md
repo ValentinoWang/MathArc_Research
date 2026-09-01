@@ -77,7 +77,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
 
-当前计划状态是“治理已对账、决定版本 2 已接受；A4、R1、Q1 和 A5 均已在各自限定范围内接受”。A4 的接受记录（`EV-A4-ACCEPTED-2`）限定在离线、来源固定范围内；R1 只比较固定四路回归记录，Q1 只记录未校准披露政策，A5 只记录受限的仓库源级发布决定。这些接受均不构成数学证明、外部文献确认、生产或设备证据、部署完成或公开研究授权。
+当前计划状态是“治理已对账、决定版本 2 已接受；A4 已在离线、来源固定范围内接受，R1、Q1 和 A5 因当前身份链失效而等待严格串行重验”。当前 A4 接受证据（`EV-A4-ACCEPTED-3`）已落盘；R1 只比较固定四路回归记录，Q1 只记录未校准披露政策，A5 只记录受限的仓库源级发布决定。任一层的工程接受都不构成数学证明、外部文献确认、生产或设备证据、部署完成或公开研究授权。
 
 ## 七、权威边界与剩余不确定性路由
 
@@ -136,15 +136,15 @@ main_thread_policy: orchestration-only
 main_thread_source_write: false
 planning source: .ssot/planning-compiler.json
 machine source: .ssot/manifest.json
-current pushed baseline: main@3920b96c5a42f99c88bf05142db04539d9fd10a1
-current worktree: clean
+current pushed baseline: main@3f1b69b5ab315442591f40295b036cd0d072be4e
+current worktree: active R1/Q1/A5 reacceptance candidate; query git status for the live file set
 ```
 
 ### 发布、基线与候选
 
 | Macro phase | Release ID | User value | Independent acceptance | Independent failure | Development baseline | Promotion baseline | Release candidate |
 |---|---|---|---|---|---|---|---|
-| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:3920b96c5a42f99c88bf05142db04539d9fd10a1` | `main:3920b96c5a42f99c88bf05142db04539d9fd10a1` | `candidate:pi-r1-v2` |
+| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:3f1b69b5ab315442591f40295b036cd0d072be4e` | `main:3f1b69b5ab315442591f40295b036cd0d072be4e` | `candidate:pi-r1-v2` |
 | P1 共享文献资料底座 | PI-R2 | 公开资料可追溯导入 | 观察、去重、预算和信任门 | 资料停留待审 | `candidate:pi-r1-v1` | `accepted:pi-r1-v1` | `candidate:pi-r2-v1` |
 | P2 问题状态与新颖性审计 | PI-R3 | 状态与新颖性分离 | 四路检索和失效负测 | 冻结完整预算 | `candidate:pi-r2-v1` | `accepted:pi-r2-v1` | `candidate:pi-r3-v1` |
 | P3 一次性主题观测 | PI-R4 | 三例真实闭环 | 重放、恢复、去重和人工审计 | 进入人工通道 | `candidate:pi-r3-v1` | `accepted:pi-r3-v1` | `candidate:pi-r4-v1` |
@@ -221,10 +221,10 @@ current worktree: clean
 | A3 | P2 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 未审计结果不得授权的专项证据通过 | source:accepted | T1 |
 | T1 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 游标重放、去重和人工通道专项及独立 AI 复审通过 | source:accepted | T2 |
 | T2 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 三个固定来源档案、重放、预算和人工闭环均通过独立 AI 复审 | source:accepted | A4 |
-| A4 | P3 | 1/1/1/1/2 | VERIFIED | 1 | 验收负责人 | EG-PLAN | 当前机器与离线固定来源证据通过；历史正式记录未绑定当前 HEAD | evidence:EV-A4-ACCEPTED-2 | R1 |
-| R1 | P4 | 1/1/1/1/2 | INVALIDATED | 0 | 评测负责人 | EG-PLAN | 历史四路复核需在当前 A4 身份下重验 | evidence:EV-R1-ACCEPTED-3 | Q1 |
-| Q1 | P4 | 1/1/1/1/2 | INVALIDATED | 2 | 研究负责人 | EG-PLAN | 当前台账为拒绝，需在 R1 重验后重做披露验收 | evidence:EV-Q1-ACCEPTED-3 | A5 |
-| A5 | P4 | 1/1/1/1/2 | INVALIDATED | 2 | 研究负责人和仓库所有者 | EG-PLAN | 历史受限发布决定需在当前 Q1 身份下重验 | evidence:EV-A5-ACCEPTED-2 | 无 |
+| A4 | P3 | 1/1/1/1/2 | ACCEPTED | 3 | 验收负责人 | EG-PLAN | 离线、来源固定的正式验收已绑定当前 A4 实现身份 | evidence:EV-A4-ACCEPTED-3 | R1 |
+| R1 | P4 | 1/1/1/1/2 | INVALIDATED | 5 | 评测负责人 | EG-PLAN | 新 A4 身份已就绪；等待候选提交、全量冻结清单和双独立 AI PASS | evidence:EV-R1-REOPENED-5 | Q1 |
+| Q1 | P4 | 1/1/1/1/2 | INVALIDATED | 3 | 研究负责人 | EG-PLAN | 等待新 R1 正式接受后重做披露验收 | evidence:EV-Q1-REOPENED-3 | A5 |
+| A5 | P4 | 1/1/1/1/2 | INVALIDATED | 3 | 研究负责人和仓库所有者 | EG-PLAN | 等待新 Q1 正式接受后重做受限源级发布验收 | evidence:EV-A5-REOPENED-3 | 无 |
 
 ### 语义节点登记表
 
@@ -244,9 +244,9 @@ current worktree: clean
 | T1 | implementation.problem-intelligence.topic-observation | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A3 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.topic-observation | implementation | 主题观测负责人 |
 | T2 | implementation.problem-intelligence.dogfood-archives | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.dogfood-archives | implementation | 主题观测负责人 |
 | A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
-| R1 | implementation.problem-intelligence.regression | implementation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
-| Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
-| A5 | release.problem-intelligence.v0 | release-decision | governance | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
+| R1 | implementation.problem-intelligence.regression | implementation | evaluation | INVALIDATED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
+| Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | INVALIDATED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
+| A5 | release.problem-intelligence.v0 | release-decision | governance | INVALIDATED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
 
 ### 依赖边表
 
@@ -274,7 +274,7 @@ current worktree: clean
 
 | Frontier | Task ID | Eligibility | Unsatisfied hard dependencies | Active assumptions | Resource decision |
 |---|---|---|---|---|---|
-| A4 | A4 | blocked | 当前 HEAD 绑定的正式人工接受记录 | none | 机器证据已通过；历史 `EV-A4-ACCEPTED-2` 仅作审计历史 |
+| R1 | R1 | blocked | 已提交的候选身份、全量冻结清单与两条独立持久化 PASS 报告 | none | A4 已接受；R1 必须先闭合，Q1/A5 不得越级 |
 
 ### 波前指标
 
@@ -317,7 +317,7 @@ current worktree: clean
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
 
-并行宽度的逻辑目标由独立交付物决定；A4、R1、Q1 和 A5 已分别在各自合同边界内接受。接受记录仍只证明本地、固定来源、固定样本和受限发布决定，不向数学证明、外部文献确认、生产或公开发布延伸。
+并行宽度的逻辑目标由独立交付物决定；A4 已在自身合同边界内接受，R1、Q1 和 A5 仍须按硬依赖串行重验。所有接受记录都只证明本地、固定来源、固定样本和受限发布决定，不向数学证明、外部文献确认、生产或公开发布延伸。
 
 ### 假设与冲突登记
 
@@ -443,7 +443,7 @@ F1
                                                         v
                                       T1 --> T2 --> A4 --> R1 --> Q1 --> A5
 
-D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；A4 当前为机器 `VERIFIED`，R1、Q1 和 A5 因身份失效等待重验。
+D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；A4 当前为 `ACCEPTED`，R1、Q1 和 A5 因身份失效等待严格串行重验。
 S1 的独立纸面 dry-run 已通过；它不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
 ```
 
@@ -468,8 +468,12 @@ flowchart LR
   A4 --> R1[R1 回归集]
   R1 --> Q1[Q1 难度与披露]
   Q1 --> A5[A5 v0 发布决定]
+  classDef accepted fill:#e7f5ec,stroke:#277a46,color:#173d28
+  classDef invalidated fill:#fff0f0,stroke:#b23b3b,color:#5e1f1f
+  class CHARTER,F1,D1,D2,A1,L1,L2,A2,S1,S2,A3,T1,T2,A4 accepted
+  class R1,Q1,A5 invalidated
 ```
 
 ### 结论与当前停止点
 
-当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2 保持接受；A4 仅有当前 HEAD 的机器 `VERIFIED`，R1、Q1、A5 尚未在当前身份下重新接受。不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。
+当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2、A4 保持接受；R1、Q1、A5 尚未在当前身份下重新接受。不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。

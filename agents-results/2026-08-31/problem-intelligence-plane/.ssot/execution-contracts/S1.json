@@ -19,8 +19,24 @@
   ],
   "acceptance_commands": [
     "python3 -m unittest",
-    "paper dry-run: validate T2 three real archives against the S1 contract"
+    "python3 -m unittest -v tests.test_v02_problem_status.ProblemStatusTests.test_three_paper_dry_run_fixtures_pin_exact_status_facts",
+    "python3 scripts/validate_s1_contract.py"
   ],
+  "pre_acceptance_dry_run": {
+    "fixture_contract": "agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json",
+    "dossier_fixture_ids": [
+      "P-FRANKL-Q6",
+      "P-ARXIV-2601-22401-COLLISION",
+      "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS"
+    ],
+    "command": "python3 -m unittest -v tests.test_v02_problem_status.ProblemStatusTests.test_three_paper_dry_run_fixtures_pin_exact_status_facts",
+    "execution_mode": "paper-only"
+  },
+  "runtime_validation_scope": {
+    "reserved_nodes": ["T1", "T2"],
+    "allowed_operations": ["runtime-replay", "runtime-closure"],
+    "s1_boundary": "S1 paper dry-run does not execute or accept T1/T2 runtime work"
+  },
   "evidence_outputs": [
     "agents-results/2026-08-31/problem-intelligence-plane/evidence/S1.json"
   ]

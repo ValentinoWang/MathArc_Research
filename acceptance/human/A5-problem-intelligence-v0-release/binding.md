@@ -1,14 +1,14 @@
 # Human Acceptance Binding: A5-problem-intelligence-v0-release
 
 - Task ID: A5-problem-intelligence-v0-release
-- Binding status: ACTIVE
+- Binding status: INVALIDATED_PENDING_R1_Q1_REACCEPTANCE
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
 - SSOT node: A5
 - Acceptance contract: agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
-- Contract version: 7
-- Contract SHA-256: bf110d61dd86a4695f2a738e32d4cc5d6467ca9d2e7a48e14bd42a84316b4f2d
+- Contract version: 8
+- Contract SHA-256: 69702feea3a040e44dc1ef5abfedb1527c2f28621d4d277e39668a7a7d304b09
 - Human checklist: acceptance/human/A5-problem-intelligence-v0-release/checklist.md
-- Checklist SHA-256: 336a4cc1667ee536a98ed7e69ac4ccc08d25d7de1380863f230ab6edf2de50d0
+- Checklist SHA-256: f0ad1ee0adf8faf44925beddd8cf6a4d3e997d45309d3cc346ba905ec25723e0
 
 ## Item bindings
 

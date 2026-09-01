@@ -1,28 +1,20 @@
 {
-  "binding_sha256": "de6851ccc80202b31a08b51e8046a6ed25fe081174ce32f19e9750d9b4cc23e4",
+  "binding_sha256": "aa0c5b45f29849353c02e2685a58e8746d169a8c404cd2aa4acb5a33aaefcb9e",
   "blocking": true,
   "blocking_budget": 3,
   "budget_exception": null,
-  "checklist_sha256": "10c678aa81890e8ed0d0c5ecc049a1cca04f15c05fbc5e703b9ca63dc7d2bf7f",
+  "checklist_sha256": "e87e54f4447e499f0f9ee67a06d2845122a75bb4400796f9168b1a917f173503",
   "contract_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md",
-  "contract_sha256": "bb587d3db92d5c5d3ed717b842be1ab7b6c83d93bd550dfd5366f264aef01bc4",
-  "contract_version": "7",
+  "contract_sha256": "abc40fe4ba228f1551354b7661097fc288d904761c0ecee5c2bb121c163dba4e",
+  "contract_version": "8",
   "estimated_minutes": 3,
-  "execution_policy": "terminal-after-machine-green",
+  "execution_policy": "blocked-upstream-R1",
   "invalidation_keys": [
     "validation.problem-intelligence.calibration-disclosure"
   ],
-  "loop_name": "Q1-reacceptance",
-  "machine_evidence": [
-    {
-      "layer": "machine/unit",
-      "result_path": "agents-results/2026-09-01/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T112000Z-local-q1c003/result.md",
-      "result_sha256": "ae545cda363ce5d9ca42805bdb43dd379bc29094481717398e8364395b7d8116",
-      "run_id": "20260901T112000Z-local-q1c003",
-      "source_identity": "bd4ecbecd699d0ea8177ff944d62b4cbcfee6170+q1-r1-accepted-3"
-    }
-  ],
-  "ready_at": "2026-09-01T10:53:00Z",
+  "loop_name": "Q1-reacceptance-v8",
+  "machine_evidence": [],
+  "ready_at": null,
   "release_slice": "PI-R5",
   "required_role": "研究负责人",
   "schema_version": 1,
@@ -30,7 +22,7 @@
     "no public release authority",
     "three fixed uncalibrated records"
   ],
-  "source_commit": "bd4ecbecd699d0ea8177ff944d62b4cbcfee6170+q1-r1-accepted-3-candidate",
-  "summary": "Current R1-bound uncalibrated disclosure policy is machine green; H-01 is limited to the research-owner boundary decision.",
+  "source_commit": "R1_CANDIDATE_COMMIT_PENDING",
+  "summary": "BLOCKED: Q1 v8 cannot enter the human terminal until EV-R1-ACCEPTED-4 and a new machine-green run are frozen.",
   "task_id": "Q1-calibration-disclosure"
 }

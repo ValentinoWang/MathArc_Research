@@ -19,15 +19,15 @@
         "started_at": "2026-09-01T19:00:24Z",
         "status": "PASS"
       },
-      "loop_name": "A5-v7-source-release",
-      "ready_at": "2026-09-01T16:01:00Z",
+      "loop_name": "A5-v8-source-release",
+      "ready_at": null,
       "release_slice": "PI-R5",
       "required_role": "研究负责人和仓库所有者",
       "scope_hints": [
         "union-closed fixed three uncalibrated records"
       ],
-      "status": "PASSED",
-      "summary": "Q1 v7 identity is accepted and machine-green; H-01 records a bounded repository-source decision.",
+      "status": "INVALIDATED",
+      "summary": "Current Q1 identity is blocked upstream; the historical A5 source-scope PASS remains audit-only.",
       "task_id": "A5-problem-intelligence-v0-release"
     },
     {
@@ -47,16 +47,16 @@
         "started_at": "2026-09-01T17:00:00Z",
         "status": "FAIL"
       },
-      "loop_name": "Q1-reacceptance",
-      "ready_at": "2026-09-01T10:53:00Z",
+      "loop_name": "Q1-reacceptance-v8",
+      "ready_at": null,
       "release_slice": "PI-R5",
       "required_role": "研究负责人",
       "scope_hints": [
         "no public release authority",
         "three fixed uncalibrated records"
       ],
-      "status": "REJECTED",
-      "summary": "Current R1-bound uncalibrated disclosure policy is machine green; H-01 is limited to the research-owner boundary decision.",
+      "status": "INVALIDATED",
+      "summary": "Current R1 identity is blocked; the historical Q1 disclosure PASS/FAIL records remain audit-only pending R1 reacceptance.",
       "task_id": "Q1-calibration-disclosure"
     },
     {
@@ -105,8 +105,8 @@
       "release_slice": null,
       "required_role": null,
       "scope_hints": [],
-      "status": "PREPARING",
-      "summary": "人工验收工作区已建立，尚未完成机器验收递交。",
+      "status": "INVALIDATED",
+      "summary": "R1 is blocked pending the v11 candidate, frozen manifest, independent reviews, and a new H-01 run; the historical PASS remains audit-only.",
       "task_id": "R1-regression-evaluation"
     }
   ]

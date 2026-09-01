@@ -1,11 +1,11 @@
 # Acceptance Contract: Q1-calibration-disclosure
 
 - Task ID: Q1-calibration-disclosure
-- Contract version: 7
+- Contract version: 8
 - Contract status: APPROVED
 - Test baseline: LOCKED
 - Acceptance owner: 研究负责人
-- Approval evidence: 用户已要求持续完成、验收通过并逐阶段推送 GitHub；A4 已在离线固定来源边界内正式接受，R1 已重新接受。Q1 合同版本 7 将旧 R1 夹具明确存为历史只读审计对象，并绑定当前 Q1 accepted record 的保护测试 SHA；所有未校准及禁止公开边界保持不变。
+- Approval evidence: 用户已要求持续完成、尽量使用独立 AI 审阅、使用 local CI 并逐阶段推送 GitHub。合同版本 8 将上游 R1 失效传播注册为 fail-closed 生命周期门禁：R1 非当前接受态时，Q1 必须阻断且旧机器、AI、人工结果只能作为历史证据；未校准及禁止公开边界保持不变。
 - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/Q1.json
 - SSOT node: Q1
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
@@ -13,7 +13,7 @@
 - Decision refs: decision.problem-intelligence.amendment@2
 - Assumption IDs: none
 - Invalidation keys: validation.problem-intelligence.calibration-disclosure
-- Baseline identity: origin/main@bd4ecbecd699d0ea8177ff944d62b4cbcfee6170
+- Baseline identity: origin/main@3f1b69b5ab315442591f40295b036cd0d072be4e
 - Human acceptance workspace: acceptance/human/Q1-calibration-disclosure
 - UI Change declaration: none
 
@@ -76,6 +76,7 @@ And it returns a passive non-public policy record
 | AC-02 | 未校准标记、科学优先级与传播准备度保持双轨分离 | Unit | Automatic | Yes |
 | AC-03 | 身份、状态、优先级、限制、字段或摘要篡改均 fail closed | Unit | Automatic | Yes |
 | AC-04 | 工件不授权公开发布，不依赖声明、新颖性或统计性能能力 | Static/Unit | Automatic | Yes |
+| AC-05 | R1 非当前接受态时 Q1 必须为 BLOCKED，且不得复用旧机器、AI 或人工接受结果 | Unit | Automatic | Yes |
 
 ## Human acceptance
 
@@ -87,7 +88,7 @@ And it returns a passive non-public policy record
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_calibration_disclosure.py | fbd26cced684b3ffe9489d18aeb7fd687e394490209106f73c75cc767fa0e846 | AC-01, AC-02, AC-03, AC-04 |
+| tests/test_v02_calibration_disclosure.py | 87f9dd494484031feb27cfc6cd1b332714411207680b889cd678bef3c628d742 | AC-01, AC-02, AC-03, AC-04, AC-05 |
 
 ## Requirements-test traceability
 
@@ -97,6 +98,7 @@ And it returns a passive non-public policy record
 | AC-02 | priority/readiness unit test | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
 | AC-03 | identity, status, disclosure and digest tamper tests | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
 | AC-04 | static dependency boundary test | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
+| AC-05 | upstream invalidation lifecycle branch | tests/test_v02_calibration_disclosure.py | Automatic | Yes |
 | H-01 | human checklist | acceptance/human/Q1-calibration-disclosure/checklist.md#h-01 | Human | Yes |
 
 ## Exploratory testing
@@ -109,4 +111,4 @@ And it returns a passive non-public policy record
 
 ## Risks and open decisions
 
-三个固定案例不构成校准样本，也不构成统计性能、泛化、外部文献或独立数学审阅。是否公开任何范围仍由 A5 的独立发布决定处理。R1 身份、固定夹具或本合同的保护测试任一变化均使 Q1 失效，并要求 A5 重新验收。版本 7 将历史 R1 fixture 固定在 `evidence/history/R1-four-route-regression-accepted-1.json`，防止下游验证把历史 Q1 政策误读为当前 R1 夹具；当前 Q1 接受记录已绑定 v7 保护测试和本地验收边界。
+三个固定案例不构成校准样本，也不构成统计性能、泛化、外部文献或独立数学审阅。是否公开任何范围仍由 A5 的独立发布决定处理。R1 身份、固定夹具或本合同的保护测试任一变化均使 Q1 失效，并要求 A5 重新验收。版本 8 保留历史 fixture 只读边界，并新增当前证据的双态生命周期检查：只有新的 R1 接受身份才能进入 Q1 接受分支；否则 Q1 与 A5 都保持阻断。

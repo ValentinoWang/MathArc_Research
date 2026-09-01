@@ -1,57 +1,66 @@
 {
-  "evidence_id": "EV-R1-ACCEPTED-3",
+  "evidence_id": "EV-R1-REOPENED-5",
   "task_id": "R1",
-  "consumed_evidence": ["EV-A4-ACCEPTED-2"],
+  "consumed_evidence": ["EV-A4-ACCEPTED-3"],
+  "acceptance_contract_version": 11,
   "source_identity": {
-    "implementation_base": "ea39bc29058aea2b940ac9f947e8236d601fb5a7",
-    "a4_evidence_sha256": "13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7",
+    "implementation_base": "R1_CANDIDATE_COMMIT_PENDING",
+    "a4_evidence_sha256": "0e22f563f17c00506ba7d482e8addb37b5e72ce52194c5e4d876ad8abbfc153b",
+    "a4_implementation_head": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
     "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
-    "r1_fixture_sha256": "9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429",
-    "protected_test_sha256": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6"
+    "r1_fixture_sha256": "e9f1089c7ab476a943eb61ba0dd42cba1a421b9d2e2bd16d3e477018cc9e1685",
+    "r1_fixture_content_sha256": "893c86684d39403eb9f32185629199e9e1042a70892bdb0b7b8f8875c003e5dc",
+    "protected_test_sha256": "4aca520f3d27dd30a0d6422057df0742605b3c292c0f672f136781de66f71433",
+    "acceptance_contract_sha256": "620a18e3cdd06c2df2e98e985a62b88abd71c04376957d2ff6e9f68fd75e7c79",
+    "human_binding_sha256": "b3f06c59904fc2201ca8853275359e176bd583e147c770089f3b557b43c15871",
+    "human_checklist_sha256": "7219d24e86e7e01d25070bde1deb52e8de817d199b29968d7cf22f5314cad5c6",
+    "guard_card_sha256": "83deea0ec8242a72e650723f78519047ad13f9f953c72f2dcb6fcebe569769a6"
   },
-  "acceptance_self_check": "pass",
+  "acceptance_self_check": "blocked",
   "acceptance_commands": [
-    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_regression_evaluation tests.test_v02_novelty_audit tests.test_v02_dogfood_archives",
-    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_v02*.py'",
-    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests",
-    "PYTHONDONTWRITEBYTECODE=1 python3 -m py_compile matharc/v02/regression_evaluation.py tests/test_v02_regression_evaluation.py",
+    "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_frozen_review_inputs tests.test_v02_regression_evaluation tests.test_v02_novelty_audit tests.test_v02_dogfood_archives",
+    "make ci-full PYTHON=.venv/bin/python",
     "git diff --check"
   ],
   "test_summary": {
-    "focused": "7 passed",
-    "v02": "227 passed, 8 skipped",
-    "full": "394 passed, 10 skipped",
-    "nonblocking_observation": "Existing ResourceWarning messages in Codex runtime tests did not fail the full suite and are outside the R1 changed scope."
+    "focused": "pending candidate verification",
+    "full_local_ci": "pending candidate verification"
   },
   "acceptance_matrix": {
-    "three_accepted_a4_case_ids_and_four_ordered_routes": "pass",
-    "full_route_incremental_and_leave_one_route_out_calculations_are_deterministic": "pass",
-    "a4_t2_topic_case_route_query_source_and_content_digest_drift_fail_closed": "pass",
-    "only_hit_miss_gap_and_bounded_manual_minutes_are_exposed": "pass",
-    "no_trace_claim_or_authorization_dependency": "pass"
+    "three_accepted_a4_case_ids_and_four_ordered_routes": "pending",
+    "full_route_incremental_and_leave_one_route_out_calculations_are_deterministic": "pending",
+    "a4_t2_topic_case_route_query_source_and_content_digest_drift_fail_closed": "pending",
+    "only_hit_miss_gap_and_bounded_manual_minutes_are_exposed": "pending",
+    "no_trace_claim_or_authorization_dependency": "pending",
+    "full_frozen_manifest_validation": "pending"
+  },
+  "frozen_input_validation": {
+    "contract_version": 11,
+    "disposition": "BLOCKED_PENDING_FROZEN_CANDIDATE",
+    "validator_path": "scripts/validate_frozen_review_inputs.py",
+    "validator_sha256": "b2b5f589cccb4fd1788c8f8eec59e376172b553140d38a2dee83f1e40fb2a898",
+    "protected_test_path": "tests/test_frozen_review_inputs.py",
+    "protected_test_sha256": "1e2bb185190579a45402f54096c98f14da9f338c7fbaa4f3075b3f5cfe60b64c",
+    "manifest": null,
+    "manifest_sha256": null,
+    "validated_input_count": 0
   },
   "independent_ai_reviews": {
-    "contract_version": 9,
-    "disposition": "PASS",
-    "historical_evidence": "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json",
-    "superseded_retry_2": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry2/dispatch.json",
-    "superseded_retry_3": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/dispatch.json",
-    "superseded_retry_4": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry4/dispatch.json",
-    "frozen_input_manifest": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-main-ea39bc2/frozen-inputs.json",
-    "frozen_input_manifest_sha256": "8b61173e4ffd5f53deede4889f4bd026941294b71d6503c0ec84630492d810a4",
-    "frozen_head": "ea39bc29058aea2b940ac9f947e8236d601fb5a7",
-    "reports": [
-      {"lane": "ablation-boundary", "reviewer_identity": "r1-ablation-boundary-main-ea39bc2-luna", "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-main-ea39bc2/reports/ablation-boundary.md", "sha256": "70728e7c38ed6a19da99dcff37fdab7838ce3cec888d2e8fd153c092f890646d"},
-      {"lane": "identity-contract", "reviewer_identity": "r1-identity-contract-main-ea39bc2-sol", "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-main-ea39bc2/reports/identity-contract.md", "sha256": "ff74a4115b610fa71e9fed75e41ea226a614e9872002aff675bc47c717bb84bd"}
-    ],
-    "failure_rule": "Missing, stalled, transport-limited, nonterminal, non-PASS, duplicate-reviewer, duplicate-wrapper, duplicate-path, symlink, byte-identical report, or frozen-identity-mismatched review blocks R1 acceptance."
+    "contract_version": 11,
+    "disposition": "BLOCKED_PENDING_TWO_DURABLE_PASS_REPORTS",
+    "historical_evidence": "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-3.json",
+    "frozen_input_manifest": null,
+    "frozen_input_manifest_sha256": null,
+    "frozen_head": null,
+    "reports": [],
+    "failure_rule": "Missing, partially validated, stalled, transport-limited, nonterminal, non-PASS, duplicate-reviewer, duplicate-wrapper, duplicate-path, symlink, byte-identical report, or frozen-identity-mismatched review blocks R1 acceptance."
   },
   "acceptance_record": {
-    "status": "ACCEPTED",
-    "reason": "Current HEAD, A4 identity, fixed three-case/four-route fixture, protected tests, frozen manifest, and two independent durable PASS reviews are bound.",
-    "human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260901T102745Z-local-r1a002/result.md"
+    "status": "BLOCKED",
+    "reason": "A4 is accepted under EV-A4-ACCEPTED-3. R1 is reopened on the new A4-bound fixture and awaits a committed candidate, a fully validated frozen manifest, two fresh independent durable PASS reports, and a new H-01 run.",
+    "historical_human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260901T102745Z-local-r1a002/result.md"
   },
-  "proposed_state": "ACCEPTED",
+  "proposed_state": "BLOCKED",
   "unverified_items": [
     "Live external literature retrieval",
     "Independent mathematical proof review",

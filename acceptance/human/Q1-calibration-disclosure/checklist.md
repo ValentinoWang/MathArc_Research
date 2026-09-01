@@ -3,18 +3,18 @@
 - 任务编号：Q1-calibration-disclosure
 - 人工验收绑定：acceptance/human/Q1-calibration-disclosure/binding.md
 - 验收合同：agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md
-- 合同版本：7
+- 合同版本：8
 - 清单状态：已批准
 - 所需人工角色：研究负责人
 - 清单负责人：用户
-- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段推送 GitHub；A4 与 R1 已正式接受，Q1 v7 仅接受本地未校准披露边界
+- 批准证据：用户要求持续完成、尽量使用 AI 审阅、使用 local CI 并逐阶段推送；Q1 v8 仅在新 R1 正式接受后执行新的本地未校准披露验收
 - 执行结果：acceptance/human/Q1-calibration-disclosure/runs/<run-id>/result.md
 
 ## H-01
 
 - 验收问题：三例困难度和科学优先级是否被清楚地限制为未校准的内部研究记录，且没有把高优先级写成可传播、可公开或已经得到数学确认？
 - 必须人工判断的原因：研究优先级与对外沟通边界的语义解释不能由字段一致性测试完全替代。
-- 前置条件：Q1 专项机器测试已通过；打开当前 R1 接受证据、固定政策夹具和 R1 范围说明。
+- 前置条件：R1 已以新身份正式接受，Q1 专项机器测试和两条独立 AI 复审均已通过；打开当前 R1 接受证据、固定政策夹具和 R1 范围说明。
 - 验收步骤：
   1. 检查三例均标为 `UNCALIBRATED`，传播准备度均为 `NOT_READY`。
   2. 检查高科学优先级的两例没有被描述成准确、已解决、开放已确认或可公开。

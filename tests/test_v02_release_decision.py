@@ -16,17 +16,55 @@ A5_CONTRACT = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/accep
 A5_BINDING = ROOT / "acceptance/human/A5-problem-intelligence-v0-release/binding.md"
 
 
+def _validate_a5_lifecycle(q1_evidence: dict, a5_evidence: dict) -> None:
+    if a5_evidence["proposed_state"] == "BLOCKED":
+        if (
+            q1_evidence["evidence_id"] != "EV-Q1-REOPENED-3"
+            or q1_evidence["acceptance_self_check"] != "blocked"
+            or q1_evidence["proposed_state"] != "BLOCKED"
+            or q1_evidence["acceptance_record"]["status"] != "BLOCKED_UPSTREAM_R1"
+            or a5_evidence["acceptance_record"]["status"] != "BLOCKED_UPSTREAM_Q1"
+            or a5_evidence["release_decision"]["status"] != "BLOCKED_UPSTREAM_Q1"
+            or a5_evidence["release_decision"]["github_source_delivery_authorized"]
+        ):
+            raise ValueError("A5 blocked lifecycle is inconsistent with current Q1")
+    elif a5_evidence["proposed_state"] == "ACCEPTED":
+        remote_main = a5_evidence["source_identity"]["accepted_upstream_remote_main"]
+        if (
+            q1_evidence["evidence_id"] != "EV-Q1-ACCEPTED-4"
+            or q1_evidence["acceptance_self_check"] != "pass"
+            or q1_evidence["proposed_state"] != "ACCEPTED"
+            or q1_evidence["acceptance_record"]["status"] != "ACCEPTED"
+            or a5_evidence["evidence_id"] != "EV-A5-ACCEPTED-3"
+            or a5_evidence["acceptance_record"]["status"] != "ACCEPTED"
+            or a5_evidence["release_decision"]["status"] != "ACCEPTED_SOURCE_SCOPE"
+            or not a5_evidence["release_decision"]["github_source_delivery_authorized"]
+            or not isinstance(remote_main, str)
+            or len(remote_main) != 40
+            or any(character not in "0123456789abcdef" for character in remote_main)
+            or a5_evidence["source_identity"]["implementation_base"] != remote_main
+        ):
+            raise ValueError("A5 accepted lifecycle is not bound to accepted Q1 and remote main")
+    else:
+        raise ValueError("A5 proposed_state must be BLOCKED or ACCEPTED")
+    if a5_evidence["consumed_evidence"] != [q1_evidence["evidence_id"]]:
+        raise ValueError("A5 consumed evidence does not match current Q1")
+
+
 class SourceLevelReleaseDecisionTests(unittest.TestCase):
     def load(self) -> dict:
         return json.loads(A5_EVIDENCE.read_text(encoding="utf-8"))
 
     def test_release_decision_pins_the_accepted_q1_artifacts(self) -> None:
         evidence = self.load()
+        q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
         policy = CalibrationDisclosurePolicy.from_dict(
             json.loads(Q1_POLICY.read_text(encoding="utf-8"))
         )
         self.assertFalse(policy.public_release_allowed)
-        self.assertEqual("EV-Q1-ACCEPTED-3", evidence["consumed_evidence"][0])
+        _validate_a5_lifecycle(q1_evidence, evidence)
+        if evidence["proposed_state"] != "ACCEPTED":
+            self.assertEqual("BLOCKED", evidence["proposed_state"])
         self.assertEqual(
             hashlib.sha256(Q1_EVIDENCE.read_bytes()).hexdigest(),
             evidence["source_identity"]["q1_evidence_sha256"],
@@ -41,9 +79,22 @@ class SourceLevelReleaseDecisionTests(unittest.TestCase):
             evidence["source_identity"]["q1_implementation_sha256"],
         )
         self.assertEqual(
-            "fbd26cced684b3ffe9489d18aeb7fd687e394490209106f73c75cc767fa0e846",
+            hashlib.sha256((ROOT / "tests/test_v02_calibration_disclosure.py").read_bytes()).hexdigest(),
             evidence["source_identity"]["q1_protected_test_sha256"],
         )
+
+    def test_a5_acceptance_rejects_blocked_q1_even_when_downstream_labels_are_promoted(self) -> None:
+        q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+        a5_evidence = self.load()
+        a5_evidence["evidence_id"] = "EV-A5-ACCEPTED-3"
+        a5_evidence["proposed_state"] = "ACCEPTED"
+        a5_evidence["acceptance_record"]["status"] = "ACCEPTED"
+        a5_evidence["release_decision"]["status"] = "ACCEPTED_SOURCE_SCOPE"
+        a5_evidence["release_decision"]["github_source_delivery_authorized"] = True
+        a5_evidence["source_identity"]["accepted_upstream_remote_main"] = "a" * 40
+        a5_evidence["source_identity"]["implementation_base"] = "a" * 40
+        with self.assertRaisesRegex(ValueError, "not bound to accepted Q1"):
+            _validate_a5_lifecycle(q1_evidence, a5_evidence)
 
     def test_release_evidence_has_only_the_locked_schema_and_artifacts(self) -> None:
         evidence = self.load()
@@ -62,7 +113,13 @@ class SourceLevelReleaseDecisionTests(unittest.TestCase):
             },
             set(evidence),
         )
-        self.assertEqual("EV-A5-ACCEPTED-2", evidence["evidence_id"])
+        if evidence["proposed_state"] != "ACCEPTED":
+            self.assertEqual("EV-A5-REOPENED-3", evidence["evidence_id"])
+            self.assertEqual("BLOCKED", evidence["proposed_state"])
+            self.assertEqual("BLOCKED_UPSTREAM_Q1", evidence["acceptance_record"]["status"])
+            return
+
+        self.assertEqual("EV-A5-ACCEPTED-3", evidence["evidence_id"])
         self.assertEqual("A5", evidence["task_id"])
         self.assertEqual("ACCEPTED", evidence["proposed_state"])
         expected_runs = {
@@ -95,8 +152,12 @@ class SourceLevelReleaseDecisionTests(unittest.TestCase):
 
     def test_release_scope_is_limited_to_repository_source_delivery(self) -> None:
         evidence = self.load()
-        self.assertEqual("ACCEPTED_SOURCE_SCOPE", evidence["release_decision"]["status"])
-        self.assertTrue(evidence["release_decision"]["github_source_delivery_authorized"])
+        expected_status = "ACCEPTED_SOURCE_SCOPE" if evidence["proposed_state"] == "ACCEPTED" else "BLOCKED_UPSTREAM_Q1"
+        self.assertEqual(expected_status, evidence["release_decision"]["status"])
+        self.assertEqual(
+            evidence["proposed_state"] == "ACCEPTED",
+            evidence["release_decision"]["github_source_delivery_authorized"],
+        )
         self.assertFalse(evidence["release_decision"]["mathematical_result_publication_authorized"])
         self.assertFalse(evidence["release_decision"]["q1_public_release_allowed"])
         self.assertEqual("union-closed", evidence["release_scope"]["topic_id"])

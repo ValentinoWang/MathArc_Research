@@ -1,15 +1,20 @@
 {
-  "evidence_id": "EV-A5-ACCEPTED-2",
+  "evidence_id": "EV-A5-REOPENED-3",
   "task_id": "A5",
-  "consumed_evidence": ["EV-Q1-ACCEPTED-3"],
+  "consumed_evidence": ["EV-Q1-REOPENED-3"],
   "source_identity": {
-    "implementation_base": "bd4ecbecd699d0ea8177ff944d62b4cbcfee6170",
-    "q1_evidence_sha256": "7961857447f7ecb45d496ebed9772f172eee9f3ae33f4b98b47d6c2b7e7256b9",
+    "implementation_base": "R1_CANDIDATE_COMMIT_PENDING",
+    "q1_evidence_sha256": "91c8b6cc15c753111efeaaf27003daa434e1cf9470b7bb65fc742b6a5dc71ac2",
     "q1_policy_fixture_sha256": "566d86da2d3ab3f9a44e380f38ed11858d021a2ac029517dd8f21d8a7e82f0b0",
     "q1_policy_digest_sha256": "0705e8af012c36afc85c5af61d9a473ec8f3d369f877450acc9587be82281252",
     "q1_implementation_sha256": "d7ac4010b960bacfb601a0670a0c1c45ef7da0be049839fd551b8a69d5b79bc7",
-    "q1_protected_test_sha256": "fbd26cced684b3ffe9489d18aeb7fd687e394490209106f73c75cc767fa0e846",
-    "accepted_upstream_remote_main": "bd4ecbecd699d0ea8177ff944d62b4cbcfee6170"
+    "q1_protected_test_sha256": "87f9dd494484031feb27cfc6cd1b332714411207680b889cd678bef3c628d742",
+    "accepted_upstream_remote_main": null,
+    "acceptance_contract_version": 8,
+    "acceptance_contract_sha256": "69702feea3a040e44dc1ef5abfedb1527c2f28621d4d277e39668a7a7d304b09",
+    "human_binding_sha256": "c81bb4e2eb214b07d80964220c150ce64bac1a817632d4c56241195bdc476904",
+    "human_checklist_sha256": "f0ad1ee0adf8faf44925beddd8cf6a4d3e997d45309d3cc346ba905ec25723e0",
+    "protected_test_sha256": "04aef89be66b535db4bceb45e3778b4a8e9ddb59c5f1017b0f1d208120cc58c8"
   },
   "release_scope": {
     "evidence_level": "source",
@@ -29,28 +34,24 @@
     ]
   },
   "release_decision": {
-    "status": "ACCEPTED_SOURCE_SCOPE",
-    "github_source_delivery_authorized": true,
+    "status": "BLOCKED_UPSTREAM_Q1",
+    "github_source_delivery_authorized": false,
     "mathematical_result_publication_authorized": false,
     "q1_public_release_allowed": false,
-    "reason": "Q1 remains a hash-bound, three-record, local UNCALIBRATED and NOT_READY disclosure policy; this decision delivers only the accepted repository source scope."
+    "reason": "Q1 is invalidated while R1 is reopened. Historical source-scope acceptance cannot authorize a current GitHub delivery claim."
   },
   "delivery_requirements": {
     "remote_ref_readback": "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
     "pre_push_delivery_claim": false
   },
   "acceptance_record": {
-    "accepted_at": "2026-09-01",
-    "accepted_by": "用户（研究负责人和仓库所有者）",
-    "authority_basis": "用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；本切片仅记录受限的仓库源级发布决定。",
-    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T190000Z-local-a5g001/result.md",
-    "machine_acceptance_result_sha256": "72e017fd6dcdd55fc70cb9e4f64dc175e7898f8507cce66d0dfad24bc8d19316",
-    "human_acceptance_result": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T190024Z-local-a5g002/result.md",
-    "human_acceptance_result_sha256": "9fd6d19c07a3f01c140a1d3bdd3a9738ab0bc3fb6d13f659c45f4d6adec57184",
-    "release_review_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T190048Z-local-a5g003/result.md",
-    "release_review_result_sha256": "029a4dce1f914419359344f67f9d8e02d36cc47e3b47d63fd4b7b8599242d4ec"
+    "status": "BLOCKED_UPSTREAM_Q1",
+    "reason": "A5 must wait for a freshly accepted Q1 and cannot reuse the EV-Q1-ACCEPTED-3 release runs.",
+    "historical_machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T190000Z-local-a5g001/result.md",
+    "historical_human_acceptance_result": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T190024Z-local-a5g002/result.md",
+    "historical_release_review_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T190048Z-local-a5g003/result.md"
   },
-  "proposed_state": "ACCEPTED",
+  "proposed_state": "BLOCKED",
   "unverified_items": [
     "Independent mathematical proof review",
     "Live external literature retrieval",

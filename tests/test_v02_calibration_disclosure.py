@@ -19,6 +19,45 @@ R1_FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/eviden
 Q1_EVIDENCE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json"
 
 
+def _validate_q1_lifecycle(
+    r1_evidence: dict,
+    q1_evidence: dict,
+    policy: CalibrationDisclosurePolicy,
+) -> None:
+    if q1_evidence["acceptance_self_check"] == "blocked":
+        if (
+            r1_evidence["evidence_id"] != "EV-R1-REOPENED-5"
+            or r1_evidence["acceptance_self_check"] != "blocked"
+            or r1_evidence["proposed_state"] != "BLOCKED"
+            or r1_evidence["acceptance_record"]["status"] != "BLOCKED"
+            or q1_evidence["evidence_id"] != "EV-Q1-REOPENED-3"
+            or q1_evidence["proposed_state"] != "BLOCKED"
+            or q1_evidence["acceptance_record"]["status"] != "BLOCKED_UPSTREAM_R1"
+        ):
+            raise ValueError("Q1 blocked lifecycle is inconsistent with current R1")
+    elif q1_evidence["acceptance_self_check"] == "pass":
+        if (
+            r1_evidence["evidence_id"] != "EV-R1-ACCEPTED-4"
+            or r1_evidence["acceptance_self_check"] != "pass"
+            or r1_evidence["proposed_state"] != "ACCEPTED"
+            or r1_evidence["acceptance_record"]["status"] != "ACCEPTED"
+            or q1_evidence["evidence_id"] != "EV-Q1-ACCEPTED-4"
+            or q1_evidence["proposed_state"] != "ACCEPTED"
+            or q1_evidence["acceptance_record"]["status"] != "ACCEPTED"
+            or policy.r1_evidence_id != r1_evidence["evidence_id"]
+            or policy.r1_evidence_sha256 != q1_evidence["source_identity"]["r1_evidence_sha256"]
+            or policy.r1_fixture_sha256 != r1_evidence["source_identity"]["r1_fixture_sha256"]
+            or policy.r1_fixture_content_sha256
+            != r1_evidence["source_identity"]["r1_fixture_content_sha256"]
+            or policy.r1_implementation_base != r1_evidence["source_identity"]["implementation_base"]
+        ):
+            raise ValueError("Q1 accepted lifecycle is not bound to accepted R1")
+    else:
+        raise ValueError("Q1 acceptance_self_check must be blocked or pass")
+    if q1_evidence["consumed_evidence"] != [r1_evidence["evidence_id"]]:
+        raise ValueError("Q1 consumed evidence does not match current R1")
+
+
 class CalibrationDisclosureTests(unittest.TestCase):
     def load(self) -> tuple[dict, CalibrationDisclosurePolicy]:
         fixture_bytes = FIXTURE.read_bytes()
@@ -52,23 +91,46 @@ class CalibrationDisclosureTests(unittest.TestCase):
     def test_current_q1_block_is_bound_to_reopened_or_accepted_r1_identity(self) -> None:
         r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
-        self.assertIn(
-            r1_evidence["evidence_id"],
-            {"EV-R1-ACCEPTED-3"},
+        policy = CalibrationDisclosurePolicy.from_fixture_bytes(FIXTURE.read_bytes())
+        _validate_q1_lifecycle(r1_evidence, q1_evidence, policy)
+        self.assertEqual(
+            r1_evidence["source_identity"]["r1_fixture_sha256"],
+            q1_evidence["source_identity"]["r1_fixture_sha256"],
         )
-        self.assertEqual("EV-Q1-ACCEPTED-3", q1_evidence["evidence_id"])
-        self.assertEqual("pass", q1_evidence["acceptance_self_check"])
-        self.assertEqual("ACCEPTED", q1_evidence["proposed_state"])
+        self.assertEqual(
+            r1_evidence["source_identity"]["r1_fixture_content_sha256"],
+            q1_evidence["source_identity"]["r1_fixture_content_sha256"],
+        )
+        if q1_evidence["acceptance_self_check"] != "pass":
+            self.assertEqual(
+                hashlib.sha256(R1_EVIDENCE.read_bytes()).hexdigest(),
+                q1_evidence["source_identity"]["r1_evidence_sha256"],
+            )
+            return
+
         self.assertEqual(
             hashlib.sha256(R1_EVIDENCE.read_bytes()).hexdigest(),
             q1_evidence["source_identity"]["r1_evidence_sha256"],
         )
-        policy = CalibrationDisclosurePolicy.from_fixture_bytes(FIXTURE.read_bytes())
         self.assertEqual(
             hashlib.sha256(FIXTURE.read_bytes()).hexdigest(),
             q1_evidence["source_identity"]["q1_policy_fixture_sha256"],
         )
         self.assertEqual(policy.policy_digest_sha256, q1_evidence["source_identity"]["q1_policy_digest_sha256"])
+
+    def test_q1_acceptance_rejects_blocked_r1_even_when_downstream_labels_are_promoted(self) -> None:
+        r1_evidence = json.loads(R1_EVIDENCE.read_text(encoding="utf-8"))
+        q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
+        q1_evidence["evidence_id"] = "EV-Q1-ACCEPTED-4"
+        q1_evidence["acceptance_self_check"] = "pass"
+        q1_evidence["proposed_state"] = "ACCEPTED"
+        q1_evidence["acceptance_record"]["status"] = "ACCEPTED"
+        with self.assertRaisesRegex(ValueError, "not bound to accepted R1"):
+            _validate_q1_lifecycle(
+                r1_evidence,
+                q1_evidence,
+                CalibrationDisclosurePolicy.from_fixture_bytes(FIXTURE.read_bytes()),
+            )
 
     def test_science_priority_remains_separate_from_communication_readiness(self) -> None:
         _, policy = self.load()

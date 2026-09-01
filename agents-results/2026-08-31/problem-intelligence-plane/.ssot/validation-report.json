@@ -1,30 +1,66 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-01T14:43:08.394998+00:00",
+  "generated_at": "2026-09-01T16:42:28.893190+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
-    "commit": "86d7c2cc7bdb0ed6f6628c8ad40250119ccb84a2",
-    "dirty": false,
-    "dirty_files": [],
-    "dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "commit": "a8975120a0a392ea902fb39f3e1d8259cbe000a0",
+    "dirty": true,
+    "dirty_files": [
+      ".agents/skills/design-reference-context",
+      ".agents/skills/runtime-visual-verification",
+      ".agents/skills/visual-collaboration-contract",
+      ".agents/skills/visual-direction-exploration",
+      "Core/skills/report-to-ssot-development-paths/references/proportional-governance-contract.md",
+      "acceptance/human-acceptance-log.json",
+      "acceptance/human-acceptance-log.md",
+      "acceptance/human/2026-W36/\\346\\234\\252-2026-09-01-C1-manual-acceptance-log-contract/binding.md",
+      "acceptance/human/2026-W36/\\346\\234\\252-2026-09-01-C1-manual-acceptance-log-contract/checklist.md",
+      "acceptance/human/2026-W36/\\346\\234\\252-2026-09-01-C1-manual-acceptance-log-contract/handoff.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/edges/E-C1-Q1.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/edges/E-I1-Q2.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/edges/E-I2-Q3.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/edges/E-Q1-I1.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/edges/E-Q2-I2.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/edges/E-Q3-DC.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/manifest.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/nodes/C1.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/nodes/DC.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/nodes/F.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/nodes/I1.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/nodes/I2.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/nodes/Q1.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/nodes/Q2.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/nodes/Q3.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/planning-compiler.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/validation-report.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/.ssot/view-sources/00-main.md",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance-contract.md",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/index.md",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/static/runs/20260901T154100Z-main-a89751/evidence/commands.txt",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/static/runs/20260901T154100Z-main-a89751/result.md",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/unit/runs/20260901T154000Z-main-a89751/evidence/commands.txt",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/unit/runs/20260901T154000Z-main-a89751/result.md",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/ssot-development-paths.md"
+    ],
+    "dirty_diff_sha256": "49adf2fde55bf9c4d867b26db00bf71604fc37f336f3bfa7f0077975eb6450ef",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
     "skill_sha256": "1e7c129ec9cb19ee5d925ee0a1c8b78da53cb18bb0e7ab8c16734c417c852e4a",
-    "checker_bundle_sha256": "f668a0b01d6811176f3cd6efab858a36ed5f50e804c7d75c5999991f788dcfab"
+    "checker_bundle_sha256": "97d4f3e8038163f6549772098bbde562072914699b596aaac9bcdbc7c5a0da48"
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "7069c784cc31531c6049550203f3249e9f6bc9c8",
-    "project_dirty": false,
-    "project_dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "project_commit": "3f1b69b5ab315442591f40295b036cd0d072be4e",
+    "project_dirty": true,
+    "project_dirty_diff_sha256": "3b337f524a079ebc382513ecb2978dee33073d0ea3a72c2104ba791d19453eca",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "1b842d530d280ddd50e3bf11f7eae8abb2c2a97a3c90ee126b734a3b791e8c13",
-    "content_sha256": "1b842d530d280ddd50e3bf11f7eae8abb2c2a97a3c90ee126b734a3b791e8c13",
-    "manifest_sha256": "196fd58344ae221200dfe93776936fa9f89f95afcc174aa5d439a9e56ae82be6",
-    "manifest_identity_sha256": "196fd58344ae221200dfe93776936fa9f89f95afcc174aa5d439a9e56ae82be6"
+    "sha256": "a24c04c215fbdf039964f4eaf3be94a6c5aa85b545fb7b53a28d1ae122a3dbbc",
+    "content_sha256": "a24c04c215fbdf039964f4eaf3be94a6c5aa85b545fb7b53a28d1ae122a3dbbc",
+    "manifest_sha256": "9baf4645c8707f97c87879207d2647687465efe7c9188ff721bf55afba6103da",
+    "manifest_identity_sha256": "9baf4645c8707f97c87879207d2647687465efe7c9188ff721bf55afba6103da"
   },
   "checks": [
     {
@@ -39,7 +75,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 41\nruntime_skill_check: enabled\ndoctor: ok\n"
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 41\nruntime_skill_check: enabled\nWARN Harness source dirty files: 33\ndoctor: ok\n"
     },
     {
       "id": "complexity",
@@ -123,17 +159,6 @@
       "exit_code": 0,
       "result": "passed",
       "output": "{\n  \"status\": \"verified\",\n  \"source\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane\",\n  \"destination\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-08-31/matharc-research/problem-intelligence-plane\",\n  \"project_name\": \"matharc-research\",\n  \"ssot_name\": \"problem-intelligence-plane\",\n  \"snapshot_date\": \"2026-08-31\",\n  \"main_document\": \"ssot-development-paths.md\",\n  \"file_count\": 2,\n  \"contains_openproblem\": true\n}\n"
-    },
-    {
-      "id": "strict-provenance",
-      "command": [
-        "git",
-        "status",
-        "--short"
-      ],
-      "exit_code": 0,
-      "result": "passed",
-      "output": "protected Harness inputs are clean"
     }
   ],
   "parallelism": {

@@ -1,19 +1,7 @@
-# Task Acceptance Evidence Index
+# Q1 Acceptance Index
 
-This generated index covers non-human evidence in this task artifact root. It locates evidence but does not define acceptance behavior.
+This current-state projection selects the reopened Q1 evidence. Historical machine and human PASS runs remain preserved under their original paths and are audit history only.
 
-| Run ID | Task ID | Lane | Status | Contract version | Source identity | Runtime identity | Result SHA-256 | Result path |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| 20260831T164137Z-local-a51e32 | Q1-calibration-disclosure | machine/unit | PARTIAL | 1 | c0dcc523ba00de9f660a8e1f1badd887f21de1f7+q1-pre-r1-metadata-migration | python-3.13 | 38b7fd5af5d5bcd42cdac04c9220497c10df0e32bda0a8c558cbda49e964968a | acceptance/machine/unit/runs/20260831T164137Z-local-a51e32/result.md |
-| 20260831T164758Z-local-c11a53 | Q1-calibration-disclosure | machine/unit | PASS | 1 | c0dcc523ba00de9f660a8e1f1badd887f21de1f7+q1-r1-metadata-migration | python-3.13 | bf4000aaa2b5ee7c772d9958855b8fedfed38c8980529ceb685ccd69ed0c9fc7 | acceptance/machine/unit/runs/20260831T164758Z-local-c11a53/result.md |
-| 20260901T003200Z-local-a1c204 | Q1-calibration-disclosure | machine/unit | PASS | 4 | 8a6d908541b770461a081b43d8ced627befd0912+q1-v4-final | python-3.13 | 27ceeac18a8f32f3b2b1b8d78921b089e71cf4d6cd1e9be0474f34c733066824 | acceptance/machine/unit/runs/20260901T003200Z-local-a1c204/result.md |
-| 20260901T004000Z-local-a1c404 | Q1-calibration-disclosure | machine/unit | PENDING | 4 | 8a6d908541b770461a081b43d8ced627befd0912+q1-v4-integrity-final | python-3.13 | 6e4959858a7717320f79cbdb95d80dae7a799de759e62f515b619c91218ddfce | acceptance/machine/unit/runs/20260901T004000Z-local-a1c404/result.md |
-| 20260901T093000Z-local-a1c004 | Q1-calibration-disclosure | machine/unit | PASS | 4 | 8a6d908541b770461a081b43d8ced627befd0912+q1-v4-reaccept | python-3.13 | 447bd501861e87ed92e80318f9d8fdeadd515233d4e2be32270c5d7804a0ec56 | acceptance/machine/unit/runs/20260901T093000Z-local-a1c004/result.md |
-| 20260901T113000Z-local-f1a001 | Q1-calibration-disclosure | machine/unit | PASS | 4 | 8a6d908541b770461a081b43d8ced627befd0912+q1-v4-integrity-final | python-3.13 | a490751d88fc2490e039282e1c4f5671f5dd5e0e8a7003f6c66d4dfe2be90d37 | acceptance/machine/unit/runs/20260901T113000Z-local-f1a001/result.md |
-| 20260901T120000Z-local-f1a201 | Q1-calibration-disclosure | machine/unit | PASS | 4 | 757feb11c6d6c05bb43332bcf3c1a523a7833a7d+q1-v4-final | python-3.13 | 9c051bf64d0330afdc7c587a711c5abd40d0b1a803555823e6e7b78d35354b4c | acceptance/machine/unit/runs/20260901T120000Z-local-f1a201/result.md |
-| 20260901T123000Z-local-f1a401 | Q1-calibration-disclosure | machine/unit | PASS | 4 | b35e02c2f12d1180ffca1c6af3d29b543c5929da+q1-v4-final | python-3.13 | 48da555788cf217e37446b83ac2717ada13ca88e41da86f8f2e4bf3091d9f989 | acceptance/machine/unit/runs/20260901T123000Z-local-f1a401/result.md |
-| 20260901T132000Z-local-a1d001 | Q1-calibration-disclosure | machine/unit | PASS | 4 | 20d41af66b03d037b7e390ce31800fcc9d573a3e+q1-r1-run-id-repair | python-3.13 | 64ebe15628e713d9c859426afa9e096d107f875b3f120b025492a6f59e95a6e0 | acceptance/machine/unit/runs/20260901T132000Z-local-a1d001/result.md |
-| 20260901T140000Z-local-a1e001 | Q1-calibration-disclosure | machine/unit | PASS | 4 | 20d41af66b03d037b7e390ce31800fcc9d573a3e+q1-r1-run-id-repair | python-3.13 | be814484f9f91962151e8fa96d91a55f1ce3b9bf150c7490ce9e2fd15a6dc15a | acceptance/machine/unit/runs/20260901T140000Z-local-a1e001/result.md |
-| 20260901T103800Z-local-q1c001 | Q1-calibration-disclosure | machine/unit | PASS | 5 | bd4ecbecd699d0ea8177ff944d62b4cbcfee6170+q1-r1-accepted-3-candidate | python-3.13 | 4a48b309c7a6220655de808dcd7d41e771727b44594216276ce4a890a39a69d8 | acceptance/machine/unit/runs/20260901T103800Z-local-q1c001/result.md |
-| 20260901T105300Z-local-q1c002 | Q1-calibration-disclosure | machine/unit | PASS | 6 | bd4ecbecd699d0ea8177ff944d62b4cbcfee6170+q1-r1-accepted-3-candidate | python-3.13 | 59b1cf182fedac14186dee45b789fba49ebd7a848d983259154c7105a9dde7af | acceptance/machine/unit/runs/20260901T105300Z-local-q1c002/result.md |
-| 20260901T112000Z-local-q1c003 | Q1-calibration-disclosure | machine/unit | PASS | 7 | bd4ecbecd699d0ea8177ff944d62b4cbcfee6170+q1-r1-accepted-3 | python-3.13 | ae545cda363ce5d9ca42805bdb43dd379bc29094481717398e8364395b7d8116 | acceptance/machine/unit/runs/20260901T112000Z-local-q1c003/result.md |
+| Evidence ID | Task ID | Layer | Status | Contract version | Source identity | Runtime identity | Evidence SHA-256 | Evidence path |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| EV-Q1-REOPENED-3 | Q1-calibration-disclosure | evidence | BLOCKED_UPSTREAM_R1 | 8 | R1_CANDIDATE_COMMIT_PENDING | pending-candidate | 91c8b6cc15c753111efeaaf27003daa434e1cf9470b7bb65fc742b6a5dc71ac2 | ../../../evidence/Q1.json |
