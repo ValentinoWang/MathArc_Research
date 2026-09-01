@@ -1,6 +1,6 @@
-# Acceptance Run: 20260901T080000Z-local-r1a008
+# Acceptance Run: 20260901T080000Z-local-a1a008
 
-- Run ID: 20260901T080000Z-local-r1a008
+- Run ID: 20260901T080000Z-local-a1a008
 - Task ID: R1-regression-evaluation
 - Lane: human
 - Status: PASS
