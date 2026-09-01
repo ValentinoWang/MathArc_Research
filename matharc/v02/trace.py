@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterable, Mapping
@@ -646,12 +647,29 @@ def save_trace(trace: ResearchTrace, path: str | Path) -> Path:
     validation = trace.validate()
     if not validation["valid"]:
         raise TraceValidationError("; ".join(validation["errors"]))
-    temporary = target.with_suffix(target.suffix + ".tmp")
-    temporary.write_text(
-        json.dumps(trace.to_dict(), ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-        encoding="utf-8",
-    )
-    os.replace(temporary, target)
+    # A fixed ``.tmp`` name lets unrelated writers publish one another's
+    # payload. Keep the temporary file in the target directory so replace is
+    # atomic, but make its name unique for every save attempt.
+    temporary: Path | None = None
+    try:
+        with tempfile.NamedTemporaryFile(
+            mode="w",
+            encoding="utf-8",
+            dir=target.parent,
+            prefix=f".{target.name}.",
+            suffix=".tmp",
+            delete=False,
+        ) as stream:
+            temporary = Path(stream.name)
+            stream.write(
+                json.dumps(trace.to_dict(), ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+            )
+            stream.flush()
+            os.fsync(stream.fileno())
+        os.replace(temporary, target)
+    finally:
+        if temporary is not None and temporary.exists():
+            temporary.unlink()
     return target
 
 

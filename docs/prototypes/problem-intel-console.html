@@ -4289,6 +4289,23 @@ const LIVE_ENUM_UI = Object.freeze({
     PENDING:{cls:"gap",label:"待核验"}, VERIFIED:{cls:"ok",label:"已核验"},
     REJECTED:{cls:"err",label:"已拒绝"}, SUPERSEDED:{cls:"skip",label:"已替代"},
   }),
+  release_state: Object.freeze({
+    PROVED_AND_AUDITED:{cls:"ok",label:"已证明且审计通过"}, PROVED_WITH_AUDIT_DEBT:{cls:"gap",label:"已证明，仍有审计欠账"},
+    REFUTED:{cls:"err",label:"已证伪"}, REFUTED_EXACT:{cls:"err",label:"已精确证伪"},
+    CANDIDATE_UNVERIFIED:{cls:"gap",label:"候选，未核验"}, BLOCKED_EXACT:{cls:"gap",label:"已被精确阻塞"}, OPEN_RESEARCH:{cls:"gap",label:"开放研究中"},
+  }),
+  event_type: Object.freeze({
+    WORKSPACE_CREATED:{cls:"skip",label:"工作区创建"}, CLAIM_ADDED:{cls:"acc",label:"新增命题"}, ROUTE_ADDED:{cls:"acc",label:"新增路线"},
+    OBJECT_ADDED:{cls:"acc",label:"新增对象"}, OBJECT_VERIFIED:{cls:"ok",label:"对象已核验"}, CLAIM_OBJECTS_LINKED:{cls:"skip",label:"关联对象"},
+    SOURCE_CLAIM_ADDED:{cls:"acc",label:"新增来源"}, SOURCE_CLAIM_VERIFIED:{cls:"ok",label:"来源已核验"}, CLAIM_SOURCES_LINKED:{cls:"skip",label:"关联来源"},
+    EVIDENCE_ADDED:{cls:"ok",label:"附加证据"}, TOOL_CALL_ADDED:{cls:"gap",label:"工具调用"}, PUBLIC_REASONING_ADDED:{cls:"skip",label:"公开推理"},
+    FAILURE_RECORDED:{cls:"err",label:"登记失败"}, CLAIM_PROMOTED:{cls:"ok",label:"命题已晋升"}, CAMPAIGN_RECORDED:{cls:"ok",label:"攻克报告已登记"},
+    CAMPAIGN_COMPLETED:{cls:"ok",label:"攻克已完成"}, CLAIM_PROMOTION_REJECTED:{cls:"err",label:"命题晋升被拒绝"}, CAMPAIGN_ROUND_COMPLETED:{cls:"skip",label:"攻克轮次完成"},
+    REVIEW_GAP_RECORDED:{cls:"gap",label:"登记评审缺口"}, ROUTE_FAILURE_RECORDED:{cls:"err",label:"登记路线失败"}, CLAIM_COUNTEREXAMPLE_RECORDED:{cls:"err",label:"登记命题反例"},
+  }),
+  campaign_reason: Object.freeze({
+    campaign_report_not_recorded:{cls:"gap",label:"尚未登记攻克报告"}, campaign_report_stale:{cls:"gap",label:"攻克报告已过期"},
+  }),
 });
 const LIVE_ENUM_KEYS = Object.freeze({
   claim_status:["PROPOSED","OPEN","CANDIDATE","PROVED","REFUTED","BLOCKED","RETRACTED"],
@@ -4296,6 +4313,9 @@ const LIVE_ENUM_KEYS = Object.freeze({
   evidence_kind:["FORMAL_PROOF","CHECKED_DERIVATION","EXACT_CERTIFICATE","EXACT_COMPUTATION","COUNTEREXAMPLE","LITERATURE_RESULT","HUMAN_AUDIT","NUMERICAL_EXPERIMENT","HEURISTIC"],
   tool_status:["REQUESTED","RUNNING","PASS","FAIL","ERROR"],
   source_claim_status:["PENDING","VERIFIED","REJECTED","SUPERSEDED"],
+  release_state:["PROVED_AND_AUDITED","PROVED_WITH_AUDIT_DEBT","REFUTED","REFUTED_EXACT","CANDIDATE_UNVERIFIED","BLOCKED_EXACT","OPEN_RESEARCH"],
+  event_type:["WORKSPACE_CREATED","CLAIM_ADDED","ROUTE_ADDED","OBJECT_ADDED","OBJECT_VERIFIED","CLAIM_OBJECTS_LINKED","SOURCE_CLAIM_ADDED","SOURCE_CLAIM_VERIFIED","CLAIM_SOURCES_LINKED","EVIDENCE_ADDED","TOOL_CALL_ADDED","PUBLIC_REASONING_ADDED","FAILURE_RECORDED","CLAIM_PROMOTED","CAMPAIGN_RECORDED","CAMPAIGN_COMPLETED","CLAIM_PROMOTION_REJECTED","CAMPAIGN_ROUND_COMPLETED","REVIEW_GAP_RECORDED","ROUTE_FAILURE_RECORDED","CLAIM_COUNTEREXAMPLE_RECORDED"],
+  campaign_reason:["campaign_report_not_recorded","campaign_report_stale"],
 });
 const assertExactEnumKeys = (domain, map, expected) => {
   const actual = Object.keys(map).sort(), wanted = [...expected].sort();
@@ -4369,7 +4389,7 @@ const liveStopReason = value => {
   if(text === "budget_exhausted") return "研究预算耗尽";
   if(text === "no_gain_rounds_exhausted") return "连续无语义增益";
   if(text === "max_rounds_reached") return "达到轮次上限";
-  if(text.startsWith("release_state_terminal:")) return `发布状态已终止 (${text})`;
+  if(text.startsWith("release_state_terminal:")) return `发布状态已终止：${liveEnumText("release_state", text.slice("release_state_terminal:".length))}`;
   return "未识别停止原因";
 };
 const liveChain = events => {
@@ -4429,7 +4449,7 @@ V.proofchain = () => {
   const chain = liveChain(workspace.events.events || []), declaredHead = String(workspace.events.head_hash || "");
   return { task:`证明过程链 · <b>真实事件账本</b> · ${(workspace.events.events||[]).length} 条`,
     rail: liveCard("浏览器复算","与 EventLedger 相同的无符号字段", `<p class="note">每条事件在浏览器内重算 SHA-256，并检查顺序、前哈希和声明哈希。此页的复算用于现场核验，不替代后端审计。</p>`),
-    main: liveCard("账本核验",`${chain.valid && chain.head===declaredHead ? "链完整" : "链不一致"}`, `<div class="banner ${chain.valid && chain.head===declaredHead ? "ok" : "err"}"><div><b>${chain.valid && chain.head===declaredHead ? "全部事件通过本地复算。" : "本地复算与声明链头不一致。"}</b> 声明链头：<span class="hash">${liveEsc(declaredHead)}</span></div></div><div class="tw"><table><thead><tr><th>#</th><th>事件</th><th>执行者</th><th>对象</th><th>顺序</th><th>咬合</th><th>哈希</th></tr></thead><tbody>${chain.rows.map(row=>`<tr><td>${row.event.sequence}</td><td class="mono">${liveEsc(row.event.event_type)}</td><td>${liveEsc(row.event.actor)}</td><td class="mono">${(row.event.subject_ids||[]).map(liveEsc).join(" · ") || "—"}</td><td>${livePill(row.sequenceOk ? "VERIFIED" : "ERROR")}</td><td>${livePill(row.previousOk ? "VERIFIED" : "ERROR")}</td><td>${livePill(row.hashOk ? "VERIFIED" : "ERROR")}</td></tr>`).join("") || `<tr><td colspan="7" class="mut">账本为空。</td></tr>`}</tbody></table></div>`),
+    main: liveCard("账本核验",`${chain.valid && chain.head===declaredHead ? "链完整" : "链不一致"}`, `<div class="banner ${chain.valid && chain.head===declaredHead ? "ok" : "err"}"><div><b>${chain.valid && chain.head===declaredHead ? "全部事件通过本地复算。" : "本地复算与声明链头不一致。"}</b> 声明链头：<span class="hash">${liveEsc(declaredHead)}</span></div></div><div class="tw"><table><thead><tr><th>#</th><th>事件</th><th>执行者</th><th>对象</th><th>顺序</th><th>咬合</th><th>哈希</th></tr></thead><tbody>${chain.rows.map(row=>`<tr><td>${row.event.sequence}</td><td>${liveEnumPill("event_type", row.event.event_type)}</td><td>${liveEsc(row.event.actor)}</td><td class="mono">${(row.event.subject_ids||[]).map(liveEsc).join(" · ") || "—"}</td><td>${livePill(row.sequenceOk ? "VERIFIED" : "ERROR")}</td><td>${livePill(row.previousOk ? "VERIFIED" : "ERROR")}</td><td>${livePill(row.hashOk ? "VERIFIED" : "ERROR")}</td></tr>`).join("") || `<tr><td colspan="7" class="mut">账本为空。</td></tr>`}</tbody></table></div>`),
     side: liveCard("链头","外部可钉定的摘要", `<dl class="kv"><dt>创世前哈希</dt><dd class="hash">${liveEsc(chain.genesis)}</dd><dt>复算链头</dt><dd class="hash">${liveEsc(chain.head)}</dd><dt>事件数</dt><dd>${chain.rows.length}</dd></dl>`)};
 };
 
@@ -4466,7 +4486,7 @@ V.admin_roles = () => {
 V.campaign = () => {
   const payload = livePayloadFor("campaign"), workspace = liveWorkspace("campaign"); if(!workspace || !payload) return DEMO_VIEWS.campaign();
   const campaign = payload.campaign;
-  if(!campaign.available) return { task:"攻克进程 · <b>未提供报告</b>", rail:liveCard("观察站状态","明确不可用",`<p class="note">${liveEsc(campaign.reason)}</p>`), main:liveCard("轮次记录","无报告",`<div class="banner gap"><div>当前工作区未附带 campaign report，控制台不会用演示轮次替代。</div></div>`), side:null };
+  if(!campaign.available) return { task:"攻克进程 · <b>未提供报告</b>", rail:liveCard("观察站状态","明确不可用",`<p class="note">${liveEnumText("campaign_reason", campaign.reason)}</p>`), main:liveCard("轮次记录","无报告",`<div class="banner gap"><div>当前工作区未附带 campaign report，控制台不会用演示轮次替代。</div></div>`), side:null };
   const report = campaign.report, rounds = report.rounds || [];
   const events = workspace.events.events || [];
   const roundCards = rounds.map((round, index) => {

@@ -176,6 +176,33 @@ class ConsoleObservatoryTests(unittest.TestCase):
                 review_trace_path=self.root / "review-trace.json",
             )
 
+    def test_same_origin_review_rejects_the_workspace_managed_trace(self) -> None:
+        with self.assertRaisesRegex(ValueError, "must not target"):
+            make_server(
+                self.root,
+                host="127.0.0.1",
+                port=0,
+                dashboard_path=self.console,
+                review_trace_path=self.root / "research-trace.json",
+                review_write_token=_REVIEW_TOKEN,
+            )
+
+    def test_same_origin_review_rejects_a_symlink_to_the_managed_trace(self) -> None:
+        alias = Path(self.temporary.name) / "managed-trace-alias.json"
+        try:
+            alias.symlink_to(self.root / "research-trace.json")
+        except OSError as exc:
+            self.skipTest(f"symlinks unavailable: {exc}")
+        with self.assertRaisesRegex(ValueError, "must not target"):
+            make_server(
+                self.root,
+                host="127.0.0.1",
+                port=0,
+                dashboard_path=self.console,
+                review_trace_path=alias,
+                review_write_token=_REVIEW_TOKEN,
+            )
+
 
 class SameOriginReviewAdapterTests(unittest.TestCase):
     def setUp(self) -> None:

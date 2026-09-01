@@ -79,7 +79,9 @@ class ConsolePrototypeTests(unittest.TestCase):
                 vm.runInNewContext(page.slice(start, end) + ";this.renderCampaign = () => V.campaign();", context);
                 const rendered = context.renderCampaign();
                 if (!rendered.task.includes("真实报告")) throw new Error("registered campaign fell back to the demo renderer");
-                if (!String(rendered.main).includes("release_state_terminal:PROVED_AND_AUDITED")) throw new Error("registered campaign report was not rendered");
+                const text = String(rendered.main);
+                if (!text.includes("发布状态已终止：已证明且审计通过")) throw new Error("registered campaign report was not rendered with a mapped release state");
+                if (text.includes("release_state_terminal:") || text.includes("PROVED_AND_AUDITED")) throw new Error("raw campaign release tokens leaked into the UI");
                 """
             )
             completed = subprocess.run(
@@ -102,6 +104,16 @@ class ConsolePrototypeTests(unittest.TestCase):
         self.assertIn("/^(https?):$/.test(parsed.protocol)", page)
         self.assertIn("const sourceCell = item", page)
         self.assertNotIn('href="${liveEsc(item.canonical_uri)}"', page)
+
+    def test_live_machine_tokens_have_non_echoing_ui_maps(self) -> None:
+        page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
+        self.assertIn('event_type: Object.freeze', page)
+        self.assertIn('release_state: Object.freeze', page)
+        self.assertIn('campaign_reason: Object.freeze', page)
+        self.assertIn('liveEnumPill("event_type", row.event.event_type)', page)
+        self.assertNotIn('liveEsc(row.event.event_type)', page)
+        self.assertNotIn('发布状态已终止 (${text})', page)
+        self.assertNotIn('liveEsc(campaign.reason)', page)
 
     def test_mobile_topbar_keeps_console_provenance_visible(self) -> None:
         page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")

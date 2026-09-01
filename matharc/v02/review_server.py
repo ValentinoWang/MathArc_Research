@@ -34,12 +34,14 @@ from __future__ import annotations
 
 import hmac
 import json
+import fcntl
 import threading
+from contextlib import contextmanager
 from dataclasses import dataclass
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
-from typing import Any
+from typing import Any, Iterator
 from urllib.parse import urlparse
 
 from .review import (
@@ -57,6 +59,36 @@ from .review_bundle import ReviewBundleError, RequiredAssurance, build_review_bu
 from .trace import ResearchTrace, load_trace, save_trace
 
 _MAX_BODY_BYTES = 64 * 1024
+_TRACE_LOCKS_GUARD = threading.Lock()
+_TRACE_LOCKS: dict[Path, threading.RLock] = {}
+
+
+def _local_trace_lock(path: Path) -> threading.RLock:
+    """Return the one process-local lock for a canonical trace path."""
+
+    with _TRACE_LOCKS_GUARD:
+        return _TRACE_LOCKS.setdefault(path, threading.RLock())
+
+
+@contextmanager
+def _locked_trace(path: Path) -> Iterator[None]:
+    """Serialize every review transaction for a trace across APIs/processes.
+
+    Lock a stable sibling, never the trace itself: ``save_trace`` replaces the
+    trace inode atomically.  The in-process lock covers same-process APIs and
+    ``flock`` covers separately started review servers.
+    """
+
+    canonical = path.resolve()
+    lock_path = canonical.with_name(f".{canonical.name}.review.lock")
+    with _local_trace_lock(canonical):
+        lock_path.parent.mkdir(parents=True, exist_ok=True)
+        with lock_path.open("a+", encoding="utf-8") as stream:
+            fcntl.flock(stream.fileno(), fcntl.LOCK_EX)
+            try:
+                yield
+            finally:
+                fcntl.flock(stream.fileno(), fcntl.LOCK_UN)
 
 _EVIDENCE_KIND_VM: dict[str, str] = {
     "FORMAL_PROOF": "形式化证明",
@@ -163,6 +195,7 @@ class ReviewServerConfig:
     write_token: str
 
     def __post_init__(self) -> None:
+        self.trace_path = self.trace_path.resolve()
         if not self.write_token or len(self.write_token) < 16:
             raise ReviewServerError(
                 "write_token must be a real secret of at least 16 characters, "
@@ -180,7 +213,6 @@ class ReviewAPI:
 
     def __init__(self, config: ReviewServerConfig) -> None:
         self.config = config
-        self._lock = threading.RLock()
 
     @staticmethod
     def handles(path: str) -> bool:
@@ -189,13 +221,13 @@ class ReviewAPI:
         )
 
     def load_trace_locked(self) -> ResearchTrace:
-        with self._lock:
+        with _locked_trace(self.config.trace_path):
             return load_trace(self.config.trace_path)
 
     def mutate_and_save(self, fn: Any) -> Any:
         """Serialize read-modify-write so submissions cannot lose updates."""
 
-        with self._lock:
+        with _locked_trace(self.config.trace_path):
             trace = load_trace(self.config.trace_path)
             result = fn(trace)
             save_trace(trace, self.config.trace_path)

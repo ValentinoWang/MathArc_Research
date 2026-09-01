@@ -324,10 +324,15 @@ def make_server(
         raise ValueError(
             "review_trace_path and review_write_token must be supplied together to enable same-origin review"
         )
+    resolved_review_trace_path = Path(review_trace_path).resolve() if review_trace_path is not None else None
+    if resolved_review_trace_path == (root / "research-trace.json").resolve():
+        raise ValueError(
+            "review_trace_path must not target the managed workspace research-trace.json"
+        )
     review_api = (
         ReviewAPI(
             ReviewServerConfig(
-                trace_path=Path(review_trace_path).resolve(), write_token=review_write_token
+                trace_path=resolved_review_trace_path, write_token=review_write_token
             )
         )
         if review_trace_path is not None and review_write_token is not None

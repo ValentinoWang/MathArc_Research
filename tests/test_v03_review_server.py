@@ -4,6 +4,7 @@ import json
 import tempfile
 import threading
 import unittest
+from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
 from urllib.error import HTTPError
 from urllib.request import Request, urlopen
@@ -16,7 +17,7 @@ from matharc.v02.falsification import (
     attach_kill_test_spec,
     record_route_evaluation,
 )
-from matharc.v02.review import ObligationVerdict, ObligationVerdictKind, ReviewDecision, ReviewerProfile, ReviewerRoster, ReviewRecord, nominate_for_review, set_reviewer_roster, statement_digest_sha256
+from matharc.v02.review import ObligationVerdict, ObligationVerdictKind, ReviewDecision, ReviewerProfile, ReviewerRoster, ReviewRecord, nominate_for_review, reviews_for_claim, set_reviewer_roster, statement_digest_sha256
 from matharc.v02.review_server import ReviewServerError, make_review_server
 from matharc.v02.schema import (
     ClaimRecord,
@@ -32,6 +33,9 @@ from matharc.v02.trace import ResearchTrace, load_trace, save_trace
 _TOKEN = "test-secret-token-0123456789"
 _REVIEWER_A = ReviewerProfile(
     reviewer_id="reviewer-A", name="A", affiliation="", independence_group="group-A"
+)
+_REVIEWER_B = ReviewerProfile(
+    reviewer_id="reviewer-B", name="B", affiliation="", independence_group="group-B"
 )
 
 
@@ -94,7 +98,7 @@ class ReviewServerTests(unittest.TestCase):
             ),
         )
         nominate_for_review(trace, "C")
-        set_reviewer_roster(trace, ReviewerRoster(roster_version="roster-1", reviewers=(_REVIEWER_A,)))
+        set_reviewer_roster(trace, ReviewerRoster(roster_version="roster-1", reviewers=(_REVIEWER_A, _REVIEWER_B)))
         save_trace(trace, self.trace_path)
 
         self.server = make_review_server(self.trace_path, write_token=_TOKEN, host="127.0.0.1", port=0)
@@ -115,17 +119,19 @@ class ReviewServerTests(unittest.TestCase):
             self.assertEqual(response.status, 200)
             return dict(json.loads(response.read().decode("utf-8")))
 
-    def _approve_payload(self) -> dict[str, object]:
+    def _approve_payload(
+        self, review_id: str = "REV-1", reviewer: ReviewerProfile = _REVIEWER_A
+    ) -> dict[str, object]:
         trace = load_trace(self.trace_path)
         claim = trace.claims["C"]
         record = ReviewRecord(
-            review_id="REV-1",
+            review_id=review_id,
             claim_id="C",
             claim_revision=claim.revision,
             statement_digest=statement_digest_sha256(claim.statement),
             bundle_digest="b" * 64,
-            reviewer_id="reviewer-A",
-            reviewer_profile_digest=_REVIEWER_A.digest_sha256,
+            reviewer_id=reviewer.reviewer_id,
+            reviewer_profile_digest=reviewer.digest_sha256,
             roster_version="roster-1",
             review_policy_version="policy-1",
             statement_correspondence="matches",
@@ -199,6 +205,44 @@ class ReviewServerTests(unittest.TestCase):
         trace_after = load_trace(self.trace_path)
         self.assertIn(evidence_id, trace_after.evidence)
         self.assertEqual(trace_after.evidence[evidence_id].kind.value, "HUMAN_AUDIT")
+
+    def test_concurrent_posts_through_two_servers_preserve_both_reviews(self) -> None:
+        other = make_review_server(self.trace_path, write_token=_TOKEN, host="127.0.0.1", port=0)
+        other_thread = threading.Thread(target=other.serve_forever, daemon=True)
+        other_thread.start()
+        other_base = f"http://127.0.0.1:{other.server_address[1]}"
+        barrier = threading.Barrier(2)
+
+        def post(base: str, payload: dict[str, object]) -> dict[str, object]:
+            barrier.wait(timeout=5)
+            request = Request(
+                base + "/api/review",
+                data=json.dumps(payload).encode("utf-8"),
+                method="POST",
+                headers={"Authorization": f"Bearer {_TOKEN}", "Content-Type": "application/json"},
+            )
+            with urlopen(request, timeout=5) as response:
+                self.assertEqual(response.status, 200)
+                return dict(json.loads(response.read().decode("utf-8")))
+
+        try:
+            with ThreadPoolExecutor(max_workers=2) as pool:
+                first = pool.submit(post, self.base, self._approve_payload("REV-CONCURRENT-A", _REVIEWER_A))
+                second = pool.submit(post, other_base, self._approve_payload("REV-CONCURRENT-B", _REVIEWER_B))
+                results = [first.result(timeout=10), second.result(timeout=10)]
+        finally:
+            other.shutdown(); other.server_close(); other_thread.join(timeout=2)
+
+        self.assertEqual({item["review_id"] for item in results}, {"REV-CONCURRENT-A", "REV-CONCURRENT-B"})
+        trace_after = load_trace(self.trace_path)
+        self.assertEqual(
+            {item.review_id for item in reviews_for_claim(trace_after, "C")},
+            {"REV-CONCURRENT-A", "REV-CONCURRENT-B"},
+        )
+        self.assertEqual(
+            set(trace_after.evidence),
+            {"EV-REVIEW-REV-CONCURRENT-A", "EV-REVIEW-REV-CONCURRENT-B"},
+        )
 
     def test_post_body_over_64kb_is_rejected(self) -> None:
         oversized = json.dumps({"padding": "x" * (70 * 1024)}).encode("utf-8")
