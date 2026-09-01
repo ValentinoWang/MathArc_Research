@@ -11,7 +11,7 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
-from .console_export import campaign_snapshot, build_console_export
+from .console_export import ConsoleLocalProjectionConfig, campaign_snapshot, build_console_export
 from .console_topic import TopicStoreConfig
 from .topic_observation import TopicObservationRunner
 from .review_server import ReviewAPI, ReviewHTTPResponse, ReviewServerConfig
@@ -70,6 +70,7 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         sse_lifetime_seconds: float = 30.0,
         review_api: ReviewAPI | None = None,
         topic_store: TopicObservationRunner | None = None,
+        local_projection_config: ConsoleLocalProjectionConfig | None = None,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
@@ -79,6 +80,7 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         # review trace, never an implicit workspace mutation path.
         self.review_api = review_api
         self.topic_store = topic_store
+        self.local_projection_config = local_projection_config
         super().__init__(server_address, WorkspaceRequestHandler)
 
 
@@ -117,7 +119,11 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
             if parsed.path == "/api/console":
                 self._json(
                     HTTPStatus.OK,
-                    build_console_export(self.server.repository.root, topic_store=self.server.topic_store),
+                    build_console_export(
+                        self.server.repository.root,
+                        topic_store=self.server.topic_store,
+                        local_projection_config=self.server.local_projection_config,
+                    ),
                 )
                 return
             if parsed.path == "/api/audit":
@@ -318,6 +324,7 @@ def make_server(
     topic_store_root: str | Path | None = None,
     topic_id: str | None = None,
     topic_initial_cursor: str | None = None,
+    local_projection_config: ConsoleLocalProjectionConfig | None = None,
 ) -> WorkspaceHTTPServer:
     root = Path(workspace_root).resolve()
     topic_args = (topic_store_root, topic_id, topic_initial_cursor)
@@ -362,4 +369,5 @@ def make_server(
         sse_lifetime_seconds=sse_lifetime_seconds,
         review_api=review_api,
         topic_store=topic_store,
+        local_projection_config=local_projection_config,
     )

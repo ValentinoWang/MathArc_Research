@@ -4,18 +4,64 @@ from __future__ import annotations
 
 import hashlib
 import json
+from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Mapping
 
+from matharc.operations import OperationsDomainStore
+
 from .authorization import RolePolicy
 from .console_topic import TopicStoreConfig, console_topic_projection
+from .difficulty_ledger import DifficultyLedger
+from .exploration_session import ExplorationSessionStore
+from .problem_gates import ProblemGateStore
+from .topic_portfolio import TopicPortfolioStore
 from .topic_observation import TopicObservationRunner
 from .schema import canonical_json
 from .workspace import ResearchWorkspace
+from .workspace_index import WorkspaceIndex
 from .workspace_visualization import workspace_dashboard_payload
 
 _SCHEMA_VERSION = "1.0"
 _CAMPAIGN_KEYS = frozenset({"rounds", "stop_reason", "final_metrics", "budget", "creation_log"})
+
+
+@dataclass(frozen=True, slots=True)
+class ConsoleLocalProjectionConfig:
+    """Explicit read-only locations for locally completed console capabilities."""
+
+    workspace_index_root: Path | None = None
+    exploration_session_root: Path | None = None
+    topic_portfolio_root: Path | None = None
+    problem_gate_root: Path | None = None
+    difficulty_ledger_root: Path | None = None
+    operations_domain_root: Path | None = None
+
+    def projection(self) -> dict[str, Any]:
+        result: dict[str, Any] = {
+            "workspace_index": {"state": "not_configured"},
+            "exploration_sessions": {"state": "not_configured"},
+            "topic_portfolio": {"state": "not_configured"},
+            "candidate_problems": {"state": "not_configured"},
+            "difficulty_ledger": {"state": "not_configured"},
+            "operations": {"state": "not_configured"},
+        }
+        if self.workspace_index_root is not None:
+            result["workspace_index"] = {"state": "live", **WorkspaceIndex.scan(self.workspace_index_root).to_dict()}
+        if self.exploration_session_root is not None:
+            result["exploration_sessions"] = {"state": "live", "sessions": [item.to_dict() for item in ExplorationSessionStore(self.exploration_session_root).list()]}
+        if self.topic_portfolio_root is not None:
+            result["topic_portfolio"] = {"state": "live", **TopicPortfolioStore(self.topic_portfolio_root).load().to_dict()}
+        if self.problem_gate_root is not None:
+            statements, candidates, graph = ProblemGateStore(self.problem_gate_root).load()
+            result["candidate_problems"] = {"state": "live", "statements": [item.to_dict() for item in statements], "candidates": [item.to_dict() for item in candidates], "graph": graph.to_dict()}
+        if self.difficulty_ledger_root is not None:
+            ledger = DifficultyLedger(self.difficulty_ledger_root)
+            predictions, outcomes = ledger.records()
+            result["difficulty_ledger"] = {"state": "live", "predictions": [item.to_dict() for item in predictions], "outcomes": [item.to_dict() for item in outcomes], "summary": ledger.summary().to_dict()}
+        if self.operations_domain_root is not None:
+            result["operations"] = {"state": "live", **OperationsDomainStore(self.operations_domain_root).snapshot()}
+        return result
 
 
 def _canonical(value: object) -> str:
@@ -99,6 +145,7 @@ def build_console_export(
     *,
     topic_store: TopicObservationRunner | None = None,
     topic_store_config: TopicStoreConfig | None = None,
+    local_projection_config: ConsoleLocalProjectionConfig | None = None,
 ) -> dict[str, Any]:
     """Build a truthful console payload without changing workspace state."""
 
@@ -137,6 +184,11 @@ def build_console_export(
         "workspace": workspace_payload,
         "source_topic": console_topic_projection(workspace.sources, topic_store=resolved_topic_store),
         "campaign": campaign_snapshot(workspace),
+        "local_console": (
+            local_projection_config.projection()
+            if local_projection_config is not None
+            else ConsoleLocalProjectionConfig().projection()
+        ),
         "role_policy": RolePolicy.default().to_dict(),
         "unsupported": {
             "external_search": "not_configured",
@@ -151,6 +203,7 @@ def write_console_export(
     output_path: str | Path,
     *,
     topic_store_config: TopicStoreConfig | None = None,
+    local_projection_config: ConsoleLocalProjectionConfig | None = None,
 ) -> Path:
     """Write one explicit JSON export; callers choose its destination."""
 
@@ -160,7 +213,11 @@ def write_console_export(
         raise ValueError("console export output must have a .json suffix")
     if target.is_relative_to(root):
         raise ValueError("console export output must be outside the workspace root")
-    payload = build_console_export(root, topic_store_config=topic_store_config)
+    payload = build_console_export(
+        root,
+        topic_store_config=topic_store_config,
+        local_projection_config=local_projection_config,
+    )
     target.parent.mkdir(parents=True, exist_ok=True)
     target.write_text(
         json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n",

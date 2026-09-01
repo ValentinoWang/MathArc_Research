@@ -108,3 +108,7 @@ class DifficultyLedger:
     def summary(self) -> CalibrationSummary:
         _, outcomes = self._load(); count = len(outcomes)
         return CalibrationSummary(tuple((key, count) for key in DIFFICULTY_DIMENSIONS), CalibrationStatus.CALIBRATED if count >= CALIBRATION_MINIMUM else CalibrationStatus.UNCALIBRATED)
+
+    def records(self) -> tuple[tuple[DifficultyPrediction, ...], tuple[DifficultyOutcome, ...]]:
+        predictions, outcomes = self._load()
+        return tuple(predictions), tuple(outcomes)

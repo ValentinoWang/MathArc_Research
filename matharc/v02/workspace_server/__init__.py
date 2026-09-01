@@ -18,6 +18,7 @@ from .._workspace_server_impl import (
 )
 from .._workspace_server_impl import WorkspaceSnapshot
 from ..review_server import ReviewAPI, ReviewServerConfig
+from ..console_export import ConsoleLocalProjectionConfig
 from ..topic_observation import TopicObservationRunner
 from ..workspace import ResearchWorkspace
 
@@ -44,6 +45,7 @@ class WorkspaceHTTPServer(_WorkspaceHTTPServerImpl):
         sse_lifetime_seconds: float = 30.0,
         review_api: ReviewAPI | None = None,
         topic_store: TopicObservationRunner | None = None,
+        local_projection_config: ConsoleLocalProjectionConfig | None = None,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
@@ -51,6 +53,7 @@ class WorkspaceHTTPServer(_WorkspaceHTTPServerImpl):
         self.sse_lifetime_seconds = sse_lifetime_seconds
         self.review_api = review_api
         self.topic_store = topic_store
+        self.local_projection_config = local_projection_config
         ThreadingHTTPServer.__init__(
             self,
             server_address,
@@ -71,6 +74,7 @@ def make_server(
     topic_store_root: str | Path | None = None,
     topic_id: str | None = None,
     topic_initial_cursor: str | None = None,
+    local_projection_config: ConsoleLocalProjectionConfig | None = None,
 ) -> WorkspaceHTTPServer:
     from ..console_topic import TopicStoreConfig
 
@@ -117,6 +121,7 @@ def make_server(
         sse_lifetime_seconds=sse_lifetime_seconds,
         review_api=review_api,
         topic_store=topic_store,
+        local_projection_config=local_projection_config,
     )
 
 
