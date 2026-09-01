@@ -21,6 +21,10 @@ const PAGE_SOURCE = readFileSync(PAGE_PATH, "utf8");
 const BLUEPRINT_PATH = resolve(ROOT, "docs/prototypes/console-dev-blueprint.html");
 const BLUEPRINT_SOURCE = readFileSync(BLUEPRINT_PATH, "utf8");
 const WIDTHS = [1240, 1366, 1440, 1536, 1728, 1920];
+const MOBILE_VIEWPORTS = [
+  { name: "mobile-390", width: 390, height: 844 },
+  { name: "mobile-820", width: 820, height: 1180 },
+];
 const CAMPAIGNS = ["c7", "q6"];
 const LIVE_VIEWS = new Set(["source", "dag", "proofchain", "tools", "reasoning", "admin_roles", "campaign", "routes", "disclosure", "novelty"]);
 const PROCESS_SCOPED = new Set([
@@ -498,6 +502,69 @@ async function testAccordions(page) {
   }
 }
 
+async function testKeyboardControls(page) {
+  await renderCase(page, "c7", { name: "source-keyboard", view: "source" });
+  const selector = '.cev[data-act="obs"][data-id="o1"]';
+  const normalizeClosed = async () => {
+    const target = page.locator(selector);
+    await target.waitFor({ state: "visible" });
+    if (await target.evaluate(node => node.classList.contains("open"))) {
+      await dispatch(page, "obs", { id: "o1" });
+    }
+    assert(!(await page.locator(selector).evaluate(node => node.classList.contains("open"))), "keyboard fixture did not normalize closed");
+  };
+  await normalizeClosed();
+
+  const enterTarget = page.locator(selector);
+  await enterTarget.focus();
+  assert(await enterTarget.evaluate(node => document.activeElement === node), "Enter target did not receive focus");
+  await page.keyboard.press("Enter");
+  await waitFor(
+    () => page.locator(selector).evaluate(node => node.classList.contains("open")),
+    "Enter did not activate the tabindex disclosure control",
+  );
+
+  const spaceTarget = page.locator(selector);
+  await spaceTarget.focus();
+  assert(await spaceTarget.evaluate(node => document.activeElement === node), "Space target did not receive focus");
+  await page.keyboard.press("Space");
+  await waitFor(
+    async () => !(await page.locator(selector).evaluate(node => node.classList.contains("open"))),
+    "Space did not activate the tabindex disclosure control",
+  );
+}
+
+async function testMobileViewports(browser, server) {
+  for (const viewport of MOBILE_VIEWPORTS) {
+    const context = await browser.newContext({
+      viewport: { width: viewport.width, height: viewport.height },
+      isMobile: true,
+      hasTouch: true,
+      deviceScaleFactor: 2,
+    });
+    const page = await context.newPage();
+    const pageErrors = [];
+    page.on("pageerror", error => pageErrors.push(error.stack || error.message));
+    try {
+      await page.goto(`${server.origin}/`, { waitUntil: "domcontentloaded" });
+      await page.locator("#console-provenance").waitFor({ state: "attached" });
+      const fellBackToDemo = await page.evaluate(() => window.MathArcConsole.loadExport("/missing-console.json"));
+      assert(!fellBackToDemo, `${viewport.name} did not enter its declared demo-data baseline`);
+      for (const campaignId of CAMPAIGNS) {
+        for (const testCase of VIEW_CASES) {
+          await renderCase(page, campaignId, testCase);
+          await measureBalance(page, `${viewport.name}/${campaignId}/${testCase.name}`, viewport.width);
+          await scanChineseEnglish(page, `${viewport.name}/${campaignId}/${testCase.name}`);
+        }
+      }
+      await testKeyboardControls(page);
+      assert(pageErrors.length === 0, `${viewport.name} page errors: ${pageErrors.join("\n")}`);
+    } finally {
+      await context.close();
+    }
+  }
+}
+
 async function testStartFlow(page) {
   await renderCase(page, "c7", { name: "portfolio", view: "portfolio" });
   await dispatch(page, "pick", { id: "full" });
@@ -769,8 +836,11 @@ async function main() {
     await testM3LocalProjections(page, exportPayload);
     const m1 = await testM1SseAndReconnect(page, server, eventCursors);
     const m2 = await testM2ReviewWorkflow(page, server);
+    await testMobileViewports(browser, server);
     assert(pageErrors.length === 0, `page errors: ${pageErrors.join("\n")}`);
     console.log(`console browser gate passed: ${VIEW_CASES.length} cases x ${CAMPAIGNS.length} campaigns x ${WIDTHS.length} widths`);
+    console.log(`mobile viewport checks passed: ${MOBILE_VIEWPORTS.map(viewport => `${viewport.name}=${viewport.width}x${viewport.height}`).join(", ")}`);
+    console.log("keyboard checks passed: tabindex disclosures activated with Enter and Space");
     console.log(`M1 SSE workflow: ${m1}`);
     console.log(`M2 review workflow: ${m2}`);
   } finally {

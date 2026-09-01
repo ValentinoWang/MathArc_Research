@@ -23,6 +23,15 @@ class ConsolePrototypeTests(unittest.TestCase):
         self.assertNotIn("ResearchCampaign", gate)
         self.assertIn("M1 SSE refresh did not render the newly emitted event", gate)
 
+    def test_browser_gate_covers_mobile_viewports_and_real_keyboard_activation(self) -> None:
+        gate = (Path(__file__).resolve().parents[1] / "scripts/console_browser_gate.mjs").read_text(encoding="utf-8")
+        self.assertIn('{ name: "mobile-390", width: 390, height: 844 }', gate)
+        self.assertIn('{ name: "mobile-820", width: 820, height: 1180 }', gate)
+        self.assertIn("isMobile: true", gate)
+        self.assertIn('page.keyboard.press("Enter")', gate)
+        self.assertIn('page.keyboard.press("Space")', gate)
+        self.assertIn("tabindex disclosure control", gate)
+
     def test_bridge_has_explicit_provenance_and_memory_only_review_token(self) -> None:
         page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
         self.assertIn('const endpoints = url ? [url] : ["console.json", "/api/console"]', page)
