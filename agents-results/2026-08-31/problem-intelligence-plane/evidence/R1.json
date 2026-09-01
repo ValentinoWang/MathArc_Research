@@ -50,7 +50,7 @@
     "accepted_at": "2026-09-01",
     "accepted_by": "用户（评测负责人、研究负责人和仓库所有者）",
     "authority_basis": "retry-2 报告在合同版本 4 下已形成持久化 PASS，但正式接受门禁揭示 Markdown 定界符兼容、R1/Q1 生命周期转换、已接受分支合同版本比对、旧清单/报告重标回放以及同一文件冒充双报告缺口。合同版本 9 更新了受保护测试并增加硬链接与自报字段完整性门禁，因此必须重新冻结并复审。 v9 invalidates retry5 because its review artifacts predate this guard and cannot count as acceptance evidence.",
-    "human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260901T080000Z-r1v9-retry8/result.md",
+    "human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260901T080000Z-local-r1a008/result.md",
     "scope": "R1 对固定 A4 三例档案的四路检索回归、路线消融和保守小样本披露边界的合同版本 9 重新验收",
     "ai_review_boundary": "新审阅只复核实现、身份与披露边界；不构成独立数学证明、外部文献结论、统计验证、生产验收或公开发布决定。"
   },

@@ -1,6 +1,6 @@
-# Acceptance Run: 20260901T080000Z-r1v9-retry8
+# Acceptance Run: 20260901T080000Z-local-r1a008
 
-- Run ID: 20260901T080000Z-r1v9-retry8
+- Run ID: 20260901T080000Z-local-r1a008
 - Task ID: R1-regression-evaluation
 - Lane: human
 - Status: PASS
@@ -17,7 +17,9 @@
 - Source identity: 95ce4faf0d941345e8265dde1eb13a189e8454b3+r1-v9-retry6
 - Runtime identity: user-acceptance
 - Executor or reviewer: 用户
+- Started at: 2026-09-01T07:58:00+08:00
 - Completed at: 2026-09-01T08:00:00+08:00
+- Evidence directory: evidence/
 
 ## Disposition
 
