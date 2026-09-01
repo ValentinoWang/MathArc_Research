@@ -576,6 +576,55 @@ class TopicObservationTests(unittest.TestCase):
             with self.assertRaisesRegex(TopicObservationError, "successful import repeats"):
                 TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
 
+    def test_cross_batch_rewrite_cannot_hide_the_original_literature_record(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            runner = TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0")
+            runner.run(batch("c0", "c1", input_for("A")))
+            runner.run(batch("c1", "c2", input_for("B")))
+
+            state_path = Path(directory) / "topic-observation-state.json"
+            state = json.loads(state_path.read_text(encoding="utf-8"))
+            stored_a = state["batches"]["c0"]
+            stored_b = state["batches"]["c1"]
+            source_b = input_for("B")
+            swapped = TopicObservationInput("A", source_b.observation, source_b.content)
+
+            stored_a["input_projections"]["A"] = swapped.input_projection
+            stored_a["input_fingerprints"]["A"] = swapped.fingerprint_sha256
+            stored_a["input_observation_ids"]["A"] = source_b.observation.observation_id
+            evidence_a = dict(stored_b["disposition_evidence"]["B"])
+            evidence_a["input_id"] = "A"
+            stored_a["disposition_evidence"]["A"] = evidence_a
+            stored_a["result"]["item_results"][0]["observation_id"] = source_b.observation.observation_id
+            state["processed_input_ids"]["A"] = swapped.fingerprint_sha256
+            state["seen_observation_keys"] = [evidence_a["input_idempotency_key"]]
+            stored_a["batch_digest_sha256"] = batch("c0", "c1", swapped).batch_digest_sha256
+            stored_a["input_projection_digest_sha256"] = _input_projection_digest(
+                topic_id="union-closed",
+                cursor="c0",
+                next_cursor="c1",
+                batch_digest_sha256=stored_a["batch_digest_sha256"],
+                input_projections=stored_a["input_projections"],
+            )
+            evidence_a["input_projection_binding_sha256"] = _input_projection_binding_digest(
+                topic_id="union-closed",
+                cursor="c0",
+                next_cursor="c1",
+                batch_digest_sha256=stored_a["batch_digest_sha256"],
+                input_projection=swapped.input_projection,
+            )
+            stored_a["result_digest_sha256"] = digest_json(stored_a["result"])
+
+            stored_b["result"]["item_results"][0]["status"] = TopicItemStatus.DUPLICATE.value
+            evidence_b = stored_b["disposition_evidence"]["B"]
+            evidence_b["basis"] = "SEEN_OBSERVATION_KEY"
+            evidence_b["import_disposition"] = None
+            stored_b["result_digest_sha256"] = digest_json(stored_b["result"])
+            state_path.write_text(json.dumps(state), encoding="utf-8")
+
+            with self.assertRaisesRegex(TopicObservationError, "literature observations"):
+                TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
+
     def test_disposition_evidence_rejects_cross_batch_projection_binding_swap(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             runner = TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0")

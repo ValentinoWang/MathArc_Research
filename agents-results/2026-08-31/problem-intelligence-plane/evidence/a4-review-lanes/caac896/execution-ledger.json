@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-caac896-post-fix-review",
+  "frozen_source": "caac896db393550817da9e57c56f03f46277cb54",
+  "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+  "dispatch_mode": "parallel-explicit-codex-workers",
+  "launch_barrier_pids": [6499, 6500, 6501],
+  "lanes": [
+    {
+      "lane": "replay-integrity",
+      "pid": 6499,
+      "session_id": "01a05e77-0b29-7aa2-8008-53395a3e056e",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh",
+      "wrapper_sha256": "67b6c79390710c106431e22cb542b346737d60dd0338e8f7c2f14e2fc73268df",
+      "prompt_sha256": "91c7c02aafacb87c344cd8b62f7ffcea55469b34207bcc7314f2a8fee2b5069f",
+      "authority": "zero-write-except-return",
+      "log": "logs/replay-integrity.log",
+      "log_sha256": "a480a0532ec429e7aefed6f172bdd72422f5e1b521ec6947cda620cf89a66a4a",
+      "return": "returns/replay-integrity.md",
+      "return_sha256": "0b20cb5d20f305e6c399a7b62f0302905195f52eceedcdab20e8ecd07ddb08f8",
+      "terminal_exit_code": 0,
+      "verdict": "FAIL",
+      "proposed_state": "FAILED",
+      "finding": "persisted_cross_batch_replay_identity_gap"
+    },
+    {
+      "lane": "archive-manual-boundary",
+      "pid": 6500,
+      "session_id": "01a05e77-0b28-7983-99a7-cc006125a506",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l2.sh",
+      "wrapper_sha256": "75284ccb1698bb6cccc36f369623503e9ea549e338911897b690331b9b35ed33",
+      "prompt_sha256": "416d9a3d35ec8959f3add12e95223f9a3d49f516a8f56463bbb2670a21bb30cb",
+      "authority": "zero-write-except-return",
+      "log": "logs/archive-manual-boundary.log",
+      "log_sha256": "f67325046e2c2769b747247ed1af87b82a108c226953cbd815c48012f7107524",
+      "return": "returns/archive-manual-boundary.md",
+      "return_sha256": "2bf94a3775dabdf8123fec45798720737060eb92a3c3da616d6313b022db6f43",
+      "terminal_exit_code": 0,
+      "verdict": "PASS",
+      "proposed_state": "VERIFIED",
+      "finding": "protected_test_baseline_identity_drift_nonblocking_for_lane"
+    },
+    {
+      "lane": "adversarial-test-review",
+      "pid": 6501,
+      "session_id": "01a05e77-0b28-7a92-b7a7-b3ed66053925",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+      "wrapper_sha256": "e3bf39774813e38819f266544f96dd1767d7eeea0a4cd6c2b8c6f7cc6ec417ee",
+      "prompt_sha256": "5c2552045cb77ac172a25e8372afcc8a35d5046350b753fef57446249b0adf58",
+      "authority": "zero-write-except-return",
+      "log": "logs/adversarial-test-review.log",
+      "log_sha256": "995c5f3a45453dcc444f82eb29a84fcc965fa017585999a65310a0c8cd37b2dd",
+      "return": null,
+      "return_sha256": null,
+      "terminal_exit_code": 0,
+      "verdict": "MISSING_RETURN",
+      "proposed_state": "BLOCKED",
+      "failure_class": "transport",
+      "failure_origin": "provider-transport",
+      "cancellation": "SIGTERM after two provider stream reconnects and more than eight minutes without output"
+    }
+  ],
+  "convergence": {
+    "state": "REPAIR_REQUIRED",
+    "reason": "The replay-integrity lane reproduced a blocking coordinated rewrite bypass; the implementation was not accepted.",
+    "acceptance_authority": false
+  },
+  "cleanup": {
+    "prompt_hashes_recorded": true,
+    "prompt_files_removed_after_registration": true,
+    "process_handles_released": true,
+    "codex_transcripts_retained": true,
+    "logs_and_returns_retained": true
+  }
+}

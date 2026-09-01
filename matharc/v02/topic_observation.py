@@ -981,6 +981,7 @@ class TopicObservationRunner:
         batch_input_ids: set[str] = set()
         referenced_manual_ids: set[str] = set()
         batch_manual_ids: set[str] = set()
+        referenced_literature_ids: set[str] = set()
         derived_seen_observation_keys: set[str] = set()
         for cursor, stored in payload["batches"].items():
             _require_nonempty(cursor, "stored cursor")
@@ -1110,6 +1111,9 @@ class TopicObservationRunner:
                     literature_by_id=literature_by_id,
                     seen_observation_keys=set(payload["seen_observation_keys"]),
                 )
+                persisted_observation_id = evidence["persisted_observation_id"]
+                if persisted_observation_id is not None:
+                    referenced_literature_ids.add(persisted_observation_id)
                 if evidence["basis"] in {"NEW_IMPORT", "EXISTING_OBSERVED"}:
                     derived_seen_observation_keys.add(evidence["input_idempotency_key"])
             expected_batch_digest = _batch_digest_from_fingerprints(
@@ -1278,6 +1282,10 @@ class TopicObservationRunner:
         if ordered_seen_observation_keys != set(payload["seen_observation_keys"]):
             raise TopicObservationError(
                 "seen observation keys do not match cursor-ordered item evidence"
+            )
+        if referenced_literature_ids != set(literature_by_id):
+            raise TopicObservationError(
+                "persisted literature observations do not match stored batch evidence"
             )
         return payload
 
