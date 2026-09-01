@@ -2,6 +2,34 @@
   "blocking_entries": [
     {
       "blocking": true,
+      "checklist_path": "acceptance/human/A4-topic-observation-dogfood/checklist.md",
+      "estimated_minutes": 3,
+      "handoff_path": null,
+      "invalidation_keys": [
+        "acceptance.problem-intelligence.dogfood"
+      ],
+      "latest_run": {
+        "completed_at": "2026-09-01T08:15:00Z",
+        "result_path": "acceptance/human/A4-topic-observation-dogfood/runs/20260901T081500Z-local-a4f001/result.md",
+        "result_sha256": "7a65f16a9fdcfde2840bbb3ea270e1ac66608fb2788890ba21b398fad0a955d9",
+        "run_id": "20260901T081500Z-local-a4f001",
+        "source_identity": "5af1d9ff6fde02d86633cca50cf815ef04661d4a",
+        "started_at": "2026-09-01T08:15:00Z",
+        "status": "PASS"
+      },
+      "loop_name": "A4-formal-acceptance",
+      "ready_at": "2026-09-01T08:12:00Z",
+      "release_slice": "PI-R4",
+      "required_role": "用户（研究负责人/仓库所有者）",
+      "scope_hints": [
+        "offline fixed-source non-mathematical-proof non-public-release"
+      ],
+      "status": "ACCEPTED",
+      "summary": "用户批准并接受 A4 工程范围；不授权数学、文献、生产或公开发布结论。",
+      "task_id": "A4-topic-observation-dogfood"
+    },
+    {
+      "blocking": true,
       "checklist_path": "acceptance/human/A5-problem-intelligence-v0-release/checklist.md",
       "estimated_minutes": 3,
       "handoff_path": "acceptance/human/A5-problem-intelligence-v0-release/handoff.json",

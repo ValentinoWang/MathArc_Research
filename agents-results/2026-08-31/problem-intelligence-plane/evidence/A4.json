@@ -1,22 +1,28 @@
 {
-  "evidence_id": "EV-A4-VERIFIED-1",
+  "evidence_id": "EV-A4-ACCEPTED-2",
   "task_id": "A4",
   "consumed_evidence": ["EV-T2-ACCEPTED-1"],
   "source_identity": {
-    "head": "fe9de3fd86e3670dc3a0c10621afa48fc4740fa8",
-    "candidate_diff_sha256": "d8d847924653bb6df547094e525b61378d234b727f8f20d93418771c2b1fefd6"
+    "approved_baseline": "b4c6d3676428a2fb1f43a81978f8c9364b8ab8fa",
+    "head": "5af1d9ff6fde02d86633cca50cf815ef04661d4a",
+    "remote_main": "5af1d9ff6fde02d86633cca50cf815ef04661d4a",
+    "repair_commit": "5af1d9ff6fde02d86633cca50cf815ef04661d4a"
   },
-  "acceptance_self_check": "partial",
+  "acceptance_self_check": "pass",
   "acceptance_commands": [
-    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives",
-    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests -p 'test_v02*.py'",
-    "PYTHONDONTWRITEBYTECODE=1 python3 -m unittest discover -s tests"
+    "PYTHONDONTWRITEBYTECODE=1 python3.13 -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives",
+    "PYTHONDONTWRITEBYTECODE=1 python3.13 -m unittest discover -s tests",
+    "node scripts/console_browser_gate.mjs",
+    "make publication-gate",
+    "git diff --check",
+    "git ls-remote origin refs/heads/main"
   ],
   "test_summary": {
-    "focused": "37 passed",
-    "v02": "223 passed, 8 skipped",
-    "full": "390 passed, 10 skipped",
-    "nonblocking_observation": "Existing ResourceWarning messages in Codex runtime tests did not fail the full suite and are outside the A4 changed scope."
+    "focused": "41 passed",
+    "full": "510 passed, 10 skipped",
+    "browser": "52 cases x 2 campaigns x 6 widths passed",
+    "publication_gate": "technical preflight PASS; fixture-only",
+    "nonblocking_observation": "Pre-existing ResourceWarning messages; skipped tests are environment-dependent and outside A4 claims."
   },
   "acceptance_matrix": {
     "three_source_pinned_archives_and_nonpromotion_boundary": "pass",
@@ -25,31 +31,33 @@
     "input_projection_and_item_disposition_coordinated_tampering_fail_closed": "pass",
     "cursor_conflict_foreign_topic_manual_id_and_event_substitution_fails_closed": "pass",
     "full_archive_and_persisted_state_canonical_replay_comparison": "pass",
+    "contract_metadata_source_fixture_directory_and_non_claim_boundary_immutable": "pass",
     "no_claim_or_trace_created": "pass"
   },
   "independent_ai_reviews": {
-    "state_integrity": "acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-state-integrity.md",
-    "archive_boundary": "acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-archive-boundary.md",
-    "transport_limited_regression_scope": "acceptance/release/runs/A4-post-cursor-topic-20260831/ledger/review-lanes.json",
-    "disposition": "Two independent review lanes returned VERIFIED findings, but both explicitly state they do not accept A4. The regression lane has no durable return after two provider-transport stalls."
+    "review_run": "acceptance/release/runs/A4-formal-20260901-0808",
+    "lanes": [
+      {"lane": "state-integrity", "path": "acceptance/release/runs/A4-formal-20260901-0808/returns/state-integrity.md", "sha256": "a3c9348c7fcdfcdea2a77234109b8b7c7ae99fd8247f4849285ea48391c0a6ed", "verdict": "VERIFIED"},
+      {"lane": "archive-boundary", "path": "acceptance/release/runs/A4-formal-20260901-0808/returns/archive-boundary.md", "sha256": "e361f32031394d985e310b6fc97dd93b9568b76b7769958be87501dc244d8a01", "verdict": "VERIFIED"},
+      {"lane": "regression-ssot", "path": "acceptance/release/runs/A4-formal-20260901-0808/returns/regression-ssot.md", "sha256": "4cc66651501e8085349e0690f4950f512e51afc652a9983523f8dd5a51b5e946", "verdict": "VERIFIED"}
+    ],
+    "disposition": "Three independent zero-write AI lanes found no P0/P1; none independently accepted A4."
   },
   "acceptance_release_record": {
-    "run_root": "acceptance/release/runs/A4-post-cursor-topic-20260831",
-    "review_lanes": "acceptance/release/runs/A4-post-cursor-topic-20260831/ledger/review-lanes.json",
-    "verified_returns": [
-      "acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-state-integrity.md",
-      "acceptance/release/runs/A4-post-cursor-topic-20260831/returns/A4-archive-boundary.md"
-    ],
-    "formal_acceptance_result": null,
-    "status": "NOT_PERFORMED",
-    "boundary": "现有 release run 只包含独立复核 lane 结果，不构成 A4 正式验收或发布授权。"
+    "run_root": "acceptance/release/runs/A4-formal-20260901-0808",
+    "formal_acceptance_result": "acceptance/release/runs/A4-formal-20260901-0808/result.md",
+    "formal_acceptance_result_sha256": "03111d4a059a08363f98515b75f797fb79415939e2153c83df4aa5849860177c",
+    "status": "ACCEPTED",
+    "human_acceptance": "acceptance/human/A4-topic-observation-dogfood/runs/20260901T081500Z-local-a4f001/result.md",
+    "human_acceptance_sha256": "7a65f16a9fdcfde2840bbb3ea270e1ac66608fb2788890ba21b398fad0a955d9",
+    "boundary": "离线、来源固定、非数学证明、非公开发布；不构成外部文献确认、生产/设备证据或公开研究授权。"
   },
-  "proposed_state": "VERIFIED",
+  "proposed_state": "ACCEPTED",
   "unverified_items": [
-    "Formal A4 acceptance result under acceptance/release",
     "Live external literature retrieval",
     "Independent mathematical proof review",
     "Production/device behavior",
-    "Remote GitHub readback for this not-yet-created A4 commit"
+    "Statistical performance or generalization",
+    "Public research release authorization"
   ]
 }
