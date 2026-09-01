@@ -18,9 +18,11 @@ const require = createRequire(import.meta.url);
 const ROOT = resolve(import.meta.dirname, "..");
 const PAGE_PATH = resolve(ROOT, "docs/prototypes/problem-intel-console.html");
 const PAGE_SOURCE = readFileSync(PAGE_PATH, "utf8");
+const BLUEPRINT_PATH = resolve(ROOT, "docs/prototypes/console-dev-blueprint.html");
+const BLUEPRINT_SOURCE = readFileSync(BLUEPRINT_PATH, "utf8");
 const WIDTHS = [1240, 1366, 1440, 1536, 1728, 1920];
 const CAMPAIGNS = ["c7", "q6"];
-const LIVE_VIEWS = new Set(["source", "dag", "proofchain", "tools", "reasoning", "admin_roles", "campaign"]);
+const LIVE_VIEWS = new Set(["source", "dag", "proofchain", "tools", "reasoning", "admin_roles", "campaign", "routes", "disclosure"]);
 const PROCESS_SCOPED = new Set([
   "campaign", "exploration", "conjecture", "routes", "dag", "proofchain", "tools", "reasoning", "novelty", "disclosure",
 ]);
@@ -61,6 +63,12 @@ function fail(message) {
 function assert(condition, message) {
   if (!condition) fail(message);
 }
+
+assert(BLUEPRINT_SOURCE.includes("console_routes_projection"), "blueprint missing live routes projection contract");
+assert(BLUEPRINT_SOURCE.includes("console_disclosure_projection"), "blueprint missing live disclosure projection contract");
+assert(BLUEPRINT_SOURCE.includes("LiteratureAdapter"), "blueprint missing W2-6 adapter contract");
+assert(BLUEPRINT_SOURCE.includes("spawn_requests"), "blueprint missing D4 governed fan-out contract");
+assert(BLUEPRINT_SOURCE.includes("transformation_catalog.py"), "blueprint missing X0/X1 transformation contract");
 
 function loadPlaywright() {
   const configured = process.env.MATHARC_PLAYWRIGHT_MODULE;

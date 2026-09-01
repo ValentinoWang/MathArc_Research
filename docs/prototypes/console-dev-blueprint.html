@@ -324,8 +324,8 @@ html{scroll-behavior:smooth;}
       <tr><td>证明过程链</td><td><code>EventLedger.to_dict()</code> + SSE</td><td>浏览器核验固定创世哈希、序号、唯一事件 ID 和后端提供的规范化无符号字节；SSE 从已见游标继续</td><td><span class="chip c-done">已落地</span></td></tr>
       <tr><td>工具调用台账</td><td><code>ToolCallRecord[]</code></td><td>字段映射已落地（含 <code>replayable</code> 四要素与 PASS 不可重放告警）</td><td><span class="chip c-done">已落地</span></td></tr>
       <tr><td>决策记录</td><td>公开推理六字段</td><td>只读映射已落地；拒收键校验仍留在后端</td><td><span class="chip c-done">已落地</span></td></tr>
-      <tr><td>是否算新结果</td><td>—</td><td>依赖文献适配器（§6）；此前保持「检索协议 + 计划中」形态，不显示检索统计</td><td><span class="chip c-new">需新建</span></td></tr>
-      <tr><td>能对外说什么</td><td>晋升/评审状态可推导分级</td><td>四级门由真状态推导；措辞检查器可先留前端正则，后续服务化</td><td><span class="chip c-part">部分待建</span></td></tr>
+      <tr><td>是否算新结果</td><td><code>matharc.v02.literature</code> 的 provider-neutral 观察报告</td><td>只记录提供方响应、固定版本、摘要与许可证；不推断开放/已解/新颖/证明状态，需人工审计后才能进入既有门</td><td><span class="chip c-done">已落地（证据边界）</span></td></tr>
+      <tr><td>能对外说什么</td><td>晋升/评审状态可推导分级</td><td>后端 <code>console_disclosure_projection</code> 生成四级允许/禁止措辞矩阵；缺失或陈旧投影明确不可用</td><td><span class="chip c-done">已落地</span></td></tr>
     </tbody>
   </table></div>
 
@@ -334,7 +334,7 @@ html{scroll-behavior:smooth;}
     <thead><tr><th>视图</th><th>数据来源</th><th>接线动作</th><th>状态</th></tr></thead>
     <tbody>
       <tr><td>攻克进程（轮次）</td><td><code>CampaignRunner</code> 的 rounds/stop_reason/budget</td><td><code>GET /api/campaign</code> 已落地；报告必须以运行 ID、状态摘要、事件链头和报告摘要绑定到当前工作区</td><td><span class="chip c-done">已落地</span></td></tr>
-      <tr><td>攻克路线</td><td><code>ResearchRoute</code> + <code>KillTestSpec</code> + 阻断器</td><td>并行/串行两轴视图已按真语义实现；映射即可</td><td><span class="chip c-wire">待接线</span></td></tr>
+      <tr><td>攻克路线</td><td><code>ResearchRoute</code> + <code>KillTestSpec</code> + 阻断器</td><td><code>console_routes_projection</code> 只读映射真实路线、证伪测试和评估结果；不虚构并行/串行拓扑</td><td><span class="chip c-done">已落地</span></td></tr>
       <tr><td>攻克进程列表</td><td>本地工作区索引以显式配置根目录只读扫描；扫描结果不暴露绝对路径</td><td>索引记录与当前工作区投影已接线；跨机器/账户的集中目录服务仍未配置</td><td><span class="chip c-done">已落地（本地隔离）</span></td></tr>
       <tr><td>猜想队列 / 实验记录</td><td>探索会话记录已在研究工作区外持久化，并以完整工作区 provenance 绑定</td><td>本地会话、内容寻址产物与回放投影已接线；不会把其他工作区或演示数据冒充为当前记录</td><td><span class="chip c-done">已落地（本地隔离）</span></td></tr>
     </tbody>
@@ -345,7 +345,7 @@ html{scroll-behavior:smooth;}
     <thead><tr><th>视图</th><th>后端现状</th><th>状态</th></tr></thead>
     <tbody>
       <tr><td>资料核验</td><td><code>SourceRegistry</code>、<code>SourceObservation</code>、<code>LiteratureBase</code> 与单主题游标/人工队列已存在；控制台只读投影已接线，录入界面仍未授权</td><td><span class="chip c-done">已落地</span></td></tr>
-      <tr><td>每日新论文 / 开放状态核查 / 是否算新结果的检索侧</td><td>本地文献存储与可重放观察已存在；真实外部检索适配器、实时统计与状态推断均不存在，不能由界面补造</td><td><span class="chip c-part">部分待建</span></td></tr>
+      <tr><td>每日新论文 / 开放状态核查 / 是否算新结果的检索侧</td><td><code>LiteratureAdapter</code> 支持 arXiv/Crossref 有界抓取与注入式传输；实时提供方配置仍按环境显式启用</td><td>报告可重放、许可证未知即 <code>PENDING</code>；控制台无配置时显示 <code>not_configured</code>，不产生检索统计或状态结论</td><td><span class="chip c-done">已落地（适配器）</span></td></tr>
       <tr><td>方向信息流 / 候选主题</td><td>主题组合、五项标准与本地席位记录已持久化；只投影显式配置的本地记录</td><td><span class="chip c-done">已落地（本地隔离）</span></td></tr>
       <tr><td>候选问题（九道门）</td><td>九门本地引擎已以 <code>PAPER_READINESS.md</code> 的人工先例为回归样本；它不执行外部检索或事实裁定</td><td><span class="chip c-done">已落地（本地隔离）</span></td></tr>
       <tr><td>问题详情 / 已知结果与缺口</td><td>陈述版本与结果图已作为本地、只读投影保存；「编译缺口→根命题」仍经受控入口</td><td><span class="chip c-done">已落地（本地隔离）</span></td></tr>
@@ -370,12 +370,12 @@ html{scroll-behavior:smooth;}
   <div class="tw"><table>
     <thead><tr><th>项</th><th>现状</th><th>备注</th></tr></thead>
     <tbody>
-      <tr><td>外部文献适配器（W2-6）</td><td>本地 <code>literature_base.py</code> 与 <code>topic_observation.py</code> 已支持可重放导入；真实外部提供方适配器不存在</td><td class="mut">平面①检索侧与新颖性审计的硬前提；落地前相关界面保持协议展示，<b>零外部检索统计数字</b></td></tr>
+      <tr><td>外部文献适配器（W2-6）</td><td><code>matharc/v02/literature.py</code> 已提供 arXiv/Crossref 标准库适配器、有限重试、内容寻址和 <code>LiteratureBase</code> 导入桥</td><td class="mut">适配器只产生观察报告；外部实时连接需显式注入，控制台保持 <code>not_configured</code> 边界</td></tr>
       <tr><td>选题门控引擎（九道门）</td><td>本地引擎已落地</td><td class="mut">以既有人工审读为回归样本；没有外部检索、开放状态或新颖性裁定权</td></tr>
       <tr><td>难度量表 + 预测台账存储</td><td>本地台账已落地</td><td class="mut">样本不足二十条一律未校准，界面禁一切总分呈现；不产生统计性能声明</td></tr>
       <tr><td>运营域（积分/席位/计费/上游路由）</td><td>本地隔离账本已落地；外部提供方未配置</td><td class="mut">独立于研究内核；身份、支付与真实上游路由必须另行批准和接入</td></tr>
-      <tr><td>受治理扇出（D4）</td><td><span class="chip c-defer">已推迟</span>（<code>DISCOVERY_PLANE_V04.md</code> 整篇推迟）</td><td class="mut">现状更硬：提案 schema 无 <code>spawn</code> 字段。界面如实展示「现状/计划」，不显示任何扇出配额数字</td></tr>
-      <tr><td>转化派生路线（X1）</td><td><span class="chip c-defer">已推迟</span>；<code>derived_from_failure / transformation_id</code> 代码中零出现</td><td class="mut"><code>parent_route_id</code> 是空悬字段：写入校验存在、无任何消费者。<b>不画父子路线</b>——画了等于宣称它在起作用。机制要再拆，拆成新命题带依赖边</td></tr>
+      <tr><td>受治理扇出（D4）</td><td><code>spawn_requests</code> 由编排器逐项裁决，深度/轮次/预算上限和不可变 <code>spawn_log</code> 已接线</td><td class="mut">只生成待执行描述符，不解禁 <code>Task</code> 或任意进程；实际用量仍进入既有预算账本</td></tr>
+      <tr><td>转化派生路线（X1）</td><td><code>transformation_catalog.py</code> + <code>derived_from_failure/transformation_id</code> 已接线</td><td class="mut">目录条目必须有真实 provenance；同机制签名、未知或不适用算子逐项拒绝，事件链保留失败→变换→路线关系</td></tr>
     </tbody>
   </table></div>
 </section>

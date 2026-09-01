@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import hashlib
 import json
+import math
 from dataclasses import dataclass, field, fields
 from datetime import datetime, timezone
 from enum import Enum
@@ -57,6 +58,11 @@ class ToolStatus(_StringEnum):
     PASS = "PASS"
     FAIL = "FAIL"
     ERROR = "ERROR"
+
+
+class SpawnDecisionStatus(_StringEnum):
+    APPROVED = "APPROVED"
+    REJECTED = "REJECTED"
 
 
 class FailureClass(_StringEnum):
@@ -239,6 +245,8 @@ class ResearchRoute:
     created_by: str = ""
     created_at: str = field(default_factory=utc_now)
     updated_at: str = field(default_factory=utc_now)
+    derived_from_failure: str | None = None
+    transformation_id: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -255,10 +263,20 @@ class ResearchRoute:
             "created_by": self.created_by,
             "created_at": self.created_at,
             "updated_at": self.updated_at,
+            "derived_from_failure": self.derived_from_failure,
+            "transformation_id": self.transformation_id,
         }
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "ResearchRoute":
+        if "derived_from_failure_id" in payload:
+            if "derived_from_failure" in payload:
+                raise ValueError(
+                    "route cannot provide both derived_from_failure and "
+                    "derived_from_failure_id"
+                )
+            payload = dict(payload)
+            payload["derived_from_failure"] = payload.pop("derived_from_failure_id")
         _strict_payload(cls, payload)
         return cls(
             route_id=str(payload["route_id"]),
@@ -278,6 +296,16 @@ class ResearchRoute:
             created_by=str(payload.get("created_by", "")),
             created_at=str(payload.get("created_at") or utc_now()),
             updated_at=str(payload.get("updated_at") or utc_now()),
+            derived_from_failure=(
+                str(payload["derived_from_failure"])
+                if payload.get("derived_from_failure") is not None
+                else None
+            ),
+            transformation_id=(
+                str(payload["transformation_id"])
+                if payload.get("transformation_id") is not None
+                else None
+            ),
         )
 
 
@@ -419,6 +447,146 @@ class ToolCallRecord:
             environment_digest_sha256=str(payload.get("environment_digest_sha256", "")),
             expected_discriminator=str(payload.get("expected_discriminator", "")),
         )
+
+
+@dataclass(frozen=True, slots=True)
+class SpawnRequest:
+    """A worker's declarative request for one governed child descriptor."""
+
+    request_id: str
+    brief: str
+    role: str
+    budget: float
+    depth: int = 1
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.request_id, str) or not self.request_id.strip():
+            raise ValueError("spawn request_id must be non-empty")
+        if not isinstance(self.brief, str) or not self.brief.strip():
+            raise ValueError("spawn brief must be non-empty")
+        if not isinstance(self.role, str) or not self.role.strip():
+            raise ValueError("spawn role must be non-empty")
+        if isinstance(self.budget, bool) or not isinstance(self.budget, (int, float)):
+            raise ValueError("spawn budget must be a finite positive number")
+        budget = float(self.budget)
+        if not math.isfinite(budget) or budget <= 0.0:
+            raise ValueError("spawn budget must be a finite positive number")
+        if isinstance(self.depth, bool) or not isinstance(self.depth, int):
+            raise ValueError("spawn depth must be an integer")
+        if self.depth < 0:
+            raise ValueError("spawn depth cannot be negative")
+        object.__setattr__(self, "request_id", self.request_id.strip())
+        object.__setattr__(self, "brief", self.brief.strip())
+        object.__setattr__(self, "role", self.role.strip())
+        object.__setattr__(self, "budget", budget)
+
+    @property
+    def requested_budget(self) -> float:
+        return self.budget
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "request_id": self.request_id,
+            "brief": self.brief,
+            "role": self.role,
+            "budget": self.budget,
+            "depth": self.depth,
+        }
+
+    @classmethod
+    def from_dict(cls, payload: Mapping[str, Any]) -> "SpawnRequest":
+        if not isinstance(payload, Mapping):
+            raise ValueError("spawn request must be an object")
+        normalized = dict(payload)
+        if "spawn_id" in normalized:
+            if "request_id" in normalized:
+                raise ValueError("spawn request cannot provide both request_id and spawn_id")
+            normalized["request_id"] = normalized.pop("spawn_id")
+        if "requested_budget" in normalized:
+            if "budget" in normalized:
+                raise ValueError(
+                    "spawn request cannot provide both budget and requested_budget"
+                )
+            normalized["budget"] = normalized.pop("requested_budget")
+        _strict_payload(cls, normalized)
+        return cls(
+            request_id=normalized["request_id"],
+            brief=normalized["brief"],
+            role=normalized["role"],
+            budget=normalized["budget"],
+            depth=normalized.get("depth", 1),
+        )
+
+
+@dataclass(frozen=True, slots=True)
+class SpawnDescriptor:
+    """The only artifact produced by an approved spawn request."""
+
+    request_id: str
+    brief: str
+    role: str
+    budget: float
+    depth: int
+    round_id: str
+    step_id: str
+
+    @property
+    def requested_budget(self) -> float:
+        return self.budget
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "request_id": self.request_id,
+            "brief": self.brief,
+            "role": self.role,
+            "budget": self.budget,
+            "depth": self.depth,
+            "round_id": self.round_id,
+            "step_id": self.step_id,
+        }
+
+
+@dataclass(frozen=True, slots=True)
+class SpawnDecisionRecord:
+    """Append-only, immutable audit record for one spawn request."""
+
+    request_id: str
+    status: SpawnDecisionStatus
+    brief: str
+    role: str
+    requested_budget: float
+    depth: int
+    reason: str
+    round_id: str
+    step_id: str
+    descriptor: SpawnDescriptor | None = None
+    created_at: str = field(default_factory=utc_now)
+
+    @property
+    def approved(self) -> bool:
+        return self.status is SpawnDecisionStatus.APPROVED
+
+    def __getitem__(self, key: str) -> Any:
+        return self.to_dict()[key]
+
+    def get(self, key: str, default: Any = None) -> Any:
+        return self.to_dict().get(key, default)
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "request_id": self.request_id,
+            "status": self.status.value,
+            "decision": self.status.value,
+            "brief": self.brief,
+            "role": self.role,
+            "requested_budget": self.requested_budget,
+            "depth": self.depth,
+            "reason": self.reason,
+            "round_id": self.round_id,
+            "step_id": self.step_id,
+            "descriptor": self.descriptor.to_dict() if self.descriptor else None,
+            "created_at": self.created_at,
+        }
 
 
 @dataclass(slots=True)

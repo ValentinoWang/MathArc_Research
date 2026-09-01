@@ -110,6 +110,9 @@ class ResearchTrace:
             raise TraceValidationError(
                 f"route {route.route_id} has unknown parent {route.parent_route_id}"
             )
+        linkage_errors = self._derived_route_issues(route)
+        if linkage_errors:
+            raise TraceValidationError("; ".join(linkage_errors))
         normalized = self._mechanism_signature(route.mechanism_signature)
         for existing in self.routes.values():
             if existing.status is RouteStatus.ABANDONED:
@@ -330,6 +333,7 @@ class ResearchTrace:
             for claim_id in route.claim_ids:
                 if claim_id not in self.claims:
                     errors.append(f"route {route.route_id} has missing claim {claim_id}")
+            errors.extend(self._derived_route_issues(route))
 
         for evidence in self.evidence.values():
             if evidence.status is EvidenceStatus.ACCEPTED and not evidence.replayable:
@@ -378,6 +382,11 @@ class ResearchTrace:
                 "public_reasoning_steps": len(self.public_reasoning),
                 "failures": len(self.failures),
                 "boundary_violations": len(self.boundary_violations),
+                "derived_routes": sum(
+                    1
+                    for route in self.routes.values()
+                    if route.derived_from_failure is not None
+                ),
             },
             "trace_digest_sha256": self.content_digest(),
         }
@@ -616,6 +625,77 @@ class ResearchTrace:
     @staticmethod
     def _mechanism_signature(values: Iterable[str]) -> tuple[str, ...]:
         return tuple(sorted({" ".join(value.lower().split()) for value in values if value.strip()}))
+
+    def _derived_route_issues(self, route: ResearchRoute) -> list[str]:
+        failure_id = route.derived_from_failure
+        transformation_id = route.transformation_id
+        if failure_id is None and transformation_id is None:
+            return []
+        issues: list[str] = []
+        if not isinstance(failure_id, str) or not failure_id.strip():
+            issues.append(
+                f"derived route {route.route_id} requires a non-empty derived_from_failure"
+            )
+        if not isinstance(transformation_id, str) or not transformation_id.strip():
+            issues.append(
+                f"derived route {route.route_id} requires a non-empty transformation_id"
+            )
+        if issues:
+            return issues
+
+        failure = next(
+            (item for item in self.failures if item.failure_id == failure_id),
+            None,
+        )
+        if failure is None:
+            issues.append(
+                f"derived route {route.route_id} references unknown failure {failure_id}"
+            )
+            return issues
+        failed_route = self.routes.get(failure.route_id)
+        if failed_route is None:
+            issues.append(
+                f"failure {failure_id} references unknown failed route {failure.route_id}"
+            )
+            return issues
+        if route.parent_route_id is not None and route.parent_route_id != failure.route_id:
+            issues.append(
+                f"derived route {route.route_id} parent must be failed route "
+                f"{failure.route_id}"
+            )
+        if self._mechanism_signature(route.mechanism_signature) == self._mechanism_signature(
+            failed_route.mechanism_signature
+        ):
+            issues.append(
+                f"derived route {route.route_id} repeats mechanism of failed route "
+                f"{failed_route.route_id}"
+            )
+        return issues
+
+    def audit_transformation_linkage(self, catalog: Any | None = None) -> dict[str, Any]:
+        """Audit failure/transformation references without changing promotion policy."""
+
+        errors: list[str] = []
+        linkages: list[dict[str, str]] = []
+        for route in self.routes.values():
+            errors.extend(self._derived_route_issues(route))
+            if route.derived_from_failure is not None:
+                if catalog is not None:
+                    try:
+                        catalog.get(route.transformation_id)
+                    except (AttributeError, KeyError, ValueError) as exc:
+                        errors.append(
+                            f"derived route {route.route_id} has unknown transformation "
+                            f"{route.transformation_id}: {exc}"
+                        )
+                linkages.append(
+                    {
+                        "route_id": route.route_id,
+                        "failure_id": route.derived_from_failure,
+                        "transformation_id": route.transformation_id or "",
+                    }
+                )
+        return {"valid": not errors, "errors": errors, "linkages": linkages}
 
     @staticmethod
     def _require_refs(

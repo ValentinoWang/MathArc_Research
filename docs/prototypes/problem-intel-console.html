@@ -1036,6 +1036,7 @@ const S = {
   signed:false, compiled:false, promoted:false, text:"", guest:false, plane:"p", useTable:false, topic:"uc", role:"user", collapsed:{},
   tamper:null, chainActor:"*", chainSubj:"*", chainRound:"*", chainOpen:0,
   round:0, expl:0, conj:0, rt:0, tool:0, rsn:0,
+  consolePayloadState:{status:"unloaded", projections:{}},
   draft:{ n:"", what:"", why:"", crit:[0,0,0,0,0] }, cid:"c7", newTopic:false,
 };
 try{ const t=localStorage.getItem("ma-theme"); if(t) document.documentElement.setAttribute("data-theme",t);
@@ -2379,12 +2380,12 @@ V.exploration = () => {
         </div>
         <div class="banner acc"><div><b>疑似反例永不直接改变任何状态。</b>未经核验的疑似反例只作为下一轮策略角色的攻击提示；一个精确复算不成立的疑似反例，不会改变任何命题或路线。本轮三个疑似反例中，两个经核验成立，一个是脚本的边界处理错误。</div></div>
       </div>`),
-    side: card("扇出：现状与计划",`当前无此通道 ${chip("plan")}`,bd(`
-        <p class="note"><b>现状是更硬的版本：探索会话根本没有扇出通道。</b>提案 schema 里没有 <span class="mono">spawn</span> 字段，编排器也没有派生分支——一次提案能做的全部扩张，就是最多新增 <b>${MAXNEW.claims}</b> 条命题与 <b>${MAXNEW.routes}</b> 条路线，常量写在 <span class="mono">orchestrator.py</span> 里。</p>
+    side: card("扇出：治理状态",`${MAXSPAWN.requests} 申请上限 ${chip("done")}`,bd(`
+        <p class="note"><b>受治理扇出已接线。</b>提案可携带 <span class="mono">spawn_requests[]</span>，编排器逐项记录批准或拒绝；批准只生成不可执行的描述符，不启动任务或进程。</p>
         <div class="divider"></div>
-        <p class="note"><b>计划中的版本</b>是 <span class="mono">docs/DISCOVERY_PLANE_V04.md</span> 的 D4（该文档目前标注为已推迟）：proposal schema 增 <span class="mono">spawn_requests[]</span>，由编排器统一裁决——每轮总数上限、递归深度上限为一、预算从本轮切分、逐项批准或拒绝并记入 <span class="mono">spawn_log</span>。</p>
+        <dl class="kv"><dt>每轮申请上限</dt><dd class="mono">${MAXSPAWN.requests}</dd><dt>单项预算上限</dt><dd class="mono">${MAXSPAWN.budget}</dd><dt>递归深度上限</dt><dd class="mono">${MAXSPAWN.depth}</dd></dl>
         <div class="divider"></div>
-        <p class="note">在它落地之前，本控制台不显示任何扇出配额或批准数。一个尚不存在的治理机制，摆出「申请 5 / 批准 3 / 拒绝 2」这样的数字，比不提它更糟。</p>`)),
+        <p class="note">每条决定都进入不可变 <span class="mono">spawn_log</span>；请求预算不从研究预算台账扣除，实际执行仍需后续独立授权。</p>`)),
   };
 };
 
@@ -3008,7 +3009,8 @@ V.acct_limits = () => ({
           <tr><td>月度额度</td><td class="mono">${QUOTA_PT.toLocaleString()} 积分</td><td class="mut">停止并转入人工通道，不降级运行</td></tr>
           <tr><td>单轮调用次数</td><td class="mono">40 次</td><td class="mut">本轮结束，进入下一轮重新规划</td></tr>
           <tr><td>求解器单次超时</td><td class="mono">30 秒</td><td class="mut">返回 unknown，按硬阻断处理</td></tr>
-          <tr><td>单次提案新增上限</td><td class="mono">${MAXNEW.claims} 命题 · ${MAXNEW.routes} 路线</td><td class="mut">超限提案整体拒绝；无动态派生子会话的通道</td></tr>
+          <tr><td>单次提案新增上限</td><td class="mono">${MAXNEW.claims} 命题 · ${MAXNEW.routes} 路线</td><td class="mut">超限提案整体拒绝</td></tr>
+          <tr><td>受治理扇出上限</td><td class="mono">${MAXSPAWN.requests} 申请 · 深度 ${MAXSPAWN.depth} · 单项 ${MAXSPAWN.budget}</td><td class="mut">逐项裁决并写入 spawn_log；不执行子任务</td></tr>
           <tr><td>监测主题数</td><td class="mono">${SEAT_TOPICS} 个</td><td class="mut">需升级席位方可增加</td></tr>
         </tbody></table></div>
       <div class="banner acc"><div><b>默认永远是有上限的。</b>无上限运行必须显式开启，且每一笔消耗都会记入积分台账。这不是省钱策略，是防止一次配置错误把整月积分烧在一个死循环上。</div></div>
@@ -3029,9 +3031,9 @@ V.acct_limits = () => ({
       <p class="note">停下来是安全的默认值。继续跑必须是一次显式的人工决定。</p>`)),
 });
 
-/* orchestrator.py 的 MAX_NEW_CLAIMS_PER_PROPOSAL / MAX_NEW_ROUTES_PER_PROPOSAL。
-   这是一次提案能做的全部扩张——仓库里没有任何 spawn / 子会话派生通道。 */
+/* orchestrator.py 的提案与受治理扇出上限。 */
 const MAXNEW = { claims:5, routes:5 };
+const MAXSPAWN = { requests:5, depth:1, budget:"10.0" };
 /* 停止原因来自 matharc/v02/campaign.py 的四个 stop_reason 分支；
    括号里的默认值是同文件构造器的默认参数（max_rounds=20、max_rounds_without_gain=5）。
    阈值可配，但分支就是这四条。 */
@@ -4018,8 +4020,9 @@ function render(){
   const dataBoundary = $("#view-data-boundary");
   if(dataBoundary){
     const connected = S.view === "admin_queue" ? ReviewConsole.view().source === "live" : !!livePayloadFor(S.view);
-    dataBoundary.textContent = connected ? "真实数据" : "演示数据";
-    dataBoundary.dataset.source = connected ? "live" : "demo";
+    const unavailable = consolePayloadWasLoaded() && (S.view === "routes" || S.view === "disclosure") && !connected;
+    dataBoundary.textContent = connected ? "真实数据" : unavailable ? "实时投影不可用" : "演示数据";
+    dataBoundary.dataset.source = connected ? "live" : unavailable ? "unavailable" : "demo";
   }
   $("#budget").textContent = S.guest ? "访客只读模式" : "预算 41% · 剩余 1 060 秒";
   $("#avatar").textContent = S.guest ? "客" : (S.role==="admin" ? "管" : "研");
@@ -4234,16 +4237,19 @@ function syncThemeBtn(){
    export contract stop rendering demonstration constants. Every other view
    retains its visible demonstration boundary until a matching backend model
    exists. */
-const DEMO_VIEWS = Object.fromEntries(["source","dag","proofchain","tools","reasoning","admin_roles","campaign"].map(id=>[id,V[id]]));
+const DEMO_VIEWS = Object.fromEntries(["source","dag","proofchain","tools","reasoning","admin_roles","campaign","routes","disclosure"].map(id=>[id,V[id]]));
 const LIVE_VIEW_CONTRACTS = {
   source:["source_registry_projection","live"], dag:["verification_publication","live"],
   proofchain:["verification_publication","live"], tools:["verification_publication","live"],
   reasoning:["verification_publication","live"], admin_roles:["verification_publication","live"],
-  campaign:["campaign_observatory","live_if_current_workspace_campaign_is_registered"]
+  campaign:["campaign_observatory","live_if_current_workspace_campaign_is_registered"],
+  routes:["routes_projection","live"], disclosure:["disclosure_projection","live"],
 };
 const livePayloadFor = view => {
   const payload = S.consolePayload, contract = LIVE_VIEW_CONTRACTS[view];
-  return payload && contract && payload.view_contract && payload.view_contract[contract[0]] === contract[1] ? payload : null;
+  if(!payload || !contract || !payload.view_contract || payload.view_contract[contract[0]] !== contract[1]) return null;
+  if((view === "routes" || view === "disclosure") && !consoleProjectionState(view).ok) return null;
+  return payload;
 };
 const liveWorkspace = view => { const payload = livePayloadFor(view); return payload && payload.workspace; };
 const liveEsc = value => esc(value == null ? "—" : String(value));
@@ -4289,6 +4295,25 @@ const LIVE_ENUM_UI = Object.freeze({
     PENDING:{cls:"gap",label:"待核验"}, VERIFIED:{cls:"ok",label:"已核验"},
     REJECTED:{cls:"err",label:"已拒绝"}, SUPERSEDED:{cls:"skip",label:"已替代"},
   }),
+  route_status: Object.freeze({
+    PROPOSED:{cls:"skip",label:"已提出"}, ACTIVE:{cls:"ok",label:"进行中"},
+    BLOCKED:{cls:"gap",label:"受阻"}, FALSIFIED:{cls:"err",label:"已证伪"},
+    CLOSED:{cls:"ok",label:"已关闭"}, ABANDONED:{cls:"skip",label:"已放弃"},
+  }),
+  kill_test_kind: Object.freeze({
+    enumeration:{cls:"acc",label:"有限枚举"}, property_random:{cls:"gap",label:"性质随机测试"},
+    sat_search:{cls:"gap",label:"可满足性搜索"}, instance_eval:{cls:"gap",label:"实例求值"},
+  }),
+  route_evaluation_outcome: Object.freeze({
+    COUNTEREXAMPLE:{cls:"err",label:"反例"}, PASS_BOUNDED:{cls:"ok",label:"有界通过"},
+    INCONCLUSIVE:{cls:"gap",label:"无法定论"}, ERROR:{cls:"err",label:"执行错误"},
+  }),
+  review_decision: Object.freeze({
+    APPROVE:{cls:"ok",label:"接受"}, REQUEST_CHANGES:{cls:"gap",label:"要求修改"}, REJECT:{cls:"err",label:"拒绝"},
+  }),
+  review_lifecycle: Object.freeze({
+    ACTIVE:{cls:"ok",label:"生效"}, SUPERSEDED:{cls:"skip",label:"已取代"}, REVOKED:{cls:"err",label:"已撤销"},
+  }),
   release_state: Object.freeze({
     PROVED_AND_AUDITED:{cls:"ok",label:"已证明且审计通过"}, PROVED_WITH_AUDIT_DEBT:{cls:"gap",label:"已证明，仍有审计欠账"},
     REFUTED:{cls:"err",label:"已证伪"}, REFUTED_EXACT:{cls:"err",label:"已精确证伪"},
@@ -4313,6 +4338,11 @@ const LIVE_ENUM_KEYS = Object.freeze({
   evidence_kind:["FORMAL_PROOF","CHECKED_DERIVATION","EXACT_CERTIFICATE","EXACT_COMPUTATION","COUNTEREXAMPLE","LITERATURE_RESULT","HUMAN_AUDIT","NUMERICAL_EXPERIMENT","HEURISTIC"],
   tool_status:["REQUESTED","RUNNING","PASS","FAIL","ERROR"],
   source_claim_status:["PENDING","VERIFIED","REJECTED","SUPERSEDED"],
+  route_status:["PROPOSED","ACTIVE","BLOCKED","FALSIFIED","CLOSED","ABANDONED"],
+  kill_test_kind:["enumeration","property_random","sat_search","instance_eval"],
+  route_evaluation_outcome:["COUNTEREXAMPLE","PASS_BOUNDED","INCONCLUSIVE","ERROR"],
+  review_decision:["APPROVE","REQUEST_CHANGES","REJECT"],
+  review_lifecycle:["ACTIVE","SUPERSEDED","REVOKED"],
   release_state:["PROVED_AND_AUDITED","PROVED_WITH_AUDIT_DEBT","REFUTED","REFUTED_EXACT","CANDIDATE_UNVERIFIED","BLOCKED_EXACT","OPEN_RESEARCH"],
   event_type:["WORKSPACE_CREATED","CLAIM_ADDED","ROUTE_ADDED","OBJECT_ADDED","OBJECT_VERIFIED","CLAIM_OBJECTS_LINKED","SOURCE_CLAIM_ADDED","SOURCE_CLAIM_VERIFIED","CLAIM_SOURCES_LINKED","EVIDENCE_ADDED","TOOL_CALL_ADDED","PUBLIC_REASONING_ADDED","FAILURE_RECORDED","CLAIM_PROMOTED","CAMPAIGN_RECORDED","CAMPAIGN_COMPLETED","CLAIM_PROMOTION_REJECTED","CAMPAIGN_ROUND_COMPLETED","REVIEW_GAP_RECORDED","ROUTE_FAILURE_RECORDED","CLAIM_COUNTEREXAMPLE_RECORDED"],
   campaign_reason:["campaign_report_not_recorded","campaign_report_stale"],
@@ -4331,6 +4361,160 @@ const liveEnumPill = (domain, value) => {
     : `<span class="pill err">未识别枚举值</span>`;
 };
 const liveEnumText = (domain, value) => (liveEnum(domain, value) || {label:"未识别枚举值"}).label;
+const isLiveObject = value => value !== null && typeof value === "object" && !Array.isArray(value);
+const hasExactLiveKeys = (value, keys) => {
+  if(!isLiveObject(value)) return false;
+  const actual = Object.keys(value).sort(), expected = [...keys].sort();
+  return actual.length === expected.length && actual.every((key, index) => key === expected[index]);
+};
+const hasLiveKeys = (value, required, optional=[]) => {
+  if(!isLiveObject(value)) return false;
+  const allowed = new Set([...required, ...optional]);
+  return required.every(key => Object.prototype.hasOwnProperty.call(value, key))
+    && Object.keys(value).every(key => allowed.has(key));
+};
+const liveString = value => typeof value === "string" && value.length > 0;
+const liveHash = value => typeof value === "string" && /^[0-9a-f]{64}$/.test(value);
+const liveStringArray = value => Array.isArray(value) && value.every(item => typeof item === "string");
+const sameLiveProvenance = (value, expected) => hasExactLiveKeys(value, ["run_id","state_digest_sha256","event_head_hash"])
+  && liveString(value.run_id) && liveHash(value.state_digest_sha256) && liveHash(value.event_head_hash)
+  && value.run_id === expected.run_id
+  && value.state_digest_sha256 === expected.state_digest_sha256
+  && value.event_head_hash === expected.event_head_hash;
+const validateLiveEvent = event => hasExactLiveKeys(event, [
+  "sequence","event_id","event_type","actor","subject_ids","payload","previous_hash","timestamp","event_hash","canonical_unsigned_json",
+]) && Number.isInteger(event.sequence) && event.sequence >= 0 && liveString(event.event_id)
+  && liveString(event.event_type) && liveString(event.actor) && liveStringArray(event.subject_ids)
+  && isLiveObject(event.payload) && liveHash(event.previous_hash) && liveString(event.timestamp)
+  && liveHash(event.event_hash) && liveString(event.canonical_unsigned_json);
+const validateLiveWorkspace = (payload, provenance) => {
+  const workspace = payload.workspace;
+  if(!hasExactLiveKeys(workspace, ["trace","metrics","objects","sources","artifacts","events","links","audit","workspace","comparison"])) return false;
+  const trace = workspace.trace;
+  if(!isLiveObject(trace) || !liveString(trace.run_id) || trace.run_id !== provenance.run_id
+    || !Array.isArray(trace.claims) || !Array.isArray(trace.routes) || !Array.isArray(trace.evidence)
+    || !Array.isArray(trace.tool_calls) || !Array.isArray(trace.public_reasoning) || !Array.isArray(trace.failures)
+    || !Array.isArray(trace.boundary_violations) || !isLiveObject(trace.metadata)) return false;
+  const ledger = workspace.events;
+  if(!hasExactLiveKeys(ledger, ["schema_version","genesis_hash","head_hash","events"])
+    || ledger.schema_version !== "1.0" || ledger.genesis_hash !== "0".repeat(64)
+    || !liveHash(ledger.head_hash) || !Array.isArray(ledger.events)
+    || !ledger.events.every(validateLiveEvent)) return false;
+  const state = workspace.workspace;
+  if(!hasExactLiveKeys(state, ["state_digest_sha256","committed_state_digest_sha256","strict_artifacts"])
+    || !liveHash(state.state_digest_sha256) || !liveHash(state.committed_state_digest_sha256)
+    || state.state_digest_sha256 !== provenance.state_digest_sha256
+    || state.committed_state_digest_sha256 !== provenance.state_digest_sha256
+    || !liveHash(provenance.event_head_hash) || ledger.head_hash !== provenance.event_head_hash) return false;
+  return isLiveObject(workspace.audit) && workspace.audit.valid === true;
+};
+const validateLiveRoute = route => {
+  if(!hasExactLiveKeys(route, [
+    "route_id","name","hypothesis","mechanism_signature","kill_test","status","claim_ids","parent_route_id",
+    "rationale","expected_discriminator","created_by","created_at","updated_at","kill_test_spec",
+    "kill_test_spec_digest_sha256","evaluations",
+  ])) return false;
+  if(!liveString(route.route_id) || !liveString(route.name) || !liveString(route.hypothesis)
+    || !liveStringArray(route.mechanism_signature) || typeof route.kill_test !== "string"
+    || !liveEnum("route_status", route.status) || !liveStringArray(route.claim_ids)
+    || (route.parent_route_id !== null && typeof route.parent_route_id !== "string")
+    || typeof route.rationale !== "string" || typeof route.expected_discriminator !== "string"
+    || typeof route.created_by !== "string" || !liveString(route.created_at) || !liveString(route.updated_at)
+    || !Array.isArray(route.evaluations)) return false;
+  const spec = route.kill_test_spec;
+  if(spec === null){
+    if(route.kill_test_spec_digest_sha256 !== null || route.evaluations.length) return false;
+  } else {
+    if(!hasExactLiveKeys(spec, ["kind","generator_spec","discriminator_spec","tested_scope","version","max_cases","seed","created_at"])
+      || !liveEnum("kill_test_kind", spec.kind) || !isLiveObject(spec.generator_spec)
+      || !isLiveObject(spec.discriminator_spec) || !liveString(spec.tested_scope) || !liveString(spec.version)
+      || (spec.max_cases !== null && (!Number.isInteger(spec.max_cases) || spec.max_cases <= 0))
+      || (spec.seed !== null && !Number.isInteger(spec.seed)) || !liveString(spec.created_at)
+      || !liveHash(route.kill_test_spec_digest_sha256)) return false;
+    const semantic = {kind:spec.kind, generator_spec:spec.generator_spec, discriminator_spec:spec.discriminator_spec,
+      tested_scope:spec.tested_scope, version:spec.version, max_cases:spec.max_cases, seed:spec.seed};
+    if(sha256(canon(semantic)) !== route.kill_test_spec_digest_sha256) return false;
+  }
+  return route.evaluations.every(evaluation => hasExactLiveKeys(evaluation, [
+    "evaluation_id","route_id","route_revision","claim_id","claim_revision","kill_test_spec_digest","tool_call_id",
+    "outcome","tested_scope","verifier_group","replay_command","witness_artifact_id","witness_verified","created_at",
+  ]) && liveString(evaluation.evaluation_id) && evaluation.route_id === route.route_id
+    && Number.isInteger(evaluation.route_revision) && evaluation.route_revision >= 0
+    && liveString(evaluation.claim_id) && Number.isInteger(evaluation.claim_revision) && evaluation.claim_revision >= 0
+    && liveHash(evaluation.kill_test_spec_digest) && route.kill_test_spec_digest_sha256 === evaluation.kill_test_spec_digest
+    && liveString(evaluation.tool_call_id) && liveEnum("route_evaluation_outcome", evaluation.outcome)
+    && liveString(evaluation.tested_scope) && liveString(evaluation.verifier_group)
+    && typeof evaluation.replay_command === "string" && typeof evaluation.witness_artifact_id === "string"
+    && typeof evaluation.witness_verified === "boolean" && liveString(evaluation.created_at));
+};
+const validateRouteProjection = (projection, provenance) => {
+  if(projection === undefined) return {ok:false, reason:"projection_missing"};
+  if(!hasExactLiveKeys(projection, ["schema_version","state","provenance","routes"])) return {ok:false, reason:"projection_malformed"};
+  if(projection.schema_version !== "1.0" || projection.state !== "live" || !sameLiveProvenance(projection.provenance, provenance)) return {ok:false, reason:"projection_stale"};
+  if(!Array.isArray(projection.routes) || !projection.routes.every(validateLiveRoute)) return {ok:false, reason:"projection_malformed"};
+  const ids = projection.routes.map(route => route.route_id);
+  if(new Set(ids).size !== ids.length) return {ok:false, reason:"projection_malformed"};
+  return {ok:true, reason:""};
+};
+const validateLiveDisclosure = (projection, provenance) => {
+  if(projection === undefined) return {ok:false, reason:"projection_missing"};
+  if(!hasExactLiveKeys(projection, ["schema_version","state","provenance","records","levels","decision_boundary"])) return {ok:false, reason:"projection_malformed"};
+  if(projection.schema_version !== "1.0" || projection.state !== "live" || !sameLiveProvenance(projection.provenance, provenance)
+    || typeof projection.decision_boundary !== "string") return {ok:false, reason:"projection_stale"};
+  const records = projection.records;
+  if(!hasExactLiveKeys(records, ["state","evidence","reviews","promotions"]) || !Array.isArray(records.state)
+    || !Array.isArray(records.evidence) || !Array.isArray(records.reviews) || !Array.isArray(records.promotions)) return {ok:false, reason:"projection_malformed"};
+  if(!records.state.every(item => isLiveObject(item) && liveString(item.claim_id) && Number.isInteger(item.revision)
+    && liveEnum("claim_status", item.status) && liveStringArray(item.dependencies) && liveStringArray(item.evidence_ids)
+    && liveStringArray(item.route_ids) && typeof item.statement === "string" && typeof item.scope === "string")) return {ok:false, reason:"projection_malformed"};
+  if(!records.evidence.every(item => isLiveObject(item) && liveString(item.evidence_id) && liveStringArray(item.claim_ids)
+    && liveEnum("evidence_kind", item.kind) && liveEnum("evidence_status", item.status))) return {ok:false, reason:"projection_malformed"};
+  if(!records.reviews.every(item => isLiveObject(item) && liveString(item.review_id) && liveString(item.claim_id)
+    && Number.isInteger(item.claim_revision) && liveEnum("review_lifecycle", item.lifecycle_status)
+    && liveEnum("review_decision", item.overall_decision))) return {ok:false, reason:"projection_malformed"};
+  if(!records.promotions.every(validateLiveEvent)) return {ok:false, reason:"projection_malformed"};
+  if(!Array.isArray(projection.levels) || projection.levels.length !== 4) return {ok:false, reason:"projection_malformed"};
+  const expectedKeys = ["internal_state","evidence_record","review_record","promotion_record"];
+  const seen = new Set();
+  for(const level of projection.levels){
+    if(!hasExactLiveKeys(level, ["level","key","state","basis","allowed","forbidden"]) || !Number.isInteger(level.level)
+      || level.level < 1 || level.level > 4 || seen.has(level.level) || level.key !== expectedKeys[level.level - 1]
+      || (level.state !== "available" && level.state !== "unavailable") || !hasExactLiveKeys(level.basis, ["record_type","record_ids"])
+      || !liveString(level.basis.record_type) || !liveStringArray(level.basis.record_ids)
+      || !Array.isArray(level.allowed) || !level.allowed.every(item => typeof item === "string")
+      || !Array.isArray(level.forbidden) || !level.forbidden.length || !level.forbidden.every(item => typeof item === "string")) return {ok:false, reason:"projection_malformed"};
+    seen.add(level.level);
+  }
+  return {ok:true, reason:""};
+};
+const validateConsolePayload = payload => {
+  const required = ["schema_version","view_contract","provenance","workspace","source_topic","campaign","local_console","role_policy","unsupported"];
+  /* Preserve the pre-live bridge's deliberately tiny harness payload. Real
+     exports always carry the full workspace contract below; this branch is
+     limited to the old test/transport shape and exposes no live view. */
+  if(payload && payload.schema_version === "1.0" && payload.provenance
+    && typeof payload.provenance.run_id === "string" && payload.provenance.run_id.length > 0
+    && payload.workspace && payload.workspace.events && Array.isArray(payload.workspace.events.events)
+    && !payload.workspace.trace && !payload.workspace.workspace) {
+    return {ok:true, reason:"legacy_minimal_payload", projections:{routes:{ok:false, reason:"projection_missing"}, disclosure:{ok:false, reason:"projection_missing"}}};
+  }
+  if(!hasLiveKeys(payload, required, ["routes","disclosure"]) || payload.schema_version !== "1.0"
+    || !sameLiveProvenance(payload.provenance, payload.provenance) || !validateLiveWorkspace(payload, payload.provenance)
+    || !isLiveObject(payload.view_contract) || !isLiveObject(payload.source_topic) || !isLiveObject(payload.local_console)
+    || !isLiveObject(payload.role_policy) || !isLiveObject(payload.unsupported) || !isLiveObject(payload.campaign)
+    || typeof payload.campaign.available !== "boolean") return {ok:false, reason:"payload_malformed", projections:{}};
+  const projections = {
+    routes: validateRouteProjection(payload.routes, payload.provenance),
+    disclosure: validateLiveDisclosure(payload.disclosure, payload.provenance),
+  };
+  return {ok:true, reason:"", projections};
+};
+const consolePayloadWasLoaded = () => {
+  const state = S.consolePayloadState || {};
+  return state.status === "loaded" || state.status === "unavailable";
+};
+const consoleProjectionState = view => (S.consolePayloadState && S.consolePayloadState.projections || {})[view]
+  || {ok:false, reason:"projection_missing"};
 const liveDerivedPill = (ok, positive, negative) => `<span class="pill ${ok ? "ok" : "gap"}">${ok ? positive : negative}</span>`;
 const liveReplayFields = item => [
   ["重放命令", item.replay_command], ["输入摘要", item.input_digest_sha256],
@@ -4662,13 +4846,20 @@ const ConsoleBridge = (() => {
   };
   const applyExport = (payload, loadId) => {
     if (loadId !== latestLoad) return false;
-    if (!payload || payload.schema_version !== "1.0" || !payload.provenance || !payload.workspace || !payload.view_contract || !payload.role_policy || !payload.campaign) return false;
+    const validation = typeof validateConsolePayload === "function"
+      ? validateConsolePayload(payload)
+      : {ok: Boolean(payload && payload.schema_version === "1.0" && payload.provenance && payload.workspace), projections:{}};
+    const legacyMinimal = payload && payload.schema_version === "1.0" && payload.provenance
+      && typeof payload.provenance.run_id === "string" && payload.workspace && payload.workspace.events
+      && Array.isArray(payload.workspace.events.events) && !payload.workspace.trace && !payload.workspace.workspace;
+    if (!validation.ok && !legacyMinimal) return false;
     const generation = workspaceGeneration(payload);
     if (generation === null) return false;
     const tail = eventTail(payload);
     const generationChanged = generation !== eventGeneration;
     const sequenceRestarted = tail < cursor;
     S.consolePayload = payload;
+    S.consolePayloadState = {status:"loaded", projections:validation.projections, reason:""};
     eventGeneration = generation;
     cursor = generationChanged || sequenceRestarted ? tail : Math.max(cursor, tail);
     const p = payload.provenance;
@@ -4678,12 +4869,14 @@ const ConsoleBridge = (() => {
   };
   const loadExport = async url => {
     const loadId = ++latestLoad;
+    let jsonResponseSeen = false;
     try {
       const endpoints = url ? [url] : ["console.json", "/api/console"];
       for (const endpoint of endpoints) {
         if (loadId !== latestLoad) return false;
         const response = await fetch(endpoint, { cache:"no-store", credentials:"same-origin" });
         if (!response.ok) continue;
+        jsonResponseSeen = true;
         const payload = await response.json();
         if (loadId !== latestLoad) return false;
         if (applyExport(payload, loadId)) {
@@ -4692,10 +4885,13 @@ const ConsoleBridge = (() => {
         }
       }
       throw new Error("incompatible console export");
-    } catch (_) {
+    } catch (error) {
       if (loadId === latestLoad) {
         S.consolePayload = null;
-        label("演示数据（console.json 不可用）", "fallback");
+        S.consolePayloadState = jsonResponseSeen
+          ? {status:"unavailable", projections:{}, reason:error instanceof Error ? error.message : String(error)}
+          : {status:"unloaded", projections:{}, reason:"console_export_not_found"};
+        label(jsonResponseSeen ? "实时载荷不可用" : "演示数据（console.json 不可用）", jsonResponseSeen ? "unavailable" : "fallback");
         renderPreservingFocus();
       }
       return false;

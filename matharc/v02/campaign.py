@@ -212,6 +212,7 @@ class CampaignReport:
     final_metrics: dict[str, Any]
     budget: dict[str, Any] | None
     creation_log: tuple[dict[str, Any], ...]
+    spawn_log: tuple[dict[str, Any], ...] = ()
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -220,6 +221,7 @@ class CampaignReport:
             "final_metrics": self.final_metrics,
             "budget": self.budget,
             "creation_log": list(self.creation_log),
+            "spawn_log": list(self.spawn_log),
         }
 
 
@@ -296,6 +298,7 @@ class ResearchCampaign:
             final_metrics=final_metrics,
             budget=self.budget.to_dict() if self.budget is not None else None,
             creation_log=tuple(self.orchestrator.creation_log),
+            spawn_log=tuple(record.to_dict() for record in self.orchestrator.spawn_log),
         )
         self._last_report = report
         return report
@@ -305,6 +308,8 @@ class ResearchCampaign:
         semantic_before = _semantic_state(self.trace)
         budget_before = _budget_spent(self.budget)
         plan = self.orchestrator.plan_round()
+        self.orchestrator.begin_round(plan.round_id)
+        spawn_log_before = len(self.orchestrator.spawn_log)
         trace_view = build_trace_view(self.trace, plan)
         trace_view["available_exact_tools"] = list(self.tool_registry.template_ids())
         trace_view["structured_kill_tests"] = {
@@ -385,6 +390,10 @@ class ResearchCampaign:
             "plan": plan.to_dict(),
             "workers": worker_reports,
             "creations": list(self.orchestrator.creation_log[creation_log_before:]),
+            "spawn_log": [
+                record.to_dict()
+                for record in self.orchestrator.spawn_log[spawn_log_before:]
+            ],
             "metrics_before": metrics_before,
             "metrics_after": metrics_after,
             "evidence_gain": _evidence_gain(semantic_before, semantic_after),

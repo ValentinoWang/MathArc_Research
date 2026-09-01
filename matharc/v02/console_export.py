@@ -14,7 +14,9 @@ from .authorization import RolePolicy
 from .console_topic import TopicStoreConfig, console_topic_projection
 from .difficulty_ledger import DifficultyLedger
 from .exploration_session import ExplorationSessionStore
+from .falsification import get_kill_test_spec, iter_route_evaluations
 from .problem_gates import ProblemGateStore
+from .review import ReviewRecord
 from .topic_portfolio import TopicPortfolioStore
 from .topic_observation import TopicObservationRunner
 from .schema import canonical_json
@@ -24,6 +26,9 @@ from .workspace_visualization import workspace_dashboard_payload
 
 _SCHEMA_VERSION = "1.0"
 _CAMPAIGN_KEYS = frozenset({"rounds", "stop_reason", "final_metrics", "budget", "creation_log"})
+_CAMPAIGN_OPTIONAL_KEYS = frozenset({"spawn_log"})
+_REVIEW_RECORDS_KEY = "v03_review_records"
+_PROMOTION_EVENT_TYPES = frozenset({"CLAIM_PROMOTED", "CLAIM_PROMOTION_REJECTED"})
 
 
 @dataclass(frozen=True, slots=True)
@@ -99,8 +104,186 @@ def _workspace_provenance(workspace: ResearchWorkspace) -> dict[str, str]:
     }
 
 
+def console_routes_projection(
+    workspace: ResearchWorkspace,
+    workspace_provenance: Mapping[str, str],
+) -> dict[str, Any]:
+    """Project only route records owned by the current research workspace.
+
+    A route's prose kill-test is a v0.2 field.  Structured kill-test specs and
+    evaluations are optional v0.3 records, so an absent spec remains absent
+    instead of being replaced by a fabricated execution result or topology.
+    """
+
+    evaluations = iter_route_evaluations(workspace.trace)
+    known_route_ids = set(workspace.trace.routes)
+    unknown_evaluations = sorted(
+        {item.route_id for item in evaluations if item.route_id not in known_route_ids}
+    )
+    if unknown_evaluations:
+        raise ValueError(
+            f"route evaluation records reference unknown routes: {unknown_evaluations}"
+        )
+    by_route: dict[str, list[dict[str, Any]]] = {route_id: [] for route_id in known_route_ids}
+    for item in evaluations:
+        by_route[item.route_id].append(item.to_dict())
+
+    routes: list[dict[str, Any]] = []
+    for route_id in sorted(workspace.trace.routes):
+        route = workspace.trace.routes[route_id]
+        spec = get_kill_test_spec(workspace.trace, route_id)
+        routes.append(
+            {
+                **route.to_dict(),
+                "kill_test_spec": spec.to_dict() if spec is not None else None,
+                "kill_test_spec_digest_sha256": (
+                    spec.digest_sha256 if spec is not None else None
+                ),
+                "evaluations": by_route[route_id],
+            }
+        )
+    return {
+        "schema_version": _SCHEMA_VERSION,
+        "state": "live",
+        "provenance": dict(workspace_provenance),
+        "routes": routes,
+    }
+
+
+def _review_records(workspace: ResearchWorkspace) -> tuple[ReviewRecord, ...]:
+    raw_records = workspace.trace.metadata.get(_REVIEW_RECORDS_KEY, [])
+    if not isinstance(raw_records, list):
+        raise ValueError("review record metadata store is malformed")
+    records: list[ReviewRecord] = []
+    for raw in raw_records:
+        if not isinstance(raw, Mapping):
+            raise ValueError("review record entry must be an object")
+        records.append(ReviewRecord.from_dict(raw))
+    return tuple(records)
+
+
+def console_disclosure_projection(
+    workspace: ResearchWorkspace,
+    workspace_provenance: Mapping[str, str],
+) -> dict[str, Any]:
+    """Build a conservative wording matrix from persisted records only.
+
+    The matrix reports what records can be described, not what those records
+    prove.  In particular, promotion events are never turned into public
+    authorization, novelty, or open/resolved claims by this projection.
+    """
+
+    trace = workspace.trace
+    state_records = [trace.claims[key].to_dict() for key in sorted(trace.claims)]
+    evidence_records = [trace.evidence[key].to_dict() for key in sorted(trace.evidence)]
+    current_reviews = []
+    for review in _review_records(workspace):
+        claim = trace.claims.get(review.claim_id)
+        if (
+            claim is not None
+            and review.claim_revision == claim.revision
+            and review.lifecycle_status.value == "ACTIVE"
+        ):
+            current_reviews.append(review.to_dict())
+    promotion_records = [
+        event.to_dict()
+        for event in workspace.events.events
+        if event.event_type in _PROMOTION_EVENT_TYPES
+    ]
+
+    forbidden = [
+        "不得说已证明或证明完成。",
+        "不得说结果新颖、首个结果或首次发现。",
+        "不得说问题开放、已解决或已被解决。",
+        "不得说已获得公开授权、公共认可或可以直接对外发布。",
+    ]
+    levels = [
+        {
+            "level": 1,
+            "key": "internal_state",
+            "state": "available",
+            "basis": {
+                "record_type": "current_state",
+                "record_ids": [item["claim_id"] for item in state_records],
+            },
+            "allowed": [
+                f"可说：工作区记录了 {len(state_records)} 条当前命题状态和 "
+                f"{len(trace.routes)} 条路线状态。"
+            ],
+            "forbidden": forbidden.copy(),
+        },
+        {
+            "level": 2,
+            "key": "evidence_record",
+            "state": "available" if evidence_records else "unavailable",
+            "basis": {
+                "record_type": "evidence",
+                "record_ids": [item["evidence_id"] for item in evidence_records],
+            },
+            "allowed": [
+                (
+                    f"可说：记录列出了 {len(evidence_records)} 条证据及其类型、摘要和限制。"
+                    if evidence_records
+                    else "可说：当前没有证据记录可供描述。"
+                )
+            ],
+            "forbidden": forbidden.copy(),
+        },
+        {
+            "level": 3,
+            "key": "review_record",
+            "state": "available" if current_reviews else "unavailable",
+            "basis": {
+                "record_type": "review",
+                "record_ids": [item["review_id"] for item in current_reviews],
+            },
+            "allowed": [
+                (
+                    f"可说：记录列出了 {len(current_reviews)} 条与当前命题版本匹配的评审记录及其生命周期。"
+                    if current_reviews
+                    else "可说：当前没有与命题版本匹配的生效评审记录。"
+                )
+            ],
+            "forbidden": forbidden.copy(),
+        },
+        {
+            "level": 4,
+            "key": "promotion_record",
+            "state": "available" if promotion_records else "unavailable",
+            "basis": {
+                "record_type": "promotion",
+                "record_ids": [item["event_id"] for item in promotion_records],
+            },
+            "allowed": [
+                (
+                    f"可说：事件账本记录了 {len(promotion_records)} 条晋升事件及其位置。"
+                    if promotion_records
+                    else "可说：当前没有晋升事件记录可供描述。"
+                )
+            ],
+            "forbidden": forbidden.copy(),
+        },
+    ]
+    return {
+        "schema_version": _SCHEMA_VERSION,
+        "state": "live",
+        "provenance": dict(workspace_provenance),
+        "records": {
+            "state": state_records,
+            "evidence": evidence_records,
+            "reviews": current_reviews,
+            "promotions": promotion_records,
+        },
+        "levels": levels,
+        "decision_boundary": (
+            "This projection does not infer proof, novelty, open/resolved status, "
+            "or public authorization."
+        ),
+    }
+
+
 def _require_campaign_report(value: object) -> dict[str, Any]:
-    if not isinstance(value, dict) or set(value) != _CAMPAIGN_KEYS:
+    if not isinstance(value, dict) or not _CAMPAIGN_KEYS.issubset(value) or set(value) - (_CAMPAIGN_KEYS | _CAMPAIGN_OPTIONAL_KEYS):
         raise ValueError("campaign report has an incompatible schema")
     if (
         not isinstance(value["rounds"], list)
@@ -110,9 +293,12 @@ def _require_campaign_report(value: object) -> dict[str, Any]:
         or (value["budget"] is not None and not isinstance(value["budget"], dict))
         or not isinstance(value["creation_log"], list)
         or not all(isinstance(item, dict) for item in value["creation_log"])
+        or ("spawn_log" in value and (not isinstance(value["spawn_log"], list) or not all(isinstance(item, dict) for item in value["spawn_log"])))
     ):
         raise ValueError("campaign report has an incompatible schema")
-    return value
+    normalized = dict(value)
+    normalized.setdefault("spawn_log", [])
+    return normalized
 
 
 def campaign_snapshot(workspace: ResearchWorkspace) -> dict[str, Any]:
@@ -191,6 +377,8 @@ def build_console_export(
             "campaign_observatory": "live_if_current_workspace_campaign_is_registered",
             "review_submission": "existing_review_service_only",
             "source_registry_projection": "live",
+            "routes_projection": "live",
+            "disclosure_projection": "live",
             "topic_observation": (
                 "live_preexisting_single_topic_store"
                 if resolved_topic_store is not None
@@ -202,6 +390,8 @@ def build_console_export(
         "provenance": provenance,
         "workspace": workspace_payload,
         "source_topic": console_topic_projection(workspace.sources, topic_store=resolved_topic_store),
+        "routes": console_routes_projection(workspace, provenance),
+        "disclosure": console_disclosure_projection(workspace, provenance),
         "campaign": campaign_snapshot(workspace),
         "local_console": (
             local_projection_config.projection(provenance)
