@@ -3,11 +3,11 @@
 - 任务编号：A5-problem-intelligence-v0-release
 - 人工验收绑定：acceptance/human/A5-problem-intelligence-v0-release/binding.md
 - 验收合同：agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md
-- 合同版本：6
+- 合同版本：7
 - 清单状态：已批准
 - 所需人工角色：研究负责人和仓库所有者
 - 清单负责人：用户
-- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；A4 已正式接受，Q1 必须在 R1 新身份接受后重新验收
+- 批准证据：用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；A4、R1、Q1 已在限定边界内接受，A5 仅记录仓库源级交付决定
 - 执行结果：acceptance/human/A5-problem-intelligence-v0-release/runs/<run-id>/result.md
 
 不要重复由自动化检查负责的哈希、字段、远端 ref 或测试断言。本清单只判断发布范围的研究语义。
@@ -18,7 +18,7 @@
 - 必须人工判断的原因：仓库源码交付与研究结论公开之间的语义边界需要研究负责人和仓库所有者共同判断，不能由字段一致性测试完全替代。
 - 前置条件：A5 机器测试、合同检查、SSOT 严格验证和 Obsidian 快照检查已通过；打开 Q1 政策、A5 证据与本清单。
 - 验收步骤：
-  1. 检查 A5 的允许范围仅为仓库源级交付，并明确绑定 `union-closed` 的固定三例和 Q1 v5 节点、执行合同、冻结清单、台账及两条独立审阅。
+  1. 检查 A5 的允许范围仅为仓库源级交付，并明确绑定 `union-closed` 的固定三例和 Q1 v7 节点、执行合同、当前冻结清单及两条独立审阅。
   2. 检查 Q1 的三例仍为 `UNCALIBRATED` 和 `NOT_READY`，且 A5 仍保留 `q1_public_release_allowed=false`。
   3. 检查数学证明、外部资料、开放状态、新颖性、校准/统计性能、生产/设备和研究结论公开均在禁止列表中。
   4. 检查 GitHub 交付被限定为 A5 提交推送后的远端 `main` SHA 回读，不把回读写成任何更高层证据。

@@ -38,11 +38,15 @@ class CalibrationDisclosureTests(unittest.TestCase):
         r1_evidence = json.loads(HISTORICAL_R1_EVIDENCE.read_text(encoding="utf-8"))
         r1_fixture = json.loads(HISTORICAL_R1_FIXTURE.read_text(encoding="utf-8"))
         self.assertEqual("EV-R1-ACCEPTED-1", r1_evidence["evidence_id"])
-        self.assertEqual("073fecdfae5f7ca8c8adc946959b3fd030b60d3c8960b22230d2256b7679114c", policy.r1_evidence_sha256)
         self.assertEqual(
-            hashlib.sha256(HISTORICAL_R1_FIXTURE.read_bytes()).hexdigest(), policy.r1_fixture_sha256
+            "88dae7d1e4314009a6a7869f1265df0e86dc95bc6f9c8ce4797850b8040a9e06",
+            hashlib.sha256(HISTORICAL_R1_EVIDENCE.read_bytes()).hexdigest(),
         )
-        self.assertEqual(r1_fixture["fixture_content_sha256"], policy.r1_fixture_content_sha256)
+        self.assertEqual(
+            "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c",
+            hashlib.sha256(HISTORICAL_R1_FIXTURE.read_bytes()).hexdigest(),
+        )
+        self.assertEqual(r1_fixture["fixture_content_sha256"], "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9")
         self.assertEqual([record.case_id for record in policy.records], r1_fixture["case_ids"])
 
     def test_current_q1_block_is_bound_to_reopened_or_accepted_r1_identity(self) -> None:
@@ -50,11 +54,11 @@ class CalibrationDisclosureTests(unittest.TestCase):
         q1_evidence = json.loads(Q1_EVIDENCE.read_text(encoding="utf-8"))
         self.assertIn(
             r1_evidence["evidence_id"],
-            {"EV-R1-REOPENED-5", "EV-R1-ACCEPTED-2"},
+            {"EV-R1-ACCEPTED-3"},
         )
-        self.assertEqual("EV-Q1-REOPENED-2", q1_evidence["evidence_id"])
-        self.assertEqual("blocked", q1_evidence["acceptance_self_check"])
-        self.assertEqual("BLOCKED", q1_evidence["proposed_state"])
+        self.assertEqual("EV-Q1-ACCEPTED-3", q1_evidence["evidence_id"])
+        self.assertEqual("pass", q1_evidence["acceptance_self_check"])
+        self.assertEqual("ACCEPTED", q1_evidence["proposed_state"])
         self.assertEqual(
             hashlib.sha256(R1_EVIDENCE.read_bytes()).hexdigest(),
             q1_evidence["source_identity"]["r1_evidence_sha256"],

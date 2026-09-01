@@ -1,11 +1,11 @@
 # Acceptance Contract: A5-problem-intelligence-v0-release
 
 - Task ID: A5-problem-intelligence-v0-release
-- Contract version: 6
+- Contract version: 7
 - Contract status: APPROVED
 - Test baseline: LOCKED
 - Acceptance owner: 研究负责人和仓库所有者
-- Approval evidence: 用户已明确要求验收通过、持续完成，并在每个阶段提交和推送 GitHub；A4 已正式接受，R1/Q1 正在按新身份重新验收。A5 合同版本 6 仅重绑定这一阻断链，继续禁止任何仓库源级交付授权，直至 Q1 新身份被正式接受。
+- Approval evidence: 用户已明确要求验收通过、持续完成，并在每个阶段提交和推送 GitHub；A4、R1、Q1 均已在其限定边界内接受。A5 合同版本 7 重新绑定当前 Q1 accepted identity，仅授权本地仓库源级交付决定，继续禁止任何研究结论公开。
 - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/A5.json
 - SSOT node: A5
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
@@ -13,7 +13,7 @@
 - Decision refs: decision.problem-intelligence.amendment@2
 - Assumption IDs: none
 - Invalidation keys: release.problem-intelligence.v0
-- Baseline identity: origin/main@20d41af66b03d037b7e390ce31800fcc9d573a3e
+- Baseline identity: origin/main@bd4ecbecd699d0ea8177ff944d62b4cbcfee6170
 - Human acceptance workspace: acceptance/human/A5-problem-intelligence-v0-release
 - UI Change declaration: none
 
@@ -54,7 +54,7 @@ And GitHub delivery may be claimed only after the final local HEAD equals origin
 - A5 的证据等级恒为 `source`，写入权限仅限独立发布决定记录。
 - A5 不能把 Q1 的 `public_release_allowed=false` 转换为研究结论公开授权。
 - 允许范围只包含 `union-closed` 的固定三例本地/仓库工件和其 GitHub 源码交付，不包含任何外部或生产事实。
-- A5 必须以固定的 Q1 v5 摘要而非可变工作树摘要校验所有上游身份；协调改写 Q1 与 A5 的本地指针同样被拒绝。
+- A5 必须以固定的 Q1 v7 摘要而非可变工作树摘要校验所有上游身份；协调改写 Q1 与 A5 的本地指针同样被拒绝。
 - 远端 SHA 相等是 GitHub 交付声明的必要条件，不是数学、文献、新颖性、统计或生产验证的替代品。
 
 ## Data impact
@@ -88,8 +88,8 @@ And GitHub delivery may be claimed only after the final local HEAD equals origin
 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
-| tests/test_v02_release_decision.py | bbb32c14950b63c8294608e4699b9ced7df51043288433fb65b8a1d18dcad167 | AC-01, AC-02, AC-03 |
-| tests/test_v02_calibration_disclosure.py | e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57 | AC-01, AC-02 |
+| tests/test_v02_release_decision.py | d4eb9c91c481fdd4987910a9773e2cc2cd647ca46b80ffcfe34803bfa140bf15 | AC-01, AC-02, AC-03 |
+| tests/test_v02_calibration_disclosure.py | fbd26cced684b3ffe9489d18aeb7fd687e394490209106f73c75cc767fa0e846 | AC-01, AC-02 |
 
 ## Requirements-test traceability
 
@@ -111,4 +111,4 @@ And GitHub delivery may be claimed only after the final local HEAD equals origin
 
 ## Risks and open decisions
 
-GitHub 源码交付并不回答数学真伪、文献完整性、新颖性、统计性能或生产可用性。任何面向公众的研究结论需要独立的后续授权与相应证据，不能引用 A5 代替。版本 6 将 Q1 的重新验收状态固定为 A5 的硬阻断，并把新保护测试哈希纳入合同；它不扩大 A5 的可交付范围。
+GitHub 源码交付并不回答数学真伪、文献完整性、新颖性、统计性能或生产可用性。任何面向公众的研究结论需要独立的后续授权与相应证据，不能引用 A5 代替。版本 7 将已接受 Q1 的当前身份固定为 A5 上游，并把新的保护测试哈希纳入合同；它不扩大 A5 的可交付范围。

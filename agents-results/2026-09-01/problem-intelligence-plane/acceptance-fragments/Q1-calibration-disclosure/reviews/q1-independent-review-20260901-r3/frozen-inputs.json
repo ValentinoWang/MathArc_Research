@@ -1,0 +1,24 @@
+{
+  "campaign_id": "q1-independent-review-20260901-r3",
+  "status": "FROZEN_PENDING_REVIEWS",
+  "frozen_at": "2026-09-01T11:20:00Z",
+  "candidate": {
+    "q1_evidence": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json",
+    "q1_evidence_sha256": "ec5d31e829a5b2d161fd992f78fedf27e88eaad60f069275a32f3ad608b36876",
+    "q1_policy_fixture": "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json",
+    "q1_policy_fixture_sha256": "566d86da2d3ab3f9a44e380f38ed11858d021a2ac029517dd8f21d8a7e82f0b0",
+    "implementation": "matharc/v02/calibration_disclosure.py",
+    "implementation_sha256": "d7ac4010b960bacfb601a0670a0c1c45ef7da0be049839fd551b8a69d5b79bc7",
+    "protected_test": "tests/test_v02_calibration_disclosure.py",
+    "protected_test_sha256": "63ea5244fac913208ff3e5ffa5d98cee7ffd68a62958c45b4c3c67d853912ced",
+    "implementation_base": "bd4ecbecd699d0ea8177ff944d62b4cbcfee6170",
+    "contract_version": 6,
+    "contract_sha256": "fdfbc542fe28f016d41fc8e013c086a20ca728f4b95a2cf79854ab6e83860eb0"
+  },
+  "review_lanes": [
+    {"lane": "identity-contract", "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh", "reviewer": "q1-identity-contract-r3-luna"},
+    {"lane": "policy-boundary", "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh", "reviewer": "q1-policy-boundary-r3-sol"}
+  ],
+  "formal_acceptance_required": ["machine", "human", "independent_ai_reviews"],
+  "public_release_allowed": false
+}

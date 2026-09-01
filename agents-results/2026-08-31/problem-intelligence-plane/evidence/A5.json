@@ -1,26 +1,24 @@
 {
-  "evidence_id": "EV-A5-BLOCKED-1",
+  "evidence_id": "EV-A5-ACCEPTED-2",
   "task_id": "A5",
-  "consumed_evidence": ["EV-Q1-REOPENED-2"],
+  "consumed_evidence": ["EV-Q1-ACCEPTED-3"],
   "source_identity": {
-    "implementation_base": "329b270460abf146561499fd5aa7ec4e62737eb1",
-    "q1_evidence_sha256": "a56efb2c662857d5e863d8ce59abaef8044319ecd3802ee19c32a01a058472f4",
-    "q1_policy_fixture_sha256": "566533a91201ee353ef80efd13e7e039e21692b4ef5334a8a55e940cccf58064",
-    "q1_policy_digest_sha256": "05f843c5c4c3956c50b211ed7e41dd4e05e2705fa74759ba8d4b4e2bb0c5748c",
-    "q1_implementation_sha256": "1a56ac0e25023e7103adc4c18e9ce50157bb6f58dee57247aba22ada5a352b50",
-    "q1_protected_test_sha256": "e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57",
-    "q1_node_sha256": "851b6ac813282d7b5df64ec09dd548e31f0056a272ccba960d59fc2a3b373ab8",
-    "q1_execution_contract_sha256": "bea478adc7da2f5f21c01990a2bcf6820ac4b469f7a131d1e9552f527dd7c31b",
-    "q1_frozen_inputs_sha256": "e0f14cd0ff4074cf745d14b23013dedd2e64683379b116c9d145b4209142e1d9",
-    "q1_final_ledger_sha256": "53bd3643f9dafe03aa821a8fc61678f71e804b371b09b86a3435b09430e739b4",
-    "q1_identity_review_sha256": "87da2960befb8b50514cdad1d17cb569a60e4745c0d52d5478ee3558fd9f63de",
-    "q1_policy_review_sha256": "91c33fdcabdf3c74ea542b336d2ecd52ff3d4d6c3e04368911c405679b078f19"
+    "implementation_base": "bd4ecbecd699d0ea8177ff944d62b4cbcfee6170",
+    "q1_evidence_sha256": "7961857447f7ecb45d496ebed9772f172eee9f3ae33f4b98b47d6c2b7e7256b9",
+    "q1_policy_fixture_sha256": "566d86da2d3ab3f9a44e380f38ed11858d021a2ac029517dd8f21d8a7e82f0b0",
+    "q1_policy_digest_sha256": "0705e8af012c36afc85c5af61d9a473ec8f3d369f877450acc9587be82281252",
+    "q1_implementation_sha256": "d7ac4010b960bacfb601a0670a0c1c45ef7da0be049839fd551b8a69d5b79bc7",
+    "q1_protected_test_sha256": "fbd26cced684b3ffe9489d18aeb7fd687e394490209106f73c75cc767fa0e846",
+    "accepted_upstream_remote_main": "bd4ecbecd699d0ea8177ff944d62b4cbcfee6170"
   },
   "release_scope": {
     "evidence_level": "source",
     "topic_id": "union-closed",
     "fixed_case_count": 3,
-    "allowed": [],
+    "allowed": [
+      "accepted repository source, tests, SSOT records, and acceptance evidence",
+      "GitHub main ref delivery after the A5 decision commit"
+    ],
     "prohibited": [
       "mathematical proof or theorem acceptance",
       "live external literature retrieval or open-status confirmation",
@@ -31,36 +29,28 @@
     ]
   },
   "release_decision": {
-    "status": "BLOCKED_UPSTREAM_Q1",
-    "github_source_delivery_authorized": false,
+    "status": "ACCEPTED_SOURCE_SCOPE",
+    "github_source_delivery_authorized": true,
     "mathematical_result_publication_authorized": false,
     "q1_public_release_allowed": false,
-    "reason": "Q1 is reopened because R1 is being reaccepted on the A4-bound fixture; no source delivery or release decision is authorized."
+    "reason": "Q1 remains a hash-bound, three-record, local UNCALIBRATED and NOT_READY disclosure policy; this decision delivers only the accepted repository source scope."
   },
   "delivery_requirements": {
     "remote_ref_readback": "git ls-remote origin refs/heads/main must equal the final local HEAD after push",
     "pre_push_delivery_claim": false
   },
   "acceptance_record": {
-    "status": "BLOCKED",
-    "reason": "Historical A5 machine, human, and release runs are invalidated by the current Q1 blocked identity.",
-    "machine": {
-      "result_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T160000Z-local-a5f001/result.md",
-      "result_sha256": "9e1f9439a4996415027732aecb427c4b9c8d84143b9365fd74b79c231e92181f",
-      "status": "INVALIDATED"
-    },
-    "human": {
-      "result_path": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T160100Z-local-a5f002/result.md",
-      "result_sha256": "8fba125e0e5373a311143b535e4b1ff9546d368c16672580a021f34031c22ab4",
-      "status": "INVALIDATED"
-    },
-    "release_review": {
-      "result_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T160200Z-local-a5f003/result.md",
-      "result_sha256": "e99b4aa45d6280b199c45052cf153a53c6b961c5e874124e305fca93c8e33100",
-      "status": "INVALIDATED"
-    }
+    "accepted_at": "2026-09-01",
+    "accepted_by": "用户（研究负责人和仓库所有者）",
+    "authority_basis": "用户已明确要求验收通过、持续完成，并在每个阶段提交并推送到 GitHub；本切片仅记录受限的仓库源级发布决定。",
+    "machine_acceptance_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/machine/static/runs/20260901T190000Z-local-a5g001/result.md",
+    "machine_acceptance_result_sha256": "72e017fd6dcdd55fc70cb9e4f64dc175e7898f8507cce66d0dfad24bc8d19316",
+    "human_acceptance_result": "acceptance/human/A5-problem-intelligence-v0-release/runs/20260901T190024Z-local-a5g002/result.md",
+    "human_acceptance_result_sha256": "9fd6d19c07a3f01c140a1d3bdd3a9738ab0bc3fb6d13f659c45f4d6adec57184",
+    "release_review_run": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A5-problem-intelligence-v0-release/acceptance/release/runs/20260901T190048Z-local-a5g003/result.md",
+    "release_review_result_sha256": "029a4dce1f914419359344f67f9d8e02d36cc47e3b47d63fd4b7b8599242d4ec"
   },
-  "proposed_state": "BLOCKED",
+  "proposed_state": "ACCEPTED",
   "unverified_items": [
     "Independent mathematical proof review",
     "Live external literature retrieval",

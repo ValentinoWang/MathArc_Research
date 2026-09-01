@@ -1,12 +1,12 @@
 {
-  "binding_sha256": "dccf8d6f09c99f682ece450789cb59a27e8e78ec340a4619fed1f5faa6bad271",
+  "binding_sha256": "de6851ccc80202b31a08b51e8046a6ed25fe081174ce32f19e9750d9b4cc23e4",
   "blocking": true,
   "blocking_budget": 3,
   "budget_exception": null,
-  "checklist_sha256": "0a25e57af95eafe3093db314eb720303bda3d6d5d6737ca62d8e44fbcbf77e81",
+  "checklist_sha256": "10c678aa81890e8ed0d0c5ecc049a1cca04f15c05fbc5e703b9ca63dc7d2bf7f",
   "contract_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md",
-  "contract_sha256": "38cacfefc654acf2b5d5cb9a54e827a5fe83e54937fe957ae4e752b941ecd1fb",
-  "contract_version": "4",
+  "contract_sha256": "bb587d3db92d5c5d3ed717b842be1ab7b6c83d93bd550dfd5366f264aef01bc4",
+  "contract_version": "7",
   "estimated_minutes": 3,
   "execution_policy": "terminal-after-machine-green",
   "invalidation_keys": [
@@ -16,13 +16,13 @@
   "machine_evidence": [
     {
       "layer": "machine/unit",
-      "result_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T140000Z-local-a1e001/result.md",
-      "result_sha256": "be814484f9f91962151e8fa96d91a55f1ce3b9bf150c7490ce9e2fd15a6dc15a",
-      "run_id": "20260901T140000Z-local-a1e001",
-      "source_identity": "20d41af66b03d037b7e390ce31800fcc9d573a3e+q1-r1-run-id-repair"
+      "result_path": "agents-results/2026-09-01/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/acceptance/machine/unit/runs/20260901T112000Z-local-q1c003/result.md",
+      "result_sha256": "ae545cda363ce5d9ca42805bdb43dd379bc29094481717398e8364395b7d8116",
+      "run_id": "20260901T112000Z-local-q1c003",
+      "source_identity": "bd4ecbecd699d0ea8177ff944d62b4cbcfee6170+q1-r1-accepted-3"
     }
   ],
-  "ready_at": "2026-09-01T14:02:00Z",
+  "ready_at": "2026-09-01T10:53:00Z",
   "release_slice": "PI-R5",
   "required_role": "研究负责人",
   "schema_version": 1,
@@ -30,7 +30,7 @@
     "no public release authority",
     "three fixed uncalibrated records"
   ],
-  "source_commit": "20d41af66b03d037b7e390ce31800fcc9d573a3e+q1-r1-run-id-repair",
+  "source_commit": "bd4ecbecd699d0ea8177ff944d62b4cbcfee6170+q1-r1-accepted-3-candidate",
   "summary": "Current R1-bound uncalibrated disclosure policy is machine green; H-01 is limited to the research-owner boundary decision.",
   "task_id": "Q1-calibration-disclosure"
 }

@@ -1,0 +1,18 @@
+{
+  "campaign_id": "q1-independent-review-20260901-r1-accepted-3",
+  "status": "FROZEN_PENDING_REVIEWS",
+  "frozen_at": "2026-09-01T10:42:00Z",
+  "candidate": {
+    "q1_evidence": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json",
+    "q1_evidence_sha256": "d9418a75e2ff99388e1c97f5e9bcefd87f617ca363e9f4a1a77b7899272a69d5",
+    "q1_policy_fixture": "agents-results/2026-08-31/problem-intelligence-plane/evidence/q1-fixtures/uncalibrated-disclosure-policy.json",
+    "q1_policy_fixture_sha256": "566d86da2d3ab3f9a44e380f38ed11858d021a2ac029517dd8f21d8a7e82f0b0",
+    "q1_policy_digest_sha256": "0705e8af012c36afc85c5af61d9a473ec8f3d369f877450acc9587be82281252",
+    "implementation_base": "bd4ecbecd699d0ea8177ff944d62b4cbcfee6170",
+    "r1_evidence_id": "EV-R1-ACCEPTED-3",
+    "r1_evidence_sha256": "effd9130a75b8e603f8d54f6ef37c511bc0ebc2de635f256353ac33f507b858a"
+  },
+  "review_lanes": ["identity-contract", "policy-boundary"],
+  "formal_acceptance_required": ["machine", "human", "independent_ai_reviews"],
+  "public_release_allowed": false
+}

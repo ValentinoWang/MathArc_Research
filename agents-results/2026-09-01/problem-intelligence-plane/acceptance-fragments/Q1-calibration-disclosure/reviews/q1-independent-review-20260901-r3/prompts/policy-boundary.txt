@@ -1,0 +1,21 @@
+You are the sole independent reviewer for the Q1 policy-boundary lane.
+
+Campaign: q1-independent-review-20260901-r3
+Reviewer identity: q1-policy-boundary-r3-sol
+Required wrapper: /Users/vsiyo/.codex/workers/run-l4.sh
+Project root: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+Frozen manifest: agents-results/2026-09-01/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-r3/frozen-inputs.json
+Sole report: agents-results/2026-09-01/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-r3/reports/policy-boundary.md
+
+Perform a zero-write independent review. Verify the policy is bound to topic
+union-closed and exactly the three frozen case IDs in order; every record is
+UNCALIBRATED and NOT_READY with separate priority; all five sorted unique
+limitations are present and public_release_allowed=false. Check static passive
+local behavior and in-memory fail-closed mutations for missing/unknown fields,
+identity/topic/order/status/readiness/priority/limit drift, digest tampering even
+after public digest recomputation, and public-release escalation. Run the focused
+15-test command, py_compile, and git diff --check. Do not modify source, tests,
+SSOT, evidence, indexes, git, or remote state. The only durable output allowed
+is the sole report path. End exactly with `Verdict: PASS` if no P0/P1 exists,
+otherwise `Verdict: FAIL`; this evidence cannot formally accept Q1 or authorize
+A5/public release.
