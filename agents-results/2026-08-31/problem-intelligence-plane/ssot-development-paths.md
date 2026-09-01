@@ -136,7 +136,7 @@ main_thread_policy: orchestration-only
 main_thread_source_write: false
 planning source: .ssot/planning-compiler.json
 machine source: .ssot/manifest.json
-current pushed baseline: main@fed4ab595aba28edd6b811a8400950c023dab1cb
+current pushed baseline: main@3920b96c5a42f99c88bf05142db04539d9fd10a1
 current worktree: clean
 ```
 
@@ -144,11 +144,13 @@ current worktree: clean
 
 | Macro phase | Release ID | User value | Independent acceptance | Independent failure | Development baseline | Promotion baseline | Release candidate |
 |---|---|---|---|---|---|---|---|
-| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:fed4ab595aba28edd6b811a8400950c023dab1cb` | `main:fed4ab595aba28edd6b811a8400950c023dab1cb` | `candidate:pi-r1-v2` |
+| P0 治理准入与事实对账 | PI-R1 | 决定是否启动支持层 | 对账、选项和修订决定 | 未批准即停止 | `git:3920b96c5a42f99c88bf05142db04539d9fd10a1` | `main:3920b96c5a42f99c88bf05142db04539d9fd10a1` | `candidate:pi-r1-v2` |
 | P1 共享文献资料底座 | PI-R2 | 公开资料可追溯导入 | 观察、去重、预算和信任门 | 资料停留待审 | `candidate:pi-r1-v1` | `accepted:pi-r1-v1` | `candidate:pi-r2-v1` |
 | P2 问题状态与新颖性审计 | PI-R3 | 状态与新颖性分离 | 四路检索和失效负测 | 冻结完整预算 | `candidate:pi-r2-v1` | `accepted:pi-r2-v1` | `candidate:pi-r3-v1` |
 | P3 一次性主题观测 | PI-R4 | 三例真实闭环 | 重放、恢复、去重和人工审计 | 进入人工通道 | `candidate:pi-r3-v1` | `accepted:pi-r3-v1` | `candidate:pi-r4-v1` |
 | P4 回归、校准与披露 | PI-R5 | 路线比较与准确发布 | 回归、量表和披露模板 | 只报告具体缺口 | `candidate:pi-r4-v1` | `accepted:pi-r4-v1` | `candidate:pi-r5-v1` |
+
+机器源固定的 R1 四路检索为 `FORWARD_CITATION`、`ALIAS_AND_EQUIVALENCE`、`STRUCTURAL_SEMANTIC`、`REVIEW_AND_EXPERT_LEAD`；T2 三例真实档案为 `P-FRANKL-Q6`、`P-ARXIV-2601-22401-COLLISION`、`P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS`。这些名称、顺序和逐例边界直接投影自对应 fixture，禁止由视图读者自行补定义。
 
 ### 最小节点合同
 
@@ -219,10 +221,10 @@ current worktree: clean
 | A3 | P2 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 未审计结果不得授权的专项证据通过 | source:accepted | T1 |
 | T1 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 游标重放、去重和人工通道专项及独立 AI 复审通过 | source:accepted | T2 |
 | T2 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 三个固定来源档案、重放、预算和人工闭环均通过独立 AI 复审 | source:accepted | A4 |
-| A4 | P3 | 1/1/1/1/2 | ACCEPTED | 1 | 验收负责人 | EG-PLAN | 离线固定来源正式验收通过，非数学证明、非公开发布 | evidence:EV-A4-ACCEPTED-2 | R1 |
-| R1 | P4 | 1/1/1/1/2 | ACCEPTED | 0 | 评测负责人 | EG-PLAN | 固定四路回归、消融记录和两份独立持久化复核通过 | evidence:EV-R1-ACCEPTED-3 | Q1 |
-| Q1 | P4 | 1/1/1/1/2 | ACCEPTED | 2 | 研究负责人 | EG-PLAN | 固定三例披露政策、机器验收和人工记录通过 | evidence:EV-Q1-ACCEPTED-3 | A5 |
-| A5 | P4 | 1/1/1/1/2 | ACCEPTED | 2 | 研究负责人和仓库所有者 | EG-PLAN | 受限仓库源级发布决定、机器验收和人工记录通过 | evidence:EV-A5-ACCEPTED-2 | 无 |
+| A4 | P3 | 1/1/1/1/2 | VERIFIED | 1 | 验收负责人 | EG-PLAN | 当前机器与离线固定来源证据通过；历史正式记录未绑定当前 HEAD | evidence:EV-A4-ACCEPTED-2 | R1 |
+| R1 | P4 | 1/1/1/1/2 | INVALIDATED | 0 | 评测负责人 | EG-PLAN | 历史四路复核需在当前 A4 身份下重验 | evidence:EV-R1-ACCEPTED-3 | Q1 |
+| Q1 | P4 | 1/1/1/1/2 | INVALIDATED | 2 | 研究负责人 | EG-PLAN | 当前台账为拒绝，需在 R1 重验后重做披露验收 | evidence:EV-Q1-ACCEPTED-3 | A5 |
+| A5 | P4 | 1/1/1/1/2 | INVALIDATED | 2 | 研究负责人和仓库所有者 | EG-PLAN | 历史受限发布决定需在当前 Q1 身份下重验 | evidence:EV-A5-ACCEPTED-2 | 无 |
 
 ### 语义节点登记表
 
@@ -272,7 +274,7 @@ current worktree: clean
 
 | Frontier | Task ID | Eligibility | Unsatisfied hard dependencies | Active assumptions | Resource decision |
 |---|---|---|---|---|---|
-| R1 | R1 | blocked | 两份新的独立、不同包装器持久化通过报告 | none | A4 已在 `EV-A4-ACCEPTED-2` 边界内接受；R1 已重新绑定但尚未重新接受 |
+| A4 | A4 | blocked | 当前 HEAD 绑定的正式人工接受记录 | none | 机器证据已通过；历史 `EV-A4-ACCEPTED-2` 仅作审计历史 |
 
 ### 波前指标
 
@@ -441,7 +443,7 @@ F1
                                                         v
                                       T1 --> T2 --> A4 --> R1 --> Q1 --> A5
 
-D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；A4、R1、Q1 和 A5 已在各自固定合同与验收记录边界内接受。
+D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；A4 当前为机器 `VERIFIED`，R1、Q1 和 A5 因身份失效等待重验。
 S1 的独立纸面 dry-run 已通过；它不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
 ```
 
@@ -470,4 +472,4 @@ flowchart LR
 
 ### 结论与当前停止点
 
-当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2、A4、R1、Q1、A5 均已接受。不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。
+当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2 保持接受；A4 仅有当前 HEAD 的机器 `VERIFIED`，R1、Q1、A5 尚未在当前身份下重新接受。不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。
