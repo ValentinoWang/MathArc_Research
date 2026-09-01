@@ -263,6 +263,7 @@ class ResearchOrchestrator:
         )
         route_ids = tuple(str(item) for item in payload.get("linked_route_ids", ()))
         tool_ids = tuple(str(item) for item in payload.get("linked_tool_call_ids", ()))
+        confidence = self._proposal_confidence(payload)
         step = PublicReasoningStep(
             step_id=step_id or f"STEP-{uuid.uuid4().hex[:12]}",
             role=role,
@@ -275,11 +276,7 @@ class ResearchOrchestrator:
             linked_claim_ids=claim_ids,
             linked_route_ids=route_ids,
             linked_tool_call_ids=tool_ids,
-            confidence=(
-                float(payload["confidence"])
-                if payload.get("confidence") is not None
-                else None
-            ),
+            confidence=confidence,
         )
         self.trace.add_public_reasoning(step)
 
@@ -287,6 +284,48 @@ class ResearchOrchestrator:
             role=role, payload=payload
         )
         self._record_spawn_requests(role=role, payload=payload, step_id=step.step_id)
+        # Proposal actions are intentionally one-way conservative.  They may
+        # open, refine, block, or nominate candidates, but never mark PROVED.
+        rejected_updates: list[dict[str, Any]] = []
+        for update in payload.get("claim_updates", []):
+            if not isinstance(update, Mapping):
+                continue
+            claim_id = str(update.get("claim_id", ""))
+            action = str(update.get("action", "keep_open"))
+            if claim_id not in self.trace.claims:
+                continue
+            claim = self.trace.claims[claim_id]
+            if claim.status in {
+                ClaimStatus.PROVED,
+                ClaimStatus.REFUTED,
+                ClaimStatus.RETRACTED,
+            }:
+                rejected_updates.append(
+                    {
+                        "kind": "claim_update",
+                        "spec": dict(update),
+                        "reason": (
+                            f"agent proposal cannot alter protected claim state: "
+                            f"{claim_id} is {claim.status.value}"
+                        ),
+                    }
+                )
+                continue
+            if action in {"propose", "refine"}:
+                if update.get("statement"):
+                    self.trace.revise_claim(
+                        claim_id,
+                        statement=str(update["statement"]),
+                        scope=str(update.get("scope", claim.scope)),
+                    )
+                claim.status = ClaimStatus.CANDIDATE
+            elif action in {"block", "refute"}:
+                # An agent cannot refute exactly without evidence; both actions
+                # therefore become BLOCKED until a counterexample is accepted.
+                claim.status = ClaimStatus.BLOCKED
+            elif action == "keep_open" and claim.status is ClaimStatus.PROPOSED:
+                claim.status = ClaimStatus.OPEN
+            claim.updated_at = utc_now()
         self.creation_log.append(
             {
                 "step_id": step.step_id,
@@ -303,38 +342,29 @@ class ResearchOrchestrator:
                     if route_id in self.trace.routes
                     and self.trace.routes[route_id].derived_from_failure is not None
                 ],
-                "rejected": rejected,
+                "rejected": [*rejected, *rejected_updates],
                 "timestamp": utc_now(),
             }
         )
-
-        # Proposal actions are intentionally one-way conservative.  They may
-        # open, refine, block, or nominate candidates, but never mark PROVED.
-        for update in payload.get("claim_updates", []):
-            if not isinstance(update, Mapping):
-                continue
-            claim_id = str(update.get("claim_id", ""))
-            action = str(update.get("action", "keep_open"))
-            if claim_id not in self.trace.claims:
-                continue
-            claim = self.trace.claims[claim_id]
-            if action in {"propose", "refine"}:
-                if update.get("statement") and claim.status is not ClaimStatus.PROVED:
-                    self.trace.revise_claim(
-                        claim_id,
-                        statement=str(update["statement"]),
-                        scope=str(update.get("scope", claim.scope)),
-                    )
-                claim.status = ClaimStatus.CANDIDATE
-            elif action in {"block", "refute"}:
-                # An agent cannot refute exactly without evidence; both actions
-                # therefore become BLOCKED until a counterexample is accepted.
-                claim.status = ClaimStatus.BLOCKED
-            elif action == "keep_open" and claim.status is ClaimStatus.PROPOSED:
-                claim.status = ClaimStatus.OPEN
-            claim.updated_at = utc_now()
         self.trace.updated_at = utc_now()
         return step
+
+    @staticmethod
+    def _proposal_confidence(payload: Mapping[str, Any]) -> float | None:
+        value = payload.get("confidence")
+        if value is None:
+            return None
+        if isinstance(value, bool):
+            raise TraceValidationError("confidence must be a finite value in [0, 1]")
+        try:
+            confidence = float(value)
+        except (TypeError, ValueError) as exc:
+            raise TraceValidationError(
+                "confidence must be a finite value in [0, 1]"
+            ) from exc
+        if not math.isfinite(confidence) or not 0.0 <= confidence <= 1.0:
+            raise TraceValidationError("confidence must be a finite value in [0, 1]")
+        return confidence
 
     def _create_proposed_structure(
         self,
@@ -378,8 +408,8 @@ class ResearchOrchestrator:
             try:
                 claim_id = str(spec["claim_id"])
                 weight = float(spec.get("weight", 1.0))
-                if weight <= 0:
-                    raise TraceValidationError("claim weight must be positive")
+                if not math.isfinite(weight) or weight <= 0:
+                    raise TraceValidationError("claim weight must be a finite positive number")
                 claim = ClaimRecord(
                     claim_id=claim_id,
                     statement=str(spec["statement"]),

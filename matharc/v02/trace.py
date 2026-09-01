@@ -438,29 +438,31 @@ class ResearchTrace:
             updated_at=str(payload.get("updated_at") or utc_now()),
             schema_version=str(payload.get("schema_version", "2.0")),
         )
-        trace.claims = {
-            item.claim_id: item
-            for item in (ClaimRecord.from_dict(value) for value in payload.get("claims", []))
-        }
-        trace.routes = {
-            item.route_id: item
-            for item in (ResearchRoute.from_dict(value) for value in payload.get("routes", []))
-        }
-        trace.evidence = {
-            item.evidence_id: item
-            for item in (EvidenceRecord.from_dict(value) for value in payload.get("evidence", []))
-        }
-        trace.tool_calls = {
-            item.call_id: item
-            for item in (ToolCallRecord.from_dict(value) for value in payload.get("tool_calls", []))
-        }
-        trace.public_reasoning = [
-            PublicReasoningStep.from_dict(value)
-            for value in payload.get("public_reasoning", [])
-        ]
-        trace.failures = [
-            FailureRecord.from_dict(value) for value in payload.get("failures", [])
-        ]
+        trace.claims = cls._load_unique_records(
+            payload.get("claims", []), ClaimRecord.from_dict, "claim_id", "claim"
+        )
+        trace.routes = cls._load_unique_records(
+            payload.get("routes", []), ResearchRoute.from_dict, "route_id", "route"
+        )
+        trace.evidence = cls._load_unique_records(
+            payload.get("evidence", []), EvidenceRecord.from_dict, "evidence_id", "evidence"
+        )
+        trace.tool_calls = cls._load_unique_records(
+            payload.get("tool_calls", []), ToolCallRecord.from_dict, "call_id", "tool call"
+        )
+        trace.public_reasoning = list(
+            cls._load_unique_records(
+                payload.get("public_reasoning", []),
+                PublicReasoningStep.from_dict,
+                "step_id",
+                "public reasoning step",
+            ).values()
+        )
+        trace.failures = list(
+            cls._load_unique_records(
+                payload.get("failures", []), FailureRecord.from_dict, "failure_id", "failure"
+            ).values()
+        )
         trace.boundary_violations = [
             dict(value) for value in payload.get("boundary_violations", [])
         ]
@@ -468,6 +470,27 @@ class ResearchTrace:
         if not validation["valid"]:
             raise TraceValidationError("; ".join(validation["errors"]))
         return trace
+
+    @staticmethod
+    def _load_unique_records(
+        raw_records: Any,
+        parser: Any,
+        identity_attr: str,
+        label: str,
+    ) -> dict[str, Any]:
+        if not isinstance(raw_records, list):
+            raise TraceValidationError(f"{label} collection must be an array")
+        records: dict[str, Any] = {}
+        for raw_record in raw_records:
+            try:
+                record = parser(raw_record)
+            except (KeyError, TypeError, ValueError) as exc:
+                raise TraceValidationError(f"invalid {label} record: {exc}") from exc
+            record_id = getattr(record, identity_attr)
+            if record_id in records:
+                raise TraceValidationError(f"duplicate {label} id: {record_id}")
+            records[record_id] = record
+        return records
 
     def content_digest(self) -> str:
         return digest_json(self.to_dict())

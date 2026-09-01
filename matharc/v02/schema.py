@@ -191,6 +191,14 @@ class ClaimRecord:
     created_at: str = field(default_factory=utc_now)
     updated_at: str = field(default_factory=utc_now)
 
+    def __post_init__(self) -> None:
+        if isinstance(self.weight, bool) or not isinstance(self.weight, (int, float)):
+            raise ValueError("claim weight must be a finite positive number")
+        weight = float(self.weight)
+        if not math.isfinite(weight) or weight <= 0.0:
+            raise ValueError("claim weight must be a finite positive number")
+        self.weight = weight
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "claim_id": self.claim_id,
@@ -605,6 +613,16 @@ class PublicReasoningStep:
     confidence: float | None = None
     timestamp: str = field(default_factory=utc_now)
 
+    def __post_init__(self) -> None:
+        if self.confidence is None:
+            return
+        if isinstance(self.confidence, bool) or not isinstance(self.confidence, (int, float)):
+            raise ValueError("confidence must be a finite value in [0, 1]")
+        confidence = float(self.confidence)
+        if not math.isfinite(confidence) or not 0.0 <= confidence <= 1.0:
+            raise ValueError("confidence must be a finite value in [0, 1]")
+        self.confidence = confidence
+
     def to_dict(self) -> dict[str, Any]:
         return {
             "step_id": self.step_id,
@@ -628,8 +646,6 @@ class PublicReasoningStep:
         confidence = payload.get("confidence")
         if confidence is not None:
             confidence = float(confidence)
-            if not 0.0 <= confidence <= 1.0:
-                raise ValueError("confidence must be in [0, 1]")
         return cls(
             step_id=str(payload["step_id"]),
             role=str(payload["role"]),

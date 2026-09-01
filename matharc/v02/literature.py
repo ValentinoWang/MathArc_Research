@@ -251,11 +251,17 @@ def _concrete_version(provider: Provider, record: Mapping[str, Any], request_val
         else:
             candidate = _first_value(record, "updated", "published", "published_at")
             if candidate is not None:
-                candidate = f"arxiv-updated:{_date_value(candidate)}"
+                date_value = _date_value(candidate)
+                if not date_value:
+                    raise ValueError("provider record has no concrete arXiv version date")
+                candidate = f"arxiv-updated:{date_value}"
     if candidate is None and provider is Provider.CROSSREF:
         candidate = _first_value(record, "revision", "indexed", "created", "published", "issued")
         if candidate is not None:
-            candidate = f"crossref-record:{_date_value(candidate)}"
+            date_value = _date_value(candidate)
+            if not date_value:
+                raise ValueError("provider record has no concrete Crossref version date")
+            candidate = f"crossref-record:{date_value}"
     if candidate is None:
         raise ValueError("provider record has no concrete version")
     version = _text(candidate)

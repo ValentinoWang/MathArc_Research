@@ -183,6 +183,16 @@ class LiteratureAdapterTests(unittest.TestCase):
             )
             self.assertNotEqual(result.observation.pinned_version.lower(), "latest")  # type: ignore[union-attr]
 
+    def test_malformed_provider_date_is_not_accepted_as_a_version(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            value = record(provider="Crossref", identity="10.1234/Example", version=None)
+            value["indexed"] = {}
+            result = adapter(LiteratureBase(directory), FakeTransport(response(value))).fetch(
+                Provider.CROSSREF, "10.1234/Example"
+            )
+            self.assertIsNone(result.import_disposition)
+            self.assertIn("concrete Crossref version date", result.result.error)  # type: ignore[union-attr]
+
     def test_status_language_is_rejected_by_source_observation(self) -> None:
         summaries = (
             "The proof is complete.",

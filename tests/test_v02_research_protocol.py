@@ -118,6 +118,64 @@ class ResearchProtocolTests(unittest.TestCase):
         self.assertEqual(trace.claims["C"].status, ClaimStatus.CANDIDATE)
         self.assertNotEqual(trace.claims["C"].status, ClaimStatus.PROVED)
 
+    def test_agent_proposal_cannot_mutate_a_proved_claim(self) -> None:
+        trace = ResearchTrace("R", contract())
+        trace.add_claim(ClaimRecord("C", "statement", "scope"))
+        trace.add_evidence(accepted_evidence("E", "C", "independent"))
+        trace.promote_claim("C")
+
+        orchestrator = ResearchOrchestrator(trace)
+        orchestrator.accept_agent_proposal(
+            role="falsifier",
+            payload={
+                "public_reasoning": {
+                    "objective": "try to alter a protected claim",
+                    "premises": [],
+                    "proposed_move": "mark it blocked",
+                    "observation": "no accepted counterexample exists",
+                    "falsification": "inspect the authority boundary",
+                    "decision": "record the rejected request",
+                },
+                "claim_updates": [{"claim_id": "C", "action": "block"}],
+            },
+        )
+
+        self.assertEqual(trace.claims["C"].status, ClaimStatus.PROVED)
+        self.assertIn("protected claim state", orchestrator.creation_log[-1]["rejected"][0]["reason"])
+
+    def test_agent_proposal_rejects_nonfinite_or_out_of_range_confidence(self) -> None:
+        trace = ResearchTrace("R", contract())
+        trace.add_claim(ClaimRecord("C", "statement", "scope"))
+        orchestrator = ResearchOrchestrator(trace)
+        for value in (float("nan"), float("inf"), -0.01, 1.01):
+            with self.subTest(value=value):
+                with self.assertRaisesRegex(TraceValidationError, "finite value in \\[0, 1\\]"):
+                    orchestrator.accept_agent_proposal(
+                        role="prover",
+                        payload={
+                            "public_reasoning": {
+                                "objective": "record confidence",
+                                "premises": [],
+                                "proposed_move": "propose",
+                                "observation": "untrusted value",
+                                "falsification": "validate bounds",
+                                "decision": "reject malformed input",
+                            },
+                            "confidence": value,
+                        },
+                    )
+
+    def test_trace_rejects_duplicate_ids_and_nonfinite_claim_weights(self) -> None:
+        trace = ResearchTrace("R", contract())
+        trace.add_claim(ClaimRecord("C", "statement", "scope"))
+        payload = trace.to_dict()
+        payload["claims"].append(dict(payload["claims"][0]))
+        with self.assertRaisesRegex(TraceValidationError, "duplicate claim id"):
+            ResearchTrace.from_dict(payload)
+
+        with self.assertRaisesRegex(ValueError, "finite positive number"):
+            ClaimRecord("NAN", "statement", "scope", weight=float("nan"))
+
     def test_unproved_dependency_blocks_promotion(self) -> None:
         trace = ResearchTrace("R", contract("B"))
         trace.add_claim(ClaimRecord("A", "A", "scope"))
