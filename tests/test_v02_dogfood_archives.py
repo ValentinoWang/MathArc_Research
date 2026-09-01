@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import copy
-import hashlib
 import json
 import shutil
 import tempfile
@@ -12,10 +11,21 @@ from matharc.v02.dogfood_archives import DogfoodArchiveError, DogfoodArchiveRunn
 from matharc.v02.schema import digest_json
 from matharc.v02.topic_observation import TopicObservationError
 
-
 ROOT = Path(__file__).parents[1]
 S1_FIXTURES = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures"
 T2_FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json"
+
+
+def manual_id_for(fields: dict[str, str]) -> str:
+    return "manual-" + digest_json(
+        {
+            "schema_version": "1.0",
+            **{
+                key: fields[key]
+                for key in ("topic_id", "cursor", "input_id", "reason", "detail")
+            },
+        }
+    )[:24]
 
 
 class DogfoodArchiveTests(unittest.TestCase):
@@ -336,16 +346,9 @@ class DogfoodArchiveTests(unittest.TestCase):
             state = json.loads(state_path.read_text(encoding="utf-8"))
             queue_entry = state["manual_queue"][0]
             tampered_detail = queue_entry["detail"] + " tampered"
-            identity = "|".join(
-                (
-                    queue_entry["topic_id"],
-                    queue_entry["cursor"],
-                    queue_entry["input_id"],
-                    queue_entry["reason"],
-                    tampered_detail,
-                )
+            tampered_manual_id = manual_id_for(
+                {**queue_entry, "detail": tampered_detail}
             )
-            tampered_manual_id = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
             queue_entry.update(detail=tampered_detail, manual_id=tampered_manual_id)
             stored = state["batches"]["dogfood-c2"]
             stored["result"]["item_results"][0]["manual_id"] = tampered_manual_id

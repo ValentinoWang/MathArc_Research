@@ -2,13 +2,13 @@
 
 from __future__ import annotations
 
-from contextlib import contextmanager
-from dataclasses import dataclass
-from enum import Enum
 import fcntl
 import hashlib
 import json
 import os
+from contextlib import contextmanager
+from dataclasses import dataclass
+from enum import Enum
 from pathlib import Path
 from typing import Any, Iterator, Mapping, TypeVar
 from urllib.parse import parse_qsl, urlsplit
@@ -210,7 +210,7 @@ class OperationsDomainStore:
             accounts, credits, seats, upstreams = self._load(); result = self._add(upstreams, configuration, "configuration_id"); self._save(accounts, credits, seats, upstreams); return result
     def snapshot(self) -> dict[str, Any]:
         accounts, credits, seats, upstreams = self._load(); balances = self._balances(credits)
-        persisted = {
+        persisted: dict[str, Any] = {
             "schema_version": "1.0",
             "accounts": [item.to_dict() for item in accounts],
             "credits": [item.to_dict() for item in credits],

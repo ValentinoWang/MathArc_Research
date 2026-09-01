@@ -18,14 +18,16 @@ import os
 import secrets
 import stat
 import tempfile
+from collections.abc import Iterator, Mapping
+from contextlib import contextmanager
 from dataclasses import dataclass, replace
 from enum import Enum
 from pathlib import Path
-from typing import Any, Iterator, Mapping
-from contextlib import contextmanager
+from typing import Any
 
 from .budget import BudgetLedger
 from .literature_base import (
+    TOPIC_OBSERVATION_RETIRED_TRANSACTION_PATH_NAME,
     TOPIC_OBSERVATION_TRANSACTION_PATH_NAME,
     ImportDisposition,
     LiteratureBase,
@@ -35,11 +37,10 @@ from .local_store import external_root
 from .schema import canonical_json, digest_json
 from .source_observation import ObservationStatus, SourceObservation
 
-
 _SCHEMA_VERSION = "1.0"
-_STATE_SCHEMA_VERSION = "1.6"
-_STATE_RECOVERY_CONTRACT = "topic-observation-state-recovery-v4"
-_LEGACY_STATE_SCHEMA_VERSIONS = {"1.0", "1.1", "1.2", "1.3", "1.4", "1.5"}
+_STATE_SCHEMA_VERSION = "1.7"
+_STATE_RECOVERY_CONTRACT = "topic-observation-state-recovery-v5"
+_LEGACY_STATE_SCHEMA_VERSIONS = {"1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6"}
 _STATE_AUTH_SCHEMA_VERSION = "1.0"
 _STATE_AUTH_DOMAIN = b"matharc.topic-observation.state-auth.v1\x00"
 _SIGNING_KEY_BYTES = 32
@@ -49,6 +50,7 @@ _TRANSACTION_RECOVERY_CONTRACT = "topic-observation-transaction-recovery-v1"
 _TRANSACTION_PREPARED = "PREPARED"
 _TRANSACTION_COMMIT_INTENT = "COMMIT_INTENT"
 _TRANSACTION_PATH_NAME = TOPIC_OBSERVATION_TRANSACTION_PATH_NAME
+_RETIRED_TRANSACTION_PATH_NAME = TOPIC_OBSERVATION_RETIRED_TRANSACTION_PATH_NAME
 
 
 class TopicObservationError(ValueError):
@@ -156,6 +158,16 @@ def _require_sha256_or_empty(value: object, name: str) -> str:
 def _require_optional_sha256(value: object, name: str) -> None:
     if value is not None:
         _require_sha256(value, name)
+
+
+def _path_entry_exists(path: Path) -> bool:
+    try:
+        path.lstat()
+    except FileNotFoundError:
+        return False
+    except OSError:
+        return True
+    return True
 
 
 def _read_verified_file(
@@ -410,8 +422,15 @@ def _manual_id_for(
     reason: ManualReviewReason,
     detail: str,
 ) -> str:
-    identity = f"{topic_id}|{cursor}|{input_id}|{reason.value}|{detail}"
-    return "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+    identity = {
+        "schema_version": "1.0",
+        "topic_id": topic_id,
+        "cursor": cursor,
+        "input_id": input_id,
+        "reason": reason.value,
+        "detail": detail,
+    }
+    return "manual-" + digest_json(identity)[:24]
 
 
 @dataclass(frozen=True, slots=True)
@@ -650,6 +669,7 @@ class TopicObservationRunner:
         self.authentication_path = self.root / ".topic-observation-state.auth.json"
         self.lock_path = self.root / ".topic-observation.lock"
         self.transaction_path = self.root / _TRANSACTION_PATH_NAME
+        self.retired_transaction_path = self.root / _RETIRED_TRANSACTION_PATH_NAME
         self._active_transaction: dict[str, Any] | None = None
         with self._storage_lock():
             self._prepare_locked()
@@ -780,13 +800,37 @@ class TopicObservationRunner:
         prior = state["processed_input_ids"].get(item.input_id)
         if prior is not None:
             if prior == item.fingerprint_sha256:
-                result = TopicItemResult(item.input_id, TopicItemStatus.DUPLICATE, item.observation.observation_id)
+                prior_cursor = self._prior_input_cursor(
+                    state,
+                    item.input_id,
+                    item.fingerprint_sha256,
+                )
+                if prior_cursor is None:
+                    raise TopicObservationError(
+                        "processed input replay has no prior batch record"
+                    )
+                prior_result = TopicBatchResult.from_dict(
+                    state["batches"][prior_cursor]["result"]
+                )
+                prior_items = {
+                    prior_item.input_id: prior_item
+                    for prior_item in prior_result.item_results
+                }
+                if item.input_id not in prior_items:
+                    raise TopicObservationError(
+                        "processed input replay prior result is missing"
+                    )
+                result = TopicItemResult(
+                    item.input_id,
+                    TopicItemStatus.DUPLICATE,
+                    prior_items[item.input_id].observation_id,
+                )
                 return result, self._item_evidence(
                     item,
                     result,
                     "PROCESSED_INPUT_REPLAY",
                     persisted=self._persisted_observation_for_input(item),
-                    prior_cursor=self._prior_input_cursor(state, item.input_id, item.fingerprint_sha256),
+                    prior_cursor=prior_cursor,
                     prior_input_id=item.input_id,
                 )
             manual = self._add_manual(
@@ -837,12 +881,21 @@ class TopicObservationRunner:
             )
         if item.observation.idempotency_key in state["seen_observation_keys"]:
             state["processed_input_ids"][item.input_id] = item.fingerprint_sha256
-            result = TopicItemResult(item.input_id, TopicItemStatus.DUPLICATE, item.observation.observation_id)
+            persisted = self._persisted_observation_for_input(item)
+            if persisted is None or persisted.status is not ObservationStatus.OBSERVED:
+                raise TopicObservationError(
+                    "seen observation key has no observed literature record"
+                )
+            result = TopicItemResult(
+                item.input_id,
+                TopicItemStatus.DUPLICATE,
+                persisted.observation_id,
+            )
             return result, self._item_evidence(
                 item,
                 result,
                 "SEEN_OBSERVATION_KEY",
-                persisted=self._persisted_observation_for_input(item),
+                persisted=persisted,
             )
 
         imported = self.literature.import_bytes(item.observation, item.content)
@@ -1063,8 +1116,21 @@ class TopicObservationRunner:
 
     @contextmanager
     def _writer_lock(self) -> Iterator[None]:
-        self.lock_path.touch(exist_ok=True)
-        with self.lock_path.open("a+", encoding="utf-8") as lock_file:
+        flags = os.O_CREAT | os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            descriptor = os.open(self.lock_path, flags, _PRIVATE_FILE_MODE)
+        except OSError as exc:
+            raise TopicObservationError("topic observation lock is unreadable") from exc
+        try:
+            if not stat.S_ISREG(os.fstat(descriptor).st_mode):
+                raise TopicObservationError("topic observation lock is not a regular file")
+            lock_file = os.fdopen(descriptor, "a+", encoding="utf-8")
+            descriptor = -1
+        except Exception:
+            if descriptor != -1:
+                os.close(descriptor)
+            raise
+        with lock_file:
             fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
             try:
                 yield
@@ -1081,11 +1147,24 @@ class TopicObservationRunner:
                 yield
 
     def _prepare_locked(self) -> None:
+        active_transaction_exists = _path_entry_exists(self.transaction_path)
+        retired_transaction_exists = _path_entry_exists(self.retired_transaction_path)
+        if active_transaction_exists and retired_transaction_exists:
+            raise TopicObservationError(
+                "active and retired topic observation transaction journals coexist"
+            )
         recovered = self._recover_transaction_files()
         self.literature = LiteratureBase(self.root / "literature", budget=self.budget)
         if recovered:
             self._load_state()
             self._remove_transaction()
+        elif retired_transaction_exists:
+            self._read_transaction(
+                path=self.retired_transaction_path,
+                label="retired topic observation transaction journal",
+            )
+            self._load_state()
+            self._remove_retired_transaction()
 
     def _private_file_snapshot(
         self,
@@ -1201,10 +1280,16 @@ class TopicObservationRunner:
             raise TopicObservationError(f"{name} transaction snapshot must have mode 0600")
         return _encoded_file_snapshot(content, mode)
 
-    def _read_transaction(self) -> dict[str, Any] | None:
+    def _read_transaction(
+        self,
+        *,
+        path: Path | None = None,
+        label: str = "topic observation transaction journal",
+    ) -> dict[str, Any] | None:
+        transaction_path = self.transaction_path if path is None else path
         result = _read_verified_file(
-            self.transaction_path,
-            label="topic observation transaction journal",
+            transaction_path,
+            label=label,
             expected_mode=_PRIVATE_FILE_MODE,
             missing_ok=True,
         )
@@ -1390,6 +1475,7 @@ class TopicObservationRunner:
                     continue
                 except OSError as exc:
                     raise TopicObservationError("could not remove stale literature file") from exc
+                _fsync_directory(path.parent)
         for item in target:
             relative_path = Path(item["path"])
             path = literature_root / relative_path
@@ -1441,7 +1527,13 @@ class TopicObservationRunner:
             target_key_sha256 = payload["target_key_sha256"]
             if current_key_sha256 == target_key_sha256:
                 use_target = True
-            elif current_key_sha256 != old_key_sha256:
+            elif current_key_sha256 == old_key_sha256:
+                if old_key_sha256 is None:
+                    raise TopicObservationError(
+                        "initial topic observation transaction has no signing "
+                        "authority for the persisted generation"
+                    )
+            else:
                 raise TopicObservationError(
                     "topic observation transaction signing authority is neither old nor committed generation"
                 )
@@ -1468,13 +1560,76 @@ class TopicObservationRunner:
         return True
 
     def _remove_transaction(self) -> None:
+        snapshot = _read_verified_file(
+            self.transaction_path,
+            label="topic observation transaction journal",
+            expected_mode=_PRIVATE_FILE_MODE,
+            missing_ok=True,
+        )
+        if snapshot is None:
+            return
+        journal_bytes, journal_mode = snapshot
+        if _path_entry_exists(self.retired_transaction_path):
+            raise TopicObservationError(
+                "retired topic observation transaction journal already exists"
+            )
         try:
-            os.unlink(self.transaction_path)
+            os.replace(self.transaction_path, self.retired_transaction_path)
         except FileNotFoundError:
             return
         except OSError as exc:
-            raise TopicObservationError("could not remove topic observation transaction journal") from exc
-        _fsync_directory(self.root)
+            raise TopicObservationError(
+                "could not retire topic observation transaction journal"
+            ) from exc
+        try:
+            _fsync_directory(self.root)
+        except OSError as exc:
+            raise TopicObservationError(
+                "could not durably retire topic observation transaction journal"
+            ) from exc
+        self._remove_retired_transaction(
+            journal_bytes=journal_bytes,
+            journal_mode=journal_mode,
+        )
+
+    def _remove_retired_transaction(
+        self,
+        *,
+        journal_bytes: bytes | None = None,
+        journal_mode: int | None = None,
+    ) -> None:
+        if journal_bytes is None or journal_mode is None:
+            snapshot = _read_verified_file(
+                self.retired_transaction_path,
+                label="retired topic observation transaction journal",
+                expected_mode=_PRIVATE_FILE_MODE,
+                missing_ok=True,
+            )
+            if snapshot is None:
+                return
+            journal_bytes, journal_mode = snapshot
+        try:
+            os.unlink(self.retired_transaction_path)
+        except FileNotFoundError:
+            return
+        except OSError as exc:
+            raise TopicObservationError(
+                "could not remove retired topic observation transaction journal"
+            ) from exc
+        try:
+            _fsync_directory(self.root)
+        except OSError as exc:
+            try:
+                _atomic_write_bytes(
+                    self.retired_transaction_path,
+                    journal_bytes,
+                    journal_mode,
+                )
+            except OSError:
+                pass
+            raise TopicObservationError(
+                "could not durably remove retired topic observation transaction journal"
+            ) from exc
 
     def _literature_snapshot_payload(self) -> dict[str, Any]:
         return {
@@ -2139,7 +2294,12 @@ class TopicObservationRunner:
             except (TypeError, ValueError) as exc:
                 raise TopicObservationError("stored item evidence import disposition is invalid") from exc
         if (
-            basis not in {"MANUAL_QUEUE", "EXISTING_OBSERVED"}
+            basis not in {
+                "MANUAL_QUEUE",
+                "EXISTING_OBSERVED",
+                "PROCESSED_INPUT_REPLAY",
+                "SEEN_OBSERVATION_KEY",
+            }
             and result.observation_id != projection_observation.observation_id
         ):
             raise TopicObservationError(
@@ -2165,6 +2325,8 @@ class TopicObservationRunner:
                 raise TopicObservationError("duplicate item evidence is not present in seen observation state")
             if literature_by_id[evidence["persisted_observation_id"]].idempotency_key != evidence["input_idempotency_key"]:
                 raise TopicObservationError("duplicate item evidence idempotency key conflicts")
+            if evidence["observation_id"] != evidence["persisted_observation_id"]:
+                raise TopicObservationError("duplicate item evidence observation identity conflicts")
             if import_disposition is not None:
                 raise TopicObservationError("topic duplicate evidence must not claim an import disposition")
         elif basis == "PENDING_OBSERVATION":
@@ -2189,6 +2351,7 @@ class TopicObservationRunner:
             if not isinstance(prior_evidence, dict):
                 raise TopicObservationError("processed duplicate evidence prior record is missing")
             for field in (
+                "observation_id",
                 "input_idempotency_key",
                 "persisted_observation_id",
                 "persisted_observation_status",

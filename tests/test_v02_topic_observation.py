@@ -48,6 +48,18 @@ def batch(cursor: str, next_cursor: str, *inputs: TopicObservationInput) -> Topi
     return TopicObservationBatch("union-closed", cursor, next_cursor, tuple(inputs))
 
 
+def manual_id_for(fields: dict[str, str]) -> str:
+    return "manual-" + digest_json(
+        {
+            "schema_version": "1.0",
+            **{
+                key: fields[key]
+                for key in ("topic_id", "cursor", "input_id", "reason", "detail")
+            },
+        }
+    )[:24]
+
+
 class TopicObservationTests(unittest.TestCase):
     def test_single_topic_batch_replays_after_restart_without_second_import(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -231,11 +243,7 @@ class TopicObservationTests(unittest.TestCase):
             manual = state["manual_queue"][0]
             old_manual_id = manual["manual_id"]
             manual["topic_id"] = "foreign-topic"
-            identity = "|".join(
-                manual[field]
-                for field in ("topic_id", "cursor", "input_id", "reason", "detail")
-            )
-            manual["manual_id"] = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+            manual["manual_id"] = manual_id_for(manual)
             state["manual_events"][0]["manual_id"] = manual["manual_id"]
             self.assertNotEqual(old_manual_id, manual["manual_id"])
             state_path.write_text(json.dumps(state), encoding="utf-8")
@@ -252,11 +260,7 @@ class TopicObservationTests(unittest.TestCase):
             state = json.loads(state_path.read_text(encoding="utf-8"))
             queue_item = state["manual_queue"][0]
             queue_item["topic_id"] = "foreign-topic"
-            identity = "|".join(
-                queue_item[field]
-                for field in ("topic_id", "cursor", "input_id", "reason", "detail")
-            )
-            queue_item["manual_id"] = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+            queue_item["manual_id"] = manual_id_for(queue_item)
             stored = state["batches"]["c0"]
             stored["result"]["item_results"][0]["manual_id"] = queue_item["manual_id"]
             stored["disposition_evidence"]["A"]["manual_id"] = queue_item["manual_id"]
@@ -456,11 +460,7 @@ class TopicObservationTests(unittest.TestCase):
             state = json.loads(state_path.read_text(encoding="utf-8"))
             orphan = dict(state["manual_queue"][0])
             orphan["detail"] += " independent orphan"
-            identity = "|".join(
-                orphan[field]
-                for field in ("topic_id", "cursor", "input_id", "reason", "detail")
-            )
-            orphan["manual_id"] = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+            orphan["manual_id"] = manual_id_for(orphan)
             state["manual_queue"].append(orphan)
             state_path.write_text(json.dumps(state), encoding="utf-8")
 
@@ -658,10 +658,15 @@ class TopicObservationTests(unittest.TestCase):
                 evidence = stored["disposition_evidence"]["A"]
                 self.assertEqual([], stored["input_projections"]["A"]["risk_flags"])
                 detail = "High-risk flags require human review: forged-risk"
-                identity = "|".join(
-                    ("union-closed", "c0", "A", ManualReviewReason.HIGH_RISK_EVENT.value, detail)
+                manual_id = manual_id_for(
+                    {
+                        "topic_id": "union-closed",
+                        "cursor": "c0",
+                        "input_id": "A",
+                        "reason": ManualReviewReason.HIGH_RISK_EVENT.value,
+                        "detail": detail,
+                    }
                 )
-                manual_id = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
                 item_result.update(status=TopicItemStatus.MANUAL_REVIEW.value, manual_id=manual_id)
                 stored["result"]["status"] = TopicRunStatus.MANUAL_REVIEW.value
                 evidence.update(
@@ -708,11 +713,7 @@ class TopicObservationTests(unittest.TestCase):
             budget_item = next(item for item in state["manual_queue"] if item["cursor"] == "c1")
             queue_item["reason"] = budget_item["reason"]
             queue_item["detail"] = budget_item["detail"]
-            identity = "|".join(
-                queue_item[field]
-                for field in ("topic_id", "cursor", "input_id", "reason", "detail")
-            )
-            queue_item["manual_id"] = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+            queue_item["manual_id"] = manual_id_for(queue_item)
             stored["result"]["item_results"][0]["manual_id"] = queue_item["manual_id"]
             stored["disposition_evidence"]["A"].update(
                 manual_id=queue_item["manual_id"],

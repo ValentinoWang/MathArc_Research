@@ -1,0 +1,146 @@
+{
+  "task_id": "A4-review-sol-bdd83e9",
+  "reviewer_route": "sol-adversarial-zero-write",
+  "frozen_source": "bdd83e980f644f028e3dbaba9174f440d274b7d4",
+  "proposed_state": "FAILED",
+  "acceptance_self_check": "pass",
+  "failure_class": "identity-replay-and-filesystem-transaction-integrity",
+  "failure_origin": "implementation",
+  "findings": [
+    {
+      "severity": "P1",
+      "failure_class": "delimiter-collision-corrupts-durable-manual-identity",
+      "locations": [
+        "matharc/v02/topic_observation.py:405",
+        "matharc/v02/topic_observation.py:413",
+        "matharc/v02/topic_observation.py:1058",
+        "matharc/v02/topic_observation.py:2383"
+      ],
+      "detail": "_manual_id_for hashes an unescaped pipe-joined tuple. All contributing fields accept pipe characters. Within one topic, (cursor='c|x', input_id='y') and (cursor='c', input_id='x|y') with the same reason/detail produce the same manual_id. _add_manual then suppresses the second queue record while the second batch result references that ID, and _save_state authenticates the inconsistent state without validating it first.",
+      "impact": "A valid two-batch input can return successfully, advance the cursor, and persist a state that fails its own manual-queue linkage checks on restart. Structured URI/idempotency composition is fixed, but delimiter-safe identity is not complete.",
+      "coverage_gap": "No scoped test constructs delimiter-bearing topic/cursor/input/detail tuples or checks collision-free manual IDs."
+    },
+    {
+      "severity": "P1",
+      "failure_class": "alternate-persisted-observation-id-replay-drift",
+      "locations": [
+        "matharc/v02/topic_observation.py:780",
+        "matharc/v02/topic_observation.py:783",
+        "matharc/v02/topic_observation.py:838",
+        "matharc/v02/topic_observation.py:840",
+        "matharc/v02/topic_observation.py:2177",
+        "tests/test_v02_topic_observation_integrity.py:267",
+        "tests/test_v02_topic_observation.py:65"
+      ],
+      "detail": "When an incoming observation is idempotent with a persisted record that has a different observation_id, the first EXISTING_OBSERVED result correctly returns the persisted ID. A later-cursor PROCESSED_INPUT_REPLAY or SEEN_OBSERVATION_KEY branch instead constructs the result with the incoming observation_id, even though its evidence resolves the alternate persisted record.",
+      "impact": "The same persisted observation is exposed under different result identities across cursor replay paths, and the validator explicitly permits this for duplicate evidence. This breaks stable replay identity without reimporting literature.",
+      "coverage_gap": "The new integrity test replays only the same stored cursor, while the protected cross-batch duplicate test asserts status/count but not the returned observation_id."
+    },
+    {
+      "severity": "P1",
+      "failure_class": "path-based-symlink-and-toctou-boundary",
+      "locations": [
+        "matharc/v02/topic_observation.py:170",
+        "matharc/v02/topic_observation.py:1066",
+        "matharc/v02/topic_observation.py:1110",
+        "matharc/v02/topic_observation.py:1134",
+        "matharc/v02/topic_observation.py:1399",
+        "matharc/v02/topic_observation.py:1416"
+      ],
+      "detail": "Private leaf reads use O_NOFOLLOW plus fstat, but the topic lock still uses Path.touch/open and follows a symlink without a regular-file check. Literature traversal/restore lstat parent directories and later reopen descendants by pathname; O_NOFOLLOW protects only the final component. A parent can be replaced by a symlink between validation and mkstemp/replace.",
+      "impact": "The lock can bind an unintended inode, and a concurrent pathname swap can redirect snapshot reads or recovery writes outside the intended literature root. Advisory locks do not close this non-cooperating filesystem race.",
+      "coverage_gap": "The integrity suite checks only state-file leaf symlink/mode rejection; it does not cover the lock file, parent-component swaps, or dirfd-bound openat/renameat behavior."
+    },
+    {
+      "severity": "P2",
+      "failure_class": "nested-directory-delete-not-durably-fsynced",
+      "locations": [
+        "matharc/v02/topic_observation.py:1382",
+        "matharc/v02/topic_observation.py:1388",
+        "matharc/v02/topic_observation.py:1417",
+        "matharc/v02/topic_observation.py:1470"
+      ],
+      "detail": "Recovery unlinks stale literature files at arbitrary nested paths but fsyncs only the literature root afterward. An unlink is durable only when the file's immediate containing directory is fsynced. For example, deleting literature/artifacts/<file> requires fsync of literature/artifacts, not just literature.",
+      "impact": "After recovery reports success and removes/fsyncs the transaction journal, a power loss can resurrect a stale nested entry and leave literature bytes inconsistent with the authenticated state with no journal left to repair it.",
+      "coverage_gap": "Crash tests simulate Python exceptions and process ordering; they do not verify power-loss durability or fsync calls for every changed directory."
+    },
+    {
+      "severity": "INFO",
+      "failure_class": "scoped-evidence-byte-match",
+      "locations": [
+        "matharc/v02/source_observation.py:138",
+        "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/transactional-replay-v3/coordinator-validation.json"
+      ],
+      "detail": "The source URI logical identity and idempotency key now use canonical JSON, lowercase scheme/authority, and preserve case-sensitive path/query/fragment bytes. The coordinator pinned_parent equals the frozen commit parent. Every coordinator hash for the five permitted source/test files matches the frozen committed bytes; both protected tests are unchanged from the parent. No weakened protected assertion or fixture-specific production branch was found in the permitted diff.",
+      "impact": "These checks pass but do not offset the blocking implementation findings above."
+    }
+  ],
+  "protected_test_hashes": {
+    "actual_at_frozen_source": {
+      "tests/test_v02_topic_observation.py": "a6ac5fdb82f832e4eb14402d9727fcc5027a7574fb5d9765002d3016741fc9eb",
+      "tests/test_v02_dogfood_archives.py": "e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873"
+    },
+    "coordinator_matches_committed_bytes": true,
+    "changed_from_frozen_parent": false,
+    "formal_contract_baseline": "STALE_PER_REVIEW_BRIEF",
+    "stale_baseline_hash_identity": "not identifiable within the permitted six-file scope"
+  },
+  "commands": [
+    {
+      "command": "git show --no-patch --format=fuller bdd83e980f644f028e3dbaba9174f440d274b7d4",
+      "result": "PASS; frozen commit resolved"
+    },
+    {
+      "command": "git ls-tree -l bdd83e980f644f028e3dbaba9174f440d274b7d4 -- <six permitted paths>",
+      "result": "PASS; all six paths are mode 100644 blobs"
+    },
+    {
+      "command": "git diff --no-ext-diff --exit-code bdd83e980f644f028e3dbaba9174f440d274b7d4 -- <six permitted paths>",
+      "result": "PASS; scoped worktree bytes match frozen source"
+    },
+    {
+      "command": "git show bdd83e980f644f028e3dbaba9174f440d274b7d4:<permitted-path> | shasum -a 256",
+      "result": "PASS; all five coordinator-declared permitted source/test hashes match committed bytes"
+    },
+    {
+      "command": "git rev-parse bdd83e980f644f028e3dbaba9174f440d274b7d4^",
+      "result": "PASS; cb1251d2a17315ae28efc1e14be1bba818c685f0 matches coordinator pinned_parent"
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_topic_observation_integrity tests.test_v02_topic_observation tests.test_v02_dogfood_archives",
+      "result": "PASS; 57 tests run, 0 failures, 0 errors, 0 skips"
+    }
+  ],
+  "repository_writes": [
+    "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-sol.json"
+  ],
+  "formal_a4_readiness": "NOT_READY",
+  "formal_blockers": [
+    "Implementation disposition is FAILED on durable identity, replay identity, pathname safety, and recovery durability defects.",
+    "The current A4 v2 contract baseline is stale and must be refreshed and rebound before formal acceptance.",
+    "One protected-test hash in the formal contract baseline is stale, independently of the fact that coordinator-declared hashes match the frozen committed bytes.",
+    "The coordinator evidence states that a new human acceptance run bound to the pushed implementation commit remains required; this zero-write reviewer exercised no acceptance authority.",
+    "A4 is not accepted by this review."
+  ],
+  "remaining_risks": [
+    "The stale contract prevents determining the intended equivalence policy for default URI ports, percent-encoding normalization, and URN namespace case from the permitted files alone.",
+    "Coordinator hashes for matharc/v02/literature_base.py and tests/test_v02_literature_base_integrity.py were not independently recomputed because those files were outside the explicit review scope.",
+    "The coordinator's wider mypy and ci-full claims were not rerun; only the explicitly permitted 57-test scope was executed.",
+    "Power-loss behavior and adversarial parent-directory replacement were established by code inspection, not a destructive filesystem fault-injection run."
+  ],
+  "zero_write_confirmation": {
+    "confirmed": true,
+    "repository_write_count": 1,
+    "sole_repository_write": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-sol.json",
+    "other_repository_writes": [],
+    "git_mutations": [],
+    "network_calls": [],
+    "test_write_controls": [
+      "PYTHONDONTWRITEBYTECODE=1",
+      "unittest modules used temporary directories outside the repository"
+    ],
+    "preexisting_repository_state_preserved": "Seven untracked dispatch/log/prompt files under reviews-bdd83e9 were present before this return was written and were not modified.",
+    "business_project_status_before_return": "Tracked tree clean; seven preexisting untracked review orchestration files present.",
+    "harness_ssot_status": "Dirty with unrelated preexisting modified and untracked files; no Harness SSOT write was made by this review."
+  }
+}

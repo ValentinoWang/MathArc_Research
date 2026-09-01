@@ -1,0 +1,64 @@
+{
+  "task_id": "A4-review-luna-bdd83e9",
+  "reviewer_route": "luna-zero-write",
+  "frozen_source": "bdd83e980f644f028e3dbaba9174f440d274b7d4",
+  "proposed_state": "FAILED",
+  "acceptance_self_check": "pass",
+  "failure_class": "concurrent-writer-crash-recovery-overwrite",
+  "failure_origin": "matharc/v02/topic_observation.py recovery and journal-retirement paths; specified tests do not cover the affected interleavings",
+  "findings": [
+    {
+      "severity": "P1",
+      "type": "implementation_defect",
+      "location": "matharc/v02/topic_observation.py:1435-1457",
+      "title": "Initial-generation COMMIT_INTENT treats an absent key as a committed old generation",
+      "detail": "For COMMIT_INTENT, recovery selects the target only when current_key_sha256 equals target_key_sha256; otherwise it accepts the old generation when current_key_sha256 equals old_key_sha256. On the first generation both values are null when the signing-key file is absent, so an ambiguous missing-key state is treated as old. Recovery then restores old_literature_files, old_state, and old_authentication. With no prior state this removes the target literature and returns to a new empty state, then _prepare_locked removes the journal at lines 1083-1088. A crash or durable key-install loss after the target generation was otherwise committed can therefore lose the target transaction without a retained recovery marker. Missing authority must fail closed or remain recoverable; it cannot be used as proof of the old choice."
+    },
+    {
+      "severity": "P1",
+      "type": "implementation_defect",
+      "location": "matharc/v02/topic_observation.py:1470-1477 and matharc/v02/literature_base.py:134-142",
+      "title": "Journal deletion failure can reopen the writer fence after the commit snapshot is stale",
+      "detail": "_remove_transaction unlinks the journal before fsyncing the root directory. If unlink succeeds but that directory fsync raises, the surrounding storage lock still releases through its context-manager finally blocks. An independent LiteratureBase writer can then see no pending journal and append literature that is absent from the transaction target snapshot. If the uncommitted deletion later becomes visible again after a crash, recovery uses the target snapshot and deletes that writer's files. No reviewed test injects failure between unlink and durable directory deletion."
+    },
+    {
+      "severity": "P2",
+      "type": "test_coverage_gap",
+      "location": "tests/test_v02_topic_observation_integrity.py:98-245",
+      "title": "The tests do not exercise both signing-key commit choices",
+      "detail": "The interrupted-literature test leaves PREPARED, and the state/authentication interruption leaves COMMIT_INTENT with the old key still present. There is no injected interruption after the target signing key is installed and before verification or journal removal, and no test for a first-generation COMMIT_INTENT with a missing current key. Thus the target-authority branch and the destructive null-versus-null branch are unproven."
+    },
+    {
+      "severity": "P2",
+      "type": "test_coverage_gap",
+      "location": "matharc/v02/literature_base.py:47-83; tests/test_v02_topic_observation_integrity.py:139-218",
+      "title": "Reentrancy, process exclusion, and deadlock claims are not directly proved",
+      "detail": "The thread-local literature lock bookkeeping is reentrant for same-thread instances and the reviewed internal order is topic lock then literature lock; no reverse acquisition path appears in the reviewed files. However, the specified tests contain no same-thread cross-instance LiteratureBase reentrancy test, no process-level flock test, and no lock-order/deadlock interleaving. The concurrency test only waits 0.2 seconds and checks the eventual REJECTED result, so it does not by itself prove that the writer was blocked on the literature lock rather than merely slow."
+    }
+  ],
+  "commands": [
+    "git show bdd83e980f644f028e3dbaba9174f440d274b7d4:<reviewed-path> | nl -ba",
+    "shasum -a 256 of the four frozen source/test files and worktree counterparts",
+    "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_topic_observation_integrity tests.test_v02_literature_base_integrity",
+    "git status --short --branch --untracked-files=all",
+    "git -C /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core status --short --branch --untracked-files=all"
+  ],
+  "repository_writes": [
+    "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9/returns/A4-review-luna.json"
+  ],
+  "formal_a4_readiness": "NOT_READY",
+  "formal_blockers": [
+    "The current A4 v2 contract is stale and independently blocks formal acceptance; it is not treated as the implementation defect above.",
+    "This independent transaction/concurrency review found P1 implementation defects in missing-key recovery and journal-retirement fencing.",
+    "coordinator-validation.json records acceptance_authority_exercised=false, so the implementation evidence is not formal acceptance evidence."
+  ],
+  "remaining_risks": [
+    "The focused integrity modules pass 18 tests with zero skips, but their passing result does not cover target-key recovery, missing-key ambiguity, fsync failure, same-thread reentrancy, process exclusion, or a deterministic deadlock check.",
+    "The reviewed lock order is internally consistent for the visible paths, but nested caller-supplied literature-to-topic acquisition is outside the proved test surface.",
+    "Existing untracked review dispatch/log/prompt files in the repository and existing modified/untracked Harness SSOT files were preserved and not used as review evidence."
+  ],
+  "zero_write_confirmation": {
+    "confirmed": true,
+    "statement": "Only the required return JSON was created. No source, test, coordinator-validation, log, prompt, Harness SSOT, or git ref was modified; no network call or acceptance decision was made."
+  }
+}

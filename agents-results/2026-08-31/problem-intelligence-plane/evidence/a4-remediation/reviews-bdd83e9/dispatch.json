@@ -1,0 +1,108 @@
+{
+  "schema_version": 2,
+  "frozen_source": "bdd83e980f644f028e3dbaba9174f440d274b7d4",
+  "reviewed_parent": "cb1251d2a17315ae28efc1e14be1bba818c685f0",
+  "logical_lanes": 2,
+  "actual_concurrency": 2,
+  "wave_count": 1,
+  "launched_at": "2026-09-01T22:11:13Z",
+  "authority": "zero-write implementation review",
+  "campaign_disposition": "FAILED_IMPLEMENTATION",
+  "scope_disposition": {
+    "status": "NONCOMPLIANT_NONMATERIAL",
+    "detail": "Both retry lanes ran git status against the Harness Engineering repository despite the prompt prohibiting wider repository searches. The command was read-only and was not used as implementation evidence, but the scope violation prevents treating either lane as a clean formal acceptance review. The campaign already fails on independently reported implementation defects."
+  },
+  "coordinator_incident": {
+    "recorded_at": "2026-09-01T22:16:14Z",
+    "classification": "runtime/control-plane",
+    "failure_origin": "control-plane",
+    "summary": "The coordinator misread ps ELAPSED 03:28 as hours rather than minutes and cancelled both attempts after about five minutes.",
+    "disposition": "Neither cancelled attempt counts as a reviewer failure or a completed review. Both routes receive one fresh bounded retry."
+  },
+  "lanes": [
+    {
+      "task_id": "A4-review-luna-bdd83e9",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh",
+      "model_route": "gpt-5.6-luna/max",
+      "sandbox_capability": "danger-full-access",
+      "write_authority": "returns/A4-review-luna.json only",
+      "prompt": "prompts/A4-review-luna-retry.txt",
+      "prompt_sha256": "d9efed116d47755ff78b46e0cb0dc39128ddc87753c667891fa80e7641de661c",
+      "log": "logs/A4-review-luna-retry.log",
+      "return": "returns/A4-review-luna.json",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "CANCELLED_BY_COORDINATOR",
+          "exit_code": 1,
+          "ended_at": "2026-09-01T22:16:14Z",
+          "prompt_sha256": "13765a31d7d5038b362d34ad418af64339429851eaefbd832e6efb92a3e1e688",
+          "log_sha256": "e0713ec69b04aa3214a6ed0aa1924083c202ce3d54460c0ded25dd5be435bfc3",
+          "structured_return": "missing",
+          "failure_class": "runtime",
+          "failure_origin": "control-plane"
+        },
+        {
+          "attempt": 2,
+          "status": "FAILED_IMPLEMENTATION",
+          "launched_at": "2026-09-01T22:17:33Z",
+          "ended_at": "2026-09-01T22:26:15Z",
+          "exit_code": 0,
+          "exec_session_id": 21275,
+          "observed_pid": 83543,
+          "prompt": "prompts/A4-review-luna-retry.txt",
+          "prompt_sha256": "d9efed116d47755ff78b46e0cb0dc39128ddc87753c667891fa80e7641de661c",
+          "log": "logs/A4-review-luna-retry.log",
+          "log_sha256": "fe6c43e87bf2d2f3e01e69218237ee05f82fae83b6a7549912fcde6b7b767ebc",
+          "structured_return": "returns/A4-review-luna.json",
+          "return_sha256": "8445b829150d8006e837b1930405e78f7f79cb9c5fb4ec4e51128cfb647cd701",
+          "proposed_state": "FAILED",
+          "scope_status": "NONCOMPLIANT_NONMATERIAL",
+          "prompt_removed_after_hash_registration": true
+        }
+      ]
+    },
+    {
+      "task_id": "A4-review-sol-bdd83e9",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+      "model_route": "gpt-5.6-sol/max",
+      "sandbox_capability": "danger-full-access",
+      "write_authority": "returns/A4-review-sol.json only",
+      "prompt": "prompts/A4-review-sol-retry.txt",
+      "prompt_sha256": "8a2101cfbae589bb23882f872173d0058bbd48f9fc9c92b463f517943ab3d6aa",
+      "log": "logs/A4-review-sol-retry.log",
+      "return": "returns/A4-review-sol.json",
+      "attempts": [
+        {
+          "attempt": 1,
+          "status": "CANCELLED_BY_COORDINATOR",
+          "exit_code": 1,
+          "ended_at": "2026-09-01T22:16:14Z",
+          "prompt_sha256": "78c8b35ea4120bf2634b6d657cdf2300ee074e054ff7ae6a0cbde2ae4dfdd585",
+          "log_sha256": "9aad83319be97eef9dab59dd7a12f48ff3811b2457f56da400e1283eb3e0f4ad",
+          "structured_return": "missing",
+          "failure_class": "runtime",
+          "failure_origin": "control-plane"
+        },
+        {
+          "attempt": 2,
+          "status": "FAILED_IMPLEMENTATION",
+          "launched_at": "2026-09-01T22:17:33Z",
+          "ended_at": "2026-09-01T22:25:49Z",
+          "exit_code": 0,
+          "exec_session_id": 5268,
+          "observed_pid": 83544,
+          "prompt": "prompts/A4-review-sol-retry.txt",
+          "prompt_sha256": "8a2101cfbae589bb23882f872173d0058bbd48f9fc9c92b463f517943ab3d6aa",
+          "log": "logs/A4-review-sol-retry.log",
+          "log_sha256": "b34a4f6f031be51428000d18d16f3e788be1bddeef3b4cd474d98241171521c7",
+          "structured_return": "returns/A4-review-sol.json",
+          "return_sha256": "9fc8246fb8158fa3dd07e521b86704b8b4cb245aef492c20593f3f1a14b3976f",
+          "proposed_state": "FAILED",
+          "scope_status": "NONCOMPLIANT_NONMATERIAL",
+          "prompt_removed_after_hash_registration": true
+        }
+      ]
+    }
+  ]
+}

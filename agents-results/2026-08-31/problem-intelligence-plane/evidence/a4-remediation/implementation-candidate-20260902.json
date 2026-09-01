@@ -1,0 +1,99 @@
+{
+  "schema_version": 1,
+  "recorded_at": "2026-09-01T22:47:00Z",
+  "phase": "A4_IMPLEMENTATION_REMEDIATION",
+  "status": "IMPLEMENTED_NOT_ACCEPTED",
+  "parent_main_sha": "bdd83e980f644f028e3dbaba9174f440d274b7d4",
+  "candidate_identity": {
+    "kind": "content_hash_set_before_commit",
+    "files": {
+      "matharc/operations/domain.py": "e46f064b1c32fe872dbdca88563ad4ea378b9034990b0002e7b1e9fa17590599",
+      "matharc/v02/literature_base.py": "2c222115eb7989336e6912e0f9b984bd080e05e072c869ba2a5b0086e3b97c68",
+      "matharc/v02/topic_observation.py": "a80db7d02bf4af2f52493cf13d5655542847003998204d9dc6f20393afece9dc",
+      "tests/test_v02_dogfood_archives.py": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242",
+      "tests/test_v02_topic_observation.py": "bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497",
+      "tests/test_v02_topic_observation_integrity.py": "9ed3f5bb23cee43bd7250dca56d128bae57a6f47de11f519a7592b08111bff63"
+    }
+  },
+  "implemented_failure_classes": [
+    "manual review identity delimiter collision",
+    "persisted observation identity drift across duplicate replay paths",
+    "topic transaction and independent literature writer race",
+    "transaction fence bypass through a canonical-path alias",
+    "missing first-generation signing authority ambiguity",
+    "journal retirement durability gap",
+    "nested deletion parent-directory durability gap",
+    "topic and literature lock symlink following",
+    "legacy state schema 1.6 loading without explicit replay"
+  ],
+  "state_contract": {
+    "state_schema_version": "1.7",
+    "state_recovery_contract": "topic-observation-state-recovery-v5",
+    "legacy_schema_requires_explicit_replay": "1.6"
+  },
+  "verification": {
+    "focused_integrity": {
+      "command": ".venv/bin/python -m unittest -v tests.test_v02_topic_observation_integrity",
+      "tests_run": 23,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "focused_a4": {
+      "command": ".venv/bin/python -m unittest -v tests.test_v02_topic_observation tests.test_v02_dogfood_archives",
+      "tests_run": 43,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "expanded_v02": {
+      "command": ".venv/bin/python -m unittest discover -s tests -p 'test_v02*.py' -v",
+      "tests_run": 346,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 0
+    },
+    "authoritative_local_ci": {
+      "command": "make ci-full PYTHON=.venv/bin/python",
+      "tests_discovered": 553,
+      "tests_run": 553,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "skip_policy": "exact non-SMT whitelist matched",
+      "smt_tests_discovered": 20,
+      "smt_tests_executed": 20,
+      "smt_tests_skipped": 0,
+      "console_browser_gate": "52 cases x 2 campaigns x 6 widths",
+      "status": "PASS"
+    },
+    "strict_mypy": "PASS",
+    "ruff_import_and_undefined_checks": "PASS",
+    "python_compile": "PASS",
+    "git_diff_check": "PASS"
+  },
+  "supplementary_zero_write_audits": {
+    "authority": "advisory only; not formal A4 acceptance evidence",
+    "lanes": {
+      "transaction_lock_and_alias": "PASS",
+      "filesystem_durability": "PASS",
+      "manual_id_collision": "PASS",
+      "recovery_authority": "PASS",
+      "replay_identity": "PASS"
+    }
+  },
+  "superseded_failed_review_campaign": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-bdd83e9",
+    "dispatch_sha256": "a5253bf8c63ea39cbcf32f9b20148cfe24f7baacf1d8fe300359852ffdeef0de",
+    "luna_return_sha256": "8445b829150d8006e837b1930405e78f7f79cb9c5fb4ec4e51128cfb647cd701",
+    "sol_return_sha256": "9fc8246fb8158fa3dd07e521b86704b8b4cb245aef492c20593f3f1a14b3976f",
+    "status": "FAILED_IMPLEMENTATION",
+    "use": "historical negative evidence only"
+  },
+  "acceptance_boundary": {
+    "a4_contract_version": 2,
+    "a4_current_projection": "STALE_AFTER_PROTECTED_TEST_AND_IMPLEMENTATION_CHANGE",
+    "human_acceptance_reused": false,
+    "next_required_action": "commit and push the candidate, then run fresh independent reviews against the remote commit before versioning and rebinding A4"
+  }
+}

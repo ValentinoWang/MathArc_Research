@@ -7,8 +7,9 @@ import stat
 import tempfile
 import threading
 import unittest
+from collections.abc import Mapping
 from pathlib import Path
-from typing import Any, Mapping
+from typing import Any
 from unittest.mock import patch
 
 import matharc.v02.topic_observation as topic_observation_module
@@ -62,7 +63,7 @@ class TopicObservationIntegrityTests(unittest.TestCase):
             self.assertEqual(0o600, stat.S_IMODE(runner.signing_key_path.stat().st_mode))
             self.assertEqual(0o600, stat.S_IMODE(runner.authentication_path.stat().st_mode))
             authentication = json.loads(runner.authentication_path.read_text(encoding="utf-8"))
-            self.assertEqual("1.6", authentication["state_schema_version"])
+            self.assertEqual("1.7", authentication["state_schema_version"])
             self.assertEqual("c1", TopicObservationRunner(
                 directory, topic_id="integrity-topic", initial_cursor="c0"
             ).next_cursor)
@@ -217,6 +218,38 @@ class TopicObservationIntegrityTests(unittest.TestCase):
             )
             self.assertFalse((root / ".topic-observation-transaction.json").exists())
 
+    def test_literature_alias_cannot_bypass_transaction_fences(self) -> None:
+        for marker_name in (
+            ".topic-observation-transaction.json",
+            ".topic-observation-transaction.retiring.json",
+        ):
+            with self.subTest(marker_name=marker_name), tempfile.TemporaryDirectory() as directory:
+                base = Path(directory)
+                topic_root = base / "topic"
+                literature_root = topic_root / "literature"
+                literature_root.mkdir(parents=True)
+                alias = base / "literature-alias"
+                alias.symlink_to(literature_root, target_is_directory=True)
+                (topic_root / marker_name).write_text("{}\n", encoding="utf-8")
+
+                external = input_for("EXTERNAL")
+                blocked = LiteratureBase(alias).import_bytes(
+                    external.observation,
+                    external.content,
+                )
+                self.assertEqual("REJECTED", blocked.disposition.value)
+                self.assertEqual(
+                    "topic observation transaction recovery is pending",
+                    blocked.reason,
+                )
+
+                (topic_root / marker_name).unlink()
+                accepted = LiteratureBase(alias).import_bytes(
+                    external.observation,
+                    external.content,
+                )
+                self.assertEqual("IMPORTED", accepted.disposition.value)
+
     def test_interrupted_between_state_and_authentication_reverts_to_one_generation(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
@@ -244,6 +277,196 @@ class TopicObservationIntegrityTests(unittest.TestCase):
             self.assertEqual(["OBS-A"], [item.observation_id for item in recovered.literature.observations])
             self.assertFalse((root / ".topic-observation-transaction.json").exists())
             self.assertEqual("c2", recovered.run(batch("c1", "c2", input_for("B"))).next_cursor)
+
+    def test_initial_commit_without_signing_authority_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+            original_atomic_write = topic_observation_module._atomic_write_bytes
+
+            def interrupt_key(path: Path, content: bytes, mode: int) -> None:
+                if path == runner.signing_key_path:
+                    raise RuntimeError("simulated interruption before initial signing authority")
+                original_atomic_write(path, content, mode)
+
+            with patch.object(
+                topic_observation_module,
+                "_atomic_write_bytes",
+                side_effect=interrupt_key,
+            ):
+                with self.assertRaisesRegex(RuntimeError, "initial signing authority"):
+                    runner.run(batch("c0", "c1", input_for("A")))
+
+            with self.assertRaisesRegex(TopicObservationError, "no signing authority"):
+                TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                )
+            self.assertTrue(runner.transaction_path.exists())
+            external = input_for("EXTERNAL")
+            blocked = LiteratureBase(root / "literature").import_bytes(
+                external.observation,
+                external.content,
+            )
+            self.assertEqual("REJECTED", blocked.disposition.value)
+
+    def test_committed_signing_authority_rolls_forward_after_verification_crash(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+            with patch.object(
+                runner,
+                "_verify_state_authentication",
+                side_effect=RuntimeError("simulated crash after signing authority commit"),
+            ):
+                with self.assertRaisesRegex(RuntimeError, "after signing authority commit"):
+                    runner.run(batch("c0", "c1", input_for("A")))
+
+            recovered = TopicObservationRunner(
+                root,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            )
+            self.assertEqual("c1", recovered.next_cursor)
+            self.assertEqual(
+                ["OBS-A"],
+                [item.observation_id for item in recovered.literature.observations],
+            )
+            self.assertFalse(runner.transaction_path.exists())
+
+    def test_initial_commit_intent_missing_entire_authority_tuple_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+            with patch.object(
+                runner,
+                "_verify_state_authentication",
+                side_effect=RuntimeError("simulated crash after initial authority commit"),
+            ):
+                with self.assertRaisesRegex(RuntimeError, "initial authority commit"):
+                    runner.run(batch("c0", "c1", input_for("A")))
+
+            for path in (
+                runner.signing_key_path,
+                runner.state_path,
+                runner.authentication_path,
+            ):
+                path.unlink()
+
+            with self.assertRaisesRegex(TopicObservationError, "no signing authority"):
+                TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                )
+            self.assertTrue(runner.transaction_path.exists())
+            external = input_for("EXTERNAL")
+            blocked = LiteratureBase(root / "literature").import_bytes(
+                external.observation,
+                external.content,
+            )
+            self.assertEqual("REJECTED", blocked.disposition.value)
+
+    def test_retirement_fsync_failure_keeps_external_writer_fenced(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+            original_fsync_directory = topic_observation_module._fsync_directory
+            failed = False
+
+            def fail_retirement_once(path: Path) -> None:
+                nonlocal failed
+                if (
+                    not failed
+                    and path == runner.root
+                    and runner.retired_transaction_path.exists()
+                    and not runner.transaction_path.exists()
+                ):
+                    failed = True
+                    raise OSError("simulated retirement fsync failure")
+                original_fsync_directory(path)
+
+            with patch.object(
+                topic_observation_module,
+                "_fsync_directory",
+                side_effect=fail_retirement_once,
+            ):
+                with self.assertRaisesRegex(TopicObservationError, "durably retire"):
+                    runner.run(batch("c0", "c1", input_for("A")))
+
+            self.assertTrue(failed)
+            self.assertTrue(runner.retired_transaction_path.exists())
+            external = input_for("EXTERNAL")
+            blocked = LiteratureBase(root / "literature").import_bytes(
+                external.observation,
+                external.content,
+            )
+            self.assertEqual("REJECTED", blocked.disposition.value)
+
+            recovered = TopicObservationRunner(
+                root,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            )
+            self.assertEqual("c1", recovered.next_cursor)
+            self.assertFalse(runner.retired_transaction_path.exists())
+
+    def test_recovery_fsyncs_each_deleted_literature_parent(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+
+            def interrupt(_state: Mapping[str, Any]) -> None:
+                raise RuntimeError("simulated interruption after literature persistence")
+
+            runner._save_state = interrupt
+            with self.assertRaisesRegex(RuntimeError, "after literature persistence"):
+                runner.run(batch("c0", "c1", input_for("A")))
+
+            original_fsync_directory = topic_observation_module._fsync_directory
+            fsynced_directories: list[Path] = []
+
+            def record_fsync(path: Path) -> None:
+                fsynced_directories.append(path)
+                original_fsync_directory(path)
+
+            with patch.object(
+                topic_observation_module,
+                "_fsync_directory",
+                side_effect=record_fsync,
+            ):
+                TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                )
+
+            self.assertIn(runner.root / "literature" / "artifacts", fsynced_directories)
+
+    def test_topic_and_literature_lock_symlinks_fail_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+            topic_lock_backing = root / "topic-lock.backing"
+            topic_lock_backing.touch()
+            runner.lock_path.unlink()
+            runner.lock_path.symlink_to(topic_lock_backing.name)
+            with self.assertRaisesRegex(TopicObservationError, "lock is unreadable"):
+                TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                )
+
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            base = LiteratureBase(root)
+            literature_lock_backing = root / "literature-lock.backing"
+            literature_lock_backing.touch()
+            base.lock_path.symlink_to(literature_lock_backing.name)
+            with self.assertRaisesRegex(ValueError, "lock is unreadable"):
+                base.import_bytes(input_for("A").observation, input_for("A").content)
 
     def test_long_lived_runner_reloads_literature_before_public_state_reads(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -288,6 +511,80 @@ class TopicObservationIntegrityTests(unittest.TestCase):
             self.assertTrue(replay.replayed)
             self.assertEqual("OBS-RECORDED", replay.item_results[0].observation_id)
             self.assertEqual("c1", restarted.next_cursor)
+
+    def test_alternate_persisted_id_remains_stable_across_duplicate_paths(self) -> None:
+        for replay_kind in ("processed-input", "seen-key"):
+            with self.subTest(replay_kind=replay_kind), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                original = input_for("A")
+                recorded = SourceObservation.from_dict(
+                    {**original.observation.to_dict(), "observation_id": "OBS-RECORDED"}
+                )
+                runner = TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                )
+                self.assertEqual(
+                    "IMPORTED",
+                    runner.literature.import_bytes(recorded, original.content).disposition.value,
+                )
+                first = runner.run(batch("c0", "c1", original))
+                self.assertEqual("OBS-RECORDED", first.item_results[0].observation_id)
+
+                if replay_kind == "processed-input":
+                    duplicate_input = original
+                else:
+                    duplicate_input = TopicObservationInput(
+                        "B",
+                        SourceObservation.from_dict(
+                            {
+                                **original.observation.to_dict(),
+                                "observation_id": "OBS-INCOMING-ALTERNATE",
+                            }
+                        ),
+                        original.content,
+                    )
+                duplicate = runner.run(batch("c1", "c2", duplicate_input))
+                self.assertEqual(TopicItemStatus.DUPLICATE, duplicate.item_results[0].status)
+                self.assertEqual("OBS-RECORDED", duplicate.item_results[0].observation_id)
+
+                restarted = TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                )
+                self.assertEqual("c2", restarted.next_cursor)
+
+    def test_manual_ids_are_delimiter_safe_across_batches(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            runner = TopicObservationRunner(
+                directory,
+                topic_id="integrity-topic",
+                initial_cursor="c|x",
+            )
+            first = runner.run(
+                batch("c|x", "c", input_for("y", risk_flags=("r",)))
+            )
+            second = runner.run(
+                batch("c", "done", input_for("x|y", risk_flags=("r",)))
+            )
+            first_id = first.item_results[0].manual_id
+            second_id = second.item_results[0].manual_id
+            self.assertIsNotNone(first_id)
+            self.assertIsNotNone(second_id)
+            self.assertNotEqual(first_id, second_id)
+            self.assertEqual(
+                {("c|x", "y"), ("c", "x|y")},
+                {(item.cursor, item.input_id) for item in runner.manual_queue},
+            )
+            restarted = TopicObservationRunner(
+                directory,
+                topic_id="integrity-topic",
+                initial_cursor="c|x",
+            )
+            self.assertEqual("done", restarted.next_cursor)
+            self.assertEqual(2, len(restarted.manual_queue))
 
     def test_topic_state_path_requires_private_regular_file(self) -> None:
         for mutation in ("symlink", "mode"):
@@ -420,7 +717,7 @@ class TopicObservationIntegrityTests(unittest.TestCase):
                 ).next_cursor
 
     def test_legacy_state_bytes_are_preserved_for_explicit_replay(self) -> None:
-        for legacy_version in ("1.4", "1.5"):
+        for legacy_version in ("1.4", "1.5", "1.6"):
             with self.subTest(legacy_version=legacy_version), tempfile.TemporaryDirectory() as directory:
                 runner = TopicObservationRunner(
                     directory, topic_id="integrity-topic", initial_cursor="c0"
@@ -521,17 +818,16 @@ class TopicObservationIntegrityTests(unittest.TestCase):
 
         original_a = input_for("A")
         detail = "High-risk flags require human review: forged-risk"
-        manual_id = "manual-" + hashlib.sha256(
-            "|".join(
-                (
-                    "integrity-topic",
-                    "c1",
-                    "B",
-                    ManualReviewReason.HIGH_RISK_EVENT.value,
-                    detail,
-                )
-            ).encode("utf-8")
-        ).hexdigest()[:24]
+        manual_id = "manual-" + digest_json(
+            {
+                "schema_version": "1.0",
+                "topic_id": "integrity-topic",
+                "cursor": "c1",
+                "input_id": "B",
+                "reason": ManualReviewReason.HIGH_RISK_EVENT.value,
+                "detail": detail,
+            }
+        )[:24]
         state["manual_queue"] = [{
             "manual_id": manual_id,
             "topic_id": "integrity-topic",

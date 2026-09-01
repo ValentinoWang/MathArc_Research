@@ -6,19 +6,22 @@ import fcntl
 import hashlib
 import json
 import os
+import stat
 import threading
+from collections.abc import Iterator
 from contextlib import contextmanager
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
-from typing import Any, Iterator
 
 from .artifact_store import ArtifactRecord, ArtifactStore
 from .budget import BudgetLedger
 from .source_observation import LicenseStatus, ObservationStatus, SourceObservation
 
-
 TOPIC_OBSERVATION_TRANSACTION_PATH_NAME = ".topic-observation-transaction.json"
+TOPIC_OBSERVATION_RETIRED_TRANSACTION_PATH_NAME = (
+    ".topic-observation-transaction.retiring.json"
+)
 _WRITER_LOCK_STATE = threading.local()
 
 
@@ -31,17 +34,33 @@ def _thread_lock_paths(name: str) -> set[str]:
 
 
 def _literature_root_key(root: Path) -> str:
-    return str(root.resolve(strict=False))
+    return str(_canonical_literature_root(root))
+
+
+def _canonical_literature_root(root: Path) -> Path:
+    try:
+        canonical_root = root.resolve(strict=True)
+    except (OSError, RuntimeError) as exc:
+        raise ValueError("literature root is unreadable") from exc
+    if not canonical_root.is_dir():
+        raise ValueError("literature root is not a directory")
+    return canonical_root
 
 
 def _topic_transaction_pending(root: Path) -> bool:
-    try:
-        (root.parent / TOPIC_OBSERVATION_TRANSACTION_PATH_NAME).lstat()
-    except FileNotFoundError:
-        return False
-    except OSError:
+    canonical_root = _canonical_literature_root(root)
+    for path_name in (
+        TOPIC_OBSERVATION_TRANSACTION_PATH_NAME,
+        TOPIC_OBSERVATION_RETIRED_TRANSACTION_PATH_NAME,
+    ):
+        try:
+            (canonical_root.parent / path_name).lstat()
+        except FileNotFoundError:
+            continue
+        except OSError:
+            return True
         return True
-    return True
+    return False
 
 
 @contextmanager
@@ -69,8 +88,21 @@ def literature_writer_lock(
         return
 
     lock_path = literature_root / ".observations.lock"
-    lock_path.touch(exist_ok=True)
-    with lock_path.open("a+", encoding="utf-8") as lock_file:
+    flags = os.O_CREAT | os.O_RDWR | getattr(os, "O_NOFOLLOW", 0)
+    try:
+        descriptor = os.open(lock_path, flags, 0o600)
+    except OSError as exc:
+        raise ValueError("literature writer lock is unreadable") from exc
+    try:
+        if not stat.S_ISREG(os.fstat(descriptor).st_mode):
+            raise ValueError("literature writer lock is not a regular file")
+        lock_file = os.fdopen(descriptor, "a+", encoding="utf-8")
+        descriptor = -1
+    except Exception:
+        if descriptor != -1:
+            os.close(descriptor)
+        raise
+    with lock_file:
         fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
         held_paths.add(root_key)
         if allow_topic_transaction:
