@@ -1,33 +1,28 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-01T02:09:31.496344+00:00",
+  "generated_at": "2026-09-01T06:31:03.795960+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
-    "commit": "480c64bc92ecab178f202daead187acd9656cd1d",
-    "dirty": true,
-    "dirty_files": [
-      "Core/harnesses/human-acceptance-blocking-integrity-guard-card.md",
-      "Core/skills/design-acceptance-contract/references/manual-acceptance-log-contract.md",
-      "Core/skills/design-acceptance-contract/scripts/manage_acceptance_artifacts.py",
-      "Core/skills/design-acceptance-contract/tests/test_manage_acceptance_artifacts.py"
-    ],
-    "dirty_diff_sha256": "dd99897aa13b47567fdf807755a2a0d17fdf1378bff2bcbeec6b8ad3c1c0e5cb",
+    "commit": "86d7c2cc7bdb0ed6f6628c8ad40250119ccb84a2",
+    "dirty": false,
+    "dirty_files": [],
+    "dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
-    "skill_sha256": "23d9638a5bd3fae1638480a1c170eac691ab6975678d752f8bd4cdf40c536d41",
-    "checker_bundle_sha256": "445169fcc852a421939689f4d3dcdd187da088c52eb21d18a8e2966905183f02"
+    "skill_sha256": "1e7c129ec9cb19ee5d925ee0a1c8b78da53cb18bb0e7ab8c16734c417c852e4a",
+    "checker_bundle_sha256": "f668a0b01d6811176f3cd6efab858a36ed5f50e804c7d75c5999991f788dcfab"
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "20d41af66b03d037b7e390ce31800fcc9d573a3e",
+    "project_commit": "7117f5742216dcceafb9d396bd6c3e33daf0e8f7",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "ae55341261bf41a2ec4b21ff4debca4b2610597cf1b5afc0455e7351fcd2f656",
+    "project_dirty_diff_sha256": "d1801581e4992d7cc79952e631e8921dab3b5ee976d9e120337e1f0945cdb7b6",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "e7d8ba7757daba627563aa3125e89fcc7d71b2f99ef6ec1d1b55b5c2c9dfcff9",
-    "content_sha256": "e7d8ba7757daba627563aa3125e89fcc7d71b2f99ef6ec1d1b55b5c2c9dfcff9",
+    "sha256": "75754ad894090857ecf93dcb9ec73117aee8fa96aaecd3ddae8372223790639b",
+    "content_sha256": "75754ad894090857ecf93dcb9ec73117aee8fa96aaecd3ddae8372223790639b",
     "manifest_sha256": "0b9ca96ef1f962a7369641ad6c991497a27ad590ca5cec1b6eb17092479a84d4",
     "manifest_identity_sha256": "0b9ca96ef1f962a7369641ad6c991497a27ad590ca5cec1b6eb17092479a84d4"
   },
@@ -35,7 +30,7 @@
     {
       "id": "runtime-skill-provenance",
       "command": [
-        "/private/tmp/matharc-publication-ci-20260901/bin/python",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/tools/harnessctl.py",
         "doctor",
         "--project",
@@ -44,12 +39,12 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 34\nruntime_skill_check: enabled\nWARN Harness source dirty files: 4\ndoctor: ok\n"
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 41\nruntime_skill_check: enabled\ndoctor: ok\n"
     },
     {
       "id": "complexity",
       "command": [
-        "/private/tmp/matharc-publication-ci-20260901/bin/python",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/planning-compiler.json"
       ],
@@ -60,7 +55,7 @@
     {
       "id": "render",
       "command": [
-        "/private/tmp/matharc-publication-ci-20260901/bin/python",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
         "--check",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
@@ -72,7 +67,7 @@
     {
       "id": "machine-program",
       "command": [
-        "/private/tmp/matharc-publication-ci-20260901/bin/python",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
@@ -83,7 +78,7 @@
     {
       "id": "parallelism-analysis",
       "command": [
-        "/private/tmp/matharc-publication-ci-20260901/bin/python",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
@@ -94,7 +89,7 @@
     {
       "id": "structure",
       "command": [
-        "/private/tmp/matharc-publication-ci-20260901/bin/python",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md"
       ],
@@ -105,7 +100,7 @@
     {
       "id": "chinese-readability",
       "command": [
-        "/private/tmp/matharc-publication-ci-20260901/bin/python",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_chinese_readability.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md"
@@ -117,7 +112,7 @@
     {
       "id": "archive-check",
       "command": [
-        "/private/tmp/matharc-publication-ci-20260901/bin/python",
+        "/opt/homebrew/opt/python@3.13/bin/python3.13",
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
         "--source",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
@@ -128,6 +123,17 @@
       "exit_code": 0,
       "result": "passed",
       "output": "{\n  \"status\": \"verified\",\n  \"source\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane\",\n  \"destination\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-08-31/matharc-research/problem-intelligence-plane\",\n  \"project_name\": \"matharc-research\",\n  \"ssot_name\": \"problem-intelligence-plane\",\n  \"snapshot_date\": \"2026-08-31\",\n  \"main_document\": \"ssot-development-paths.md\",\n  \"file_count\": 2,\n  \"contains_openproblem\": true\n}\n"
+    },
+    {
+      "id": "strict-provenance",
+      "command": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "protected Harness inputs are clean"
     }
   ],
   "parallelism": {
