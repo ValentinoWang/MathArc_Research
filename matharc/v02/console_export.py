@@ -42,6 +42,8 @@ class ConsoleLocalProjectionConfig:
     difficulty_ledger_root: Path | None = None
     operations_domain_root: Path | None = None
     novelty_audit_path: Path | None = None
+    route_regression_path: Path | None = None
+    dogfood_archive_path: Path | None = None
 
     def projection(
         self,
@@ -57,6 +59,8 @@ class ConsoleLocalProjectionConfig:
             "difficulty_ledger": {"state": "not_configured"},
             "operations": {"state": "not_configured"},
             "novelty_audit": {"state": "not_configured"},
+            "route_regression": {"state": "not_configured"},
+            "dogfood_archives": {"state": "not_configured"},
         }
         if self.workspace_index_root is not None:
             result["workspace_index"] = {
@@ -149,6 +153,78 @@ class ConsoleLocalProjectionConfig:
                     "This projection reports a persisted novelty-audit record only; "
                     "it does not infer mathematical correctness or public priority."
                 ),
+            }
+        if self.route_regression_path is not None:
+            path = self.route_regression_path.resolve()
+            try:
+                raw = path.read_bytes()
+                payload = json.loads(raw.decode("utf-8"))
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError, TypeError) as exc:
+                raise ValueError("configured route regression fixture is invalid") from exc
+            if not isinstance(payload, Mapping) or payload.get("fixture_kind") != "r1-four-route-regression":
+                raise ValueError("configured route regression fixture has incompatible identity")
+            route_order = payload.get("route_order")
+            cases = payload.get("cases")
+            if route_order != [
+                "FORWARD_CITATION",
+                "ALIAS_AND_EQUIVALENCE",
+                "STRUCTURAL_SEMANTIC",
+                "REVIEW_AND_EXPERT_LEAD",
+            ] or not isinstance(cases, list) or len(cases) != 3:
+                raise ValueError("configured route regression fixture is incomplete")
+            if any(not isinstance(case, Mapping) or not isinstance(case.get("routes"), list) or len(case["routes"]) != 4 for case in cases):
+                raise ValueError("configured route regression fixture has incomplete cases")
+            result["route_regression"] = {
+                "state": "live",
+                "schema_version": str(payload.get("schema_version", "1.0")),
+                "topic_id": payload.get("topic_id"),
+                "route_order": list(route_order),
+                "case_ids": list(payload.get("case_ids", [])),
+                "cases": [
+                    {
+                        "case_id": case.get("case_id"),
+                        "expected_status": case.get("expected_status"),
+                        "routes": [
+                            {"route": item.get("route"), "query_scope": item.get("query_scope"),
+                             "hits": list(item.get("hits", [])), "unresolved": list(item.get("unresolved", []))}
+                            for item in case["routes"]
+                        ],
+                    }
+                    for case in cases
+                ],
+                "fixture_sha256": hashlib.sha256(raw).hexdigest(),
+                "provenance": dict(workspace_provenance),
+                "boundary": "固定四路回归记录仅用于审计观察，不产生新颖性、开放状态或发布结论。",
+            }
+        if self.dogfood_archive_path is not None:
+            path = self.dogfood_archive_path.resolve()
+            try:
+                raw = path.read_bytes()
+                payload = json.loads(raw.decode("utf-8"))
+            except (OSError, UnicodeDecodeError, json.JSONDecodeError, TypeError) as exc:
+                raise ValueError("configured dogfood archive fixture is invalid") from exc
+            cases = payload.get("cases") if isinstance(payload, Mapping) else None
+            if not isinstance(payload, Mapping) or payload.get("fixture_kind") != "t2-dogfood-archive-contract" or not isinstance(cases, list) or len(cases) != 3:
+                raise ValueError("configured dogfood archive fixture is incomplete")
+            result["dogfood_archives"] = {
+                "state": "live",
+                "schema_version": "1.0",
+                "topic_id": payload.get("topic_id"),
+                "cases": [
+                    {
+                        "problem_id": case.get("problem_id"),
+                        "case_role": case.get("case_role"),
+                        "expected_topic_status": case.get("expected_topic_status"),
+                        "expected_problem_status": case.get("expected_problem_status"),
+                        "expected_manual_reason": case.get("expected_manual_reason"),
+                        "expected_novelty_status": case.get("expected_novelty_status"),
+                        "expected_promotion_allowed": case.get("expected_promotion_allowed"),
+                    }
+                    for case in cases
+                ],
+                "fixture_sha256": hashlib.sha256(raw).hexdigest(),
+                "provenance": dict(workspace_provenance),
+                "boundary": str(payload.get("non_claim_boundary", "")),
             }
         return result
 
@@ -450,6 +526,8 @@ def build_console_export(
             "routes_projection": "live",
             "disclosure_projection": "live",
             "novelty_projection": "live_if_configured",
+            "route_regression_projection": "live_if_configured",
+            "dogfood_archives_projection": "live_if_configured",
             "topic_observation": (
                 "live_preexisting_single_topic_store"
                 if resolved_topic_store is not None

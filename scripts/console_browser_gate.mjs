@@ -257,6 +257,8 @@ server = make_server(
         difficulty_ledger_root=difficulty_root,
         operations_domain_root=operations_root,
         novelty_audit_path=Path.cwd() / "agents-results/2026-08-31/problem-intelligence-plane/evidence/s2-fixtures/q6-candidate-audit.json",
+        route_regression_path=Path.cwd() / "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json",
+        dogfood_archive_path=Path.cwd() / "agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json",
     ),
     review_trace_path=review_trace_path, review_write_token=review_token,
 )
@@ -638,6 +640,11 @@ async function testDataBoundaryAndProvenance(page, server, exportPayload) {
       assert(text.includes(exportPayload.novelty.audit.audit_id), "novelty live renderer omitted the persisted audit id");
     }
   }
+  assert(exportPayload.local_console.route_regression.state === "live", "R1 four-route projection was not exported");
+  assert(exportPayload.local_console.route_regression.route_order.join(",") === "FORWARD_CITATION,ALIAS_AND_EQUIVALENCE,STRUCTURAL_SEMANTIC,REVIEW_AND_EXPERT_LEAD", "R1 route order drifted");
+  assert(exportPayload.local_console.route_regression.cases.length === 3, "R1 route projection omitted a fixed case");
+  assert(exportPayload.local_console.dogfood_archives.state === "live", "T2 dogfood archive projection was not exported");
+  assert(exportPayload.local_console.dogfood_archives.cases.length === 3, "T2 archive projection omitted a fixed case");
   for (const view of ["acct_usage"]) {
     await renderCase(page, "c7", { name: `${view}-unwired`, view });
     const boundary = await page.locator("#view-data-boundary").getAttribute("data-source");

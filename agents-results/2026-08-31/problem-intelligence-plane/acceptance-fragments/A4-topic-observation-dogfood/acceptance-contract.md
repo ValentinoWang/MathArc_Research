@@ -1,18 +1,18 @@
 # Acceptance Contract: A4-topic-observation-dogfood
 
 - Task ID: A4-topic-observation-dogfood
-- Contract version: 1
+- Contract version: 2
 - Contract status: APPROVED
 - Test baseline: LOCKED
 - Acceptance owner: 验收负责人（用户授权）
-- Approval evidence: 用户批准以 `main` HEAD `b4c6d36` 为基线，对 A4 执行离线、来源固定、非数学证明、非公开发布的正式验收；必要的合同不可变性修复已提交为 `5af1d9f`，正式验收绑定该修复后的主线身份。
+- Approval evidence: 用户批准在离线、来源固定、非数学证明、非公开发布边界内正式验收 A4，并指定使用 local CI；本次重验收将身份重钉到当前已推送的 `main` HEAD `0b904fc`，不扩大原范围。
 - Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/A4.json
 - SSOT node: A4
 - SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
 - Readiness mode: FORMAL
 - Decision refs: decision.problem-intelligence.amendment@2
 - Invalidation keys: acceptance.problem-intelligence.dogfood
-- Baseline identity: main@5af1d9ff6fde02d86633cca50cf815ef04661d4a
+- Baseline identity: main@0b904fca9a750edb5afaa746feedde1378f38919
 - Human acceptance workspace: acceptance/human/A4-topic-observation-dogfood
 
 ## Scope

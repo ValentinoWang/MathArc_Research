@@ -81,6 +81,31 @@ class ConsoleExportTests(unittest.TestCase):
                     ),
                 )
 
+    def test_configured_r1_routes_and_t2_archives_are_exported_with_fixed_boundaries(self) -> None:
+        route_fixture = Path(__file__).parents[1] / "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json"
+        archive_fixture = Path(__file__).parents[1] / "agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "workspace"
+            write_full_workspace_bundle(root)
+            payload = build_console_export(
+                root,
+                local_projection_config=ConsoleLocalProjectionConfig(
+                    route_regression_path=route_fixture,
+                    dogfood_archive_path=archive_fixture,
+                ),
+            )
+            routes = payload["local_console"]["route_regression"]
+            self.assertEqual(routes["state"], "live")
+            self.assertEqual(routes["route_order"], [
+                "FORWARD_CITATION", "ALIAS_AND_EQUIVALENCE",
+                "STRUCTURAL_SEMANTIC", "REVIEW_AND_EXPERT_LEAD",
+            ])
+            self.assertEqual(len(routes["cases"]), 3)
+            archives = payload["local_console"]["dogfood_archives"]
+            self.assertEqual(archives["state"], "live")
+            self.assertEqual(len(archives["cases"]), 3)
+            self.assertTrue(all(item["expected_promotion_allowed"] is False for item in archives["cases"]))
+
     def test_campaign_and_json_output_are_explicit(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "workspace"

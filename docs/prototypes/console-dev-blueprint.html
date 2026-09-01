@@ -345,6 +345,8 @@ html{scroll-behavior:smooth;}
     <thead><tr><th>视图</th><th>后端现状</th><th>状态</th></tr></thead>
     <tbody>
       <tr><td>资料核验</td><td><code>SourceRegistry</code>、<code>SourceObservation</code>、<code>LiteratureBase</code> 与单主题游标/人工队列已存在；控制台只读投影已接线，录入界面仍未授权</td><td><span class="chip c-done">已落地</span></td></tr>
+      <tr><td>四路检索回归</td><td><code>route_regression_projection</code> 读取来源固定的 R1 四路记录：<code>FORWARD_CITATION</code>、<code>ALIAS_AND_EQUIVALENCE</code>、<code>STRUCTURAL_SEMANTIC</code>、<code>REVIEW_AND_EXPERT_LEAD</code>；每个案例的路线、查询范围、命中与未决项只读展示</td><td><span class="chip c-done">已落地（来源固定）</span></td></tr>
+      <tr><td>三例真实档案</td><td><code>dogfood_archives_projection</code> 读取 T2 三例档案合同，展示案例身份、预期状态、人工原因和不晋升边界；执行、重放与恢复仍由后端档案运行器负责</td><td><span class="chip c-done">已落地（只读投影）</span></td></tr>
       <tr><td>每日新论文 / 开放状态核查 / 是否算新结果的检索侧</td><td><code>LiteratureAdapter</code> 支持 arXiv/Crossref 有界抓取与注入式传输；实时提供方配置仍按环境显式启用</td><td>报告可重放、许可证未知即 <code>PENDING</code>；控制台无配置时显示 <code>not_configured</code>，不产生检索统计或状态结论</td><td><span class="chip c-done">已落地（适配器）</span></td></tr>
       <tr><td>方向信息流 / 候选主题</td><td>主题组合、五项标准与本地席位记录已持久化；只投影显式配置的本地记录</td><td><span class="chip c-done">已落地（本地隔离）</span></td></tr>
       <tr><td>候选问题（九道门）</td><td>九门本地引擎已以 <code>PAPER_READINESS.md</code> 的人工先例为回归样本；它不执行外部检索或事实裁定</td><td><span class="chip c-done">已落地（本地隔离）</span></td></tr>
@@ -394,6 +396,7 @@ html{scroll-behavior:smooth;}
     <tbody>
       <tr><td><code>GET /api/workspace · /api/audit · /api/events · /api/artifacts · /api/health · /events(SSE)</code></td><td class="mut">已有（观察站）</td><td>M1</td></tr>
       <tr><td><code>GET /api/console · /api/campaign</code></td><td class="mut">已落地，只读；campaign 严格绑定工作区 provenance</td><td>M0/M1</td></tr>
+      <tr><td><code>GET /api/console</code>（<code>local_console.route_regression</code> / <code>dogfood_archives</code>）</td><td class="mut">已落地；显式配置时读取固定 R1/T2 文件并绑定当前工作区 provenance，缺失时 <code>not_configured</code></td><td>M0/M3</td></tr>
       <tr><td><code>GET /api/review-queue · /api/review-bundle/{命题}</code></td><td class="mut">已有（评审服务）</td><td>M2</td></tr>
       <tr><td><code>POST /api/review</code>（名册令牌）</td><td class="mut">已有；全系统唯一写口</td><td>M2</td></tr>
       <tr><td>选题/运营域 API</td><td class="mut">随 §6 各项新建，另立服务</td><td>M3/M4</td></tr>

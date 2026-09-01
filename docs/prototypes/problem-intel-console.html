@@ -4778,12 +4778,17 @@ V.novelty = () => {
   const audit = projection.audit, candidate = audit.candidate, routes = audit.route_results || [], auth = projection.authorization;
   const routeRows = routes.map(route => `<tr><td>${liveEnumPill("novelty_route", route.route)}</td><td>${liveEsc(route.query_scope)}</td><td>${route.hits.length}</td><td>${route.completed ? `<span class="pill ok">已完成</span>` : `<span class="pill gap">未完成</span>`}</td><td>${route.unresolved_items.length || "—"}</td></tr>`).join("");
   const human = audit.human_audit;
+  const routeRegression = payload.local_console && payload.local_console.route_regression;
+  const routeRegressionCard = routeRegression && routeRegression.state === "live"
+    ? liveCard("四路回归记录", `${routeRegression.cases.length} 个固定案例`, `<div class="tw"><table><thead><tr><th>案例</th><th>状态</th><th>路线</th></tr></thead><tbody>${routeRegression.cases.map(item => `<tr><td class="mono">${liveEsc(item.case_id)}</td><td>${liveEsc(item.expected_status)}</td><td>${(item.routes || []).map(route => liveEsc(route.route)).join("、")}</td></tr>`).join("")}</tbody></table></div>`)
+    : null;
   return {task:`新颖性审计 · <b>真实审计记录</b> · ${liveEsc(audit.audit_id)}`,
     rail:liveCard("审计边界","只读记录", `<p class="note">${liveEsc(projection.decision_boundary)}</p><div class="divider"></div><p class="note">不以记录推断数学正确性、开放状态或公开优先权。</p>`),
     main:liveCard("受审候选结果", `${liveEsc(candidate.candidate_id)} · ${liveEsc(candidate.version)}`, `<div class="body"><div class="stmtbox"><p class="stmt">候选结果指纹：<span class="hash">${liveEsc(candidate.candidate_fingerprint_sha256)}</span></p><p class="note">范围：${liveEsc(candidate.scope)}</p></div></div>`)
       + liveCard("新颖性检索路线", `${routes.length} 条已记录路线`, `<div class="tw"><table><thead><tr><th>路线</th><th>查询范围</th><th>命中</th><th>状态</th><th>未决项</th></tr></thead><tbody>${routeRows || `<tr><td colspan="5" class="mut">没有路线记录。</td></tr>`}</tbody></table></div>`)
+      + (routeRegressionCard || "")
       + liveCard("审计结论", liveEnumText("novelty_conclusion", audit.conclusion), `<div class="row">${liveEnumPill("novelty_conclusion", audit.conclusion)} ${liveEnumPill("novelty_status", auth.status)}</div>${human ? `<p class="note" style="margin-top:8px">${liveEnumText("novelty_verdict", human.verdict)} · ${liveEsc(human.reviewer_id)} · ${liveEsc(human.rationale)}</p>` : `<p class="note" style="margin-top:8px">尚无人工审计条目。</p>`}`),
-    side:liveCard("授权边界","不会自动放行", `<dl class="kv"><dt>完整预算</dt><dd>${auth.complete_research_budget ? "允许" : "不允许"}</dd><dt>公开结论</dt><dd>${auth.public_qualitative_conclusion ? "允许" : "不允许"}</dd><dt>失效原因</dt><dd>${(auth.invalidations || []).map(value => liveEnumText("novelty_invalidation", value)).join("、") || "无"}</dd></dl>`) };
+    side:liveCard("授权边界","不会自动放行", `<dl class="kv"><dt>完整预算</dt><dd>${auth.complete_research_budget ? "允许" : "不允许"}</dd><dt>公开结论</dt><dd>${auth.public_qualitative_conclusion ? "允许" : "不允许"}</dd><dt>固定档案</dt><dd>${payload.local_console && payload.local_console.dogfood_archives && payload.local_console.dogfood_archives.state === "live" ? `${payload.local_console.dogfood_archives.cases.length} 例` : "未配置"}</dd><dt>失效原因</dt><dd>${(auth.invalidations || []).map(value => liveEnumText("novelty_invalidation", value)).join("、") || "无"}</dd></dl>`) };
 };
 /* M2 reads only the review service. It deliberately does not derive review
    state from console.json or the workspace observatory, whose authority is
