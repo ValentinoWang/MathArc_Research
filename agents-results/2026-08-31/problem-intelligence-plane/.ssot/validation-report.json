@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-01T06:31:03.795960+00:00",
+  "generated_at": "2026-09-01T06:38:41.145504+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "86d7c2cc7bdb0ed6f6628c8ad40250119ccb84a2",
@@ -14,9 +14,9 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "7117f5742216dcceafb9d396bd6c3e33daf0e8f7",
-    "project_dirty": true,
-    "project_dirty_diff_sha256": "d1801581e4992d7cc79952e631e8921dab3b5ee976d9e120337e1f0945cdb7b6",
+    "project_commit": "6890903a9428958ef2841aae88824b22d474e542",
+    "project_dirty": false,
+    "project_dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
