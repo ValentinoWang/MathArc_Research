@@ -4197,7 +4197,7 @@ const LIVE_VIEW_CONTRACTS = {
   source:["source_registry_projection","live"], dag:["verification_publication","live"],
   proofchain:["verification_publication","live"], tools:["verification_publication","live"],
   reasoning:["verification_publication","live"], admin_roles:["verification_publication","live"],
-  campaign:["campaign_observatory","live_if_campaign_report_supplied"]
+  campaign:["campaign_observatory","live_if_current_workspace_campaign_is_registered"]
 };
 const livePayloadFor = view => {
   const payload = S.consolePayload, contract = LIVE_VIEW_CONTRACTS[view];

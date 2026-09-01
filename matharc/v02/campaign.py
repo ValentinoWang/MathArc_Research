@@ -17,7 +17,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Iterable, Mapping
+from typing import Any, Callable, Iterable, Mapping
 
 from .budget import BudgetLedger
 from .exact_tools import (
@@ -237,6 +237,7 @@ class ResearchCampaign:
         max_rounds: int = 20,
         max_rounds_without_gain: int = 5,
         persist_path: str | Path | None = None,
+        on_round_complete: Callable[[Mapping[str, Any]], None] | None = None,
     ) -> None:
         self.trace = trace
         self.workers = tuple(workers)
@@ -251,6 +252,7 @@ class ResearchCampaign:
         self.max_rounds = max_rounds
         self.max_rounds_without_gain = max_rounds_without_gain
         self.persist_path = Path(persist_path) if persist_path is not None else None
+        self.on_round_complete = on_round_complete
         self._last_report: CampaignReport | None = None
 
     @property
@@ -277,6 +279,8 @@ class ResearchCampaign:
             rounds.append(round_record)
             if self.persist_path is not None:
                 save_trace(self.trace, self.persist_path)
+            if self.on_round_complete is not None:
+                self.on_round_complete(round_record)
 
             if bool(round_record["evidence_gain"]["has_gain"]):
                 rounds_without_gain = 0

@@ -38,6 +38,7 @@ from .review_bundle import (
     render_review_bundle_html,
     write_review_bundle,
 )
+from .schema import digest_json
 from .trace import load_trace, save_trace
 from .workspace import ResearchWorkspace
 
@@ -385,13 +386,38 @@ def main(argv: list[str] | None = None) -> None:
         runner = ClaudeCodeRunner(claude_config)
         workers = [LLMProposalWorker(role, runner=runner) for role in roles]
         budget = _build_run_budget(args)
+        persist_path = args.persist
+        if workspace is not None and persist_path is not None:
+            workspace_trace_path = (workspace.root / "research-trace.json").resolve()
+            if Path(persist_path).resolve() == workspace_trace_path:
+                # workspace.save() publishes this trace atomically with its manifest.
+                persist_path = None
+
+        def checkpoint_workspace(round_record: dict[str, Any]) -> None:
+            if workspace is None:
+                return
+            round_index = round_record["round_index"]
+            if not isinstance(round_index, int):
+                raise ValueError("campaign round checkpoint is missing its round index")
+            workspace._seal_transition(
+                "CAMPAIGN_ROUND_COMPLETED",
+                actor="campaign-runner",
+                subject_ids=(workspace.trace.run_id,),
+                details={
+                    "round_index": round_index,
+                    "round_digest_sha256": digest_json(round_record),
+                },
+            )
+            workspace.save()
+
         campaign = ResearchCampaign(
             trace,
             workers,
             budget=budget,
             max_rounds=args.rounds,
             max_rounds_without_gain=args.max_rounds_without_gain,
-            persist_path=args.persist,
+            persist_path=persist_path,
+            on_round_complete=checkpoint_workspace if workspace is not None else None,
         )
         report = campaign.run()
         if workspace is None:

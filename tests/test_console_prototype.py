@@ -1,10 +1,19 @@
 from __future__ import annotations
 
+import json
 import shutil
 import subprocess
+import tempfile
 import textwrap
 import unittest
 from pathlib import Path
+
+from matharc.v02.budget import BudgetLedger
+from matharc.v02.campaign import ResearchCampaign
+from matharc.v02.console_export import build_console_export
+from matharc.v02.workspace import ResearchWorkspace
+from matharc.v02.workspace_bundle import write_full_workspace_bundle
+from matharc.v02.workers import StaticProposalWorker
 
 
 class ConsolePrototypeTests(unittest.TestCase):
@@ -30,6 +39,62 @@ class ConsolePrototypeTests(unittest.TestCase):
         self.assertIn("S.consolePayload = null", page)
         self.assertIn("latestLoad", page)
         self.assertIn("same-origin /api/review service", page)
+
+    def test_registered_campaign_export_renders_live_report_not_demo(self) -> None:
+        node = shutil.which("node")
+        if node is None:
+            self.skipTest("node is required for the embedded live campaign regression")
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "workspace"
+            write_full_workspace_bundle(root)
+            workspace = ResearchWorkspace.load(root)
+            campaign = ResearchCampaign(
+                workspace.trace,
+                [StaticProposalWorker("prover", {})],
+                budget=BudgetLedger(wall_seconds_limit=0.0),
+            )
+            workspace.record_campaign_result(campaign, campaign.run())
+            workspace.save()
+            payload = build_console_export(root)
+            self.assertEqual(
+                payload["view_contract"]["campaign_observatory"],
+                "live_if_current_workspace_campaign_is_registered",
+            )
+            self.assertTrue(payload["campaign"]["available"])
+            script = textwrap.dedent(
+                r"""
+                const fs = require("fs");
+                const vm = require("vm");
+                const page = fs.readFileSync(process.argv[1], "utf8");
+                const payload = JSON.parse(process.argv[2]);
+                const start = page.indexOf("const DEMO_VIEWS =");
+                const end = page.indexOf("/* Console transport", start);
+                if (start < 0 || end < 0) throw new Error("live view source was not found");
+                const context = {
+                  S: { consolePayload: payload },
+                  V: { campaign: () => ({ task: "DEMO_CAMPAIGN" }) },
+                  esc(value) { return String(value); },
+                  card(title, subtitle, body) { return `${title}|${subtitle}|${body}`; },
+                };
+                vm.runInNewContext(page.slice(start, end) + ";this.renderCampaign = () => V.campaign();", context);
+                const rendered = context.renderCampaign();
+                if (!rendered.task.includes("真实报告")) throw new Error("registered campaign fell back to the demo renderer");
+                if (!String(rendered.main).includes("release_state_terminal:PROVED_AND_AUDITED")) throw new Error("registered campaign report was not rendered");
+                """
+            )
+            completed = subprocess.run(
+                [
+                    node,
+                    "-e",
+                    script,
+                    str(Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html"),
+                    json.dumps(payload),
+                ],
+                text=True,
+                capture_output=True,
+                check=False,
+            )
+            self.assertEqual(completed.returncode, 0, completed.stderr)
 
     def test_source_links_allow_only_web_schemes(self) -> None:
         page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")

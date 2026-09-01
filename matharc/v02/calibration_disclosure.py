@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+import hashlib
+import json
 import re
 from dataclasses import dataclass
 from enum import Enum
@@ -16,11 +18,13 @@ _CASE_IDS = (
     "P-ARXIV-2601-22401-COLLISION",
     "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
 )
-_R1_EVIDENCE_ID = "EV-R1-ACCEPTED-1"
-_R1_EVIDENCE_DIGEST = "88dae7d1e4314009a6a7869f1265df0e86dc95bc6f9c8ce4797850b8040a9e06"
+_R1_EVIDENCE_ID = "EV-R1-ACCEPTED-2"
+_R1_EVIDENCE_DIGEST = "672a4c439c3b7de7bfebe2e09576daa0fcefd731d874c3a48d3671d7ba625c71"
 _R1_FIXTURE_DIGEST = "04839d8177b10b4b7749ee953b6bae0771db3ede63a79708ed9da64e6ce1b75c"
 _R1_FIXTURE_CONTENT_DIGEST = "be18b8bae4b359d0b55a10f6b5da95e541897cff677a1555ee9db659d8dd44e9"
 _R1_IMPLEMENTATION_BASE = "2e47f5040d3a833e10de07286d68f017efec5d42"
+_Q1_POLICY_FIXTURE_DIGEST = "f519e824ef92274ae2f9f3749ef84dc71beece3fb1c4523c98a765db98cf17bf"
+_Q1_POLICY_DIGEST = "f11f61ab1b780ff61ed9b1211063d30d6b3632b92e05b95735b9bde9f55ca3e7"
 
 
 class CalibrationDisclosureError(ValueError):
@@ -180,6 +184,8 @@ class CalibrationDisclosurePolicy:
             raise CalibrationDisclosureError("R1 source identity drift")
         if tuple(record.case_id for record in self.records) != _CASE_IDS:
             raise CalibrationDisclosureError("Q1 records must match the accepted R1 case order")
+        if self.policy_digest_sha256 != _Q1_POLICY_DIGEST:
+            raise CalibrationDisclosureError("Q1 policy canonical identity drift")
 
     @property
     def policy_digest_sha256(self) -> str:
@@ -258,3 +264,18 @@ class CalibrationDisclosurePolicy:
         if _sha256(value["policy_digest_sha256"], "policy_digest_sha256") != policy.policy_digest_sha256:
             raise CalibrationDisclosureError("policy digest mismatch")
         return policy
+
+    @classmethod
+    def from_fixture_bytes(cls, value: bytes) -> "CalibrationDisclosurePolicy":
+        """Load only the byte-pinned checked-in Q1 policy fixture."""
+        if not isinstance(value, bytes):
+            raise CalibrationDisclosureError("Q1 policy fixture must be bytes")
+        if hashlib.sha256(value).hexdigest() != _Q1_POLICY_FIXTURE_DIGEST:
+            raise CalibrationDisclosureError("Q1 policy fixture byte identity drift")
+        try:
+            payload = json.loads(value)
+        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+            raise CalibrationDisclosureError("Q1 policy fixture is not valid JSON") from exc
+        if not isinstance(payload, Mapping):
+            raise CalibrationDisclosureError("Q1 policy fixture must be a JSON object")
+        return cls.from_dict(payload)
