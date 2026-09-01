@@ -195,7 +195,7 @@ class ReviewServerConfig:
     write_token: str
 
     def __post_init__(self) -> None:
-        self.trace_path = self.trace_path.resolve()
+        self.trace_path = Path(self.trace_path).resolve()
         if not self.write_token or len(self.write_token) < 16:
             raise ReviewServerError(
                 "write_token must be a real secret of at least 16 characters, "

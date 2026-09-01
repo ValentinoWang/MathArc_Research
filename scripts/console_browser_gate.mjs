@@ -9,12 +9,10 @@
  * case list together when a deliberately approved view contract changes.
  */
 import { createRequire } from "node:module";
-import { execFileSync, spawnSync } from "node:child_process";
+import { execFileSync, spawn, spawnSync } from "node:child_process";
 import { mkdtempSync, readFileSync, rmSync } from "node:fs";
-import { createServer } from "node:http";
 import { tmpdir } from "node:os";
-import { basename, join, resolve } from "node:path";
-import { pathToFileURL } from "node:url";
+import { join, resolve } from "node:path";
 
 const require = createRequire(import.meta.url);
 const ROOT = resolve(import.meta.dirname, "..");
@@ -82,76 +80,230 @@ function loadPlaywright() {
   }
 }
 
-function buildConsoleExport() {
-  const directory = mkdtempSync(join(tmpdir(), "matharc-console-browser-"));
-  const output = join(directory, "console.json");
-  const program = String.raw`
+const PYTHON = process.env.PYTHON || "python3";
+
+const WORKSPACE_SERVER_PROGRAM = String.raw`
 import json
 import sys
 from pathlib import Path
+
 from matharc.v02.budget import BudgetLedger
 from matharc.v02.campaign import ResearchCampaign
-from matharc.v02.console_export import build_console_export
+from matharc.v02.falsification import (
+    KillTestKind, KillTestSpec, RouteEvaluationOutcome, RouteEvaluationRecord,
+    attach_kill_test_spec, record_route_evaluation,
+)
+from matharc.v02.review import (
+    ReviewerProfile, ReviewerRoster, nominate_for_review, set_reviewer_roster,
+)
+from matharc.v02.schema import (
+    ClaimRecord, ClaimStatus, ResearchRoute, RouteStatus, TheoremContract,
+    ToolCallRecord, ToolStatus,
+)
+from matharc.v02.trace import ResearchTrace, save_trace
 from matharc.v02.workspace import ResearchWorkspace
 from matharc.v02.workspace_bundle import write_full_workspace_bundle
+from matharc.v02.workspace_server import make_server
 from matharc.v02.workers import StaticProposalWorker
 
-root = Path(sys.argv[1]) / "workspace"
-write_full_workspace_bundle(root)
-workspace = ResearchWorkspace.load(root)
-campaign = ResearchCampaign(workspace.trace, [StaticProposalWorker("prover", {})], budget=BudgetLedger(wall_seconds_limit=0.0))
+root = Path(sys.argv[1])
+dashboard = Path(sys.argv[2])
+workspace_root = root / "workspace"
+review_trace_path = root / "review-trace.json"
+review_token = "browser-review-token"
+reviewer = ReviewerProfile(
+    reviewer_id="reviewer-A", name="A", affiliation="", independence_group="group-A"
+)
+
+write_full_workspace_bundle(workspace_root)
+workspace = ResearchWorkspace.load(workspace_root)
+campaign = ResearchCampaign(
+    workspace.trace, [StaticProposalWorker("prover", {})],
+    budget=BudgetLedger(wall_seconds_limit=0.0),
+)
 workspace.record_campaign_result(campaign, campaign.run())
 workspace.save()
-Path(sys.argv[2]).write_text(json.dumps(build_console_export(root)), encoding="utf-8")
+
+trace = ResearchTrace("BROWSER-REVIEW", TheoremContract("K", "p", ("C",), "s"))
+trace.add_claim(
+    ClaimRecord("C", "n + 1 = 1 + n", "all integers n", status=ClaimStatus.CANDIDATE, owner="p1")
+)
+trace.add_route(
+    ResearchRoute("R", "direct", "commute", ("m",), "kt", status=RouteStatus.ACTIVE,
+                  claim_ids=("C",), created_by="route-proposer")
+)
+spec = KillTestSpec(
+    kind=KillTestKind.ENUMERATION,
+    generator_spec={"range": [0, 10]}, discriminator_spec={"check": "commutativity"},
+    tested_scope="n in [0, 10)",
+)
+attach_kill_test_spec(trace, "R", spec)
+trace.add_tool_call(
+    ToolCallRecord(
+        call_id="TC-1", tool="enumeration", purpose="check", status=ToolStatus.PASS,
+        input_digest_sha256="a" * 64, output_digest_sha256="b" * 64,
+        linked_claim_ids=("C",), independence_group="exact:1",
+        replay_command="python -m matharc.v02 replay",
+        started_at="2026-01-01T00:00:00Z", ended_at="2026-01-01T00:00:01Z",
+    )
+)
+record_route_evaluation(
+    trace,
+    RouteEvaluationRecord(
+        evaluation_id="EVAL-1", route_id="R", route_revision=0, claim_id="C",
+        claim_revision=0, kill_test_spec_digest=spec.digest_sha256, tool_call_id="TC-1",
+        outcome=RouteEvaluationOutcome.PASS_BOUNDED, tested_scope=spec.tested_scope,
+        verifier_group="exact:1", replay_command="python -m matharc.v02 replay",
+    ),
+)
+nominate_for_review(trace, "C")
+set_reviewer_roster(trace, ReviewerRoster(roster_version="roster-1", reviewers=(reviewer,)))
+save_trace(trace, review_trace_path)
+
+server = make_server(
+    workspace_root, host="127.0.0.1", port=0, dashboard_path=dashboard,
+    sse_poll_seconds=0.02, sse_lifetime_seconds=0.35,
+    review_trace_path=review_trace_path, review_write_token=review_token,
+)
+print(json.dumps({
+    "origin": f"http://127.0.0.1:{server.server_address[1]}",
+    "workspace_root": str(workspace_root), "review_trace_path": str(review_trace_path),
+    "review_token": review_token, "reviewer_id": reviewer.reviewer_id,
+    "reviewer_profile_digest": reviewer.digest_sha256,
+}), flush=True)
+server.serve_forever(poll_interval=0.02)
 `;
-  const completed = spawnSync(process.env.PYTHON || "python3", ["-c", program, directory, output], {
-    cwd: ROOT,
-    encoding: "utf8",
-    env: { ...process.env, PYTHONPATH: [ROOT, process.env.PYTHONPATH].filter(Boolean).join(":") },
-  });
-  if (completed.status !== 0) {
-    rmSync(directory, { recursive: true, force: true });
-    fail(`could not build a real console export: ${completed.stderr || completed.stdout}`);
-  }
-  return { directory, json: readFileSync(output, "utf8") };
+
+const RECORD_CAMPAIGN_PROGRAM = String.raw`
+import json
+import sys
+from pathlib import Path
+
+from matharc.v02.budget import BudgetLedger
+from matharc.v02.campaign import ResearchCampaign
+from matharc.v02.workspace import ResearchWorkspace
+from matharc.v02.workers import StaticProposalWorker
+
+workspace = ResearchWorkspace.load(Path(sys.argv[1]))
+campaign = ResearchCampaign(
+    workspace.trace, [StaticProposalWorker("prover", {})],
+    budget=BudgetLedger(wall_seconds_limit=0.0),
+)
+workspace.record_campaign_result(campaign, campaign.run())
+workspace.save()
+print(json.dumps({"tail": workspace.events.events[-1].sequence}))
+`;
+
+const REVIEW_STATE_PROGRAM = String.raw`
+import json
+import sys
+from pathlib import Path
+
+from matharc.v02.review import reviews_for_claim
+from matharc.v02.trace import load_trace
+
+trace = load_trace(Path(sys.argv[1]))
+reviews = reviews_for_claim(trace, "C")
+print(json.dumps({
+    "review_count": len(reviews),
+    "active_review_count": sum(item.lifecycle_status.value == "ACTIVE" for item in reviews),
+    "evidence_ids": sorted(trace.evidence),
+}))
+`;
+
+function pythonEnvironment() {
+  return { ...process.env, PYTHONPATH: [ROOT, process.env.PYTHONPATH].filter(Boolean).join(":") };
 }
 
-async function startServer(exportJson) {
-  let serveExport = false;
-  const reviewPosts = [];
-  const server = createServer((request, response) => {
-    const pathname = new URL(request.url || "/", "http://localhost").pathname;
-    if (pathname === "/" || pathname === `/${basename(PAGE_PATH)}`) {
-      response.writeHead(200, { "content-type": "text/html; charset=utf-8" });
-      response.end(PAGE_SOURCE);
-      return;
-    }
-    if (pathname === "/console.json" && serveExport) {
-      response.writeHead(200, { "content-type": "application/json" });
-      response.end(exportJson);
-      return;
-    }
-    if (pathname === "/api/review" && request.method === "POST") {
-      const chunks = [];
-      request.on("data", chunk => chunks.push(chunk));
-      request.on("end", () => {
-        reviewPosts.push({ authorization: request.headers.authorization || "", body: Buffer.concat(chunks).toString("utf8") });
-        response.writeHead(201, { "content-type": "application/json" });
-        response.end(JSON.stringify({ submitted: true, evidence_id: "EV-BROWSER-REVIEW" }));
-      });
-      return;
-    }
-    response.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
-    response.end("not found");
+function runPython(program, args, label) {
+  const completed = spawnSync(PYTHON, ["-c", program, ...args], {
+    cwd: ROOT,
+    encoding: "utf8",
+    env: pythonEnvironment(),
   });
-  await new Promise(resolve => server.listen(0, "127.0.0.1", resolve));
-  const address = server.address();
-  assert(address && typeof address !== "string", "local browser fixture server did not bind");
+  if (completed.status !== 0) fail(`${label}: ${completed.stderr || completed.stdout}`);
+  try {
+    return JSON.parse(completed.stdout);
+  } catch (error) {
+    fail(`${label} emitted invalid JSON: ${completed.stdout || error.message}`);
+  }
+}
+
+function wait(milliseconds) {
+  return new Promise(resolve => setTimeout(resolve, milliseconds));
+}
+
+async function waitFor(predicate, message, timeout = 8000) {
+  const deadline = Date.now() + timeout;
+  while (Date.now() < deadline) {
+    if (await predicate()) return;
+    await wait(25);
+  }
+  fail(message);
+}
+
+async function startServer() {
+  const directory = mkdtempSync(join(tmpdir(), "matharc-console-browser-"));
+  const child = spawn(PYTHON, ["-u", "-c", WORKSPACE_SERVER_PROGRAM, directory, PAGE_PATH], {
+    cwd: ROOT,
+    env: pythonEnvironment(),
+    stdio: ["ignore", "pipe", "pipe"],
+  });
+  let stderr = "";
+  let buffer = "";
+  let settled = false;
+  let resolveReady;
+  let rejectReady;
+  const ready = new Promise((resolve, reject) => { resolveReady = resolve; rejectReady = reject; });
+  child.stderr.setEncoding("utf8");
+  child.stderr.on("data", chunk => { stderr += chunk; });
+  child.stdout.setEncoding("utf8");
+  child.stdout.on("data", chunk => {
+    buffer += chunk;
+    let newline;
+    while ((newline = buffer.indexOf("\n")) !== -1) {
+      const line = buffer.slice(0, newline).trim();
+      buffer = buffer.slice(newline + 1);
+      if (!line || settled) continue;
+      try {
+        settled = true;
+        resolveReady(JSON.parse(line));
+      } catch (error) {
+        settled = true;
+        rejectReady(new Error(`workspace fixture emitted invalid readiness JSON: ${line}; ${error.message}`));
+      }
+    }
+  });
+  child.once("error", error => {
+    if (!settled) {
+      settled = true;
+      rejectReady(error);
+    }
+  });
+  child.once("exit", (code, signal) => {
+    if (!settled) {
+      settled = true;
+      rejectReady(new Error(`workspace fixture stopped before readiness (code=${code}, signal=${signal}): ${stderr}`));
+    }
+  });
+  const details = await ready;
   return {
-    origin: `http://127.0.0.1:${address.port}`,
-    enableExport() { serveExport = true; },
-    reviewPosts() { return reviewPosts.slice(); },
-    close() { return new Promise(resolve => server.close(resolve)); },
+    ...details,
+    campaignMutation() {
+      return runPython(RECORD_CAMPAIGN_PROGRAM, [details.workspace_root], "could not record a live campaign result");
+    },
+    reviewState() {
+      return runPython(REVIEW_STATE_PROGRAM, [details.review_trace_path], "could not read review fixture state");
+    },
+    async close() {
+      if (child.exitCode === null && !child.killed) child.kill("SIGTERM");
+      await waitFor(
+        () => child.exitCode !== null || child.signalCode !== null,
+        "workspace fixture did not stop",
+        5000,
+      );
+      rmSync(directory, { recursive: true, force: true });
+    },
   };
 }
 
@@ -298,8 +450,7 @@ async function testDataBoundaryAndProvenance(page, server, exportPayload) {
     assert(await page.locator("#view-data-boundary").evaluate(node => node.dataset.source === "demo"), `${view} fallback lost its demo label`);
   }
 
-  server.enableExport();
-  const loaded = await page.evaluate(() => window.MathArcConsole.loadExport("/console.json"));
+  const loaded = await page.evaluate(() => window.MathArcConsole.loadExport("/api/console"));
   assert(loaded, "real console export was rejected by the browser bridge");
   const expected = {
     source: exportPayload.source_topic.source_claims.length,
@@ -322,37 +473,104 @@ async function testDataBoundaryAndProvenance(page, server, exportPayload) {
   }
 }
 
-async function testM2ReviewPostExtension(page, server) {
-  const result = await page.evaluate(async origin => {
-    const input = document.createElement("input");
-    input.type = "password";
-    input.value = "browser-review-token";
-    document.body.appendChild(input);
-    try {
-      const payload = await window.MathArcConsole.submitReview(`${origin}/api/review`, { review_id: "R-browser", verdict: "APPROVE" }, input);
-      const cleared = input.value === "";
-      const foreign = document.createElement("input");
-      foreign.type = "password";
-      foreign.value = "never-sent";
-      let rejectedForeign = false;
-      try {
-        await window.MathArcConsole.submitReview("https://example.test/api/review", {}, foreign);
-      } catch (error) {
-        rejectedForeign = /same-origin/.test(String(error.message));
-      }
-      return { payload, cleared, rejectedForeign };
-    } finally {
-      input.remove();
-    }
-  }, server.origin);
-  assert(result.payload && result.payload.submitted === true, "M2 review adapter did not expose the successful POST response");
-  assert(result.cleared, "M2 review adapter retained the password token after POST");
-  assert(result.rejectedForeign, "M2 review adapter accepted a cross-origin endpoint");
-  const posts = server.reviewPosts();
-  assert(posts.length === 1, `M2 review adapter sent ${posts.length} POSTs instead of exactly one`);
-  assert(posts[0].authorization === "Bearer browser-review-token", "M2 review POST omitted or changed its bearer token");
-  assert(JSON.parse(posts[0].body).review_id === "R-browser", "M2 review POST changed the submitted review record");
-  return "exercised: same-origin POST, response, token clearing, and foreign-endpoint rejection";
+async function testM1SseAndReconnect(page, server, eventCursors) {
+  const initial = await (await fetch(`${server.origin}/api/console`)).json();
+  const initialTail = initial.workspace.events.events.at(-1).sequence;
+  await waitFor(
+    () => eventCursors.includes(initialTail),
+    `M1 did not connect to /events with initial cursor ${initialTail}`,
+  );
+  const requestsBeforeMutation = eventCursors.length;
+  const refreshed = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    return url.pathname === "/api/console" && response.request().method() === "GET";
+  });
+  const mutation = server.campaignMutation();
+  assert(mutation.tail > initialTail, "M1 workspace mutation did not append a new event");
+  const refreshResponse = await refreshed;
+  assert(refreshResponse.status() === 200, "M1 event refresh did not receive a console export");
+  const refreshedPayload = await refreshResponse.json();
+  assert(
+    refreshedPayload.workspace.events.events.at(-1).sequence === mutation.tail,
+    "M1 event refresh did not load the workspace state containing the emitted event",
+  );
+  await renderCase(page, "c7", { name: "campaign-after-sse", view: "campaign" });
+  assert((await page.locator("#nowtask").innerText()).includes("真实报告"), "M1 event refresh did not render the live campaign report");
+  await waitFor(
+    () => eventCursors.slice(requestsBeforeMutation).includes(mutation.tail),
+    `M1 reconnect did not continue from event cursor ${mutation.tail}`,
+  );
+  return `emitted event ${mutation.tail}, refreshed /api/console, and reconnected with after=${mutation.tail}`;
+}
+
+async function fillReviewForm(page, server, reviewId, verdict) {
+  await page.locator("#review-id").fill(reviewId);
+  await page.locator("#reviewer-id").fill(server.reviewer_id);
+  await page.locator("#reviewer-roster-version").fill("roster-1");
+  await page.locator("#reviewer-profile-digest").fill(server.reviewer_profile_digest);
+  await page.locator("#review-policy-version").fill("policy-1");
+  await page.locator("#review-decision").selectOption("APPROVE");
+  await page.locator("#review-statement-correspondence").fill("matches");
+  const verdicts = page.locator("[data-review-verdict]");
+  const count = await verdicts.count();
+  assert(count > 0, "M2 real review bundle rendered no obligation verdict controls");
+  for (let index = 0; index < count; index += 1) await verdicts.nth(index).selectOption(verdict);
+  await page.locator("#review-token").fill(server.review_token);
+}
+
+async function testM2ReviewWorkflow(page, server) {
+  await dispatch(page, "go", { v: "admin_queue" });
+  const bundleButton = page.getByRole("button", { name: "打开送审包", exact: true });
+  await bundleButton.waitFor({ state: "visible" });
+  assert(
+    await page.locator("#view-data-boundary").evaluate(node => node.dataset.source === "live"),
+    "M2 review queue was not rendered from the same-origin review service",
+  );
+  const bundleResponse = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    return url.pathname === "/api/review-bundle/C" && response.request().method() === "GET";
+  });
+  await bundleButton.click();
+  const response = await bundleResponse;
+  assert(response.status() === 200, "M2 review bundle endpoint did not return the rendered claim bundle");
+  await page.locator("#review-id").waitFor({ state: "visible" });
+  assert((await page.locator("body").innerText()).includes("n + 1 = 1 + n"), "M2 rendered review form omitted the real bundle statement");
+
+  await fillReviewForm(page, server, "REV-BROWSER-REJECT", "GAP");
+  const rejectedPost = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    return url.pathname === "/api/review" && response.request().method() === "POST";
+  });
+  await page.getByRole("button", { name: "提交评审", exact: true }).click();
+  const rejectedResponse = await rejectedPost;
+  assert(rejectedResponse.status() === 400, "M2 APPROVE with a non-OK obligation was not rejected by the domain contract");
+  const rejectedPayload = await rejectedResponse.json();
+  assert(rejectedPayload.error === "malformed_review", "M2 rejected submission did not expose the domain validation response");
+  await page.getByText("评审未被接受。", { exact: true }).waitFor({ state: "visible" });
+  assert(await page.locator("#review-token").inputValue() === "", "M2 rejected submission retained the review token in the form");
+  const rejectedState = server.reviewState();
+  assert(rejectedState.review_count === 0 && rejectedState.evidence_ids.length === 0, "M2 rejected submission mutated the review trace");
+
+  await fillReviewForm(page, server, "REV-BROWSER-APPROVE", "OK");
+  const approvedPost = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    return url.pathname === "/api/review" && response.request().method() === "POST";
+  });
+  await page.getByRole("button", { name: "提交评审", exact: true }).click();
+  const approvedResponse = await approvedPost;
+  assert(approvedResponse.status() === 200, "M2 valid rendered review submission was not accepted");
+  const approvedPayload = await approvedResponse.json();
+  assert(approvedPayload.submitted === true && approvedPayload.evidence_id === "EV-REVIEW-REV-BROWSER-APPROVE", "M2 success response did not bind the review evidence");
+  await page.getByText("评审已提交。", { exact: true }).waitFor({ state: "visible" });
+  await waitFor(async () => (await page.locator("body").innerText()).includes("已有 1 份生效评审"), "M2 queue did not refresh after a valid review submission");
+  const approvedState = server.reviewState();
+  assert(
+    approvedState.review_count === 1
+      && approvedState.active_review_count === 1
+      && approvedState.evidence_ids.includes("EV-REVIEW-REV-BROWSER-APPROVE"),
+    "M2 valid submission did not persist the active review and evidence",
+  );
+  return "exercised real queue, bundle, rendered rejection, token clearing, and persisted approval";
 }
 
 async function main() {
@@ -362,16 +580,24 @@ async function main() {
   for (const view of declaredViews) assert(coveredViews.has(view), `declared view ${view} has no browser case`);
 
   const playwright = loadPlaywright();
-  const exportFixture = buildConsoleExport();
-  const exportPayload = JSON.parse(exportFixture.json);
-  const server = await startServer(exportFixture.json);
+  const server = await startServer();
+  const exportPayload = await (await fetch(`${server.origin}/api/console`)).json();
   const browser = await playwright.chromium.launch({ headless: true });
   const page = await browser.newPage({ viewport: { width: WIDTHS[0], height: 1080 } });
   const pageErrors = [];
+  const eventCursors = [];
   page.on("pageerror", error => pageErrors.push(error.stack || error.message));
+  page.on("request", request => {
+    const url = new URL(request.url());
+    if (url.pathname !== "/events") return;
+    const cursor = Number(url.searchParams.get("after"));
+    if (Number.isInteger(cursor)) eventCursors.push(cursor);
+  });
   try {
     await page.goto(`${server.origin}/`, { waitUntil: "domcontentloaded" });
-    await page.waitForTimeout(50);
+    await page.locator("#console-provenance").waitFor({ state: "attached" });
+    const fellBackToDemo = await page.evaluate(() => window.MathArcConsole.loadExport("/missing-console.json"));
+    assert(!fellBackToDemo, "prototype regression cases did not enter their declared demo-data baseline");
     for (const width of WIDTHS) {
       await page.setViewportSize({ width, height: 1080 });
       for (const campaignId of CAMPAIGNS) {
@@ -386,14 +612,15 @@ async function main() {
     await testStartFlow(page);
     await testTampers(page);
     await testDataBoundaryAndProvenance(page, server, exportPayload);
-    const m2 = await testM2ReviewPostExtension(page, server);
+    const m1 = await testM1SseAndReconnect(page, server, eventCursors);
+    const m2 = await testM2ReviewWorkflow(page, server);
     assert(pageErrors.length === 0, `page errors: ${pageErrors.join("\n")}`);
     console.log(`console browser gate passed: ${VIEW_CASES.length} cases x ${CAMPAIGNS.length} campaigns x ${WIDTHS.length} widths`);
-    console.log(`M2 review POST extension: ${m2}`);
+    console.log(`M1 SSE workflow: ${m1}`);
+    console.log(`M2 review workflow: ${m2}`);
   } finally {
     await browser.close();
     await server.close();
-    rmSync(exportFixture.directory, { recursive: true, force: true });
   }
 }
 
