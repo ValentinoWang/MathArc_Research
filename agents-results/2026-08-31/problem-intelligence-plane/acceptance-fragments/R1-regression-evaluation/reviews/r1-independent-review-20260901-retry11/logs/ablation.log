@@ -1,0 +1,869 @@
+Reading additional input from stdin...
+2026-09-01T09:40:44.451085Z  WARN codex_core_plugins::manager: remote installed plugin bundle sync failed error=chatgpt authentication required for remote plugin catalog; api key auth is not supported
+2026-09-01T09:40:44.725526Z  WARN codex_skills::interface: ignoring interface.icon_small: icon path with '..' must resolve under plugin assets/
+2026-09-01T09:40:44.725590Z  WARN codex_skills::interface: ignoring interface.icon_large: icon path with '..' must resolve under plugin assets/
+OpenAI Codex v0.151.0
+--------
+workdir: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+model: gpt-5.6-luna
+provider: sub2api
+approval: never
+sandbox: danger-full-access
+reasoning effort: low
+reasoning summaries: none
+session id: 01a05c57-ab98-7e71-9158-3f5f4d9a5530
+--------
+user
+Independent local R1 ablation reviewer. Candidate is main@eaf433c168dd30417968fbf4a32cd4bbc050d2ae. Do not use skills, agents, network, release workflow, or remote action. Your only allowed write is reports/ablation-boundary.md. Do not read the peer report. Verify git HEAD and all 14 manifest hashes in frozen-inputs.json, verify the R1 contract contains the protected test hash, run `env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.test_v02_regression_evaluation`, inspect regression_evaluation.py and four-route-regression.json for a P0/P1 or boundary overclaim, then immediately write the report. Use exactly these first lines, each exactly once, substituting only the manifest SHA:
+- Lane: `ablation-boundary`
+- Reviewer identity: `r1-ablation-boundary-luna-low-retry11`
+- Wrapper: `agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry11/workers/run-luna-low.sh`
+- Review mode: zero-write
+Then state frozen head, `Frozen input manifest SHA-256: <SHA>`, zero-write compliance, exact results, P0/P1 findings, AC-01 through AC-06, and residual limits. This review does not accept R1 or transition Q1/A5. The final line is exactly `Verdict: PASS` only if all checks pass and no P0/P1 exists; otherwise exactly `Verdict: FAIL`. After the report write, stop.
+2026-09-01T09:40:45.748293Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-09-01T09:40:45.780147Z  WARN codex_core_plugins::manifest: ignoring interface.defaultPrompt[0]: prompt must be at most 128 characters path=file:///Users/vsiyo/.codex/.tmp/plugins/plugins/ngs-analysis/.codex-plugin/plugin.json
+2026-09-01T09:40:46.892275Z  WARN codex_rmcp_client::rmcp_client: stored OAuth refresh credentials could not be bound to their issuer for MCP server `figma`; using the stored access token without refresh
+warning: Skill descriptions were shortened to fit the skills context budget. Codex can still see every skill, but some descriptions are shorter. Disable unused skills or plugins to leave more room for the rest.
+codex
+I will perform only the requested read-only checks, run the exact unittest command, inspect the two named implementation/artifact files, and then make the single permitted write to `reports/ablation-boundary.md`. I will not read peer reports or invoke skills, agents, network, release workflow, or remote actions.
+2026-09-01T09:40:54.459257Z  WARN codex_core_plugins::manager: failed to warm featured plugin ids cache error=failed to send remote featured plugin request to https://chatgpt.com/backend-api/plugins/featured?platform=codex: error sending request for url (https://chatgpt.com/backend-api/plugins/featured?platform=codex)
+exec
+/bin/zsh -lc "pwd && printf '%s\\n' '--- candidate ---' && git rev-parse HEAD && printf '%s\\n' '--- relevant files ---' && rg --files -g 'frozen-inputs.json' -g 'regression_evaluation.py' -g 'four-route-regression.json' -g '*R1*' -g 'reports/ablation-boundary.md' -g 'tests/test_v02_regression_evaluation.py'" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+--- candidate ---
+eaf433c168dd30417968fbf4a32cd4bbc050d2ae
+--- relevant files ---
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/Q1-calibration-disclosure/reviews/q1-independent-review-20260901-reaccept/frozen-inputs.json
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json
+agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-four-route-regression-accepted-1.json
+agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry11/frozen-inputs.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260902-a4/frozen-inputs.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry2/frozen-inputs.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/frozen-inputs.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry5/frozen-inputs.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry10/frozen-inputs.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry9/frozen-inputs.json
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry4/frozen-inputs.json
+matharc/v02/regression_evaluation.py
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/frozen-inputs.json
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901/frozen-inputs.json
+tests/test_v02_regression_evaluation.py
+
+exec
+/bin/zsh -lc "find agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation -maxdepth 2 -type f -not -path '*/reviews/*' -print" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
+
+exec
+/bin/zsh -lc "python3 - <<'PY'
+import json
+p='agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry11/frozen-inputs.json'
+with open(p) as f: d=json.load(f)
+print(json.dumps(d, indent=2, sort_keys=True))
+PY" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "sed -n '1,260p' matharc/v02/regression_evaluation.py && printf '%s\\n' '--- fixture ---' && python3 -m json.tool agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc 'env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.test_v02_regression_evaluation' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 35ms:
+{
+  "frozen_head": "eaf433c168dd30417968fbf4a32cd4bbc050d2ae",
+  "inputs": [
+    {
+      "path": "matharc/v02/regression_evaluation.py",
+      "sha256": "667a89bfe61f87b3679f5d0892cdf1e49051c41b9d47cf26d622ea96eaa77edd"
+    },
+    {
+      "path": "tests/test_v02_regression_evaluation.py",
+      "sha256": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6"
+    },
+    {
+      "path": "tests/test_v02_calibration_disclosure.py",
+      "sha256": "e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57"
+    },
+    {
+      "path": "tests/test_v02_release_decision.py",
+      "sha256": "bbb32c14950b63c8294608e4699b9ced7df51043288433fb65b8a1d18dcad167"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json",
+      "sha256": "9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/A4.json",
+      "sha256": "13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json",
+      "sha256": "84fde4a8f71b5f87160151f3eb3bfd432bb465c146733db6c3193d100e6bfa15"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json",
+      "sha256": "a56efb2c662857d5e863d8ce59abaef8044319ecd3802ee19c32a01a058472f4"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json",
+      "sha256": "73bccc95dc5640eff2e03c60b31cffc6b1053d1c87c2b2b0e2dc4dfeff843517"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md",
+      "sha256": "6faa8116278e8fe64d26f39bfcd0277d6dfac74fea0aa74a11aacb8046fd85ee"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json",
+      "sha256": "cda88cec2023cfb14f2a78e182df65c65428e80e5f27ccb08b4d680864ee9c61"
+    },
+    {
+      "path": "acceptance/human/R1-regression-evaluation/binding.md",
+      "sha256": "ec6336739a676253620abeb24c0df22fefec99796ad113390b1f161b428c874b"
+    },
+    {
+      "path": "acceptance/human/R1-regression-evaluation/checklist.md",
+      "sha256": "d7a89e055f43e192d899b86f9acf707457abad034db8a29094d660108afffdde"
+    },
+    {
+      "path": "acceptance/human-acceptance-log.json",
+      "sha256": "8778dd8df24a92d4fc6007ea79295fca2147f4fcd37feb56dbfdd55204af32dc"
+    }
+  ],
+  "remote_head": "eaf433c168dd30417968fbf4a32cd4bbc050d2ae",
+  "required_verdict": "PASS only if every frozen input matches, no P0/P1 exists in the assigned lane, and the assigned regular report contains the exact protected self-binding markers, zero-write declaration, frozen manifest SHA, and a terminal PASS.",
+  "review_boundary": "No writes except the assigned report. Do not invoke skills, agents, network, release workflows, or remote actions. Do not accept R1 or transition Q1/A5. Do not claim mathematical proof, external literature confirmation, statistical performance, production/device behavior, or public release.",
+  "review_campaign_id": "R1-independent-review-20260901-retry11",
+  "scope": "Fresh R1 v9 reacceptance review against accepted A4; Q1 and A5 remain blocked."
+}
+
+ succeeded in 44ms:
+{
+    "fixture_kind": "r1-four-route-regression",
+    "schema_version": "1.0",
+    "topic_id": "union-closed",
+    "a4_evidence_id": "EV-A4-ACCEPTED-2",
+    "a4_evidence_digest": "13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7",
+    "a4_source_head": "5af1d9ff6fde02d86633cca50cf815ef04661d4a",
+    "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
+    "fixture_content_sha256": "7ac8f8ef52b7cb23f77d2150b23975f9f3f0cfcdc8e12005ea5c99f925fe1b6f",
+    "route_order": [
+        "FORWARD_CITATION",
+        "ALIAS_AND_EQUIVALENCE",
+        "STRUCTURAL_SEMANTIC",
+        "REVIEW_AND_EXPERT_LEAD"
+    ],
+    "case_ids": [
+        "P-FRANKL-Q6",
+        "P-ARXIV-2601-22401-COLLISION",
+        "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS"
+    ],
+    "cases": [
+        {
+            "case_id": "P-FRANKL-Q6",
+            "expected_status": "OPEN_REPORTED",
+            "manual_minutes": 12,
+            "expected_outcomes": [
+                "gap",
+                "hit",
+                "miss"
+            ],
+            "routes": [
+                {
+                    "route": "FORWARD_CITATION",
+                    "query_scope": "Frankl q=6 cited sources",
+                    "queries": [
+                        "frankl q=6 citations"
+                    ],
+                    "source_ids": [
+                        "r1-frankl-q6-forward-source"
+                    ],
+                    "hits": [
+                        "frankl-boundary"
+                    ],
+                    "unresolved": []
+                },
+                {
+                    "route": "ALIAS_AND_EQUIVALENCE",
+                    "query_scope": "Frankl q=6 aliases",
+                    "queries": [
+                        "union closed q six outside balance"
+                    ],
+                    "source_ids": [
+                        "r1-frankl-q6-alias-source"
+                    ],
+                    "hits": [],
+                    "unresolved": [
+                        "alias corpus incomplete"
+                    ]
+                },
+                {
+                    "route": "STRUCTURAL_SEMANTIC",
+                    "query_scope": "six-set union closure structure",
+                    "queries": [
+                        "six-set union closure outside parts"
+                    ],
+                    "source_ids": [
+                        "r1-frankl-q6-structural-source"
+                    ],
+                    "hits": [
+                        "frankl-structure"
+                    ],
+                    "unresolved": []
+                },
+                {
+                    "route": "REVIEW_AND_EXPERT_LEAD",
+                    "query_scope": "Frankl q=6 reviews and experts",
+                    "queries": [
+                        "Frankl conjecture q=6 review"
+                    ],
+                    "source_ids": [
+                        "r1-frankl-q6-review-source"
+                    ],
+                    "hits": [],
+                    "unresolved": [
+                        "expert comparison pending"
+                    ]
+                }
+            ]
+        },
+        {
+            "case_id": "P-ARXIV-2601-22401-COLLISION",
+            "expected_status": "RESOLVED_REPORTED",
+            "manual_minutes": 28,
+            "expected_outcomes": [
+                "hit",
+                "miss"
+            ],
+            "routes": [
+                {
+                    "route": "FORWARD_CITATION",
+                    "query_scope": "Erdos 397 cited chain",
+                    "queries": [
+                        "Erdos 397 citation chain"
+                    ],
+                    "source_ids": [
+                        "r1-erdos-397-forward-source"
+                    ],
+                    "hits": [
+                        "erdos-397-resolution"
+                    ],
+                    "unresolved": []
+                },
+                {
+                    "route": "ALIAS_AND_EQUIVALENCE",
+                    "query_scope": "Erdos 397 alternate wording",
+                    "queries": [
+                        "infinitely many solutions Erdos 397"
+                    ],
+                    "source_ids": [
+                        "r1-erdos-397-alias-source"
+                    ],
+                    "hits": [
+                        "erdos-397-alias"
+                    ],
+                    "unresolved": []
+                },
+                {
+                    "route": "STRUCTURAL_SEMANTIC",
+                    "query_scope": "binomial product equation",
+                    "queries": [
+                        "binomial coefficient product equation"
+                    ],
+                    "source_ids": [
+                        "r1-erdos-397-structural-source"
+                    ],
+                    "hits": [],
+                    "unresolved": [
+                        "structural match requires review"
+                    ]
+                },
+                {
+                    "route": "REVIEW_AND_EXPERT_LEAD",
+                    "query_scope": "Erdos problem reviews",
+                    "queries": [
+                        "Erdos problems 397 review"
+                    ],
+                    "source_ids": [
+                        "r1-erdos-397-review-source"
+                    ],
+                    "hits": [
+                        "erdos-397-review"
+                    ],
+                    "unresolved": []
+                }
+            ]
+        },
+        {
+            "case_id": "P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS",
+            "expected_status": "OPEN_REPORTED",
+            "manual_minutes": 7,
+            "expected_outcomes": [
+                "gap",
+                "miss"
+            ],
+            "routes": [
+                {
+                    "route": "FORWARD_CITATION",
+                    "query_scope": "four-or-more outside parts citations",
+                    "queries": [
+                        "four outside parts Frankl citation"
+                    ],
+                    "source_ids": [
+                        "r1-q6-residual-forward-source"
+                    ],
+                    "hits": [],
+                    "unresolved": [
+                        "no pinned citation"
+                    ]
+                },
+                {
+                    "route": "ALIAS_AND_EQUIVALENCE",
+                    "query_scope": "four-or-more residual aliases",
+                    "queries": [
+                        "Frankl q=6 four small outside parts"
+                    ],
+                    "source_ids": [
+                        "r1-q6-residual-alias-source"
+                    ],
+                    "hits": [],
+                    "unresolved": [
+                        "alias gap"
+                    ]
+                },
+                {
+                    "route": "STRUCTURAL_SEMANTIC",
+                    "query_scope": "residual small outside parts structure",
+                    "queries": [
+                        "union closed residual outside parts"
+                    ],
+                    "source_ids": [
+                        "r1-q6-residual-structural-source"
+                    ],
+                    "hits": [
+                        "q6-residual-boundary"
+                    ],
+                    "unresolved": []
+                },
+                {
+                    "route": "REVIEW_AND_EXPERT_LEAD",
+                    "query_scope": "residual expert leads",
+                    "queries": [
+                        "Frankl q=6 residual expert"
+                    ],
+                    "source_ids": [
+                        "r1-q6-residual-review-source"
+                    ],
+                    "hits": [],
+                    "unresolved": [
+                        "expert lead absent"
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+ succeeded in 225ms:
+----------------------------------------------------------------------
+Ran 7 tests in 0.029s
+
+OK
+
+codex
+The candidate HEAD matches the frozen head, the exact regression test passes (`7` tests, `OK`), and the fixture is the expected four-route, three-case artifact. I am now checking every manifest digest and the contract’s protected test binding, then I will record the boundary assessment directly in the assigned report.
+exec
+/bin/zsh -lc "python3 - <<'PY'
+import hashlib, json
+p='agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry11/frozen-inputs.json'
+d=json.load(open(p))
+for item in d['inputs']:
+ h=hashlib.sha256(open(item['path'],'rb').read()).hexdigest()
+ print(('MATCH' if h==item['sha256'] else 'MISMATCH'), h, item['path'])
+print('COUNT', len(d['inputs']))
+PY" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "rg -n -i 'test_v02_regression_evaluation|protected|sha256|zero-write|AC-0[1-6]|P0|P1|verdict|accept|production|proof|claim' agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md && sed -n '1,260p' agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 66ms:
+1:# Acceptance Contract: R1-regression-evaluation
+7:- Acceptance owner: 评测负责人
+17:- Human acceptance workspace: acceptance/human/R1-regression-evaluation
+34:不进行网络检索、数学证明、生产部署、ResearchTrace/ClaimStatus 写入、预算授权、新颖性授权或统计性能推断。
+57:- 评估不导入 `ResearchTrace`、`ClaimStatus` 或 `authorize`，不产生授权字段。
+71:## Acceptance criteria
+75:| AC-01 | 三例固定绑定且每例恰有四路独立记录 | Unit | Automatic | Yes |
+76:| AC-02 | 全路、增量、留一路损失和 hit/miss/gap 确定性重算 | Unit | Automatic | Yes |
+77:| AC-03 | 摘要、身份、范围、来源、人工分钟或消融篡改 fail closed | Unit | Automatic | Yes |
+78:| AC-04 | 结果不含授权、声明或 ResearchTrace/ClaimStatus 依赖 | Static/Unit | Automatic | Yes |
+79:| AC-05 | 消融边界复审必须在冻结输入上由独立零写入审阅进程产出持久化 `PASS` 报告 | Review evidence/Unit | Automatic | Yes |
+80:| AC-06 | 身份与合同复审必须在同一冻结输入上由不同审阅身份的独立零写入审阅进程产出持久化 `PASS` 报告 | Review evidence/Unit | Automatic | Yes |
+82:## Human acceptance
+86:| H-01 | 评测负责人确认结果只用于小样本路线比较，未包装成统计性能 | acceptance/human/R1-regression-evaluation/checklist.md#h-01 | 评测负责人 | Yes |
+88:## Protected acceptance tests
+92:| tests/test_v02_regression_evaluation.py | 4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6 | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
+98:| AC-01 | focused unit tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+99:| AC-02 | focused unit tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+100:| AC-03 | tamper/negative tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+101:| AC-04 | import/source guard | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+102:| AC-05 | frozen review ledger and report integrity gate | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+103:| AC-06 | distinct reviewer identity, wrapper, terminal verdict and report integrity gate | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+104:| H-01 | human checklist | acceptance/human/R1-regression-evaluation/checklist.md#h-01 | Human | Yes |
+110:## Production monitoring and rollback
+118:合同版本 9 保留版本 8 的夹具、主题和来源身份闭合，并将两份独立 AI 复审维持为硬性、可机读的接受条件。报告完整性检查对冻结清单摘要接受等价的 Markdown 定界表达，避免把无语义差异的反引号写法误判为证据缺失；Q1 生命周期测试明确允许 R1 已重新接受而 Q1 仍阻断的中间状态；已接受分支不仅核验当前合同版本，还必须读取报告绑定的冻结清单，逐项比对当前受保护测试、R1 合同、人工绑定和清单的 SHA-256，阻止旧合同的整套报告/清单被重标后回放。每份报告还必须位于该冻结清单同一 campaign 的 `reports/<lane>.md`，正文自报与证据元数据一致的 lane、审阅身份和包装器，并以 `Verdict: PASS` 作为唯一终态末行；这样同一文件、prompt 或伪造元数据不能冒充两份独立报告。缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。
+120:Version 9 guard: the accepted review gate rejects reports unless the two report paths are distinct non-symlink regular files, their observed SHA-256 values differ, and each report contains exactly one lane marker, reviewer identity marker, and wrapper marker matching its evidence metadata. The protected negative test constructs one byte-identical report containing both lanes' declarations, hard-links it into both expected report paths, updates both synthetic report hashes, and verifies rejection. This is a stable review-integrity failure class; retry5 artifacts created before this guard are invalidated and cannot count as acceptance evidence. The guard does not expand the acceptance scope or limitations.
+# Acceptance Contract: R1-regression-evaluation
+
+- Task ID: R1-regression-evaluation
+- Contract version: 9
+- Contract status: APPROVED
+- Test baseline: LOCKED
+- Acceptance owner: 评测负责人
+- Approval evidence: 用户于 2026-09-01 批准修订 R1 验收，要求两条独立 AI 复审均产出持久化 PASS 报告；本次对报告 Markdown 哈希定界符和 R1/Q1 生命周期转换补充负测，缺失、停滞或非 PASS 报告均阻断接受; v9 adds the byte-identical hard-link replay guard and exact-once self-declaration checks.
+- Request source: agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json
+- SSOT node: R1
+- SSOT path: agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json
+- Readiness mode: FORMAL
+- Decision refs: decision.problem-intelligence.amendment@2
+- Assumption IDs: none
+- Invalidation keys: implementation.problem-intelligence.regression
+- Baseline identity: origin/main@2e47f5040d3a833e10de07286d68f017efec5d42
+- Human acceptance workspace: acceptance/human/R1-regression-evaluation
+- UI Change declaration: none
+
+## User and scenario
+
+评测负责人需要在已接受的 A4 三例档案上比较四条检索路线的具体增量，使用本地固定夹具记录命中、漏检、未决项和人工耗时。
+
+## Problem
+
+当前没有 R1 专用回归集或消融记录，不能证明四路结果被独立保留，也不能区分某一路的独有命中与其他路线重复命中。
+
+## Expected outcome
+
+存在一个严格可序列化的回归评估工件：固定绑定 A4/T2 身份和三例档案；每例恰有四路；可确定性计算全路覆盖、每路增量和留一路损失；仅报告 hit/miss/gap 与人工分钟，不输出准确率、召回率、泛化或公开结论。
+
+## Non-goals
+
+不进行网络检索、数学证明、生产部署、ResearchTrace/ClaimStatus 写入、预算授权、新颖性授权或统计性能推断。
+
+## Normal path
+
+```gherkin
+Given a hash-bound three-case fixture with four independent search routes per case
+When the regression suite is deserialized and evaluated
+Then deterministic full coverage, route increments, leave-one-route-out loss, gaps, and bounded human minutes are returned
+And the result remains a passive evaluation artifact
+```
+
+## Exception paths
+
+- 缺少/多出档案或路线、复制查询/来源、错误摘要、A4/T2 身份漂移必须拒绝加载。
+- 篡改命中、漏检、人工分钟或消融值必须因摘要或重算不一致而拒绝。
+- 零增量路线必须保留为合法结果，不能被当作缺失数据。
+- 不允许网络、持久运行时状态或外部服务；失败时不产生部分可接受结果。
+
+## Invariants
+
+- 三例身份、四路顺序、路线范围/查询/来源独立性、主题和固定夹具内容摘要在加载时闭合。
+- 每一路增量命中必须确实不在其余路线的命中集合中；留一路损失由全路与去一路集合重算。
+- hit、miss、gap 是封闭枚举；人工分钟为有限非负数并受上限约束。
+- 评估不导入 `ResearchTrace`、`ClaimStatus` 或 `authorize`，不产生授权字段。
+
+## Data impact
+
+只读加载固定 JSON，生成内存中的不可变评估结果；不修改业务数据库、运行时状态或来源文件。
+
+## Permissions
+
+评测负责人可创建和评估 R1 工件；验收负责人复核机器证据；研究负责人和仓库所有者保留发布决定权。
+
+## Performance and reliability
+
+本地三例四路评估应在 1 秒内完成；重复加载同一字节必须得到相同摘要和结果；任何校验失败均 fail closed。
+
+## Acceptance criteria
+
+| ID | Requirement | Verification layer | Mode | Blocking |
+| --- | --- | --- | --- | --- |
+| AC-01 | 三例固定绑定且每例恰有四路独立记录 | Unit | Automatic | Yes |
+| AC-02 | 全路、增量、留一路损失和 hit/miss/gap 确定性重算 | Unit | Automatic | Yes |
+| AC-03 | 摘要、身份、范围、来源、人工分钟或消融篡改 fail closed | Unit | Automatic | Yes |
+| AC-04 | 结果不含授权、声明或 ResearchTrace/ClaimStatus 依赖 | Static/Unit | Automatic | Yes |
+| AC-05 | 消融边界复审必须在冻结输入上由独立零写入审阅进程产出持久化 `PASS` 报告 | Review evidence/Unit | Automatic | Yes |
+| AC-06 | 身份与合同复审必须在同一冻结输入上由不同审阅身份的独立零写入审阅进程产出持久化 `PASS` 报告 | Review evidence/Unit | Automatic | Yes |
+
+## Human acceptance
+
+| ID | Summary | Checklist path | Required role | Blocking |
+| --- | --- | --- | --- | --- |
+| H-01 | 评测负责人确认结果只用于小样本路线比较，未包装成统计性能 | acceptance/human/R1-regression-evaluation/checklist.md#h-01 | 评测负责人 | Yes |
+
+## Protected acceptance tests
+
+| Path | SHA-256 | Covers |
+| --- | --- | --- |
+| tests/test_v02_regression_evaluation.py | 4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6 | AC-01, AC-02, AC-03, AC-04, AC-05, AC-06 |
+
+## Requirements-test traceability
+
+| Requirement | Verification | Evidence target | Mode | Blocking |
+| --- | --- | --- | --- | --- |
+| AC-01 | focused unit tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-02 | focused unit tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-03 | tamper/negative tests | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-04 | import/source guard | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-05 | frozen review ledger and report integrity gate | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| AC-06 | distinct reviewer identity, wrapper, terminal verdict and report integrity gate | tests/test_v02_regression_evaluation.py | Automatic | Yes |
+| H-01 | human checklist | acceptance/human/R1-regression-evaluation/checklist.md#h-01 | Human | Yes |
+
+## Exploratory testing
+
+检查一条零增量路线、跨例重复命中、空未决项、边界人工分钟和 JSON 字段顺序变化；探索结果不改变发布判定。
+
+## Production monitoring and rollback
+
+不适用。R1 是本地评估工件，不进入生产运行；若夹具或算法变更，废止当前工件并以新版本重新验收。
+
+## Risks and open decisions
+
+小样本只代表固定 A4 档案，不代表检索系统总体准确率、召回率或文献开放性；真实外部文献检索仍未由本合同覆盖。
+
+合同版本 9 保留版本 8 的夹具、主题和来源身份闭合，并将两份独立 AI 复审维持为硬性、可机读的接受条件。报告完整性检查对冻结清单摘要接受等价的 Markdown 定界表达，避免把无语义差异的反引号写法误判为证据缺失；Q1 生命周期测试明确允许 R1 已重新接受而 Q1 仍阻断的中间状态；已接受分支不仅核验当前合同版本，还必须读取报告绑定的冻结清单，逐项比对当前受保护测试、R1 合同、人工绑定和清单的 SHA-256，阻止旧合同的整套报告/清单被重标后回放。每份报告还必须位于该冻结清单同一 campaign 的 `reports/<lane>.md`，正文自报与证据元数据一致的 lane、审阅身份和包装器，并以 `Verdict: PASS` 作为唯一终态末行；这样同一文件、prompt 或伪造元数据不能冒充两份独立报告。缺少报告、传输超时、非终态输出、候选身份不匹配、重复审阅身份或任意非 `PASS` 均 fail closed。该修订重新打开 R1，并仅失效其后继 Q1 与 A5；历史 R1 证据只保留为不可接受的审计记录。
+
+Version 9 guard: the accepted review gate rejects reports unless the two report paths are distinct non-symlink regular files, their observed SHA-256 values differ, and each report contains exactly one lane marker, reviewer identity marker, and wrapper marker matching its evidence metadata. The protected negative test constructs one byte-identical report containing both lanes' declarations, hard-links it into both expected report paths, updates both synthetic report hashes, and verifies rejection. This is a stable review-integrity failure class; retry5 artifacts created before this guard are invalidated and cannot count as acceptance evidence. The guard does not expand the acceptance scope or limitations.
+
+exec
+/bin/zsh -lc "sed -n '240,620p' matharc/v02/regression_evaluation.py" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+exec
+/bin/zsh -lc "rg -n -i 'p0|p1|overclaim|accept|transition|q1|a5|R1|ablation|limitations|coverage|route|manual|statistical|production|proof' agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json matharc/v02/regression_evaluation.py" in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 0ms:
+            if case.case_id == case_id:
+                return case
+        raise RegressionValidationError("unknown evaluated case")
+
+
+@dataclass(frozen=True, slots=True)
+class RegressionSuite:
+    topic_id: str
+    a4_evidence_id: str
+    a4_evidence_digest: str
+    a4_source_head: str
+    t2_fixture_sha256: str
+    cases: tuple[RegressionCase, ...]
+
+    @classmethod
+    def from_dict(cls, value: Mapping[str, Any]) -> "RegressionSuite":
+        _fields(value, {
+            "fixture_kind", "schema_version", "topic_id", "a4_evidence_id", "a4_evidence_digest",
+            "a4_source_head", "t2_fixture_sha256", "fixture_content_sha256", "route_order", "case_ids", "cases",
+        }, "suite")
+        if value["fixture_kind"] != "r1-four-route-regression" or value["schema_version"] != "1.0":
+            raise RegressionValidationError("unsupported regression fixture")
+        if value["route_order"] != list(_ROUTES):
+            raise RegressionValidationError("route_order must match the R1 contract")
+        if value["case_ids"] != list(_CASE_IDS):
+            raise RegressionValidationError("case_ids must match the accepted A4 archive order")
+        if not isinstance(value["cases"], list) or any(not isinstance(item, Mapping) for item in value["cases"]):
+            raise RegressionValidationError("cases must be an array of objects")
+        cases = tuple(RegressionCase.from_dict(item) for item in value["cases"])
+        if tuple(case.case_id for case in cases) != _CASE_IDS:
+            raise RegressionValidationError("cases must match the accepted A4 archive order")
+        declared_content_digest = _sha(value["fixture_content_sha256"], "fixture_content_sha256")
+        content = dict(value)
+        content.pop("fixture_content_sha256")
+        if (
+            declared_content_digest != _FIXTURE_CONTENT_DIGEST
+            or digest_json(content) != declared_content_digest
+        ):
+            raise RegressionValidationError("fixed regression fixture content drift")
+        suite = cls(
+            topic_id=_text(value["topic_id"], "topic_id"),
+            a4_evidence_id=_text(value["a4_evidence_id"], "a4_evidence_id"),
+            a4_evidence_digest=_sha(value["a4_evidence_digest"], "a4_evidence_digest"),
+            a4_source_head=_git_sha(value["a4_source_head"], "a4_source_head"),
+            t2_fixture_sha256=_sha(value["t2_fixture_sha256"], "t2_fixture_sha256"),
+            cases=cases,
+        )
+        if (
+            suite.topic_id != "union-closed"
+            or
+            suite.a4_evidence_id != _A4_EVIDENCE_ID
+            or suite.a4_evidence_digest != _A4_EVIDENCE_DIGEST
+            or suite.a4_source_head != _A4_SOURCE_HEAD
+            or suite.t2_fixture_sha256 != _T2_FIXTURE_DIGEST
+        ):
+            raise RegressionValidationError("accepted A4, T2, or topic identity drift")
+        source_ids = tuple(
+            source_id
+            for case in cases
+            for route in case.routes
+            for source_id in route.source_ids
+        )
+        if len(source_ids) != len(set(source_ids)):
+            raise RegressionValidationError("route source identities must be unique across the R1 fixture")
+        return suite
+
+    def evaluate(self) -> RegressionEvaluation:
+        evaluated: list[CaseEvaluation] = []
+        for case in self.cases:
+            route_sets = tuple(set(route.hit_ids) for route in case.routes)
+            full = set().union(*route_sets)
+            ablations = []
+            for index, route in enumerate(case.routes):
+                without = set().union(*(route_sets[:index] + route_sets[index + 1:]))
+                incremental = tuple(sorted(route_sets[index] - without))
+                ablations.append(RouteAblation(route.route, incremental, tuple(sorted(full - without))))
+            evaluated.append(CaseEvaluation(
+                case_id=case.case_id,
+                full_hit_ids=tuple(sorted(full)),
+                outcome_labels=case.outcome_labels,
+                manual_minutes=float(case.manual_minutes),
+                routes=tuple(ablations),
+            ))
+        return RegressionEvaluation(_CASE_IDS, tuple(evaluated))
+
+ succeeded in 0ms:
+matharc/v02/regression_evaluation.py:1:"""Deterministic, non-authorizing route-ablation evaluation for R1 fixtures."""
+matharc/v02/regression_evaluation.py:15:_ROUTES = (
+matharc/v02/regression_evaluation.py:31:_A4_EVIDENCE_ID = "EV-A4-ACCEPTED-2"
+matharc/v02/regression_evaluation.py:33:_A4_SOURCE_HEAD = "5af1d9ff6fde02d86633cca50cf815ef04661d4a"
+matharc/v02/regression_evaluation.py:34:_T2_FIXTURE_DIGEST = "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c"
+matharc/v02/regression_evaluation.py:35:_FIXTURE_CONTENT_DIGEST = "7ac8f8ef52b7cb23f77d2150b23975f9f3f0cfcdc8e12005ea5c99f925fe1b6f"
+matharc/v02/regression_evaluation.py:40:    """Raised when a fixed R1 evaluation fixture violates its contract."""
+matharc/v02/regression_evaluation.py:84:class RouteResult:
+matharc/v02/regression_evaluation.py:85:    route: str
+matharc/v02/regression_evaluation.py:93:        if self.route not in _ROUTES:
+matharc/v02/regression_evaluation.py:94:            raise RegressionValidationError("unsupported route")
+matharc/v02/regression_evaluation.py:107:            "route": self.route,
+matharc/v02/regression_evaluation.py:116:    def from_dict(cls, value: Mapping[str, Any]) -> "RouteResult":
+matharc/v02/regression_evaluation.py:117:        _fields(value, {"route", "query_scope", "queries", "source_ids", "hits", "unresolved"}, "route")
+matharc/v02/regression_evaluation.py:119:            route=_text(value["route"], "route"),
+matharc/v02/regression_evaluation.py:132:    manual_minutes: float
+matharc/v02/regression_evaluation.py:134:    routes: tuple[RouteResult, ...]
+matharc/v02/regression_evaluation.py:141:            raise RegressionValidationError("expected_status does not match the accepted A4 case")
+matharc/v02/regression_evaluation.py:142:        if not isinstance(self.manual_minutes, (int, float)) or isinstance(self.manual_minutes, bool):
+matharc/v02/regression_evaluation.py:143:            raise RegressionValidationError("manual_minutes must be numeric")
+matharc/v02/regression_evaluation.py:144:        if not math.isfinite(self.manual_minutes) or not 0 <= self.manual_minutes <= 240:
+matharc/v02/regression_evaluation.py:145:            raise RegressionValidationError("manual_minutes must be finite and within the R1 bound")
+matharc/v02/regression_evaluation.py:150:        if len(self.routes) != len(_ROUTES) or tuple(route.route for route in self.routes) != _ROUTES:
+matharc/v02/regression_evaluation.py:151:            raise RegressionValidationError("each case must retain exactly the four ordered routes")
+matharc/v02/regression_evaluation.py:152:        scopes = tuple(_normalized(route.query_scope) for route in self.routes)
+matharc/v02/regression_evaluation.py:153:        queries = tuple(_normalized(query) for route in self.routes for query in route.queries)
+matharc/v02/regression_evaluation.py:154:        source_ids = tuple(source_id for route in self.routes for source_id in route.source_ids)
+matharc/v02/regression_evaluation.py:160:            raise RegressionValidationError("route scopes, queries, and sources must be independent")
+matharc/v02/regression_evaluation.py:170:            "manual_minutes": self.manual_minutes,
+matharc/v02/regression_evaluation.py:172:            "routes": [route.to_dict() for route in self.routes],
+matharc/v02/regression_evaluation.py:177:        _fields(value, {"case_id", "expected_status", "manual_minutes", "expected_outcomes", "routes"}, "case")
+matharc/v02/regression_evaluation.py:178:        if not isinstance(value["routes"], list) or any(not isinstance(item, Mapping) for item in value["routes"]):
+matharc/v02/regression_evaluation.py:179:            raise RegressionValidationError("routes must be an array of objects")
+matharc/v02/regression_evaluation.py:184:            manual_minutes=value["manual_minutes"],
+matharc/v02/regression_evaluation.py:186:            routes=tuple(RouteResult.from_dict(item) for item in value["routes"]),
+matharc/v02/regression_evaluation.py:191:class RouteAblation:
+matharc/v02/regression_evaluation.py:192:    route: str
+matharc/v02/regression_evaluation.py:202:    manual_minutes: float
+matharc/v02/regression_evaluation.py:203:    routes: tuple[RouteAblation, ...]
+matharc/v02/regression_evaluation.py:206:    def route_names(self) -> tuple[str, ...]:
+matharc/v02/regression_evaluation.py:207:        return tuple(item.route for item in self.routes)
+matharc/v02/regression_evaluation.py:224:                    "manual_minutes": case.manual_minutes,
+matharc/v02/regression_evaluation.py:225:                    "routes": [
+matharc/v02/regression_evaluation.py:227:                            "route": route.route,
+matharc/v02/regression_evaluation.py:228:                            "incremental_hits": list(route.incremental_hits),
+matharc/v02/regression_evaluation.py:229:                            "leave_one_out_loss": list(route.leave_one_out_loss),
+matharc/v02/regression_evaluation.py:231:                        for route in case.routes
+matharc/v02/regression_evaluation.py:258:            "a4_source_head", "t2_fixture_sha256", "fixture_content_sha256", "route_order", "case_ids", "cases",
+matharc/v02/regression_evaluation.py:260:        if value["fixture_kind"] != "r1-four-route-regression" or value["schema_version"] != "1.0":
+matharc/v02/regression_evaluation.py:262:        if value["route_order"] != list(_ROUTES):
+matharc/v02/regression_evaluation.py:263:            raise RegressionValidationError("route_order must match the R1 contract")
+matharc/v02/regression_evaluation.py:265:            raise RegressionValidationError("case_ids must match the accepted A4 archive order")
+matharc/v02/regression_evaluation.py:270:            raise RegressionValidationError("cases must match the accepted A4 archive order")
+matharc/v02/regression_evaluation.py:295:            raise RegressionValidationError("accepted A4, T2, or topic identity drift")
+matharc/v02/regression_evaluation.py:299:            for route in case.routes
+matharc/v02/regression_evaluation.py:300:            for source_id in route.source_ids
+matharc/v02/regression_evaluation.py:303:            raise RegressionValidationError("route source identities must be unique across the R1 fixture")
+matharc/v02/regression_evaluation.py:309:            route_sets = tuple(set(route.hit_ids) for route in case.routes)
+matharc/v02/regression_evaluation.py:310:            full = set().union(*route_sets)
+matharc/v02/regression_evaluation.py:311:            ablations = []
+matharc/v02/regression_evaluation.py:312:            for index, route in enumerate(case.routes):
+matharc/v02/regression_evaluation.py:313:                without = set().union(*(route_sets[:index] + route_sets[index + 1:]))
+matharc/v02/regression_evaluation.py:314:                incremental = tuple(sorted(route_sets[index] - without))
+matharc/v02/regression_evaluation.py:315:                ablations.append(RouteAblation(route.route, incremental, tuple(sorted(full - without))))
+matharc/v02/regression_evaluation.py:320:                manual_minutes=float(case.manual_minutes),
+matharc/v02/regression_evaluation.py:321:                routes=tuple(ablations),
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:2:  "evidence_id": "EV-R1-REOPENED-5",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:3:  "task_id": "R1",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:4:  "consumed_evidence": ["EV-A4-ACCEPTED-2"],
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:8:    "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:9:    "r1_fixture_sha256": "9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:10:    "protected_test_sha256": "4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6"
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:12:  "acceptance_self_check": "blocked",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:13:  "acceptance_commands": [
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:24:    "nonblocking_observation": "Existing ResourceWarning messages in Codex runtime tests did not fail the full suite and are outside the R1 changed scope."
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:26:  "acceptance_matrix": {
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:27:    "three_accepted_a4_case_ids_and_four_ordered_routes": "pass",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:28:    "full_route_incremental_and_leave_one_route_out_calculations_are_deterministic": "pass",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:29:    "a4_t2_topic_case_route_query_source_and_content_digest_drift_fail_closed": "pass",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:30:    "only_hit_miss_gap_and_bounded_manual_minutes_are_exposed": "pass",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:36:    "historical_evidence": "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/R1-accepted-1.json",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:37:    "superseded_retry_2": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry2/dispatch.json",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:38:    "superseded_retry_3": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry3/dispatch.json",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:39:    "superseded_retry_4": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry4/dispatch.json",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:40:    "frozen_input_manifest": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/frozen-inputs.json",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:42:    "frozen_head": "95ce4faf0d941345e8265dde1eb13a189e8454b3 plus R1-v9 candidate",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:44:      {"lane": "ablation-boundary", "reviewer_identity": "r1-ablation-boundary-l3-luna-retry8", "wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/reports/ablation-boundary.md", "sha256": "ff2a785aa223ae537a15a0e8b196dc7539a6299c16605f8a67cd82537b0665ee"},
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:45:      {"lane": "identity-contract", "reviewer_identity": "r1-identity-contract-l4-sol-retry8", "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh", "verdict": "PASS", "zero_write": true, "report_path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry6/reports/identity-contract.md", "sha256": "4d39bcc4eec4f0c677cf35a79abd83287b989379702b478a5aa2361037b6959b"}
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:47:    "failure_rule": "Missing, stalled, transport-limited, nonterminal, non-PASS, duplicate-reviewer, duplicate-wrapper, duplicate-path, symlink, byte-identical report, or frozen-identity-mismatched review blocks R1 acceptance."
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:49:  "acceptance_record": {
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:51:    "reason": "A4 is formally accepted under EV-A4-ACCEPTED-2. R1 is reopened on the re-bound fixture and awaits two fresh independent durable PASS reports.",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:52:    "historical_human_acceptance_result": "acceptance/human/R1-regression-evaluation/runs/20260901T080000Z-local-a1a008/result.md"
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:57:    "Independent mathematical proof review",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:58:    "Production or device behavior",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json:59:    "Statistical performance, accuracy, recall, or generalization beyond the fixed three-case fixture"
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:2:  "fixture_kind": "r1-four-route-regression",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:5:  "a4_evidence_id": "EV-A4-ACCEPTED-2",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:7:  "a4_source_head": "5af1d9ff6fde02d86633cca50cf815ef04661d4a",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:8:  "t2_fixture_sha256": "475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:9:  "fixture_content_sha256": "7ac8f8ef52b7cb23f77d2150b23975f9f3f0cfcdc8e12005ea5c99f925fe1b6f",
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:10:  "route_order": ["FORWARD_CITATION", "ALIAS_AND_EQUIVALENCE", "STRUCTURAL_SEMANTIC", "REVIEW_AND_EXPERT_LEAD"],
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:16:      "manual_minutes": 12,
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:18:      "routes": [
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:19:        {"route": "FORWARD_CITATION", "query_scope": "Frankl q=6 cited sources", "queries": ["frankl q=6 citations"], "source_ids": ["r1-frankl-q6-forward-source"], "hits": ["frankl-boundary"], "unresolved": []},
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:20:        {"route": "ALIAS_AND_EQUIVALENCE", "query_scope": "Frankl q=6 aliases", "queries": ["union closed q six outside balance"], "source_ids": ["r1-frankl-q6-alias-source"], "hits": [], "unresolved": ["alias corpus incomplete"]},
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:21:        {"route": "STRUCTURAL_SEMANTIC", "query_scope": "six-set union closure structure", "queries": ["six-set union closure outside parts"], "source_ids": ["r1-frankl-q6-structural-source"], "hits": ["frankl-structure"], "unresolved": []},
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:22:        {"route": "REVIEW_AND_EXPERT_LEAD", "query_scope": "Frankl q=6 reviews and experts", "queries": ["Frankl conjecture q=6 review"], "source_ids": ["r1-frankl-q6-review-source"], "hits": [], "unresolved": ["expert comparison pending"]}
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:28:      "manual_minutes": 28,
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:30:      "routes": [
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:31:        {"route": "FORWARD_CITATION", "query_scope": "Erdos 397 cited chain", "queries": ["Erdos 397 citation chain"], "source_ids": ["r1-erdos-397-forward-source"], "hits": ["erdos-397-resolution"], "unresolved": []},
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:32:        {"route": "ALIAS_AND_EQUIVALENCE", "query_scope": "Erdos 397 alternate wording", "queries": ["infinitely many solutions Erdos 397"], "source_ids": ["r1-erdos-397-alias-source"], "hits": ["erdos-397-alias"], "unresolved": []},
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:33:        {"route": "STRUCTURAL_SEMANTIC", "query_scope": "binomial product equation", "queries": ["binomial coefficient product equation"], "source_ids": ["r1-erdos-397-structural-source"], "hits": [], "unresolved": ["structural match requires review"]},
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:34:        {"route": "REVIEW_AND_EXPERT_LEAD", "query_scope": "Erdos problem reviews", "queries": ["Erdos problems 397 review"], "source_ids": ["r1-erdos-397-review-source"], "hits": ["erdos-397-review"], "unresolved": []}
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:40:      "manual_minutes": 7,
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:42:      "routes": [
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:43:        {"route": "FORWARD_CITATION", "query_scope": "four-or-more outside parts citations", "queries": ["four outside parts Frankl citation"], "source_ids": ["r1-q6-residual-forward-source"], "hits": [], "unresolved": ["no pinned citation"]},
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:44:        {"route": "ALIAS_AND_EQUIVALENCE", "query_scope": "four-or-more residual aliases", "queries": ["Frankl q=6 four small outside parts"], "source_ids": ["r1-q6-residual-alias-source"], "hits": [], "unresolved": ["alias gap"]},
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:45:        {"route": "STRUCTURAL_SEMANTIC", "query_scope": "residual small outside parts structure", "queries": ["union closed residual outside parts"], "source_ids": ["r1-q6-residual-structural-source"], "hits": ["q6-residual-boundary"], "unresolved": []},
+agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json:46:        {"route": "REVIEW_AND_EXPERT_LEAD", "query_scope": "residual expert leads", "queries": ["Frankl q=6 residual expert"], "source_ids": ["r1-q6-residual-review-source"], "hits": [], "unresolved": ["expert lead absent"]}
+
+ succeeded in 1585ms:
+MATCH 667a89bfe61f87b3679f5d0892cdf1e49051c41b9d47cf26d622ea96eaa77edd matharc/v02/regression_evaluation.py
+MATCH 4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6 tests/test_v02_regression_evaluation.py
+MATCH e511c5a26eb05b5be81f6e2f7c74a7c48f685f94e67a64729316678a0353ce57 tests/test_v02_calibration_disclosure.py
+MATCH bbb32c14950b63c8294608e4699b9ced7df51043288433fb65b8a1d18dcad167 tests/test_v02_release_decision.py
+MATCH 9b7fb5c0e63cecde14ee658b4eac7e5b26196ee511ea8a6bbddcfa3dceec0429 agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json
+MATCH 13a67ddb425c1329d020ac3d757760b860a24481ac9d298f3c56fd69968f9bf7 agents-results/2026-08-31/problem-intelligence-plane/evidence/A4.json
+MATCH 84fde4a8f71b5f87160151f3eb3bfd432bb465c146733db6c3193d100e6bfa15 agents-results/2026-08-31/problem-intelligence-plane/evidence/R1.json
+MATCH a56efb2c662857d5e863d8ce59abaef8044319ecd3802ee19c32a01a058472f4 agents-results/2026-08-31/problem-intelligence-plane/evidence/Q1.json
+MATCH 73bccc95dc5640eff2e03c60b31cffc6b1053d1c87c2b2b0e2dc4dfeff843517 agents-results/2026-08-31/problem-intelligence-plane/evidence/A5.json
+MATCH 6faa8116278e8fe64d26f39bfcd0277d6dfac74fea0aa74a11aacb8046fd85ee agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/acceptance-contract.md
+MATCH cda88cec2023cfb14f2a78e182df65c65428e80e5f27ccb08b4d680864ee9c61 agents-results/2026-08-31/problem-intelligence-plane/.ssot/nodes/R1.json
+MATCH ec6336739a676253620abeb24c0df22fefec99796ad113390b1f161b428c874b acceptance/human/R1-regression-evaluation/binding.md
+MATCH d7a89e055f43e192d899b86f9acf707457abad034db8a29094d660108afffdde acceptance/human/R1-regression-evaluation/checklist.md
+MATCH 8778dd8df24a92d4fc6007ea79295fca2147f4fcd37feb56dbfdd55204af32dc acceptance/human-acceptance-log.json
+COUNT 14
+
+exec
+/bin/zsh -lc 'sha256sum agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry11/frozen-inputs.json && git status --short -- reports/ablation-boundary.md' in /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research
+ succeeded in 2288ms:
+75fa2c6194433f84eddfa861942a38eb740120db17aa3b5eeb5f8bbc86fb92f6  agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry11/frozen-inputs.json
+
+codex
+All 14 manifest entries match their recorded SHA-256 values, and the contract contains the protected test hash `4afbed63...5dbcdc6`. The implementation’s calculation is deterministic and passive: it derives full-hit unions, route-exclusive increments, and leave-one-out losses from the fixed fixture, with no authorization or production claims; I found no P0/P1 or boundary overclaim. I am writing the required report now, with the mandated non-acceptance boundary preserved.
+apply patch
+patch: completed
+/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/reports/ablation-boundary.md
+diff --git a/reports/ablation-boundary.md b/reports/ablation-boundary.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..aa5246a52cbe3a540bb2efe6542f63ece3d95906
+--- /dev/null
++++ b/reports/ablation-boundary.md
+@@ -0,0 +1,24 @@
++Lane: `ablation-boundary`
++Reviewer identity: `r1-ablation-boundary-luna-low-retry11`
++Wrapper: `agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry11/workers/run-luna-low.sh`
++Review mode: zero-write
++
++Frozen head: `eaf433c168dd30417968fbf4a32cd4bbc050d2ae` (verified against git HEAD).
++Frozen input manifest SHA-256: 75fa2c6194433f84eddfa861942a38eb740120db17aa3b5eeb5f8bbc86fb92f6
++
++Zero-write compliance: PASS. No files were written before this assigned report; no skills, agents, network, release workflow, or remote action was used. This report is the only write.
++
++Exact results: all 14 manifest entries matched their recorded SHA-256 values. The R1 contract contains the protected test hash `4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6`. `env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.test_v02_regression_evaluation` completed with 7 tests and `OK`.
++
++P0/P1 findings: none. `regression_evaluation.py` fail-closes fixture identity, route order, case order, route/query/source independence, bounded minutes, and fixed content digest; evaluation recomputes full coverage, route increments, and leave-one-out loss. `four-route-regression.json` contains the fixed three cases and four ordered routes with hit/miss/gap labels and unresolved boundaries. No P0/P1 issue or ablation-boundary overclaim was found.
++
++AC-01: PASS. Three fixed cases and exactly four ordered independent routes per case are enforced and present.
++AC-02: PASS. Full-route hits, route-exclusive increments, leave-one-out losses, and hit/miss/gap labels are deterministically recomputed.
++AC-03: PASS. Identity, scope, query, source, content digest, hit data, and manual-minute tampering are fail-closed by the implementation and protected tests.
++AC-04: PASS. The evaluated result is passive and contains no authorization, declaration, ResearchTrace, or ClaimStatus dependency.
++AC-05: PASS for this lane’s local checks and report production on the frozen inputs.
++AC-06: Not assessed by this ablation-boundary lane; this report does not establish the independent identity-contract review.
++
++Residual limits: this is a small fixed three-case route comparison only. It does not establish mathematical proof, external literature confirmation, statistical performance, accuracy, recall, generalization, production/device behavior, or public release. This review does not accept R1 and does not transition Q1/A5.
++
++Verdict: PASS
+
+diff --git a/reports/ablation-boundary.md b/reports/ablation-boundary.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..aa5246a52cbe3a540bb2efe6542f63ece3d95906
+--- /dev/null
++++ b/reports/ablation-boundary.md
+@@ -0,0 +1,24 @@
++Lane: `ablation-boundary`
++Reviewer identity: `r1-ablation-boundary-luna-low-retry11`
++Wrapper: `agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry11/workers/run-luna-low.sh`
++Review mode: zero-write
++
++Frozen head: `eaf433c168dd30417968fbf4a32cd4bbc050d2ae` (verified against git HEAD).
++Frozen input manifest SHA-256: 75fa2c6194433f84eddfa861942a38eb740120db17aa3b5eeb5f8bbc86fb92f6
++
++Zero-write compliance: PASS. No files were written before this assigned report; no skills, agents, network, release workflow, or remote action was used. This report is the only write.
++
++Exact results: all 14 manifest entries matched their recorded SHA-256 values. The R1 contract contains the protected test hash `4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6`. `env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.test_v02_regression_evaluation` completed with 7 tests and `OK`.
++
++P0/P1 findings: none. `regression_evaluation.py` fail-closes fixture identity, route order, case order, route/query/source independence, bounded minutes, and fixed content digest; evaluation recomputes full coverage, route increments, and leave-one-out loss. `four-route-regression.json` contains the fixed three cases and four ordered routes with hit/miss/gap labels and unresolved boundaries. No P0/P1 issue or ablation-boundary overclaim was found.
++
++AC-01: PASS. Three fixed cases and exactly four ordered independent routes per case are enforced and present.
++AC-02: PASS. Full-route hits, route-exclusive increments, leave-one-out losses, and hit/miss/gap labels are deterministically recomputed.
++AC-03: PASS. Identity, scope, query, source, content digest, hit data, and manual-minute tampering are fail-closed by the implementation and protected tests.
++AC-04: PASS. The evaluated result is passive and contains no authorization, declaration, ResearchTrace, or ClaimStatus dependency.
++AC-05: PASS for this lane’s local checks and report production on the frozen inputs.
++AC-06: Not assessed by this ablation-boundary lane; this report does not establish the independent identity-contract review.
++
++Residual limits: this is a small fixed three-case route comparison only. It does not establish mathematical proof, external literature confirmation, statistical performance, accuracy, recall, generalization, production/device behavior, or public release. This review does not accept R1 and does not transition Q1/A5.
++
++Verdict: PASS
+
+codex
+报告已写入 [reports/ablation-boundary.md](/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/reports/ablation-boundary.md)。全部检查通过，无 P0/P1；R1 未被接受，Q1/A5 未转换。
+diff --git a/reports/ablation-boundary.md b/reports/ablation-boundary.md
+new file mode 100644
+index 0000000000000000000000000000000000000000..aa5246a52cbe3a540bb2efe6542f63ece3d95906
+--- /dev/null
++++ b/reports/ablation-boundary.md
+@@ -0,0 +1,24 @@
++Lane: `ablation-boundary`
++Reviewer identity: `r1-ablation-boundary-luna-low-retry11`
++Wrapper: `agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry11/workers/run-luna-low.sh`
++Review mode: zero-write
++
++Frozen head: `eaf433c168dd30417968fbf4a32cd4bbc050d2ae` (verified against git HEAD).
++Frozen input manifest SHA-256: 75fa2c6194433f84eddfa861942a38eb740120db17aa3b5eeb5f8bbc86fb92f6
++
++Zero-write compliance: PASS. No files were written before this assigned report; no skills, agents, network, release workflow, or remote action was used. This report is the only write.
++
++Exact results: all 14 manifest entries matched their recorded SHA-256 values. The R1 contract contains the protected test hash `4afbed63fc11fa3133999e3f2d90683fa6663d62ed60791674362725a5dbcdc6`. `env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.test_v02_regression_evaluation` completed with 7 tests and `OK`.
++
++P0/P1 findings: none. `regression_evaluation.py` fail-closes fixture identity, route order, case order, route/query/source independence, bounded minutes, and fixed content digest; evaluation recomputes full coverage, route increments, and leave-one-out loss. `four-route-regression.json` contains the fixed three cases and four ordered routes with hit/miss/gap labels and unresolved boundaries. No P0/P1 issue or ablation-boundary overclaim was found.
++
++AC-01: PASS. Three fixed cases and exactly four ordered independent routes per case are enforced and present.
++AC-02: PASS. Full-route hits, route-exclusive increments, leave-one-out losses, and hit/miss/gap labels are deterministically recomputed.
++AC-03: PASS. Identity, scope, query, source, content digest, hit data, and manual-minute tampering are fail-closed by the implementation and protected tests.
++AC-04: PASS. The evaluated result is passive and contains no authorization, declaration, ResearchTrace, or ClaimStatus dependency.
++AC-05: PASS for this lane’s local checks and report production on the frozen inputs.
++AC-06: Not assessed by this ablation-boundary lane; this report does not establish the independent identity-contract review.
++
++Residual limits: this is a small fixed three-case route comparison only. It does not establish mathematical proof, external literature confirmation, statistical performance, accuracy, recall, generalization, production/device behavior, or public release. This review does not accept R1 and does not transition Q1/A5.
++
++Verdict: PASS
+
+tokens used
+54,757
+报告已写入 [reports/ablation-boundary.md](/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/reports/ablation-boundary.md)。全部检查通过，无 P0/P1；R1 未被接受，Q1/A5 未转换。

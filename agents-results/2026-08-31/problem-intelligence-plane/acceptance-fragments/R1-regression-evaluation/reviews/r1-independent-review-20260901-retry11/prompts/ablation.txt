@@ -1,0 +1,6 @@
+Independent local R1 ablation reviewer. Candidate is main@eaf433c168dd30417968fbf4a32cd4bbc050d2ae. Do not use skills, agents, network, release workflow, or remote action. Your only allowed write is reports/ablation-boundary.md. Do not read the peer report. Verify git HEAD and all 14 manifest hashes in frozen-inputs.json, verify the R1 contract contains the protected test hash, run `env PYTHONDONTWRITEBYTECODE=1 python3 -m unittest -q tests.test_v02_regression_evaluation`, inspect regression_evaluation.py and four-route-regression.json for a P0/P1 or boundary overclaim, then immediately write the report. Use exactly these first lines, each exactly once, substituting only the manifest SHA:
+- Lane: `ablation-boundary`
+- Reviewer identity: `r1-ablation-boundary-luna-low-retry11`
+- Wrapper: `agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/R1-regression-evaluation/reviews/r1-independent-review-20260901-retry11/workers/run-luna-low.sh`
+- Review mode: zero-write
+Then state frozen head, `Frozen input manifest SHA-256: <SHA>`, zero-write compliance, exact results, P0/P1 findings, AC-01 through AC-06, and residual limits. This review does not accept R1 or transition Q1/A5. The final line is exactly `Verdict: PASS` only if all checks pass and no P0/P1 exists; otherwise exactly `Verdict: FAIL`. After the report write, stop.
