@@ -38,9 +38,9 @@ from .schema import canonical_json, digest_json
 from .source_observation import ObservationStatus, SourceObservation
 
 _SCHEMA_VERSION = "1.0"
-_STATE_SCHEMA_VERSION = "1.7"
-_STATE_RECOVERY_CONTRACT = "topic-observation-state-recovery-v5"
-_LEGACY_STATE_SCHEMA_VERSIONS = {"1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6"}
+_STATE_SCHEMA_VERSION = "1.8"
+_STATE_RECOVERY_CONTRACT = "topic-observation-state-recovery-v6"
+_LEGACY_STATE_SCHEMA_VERSIONS = {"1.0", "1.1", "1.2", "1.3", "1.4", "1.5", "1.6", "1.7"}
 _STATE_AUTH_SCHEMA_VERSION = "1.0"
 _STATE_AUTH_DOMAIN = b"matharc.topic-observation.state-auth.v1\x00"
 _SIGNING_KEY_BYTES = 32
@@ -707,7 +707,12 @@ class TopicObservationRunner:
                     reason=ManualReviewReason.CURSOR_CONFLICT,
                     detail="A cursor was replayed with different batch content.",
                 )
-                self._record_manual_event(state, manual)
+                self._record_manual_event(
+                    state,
+                    manual,
+                    conflict_kind="REPLAY_DIFFERENT_CONTENT",
+                    expected_cursor=None,
+                )
                 transaction = self._begin_transaction()
                 self._active_transaction = transaction
                 try:
@@ -726,7 +731,12 @@ class TopicObservationRunner:
                     reason=ManualReviewReason.CURSOR_CONFLICT,
                     detail=f"Expected cursor {state['next_cursor']!r}, received {batch.cursor!r}.",
                 )
-                self._record_manual_event(state, manual)
+                self._record_manual_event(
+                    state,
+                    manual,
+                    conflict_kind="EXPECTED_CURSOR",
+                    expected_cursor=state["next_cursor"],
+                )
                 transaction = self._begin_transaction()
                 self._active_transaction = transaction
                 try:
@@ -864,18 +874,24 @@ class TopicObservationRunner:
                 manual_reason=ManualReviewReason.HIGH_RISK_EVENT,
             )
         if self.budget is not None and self.budget.exhausted():
+            persisted = self._persisted_observation_for_input(item)
             manual = self._add_manual(
                 state, cursor=batch.cursor, input_id=item.input_id,
                 reason=ManualReviewReason.BUDGET_EXHAUSTED,
                 detail="The configured import budget is exhausted before topic observation.",
             )
             state["processed_input_ids"][item.input_id] = item.fingerprint_sha256
-            result = TopicItemResult(item.input_id, TopicItemStatus.MANUAL_REVIEW, item.observation.observation_id, manual.manual_id)
+            result = TopicItemResult(
+                item.input_id,
+                TopicItemStatus.MANUAL_REVIEW,
+                persisted.observation_id if persisted is not None else item.observation.observation_id,
+                manual.manual_id,
+            )
             return result, self._item_evidence(
                 item,
                 result,
                 "MANUAL_QUEUE",
-                persisted=self._persisted_observation_for_input(item),
+                persisted=persisted,
                 manual_id=manual.manual_id,
                 manual_reason=ManualReviewReason.BUDGET_EXHAUSTED,
             )
@@ -945,7 +961,10 @@ class TopicObservationRunner:
                 item,
                 result,
                 "MANUAL_QUEUE",
-                persisted=self._persisted_observation_for_input(item),
+                persisted=self._persisted_observation_for_input(
+                    item,
+                    allow_observation_id_conflict=True,
+                ),
                 manual_id=manual.manual_id,
                 manual_reason=ManualReviewReason.LITERATURE_IMPORT_FAILURE,
                 import_disposition=imported.disposition,
@@ -1033,28 +1052,36 @@ class TopicObservationRunner:
     def _persisted_observation_for_input(
         self,
         item: TopicObservationInput,
+        *,
+        allow_observation_id_conflict: bool = False,
     ) -> SourceObservation | None:
-        candidates = [
-            observation
-            for observation in self.literature.observations
-            if observation.observation_id == item.observation.observation_id
-            or observation.idempotency_key == item.observation.idempotency_key
-        ]
-        if not candidates:
-            return None
-        status_order = {
-            ObservationStatus.OBSERVED: 0,
-            ObservationStatus.PENDING: 1,
-            ObservationStatus.CONFLICT: 2,
-            ObservationStatus.REJECTED: 3,
-        }
-        return min(
-            candidates,
-            key=lambda observation: (
-                status_order[observation.status],
-                observation.observation_id,
+        by_id = next(
+            (
+                observation
+                for observation in self.literature.observations
+                if observation.observation_id == item.observation.observation_id
             ),
+            None,
         )
+        by_key = next(
+            (
+                observation
+                for observation in self.literature.observations
+                if observation.idempotency_key == item.observation.idempotency_key
+            ),
+            None,
+        )
+        if by_id is not None and by_id.idempotency_key != item.observation.idempotency_key:
+            if allow_observation_id_conflict and by_key is None:
+                return by_id
+            raise TopicObservationError(
+                "persisted observation id and idempotency key identify different records"
+            )
+        if by_id is not None and by_key is not None and by_id.observation_id != by_key.observation_id:
+            raise TopicObservationError(
+                "persisted observation id and idempotency key identify different records"
+            )
+        return by_id if by_id is not None else by_key
 
     @staticmethod
     def _prior_input_cursor(
@@ -1074,6 +1101,9 @@ class TopicObservationRunner:
     def _record_manual_event(
         state: dict[str, Any],
         manual: ManualReviewItem,
+        *,
+        conflict_kind: str,
+        expected_cursor: str | None,
     ) -> None:
         existing = {item["manual_id"] for item in state["manual_events"]}
         if manual.manual_id not in existing:
@@ -1081,6 +1111,8 @@ class TopicObservationRunner:
                 {
                     "event_type": "CURSOR_CONFLICT",
                     "manual_id": manual.manual_id,
+                    "conflict_kind": conflict_kind,
+                    "expected_cursor": expected_cursor,
                 }
             )
             state["manual_events"].sort(key=lambda item: item["manual_id"])
@@ -1130,12 +1162,14 @@ class TopicObservationRunner:
             if descriptor != -1:
                 os.close(descriptor)
             raise
+        owner_pid = os.getpid()
         with lock_file:
             fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
             try:
                 yield
             finally:
-                fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+                if os.getpid() == owner_pid:
+                    fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
 
     @contextmanager
     def _storage_lock(self) -> Iterator[None]:
@@ -1458,8 +1492,14 @@ class TopicObservationRunner:
         try:
             root_metadata = literature_root.lstat()
         except FileNotFoundError:
-            literature_root.mkdir(parents=True, exist_ok=True)
-            root_metadata = literature_root.lstat()
+            try:
+                literature_root.mkdir()
+                _fsync_directory(self.root)
+                root_metadata = literature_root.lstat()
+            except OSError as exc:
+                raise TopicObservationError(
+                    "could not durably create topic observation literature root"
+                ) from exc
         except OSError as exc:
             raise TopicObservationError("topic observation literature root is unreadable") from exc
         if stat.S_ISLNK(root_metadata.st_mode) or not stat.S_ISDIR(root_metadata.st_mode):
@@ -1485,8 +1525,14 @@ class TopicObservationRunner:
                 try:
                     metadata = parent_path.lstat()
                 except FileNotFoundError:
-                    parent_path.mkdir()
-                    metadata = parent_path.lstat()
+                    try:
+                        parent_path.mkdir()
+                        _fsync_directory(parent_path.parent)
+                        metadata = parent_path.lstat()
+                    except OSError as exc:
+                        raise TopicObservationError(
+                            "could not durably create topic observation literature parent"
+                        ) from exc
                 except OSError as exc:
                     raise TopicObservationError(
                         "topic observation literature parent is unreadable"
@@ -1499,8 +1545,18 @@ class TopicObservationRunner:
                 file_snapshot,
                 "topic observation literature transaction",
             )
-            _atomic_write_bytes(path, content, mode)
-        _fsync_directory(literature_root)
+            try:
+                _atomic_write_bytes(path, content, mode)
+            except OSError as exc:
+                raise TopicObservationError(
+                    "could not durably restore topic observation literature file"
+                ) from exc
+        try:
+            _fsync_directory(literature_root)
+        except OSError as exc:
+            raise TopicObservationError(
+                "could not durably restore topic observation literature root"
+            ) from exc
 
     def _recover_transaction_files(self) -> bool:
         payload = self._read_transaction()
@@ -1625,10 +1681,48 @@ class TopicObservationRunner:
                     journal_bytes,
                     journal_mode,
                 )
-            except OSError:
-                pass
+            except OSError as restore_exc:
+                self._restore_transaction_fence_fallback(journal_bytes, journal_mode)
+                raise TopicObservationError(
+                    "could not durably remove or normally restore retired topic observation transaction journal"
+                ) from restore_exc
             raise TopicObservationError(
                 "could not durably remove retired topic observation transaction journal"
+            ) from exc
+
+    def _restore_transaction_fence_fallback(
+        self,
+        journal_bytes: bytes,
+        journal_mode: int,
+    ) -> None:
+        """Keep external writers fenced when normal retired-marker restoration fails."""
+
+        flags = os.O_WRONLY | os.O_CREAT | os.O_EXCL | getattr(os, "O_NOFOLLOW", 0)
+        try:
+            descriptor = os.open(self.retired_transaction_path, flags, journal_mode)
+        except FileExistsError:
+            return
+        except OSError as exc:
+            raise TopicObservationError(
+                "could not restore retired topic observation transaction fence"
+            ) from exc
+        try:
+            view = memoryview(journal_bytes)
+            while view:
+                written = os.write(descriptor, view)
+                if written <= 0:
+                    raise OSError("short write while restoring transaction fence")
+                view = view[written:]
+            os.fsync(descriptor)
+        finally:
+            os.close(descriptor)
+        try:
+            _fsync_directory(self.root)
+        except OSError as exc:
+            # The marker remains visible in this runtime, and a crash can only
+            # preserve either this restored marker or the failed prior unlink.
+            raise TopicObservationError(
+                "could not durably restore retired topic observation transaction fence"
             ) from exc
 
     def _literature_snapshot_payload(self) -> dict[str, Any]:
@@ -1760,40 +1854,52 @@ class TopicObservationRunner:
             "manual_events": [],
         }
 
-    def _load_state(self) -> dict[str, Any]:
-        state_result = _read_verified_file(
-            self.state_path,
-            label="topic observation state",
-            expected_mode=_PRIVATE_FILE_MODE,
-            missing_ok=True,
-        )
-        if state_result is None:
-            if _read_verified_file(
-                self.authentication_path,
-                label="topic observation authentication state",
+    def _load_state(
+        self,
+        *,
+        candidate_payload: Mapping[str, Any] | None = None,
+        candidate_state_bytes: bytes | None = None,
+        verify_authentication: bool = True,
+    ) -> dict[str, Any]:
+        if candidate_payload is None:
+            state_result = _read_verified_file(
+                self.state_path,
+                label="topic observation state",
                 expected_mode=_PRIVATE_FILE_MODE,
                 missing_ok=True,
-            ) is not None:
-                raise TopicObservationError(
-                    "topic observation authentication state exists without a topic state"
-                )
-            if _read_verified_file(
-                self.signing_key_path,
-                label="topic observation signing key",
-                expected_mode=_PRIVATE_FILE_MODE,
-                missing_ok=True,
-            ) is not None:
-                raise TopicObservationError(
-                    "topic observation authentication state is missing"
-                )
-            return self._new_state()
-        state_bytes, _ = state_result
-        try:
-            payload = json.loads(state_bytes.decode("utf-8"))
-        except (UnicodeDecodeError, json.JSONDecodeError) as exc:
-            raise TopicObservationError("topic observation state is unreadable") from exc
-        if not isinstance(payload, dict):
-            raise TopicObservationError("topic observation state must be an object")
+            )
+            if state_result is None:
+                if _read_verified_file(
+                    self.authentication_path,
+                    label="topic observation authentication state",
+                    expected_mode=_PRIVATE_FILE_MODE,
+                    missing_ok=True,
+                ) is not None:
+                    raise TopicObservationError(
+                        "topic observation authentication state exists without a topic state"
+                    )
+                if _read_verified_file(
+                    self.signing_key_path,
+                    label="topic observation signing key",
+                    expected_mode=_PRIVATE_FILE_MODE,
+                    missing_ok=True,
+                ) is not None:
+                    raise TopicObservationError(
+                        "topic observation authentication state is missing"
+                    )
+                return self._new_state()
+            state_bytes, _ = state_result
+            try:
+                payload = json.loads(state_bytes.decode("utf-8"))
+            except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+                raise TopicObservationError("topic observation state is unreadable") from exc
+            if not isinstance(payload, dict):
+                raise TopicObservationError("topic observation state must be an object")
+        else:
+            if candidate_state_bytes is None:
+                raise TopicObservationError("candidate topic observation state bytes are missing")
+            payload = dict(candidate_payload)
+            state_bytes = candidate_state_bytes
         schema_version = payload.get("schema_version")
         if schema_version in _LEGACY_STATE_SCHEMA_VERSIONS:
             raise TopicObservationError(
@@ -1862,6 +1968,7 @@ class TopicObservationRunner:
         referenced_manual_ids: set[str] = set()
         batch_manual_ids: set[str] = set()
         derived_seen_observation_keys: set[str] = set()
+        historical_pending_upgrades: list[tuple[str, Mapping[str, Any]]] = []
         for cursor, stored in payload["batches"].items():
             _require_nonempty(cursor, "stored cursor")
             if not isinstance(stored, dict) or set(stored) != {
@@ -1975,7 +2082,7 @@ class TopicObservationRunner:
                     ):
                         raise TopicObservationError("stored batch input fingerprint conflicts with processed state")
             for input_id, evidence in disposition_evidence.items():
-                self._validate_item_evidence(
+                historical_pending_upgrade = self._validate_item_evidence(
                     evidence,
                     result_by_input_id[input_id],
                     input_fingerprints[input_id],
@@ -1990,6 +2097,8 @@ class TopicObservationRunner:
                     literature_by_id=literature_by_id,
                     seen_observation_keys=set(payload["seen_observation_keys"]),
                 )
+                if historical_pending_upgrade:
+                    historical_pending_upgrades.append((cursor, evidence))
                 if evidence["basis"] in {"NEW_IMPORT", "EXISTING_OBSERVED"}:
                     derived_seen_observation_keys.add(evidence["input_idempotency_key"])
             expected_batch_digest = _batch_digest_from_fingerprints(
@@ -2018,11 +2127,15 @@ class TopicObservationRunner:
             batch_input_ids.update(input_fingerprints)
 
         event_ids: set[str] = set()
+        events_by_manual_id: dict[str, dict[str, str | None]] = {}
         for event in manual_events:
             manual_id = event["manual_id"]
+            if not isinstance(manual_id, str) or not manual_id.strip():
+                raise ManualQueueObservationError("manual event manual_id is invalid")
             if manual_id in event_ids:
                 raise ManualQueueObservationError("manual event manual_ids must be unique")
             event_ids.add(manual_id)
+            events_by_manual_id[manual_id] = event
             matching_manuals = [manual for manual in manual_queue if manual.manual_id == manual_id]
             if len(matching_manuals) != 1:
                 raise ManualQueueObservationError(
@@ -2051,16 +2164,26 @@ class TopicObservationRunner:
                 raise ManualQueueObservationError(
                     "cursor conflict manual entry must match a manual event"
                 )
-            if manual.cursor in validated_batches:
-                expected_detail = "A cursor was replayed with different batch content."
-            else:
-                if manual.cursor == payload["next_cursor"]:
+            event = events_by_manual_id[manual.manual_id]
+            if event["conflict_kind"] == "REPLAY_DIFFERENT_CONTENT":
+                if manual.cursor not in validated_batches or event["expected_cursor"] is not None:
                     raise ManualQueueObservationError(
-                        "cursor conflict manual entry names the current cursor"
+                        "cursor replay conflict event does not match its stored cursor"
+                    )
+                expected_detail = "A cursor was replayed with different batch content."
+            elif event["conflict_kind"] == "EXPECTED_CURSOR":
+                expected_cursor = event["expected_cursor"]
+                if not isinstance(expected_cursor, str) or expected_cursor == manual.cursor:
+                    raise ManualQueueObservationError(
+                        "cursor conflict event has an invalid expected cursor"
                     )
                 expected_detail = (
-                    f"Expected cursor {payload['next_cursor']!r}, "
+                    f"Expected cursor {expected_cursor!r}, "
                     f"received {manual.cursor!r}."
+                )
+            else:
+                raise ManualQueueObservationError(
+                    "cursor conflict manual event has an unsupported conflict kind"
                 )
             if manual.detail != expected_detail:
                 raise ManualQueueObservationError(
@@ -2085,6 +2208,39 @@ class TopicObservationRunner:
             cursor = validated_batches[cursor].next_cursor
         if cursor != payload["next_cursor"] or visited != set(validated_batches):
             raise TopicObservationError("stored batch cursor chain conflicts with state")
+        cursor_nodes = {self.initial_cursor, payload["next_cursor"], *validated_batches}
+        cursor_nodes.update(result.next_cursor for result in validated_batches.values())
+        for event in manual_events:
+            if (
+                event["conflict_kind"] == "EXPECTED_CURSOR"
+                and event["expected_cursor"] not in cursor_nodes
+            ):
+                raise ManualQueueObservationError(
+                    "cursor conflict event expected cursor is outside the stored cursor chain"
+                )
+
+        cursor_position = {batch_cursor: index for index, batch_cursor in enumerate(cursor_order)}
+        for historical_cursor, historical_evidence in historical_pending_upgrades:
+            historical_position = cursor_position[historical_cursor]
+            upgrade_proven = False
+            for later_cursor in cursor_order[historical_position + 1 :]:
+                later_evidence = validated_batch_records[later_cursor]["disposition_evidence"]
+                if any(
+                    candidate["basis"] in {"NEW_IMPORT", "EXISTING_OBSERVED"}
+                    and candidate["persisted_observation_id"]
+                    == historical_evidence["persisted_observation_id"]
+                    and candidate["input_idempotency_key"]
+                    == historical_evidence["input_idempotency_key"]
+                    and candidate["persisted_content_digest_sha256"]
+                    == historical_evidence["persisted_content_digest_sha256"]
+                    for candidate in later_evidence.values()
+                ):
+                    upgrade_proven = True
+                    break
+            if not upgrade_proven:
+                raise TopicObservationError(
+                    "historical pending evidence has no strictly later observed upgrade proof"
+                )
 
         # A batch digest proves only the bytes currently stored in that batch.
         # Replaying the cursor chain additionally proves that successful imports
@@ -2159,7 +2315,8 @@ class TopicObservationRunner:
             raise TopicObservationError(
                 "seen observation keys do not match cursor-ordered item evidence"
             )
-        self._verify_state_authentication(payload, state_bytes)
+        if verify_authentication:
+            self._verify_state_authentication(payload, state_bytes)
         return payload
 
     def _validate_item_evidence(
@@ -2178,7 +2335,7 @@ class TopicObservationRunner:
         manual_queue: list[ManualReviewItem],
         literature_by_id: Mapping[str, SourceObservation],
         seen_observation_keys: set[str],
-    ) -> None:
+    ) -> bool:
         basis = evidence["basis"]
         _require_nonempty(basis, "stored topic-item evidence basis")
         if basis not in _ITEM_EVIDENCE_BASIS_TO_STATUS:
@@ -2253,6 +2410,7 @@ class TopicObservationRunner:
         if persisted_status not in valid_persisted_statuses:
             raise TopicObservationError("stored persisted observation status is invalid")
         persisted_id = evidence["persisted_observation_id"]
+        historical_pending_upgrade = False
         if persisted_id is not None:
             _require_nonempty(persisted_id, "stored persisted observation id")
             if evidence["persisted_artifact_id"] is not None:
@@ -2261,10 +2419,45 @@ class TopicObservationRunner:
             if persisted is None:
                 raise TopicObservationError("stored item evidence references an unknown literature observation")
             if persisted.status.value != persisted_status:
-                raise TopicObservationError("stored item evidence observation status conflicts with literature")
+                historical_pending_upgrade = (
+                    persisted_status == ObservationStatus.PENDING.value
+                    and persisted.status is ObservationStatus.OBSERVED
+                    and (
+                        basis == "PENDING_OBSERVATION"
+                        or (
+                            basis == "MANUAL_QUEUE"
+                            and evidence["manual_reason"]
+                            == ManualReviewReason.BUDGET_EXHAUSTED.value
+                            and evidence["import_disposition"]
+                            == ImportDisposition.PENDING.value
+                        )
+                    )
+                )
+                if not historical_pending_upgrade:
+                    raise TopicObservationError(
+                        "stored item evidence observation status conflicts with literature"
+                    )
             if persisted.content_digest_sha256 != evidence["persisted_content_digest_sha256"]:
                 raise TopicObservationError("stored item evidence content digest conflicts with literature")
-            if persisted.status is ObservationStatus.OBSERVED:
+            if historical_pending_upgrade:
+                if (
+                    evidence["persisted_artifact_id"] is not None
+                    or evidence["persisted_artifact_sha256"] is not None
+                ):
+                    raise TopicObservationError(
+                        "historical pending evidence must not carry an observed artifact"
+                    )
+                try:
+                    artifact = self.literature.artifacts.get(persisted.artifact_id or "")
+                except KeyError as exc:
+                    raise TopicObservationError(
+                        "upgraded literature observation has no persisted artifact"
+                    ) from exc
+                if artifact.sha256 != persisted.content_digest_sha256:
+                    raise TopicObservationError(
+                        "upgraded literature artifact conflicts with observation"
+                    )
+            elif persisted.status is ObservationStatus.OBSERVED:
                 if evidence["persisted_artifact_id"] != persisted.artifact_id:
                     raise TopicObservationError("stored item evidence artifact id conflicts with literature")
                 if evidence["persisted_artifact_sha256"] is None:
@@ -2432,9 +2625,16 @@ class TopicObservationRunner:
                     raise TopicObservationError(
                         "budget manual disposition conflicts with input projection"
                     )
-                if persisted_id is not None and import_disposition != ImportDisposition.PENDING.value:
+                if import_disposition not in {None, ImportDisposition.PENDING.value}:
                     raise TopicObservationError(
-                        "budget manual disposition lacks budget-blocked import evidence"
+                        "budget manual disposition has an invalid import phase"
+                    )
+                if import_disposition == ImportDisposition.PENDING.value and (
+                    persisted_id is None
+                    or persisted_status != ObservationStatus.PENDING.value
+                ):
+                    raise TopicObservationError(
+                        "post-import budget evidence must reference a pending observation"
                     )
                 if persisted_id is not None and result.observation_id != persisted_id:
                     raise TopicObservationError(
@@ -2458,7 +2658,6 @@ class TopicObservationRunner:
                 )
             if manual.reason in {
                 ManualReviewReason.HIGH_RISK_EVENT,
-                ManualReviewReason.BUDGET_EXHAUSTED,
                 ManualReviewReason.INPUT_ID_CONFLICT,
             } and import_disposition is not None:
                 raise TopicObservationError("manual item evidence import disposition is not derivable")
@@ -2477,21 +2676,45 @@ class TopicObservationRunner:
                 raise ManualQueueObservationError("stored manual result and item evidence disagree")
         elif any(evidence[field] is not None for field in ("manual_id", "manual_reason")):
             raise TopicObservationError("non-manual item evidence must not carry manual linkage")
+        return historical_pending_upgrade
 
     @staticmethod
-    def _load_manual_events(value: object) -> list[dict[str, str]]:
+    def _load_manual_events(value: object) -> list[dict[str, str | None]]:
         try:
             if not isinstance(value, list):
                 raise TopicObservationError("topic observation state has invalid manual events")
-            events: list[dict[str, str]] = []
+            events: list[dict[str, str | None]] = []
             for item in value:
                 if not isinstance(item, dict):
                     raise TopicObservationError("manual event is malformed")
-                _require_fields(item, {"event_type", "manual_id"}, "manual event")
+                _require_fields(
+                    item,
+                    {"event_type", "manual_id", "conflict_kind", "expected_cursor"},
+                    "manual event",
+                )
                 if item["event_type"] != "CURSOR_CONFLICT":
                     raise TopicObservationError("manual event has an unsupported type")
                 _require_nonempty(item["manual_id"], "manual event manual_id")
-                events.append({"event_type": item["event_type"], "manual_id": item["manual_id"]})
+                if item["conflict_kind"] not in {
+                    "REPLAY_DIFFERENT_CONTENT",
+                    "EXPECTED_CURSOR",
+                }:
+                    raise TopicObservationError("manual event has an unsupported conflict kind")
+                expected_cursor = item["expected_cursor"]
+                if item["conflict_kind"] == "EXPECTED_CURSOR":
+                    _require_nonempty(expected_cursor, "manual event expected_cursor")
+                elif expected_cursor is not None:
+                    raise TopicObservationError(
+                        "cursor replay manual event must not carry expected_cursor"
+                    )
+                events.append(
+                    {
+                        "event_type": item["event_type"],
+                        "manual_id": item["manual_id"],
+                        "conflict_kind": item["conflict_kind"],
+                        "expected_cursor": expected_cursor,
+                    }
+                )
             event_ids = [item["manual_id"] for item in events]
             if len(event_ids) != len(set(event_ids)):
                 raise TopicObservationError("manual event manual_ids must be unique")
@@ -2579,6 +2802,11 @@ class TopicObservationRunner:
             "target_literature_files": target_literature_files,
             "target_literature_files_sha256": digest_json(target_literature_files),
         }
+        self._load_state(
+            candidate_payload=persisted_state,
+            candidate_state_bytes=state_bytes,
+            verify_authentication=False,
+        )
         self._write_transaction(target_transaction)
         _atomic_write_bytes(self.state_path, state_bytes, _PRIVATE_FILE_MODE)
         _atomic_write_bytes(

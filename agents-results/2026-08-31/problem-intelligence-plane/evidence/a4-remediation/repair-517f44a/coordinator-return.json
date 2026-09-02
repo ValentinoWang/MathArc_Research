@@ -1,0 +1,83 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-remediation-repair-517f44a-coordinator",
+  "validated_at": "2026-09-02T00:21:55Z",
+  "pinned_parent": "517f44a472d56c4e1c733fc02ea97f45d15c5eca",
+  "worker_disposition": "One interrupted worker produced a repair return; two topic attempts were interrupted without returns. The coordinator independently inspected, completed, and verified the aggregate patch.",
+  "changed_files": [
+    "matharc/v02/artifact_store.py",
+    "matharc/v02/literature_base.py",
+    "matharc/v02/topic_observation.py",
+    "tests/test_v02_artifact_store_durability.py",
+    "tests/test_v02_topic_observation_integrity.py"
+  ],
+  "file_identities": {
+    "matharc/v02/artifact_store.py": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3",
+    "matharc/v02/literature_base.py": "f986e6a4354dd561cf14bf47e1343a995d012e57f6f9409149c3e16f1af05da1",
+    "matharc/v02/topic_observation.py": "d60888856685637f6123098857817335c22d4976ef80d569e1b4097c43b90393",
+    "tests/test_v02_artifact_store_durability.py": "da68ab76a64a38b1a744119fa6840281d2c486bbc94797baf095c828673462e3",
+    "tests/test_v02_topic_observation_integrity.py": "719a3da1710745ff7e27e3f22396965af698af14d07be35722724df7f2e84652"
+  },
+  "protected_test_identities": {
+    "tests/test_v02_topic_observation.py": "bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497",
+    "tests/test_v02_dogfood_archives.py": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242"
+  },
+  "resolved_failure_classes": [
+    "artifact and literature manifests lacked durable file-and-parent fsync ordering",
+    "in-memory maps advanced before manifest durability completed",
+    "forked children inherited literature reentrancy and topic transaction authority",
+    "forked child context exit could unlock a parent-held OFD lock",
+    "persisted observation ID and idempotency key could cross-match different records",
+    "cursor conflict validation depended on the later mutable current cursor",
+    "historical PENDING evidence rejected a valid strictly-later OBSERVED upgrade",
+    "pre-import and post-import budget evidence used incompatible identity and disposition rules",
+    "candidate state could be written before full semantic validation",
+    "recovery did not prove every newly-created directory entry durable",
+    "retired transaction marker restoration lacked a lower-level fallback fence"
+  ],
+  "verification": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+      "result": "PASS",
+      "tests_run": 66,
+      "skipped": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v <eight defect-specific regression selectors>",
+      "result": "PASS",
+      "tests_run": 8,
+      "skipped": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature_base tests.test_v02_literature_base_integrity tests.test_v02_artifact_store_durability tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+      "result": "PASS",
+      "tests_run": 100,
+      "skipped": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m py_compile matharc/v02/artifact_store.py matharc/v02/literature_base.py matharc/v02/topic_observation.py tests/test_v02_artifact_store_durability.py tests/test_v02_topic_observation_integrity.py",
+      "result": "PASS"
+    },
+    {
+      "command": ".venv/bin/python -m mypy --strict matharc/v02/artifact_store.py matharc/v02/literature_base.py matharc/v02/topic_observation.py",
+      "result": "PASS",
+      "files_checked": 3
+    },
+    {
+      "command": "git diff --check -- matharc/v02 tests/test_v02_artifact_store_durability.py tests/test_v02_topic_observation_integrity.py agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/coordinator-return.json agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/execution-ledger.json",
+      "result": "PASS"
+    }
+  ],
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_self_check": "pass",
+  "failure_class": "none",
+  "failure_origin": "none",
+  "remaining_boundaries": [
+    "The candidate still requires authoritative local CI on a committed identity.",
+    "The committed and pushed identity still requires independent frozen zero-write review.",
+    "A4 remains invalidated until a separately approved v3 acceptance contract is locked and executed.",
+    "R1 v11 is unchanged; Q1 and A5 remain human-only nodes."
+  ],
+  "harness_ssot_changes": [],
+  "acceptance_authority_exercised": false
+}

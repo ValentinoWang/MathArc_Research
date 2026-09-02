@@ -1,0 +1,181 @@
+{
+  "task_id": "A4-repair-literature-durability-lock",
+  "direct_parent": "A4 remediation of failed independent review at remote main 517f44a472d56c4e1c733fc02ea97f45d15c5eca",
+  "frozen_hashes_checked": {
+    "matharc/v02/artifact_store.py": {
+      "expected_sha256_before_edit": "33ae7684f827f977a631f8ffe678a2a6c17bd23a5d66a4c2fad1713937b5bbc5",
+      "observed_sha256_before_edit": "33ae7684f827f977a631f8ffe678a2a6c17bd23a5d66a4c2fad1713937b5bbc5",
+      "observed_sha256_after_edit": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3",
+      "checked": true
+    },
+    "matharc/v02/literature_base.py": {
+      "expected_sha256_before_edit": "2c222115eb7989336e691e0f9b984bd080e05e072c869ba2a5b0086e3b97c68",
+      "observed_sha256_before_edit": "2c222115eb7989336e691e0f9b984bd080e05e072c869ba2a5b0086e3b97c68",
+      "observed_sha256_after_edit": "f986e6a4354dd561cf14bf47e1343a995d012e57f6f9409149c3e16f1af05da1",
+      "checked": true
+    },
+    "tests/test_v02_literature_base_integrity.py": {
+      "expected_sha256_before_edit": "43104d71f3e954598144b52fa0a2d5248a994abc7125cbfc71ac41424c4c8c62",
+      "observed_sha256_before_edit": "43104d71f3e954598144b52fa0a2d5248a994abc7125cbfc71ac41424c4c8c62",
+      "observed_sha256_after_edit": "43104d71f3e954598144b52fa0a2d5248a994abc7125cbfc71ac41424c4c8c62",
+      "checked": true
+    }
+  },
+  "changed_files": [
+    "matharc/v02/artifact_store.py",
+    "matharc/v02/literature_base.py",
+    "tests/test_v02_artifact_store_durability.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/returns/literature-durability-lock.json"
+  ],
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature_base tests.test_v02_literature_base_integrity",
+      "phase": "pre-repair baseline",
+      "result": "PASS",
+      "counts": {
+        "run": 20,
+        "passed": 20,
+        "failed": 0,
+        "errors": 0
+      },
+      "skips": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability",
+      "phase": "pre-repair red proof",
+      "result": "RED_REPRODUCED",
+      "counts": {
+        "run": 7,
+        "passed": 0,
+        "failed": 4,
+        "errors": 3
+      },
+      "skips": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature_base tests.test_v02_literature_base_integrity",
+      "phase": "post-repair requested regression",
+      "result": "PASS",
+      "counts": {
+        "run": 20,
+        "passed": 20,
+        "failed": 0,
+        "errors": 0
+      },
+      "skips": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability",
+      "phase": "post-repair focused regression",
+      "result": "PASS",
+      "counts": {
+        "run": 7,
+        "passed": 7,
+        "failed": 0,
+        "errors": 0
+      },
+      "skips": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature tests.test_v02_topic_observation_integrity tests.test_v02_topic_observation tests.test_v02_workspace tests.test_v02_novelty_audit tests.test_v02_artifact_store_durability",
+      "phase": "post-repair related regression",
+      "result": "PASS",
+      "counts": {
+        "run": 94,
+        "passed": 94,
+        "failed": 0,
+        "errors": 0
+      },
+      "skips": 0
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m py_compile matharc/v02/artifact_store.py matharc/v02/literature_base.py tests/test_v02_artifact_store_durability.py",
+      "phase": "syntax check",
+      "result": "PASS",
+      "counts": {
+        "files_checked": 3
+      },
+      "skips": 0
+    },
+    {
+      "command": "git diff --check",
+      "phase": "diff check",
+      "result": "PASS",
+      "counts": {
+        "diff_errors": 0
+      },
+      "skips": 0
+    }
+  ],
+  "red_proof": {
+    "status": "RED_REPRODUCED",
+    "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability",
+    "counts": {
+      "run": 7,
+      "passed": 0,
+      "failed": 4,
+      "errors": 3
+    },
+    "skips": 0,
+    "failure_observed": [
+      "blob and manifest replacement ordering had no file/directory fsync proof",
+      "blob fsync failure did not propagate and no rollback assertion could pass",
+      "forked child inherited transaction authority and logical reentrancy",
+      "child inherited-context exit unlocked the parent's shared flock"
+    ],
+    "historical_reproduction_binding": [
+      "Frozen findings are reviews-5e4ef52 Luna findings 2/4, Sol findings 1/5, and filesystem_durability/recovery_authority reproductions.",
+      "Existing evidence is preserved at agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/logs/literature-durability-lock.log.",
+      "The three pre-repair test errors were probes for the absent durability helper; the four failures independently reproduced ordering, failure propagation, and fork ownership defects.",
+      "No contract, SSOT, human acceptance artifact, topic_observation.py file, or unrelated test was edited."
+    ]
+  },
+  "green_proof": {
+    "durability": [
+      "Artifact blob and artifact manifest each fsync file content before replace and fsync the immediate parent after replace.",
+      "Observation manifest uses the same durable atomic replacement path.",
+      "New nested directories are created one component at a time and each mkdir fsyncs its immediate parent.",
+      "Candidate artifact and observation maps are assigned only after their manifest replacement and parent fsync return successfully.",
+      "Unrenamed temporary files are cleaned on failure; a post-rename fsync failure leaves the renamed target in place."
+    ],
+    "fork_lock": [
+      "Thread-local lock state is reset when the process ID changes.",
+      "Child processes cannot reuse inherited logical ownership or topic transaction authority.",
+      "An inherited context finalizer skips LOCK_UN in a child whose owner PID differs."
+    ],
+    "tests": "20 requested tests, 7 focused tests, and 94 related tests passed with zero skips."
+  },
+  "remaining_risks": [
+    "No physical power-loss or filesystem-specific crash injection was performed; the proof is syscall-order and failure-injection based.",
+    "A post-rename fsync failure can leave an unreferenced durable blob or an uncertain manifest generation by design; garbage collection and recovery policy remain outside this defect scope.",
+    "Full repository CI and remote GitHub staging were not run because this task explicitly forbids network, commits, branches, and Git metadata writes."
+  ],
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_self_check": "pass",
+  "acceptance_self_check_details": "Implementation scope, frozen hashes, red proof, green proof, failure propagation, PID-bound fork behavior, and non-approval boundary were checked.",
+  "failure_class": "filesystem_durability/recovery_authority",
+  "failure_origin": "Remote main 517f44a472d56c4e1c733fc02ea97f45d15c5eca exposed ordinary blob and manifest writes without durable fsync ordering, map publication before durable manifest completion, and inherited thread-local literature lock ownership across fork.",
+  "contracts_ssot_human_acceptance_changed": false,
+  "harness_ssot_changes": [],
+  "business_project_git_status": {
+    "branch": "main",
+    "tracked_task_changes": [
+      "M matharc/v02/artifact_store.py",
+      "M matharc/v02/literature_base.py"
+    ],
+    "task_untracked_changes": [
+      "?? tests/test_v02_artifact_store_durability.py",
+      "?? agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/returns/literature-durability-lock.json"
+    ],
+    "preexisting_untracked_evidence_preserved": true,
+    "commits_created": false,
+    "branches_created": false
+  },
+  "harness_ssot_git_status": {
+    "repository": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering",
+    "branch": "main",
+    "status": "dirty with unrelated pre-existing user changes",
+    "changed_by_task": false
+  },
+  "evidence_path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/returns/literature-durability-lock.json"
+}

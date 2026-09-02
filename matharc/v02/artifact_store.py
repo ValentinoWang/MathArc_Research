@@ -4,11 +4,85 @@ import hashlib
 import json
 import mimetypes
 import os
+import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 from .schema import canonical_json, digest_json, utc_now
+
+
+def _fsync_directory(directory: Path) -> None:
+    flags = os.O_RDONLY | getattr(os, "O_DIRECTORY", 0)
+    directory_fd = os.open(directory, flags)
+    try:
+        os.fsync(directory_fd)
+    finally:
+        os.close(directory_fd)
+
+
+def _ensure_directory_durable(path: str | Path) -> None:
+    directory = Path(path)
+    if not directory.is_absolute():
+        directory = Path.cwd() / directory
+    missing: list[Path] = []
+    current = directory
+    while True:
+        try:
+            current.stat()
+        except FileNotFoundError:
+            missing.append(current)
+        else:
+            if not current.is_dir():
+                raise NotADirectoryError(f"directory path is not a directory: {current}")
+            break
+        parent = current.parent
+        if parent == current:
+            raise FileNotFoundError(f"could not find directory parent: {current}")
+        current = parent
+
+    for child in reversed(missing):
+        try:
+            child.mkdir()
+        except FileExistsError:
+            if not child.is_dir():
+                raise
+            continue
+        _fsync_directory(child.parent)
+
+
+def _durable_atomic_replace(path: str | Path, content: bytes) -> Path:
+    target = Path(path)
+    if not target.is_absolute():
+        target = Path.cwd() / target
+    _ensure_directory_durable(target.parent)
+    temporary_path: Path | None = None
+    open_fd = -1
+    renamed = False
+    try:
+        open_fd, temporary_name = tempfile.mkstemp(
+            prefix=f".{target.name}.",
+            suffix=".tmp",
+            dir=target.parent,
+        )
+        temporary_path = Path(temporary_name)
+        with os.fdopen(open_fd, "wb") as temporary_file:
+            open_fd = -1
+            temporary_file.write(content)
+            temporary_file.flush()
+            os.fsync(temporary_file.fileno())
+        os.replace(temporary_path, target)
+        renamed = True
+        _fsync_directory(target.parent)
+        return target
+    finally:
+        if open_fd != -1:
+            os.close(open_fd)
+        if not renamed and temporary_path is not None:
+            try:
+                temporary_path.unlink()
+            except FileNotFoundError:
+                pass
 
 
 @dataclass(slots=True)
@@ -88,7 +162,7 @@ class ArtifactStore:
         self.root = Path(root)
         self.blob_root = self.root / "sha256"
         self.manifest_path = self.root / "manifest.json"
-        self.blob_root.mkdir(parents=True, exist_ok=True)
+        _ensure_directory_durable(self.blob_root)
         self._records: dict[str, ArtifactRecord] = {}
         for record in records:
             self._add_record(record)
@@ -127,15 +201,16 @@ class ArtifactStore:
         sha256 = hashlib.sha256(content).hexdigest()
         relative_path = Path("sha256") / sha256[:2] / sha256
         target = self.root / relative_path
-        target.parent.mkdir(parents=True, exist_ok=True)
+        _ensure_directory_durable(target.parent)
         if target.exists():
-            existing = target.read_bytes()
-            if existing != content:
-                raise ValueError(f"content-address collision at {target}")
+            with target.open("rb") as existing_file:
+                existing = existing_file.read()
+                if existing != content:
+                    raise ValueError(f"content-address collision at {target}")
+                os.fsync(existing_file.fileno())
+            _fsync_directory(target.parent)
         else:
-            temporary = target.with_suffix(".tmp")
-            temporary.write_bytes(content)
-            os.replace(temporary, target)
+            _durable_atomic_replace(target, content)
         record = ArtifactRecord(
             artifact_id=artifact_id,
             sha256=sha256,
@@ -148,8 +223,10 @@ class ArtifactStore:
             linked_tool_call_ids=tuple(str(item) for item in linked_tool_call_ids),
             source_filename=source_filename,
         )
-        self._add_record(record)
-        self.save_manifest()
+        candidate_records = dict(self._records)
+        self._add_record_to(candidate_records, record)
+        self._save_manifest(candidate_records)
+        self._records = candidate_records
         return record
 
     def put_text(
@@ -252,21 +329,31 @@ class ArtifactStore:
         }
 
     def to_dict(self) -> dict[str, Any]:
+        return self._manifest_dict(self._records)
+
+    @staticmethod
+    def _manifest_dict(records: Mapping[str, ArtifactRecord]) -> dict[str, Any]:
         return {
             "schema_version": "1.0",
             "content_addressing": "sha256",
-            "records": [record.to_dict() for record in self.records],
+            "records": [records[key].to_dict() for key in sorted(records)],
         }
 
     def save_manifest(self) -> Path:
-        self.root.mkdir(parents=True, exist_ok=True)
-        temporary = self.manifest_path.with_suffix(".tmp")
-        temporary.write_text(
-            json.dumps(self.to_dict(), ensure_ascii=False, indent=2, sort_keys=True) + "\n",
-            encoding="utf-8",
-        )
-        os.replace(temporary, self.manifest_path)
+        self._save_manifest(self._records)
         return self.manifest_path
+
+    def _save_manifest(self, records: Mapping[str, ArtifactRecord]) -> None:
+        content = (
+            json.dumps(
+                self._manifest_dict(records),
+                ensure_ascii=False,
+                indent=2,
+                sort_keys=True,
+            )
+            + "\n"
+        ).encode("utf-8")
+        _durable_atomic_replace(self.manifest_path, content)
 
     @classmethod
     def load(cls, root: str | Path) -> "ArtifactStore":
@@ -293,11 +380,18 @@ class ArtifactStore:
         return store
 
     def _add_record(self, record: ArtifactRecord) -> None:
-        if record.artifact_id in self._records:
-            existing = self._records[record.artifact_id]
+        self._add_record_to(self._records, record)
+
+    @staticmethod
+    def _add_record_to(
+        records: dict[str, ArtifactRecord],
+        record: ArtifactRecord,
+    ) -> None:
+        if record.artifact_id in records:
+            existing = records[record.artifact_id]
             if existing.to_dict() != record.to_dict():
                 raise ValueError(f"conflicting artifact id: {record.artifact_id}")
             return
         if len(record.sha256) != 64:
             raise ValueError(f"artifact {record.artifact_id} has invalid SHA-256")
-        self._records[record.artifact_id] = record
+        records[record.artifact_id] = record

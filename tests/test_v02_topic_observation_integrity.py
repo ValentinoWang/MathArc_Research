@@ -3,6 +3,7 @@ from __future__ import annotations
 import hashlib
 import json
 import os
+import shutil
 import stat
 import tempfile
 import threading
@@ -13,6 +14,7 @@ from typing import Any
 from unittest.mock import patch
 
 import matharc.v02.topic_observation as topic_observation_module
+from matharc.v02.budget import BudgetLedger
 from matharc.v02.literature_base import LiteratureBase
 from matharc.v02.schema import digest_json
 from matharc.v02.source_observation import LicenseStatus, SourceObservation, new_observation
@@ -63,7 +65,7 @@ class TopicObservationIntegrityTests(unittest.TestCase):
             self.assertEqual(0o600, stat.S_IMODE(runner.signing_key_path.stat().st_mode))
             self.assertEqual(0o600, stat.S_IMODE(runner.authentication_path.stat().st_mode))
             authentication = json.loads(runner.authentication_path.read_text(encoding="utf-8"))
-            self.assertEqual("1.7", authentication["state_schema_version"])
+            self.assertEqual("1.8", authentication["state_schema_version"])
             self.assertEqual("c1", TopicObservationRunner(
                 directory, topic_id="integrity-topic", initial_cursor="c0"
             ).next_cursor)
@@ -416,13 +418,15 @@ class TopicObservationIntegrityTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)
             runner = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+            runner.run(batch("c0", "c1", input_for("A")))
 
             def interrupt(_state: Mapping[str, Any]) -> None:
                 raise RuntimeError("simulated interruption after literature persistence")
 
             runner._save_state = interrupt
             with self.assertRaisesRegex(RuntimeError, "after literature persistence"):
-                runner.run(batch("c0", "c1", input_for("A")))
+                runner.run(batch("c1", "c2", input_for("B")))
+            shutil.rmtree(root / "literature")
 
             original_fsync_directory = topic_observation_module._fsync_directory
             fsynced_directories: list[Path] = []
@@ -442,7 +446,82 @@ class TopicObservationIntegrityTests(unittest.TestCase):
                     initial_cursor="c0",
                 )
 
-            self.assertIn(runner.root / "literature" / "artifacts", fsynced_directories)
+            self.assertTrue(
+                {
+                    runner.root,
+                    runner.root / "literature",
+                    runner.root / "literature" / "artifacts",
+                    runner.root / "literature" / "artifacts" / "sha256",
+                }.issubset(set(fsynced_directories))
+            )
+
+    def test_candidate_state_is_rejected_before_self_invalidating_write(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+            runner.run(batch("c0", "c1", input_for("A")))
+            old_state = runner.state_path.read_bytes()
+            old_authentication = runner.authentication_path.read_bytes()
+            runner._active_transaction = runner._begin_transaction()
+            try:
+                invalid = runner._load_state()
+                invalid["next_cursor"] = "not-the-cursor-chain"
+                with self.assertRaisesRegex(TopicObservationError, "cursor chain"):
+                    runner._save_state(invalid)
+            finally:
+                runner._active_transaction = None
+
+            self.assertEqual(old_state, runner.state_path.read_bytes())
+            self.assertEqual(old_authentication, runner.authentication_path.read_bytes())
+
+    def test_retired_marker_normal_restore_failure_uses_fallback_fence(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runner = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+            original_fsync_directory = topic_observation_module._fsync_directory
+            original_atomic_write = topic_observation_module._atomic_write_bytes
+            failed_unlink_fsync = False
+
+            def fail_unlink_fsync_once(path: Path) -> None:
+                nonlocal failed_unlink_fsync
+                if (
+                    not failed_unlink_fsync
+                    and path == runner.root
+                    and not runner.retired_transaction_path.exists()
+                    and not runner.transaction_path.exists()
+                ):
+                    failed_unlink_fsync = True
+                    raise OSError("simulated retired unlink fsync failure")
+                original_fsync_directory(path)
+
+            def fail_normal_restore(path: Path, content: bytes, mode: int) -> None:
+                if path == runner.retired_transaction_path:
+                    raise OSError("simulated normal marker restore failure")
+                original_atomic_write(path, content, mode)
+
+            with (
+                patch.object(
+                    topic_observation_module,
+                    "_fsync_directory",
+                    side_effect=fail_unlink_fsync_once,
+                ),
+                patch.object(
+                    topic_observation_module,
+                    "_atomic_write_bytes",
+                    side_effect=fail_normal_restore,
+                ),
+            ):
+                with self.assertRaisesRegex(TopicObservationError, "normally restore"):
+                    runner.run(batch("c0", "c1", input_for("A")))
+
+            self.assertTrue(failed_unlink_fsync)
+            self.assertTrue(runner.retired_transaction_path.exists())
+            external = input_for("EXTERNAL")
+            blocked = LiteratureBase(root / "literature").import_bytes(
+                external.observation,
+                external.content,
+            )
+            self.assertEqual("REJECTED", blocked.disposition.value)
 
     def test_topic_and_literature_lock_symlinks_fail_closed(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -555,6 +634,155 @@ class TopicObservationIntegrityTests(unittest.TestCase):
                     initial_cursor="c0",
                 )
                 self.assertEqual("c2", restarted.next_cursor)
+
+    def test_alternate_persisted_id_remains_stable_when_budget_is_exhausted(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            original = input_for("A")
+            recorded = SourceObservation.from_dict(
+                {**original.observation.to_dict(), "observation_id": "OBS-RECORDED"}
+            )
+            runner = TopicObservationRunner(
+                root,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            )
+            self.assertEqual(
+                "IMPORTED",
+                runner.literature.import_bytes(recorded, original.content).disposition.value,
+            )
+
+            exhausted = TopicObservationRunner(
+                root,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+                budget=BudgetLedger(cost_usd_limit=0.0),
+            )
+            result = exhausted.run(batch("c0", "c1", original))
+
+            self.assertEqual(TopicItemStatus.MANUAL_REVIEW, result.item_results[0].status)
+            self.assertEqual("OBS-RECORDED", result.item_results[0].observation_id)
+            self.assertEqual("c1", exhausted.next_cursor)
+            self.assertEqual(
+                "c1",
+                TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                    budget=BudgetLedger(cost_usd_limit=0.0),
+                ).next_cursor,
+            )
+
+    def test_persisted_observation_id_and_key_cross_match_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            runner = TopicObservationRunner(
+                directory,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            )
+            item_a = input_for("A")
+            item_b = input_for("B")
+            self.assertEqual(
+                "IMPORTED",
+                runner.literature.import_bytes(item_a.observation, item_a.content).disposition.value,
+            )
+            self.assertEqual(
+                "IMPORTED",
+                runner.literature.import_bytes(item_b.observation, item_b.content).disposition.value,
+            )
+            crossed = TopicObservationInput(
+                "CROSSED",
+                SourceObservation.from_dict(
+                    {
+                        **item_b.observation.to_dict(),
+                        "observation_id": item_a.observation.observation_id,
+                    }
+                ),
+                item_b.content,
+            )
+
+            with self.assertRaisesRegex(
+                TopicObservationError,
+                "persisted observation id and idempotency key identify different records",
+            ):
+                runner.run(batch("c0", "c1", crossed))
+
+    def test_cursor_conflict_survives_later_progress_and_restart(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            runner = TopicObservationRunner(
+                directory,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            )
+            conflict = runner.run(batch("c1", "c2", input_for("EARLY")))
+            self.assertEqual("CURSOR_BLOCKED", conflict.status.value)
+            self.assertEqual(
+                "Expected cursor 'c0', received 'c1'.",
+                runner.manual_queue[0].detail,
+            )
+
+            self.assertEqual("APPLIED", runner.run(batch("c0", "c1", input_for("A"))).status.value)
+            self.assertEqual("APPLIED", runner.run(batch("c1", "c2", input_for("B"))).status.value)
+
+            restarted = TopicObservationRunner(
+                directory,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            )
+            self.assertEqual("c2", restarted.next_cursor)
+            self.assertEqual(
+                "Expected cursor 'c0', received 'c1'.",
+                restarted.manual_queue[0].detail,
+            )
+
+    def test_historical_pending_upgrade_survives_restart(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            content = b"pending upgrade source"
+            pending = TopicObservationInput(
+                "A",
+                new_observation(
+                    observation_id="OBS-A",
+                    canonical_uri="https://integrity.example/pending-upgrade",
+                    pinned_version="v1",
+                    license_status=LicenseStatus.RESTRICTED,
+                    license_basis="restricted fixture",
+                    content_summary="Descriptive pending upgrade fixture.",
+                    summary_basis="fixture",
+                    media_type="text/plain",
+                    content_digest_sha256=hashlib.sha256(content).hexdigest(),
+                    observed_at="2026-09-02T08:00:00+00:00",
+                ),
+                content,
+            )
+            observed = TopicObservationInput(
+                "B",
+                SourceObservation.from_dict(
+                    {
+                        **pending.observation.to_dict(),
+                        "license_status": LicenseStatus.OPEN.value,
+                        "license_basis": "open fixture",
+                    }
+                ),
+                content,
+            )
+            runner = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+
+            first = runner.run(batch("c0", "c1", pending))
+            second = runner.run(batch("c1", "c2", observed))
+
+            self.assertEqual(TopicItemStatus.PENDING, first.item_results[0].status)
+            self.assertEqual(TopicItemStatus.IMPORTED, second.item_results[0].status)
+            restarted = TopicObservationRunner(root, topic_id="integrity-topic", initial_cursor="c0")
+            self.assertEqual("c2", restarted.next_cursor)
+            stored = json.loads(restarted.state_path.read_text(encoding="utf-8"))
+            self.assertEqual(
+                "PENDING",
+                stored["batches"]["c0"]["disposition_evidence"]["A"][
+                    "persisted_observation_status"
+                ],
+            )
+            self.assertEqual("OBSERVED", restarted.literature.observations[0].status.value)
 
     def test_manual_ids_are_delimiter_safe_across_batches(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
@@ -874,6 +1102,52 @@ class TopicObservationIntegrityTests(unittest.TestCase):
         )
         stored_b["result"]["status"] = "MANUAL_REVIEW"
         stored_b["result_digest_sha256"] = digest_json(stored_b["result"])
+
+
+@unittest.skipUnless(hasattr(os, "fork"), "POSIX fork is required")
+class TopicWriterForkTests(unittest.TestCase):
+    def test_forked_child_exit_cannot_unlock_parent_topic_lock(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            runner = TopicObservationRunner(
+                directory,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            )
+            child_pid: int | None = None
+            contender_pid: int | None = None
+            try:
+                with runner._writer_lock():
+                    child_pid = os.fork()
+                    if child_pid == 0:
+                        os._exit(0)
+                    _, child_status = os.waitpid(child_pid, 0)
+                    child_pid = None
+                    self.assertTrue(os.WIFEXITED(child_status))
+                    self.assertEqual(0, os.WEXITSTATUS(child_status))
+
+                    contender_pid = os.fork()
+                    if contender_pid == 0:
+                        try:
+                            import fcntl
+
+                            descriptor = os.open(runner.lock_path, os.O_RDWR)
+                            try:
+                                fcntl.flock(descriptor, fcntl.LOCK_EX | fcntl.LOCK_NB)
+                            finally:
+                                os.close(descriptor)
+                        except BlockingIOError:
+                            os._exit(0)
+                        except BaseException:
+                            os._exit(2)
+                        os._exit(1)
+                    _, contender_status = os.waitpid(contender_pid, 0)
+                    contender_pid = None
+                    self.assertTrue(os.WIFEXITED(contender_status))
+                    self.assertEqual(0, os.WEXITSTATUS(contender_status))
+            finally:
+                for pid in (child_pid, contender_pid):
+                    if pid is not None:
+                        os.waitpid(pid, 0)
 
 
 if __name__ == "__main__":

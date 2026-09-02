@@ -8,13 +8,18 @@ import json
 import os
 import stat
 import threading
-from collections.abc import Iterator
+from collections.abc import Iterator, Mapping
 from contextlib import contextmanager
 from dataclasses import dataclass
 from enum import Enum
 from pathlib import Path
 
-from .artifact_store import ArtifactRecord, ArtifactStore
+from .artifact_store import (
+    ArtifactRecord,
+    ArtifactStore,
+    _durable_atomic_replace,
+    _ensure_directory_durable,
+)
 from .budget import BudgetLedger
 from .source_observation import LicenseStatus, ObservationStatus, SourceObservation
 
@@ -25,7 +30,17 @@ TOPIC_OBSERVATION_RETIRED_TRANSACTION_PATH_NAME = (
 _WRITER_LOCK_STATE = threading.local()
 
 
+def _reset_lock_state_if_forked() -> None:
+    process_id = os.getpid()
+    if getattr(_WRITER_LOCK_STATE, "process_id", None) == process_id:
+        return
+    _WRITER_LOCK_STATE.process_id = process_id
+    _WRITER_LOCK_STATE.held_paths = set()
+    _WRITER_LOCK_STATE.authorized_paths = set()
+
+
 def _thread_lock_paths(name: str) -> set[str]:
+    _reset_lock_state_if_forked()
     paths = getattr(_WRITER_LOCK_STATE, name, None)
     if paths is None:
         paths = set()
@@ -72,7 +87,7 @@ def literature_writer_lock(
     """Serialize all writers, including a topic transaction spanning many imports."""
 
     literature_root = Path(root)
-    literature_root.mkdir(parents=True, exist_ok=True)
+    _ensure_directory_durable(literature_root)
     root_key = _literature_root_key(literature_root)
     held_paths = _thread_lock_paths("held_paths")
     authorized_paths = _thread_lock_paths("authorized_paths")
@@ -102,6 +117,7 @@ def literature_writer_lock(
         if descriptor != -1:
             os.close(descriptor)
         raise
+    owner_pid = os.getpid()
     with lock_file:
         fcntl.flock(lock_file.fileno(), fcntl.LOCK_EX)
         held_paths.add(root_key)
@@ -110,9 +126,10 @@ def literature_writer_lock(
         try:
             yield
         finally:
-            authorized_paths.discard(root_key)
-            held_paths.remove(root_key)
-            fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
+            if os.getpid() == owner_pid:
+                authorized_paths.discard(root_key)
+                held_paths.remove(root_key)
+                fcntl.flock(lock_file.fileno(), fcntl.LOCK_UN)
 
 
 def _topic_transaction_authorized(root: Path) -> bool:
@@ -140,7 +157,7 @@ class LiteratureBase:
 
     def __init__(self, root: str | Path, budget: BudgetLedger | None = None) -> None:
         self.root = Path(root)
-        self.root.mkdir(parents=True, exist_ok=True)
+        _ensure_directory_durable(self.root)
         self.artifacts = ArtifactStore.load(self.root / "artifacts")
         self.manifest_path = self.root / "observations.json"
         self.lock_path = self.root / ".observations.lock"
@@ -367,9 +384,11 @@ class LiteratureBase:
             yield
 
     def _reload_state(self) -> None:
-        self.artifacts = ArtifactStore.load(self.root / "artifacts")
-        self._observations = {}
+        artifacts = ArtifactStore.load(self.root / "artifacts")
+        observations: dict[str, SourceObservation] = {}
         if not self.manifest_path.is_file():
+            self.artifacts = artifacts
+            self._observations = observations
             return
         payload = json.loads(self.manifest_path.read_text(encoding="utf-8"))
         if not isinstance(payload, dict) or set(payload) != {"schema_version", "observations"}:
@@ -381,7 +400,7 @@ class LiteratureBase:
         observation_keys: dict[str, str] = {}
         for item in payload["observations"]:
             observation = SourceObservation.from_dict(item)
-            if observation.observation_id in self._observations:
+            if observation.observation_id in observations:
                 raise ValueError("duplicate observation id")
             existing_observation_id = observation_keys.get(observation.idempotency_key)
             if (
@@ -390,31 +409,39 @@ class LiteratureBase:
             ):
                 raise ValueError("duplicate observation idempotency key")
             observation_keys[observation.idempotency_key] = observation.observation_id
-            self._observations[observation.observation_id] = observation
-        self._validate_observed_artifacts()
+            observations[observation.observation_id] = observation
+        self._validate_observed_artifacts(artifacts=artifacts, observations=observations)
+        self.artifacts = artifacts
+        self._observations = observations
 
     def _record(self, observation: SourceObservation) -> None:
-        existing = self._observations.get(observation.observation_id)
+        candidate_observations = dict(self._observations)
+        existing = candidate_observations.get(observation.observation_id)
         if existing is not None and existing.to_dict() != observation.to_dict():
             if (
                 existing.logical_identity != observation.logical_identity
                 or existing.status is not ObservationStatus.PENDING
             ):
                 raise ValueError(f"refusing to overwrite observation id: {observation.observation_id}")
-        for existing in self._observations.values():
+        for existing in candidate_observations.values():
             if (
                 existing.observation_id != observation.observation_id
                 and existing.idempotency_key == observation.idempotency_key
             ):
                 raise ValueError("refusing to record duplicate observation idempotency key")
-        self._observations[observation.observation_id] = observation
+        candidate_observations[observation.observation_id] = observation
         payload = {
             "schema_version": "1.0",
-            "observations": [item.to_dict() for item in self.observations],
+            "observations": [
+                candidate_observations[key].to_dict()
+                for key in sorted(candidate_observations)
+            ],
         }
-        temporary = self.manifest_path.with_suffix(".tmp")
-        temporary.write_text(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n", encoding="utf-8")
-        os.replace(temporary, self.manifest_path)
+        content = (
+            json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
+        ).encode("utf-8")
+        _durable_atomic_replace(self.manifest_path, content)
+        self._observations = candidate_observations
 
     def _verified_artifact(
         self,
@@ -422,9 +449,11 @@ class LiteratureBase:
         expected_digest: str,
         *,
         expected_media_type: str | None = None,
+        artifacts: ArtifactStore | None = None,
     ) -> ArtifactRecord:
-        artifact = self.artifacts.get(artifact_id)
-        path = self.artifacts.path_for(artifact_id)
+        artifact_store = artifacts if artifacts is not None else self.artifacts
+        artifact = artifact_store.get(artifact_id)
+        path = artifact_store.path_for(artifact_id)
         if (
             artifact.sha256 != expected_digest
             or not path.is_file()
@@ -440,8 +469,15 @@ class LiteratureBase:
             raise ValueError("artifact blob size mismatch")
         return artifact
 
-    def _validate_observed_artifacts(self) -> None:
-        for observation in self._observations.values():
+    def _validate_observed_artifacts(
+        self,
+        *,
+        artifacts: ArtifactStore | None = None,
+        observations: Mapping[str, SourceObservation] | None = None,
+    ) -> None:
+        artifact_store = artifacts if artifacts is not None else self.artifacts
+        stored_observations = observations if observations is not None else self._observations
+        for observation in stored_observations.values():
             if observation.status is not ObservationStatus.OBSERVED:
                 continue
             if not observation.artifact_id or not observation.content_digest_sha256:
@@ -451,6 +487,7 @@ class LiteratureBase:
                     observation.artifact_id,
                     observation.content_digest_sha256,
                     expected_media_type=observation.media_type,
+                    artifacts=artifact_store,
                 )
             except (KeyError, ValueError) as exc:
                 raise ValueError(f"invalid artifact for observed record {observation.observation_id}: {exc}") from exc
