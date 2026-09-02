@@ -13,6 +13,7 @@
 - Decision refs: decision.problem-intelligence.amendment@2
 - Assumption IDs: none
 - Invalidation keys: acceptance.problem-intelligence.dogfood
+- AC budget: 5
 - Baseline identity: main@7a29d00b1896b41654f3c1d86645114b71b8c4d2
 - Human acceptance workspace: acceptance/human/A4-topic-observation-dogfood
 
@@ -34,13 +35,13 @@ A4 需要在既有验收条件不变的前提下，明确本轮闭合式复核�
 
 ## Acceptance criteria
 
-| ID | Requirement | Verification | Blocking |
-| --- | --- | --- | --- |
-| AC-01 | 三例固定档案的身份、状态、来源和不晋升边界完整 | T2 evidence plus archive-boundary review | Yes |
-| AC-02 | 重放、恢复、去重、预算和人工队列绑定且篡改 fail-closed | focused topic/archive tests plus state-integrity review | Yes |
-| AC-03 | 合同元数据（来源目录与 non-claim boundary）语义不可变 | protected negative test and archive-boundary review | Yes |
-| AC-04 | 全量回归、浏览器门禁和技术预检通过且不越界 | regression-ssot review | Yes |
-| AC-05 | 当前主线、合同、边、T2 证据和三条独立 AI return 哈希一致 | release synthesis | Yes |
+| ID | Class | Lane | Requirement | Verification | Blocking |
+| --- | --- | --- | --- | --- | --- |
+| AC-01 | behavior | machine/unit | 三例固定档案的身份、状态、来源和不晋升边界完整 | T2 evidence plus archive-boundary review | Yes |
+| AC-02 | behavior | machine/unit | 重放、恢复、去重、预算和人工队列绑定且篡改 fail-closed | focused topic/archive tests plus state-integrity review | Yes |
+| AC-03 | behavior | machine/static | 合同元数据（来源目录与 non-claim boundary）语义不可变 | protected negative test and archive-boundary review | Yes |
+| AC-04 | behavior | machine/e2e | 全量回归、浏览器门禁和技术预检通过且不越界 | regression-ssot review | Yes |
+| AC-05 | behavior | release | 当前主线、合同、边、T2 证据和三条独立 AI return 哈希一致 | release synthesis | Yes |
 | H-01 | 用户确认本次仅为离线源级验收，不是数学证明或公开发布 | human checklist | Yes |
 
 ## Protected acceptance tests

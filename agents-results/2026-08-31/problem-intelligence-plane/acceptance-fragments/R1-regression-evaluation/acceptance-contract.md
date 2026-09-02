@@ -13,6 +13,7 @@
 - Decision refs: decision.problem-intelligence.amendment@2
 - Assumption IDs: none
 - Invalidation keys: implementation.problem-intelligence.regression
+- AC budget: 8
 - Baseline identity: origin/main@3f1b69b5ab315442591f40295b036cd0d072be4e
 - Human acceptance workspace: acceptance/human/R1-regression-evaluation
 - UI Change declaration: none
@@ -70,16 +71,16 @@ And the result remains a passive evaluation artifact
 
 ## Acceptance criteria
 
-| ID | Requirement | Verification layer | Mode | Blocking |
-| --- | --- | --- | --- | --- |
-| AC-01 | 三例固定绑定且每例恰有四路独立记录 | Unit | Automatic | Yes |
-| AC-02 | 全路、增量、留一路损失和 hit/miss/gap 确定性重算 | Unit | Automatic | Yes |
-| AC-03 | 摘要、身份、范围、来源、人工分钟或消融篡改 fail closed | Unit | Automatic | Yes |
-| AC-04 | 结果不含授权、声明或 ResearchTrace/ClaimStatus 依赖 | Static/Unit | Automatic | Yes |
-| AC-05 | 消融边界复审必须在冻结输入上由 Luna L3 零写入审阅进程产出持久化 `PASS` 报告和运行记录 | Review evidence/Unit | Automatic | Yes |
-| AC-06 | 身份与合同复审必须在同一冻结输入上由 Sol L4 独立零写入审阅进程产出持久化 `PASS` 报告和运行记录 | Review evidence/Unit | Automatic | Yes |
-| AC-07 | 冻结清单必须使用 `r1-regression-evaluation-v11` 固定 profile，必需输入集合必须 exact-match，本地与远程提交身份必须相同；路径、SHA-256、重复、越界、符号链接或任一项漂移均 fail closed | Static/Unit | Automatic | Yes |
-| AC-08 | 每个 AI lane 必须绑定独立的 execution/session/PID、包装器摘要、prompt 摘要、零写入日志和终态运行记录；报告、记录和日志的任一路径组件不得为符号链接 | Review evidence/Unit | Automatic | Yes |
+| ID | Class | Lane | Requirement | Verification layer | Mode | Blocking |
+| --- | --- | --- | --- | --- | --- | --- |
+| AC-01 | behavior | machine/unit | 三例固定绑定且每例恰有四路独立记录 | Unit | Automatic | Yes |
+| AC-02 | behavior | machine/unit | 全路、增量、留一路损失和 hit/miss/gap 确定性重算 | Unit | Automatic | Yes |
+| AC-03 | behavior | machine/unit | 摘要、身份、范围、来源、人工分钟或消融篡改 fail closed | Unit | Automatic | Yes |
+| AC-04 | behavior | machine/static | 结果不含授权、声明或 ResearchTrace/ClaimStatus 依赖 | Static/Unit | Automatic | Yes |
+| AC-05 | behavior | machine/local-runtime | 消融边界复审必须在冻结输入上由 Luna L3 零写入审阅进程产出持久化 `PASS` 报告和运行记录 | Review evidence/Unit | Automatic | Yes |
+| AC-06 | behavior | machine/local-runtime | 身份与合同复审必须在同一冻结输入上由 Sol L4 独立零写入审阅进程产出持久化 `PASS` 报告和运行记录 | Review evidence/Unit | Automatic | Yes |
+| AC-07 | behavior | machine/static | 冻结清单必须使用 `r1-regression-evaluation-v11` 固定 profile，必需输入集合必须 exact-match，本地与远程提交身份必须相同；路径、SHA-256、重复、越界、符号链接或任一项漂移均 fail closed | Static/Unit | Automatic | Yes |
+| AC-08 | behavior | machine/local-runtime | 每个 AI lane 必须绑定独立的 execution/session/PID、包装器摘要、prompt 摘要、零写入日志和终态运行记录；报告、记录和日志的任一路径组件不得为符号链接 | Review evidence/Unit | Automatic | Yes |
 
 ## Human acceptance
 

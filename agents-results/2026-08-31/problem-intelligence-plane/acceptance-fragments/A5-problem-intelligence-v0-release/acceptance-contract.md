@@ -13,6 +13,7 @@
 - Decision refs: decision.problem-intelligence.amendment@2
 - Assumption IDs: none
 - Invalidation keys: release.problem-intelligence.v0
+- AC budget: 5
 - Baseline identity: origin/main@3f1b69b5ab315442591f40295b036cd0d072be4e
 - Human acceptance workspace: acceptance/human/A5-problem-intelligence-v0-release
 - UI Change declaration: none
@@ -71,13 +72,13 @@ And GitHub delivery may be claimed only after the final local HEAD equals origin
 
 ## Acceptance criteria
 
-| ID | Requirement | Verification layer | Mode | Blocking |
-| --- | --- | --- | --- | --- |
-| AC-01 | A5 严格绑定已接受 Q1 证据、政策、实现、保护测试、节点、执行合同、v5 冻结清单、台账和双独立审阅身份 | Unit | Automatic | Yes |
-| AC-02 | 仅允许仓库源级交付，完整列出数学、文献、新颖性、校准、生产和研究结论禁止项 | Unit | Automatic | Yes |
-| AC-03 | A5 要求 GitHub `main` 的推送后远端 SHA 回读，推送前不声称交付 | Unit/Release | Automatic | Yes |
-| AC-04 | 发布决定的合同、分根验收记录、SSOT、快照与严格验证均通过 | Contract/SSOT | Automatic | Yes |
-| AC-05 | Q1 非当前接受态时 A5 必须为 BLOCKED、源码交付授权为假且旧运行仅作为历史证据 | Unit | Automatic | Yes |
+| ID | Class | Lane | Requirement | Verification layer | Mode | Blocking |
+| --- | --- | --- | --- | --- | --- | --- |
+| AC-01 | behavior | machine/unit | A5 严格绑定已接受 Q1 证据、政策、实现、保护测试、节点、执行合同、v5 冻结清单、台账和双独立审阅身份 | Unit | Automatic | Yes |
+| AC-02 | behavior | machine/static | 仅允许仓库源级交付，完整列出数学、文献、新颖性、校准、生产和研究结论禁止项 | Unit | Automatic | Yes |
+| AC-03 | behavior | release | A5 要求 GitHub `main` 的推送后远端 SHA 回读，推送前不声称交付 | Unit/Release | Automatic | Yes |
+| AC-04 | behavior | release | 发布决定的合同、分根验收记录、SSOT、快照与严格验证均通过 | Contract/SSOT | Automatic | Yes |
+| AC-05 | behavior | machine/unit | Q1 非当前接受态时 A5 必须为 BLOCKED、源码交付授权为假且旧运行仅作为历史证据 | Unit | Automatic | Yes |
 
 ## Human acceptance
 

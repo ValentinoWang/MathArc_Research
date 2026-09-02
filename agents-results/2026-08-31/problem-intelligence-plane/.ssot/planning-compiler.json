@@ -25,11 +25,7 @@
       "sha256": "d205bcf1cd5a0f0045f97dc7f79cc424b2579a946b967f5196c16bc622846014"
     }
   ],
-  "external_systems": [
-    "arxiv-api",
-    "crossref-api",
-    "openalex-api"
-  ],
+  "external_systems": [],
   "acceptance_layers": [
     "source",
     "static-test",

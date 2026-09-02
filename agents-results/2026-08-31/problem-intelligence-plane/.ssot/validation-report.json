@@ -1,89 +1,29 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-02T17:48:41.029160+00:00",
+  "generated_at": "2026-09-02T18:58:03.515386+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
-    "commit": "dafc0f0eceace7a09d5871d2952913ec05de678b",
-    "dirty": true,
-    "dirty_files": [
-      "AGENTS.md",
-      "HARNESS-LAYERING.md",
-      "Harness-Engineering-SSOT-A+C-Link-Mode-\\345\\274\\200\\345\\217\\221\\346\\226\\271\\346\\241\\210.md",
-      "README.md",
-      "Users/vsiyo/.codex/worktrees/harness-delivery-console-v2/actions-v041/tools/console/templates/workbench-sync.service",
-      "Users/vsiyo/.codex/worktrees/harness-delivery-console-v2/actions-v041/tools/console/templates/workbench-sync.timer",
-      "Users/vsiyo/.codex/worktrees/harness-delivery-console-v2/actions-v041/tools/console/tests/test_project_actions_extended.py",
-      "agents-results/2026-09-01/harness-delivery-console-v2/README.md",
-      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/athlete-os.json",
-      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/harness-engineering.json",
-      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/hongru.json",
-      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/index.json",
-      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/matharc.json",
-      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/skills-index.json",
-      "agents-results/2026-09-01/harness-delivery-console-v2/harness-console-legacy.html",
-      "agents-results/2026-09-01/harness-delivery-console-v2/harness-console.html",
-      "agents-results/2026-09-01/harness-delivery-console-v2/index.html",
-      "agents-results/2026-09-01/harness-delivery-console-v2/manifest.json",
-      "agents-results/2026-09-01/harness-delivery-console-v2/reference-workbench.html",
-      "agents-results/2026-09-01/harness-delivery-console-v2/version.json",
-      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/static/runs/20260901T201122Z-main-e965c5/evidence/commands.txt",
-      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/static/runs/20260901T201122Z-main-e965c5/result.md",
-      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/unit/runs/20260901T201121Z-main-e965c5/evidence/commands.txt",
-      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/unit/runs/20260901T201121Z-main-e965c5/result.md",
-      "agents-results/2026-09-01/manual-acceptance-log-v0-1/ssot-development-paths.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/ssot-development-paths.md",
-      "agents-results/2026-09-01/product-aware-frontend-design-v0-3/ssot-development-paths.md",
-      "agents-results/2026-09-02/delivery-console-html-export/page-conservation.json",
-      "agents-results/2026-09-02/delivery-console-html-export/parallel-development/contract-guard/worker.log",
-      "agents-results/2026-09-02/delivery-console-html-export/parallel-development/route-model/worker.log",
-      "agents-results/2026-09-02/harness-console-skill-catalog/acceptance/machine/e2e/runs/20260902T140000Z-local-chromium-skill/evidence/screenshot-manifest.json",
-      "agents-results/2026-09-02/harness-console-skill-catalog/acceptance/machine/e2e/runs/20260902T140000Z-local-chromium-skill/evidence/screenshots/desktop-1440x900.png",
-      "agents-results/2026-09-02/harness-console-skill-catalog/acceptance/machine/e2e/runs/20260902T140000Z-local-chromium-skill/evidence/screenshots/mobile-390x844.png",
-      "agents-results/2026-09-02/harness-delivery-console-v2/.ssot/validation-report.json",
-      "agents-results/2026-09-02/harness-delivery-console-v2/ssot-development-paths.md",
-      "console/templates/workbench-sync.service",
-      "console/templates/workbench-sync.timer",
-      "console/tests/test_project_actions_extended.py",
-      "tools/console/README.md",
-      "tools/console/generate_console.py",
-      "tools/console/generated/console-data/athlete-os.json",
-      "tools/console/generated/console-data/harness-engineering.json",
-      "tools/console/generated/console-data/hongru.json",
-      "tools/console/generated/console-data/index.json",
-      "tools/console/generated/console-data/matharc.json",
-      "tools/console/generated/console-data/skills-index.json",
-      "tools/console/generated/index.html",
-      "tools/console/generated/manifest.json",
-      "tools/console/generated/reference-workbench.html",
-      "tools/console/generated/version.json",
-      "tools/console/requirements.txt",
-      "tools/console/route_contract.py",
-      "tools/console/skill_catalog.py",
-      "tools/console/smoke.mjs",
-      "tools/console/tests/test_artifact_sync.py",
-      "tools/console/tests/test_generate_console.py",
-      "tools/console/tests/test_page_conservation.py",
-      "tools/console/tests/test_route_contract.py",
-      "tools/console/tests/test_skill_catalog.py"
-    ],
-    "dirty_diff_sha256": "c926f2647c38bdd303367d02673ff60a7d7098ebabb4e978e46b3ca83abda421",
+    "commit": "013ccf160574b561310b4a3b33f77e81f06ab7ad",
+    "dirty": false,
+    "dirty_files": [],
+    "dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
-    "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
-    "skill_sha256": "1258fdc3c4229cebd7c4a9c1c3818cdcf2b9c4637d08d9a99de1e105a42765c1",
-    "checker_bundle_sha256": "df7a265bb038c401c7fe82c76386f1e9bf10801d6f9d86b55520fba3d29a04da"
+    "skill_realpath": "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths",
+    "skill_sha256": "dab28737e77d796c3f07e7fbf3a74245f49f154621c7ef343b69582a6cd44f1c",
+    "checker_bundle_sha256": "81daee0a5fda0e664d548fa1bc689c1ae3061e09b71908162fc7b4cd65f4f4ae"
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "tree_commit": "dfc0acfc2e3c0179c44b6ccfef17d0abf1663459",
-    "project_commit": "dfc0acfc2e3c0179c44b6ccfef17d0abf1663459",
+    "tree_commit": "0e53f0bcd9664dec169e1227431ba8c2d6b0cd2a",
+    "project_commit": "0e53f0bcd9664dec169e1227431ba8c2d6b0cd2a",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "03c44c650957c98b2fe5555f2dc2eb7ff4c917c0048726c00d3643fe4462b815",
+    "project_dirty_diff_sha256": "329fcf3a90a46e3bb87969885bc54a948eeb8716c70e5853cf6655298c5852b5",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "6ba325dc05132f40835311a1622f1ab05a2a94b9f6f541ab7679cd589b27886a",
-    "content_sha256": "6ba325dc05132f40835311a1622f1ab05a2a94b9f6f541ab7679cd589b27886a",
+    "sha256": "e7db4374019dbc638ca2f18194748c5ab25af1d0510b5d43746940dd2e22172b",
+    "content_sha256": "e7db4374019dbc638ca2f18194748c5ab25af1d0510b5d43746940dd2e22172b",
     "manifest_sha256": "5b72515e7da9d062a5ee3a30df70cc8f1ce9798e6150226bd5a8cc382f9f33fa",
     "manifest_identity_sha256": "5b72515e7da9d062a5ee3a30df70cc8f1ce9798e6150226bd5a8cc382f9f33fa"
   },
@@ -92,7 +32,7 @@
       "id": "runtime-skill-provenance",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/tools/harnessctl.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/tools/harnessctl.py",
         "doctor",
         "--project",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
@@ -107,31 +47,31 @@
       "id": "complexity",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/planning-compiler.json"
       ],
-      "exit_code": 1,
-      "result": "failed",
-      "output": "SSOT complexity check failed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/planning-compiler.json\n- acceptance-fragments/A4-topic-observation-dogfood/acceptance-contract.md missing metadata: AC budget\n- acceptance-fragments/A4-topic-observation-dogfood/acceptance-contract.md Acceptance criteria missing table headers: class\n- acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md missing metadata: AC budget\n- acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md Acceptance criteria missing table headers: class\n- acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md missing metadata: AC budget\n- acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md Acceptance criteria missing table headers: class\n- acceptance-fragments/R1-regression-evaluation/acceptance-contract.md missing metadata: AC budget\n- acceptance-fragments/R1-regression-evaluation/acceptance-contract.md Acceptance criteria missing table headers: class\n",
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT complexity check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/planning-compiler.json (depth=L2, releases=7, nodes=25, workers=0, contracts=11, criteria=44)\n",
       "class": "self-consistency"
     },
     {
       "id": "source-requirements",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_coverage.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_coverage.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
-      "exit_code": 1,
-      "result": "failed",
-      "output": "ERROR: planning-compiler.external_systems[0] must be an object\nERROR: planning-compiler.external_systems[1] must be an object\nERROR: planning-compiler.external_systems[2] must be an object\nERROR: governance.design_acceptance_contract_ref escapes project root\nERROR: governance.runtime_visual_verification_ref escapes project root\nERROR: governance.visual_collaboration_contract_ref escapes project root\n",
+      "exit_code": 0,
+      "result": "passed",
+      "output": "source requirement registry passed: mode=strict covered=21/21\n",
       "class": "world-verification"
     },
     {
       "id": "render",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
         "--check",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
@@ -144,7 +84,7 @@
       "id": "machine-program",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
       "exit_code": 0,
@@ -156,7 +96,7 @@
       "id": "acceptance-contracts",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_acceptance_contracts.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_acceptance_contracts.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
         "--project-root",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research"
@@ -170,7 +110,7 @@
       "id": "parallelism-analysis",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
       "exit_code": 0,
@@ -182,7 +122,7 @@
       "id": "structure",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md"
       ],
       "exit_code": 0,
@@ -194,7 +134,7 @@
       "id": "facts",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_facts.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_facts.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md",
         "--allow-legacy"
       ],
@@ -207,7 +147,7 @@
       "id": "source-requirement-conservation",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_conservation.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_conservation.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
       "exit_code": 0,
@@ -219,7 +159,7 @@
       "id": "chinese-readability",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_chinese_readability.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/check_chinese_readability.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md"
       ],
@@ -232,7 +172,7 @@
       "id": "execution-ledger",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
         "--project-root",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research"
@@ -246,7 +186,7 @@
       "id": "push-gate",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_push_gate.py",
+        "/private/tmp/matharc-harness-validate.mQ2VTj/Core/skills/report-to-ssot-development-paths/scripts/check_push_gate.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
         "--project-root",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research"
@@ -254,22 +194,6 @@
       "exit_code": 0,
       "result": "passed",
       "output": "push gate check skipped: not opted in\n",
-      "class": "policy"
-    },
-    {
-      "id": "archive-check",
-      "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
-        "--source",
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-        "--project-root",
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-        "--check"
-      ],
-      "exit_code": 0,
-      "result": "passed",
-      "output": "{\n  \"status\": \"verified\",\n  \"source\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane\",\n  \"destination\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-08-31/matharc-research/problem-intelligence-plane\",\n  \"project_name\": \"matharc-research\",\n  \"ssot_name\": \"problem-intelligence-plane\",\n  \"snapshot_date\": \"2026-08-31\",\n  \"main_document\": \"ssot-development-paths.md\",\n  \"file_count\": 2,\n  \"contains_openproblem\": true\n}\n",
       "class": "policy"
     }
   ],
@@ -521,5 +445,6 @@
     "scheduling_model": "event-driven",
     "static_waves_are_authority": false
   },
-  "result": "fail"
+  "skipped_checks": [],
+  "result": "pass"
 }

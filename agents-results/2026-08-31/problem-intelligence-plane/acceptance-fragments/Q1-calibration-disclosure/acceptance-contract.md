@@ -13,6 +13,7 @@
 - Decision refs: decision.problem-intelligence.amendment@2
 - Assumption IDs: none
 - Invalidation keys: validation.problem-intelligence.calibration-disclosure
+- AC budget: 5
 - Baseline identity: origin/main@3f1b69b5ab315442591f40295b036cd0d072be4e
 - Human acceptance workspace: acceptance/human/Q1-calibration-disclosure
 - UI Change declaration: none
@@ -70,13 +71,13 @@ And it returns a passive non-public policy record
 
 ## Acceptance criteria
 
-| ID | Requirement | Verification layer | Mode | Blocking |
-| --- | --- | --- | --- | --- |
-| AC-01 | 三例、主题、R1 evidence、R1 夹具字节和内容身份被严格闭合 | Unit | Automatic | Yes |
-| AC-02 | 未校准标记、科学优先级与传播准备度保持双轨分离 | Unit | Automatic | Yes |
-| AC-03 | 身份、状态、优先级、限制、字段或摘要篡改均 fail closed | Unit | Automatic | Yes |
-| AC-04 | 工件不授权公开发布，不依赖声明、新颖性或统计性能能力 | Static/Unit | Automatic | Yes |
-| AC-05 | R1 非当前接受态时 Q1 必须为 BLOCKED，且不得复用旧机器、AI 或人工接受结果 | Unit | Automatic | Yes |
+| ID | Class | Lane | Requirement | Verification layer | Mode | Blocking |
+| --- | --- | --- | --- | --- | --- | --- |
+| AC-01 | behavior | machine/unit | 三例、主题、R1 evidence、R1 夹具字节和内容身份被严格闭合 | Unit | Automatic | Yes |
+| AC-02 | behavior | machine/unit | 未校准标记、科学优先级与传播准备度保持双轨分离 | Unit | Automatic | Yes |
+| AC-03 | behavior | machine/unit | 身份、状态、优先级、限制、字段或摘要篡改均 fail closed | Unit | Automatic | Yes |
+| AC-04 | behavior | machine/static | 工件不授权公开发布，不依赖声明、新颖性或统计性能能力 | Static/Unit | Automatic | Yes |
+| AC-05 | behavior | machine/unit | R1 非当前接受态时 Q1 必须为 BLOCKED，且不得复用旧机器、AI 或人工接受结果 | Unit | Automatic | Yes |
 
 ## Human acceptance
 
