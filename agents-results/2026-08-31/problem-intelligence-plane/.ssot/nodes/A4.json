@@ -4,7 +4,7 @@
   "stage": "P3",
   "work_kind": "validation",
   "domain_lane": "topic-observation",
-  "execution_state": "ACCEPTED",
+  "execution_state": "INVALIDATED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",

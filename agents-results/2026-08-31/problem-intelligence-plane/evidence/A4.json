@@ -1,47 +1,55 @@
 {
-  "evidence_id": "EV-A4-ACCEPTED-3",
+  "evidence_id": "EV-A4-REOPENED-4",
   "task_id": "A4",
   "consumed_evidence": ["EV-T2-ACCEPTED-1"],
+  "historical_acceptance": {
+    "evidence_id": "EV-A4-ACCEPTED-3",
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/history/A4-accepted-3.json",
+    "sha256": "0e22f563f17c00506ba7d482e8addb37b5e72ce52194c5e4d876ad8abbfc153b",
+    "disposition": "audit-only; superseded by the frozen independent review campaign"
+  },
   "source_identity": {
-    "approved_baseline": "b4c6d3676428a2fb1f43a81978f8c9364b8ab8fa",
-    "head": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
-    "remote_main": "b70bac26f01046cba5d219395e48b8c5a8515815",
-    "repair_commit": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
-    "implementation_candidate": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
-    "delivery_readback": "b70bac26f01046cba5d219395e48b8c5a8515815"
+    "reviewed_head": "d77e5c12d0c7d76df39742065687d01cdf8aa7b4",
+    "state_transition_baseline": "5e06216edbb36e42b5b5c6686e6792c84959f9da",
+    "identity_policy": "Git heads are provenance only; the replacement acceptance contract will use consumed-content digests."
   },
-  "contract": {"path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A4-topic-observation-dogfood/acceptance-contract.md", "version": 2, "sha256": "4b7ac7ea035d59be7c87fef9867b97529f8b00f68c207d7460963cd625095c84"},
-  "human_binding": {"path": "acceptance/human/A4-topic-observation-dogfood/binding.md", "sha256": "7b299dff38c8c36b9041c8f121b28dc0b70a6539c894081bd4111dab17b4cc78"},
-  "human_checklist": {"path": "acceptance/human/A4-topic-observation-dogfood/checklist.md", "sha256": "cd57b8e24177664d0796084d81cda6891703a9fe7a6b5a958dbd943cfc180593"},
-  "acceptance_self_check": "pass",
-  "acceptance_commands": ["make ci-full PYTHON=.venv/bin/python", "node scripts/console_browser_gate.mjs", "git diff --check", "git ls-remote origin refs/heads/main"],
-  "test_summary": {"full_local_ci": "513 passed, 2 skipped", "smt": "20 executed, 0 skipped", "browser": "52 cases x 2 campaigns x 6 widths; mobile/keyboard/SSE/M2 passed", "result": "passed"},
-  "acceptance_matrix": {
-    "three_source_pinned_archives_and_nonpromotion_boundary": "pass",
-    "restart_replay_deduplication_budget_and_manual_queue_closure": "pass",
-    "legacy_state_and_archive_recovery_fail_closed_without_rewrite": "pass",
-    "input_projection_and_item_disposition_coordinated_tampering_fail_closed": "pass",
-    "current_main_and_remote_readback": "pass",
-    "offline_nonmathematical_nonpublic_boundary": "pass"
-  },
-  "independent_ai_reviews": {
-    "review_run": "acceptance/release/runs/A4-formal-20260901-current",
+  "independent_ai_review_campaign": {
+    "campaign_id": "A4-remediation-review-d77e5c1",
+    "dispatch_path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/dispatch.json",
+    "dispatch_sha256": "d0b9e37eddf1e0debef63fc20ba414ea954a3b167d1336ff7f75855e0def62d1",
     "lanes": [
-      {"lane": "identity-readiness", "path": "acceptance/release/runs/A4-formal-20260901-current/evidence/review-lanes/identity-review.md", "sha256": "28410474cc3b801807109a4d05b8f9317ec85c8cb107e1462f6cd3cff651ae2b", "verdict": "FAILED_PRE_SYNTHESIS"},
-      {"lane": "archive-state", "path": "acceptance/release/runs/A4-formal-20260901-current/evidence/review-lanes/archive-review-fresh.md", "sha256": "0e1c76b5a16b250425d26100f3717f34077d3c9e0ac843657182c751e4ba3fa4", "verdict": "VERIFIED"},
-      {"lane": "regression", "path": "acceptance/release/runs/A4-formal-20260901-current/evidence/review-lanes/regression-review.md", "sha256": "9b05d090d8e093e56cc89c00d0679cd6d4c2f0a5fe6c73c7d22760f49c8089ac", "verdict": "PASS"}
+      {
+        "lane": "luna-zero-write",
+        "return_path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/returns/A4-review-luna.json",
+        "return_sha256": "a56f2811d75e55ad5b076ccc159327a8b0b2d397b5eb45c731cae012299180af",
+        "verdict": "FAIL"
+      },
+      {
+        "lane": "sol-zero-write",
+        "return_path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/returns/A4-review-sol.json",
+        "return_sha256": "2febef29c40b630b47d2005d4abcc0a445d5412027f11d110171faaa630da50f",
+        "verdict": "FAIL"
+      }
     ],
-    "disposition": "Identity findings were closed by the current serial result, human run, committed contract/binding/checklist, evidence, and node update."
+    "convergence": "FAILED_IMPLEMENTATION"
   },
-  "acceptance_release_record": {
-    "run_root": "acceptance/release/runs/A4-formal-20260901-current",
-    "formal_acceptance_result": "acceptance/release/runs/A4-formal-20260901-current/result.md",
-    "formal_acceptance_result_sha256": "4274154df28e06d3f396be57671294ac35c72b26b64cfbb4652dcae837249182",
-    "status": "ACCEPTED",
-    "human_acceptance": "acceptance/human/A4-topic-observation-dogfood/runs/20260901T141500Z-local-a4f002/result.md",
-    "human_acceptance_sha256": "e09f6b8cf4b40604e621a72f01b01c81d7ccae82f04aa327bc61ebc9d605ad9d",
-    "boundary": "离线、来源固定、非数学证明、非公开发布；不构成外部文献确认、生产/设备证据或公开研究授权。"
+  "blocking_findings": [
+    "P1: newly created nested runner roots are not durably linked component by component",
+    "P1: pre-import budget evidence blocks a valid strictly later PENDING-to-OBSERVED transition",
+    "P1: processed replay fails after its historical PENDING observation becomes OBSERVED",
+    "P2: incomplete PENDING retries can rewrite immutable source metadata and digest"
+  ],
+  "acceptance_self_check": "blocked",
+  "reuse_identity": {
+    "status": "BLOCKED",
+    "reason": "No content-digest-bound A4 v3 candidate exists until the implementation findings are repaired and independently re-reviewed."
   },
-  "proposed_state": "ACCEPTED",
-  "unverified_items": ["Live external literature retrieval", "Independent mathematical proof review", "Production/device behavior", "Statistical performance or generalization", "Public research release authorization"]
+  "proposed_state": "BLOCKED",
+  "required_next_actions": [
+    "repair the four confirmed implementation findings without weakening protected tests",
+    "run focused tests, strict mypy, and full local CI",
+    "run fresh independent zero-write reviews against frozen consumed-content identities",
+    "obtain explicit human approval before formal A4 acceptance"
+  ],
+  "boundary": "No mathematical proof, external literature confirmation, production/device evidence, or public release authority is claimed."
 }

@@ -77,7 +77,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
 
-当前计划状态是“治理已对账、决定版本 2 已接受；A4 已在离线、来源固定范围内接受，R1、Q1 和 A5 因当前身份链失效而等待严格串行重验”。当前 A4 接受证据（`EV-A4-ACCEPTED-3`）已落盘；R1 只比较固定四路回归记录，Q1 只记录未校准披露政策，A5 只记录受限的仓库源级发布决定。任一层的工程接受都不构成数学证明、外部文献确认、生产或设备证据、部署完成或公开研究授权。
+当前计划状态是“治理已对账、决定版本 2 已接受；A4 因双独立 AI 复核确认实现缺陷而失效，R1、Q1 和 A5 继续失效”。当前 A4 重开证据（`EV-A4-REOPENED-4`）已落盘；历史 A4 接受证据（`EV-A4-ACCEPTED-3`）只作审计材料。R1 只比较固定四路回归记录，Q1 只记录未校准披露政策，A5 只记录受限的仓库源级发布决定。任一层的工程接受都不构成数学证明、外部文献确认、生产或设备证据、部署完成或公开研究授权。
 
 ## 七、权威边界与剩余不确定性路由
 
@@ -136,8 +136,8 @@ main_thread_policy: orchestration-only
 main_thread_source_write: false
 planning source: .ssot/planning-compiler.json
 machine source: .ssot/manifest.json
-current pushed baseline: main@3f1b69b5ab315442591f40295b036cd0d072be4e
-current worktree: active R1/Q1/A5 reacceptance candidate; query git status for the live file set
+current pushed baseline: main@5e06216edbb36e42b5b5c6686e6792c84959f9da
+current worktree: A4 invalidation state transition; query git status for the live file set
 ```
 
 ### 发布、基线与候选
@@ -221,8 +221,8 @@ current worktree: active R1/Q1/A5 reacceptance candidate; query git status for t
 | A3 | P2 | 1/1/1/1/2 | ACCEPTED | 0 | 验收负责人 | EG-PLAN | 未审计结果不得授权的专项证据通过 | source:accepted | T1 |
 | T1 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 游标重放、去重和人工通道专项及独立 AI 复审通过 | source:accepted | T2 |
 | T2 | P3 | 1/1/1/1/2 | ACCEPTED | 0 | 主题观测负责人 | EG-PLAN | 三个固定来源档案、重放、预算和人工闭环均通过独立 AI 复审 | source:accepted | A4 |
-| A4 | P3 | 1/1/1/1/2 | ACCEPTED | 3 | 验收负责人 | EG-PLAN | 离线、来源固定的正式验收已绑定当前 A4 实现身份 | evidence:EV-A4-ACCEPTED-3 | R1 |
-| R1 | P4 | 1/1/1/1/2 | INVALIDATED | 5 | 评测负责人 | EG-PLAN | 新 A4 身份已就绪；等待候选提交、全量冻结清单和双独立 AI PASS | evidence:EV-R1-REOPENED-5 | Q1 |
+| A4 | P3 | 1/1/1/1/2 | INVALIDATED | 4 | 验收负责人 | EG-PLAN | 双独立 AI 复核确认四项实现缺陷；等待修复、重验和明确人工批准 | evidence:EV-A4-REOPENED-4 | R1 |
+| R1 | P4 | 1/1/1/1/2 | INVALIDATED | 5 | 评测负责人 | EG-PLAN | 等待 A4 重新接受；R1 v11 当前保持字节不变 | evidence:EV-R1-REOPENED-5 | Q1 |
 | Q1 | P4 | 1/1/1/1/2 | INVALIDATED | 3 | 研究负责人 | EG-PLAN | 等待新 R1 正式接受后重做披露验收 | evidence:EV-Q1-REOPENED-3 | A5 |
 | A5 | P4 | 1/1/1/1/2 | INVALIDATED | 3 | 研究负责人和仓库所有者 | EG-PLAN | 等待新 Q1 正式接受后重做受限源级发布验收 | evidence:EV-A5-REOPENED-3 | 无 |
 
@@ -243,7 +243,7 @@ current worktree: active R1/Q1/A5 reacceptance candidate; query git status for t
 | A3 | acceptance.problem-intelligence.status-novelty | validation | novelty-audit | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | S2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.status-novelty | evidence-only | 验收负责人 |
 | T1 | implementation.problem-intelligence.topic-observation | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | A3 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.topic-observation | implementation | 主题观测负责人 |
 | T2 | implementation.problem-intelligence.dogfood-archives | implementation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T1 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.dogfood-archives | implementation | 主题观测负责人 |
-| A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | ACCEPTED | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
+| A4 | acceptance.problem-intelligence.dogfood | validation | topic-observation | INVALIDATED | NOT_APPLICABLE | n/a | FORMAL | T2 | none | none | decision.problem-intelligence.amendment@2 | acceptance.problem-intelligence.dogfood | evidence-only | 验收负责人 |
 | R1 | implementation.problem-intelligence.regression | implementation | evaluation | INVALIDATED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
 | Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | INVALIDATED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
 | A5 | release.problem-intelligence.v0 | release-decision | governance | INVALIDATED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
@@ -274,7 +274,7 @@ current worktree: active R1/Q1/A5 reacceptance candidate; query git status for t
 
 | Frontier | Task ID | Eligibility | Unsatisfied hard dependencies | Active assumptions | Resource decision |
 |---|---|---|---|---|---|
-| R1 | R1 | blocked | 已提交的候选身份、全量冻结清单与两条独立持久化 PASS 报告 | none | A4 已接受；R1 必须先闭合，Q1/A5 不得越级 |
+| A4 | A4 | blocked | 四项实现缺陷修复、完整 local CI、内容摘要冻结、独立复核和人工批准 | none | R1 v11 保持不变；Q1/A5 不得越级或由 AI 代签 |
 
 ### 波前指标
 
@@ -317,7 +317,7 @@ current worktree: active R1/Q1/A5 reacceptance candidate; query git status for t
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
 
-并行宽度的逻辑目标由独立交付物决定；A4 已在自身合同边界内接受，R1、Q1 和 A5 仍须按硬依赖串行重验。所有接受记录都只证明本地、固定来源、固定样本和受限发布决定，不向数学证明、外部文献确认、生产或公开发布延伸。
+并行宽度的逻辑目标由独立交付物决定；A4 当前失效并进入修复，R1、Q1 和 A5 仍须等待其硬依赖恢复。所有历史接受记录都只证明对应旧身份下的本地、固定来源、固定样本和受限发布决定，不向数学证明、外部文献确认、生产或公开发布延伸。
 
 ### 假设与冲突登记
 
@@ -470,10 +470,10 @@ flowchart LR
   Q1 --> A5[A5 v0 发布决定]
   classDef accepted fill:#e7f5ec,stroke:#277a46,color:#173d28
   classDef invalidated fill:#fff0f0,stroke:#b23b3b,color:#5e1f1f
-  class CHARTER,F1,D1,D2,A1,L1,L2,A2,S1,S2,A3,T1,T2,A4 accepted
-  class R1,Q1,A5 invalidated
+  class CHARTER,F1,D1,D2,A1,L1,L2,A2,S1,S2,A3,T1,T2 accepted
+  class A4,R1,Q1,A5 invalidated
 ```
 
 ### 结论与当前停止点
 
-当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2、A4 保持接受；R1、Q1、A5 尚未在当前身份下重新接受。不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。
+当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2 保持接受；A4、R1、Q1、A5 均为 `INVALIDATED`。当前停止点是 A4 的四项实现修复与重验，不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。
