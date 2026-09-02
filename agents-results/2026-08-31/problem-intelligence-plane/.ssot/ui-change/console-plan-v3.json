@@ -1,0 +1,174 @@
+{
+  "schema_version": "1.2.0",
+  "ui_change_id": "problem-intelligence-console-plan-v3",
+  "kind": "modify-surface",
+  "user_visible": true,
+  "source_authority_mode": "strict",
+  "source_requirements_ref": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/source-requirements.json",
+    "entity_id": "problem-intelligence-console-source-requirements-v3",
+    "canonical_digest": "a9f131f78314ad73df35b309d8af6e3eb647f6dd233ac68acba1334bab97a0cf"
+  },
+  "affected_surfaces": [
+    {
+      "surface_id": "problem-intelligence-console",
+      "resolved_surface_contract_ref": {
+        "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
+        "entity_id": "problem-intelligence-console-resolved-surface-v3",
+        "canonical_digest": "ff98667237e86dc28b3383e35658f5317333e7876e15f930eec64375a243a1c6"
+      }
+    }
+  ],
+  "product_context_ref": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
+    "entity_id": "problem-intelligence-console-product-context-v3",
+    "canonical_digest": "ff98667237e86dc28b3383e35658f5317333e7876e15f930eec64375a243a1c6"
+  },
+  "role_context_refs": [
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
+      "entity_id": "problem-intelligence-console-role-context-v3",
+      "canonical_digest": "ff98667237e86dc28b3383e35658f5317333e7876e15f930eec64375a243a1c6"
+    }
+  ],
+  "screen_contract_ref": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
+    "entity_id": "problem-intelligence-console-screen-contract-v3",
+    "canonical_digest": "ff98667237e86dc28b3383e35658f5317333e7876e15f930eec64375a243a1c6"
+  },
+  "reference_prototypes": [
+    {
+      "path": "docs/prototypes/console-dev-blueprint.html",
+      "sha256": "6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f",
+      "media_type": "text/html",
+      "authority_by_dimension": {
+        "information_architecture": "normative",
+        "visual_tokens": "normative",
+        "layout": "normative",
+        "interaction_behavior": "normative",
+        "seed_data": "illustrative",
+        "runtime_side_effects": "simulated"
+      }
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/console-visual-baseline/authority/problem-intel-console-31bb970.html",
+      "sha256": "7809b144c49c63b8a3f7cc2975e2ea8c933284fc48c7bf8e38a0f52f07014814",
+      "media_type": "text/html",
+      "authority_by_dimension": {
+        "information_architecture": "normative",
+        "visual_tokens": "normative",
+        "layout": "normative",
+        "interaction_behavior": "informative",
+        "seed_data": "illustrative",
+        "runtime_side_effects": "simulated"
+      }
+    }
+  ],
+  "capture_matrix": {
+    "routes": [
+      "view:portfolio",
+      "view:dossier",
+      "view:cert",
+      "view:frontier",
+      "view:radar",
+      "view:source",
+      "view:novelty",
+      "view:difficulty",
+      "view:dag",
+      "view:disclosure",
+      "view:campaigns",
+      "view:campaign",
+      "view:exploration",
+      "view:conjecture",
+      "view:routes",
+      "view:tools",
+      "view:reasoning",
+      "view:landing",
+      "view:login",
+      "view:acct_overview",
+      "view:acct_usage",
+      "view:acct_billing",
+      "view:acct_limits",
+      "view:admin_cost",
+      "view:admin_upstream",
+      "view:admin_users",
+      "view:field",
+      "view:topics",
+      "view:admin_roles",
+      "view:admin_roster",
+      "view:admin_queue",
+      "view:proofchain"
+    ],
+    "locales": [
+      "zh-CN"
+    ],
+    "themes": [
+      "system",
+      "light",
+      "dark"
+    ],
+    "viewports": [
+      "1240x1080",
+      "1366x1080",
+      "1440x1080",
+      "1536x1080",
+      "1728x1080",
+      "1920x1080",
+      "390x844",
+      "820x1180"
+    ],
+    "helper_modes": [
+      "demo-baseline",
+      "fixture-live"
+    ]
+  },
+  "interaction_matrix_ref": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
+    "entity_id": "problem-intelligence-console-interaction-matrix-v3",
+    "canonical_digest": "ff98667237e86dc28b3383e35658f5317333e7876e15f930eec64375a243a1c6"
+  },
+  "visual_evidence_types": [
+    "dom-structure",
+    "computed-style",
+    "fixed-browser-screenshot",
+    "interaction-trace"
+  ],
+  "visual_contract_ref": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/console-visual-baseline/manifest.json",
+    "entity_id": "problem-intelligence-console-visual-baseline-v1",
+    "canonical_digest": "35e287950bd91fd8c5d3c814f7b09d7d3c68dc255c575ddd3c36e1dbdb28b202"
+  },
+  "affected_entity_digests": [
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/source-requirements.json",
+      "entity_id": "problem-intelligence-console-source-requirements-v3",
+      "canonical_digest": "a9f131f78314ad73df35b309d8af6e3eb647f6dd233ac68acba1334bab97a0cf"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
+      "entity_id": "problem-intelligence-console-view-contract-v3",
+      "canonical_digest": "ff98667237e86dc28b3383e35658f5317333e7876e15f930eec64375a243a1c6"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/console-visual-baseline/manifest.json",
+      "entity_id": "problem-intelligence-console-visual-baseline-v1",
+      "canonical_digest": "35e287950bd91fd8c5d3c814f7b09d7d3c68dc255c575ddd3c36e1dbdb28b202"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/workbench/console-visual-workbench.json",
+      "entity_id": "problem-intelligence-console-visual-workbench-v1",
+      "canonical_digest": "0981c2ed35b65dfd3283302e0df200b39f9020e0c6b464a6caf3e26a12fef4ad"
+    },
+    {
+      "path": "docs/prototypes/console-dev-blueprint.html",
+      "entity_id": "problem-intelligence-console-blueprint-3353d6a",
+      "canonical_digest": "6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f"
+    },
+    {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/console-visual-baseline/authority/problem-intel-console-31bb970.html",
+      "entity_id": "problem-intelligence-console-visual-authority-31bb970",
+      "canonical_digest": "7809b144c49c63b8a3f7cc2975e2ea8c933284fc48c7bf8e38a0f52f07014814"
+    }
+  ],
+  "execution_mode": "bootstrap"
+}

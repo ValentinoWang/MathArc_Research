@@ -1,0 +1,126 @@
+【SSOT 修订规格：把控制台蓝图纳入问题情报平面 SSOT（PLAN_VERSION 3）】
+
+适用：agents-results/2026-08-31/problem-intelligence-plane
+触发时机：A5 ACCEPTED 之后（当前闭合指令 v2 的冻结解除后）。在此之前不得改 DAG。
+批准：本规格是研究负责人和仓库所有者对新增决策 D3 与本次 L2 修订的书面批准；它不构成 A6、A7 的人工 acceptance。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+0. 修订头
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- PLAN_VERSION 2 → 3；DAG_VERSION 1 → 2；INTERFACE_FREEZE_VERSION、NODE_CONTRACT_VERSION 不变。
+- 新决策键 `decision.problem-intelligence.console-slices@1`。不得给 `decision.problem-intelligence.amendment` 升版本，否则 17 个引用 @2 的节点会级联失效。
+- 复杂度预算例外（写入 planning-compiler.json 的 complexity_budget）：total_nodes 20 → 25；理由：两个控制台发布切片共 8 个节点，零 worker；批准权威：规划编排者与仓库所有者。其余上限不变（每发布实现节点 ≤3，worker 0，生成视图 1）。
+- 新宏观阶段 P5「控制台接线」、P6「本地域投影与运营域」。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. 发布切片
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+| Release ID | Macro phase | 节点 | 用户价值 | 独立验收 | 独立失败 | 开发基线 | 晋升基线 | 候选 |
+|---|---|---|---|---|---|---|---|---|
+| PI-R6 | P5 | D3、U1、U2、U3、A6 | 研究者在控制台看到的证明结构、过程链、工具台账、轮次和评审队列全部来自真实工作区，且外观与原型一致 | 门禁全绿 + 视觉一致性清单 + 人工 H-01 | 任一 live 视图与基线不一致即退回演示标注，不发布 | accepted:pi-r5-v1 | accepted:pi-r5-v1 | candidate:pi-r6-v1 |
+| PI-R7 | P6 | U4、U5、A7 | 选题投影与运营账本只读可见、边界诚实 | 投影不推断状态 + 重放字节不变 + 人工 H-01 | 未配置项显示 not_configured，不发布外部能力 | candidate:pi-r6-v1 | accepted:pi-r6-v1 | candidate:pi-r7-v1 |
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+2. 最小节点合同（五字段）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+| id | kind | goal | dependencies | acceptance | owner |
+|---|---|---|---|---|---|
+| D3 | decision-acceptance | 决定是否把控制台两个切片纳入问题情报平面修订 | A1 | 研究负责人和仓库所有者记录决定；写入 openproblem.md 工程附录 | 研究负责人和仓库所有者 |
+| U1 | contract-compile | 冻结控制台视觉基线与建设状态合同 | D3 | 基线清单落盘且哈希不可变；§5 每行绑定归属节点 | 验收负责人（用户授权） |
+| U2 | implementation | 正式化 M0 只读导出与 M1 观察站接线，并补齐 §9 缺失断言 | U1 | 门禁全绿；live 视图对基线的结构签名与样式令牌一致 | 研究基础设施负责人 |
+| U3 | implementation | 正式化 M2 评审闭环 | U2 | 真服务下 APPROVE 含非 OK 义务被拒并如实呈现；有效评审持久化后队列刷新；令牌只驻内存 | 研究基础设施负责人 |
+| A6 | validation | 验收控制台接线与视觉还原（平面③、平面②、管理端） | U2、U3 | 机器证据 + 人工 H-01 并排验收 | 验收负责人 |
+| U4 | implementation | 正式化 M3 选题投影：资料核验、四路回归、三例档案、难度、披露 | A6、A4、R1、Q1 | 投影只读；不推断开放/已解/新颖；样本不足即未校准且无总分 | 主题观测负责人 |
+| U5 | implementation | 正式化 M4 运营域本地账本 | A6 | 账本不在研究工作区；换模型换上游后历史重放逐字节不变；外部身份支付上游均 not_configured | 研究基础设施负责人 |
+| A7 | release-decision | 控制台 v0 验收与发布决定（平面①、账户端） | U4、U5、A5 | 人工 H-01；只发布已验收范围并披露未配置项 | 研究负责人和仓库所有者 |
+
+语义键：
+D3 decision.problem-intelligence.console-slices
+U1 contract.problem-intelligence.console-visual-baseline
+U2 implementation.problem-intelligence.console-readonly-wiring
+U3 implementation.problem-intelligence.console-review-loop
+A6 acceptance.problem-intelligence.console-wiring
+U4 implementation.problem-intelligence.console-local-projections
+U5 implementation.problem-intelligence.console-operations-domain
+A7 release.problem-intelligence.console-v0
+
+所有 U/A6/A7 节点 decision_refs = console-slices@1；invalidation_keys = 各自语义键；execution_actor：U 节点 codex（primary lw-luna），D3/A6/A7 human；side_effect_class：U 节点 reversible，其余 none；candidate_identity_policy：A7 must-match，其余 none。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+3. 边表（只写真实依赖）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+| From | To | type | scope | required state | 传递输入 | 必要性证明 |
+|---|---|---|---|---|---|---|
+| A1 | D3 | hard | specific-output | ACCEPTED | amendment@2 决定 | 扩展的修订必须先存在 |
+| D3 | U1 | hard | specific-output | ACCEPTED | console-slices@1 | 未批准不冻结基线 |
+| U1 | U2 | hard | specific-output | ACCEPTED | 视觉基线清单 | 一致性断言需要基线 |
+| U2 | U3 | hard | specific-output | ACCEPTED | live 数据层与门禁 | 评审面复用同一数据层 |
+| U2 | A6 | hard | specific-output | ACCEPTED | 接线证据 | 验收输入 |
+| U3 | A6 | hard | specific-output | ACCEPTED | 评审闭环证据 | 验收输入 |
+| A6 | U4 | hard | specific-output | ACCEPTED | 已验收的数据层与视觉基线 | 本地域投影复用同一壳 |
+| A4 | U4 | hard | specific-output | ACCEPTED | DL-A4 三例档案证据 | dogfood_archives_projection 的来源 |
+| R1 | U4 | hard | specific-output | ACCEPTED | DL-R1 四路回归记录 | route_regression_projection 的来源 |
+| Q1 | U4 | hard | specific-output | ACCEPTED | DL-Q1 披露政策 | disclosure 投影的来源 |
+| A6 | U5 | hard | specific-output | ACCEPTED | 已验收的数据层 | 运营域复用同一壳 |
+| U4 | A7 | hard | specific-output | ACCEPTED | 投影证据 | 验收输入 |
+| U5 | A7 | hard | specific-output | ACCEPTED | 账本证据 | 验收输入 |
+| A5 | A7 | hard | specific-output | ACCEPTED | 平面 v0 发布边界 | 控制台发布不得先于平面发布决定 |
+
+U4 与 U5 无相互依赖，写区隔离（console_topic 投影 vs operations 域），同一波次并行。
+
+波次：W16 D3；W17 U1；W18 U2；W19 U3；W20 A6；W21 U4 ∥ U5；W22 A7。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4. 视觉还原的证据机制（U1 产出，U2/U4 消费，A6/A7 人工签）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+4.1 设计权威 = `git show 31bb970:docs/prototypes/problem-intel-console.html`（实现者改写前的原型）。当前主线上的原型文件是实现载体，不是权威；live 专用组件（liveCard、projectionUnavailable 等）只能复用权威文件已有的令牌与组件类。
+
+4.2 基线清单 `evidence/console-visual-baseline/manifest.json`：以权威文件在演示模式下，对 32 个视图 × 六档宽度（1240/1366/1440/1536/1728/1920）+ 移动端 390/820 各截一张图；每格记录 PNG 的 SHA-256、视图 DOM 结构签名（.card/.grid2/.chain/.li 等类序列与计数）、样式令牌采样（字体族、颜色令牌、.card 圆角与边框）。清单哈希写入 U1 证据，之后不可变。
+
+4.3 一致性断言（新增 `scripts/console_visual_parity.mjs`，纳入 ci-full）：对 live 构建在 fixture 工作区下截同样的格：
+- 结构签名必须一致，数据驱动的行数允许不同；
+- 样式令牌采样必须逐项相等；
+- 像素差异只在导航、顶栏、卡片框等非数据区域比较，阈值写在清单里，数据区域用遮罩。
+任一 live 视图不一致：该视图退回演示标注并阻塞 A6/A7。
+
+4.4 人工 H-01：由清单生成并排画廊页（左基线、右 live），验收负责人逐视图确认后签 result.md。A6 覆盖平面③、平面②、管理端；A7 覆盖平面①、账户端。人工阻塞项每切片各 1 项，低于上游默认预算 3。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+5. §9 缺失断言补入门禁（U2 验收的一部分）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- 中英夹杂扫描：剔除 .mono/.hash 后，渲染文案中中文紧贴裸英文标识符 = 0 处。
+- 数字溯源：页面每个计数都能在响应 JSON 中找到同值或可推导来源。
+- 标注守恒：DEMO_VIEWS/DEMO_LOCAL_VIEWS 之外的视图不得出现演示标注，之内的必须出现。
+- 篡改五模式：确认门禁覆盖 edit/delete/swap/insert/rewrite 五种，缺哪种补哪种。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+6. 蓝图状态列改为生成投影（U1 交付，随节点状态刷新）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- 附C 的能力芯片规则改回：四态（待接线、部分待建、需新建、已推迟）+ 两个派生态：「已落地」= 归属节点 ACCEPTED；「已实现待验收」= 有自动化证据但归属节点未 ACCEPTED。
+- §5、§6、§8 每行加「归属节点」列（U2/U3/U4/U5），状态列由脚本 `scripts/check_blueprint_projection.py` 从 .ssot/nodes 生成并校验，手工改动即失败；该脚本纳入 validate_ssot_bundle 的视图检查。
+- 立即效果：现在所有「已落地」行退回「已实现待验收」，A6/A7 通过后自动翻回。
+- 保留门禁对蓝图五个字符串（console_routes_projection 等）的存在性断言。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+7. 验收命令（写入各节点 acceptance_commands）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+U2/U3/U4/U5 共用：
+  make ci-full PYTHON=.venv/bin/python
+  node scripts/console_browser_gate.mjs
+  node scripts/console_visual_parity.mjs
+  python3 scripts/check_blueprint_projection.py
+U2 另加：python3 -m unittest tests.test_v02_console_export tests.test_v02_console_observatory tests.test_console_prototype
+U3 另加：python3 -m unittest tests.test_v03_review_server
+U4 另加：python3 -m unittest tests.test_v02_console_topic tests.test_v02_console_local_projection
+U5 另加：python3 -m unittest tests.test_operations_ledger tests.test_v02_operations_ledger tests.test_operations_domain
+历史证据：agents-results/2026-09-01/console-publication-pipeline/ 的 verification.md 与两份 implementation-boundary 只作为 U2/U3 的输入材料引用（含提交身份），不作为验收。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+8. 执行条款（交给 agent）
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+- 在 A5 ACCEPTED 之前，只允许做一件事：把 D3 的问题写入 openproblem.md（human-decision，已由本规格拍板），不改 DAG。
+- A5 ACCEPTED 后，一次 L2 修订提交：planning-compiler、manifest、8 个节点分片、14 条边、两个切片、预算例外、view-sources、重新生成主视图；跑 validate_ssot_bundle.py；提交信息 `ssot: plan v3 add console slices PI-R6 PI-R7`。
+- U1 先于任何代码改动；基线清单来自 31bb970，不来自当前文件。
+- U 节点的实现工作大部分已存在；节点的意义是验收，不是重写。除 §9 缺失断言与视觉一致性脚本外，不得借机重构控制台。
+- 复核规则沿用闭合指令 v2：闭合式复核、传输重试一次、每节点最多一次定点修复。
+- 人工签字：A6 一次、A7 一次。

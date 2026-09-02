@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-Q1-U4",
+  "from": "Q1",
+  "to": "U4",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.calibration-disclosure.console-local-projections"],
+  "transferred_input": "已验收的难度、校准和披露策略",
+  "gate_evidence": "Q1 未校准标记与科学/传播双轨检查",
+  "reason_code": "data-dependency",
+  "necessity_proof": "本地选题投影必须遵循已验收的难度校准和分级披露边界。",
+  "transferred_artifact_ids": ["DL-Q1"],
+  "resource_ids": []
+}

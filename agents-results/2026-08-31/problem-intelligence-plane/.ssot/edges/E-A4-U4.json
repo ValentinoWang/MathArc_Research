@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-A4-U4",
+  "from": "A4",
+  "to": "U4",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.dogfood-acceptance.console-local-projections"],
+  "transferred_input": "已验收的三例真实主题档案",
+  "gate_evidence": "A4 三例档案、重放、恢复、预算和人工边界证据",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "选题投影必须以已验收的三例真实档案边界为输入。",
+  "transferred_artifact_ids": ["DL-A4"],
+  "resource_ids": []
+}

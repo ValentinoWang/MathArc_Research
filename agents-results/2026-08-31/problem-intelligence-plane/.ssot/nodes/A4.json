@@ -25,7 +25,11 @@
   "write_authority": "evidence-only",
   "acceptance_authority": "验收负责人",
   "unlocks": [
-    "R1"
+    "R1",
+    "U4"
+  ],
+  "source_requirement_refs": [
+    "SRC-PI-R6-D3-02"
   ],
   "node_role": "acceptance-gate",
   "execution_actor": "human",

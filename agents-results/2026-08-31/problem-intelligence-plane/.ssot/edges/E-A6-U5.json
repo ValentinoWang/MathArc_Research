@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-A6-U5",
+  "from": "A6",
+  "to": "U5",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.console-wiring.console-operations-domain"],
+  "transferred_input": "已验收的控制台接线和可视化范围",
+  "gate_evidence": "A6 控制台视觉、状态和交互验收证据",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "运营域实现必须在已验收的控制台接线与证据边界内展开。",
+  "transferred_artifact_ids": ["DL-A6"],
+  "resource_ids": []
+}

@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-D3-U1",
+  "from": "D3",
+  "to": "U1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.console-slices.console-visual-baseline"],
+  "transferred_input": "已接受的控制台切片决定",
+  "gate_evidence": "D3 控制台切片、范围与非目标记录",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "视觉基线合同不得脱离已接受的控制台切片范围。",
+  "transferred_artifact_ids": ["DL-D3"],
+  "resource_ids": []
+}

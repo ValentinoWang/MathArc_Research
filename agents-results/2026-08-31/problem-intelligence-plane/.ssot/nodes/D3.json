@@ -1,0 +1,42 @@
+{
+  "node_id": "D3",
+  "semantic_key": "decision.problem-intelligence.console-slices",
+  "stage": "P5",
+  "work_kind": "decision-acceptance",
+  "domain_lane": "governance",
+  "execution_state": "BLOCKED",
+  "decision_state": "ACCEPTED",
+  "decision_version": 1,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": ["A1"],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [],
+  "invalidation_keys": ["decision.problem-intelligence.console-slices"],
+  "write_authority": "isolated-record",
+  "acceptance_authority": "研究负责人和仓库所有者",
+  "unlocks": ["U1"],
+  "source_requirement_refs": [
+    "SRC-PI-R6-D3-01",
+    "SRC-PI-R6-D3-02",
+    "SRC-PI-R6-D3-03"
+  ],
+  "node_role": "acceptance-gate",
+  "execution_actor": "human",
+  "execution_contract_ref": "D3.json",
+  "deliverable_ids": ["DL-D3"],
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "read_set": ["artifact:pi-amendment-decision"],
+  "write_set": ["artifact:pi-console-slices-decision"],
+  "resource_claims": [
+    {"resource_id": "artifact:pi-amendment-decision", "mode": "R", "isolation_key": "pi-d3"},
+    {"resource_id": "artifact:pi-console-slices-decision", "mode": "W", "isolation_key": "pi-d3"}
+  ],
+  "produced_artifact_ids": ["DL-D3"],
+  "consumed_artifact_ids": ["DL-A1"],
+  "acceptance_commands": ["python3 -m unittest"],
+  "evidence_outputs": ["agents-results/2026-08-31/problem-intelligence-plane/evidence/D3.json"],
+  "actor_pool": "human-review",
+  "execution_contract_sha256": "09a859df3a30656480da763926ad58c4a3248fb1b4ca9484459d6ce48f944fde"
+}

@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-U5-A7",
+  "from": "U5",
+  "to": "A7",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.console-operations-domain.console-release"],
+  "transferred_input": "已实现的运营域账本和隔离投影",
+  "gate_evidence": "U5 账本隔离、耐久读回和 not_configured 测试",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "控制台发布决定必须检查运营账本隔离、耐久性和未配置外部能力边界。",
+  "transferred_artifact_ids": ["DL-U5"],
+  "resource_ids": []
+}

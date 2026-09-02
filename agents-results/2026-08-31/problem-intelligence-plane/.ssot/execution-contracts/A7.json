@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "contract_id": "A7",
+  "node_id": "A7",
+  "semantic_key": "release.problem-intelligence.console-v0",
+  "work_kind": "release-decision",
+  "execution_actor": "human",
+  "write_authority": "isolated-record",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "must-match",
+  "hard_dependencies": [
+    "U4",
+    "U5",
+    "A5"
+  ],
+  "read_set": [
+    "artifact:pi-console-topic-projections",
+    "artifact:pi-console-operations-ledger",
+    "artifact:pi-release-decision"
+  ],
+  "write_set": [
+    "artifact:pi-console-v0-release-decision"
+  ],
+  "acceptance_commands": [
+    "make ci-full PYTHON=.venv/bin/python"
+  ],
+  "planned_acceptance_commands": [
+    "node scripts/console_visual_parity.mjs",
+    "python3 scripts/check_blueprint_projection.py"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/A7.json"
+  ]
+}

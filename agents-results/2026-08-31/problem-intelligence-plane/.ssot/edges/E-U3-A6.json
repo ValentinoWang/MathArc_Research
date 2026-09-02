@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-U3-A6",
+  "from": "U3",
+  "to": "A6",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.console-review-loop.console-wiring-acceptance"],
+  "transferred_input": "控制台评审闭环候选及其交互证据",
+  "gate_evidence": "U3 评审提交、SSE、焦点和读回证据",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "控制台接线验收必须检查评审闭环的真实交互与读回边界。",
+  "transferred_artifact_ids": ["DL-U3"],
+  "resource_ids": []
+}

@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-U2-U3",
+  "from": "U2",
+  "to": "U3",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.console-readonly-wiring.console-review-loop"],
+  "transferred_input": "已接线的控制台只读载荷与观察站桥接",
+  "gate_evidence": "U2 API/SSE 只读接线、作用域和 fail-closed 测试",
+  "reason_code": "data-dependency",
+  "necessity_proof": "评审闭环必须复用已接线的只读作用域和载荷边界。",
+  "transferred_artifact_ids": ["DL-U2"],
+  "resource_ids": []
+}

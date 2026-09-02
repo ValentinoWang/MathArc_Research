@@ -1,0 +1,34 @@
+{
+  "schema_version": 1,
+  "contract_id": "U2",
+  "node_id": "U2",
+  "semantic_key": "implementation.problem-intelligence.console-readonly-wiring",
+  "work_kind": "implementation",
+  "execution_actor": "codex",
+  "write_authority": "implementation",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "U1"
+  ],
+  "read_set": [
+    "artifact:pi-console-visual-baseline",
+    "artifact:pi-console-blueprint-projection-contract",
+    "evidence:pi-console-publication-pipeline"
+  ],
+  "write_set": [
+    "artifact:pi-console-readonly-wiring"
+  ],
+  "acceptance_commands": [
+    "make ci-full PYTHON=.venv/bin/python",
+    "node scripts/console_browser_gate.mjs",
+    "python3 -m unittest tests.test_v02_console_export tests.test_v02_console_observatory tests.test_console_prototype"
+  ],
+  "planned_acceptance_commands": [
+    "node scripts/console_visual_parity.mjs",
+    "python3 scripts/check_blueprint_projection.py"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/U2.json"
+  ]
+}

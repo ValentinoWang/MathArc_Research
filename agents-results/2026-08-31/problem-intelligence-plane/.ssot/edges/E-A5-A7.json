@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-A5-A7",
+  "from": "A5",
+  "to": "A7",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.release.console-release"],
+  "transferred_input": "已接受的问题情报平面 v0 发布决定",
+  "gate_evidence": "A5 发布范围、限制披露和候选身份记录",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "控制台发布决定必须继承问题情报平面 v0 已接受的发布范围和限制。",
+  "transferred_artifact_ids": ["DL-A5"],
+  "resource_ids": []
+}

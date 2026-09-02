@@ -3,10 +3,10 @@
 ```yaml
 ARTIFACT_CLASS: ssot-development
 APPLICABILITY_DECISION: ssot
-GOVERNANCE_REASON: "跨文献资料、问题状态、新颖性审计和分级发布需要长期决策与五个独立发布切片；现行路线图仍是唯一工程权威。"
+GOVERNANCE_REASON: "跨文献资料、问题状态、新颖性审计、分级发布和控制台接线需要长期决策与七个独立发布切片；现行路线图仍是唯一工程权威。"
 TARGET_EVIDENCE_LEVEL: source
-PLAN_VERSION: 2
-DAG_VERSION: 1
+PLAN_VERSION: 3
+DAG_VERSION: 2
 INTERFACE_FREEZE_VERSION: 2
 NODE_CONTRACT_VERSION: 2
 SSOT_SCHEMA_VERSION: 2
@@ -20,7 +20,7 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 “问题情报平面”是研究流程中的支持层：它整理公开资料、记录问题在某个时间点的开放状态，并在产生候选结果后单独检查新颖性。它不是证明系统，也不拥有最终数学结论的晋升权。本文所说的“开放”只表示在明确资料范围和观察时间内尚未得到足够反证；它不等于永久证明问题没有答案。
 
-本计划把评审建议收敛成五个可以分别验收、分别停止的发布切片。L1 资料观察合同和 L2 资料导入已实现并完成 A2 验收；后续正式验收仍必须由各自指定负责人完成。计划不改变现有论文准备路线，也不改变正式结论的唯一晋升入口。
+本计划把评审建议收敛成七个可以分别验收、分别停止的发布切片。新增的第六、第七发布切片（`PI-R6`、`PI-R7`）仅是本计划的源级修订合同；控制台切片决定节点（`D3`）的决定内容已获用户批准，但其执行受问题情报平面发布节点（`A5`）的失效状态阻塞。任何控制台实现节点（`U1` 至 `U5`）或新增验收节点（`A6`、`A7`）都不得被本文件解释为已实现、已验收或已发布。计划不改变现有论文准备路线，也不改变正式结论的唯一晋升入口。
 
 本修订版本 2 固定机器源中的两组定义：
 
@@ -55,15 +55,16 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 
 ### 术语说明
 
-这里的“支持性小切片”是把问题情报能力明确登记为现有论文准备和资料登记的辅助发布；它不等于批准完整平台。“首个主题”是一次性观测的范围边界；修订批准记录（`decision.problem-intelligence.amendment@2`）是让后续正式消费者依赖的人工决定。
+这里的“支持性小切片”是把问题情报能力明确登记为现有论文准备和资料登记的辅助发布；它不等于批准完整平台。“首个主题”是一次性观测的范围边界；修订批准记录（`decision.problem-intelligence.amendment@2`）是让后续正式消费者依赖的人工决定。控制台的全屏入口页（`landing`、`login`）归属仍待后续产品决定，但不扩大当前阻塞范围。
 
 1. 支持性小切片路线已由研究负责人和仓库所有者接受（`decision.problem-intelligence.activation-route@2`）：范围限于现有论文准备和资料登记，不得绕过现行唯一工程决策入口。该决定供支持性小切片决定节点（`D1`）、修订接受节点（`A1`）及其正式消费者使用。
 2. 首个监测主题已由研究负责人接受（`decision.problem-intelligence.first-topic@2`）：采用并集封闭问题，并保留资料范围、预算和不宣称事项；该选择决定检索合同、三种真实档案定义和回归样本，但不预先证明任何结果新颖。该决定供首个主题决定节点（`D2`）、修订接受节点（`A1`）及主题观测切片使用。
 3. 当前路线图修订批准记录（`decision.problem-intelligence.amendment@2`）已由研究负责人和仓库所有者接受：它解锁已接受的资料底座和当前问题状态模型节点（`S1`）的正式前沿，但不替代任何后续切片各自的验收。
+4. 控制台切片决定（`decision.problem-intelligence.console-slices@1`）已由研究负责人和仓库所有者在用户规格中批准：纳入第六、第七发布切片（`PI-R6`、`PI-R7`）的范围、节点和边；这只是控制台切片决定节点（`D3`）的决定内容，该执行节点当前为阻塞（`BLOCKED`），不解锁控制台语义节点（`U1`），也不构成新增验收节点（`A6`、`A7`）的人工验收或发布。全屏入口页（`landing`、`login`）的产品归属仍待决定，但不作为控制台切片决定节点（`D3`）的当前阻塞项。
 
 活动假设（`ASM-ACTIVATION-ROUTE`）仅保留为修订批准前的可撤销隔离草稿历史，不再描述当前主视图的执行资格；所有正式消费者统一绑定修订批准记录（`decision.problem-intelligence.amendment@2`）。
 
-## 五、五个发布切片摘要
+## 五、七个发布切片摘要
 
 | 发布切片 | 业务价值 | 独立验收边界 | 失败时的处理 |
 |---|---|---|---|
@@ -72,12 +73,14 @@ SSOT_MACHINE_SOURCE: .ssot/manifest.json
 | `PI-R3` 问题状态与新颖性审计 | 分离开放状态与候选结果新颖性 | 状态对象、四路检索和失效规则通过负面测试 | 冻结完整预算和公开定性 |
 | `PI-R4` 一次性主题观测与三例档案 | 用一个主题验证重放、恢复、去重和人工闭环 | 同一游标可重放，三种失败模式各有证据 | 进入人工复核，不自动改状态 |
 | `PI-R5` 回归集、难度记录与分级披露 | 比较检索路线增量并约束发布措辞 | 小型回归、三张量表和披露模板完成 | 只报告具体命中与缺口 |
+| `PI-R6` 控制台接线 | 研究者在控制台看到真实工作区的证明结构、过程链、工具台账、轮次和评审队列，且外观与原型一致 | 门禁全绿、视觉一致性清单和人工 H-01 | 任一 live 视图与基线不一致即退回演示标注，不发布 |
+| `PI-R7` 本地域投影与运营域 | 选题投影和运营账本只读可见、边界诚实 | 不推断状态、重放字节不变和人工 H-01 | 未配置项显示 `not_configured`，不发布外部能力 |
 
 ## 六、实施路径摘要
 
-先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
+先由治理对账确认当前权威边界，再并行形成“是否启动”和“首个主题”两个选项；只有二者都被正式接受，才进入统一资料底座。资料底座验收后建立问题状态与新颖性审计竖切，再运行一次性主题观测和三份真实档案，最后才建立回归集、难度记录和分级披露。问题情报平面发布节点（`A5`）通过后，才按第十六至第二十二波（`W16` 至 `W22`）执行控制台切片决定节点（`D3`）、控制台语义至评审闭环节点（`U1`、`U2`、`U3`）、接线验收节点（`A6`）、本地域投影和运营域节点（`U4`、`U5`）以及控制台发布节点（`A7`）。每个切片都有独立失败半径，不能把后续切片的完成度倒推为前置切片已获批准。
 
-当前计划状态是“治理已对账、决定版本 2 已接受；A4 因双独立 AI 复核确认实现缺陷而失效，R1、Q1 和 A5 继续失效”。当前 A4 重开证据（`EV-A4-REOPENED-4`）已落盘；历史 A4 接受证据（`EV-A4-ACCEPTED-3`）只作审计材料。R1 只比较固定四路回归记录，Q1 只记录未校准披露政策，A5 只记录受限的仓库源级发布决定。任一层的工程接受都不构成数学证明、外部文献确认、生产或设备证据、部署完成或公开研究授权。
+当前计划状态是“治理已对账、修订接受节点（`A1`）已接受；主题观测验收、回归评测、分级披露和问题情报平面发布节点（`A4`、`R1`、`Q1`、`A5`）均因旧身份或上游失效而处于已失效（`INVALIDATED`）；控制台切片决定节点（`D3`）的用户决定内容已批准，但新执行节点处于阻塞（`BLOCKED`），新增验收节点（`A6`、`A7`）的合同与人工清单仍为草稿（`DRAFT`）和待执行（`PENDING`）”。第六、第七发布切片（`PI-R6`、`PI-R7`）只描述待执行的源级计划，不能被解释为控制台已实现、已验收或已发布。任一层的工程状态都不构成数学证明、外部文献确认、生产或设备证据、部署完成或公开研究授权。
 
 ## 七、权威边界与剩余不确定性路由
 
@@ -136,6 +139,7 @@ main_thread_policy: orchestration-only
 main_thread_source_write: false
 planning source: .ssot/planning-compiler.json
 machine source: .ssot/manifest.json
+plan revision: PLAN_VERSION 3 / DAG_VERSION 2
 current pushed baseline: main@5e06216edbb36e42b5b5c6686e6792c84959f9da
 current worktree: A4 invalidation state transition; query git status for the live file set
 ```
@@ -149,6 +153,10 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | P2 问题状态与新颖性审计 | PI-R3 | 状态与新颖性分离 | 四路检索和失效负测 | 冻结完整预算 | `candidate:pi-r2-v1` | `accepted:pi-r2-v1` | `candidate:pi-r3-v1` |
 | P3 一次性主题观测 | PI-R4 | 三例真实闭环 | 重放、恢复、去重和人工审计 | 进入人工通道 | `candidate:pi-r3-v1` | `accepted:pi-r3-v1` | `candidate:pi-r4-v1` |
 | P4 回归、校准与披露 | PI-R5 | 路线比较与准确发布 | 回归、量表和披露模板 | 只报告具体缺口 | `candidate:pi-r4-v1` | `accepted:pi-r4-v1` | `candidate:pi-r5-v1` |
+| P5 控制台接线 | PI-R6 | 研究者看到真实工作区观察面 | 门禁、视觉清单和人工 H-01 | 任一 live 视图不一致即退回演示标注 | `development-freeze:accepted:pi-r5-v1` | `promotion-replay:accepted:pi-r5-v1` | `candidate:pi-r6-v1` |
+| P6 本地域投影与运营域 | PI-R7 | 选题投影与运营账本只读可见 | 投影边界、字节重放和人工 H-01 | 未配置项显示 `not_configured`，不发布外部能力 | `candidate:pi-r6-v1` | `accepted:pi-r6-v1` | `candidate:pi-r7-v1` |
+
+第六发布切片（`PI-R6`）的开发冻结身份和晋升重放身份都解析到用户批准的同一个底层基线（`accepted:pi-r5-v1`）；前缀只区分 Harness 要求的基线角色，不代表两个不同源码提交，也不改变批准语义。
 
 机器源固定的 R1 四路检索为 `FORWARD_CITATION`、`ALIAS_AND_EQUIVALENCE`、`STRUCTURAL_SEMANTIC`、`REVIEW_AND_EXPERT_LEAD`；T2 三例真实档案为 `P-FRANKL-Q6`、`P-ARXIV-2601-22401-COLLISION`、`P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS`。这些名称、顺序和逐例边界直接投影自对应 fixture，禁止由视图读者自行补定义。
 
@@ -173,6 +181,14 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | `R1` | 建立四条检索路线的回归集和消融记录 | `A4` | 比较路线增量且不包装小样本性能 | 评测负责人 |
 | `Q1` | 建立难度量表、实验性预测和分级披露模板 | `R1` | 未校准预测标记为 `UNCALIBRATED` | 研究负责人 |
 | `A5` | 作出问题情报平面 v0 发布决定 | `Q1` | 只发布已验收范围并披露限制 | 研究负责人和仓库所有者 |
+| `D3` | 决定是否把控制台两个切片纳入本次修订 | `A1` | 用户决定内容已批准；执行节点受 A5 失效阻塞 | 研究负责人和仓库所有者 |
+| `U1` | 冻结控制台视觉基线与建设状态合同 | `D3` | 基线清单哈希不可变，§5 每行绑定归属节点 | 验收负责人（用户授权） |
+| `U2` | 正式化 M0 只读导出与 M1 观察站接线并补齐 §9 断言 | `U1` | 门禁全绿且 live 结构/令牌与基线一致 | 研究基础设施负责人 |
+| `U3` | 正式化 M2 评审闭环 | `U2` | 非 OK 义务的 APPROVE 被拒，有效评审读回，令牌只驻内存 | 研究基础设施负责人 |
+| `A6` | 验收控制台接线与视觉还原 | `U2`、`U3` | 机器证据与人工 H-01 并排验收 | 验收负责人 |
+| `U4` | 正式化 M3 选题本地投影 | `A6`、`A4`、`R1`、`Q1` | 只读且不推断开放、已解或新颖 | 主题观测负责人 |
+| `U5` | 正式化 M4 本地运营域账本 | `A6` | 研究账本隔离，换模型/上游后历史重放逐字节不变 | 研究基础设施负责人 |
+| `A7` | 控制台 v0 验收与发布决定 | `U4`、`U5`、`A5` | 人工 H-01；仅发布已验收范围并披露未配置项 | 研究负责人和仓库所有者 |
 
 ### 执行波次
 
@@ -194,12 +210,19 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | W13 | PI-R5 | `R1` | 回归集唯一实现写入 |
 | W14 | PI-R5 | `Q1` | 披露政策唯一写入 |
 | W15 | PI-R5 | `A5` | 发布决定串行 |
+| W16 | PI-R6 | `D3` | 用户决定已批准；执行节点阻塞，不能解锁 U1 |
+| W17 | PI-R6 | `U1` | 视觉基线合同唯一写入 |
+| W18 | PI-R6 | `U2` | 只读接线与缺失断言唯一实现写入 |
+| W19 | PI-R6 | `U3` | 评审闭环唯一实现写入 |
+| W20 | PI-R6 | `A6` | 机器与人工 H-01 验收串行 |
+| W21 | PI-R7 | `U4`、`U5` | 选题投影与运营账本写区隔离并行 |
+| W22 | PI-R7 | `A7` | 控制台发布决定串行 |
 
 ### 复杂度预算
 
 | Budget | Limit | Actual | Exception authority |
 |---|---:|---:|---|
-| 总节点数 | 20 | 17 | 规划编排者 |
+| 总节点数 | 25 | 25 | 规划编排者与仓库所有者（PI-R6/PI-R7 预算例外） |
 | 每发布实现节点数 | 3 | 3 | 规划编排者 |
 | Codex worker 节点数 | 0 | 0 | 不注册外部 worker |
 | 生成视图数 | 1 | 1 | 唯一汇编者 |
@@ -225,6 +248,14 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | R1 | P4 | 1/1/1/1/2 | INVALIDATED | 5 | 评测负责人 | EG-PLAN | 等待 A4 重新接受；R1 v11 当前保持字节不变 | evidence:EV-R1-REOPENED-5 | Q1 |
 | Q1 | P4 | 1/1/1/1/2 | INVALIDATED | 3 | 研究负责人 | EG-PLAN | 等待新 R1 正式接受后重做披露验收 | evidence:EV-Q1-REOPENED-3 | A5 |
 | A5 | P4 | 1/1/1/1/2 | INVALIDATED | 3 | 研究负责人和仓库所有者 | EG-PLAN | 等待新 Q1 正式接受后重做受限源级发布验收 | evidence:EV-A5-REOPENED-3 | 无 |
+| D3 | P5 | 1/1/1/1/2 | BLOCKED | 0 | 研究负责人和仓库所有者 | EG-PLAN | 用户决定内容已批准，但 A5 为 `INVALIDATED`，新执行节点不能解锁 | source:plan-v3-owner-instruction | U1 |
+| U1 | P5 | 1/1/1/1/2 | BLOCKED | 0 | 验收负责人（用户授权） | EG-PLAN | 等待 D3 执行节点可用；合同为 `DRAFT` | source:plan-v3-owner-instruction | U2 |
+| U2 | P5 | 1/1/1/1/2 | BLOCKED | 0 | 研究基础设施负责人 | EG-PLAN | 等待 U1；不声称实现或门禁通过 | source:plan-v3-owner-instruction | U3,A6 |
+| U3 | P5 | 1/1/1/1/2 | BLOCKED | 0 | 研究基础设施负责人 | EG-PLAN | 等待 U2；不声称实现或评审闭环 | source:plan-v3-owner-instruction | A6 |
+| A6 | P5 | 1/1/1/1/2 | BLOCKED | 0 | 验收负责人 | EG-PLAN | 合同和人工 H-01 清单为 `DRAFT`/`PENDING` | source:plan-v3-owner-instruction | U4,U5 |
+| U4 | P6 | 1/1/1/1/2 | BLOCKED | 0 | 主题观测负责人 | EG-PLAN | 等待 A6、A4、R1、Q1；不声称投影实现 | source:plan-v3-owner-instruction | A7 |
+| U5 | P6 | 1/1/1/1/2 | BLOCKED | 0 | 研究基础设施负责人 | EG-PLAN | 等待 A6；不声称运营账本实现 | source:plan-v3-owner-instruction | A7 |
+| A7 | P6 | 1/1/1/1/2 | BLOCKED | 0 | 研究负责人和仓库所有者 | EG-PLAN | 合同和人工 H-01 清单为 `DRAFT`/`PENDING`；A5 未接受 | source:plan-v3-owner-instruction | 无 |
 
 ### 语义节点登记表
 
@@ -247,6 +278,14 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | R1 | implementation.problem-intelligence.regression | implementation | evaluation | INVALIDATED | NOT_APPLICABLE | n/a | FORMAL | A4 | none | none | decision.problem-intelligence.amendment@2 | implementation.problem-intelligence.regression | implementation | 评测负责人 |
 | Q1 | validation.problem-intelligence.calibration-disclosure | validation | evaluation | INVALIDATED | NOT_APPLICABLE | n/a | FORMAL | R1 | none | none | decision.problem-intelligence.amendment@2 | validation.problem-intelligence.calibration-disclosure | evidence-only | 研究负责人 |
 | A5 | release.problem-intelligence.v0 | release-decision | governance | INVALIDATED | NOT_APPLICABLE | n/a | FORMAL | Q1 | none | none | decision.problem-intelligence.amendment@2 | release.problem-intelligence.v0 | isolated-record | 研究负责人和仓库所有者 |
+| D3 | decision.problem-intelligence.console-slices | decision-acceptance | governance | BLOCKED | ACCEPTED | 1 | FORMAL | A1 | none | none | decision.problem-intelligence.console-slices@1 | decision.problem-intelligence.console-slices | isolated-record | 研究负责人和仓库所有者 |
+| U1 | contract.problem-intelligence.console-visual-baseline | contract-compile | console | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | D3 | none | none | decision.problem-intelligence.console-slices@1 | contract.problem-intelligence.console-visual-baseline | isolated-record | 验收负责人（用户授权） |
+| U2 | implementation.problem-intelligence.console-readonly-wiring | implementation | console | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | U1 | none | none | decision.problem-intelligence.console-slices@1 | implementation.problem-intelligence.console-readonly-wiring | implementation | 研究基础设施负责人 |
+| U3 | implementation.problem-intelligence.console-review-loop | implementation | console | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | U2 | none | none | decision.problem-intelligence.console-slices@1 | implementation.problem-intelligence.console-review-loop | implementation | 研究基础设施负责人 |
+| A6 | acceptance.problem-intelligence.console-wiring | validation | console | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | U2,U3 | none | none | decision.problem-intelligence.console-slices@1 | acceptance.problem-intelligence.console-wiring | evidence-only | 验收负责人 |
+| U4 | implementation.problem-intelligence.console-local-projections | implementation | console-topic | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | A6,A4,R1,Q1 | none | none | decision.problem-intelligence.console-slices@1 | implementation.problem-intelligence.console-local-projections | implementation | 主题观测负责人 |
+| U5 | implementation.problem-intelligence.console-operations-domain | implementation | operations | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | A6 | none | none | decision.problem-intelligence.console-slices@1 | implementation.problem-intelligence.console-operations-domain | implementation | 研究基础设施负责人 |
+| A7 | release.problem-intelligence.console-v0 | release-decision | governance | BLOCKED | NOT_APPLICABLE | n/a | FORMAL | U4,U5,A5 | none | none | decision.problem-intelligence.console-slices@1 | release.problem-intelligence.console-v0 | isolated-record | 研究负责人和仓库所有者 |
 
 ### 依赖边表
 
@@ -269,12 +308,27 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | A4 | R1 | hard | specific-output | ACCEPTED | none | edge.dogfood-acceptance.regression | 已验收的真实主题档案 | A4 三例闭环证据 |
 | R1 | Q1 | hard | specific-output | ACCEPTED | none | edge.regression.calibration-disclosure | 四路检索回归和消融结果 | R1 样本、增量和缺口 |
 | Q1 | A5 | hard | specific-output | ACCEPTED | none | edge.calibration-disclosure.release | 难度记录、校准状态和披露模板 | Q1 未校准标记和双轨检查 |
+| A1 | D3 | hard | specific-output | ACCEPTED | none | edge.amendment.console-slices | `amendment@2` 决定 | 扩展修订必须先存在 |
+| D3 | U1 | hard | specific-output | ACCEPTED | none | edge.console-slices.visual-baseline | `console-slices@1` 决定 | 未批准不冻结基线 |
+| U1 | U2 | hard | specific-output | ACCEPTED | none | edge.visual-baseline.readonly-wiring | 视觉基线清单 | 一致性断言需要基线 |
+| U2 | U3 | hard | specific-output | ACCEPTED | none | edge.readonly-wiring.review-loop | live 数据层与门禁 | 评审面复用同一数据层 |
+| U2 | A6 | hard | specific-output | ACCEPTED | none | edge.readonly-wiring.console-acceptance | 接线证据 | 验收输入 |
+| U3 | A6 | hard | specific-output | ACCEPTED | none | edge.review-loop.console-acceptance | 评审闭环证据 | 验收输入 |
+| A6 | U4 | hard | specific-output | ACCEPTED | none | edge.console-acceptance.local-projections | 已验收数据层与视觉基线 | 本地域投影复用同一壳 |
+| A4 | U4 | hard | specific-output | ACCEPTED | none | edge.dogfood.local-projections | DL-A4 三例档案证据 | dogfood_archives_projection 来源 |
+| R1 | U4 | hard | specific-output | ACCEPTED | none | edge.regression.local-projections | DL-R1 四路回归记录 | route_regression_projection 来源 |
+| Q1 | U4 | hard | specific-output | ACCEPTED | none | edge.disclosure.local-projections | DL-Q1 披露政策 | disclosure 投影来源 |
+| A6 | U5 | hard | specific-output | ACCEPTED | none | edge.console-acceptance.operations-domain | 已验收数据层 | 运营域复用同一壳 |
+| U4 | A7 | hard | specific-output | ACCEPTED | none | edge.local-projections.console-release | 投影证据 | 验收输入 |
+| U5 | A7 | hard | specific-output | ACCEPTED | none | edge.operations-domain.console-release | 账本证据 | 验收输入 |
+| A5 | A7 | hard | specific-output | ACCEPTED | none | edge.release-boundary.console-release | 平面 v0 发布边界 | 控制台发布不得先于平面发布决定 |
 
 ### 当前就绪前沿
 
 | Frontier | Task ID | Eligibility | Unsatisfied hard dependencies | Active assumptions | Resource decision |
 |---|---|---|---|---|---|
 | A4 | A4 | blocked | 四项实现缺陷修复、完整 local CI、内容摘要冻结、独立复核和人工批准 | none | R1 v11 保持不变；Q1/A5 不得越级或由 AI 代签 |
+| console | D3 | blocked | 用户决定内容已批准，但 A5 为 `INVALIDATED`；D3 执行节点不能解锁 U1 | none | A6/A7 合同与人工清单保持 `DRAFT`/`PENDING`；不启动实现或验收 |
 
 ### 波前指标
 
@@ -284,7 +338,7 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | formal-ready | 0 | 没有待执行的正式节点 |
 | conditional-ready | 0 | 当前没有条件草稿 |
 | global-completeness-barriers | 0 | 没有把全局完成度作为普通节点前置条件 |
-| critical-path-length | 16 | 显式硬边上的最长节点路径 |
+| critical-path-length | 17 | 加入 A7 后显式硬边上的最长节点路径 |
 | graph-ready-width | 0 | 没有待执行节点 |
 | graph-antichain-width | 2 | 结构分析器计算的最大反链宽度 |
 | resource-verified-width | 0 | 没有待执行节点需要资源分配 |
@@ -310,12 +364,21 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | DL-R1 | W13 | 回归集与消融记录 | artifact:pi-regression-suite | DL-A4 | independent | none | R1 | n/a |
 | DL-Q1 | W14 | 难度与披露政策 | artifact:pi-disclosure-policy | DL-R1 | independent | none | Q1 | n/a |
 | DL-A5 | W15 | v0 发布决定 | artifact:pi-release-decision | DL-Q1 | independent | none | A5 | n/a |
+| DL-D3 | W16 | 控制台切片决定记录 | artifact:pi-console-slices-decision | DL-A1 | independent | none | D3 | n/a |
+| DL-U1 | W17 | 控制台视觉基线合同 | artifact:pi-console-visual-baseline | DL-D3 | independent | none | U1 | n/a |
+| DL-U2 | W18 | M0/M1 只读接线与门禁补充 | artifact:pi-console-readonly-wiring | DL-U1 | independent | none | U2 | n/a |
+| DL-U3 | W19 | M2 评审闭环 | artifact:pi-console-review-loop | DL-U2 | independent | none | U3 | n/a |
+| DL-A6 | W20 | 控制台接线与视觉验收证据 | artifact:pi-console-wiring-proof | DL-U2,DL-U3 | independent | none | A6 | n/a |
+| DL-U4 | W21 | 选题本地投影 | artifact:pi-console-topic-projections | DL-A6,DL-A4,DL-R1,DL-Q1 | independent | none | U4 | n/a |
+| DL-U5 | W21 | 本地运营域账本 | artifact:pi-console-operations-ledger | DL-A6 | independent | none | U5 | n/a |
+| DL-A7 | W22 | 控制台 v0 发布决定 | artifact:pi-console-release-decision | DL-U4,DL-U5,DL-A5 | independent | none | A7 | n/a |
 
 ### 并行宽度表
 
 | Parallel batch | Leaf deliverables | Independent deliverables | Conflict-grouped deliverables | Logical lane target | Available worker slots | Wave count | Graph ready width | Graph antichain width | Resource-verified width |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
+| W21-console-local-parallel | DL-U4,DL-U5 | 2 | 0 | 2 | 1 | 1 | 2 | 0 |
 
 并行宽度的逻辑目标由独立交付物决定；A4 当前失效并进入修复，R1、Q1 和 A5 仍须等待其硬依赖恢复。所有历史接受记录都只证明对应旧身份下的本地、固定来源、固定样本和受限发布决定，不向数学证明、外部文献确认、生产或公开发布延伸。
 
@@ -324,7 +387,8 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | 记录类型 | ID | 状态 | 内容 | 影响范围 | 失效或解决方式 |
 |---|---|---|---|---|---|
 | assumption | ASM-ACTIVATION-ROUTE | CONFIRMED | 修订批准前的只读、可撤销资料观察隔离草稿路径已被确认；正式消费者统一绑定修订批准记录 | L1 | D1、D2 和 A1 接受后重算 |
-| authority-conflict | C-AUTHORITY-BOUNDARY | RESOLVED | 延期发现文档不得越过当前唯一工程决策入口解锁实现；权威优先级已由仓库所有者确认 | D1、D2、A1、PI-R1 | 后续权威变化重新开启冲突记录 |
+| authority-conflict | C-AUTHORITY-BOUNDARY | RESOLVED | 延期发现文档不得越过当前唯一工程决策入口解锁实现；权威优先级已由仓库所有者确认 | D1、D2、A1、D3、PI-R1、PI-R6、PI-R7 | 后续权威变化重新开启冲突记录 |
+| decision-gate | D3-CONSOLE-SLICES | APPROVED-BLOCKED | 用户规格已批准 `console-slices@1` 决定内容；A5 未接受前，新执行节点 D3 保持 `BLOCKED`，不解锁 U1 | D3、PI-R6、PI-R7 | A5 接受后重算并保留用户决定身份 |
 
 ### 跨切面适用性表
 
@@ -336,7 +400,7 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | Reliability, rollback, disaster recovery | required | 主题观测负责人 | 一次性同步可重放、可恢复，预算耗尽即停止 |
 | Performance and capacity | required | 评测负责人 | 请求、下载、模型令牌和人工分钟数均有预算 |
 | Observability and alerting | required | 主题观测负责人 | 保存游标、去重、停止原因和待处置事件 |
-| Accessibility and internationalization | not-applicable | 研究负责人 | 当前交付为内部命令和档案，无面向公众页面 |
+| Accessibility and internationalization | required | 验收负责人 | 控制台真实控件需有键盘、焦点和状态语义证据；非控制台旧切片仍不面向公众 |
 | Cost and external-service limits | required | 研究基础设施负责人 | arXiv、Crossref、OpenAlex 访问与下载预算 |
 | Deployment, readback, monitoring window | not-applicable | 仓库所有者 | 本计划不发布服务、不宣称线上可用 |
 | Operational ownership and handoff | required | 仓库所有者 | 每个切片有明确负责人和停止条件 |
@@ -373,7 +437,7 @@ current worktree: A4 invalidation state transition; query git status for the liv
 
 | Guard ID | Authority basis | Allowed write roots | Forbidden paths | External targets | External side effects | Destructive actions | Secret handling | Baseline | Recovery | Postflight diff | Readback | Rollback condition |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|
-| EG-PLAN | 用户请求、项目规则和当前唯一路线图 | `agents-results/2026-08-31/problem-intelligence-plane/` | 运行代码、`docs/**`、权威分支、`~/.codex/sessions/`、`~/.codex/archived_sessions/` | 无 | 无；外部资料只允许在获批实现节点按预算读取 | 无 | 凭据不得进入提示、参数、日志或证据 | `git status`、当前 HEAD 和五份文件校验值 | 只保留可撤销隔离草稿；无生产迁移 | 检查仅有任务目录改动 | 本计划只做源文件和机器源核对 | 发现越界写入、权威漂移或决定冲突即停止 |
+| EG-PLAN | 用户请求、项目规则和当前唯一路线图 | `agents-results/2026-08-31/problem-intelligence-plane/` | 运行代码、`docs/**`、权威分支、`~/.codex/sessions/`、`~/.codex/archived_sessions/` | 无 | 无；外部资料只允许在获批实现节点按预算读取 | 无 | 凭据不得进入提示、参数、日志或证据 | `git status`、当前 HEAD 和本次三份 SSOT 文件校验值 | 只保留可撤销隔离草稿；无生产迁移 | 检查仅有任务目录改动 | 本次仅更新三份 Markdown SSOT 源文件，不改生成主视图或 Harness | 发现越界写入、权威漂移或决定冲突即停止 |
 
 ### 计划版本与局部失效
 
@@ -409,7 +473,7 @@ current worktree: A4 invalidation state transition; query git status for the liv
 
 ### 验收合同与最终顺序
 
-每个发布切片的终止节点只接受本切片声明的输入。`A1` 只接受两项人工决定；`A2`、`A3`、`A4` 和 `A5` 只接受对应专项证据。最终执行顺序为：CHARTER → F1 → D1 与 D2 → A1 → L1 → L2 → A2 → S1 → S2 → A3 → T1 → T2 → A4 → R1 → Q1 → A5。若任一验收节点失败，只重跑受失效键影响的后继，不把整条路线标记为已完成。
+每个发布切片的终止节点只接受本切片声明的输入。`A1` 只接受两项人工决定；`A2`、`A3`、`A4`、`A5`、`A6` 和 `A7` 只接受对应专项证据。最终执行顺序为：CHARTER → F1 → D1 与 D2 → A1 → L1 → L2 → A2 → S1 → S2 → A3 → T1 → T2 → A4 → R1 → Q1 → A5；控制台支线为 A1 → D3 → U1 → U2 → U3 → A6 → (U4 ∥ U5) → A7，且 A7 另受 A5 硬边约束。当前 D3、U1-U5、A6、A7 均不得视为实现、验收或发布。若任一节点失败，只重跑受失效键影响的后继，不把整条路线标记为已完成。
 
 ### 清理台账
 
@@ -443,7 +507,13 @@ F1
                                                         v
                                       T1 --> T2 --> A4 --> R1 --> Q1 --> A5
 
-D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其正式消费者；A4 当前为 `ACCEPTED`，R1、Q1 和 A5 因身份失效等待严格串行重验。
+                                      A1 --> D3 --> U1 --> U2 --> U3 --> A6
+                                                                    |       |
+                                                                    +--> U4 --+
+                                                                    +--> U5 --+--> A7
+                                      A5 -------------------------------------> A7
+
+D1 与 D2 已接受，`decision.problem-intelligence.amendment@2` 已解锁其既有正式消费者；D3 的用户决定内容已批准但执行节点 `BLOCKED`，A4、R1、Q1 和 A5 因身份失效等待严格串行重验。
 S1 的独立纸面 dry-run 已通过；它不执行或验收后续 T2。所有正式消费者都等待对应的明确接受记录，不等待无关阶段的整体完成。
 ```
 
@@ -468,12 +538,296 @@ flowchart LR
   A4 --> R1[R1 回归集]
   R1 --> Q1[Q1 难度与披露]
   Q1 --> A5[A5 v0 发布决定]
+  A1 --> D3[D3 控制台切片决定]
+  D3 --> U1[U1 视觉基线合同]
+  U1 --> U2[U2 只读接线]
+  U2 --> U3[U3 评审闭环]
+  U2 --> A6[A6 控制台接线验收]
+  U3 --> A6
+  A6 --> U4[U4 选题本地投影]
+  A6 --> U5[U5 本地运营域]
+  A4 --> U4
+  R1 --> U4
+  Q1 --> U4
+  U4 --> A7[A7 控制台 v0 发布决定]
+  U5 --> A7
+  A5 --> A7
   classDef accepted fill:#e7f5ec,stroke:#277a46,color:#173d28
+  classDef blocked fill:#fff7e6,stroke:#b7791f,color:#5f3b0a
   classDef invalidated fill:#fff0f0,stroke:#b23b3b,color:#5e1f1f
   class CHARTER,F1,D1,D2,A1,L1,L2,A2,S1,S2,A3,T1,T2 accepted
   class A4,R1,Q1,A5 invalidated
+  class D3,U1,U2,U3,A6,U4,U5,A7 blocked
 ```
 
 ### 结论与当前停止点
 
-当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2 保持接受；A4、R1、Q1、A5 均为 `INVALIDATED`。当前停止点是 A4 的四项实现修复与重验，不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。
+当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2 保持既有机器状态；A4、R1、Q1、A5 均为 `INVALIDATED`。D3 用户决定内容已批准但新执行节点为 `BLOCKED`；U1-U5、A6、A7 尚未实现或验收，合同与人工清单为 `DRAFT`/`PENDING`。当前停止点是 A4 修复重验及其后续控制台计划，不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。
+
+## 九、控制台视图合同（PLAN v3）
+
+### 9.1 修订身份与权威边界
+
+本节是问题情报平面控制台的 **view-contract revision 3**。它是本文件的阅读投影补充，对应 PLAN_VERSION 3 / DAG_VERSION 2，并与新增的 8 个节点及 14 条边一致；机器源 `.ssot/manifest.json` 和节点/边分片是结构权威。任何实现、验收或证据若与机器源冲突，以机器源和后端代码为准。
+
+控制台的事实源只有后端工作区投影。前端演示常量、静态导出和本地 UI 状态都不是事实源，且必须带有可见的数据来源标记：
+
+| 来源状态 | 允许呈现 | 禁止呈现 |
+|---|---|---|
+| `loading` | 加载中的结构和明确的占位状态 | 计数、阈值、枚举或上一次快照的伪装值 |
+| `empty` | 当前工作区/当前 `campaign` 作用域的诚实空态 | 借用其他进程、其他工作区或演示数据 |
+| `error` | 错误原因、端点和恢复入口 | 以旧数据掩盖错误，或把错误当作开放/已解决 |
+| `ready` | 已校验的后端投影及其 `run_id`、状态摘要和来源标记 | 前端自行裁定数学状态或新颖性 |
+| `success` | 仅在后端写入并读回确认后呈现成功 | 仅因按钮点击或 HTTP 请求发出就宣称持久化 |
+
+桥接层的 `unloaded`、`loaded`、`unavailable`、`fallback` 等内部传输状态必须映射到上述五态；映射缺失时按 `error` 处理。`success` 不是第五种事实来源，而是一次受控动作的读回结果。控制台永远不拥有 `ResearchTrace.promote_claim()`，也不提供命题、路线或晋升的 HTTP 写口。
+
+### 9.2 后端端点与视图数据映射
+
+端点是能力边界，不是前端的可选实现。所有数值、枚举、时间、状态、链头和来源摘要必须能在响应中找到同值或可推导的证据；响应缺失、版本不兼容或 provenance 不匹配时，视图进入 `error`/`empty`，不得回填事实。
+
+| 后端事实/动作 | 端点 | 主要视图或用途 | 约束 |
+|---|---|---|---|
+| 经审计控制台投影 | `GET /api/console` | `source`、`dag`、`proofchain`、`tools`、`reasoning`、`admin_roles`、`campaign`、`routes`、`disclosure`、`novelty`，以及 `route_regression_projection`、`dogfood_archives_projection` 等显式配置的本地投影 | 只读；须绑定当前工作区 `provenance`；每个投影缺失即按自身状态处理 |
+| 工作区状态 | `GET /api/workspace` | `portfolio`、`dossier`、`cert`、`frontier`、`radar`、`difficulty`、`field`、`topics` 等观察视图 | 只读；不能从页面常量推导后端事实 |
+| 账本与审计 | `GET /api/audit`、`GET /api/events?after=<cursor>` | `proofchain`、`dag`、事件/审计面 | 事件序号、前哈希、事件哈希和唯一 ID 四项校验均须通过 |
+| 产物与健康 | `GET /api/artifacts`、`GET /api/health` | `source`、`disclosure`、管理和运维只读投影 | 不能把健康响应当成业务事实或发布批准 |
+| 实时事件 | `GET /events` | `proofchain`、`campaign`、`reasoning` 等 live 视图 | SSE `research_event` 带序号；按已见游标 `after` 续传，事件合并为一次刷新 |
+| 攻克报告 | `GET /api/campaign` | `campaign` 及所有进程作用域视图 | 只返回绑定当前工作区的报告；必须带运行 ID、状态摘要、事件链头和报告摘要 |
+| 评审队列/送审包 | `GET /api/review-queue`、`GET /api/review-bundle/{claim}` | `admin_queue`、`proofchain`、`disclosure` | 送审包版本、命题修订和 bundle 摘要必须对应 |
+| 唯一研究写口 | `POST /api/review` | `admin_queue` 的评审提交 | 同源 `/api/review`、名册令牌；`APPROVE` 含任一非 `OK` 义务必须拒绝；令牌只驻留内存 |
+| 观察站其他写请求 | 任意 `POST *`（观察站） | 无 | 一律 `405`；不能由前端新增备用写端点 |
+
+静态导出可按 `console.json` → `/api/console` 顺序尝试。导出缺失或不兼容时，必须清空陈旧载荷并标出 `演示数据`/`实时载荷不可用`；演示数据不能与任何实时字段同屏混排。`local_console.route_regression` 和 `local_console.dogfood_archives` 只有在显式配置且 provenance 相符时才映射到上述两个投影键，否则返回 `not_configured`。跨进程视图（`campaign`、`exploration`、`conjecture`、`routes`、`dag`、`proofchain`、`tools`、`reasoning`、`novelty`、`disclosure`）没有选中进程或报告时只能显示作用域空态。
+
+### 9.3 唯一视图清单：32 个
+
+“32 个视图”是去重后的 `view_id` 数量；三个研究平面的导航位合计 21 个，`campaigns` 在攻克过程和验证发布两棵树各出现一次，但仍只有一个唯一视图。下面的顺序与 `scripts/console_browser_gate.mjs` 的基线数组一致，新增或删除必须同时更新原型、门禁和本合同：
+
+```text
+portfolio dossier cert frontier radar source novelty difficulty dag disclosure
+campaigns campaign exploration conjecture routes tools reasoning landing login
+acct_overview acct_usage acct_billing acct_limits admin_cost admin_upstream admin_users
+field topics admin_roles admin_roster admin_queue proofchain
+```
+
+视图级身份要求：每个 `view_id` 必须在 `V` 注册表中有唯一渲染入口；导航重复不增加计数；全屏 `landing`、`login` 也必须有独立的页面身份和错误边界。`LIVE_VIEWS`、`PROCESS_SCOPED` 和 `FAIL_CLOSED_M2_VIEWS` 是后端事实状态的约束集合，不得因为页面看起来可渲染就降级为演示事实。
+
+### 9.4 渲染/状态案例清单：52 个
+
+“52 个案例”不是 52 个不同视图，而是 32 个基线视图加 20 个带选择动作的状态案例。门禁必须断言案例总数为 52，并对每个案例保存 `case_id`、对应 `view_id`、动作数据和预期交互态。
+
+基线案例（前 32 个，顺序固定）:
+
+```text
+portfolio dossier cert frontier radar source novelty difficulty dag disclosure
+campaigns campaign exploration conjecture routes tools reasoning landing login
+acct_overview acct_usage acct_billing acct_limits admin_cost admin_upstream admin_users
+field topics admin_roles admin_roster admin_queue proofchain
+```
+
+状态/动作案例（后 20 个，动作数据固定）:
+
+| `case_id` | `view_id` | 动作 | 数据 |
+|---|---|---|---|
+| `source-observation-o1` | `source` | `obs` | `{ "id": "o1" }` |
+| `source-observation-o3` | `source` | `obs` | `{ "id": "o3" }` |
+| `dossier-version-1` | `dossier` | `ver` | `{ "i": "1" }` |
+| `dossier-version-2` | `dossier` | `ver` | `{ "i": "2" }` |
+| `dossier-version-3` | `dossier` | `ver` | `{ "i": "3" }` |
+| `frontier-node-n7` | `frontier` | `fnode` | `{ "id": "n7" }` |
+| `frontier-node-barrier` | `frontier` | `fnode` | `{ "id": "barrier" }` |
+| `campaign-round-1` | `campaign` | `round` | `{ "i": "0" }` |
+| `campaign-round-3` | `campaign` | `round` | `{ "i": "2" }` |
+| `campaign-round-7` | `campaign` | `round` | `{ "i": "6" }` |
+| `exploration-e1` | `exploration` | `expl` | `{ "i": "0" }` |
+| `exploration-e2` | `exploration` | `expl` | `{ "i": "1" }` |
+| `conjecture-c1` | `conjecture` | `conj` | `{ "i": "0" }` |
+| `conjecture-c2` | `conjecture` | `conj` | `{ "i": "1" }` |
+| `routes-r1` | `routes` | `rt` | `{ "i": "0" }` |
+| `routes-r2` | `routes` | `rt` | `{ "i": "1" }` |
+| `tools-call-1` | `tools` | `tool` | `{ "i": "0" }` |
+| `tools-call-4` | `tools` | `tool` | `{ "i": "3" }` |
+| `reasoning-step-1` | `reasoning` | `rsn` | `{ "i": "0" }` |
+| `reasoning-step-2` | `reasoning` | `rsn` | `{ "i": "1" }` |
+
+`case_id`、`view_id`、动作名和动作数据是规范身份，不能以屏幕标题替代。每个案例都要覆盖五态词汇中适用的状态；没有数据的案例明确为 `empty`，加载失败为 `error`，不能把所有案例强制标为 `ready`。
+
+### 9.5 固定夹具、检索路线与真实档案
+
+#### R1 四路检索
+
+R1 的路线顺序和独立性固定如下：
+
+```text
+FORWARD_CITATION
+ALIAS_AND_EQUIVALENCE
+STRUCTURAL_SEMANTIC
+REVIEW_AND_EXPERT_LEAD
+```
+
+每一路必须独立保存查询范围、查询串、来源 ID、命中和 `unresolved`；单一路无命中不能推出开放性。控制台只投影固定夹具，不把页面上的路线数、命中数或未决项重新解释为研究结论。
+
+| 夹具 | 路径 | 捕获身份 |
+|---|---|---|
+| R1 四路回归 | `agents-results/2026-08-31/problem-intelligence-plane/evidence/r1-fixtures/four-route-regression.json` | `fixture_content_sha256=893c86684d39403eb9f32185629199e9e1042a70892bdb0b7b8f8875c003e5dc`；文件 SHA-256=`e9f1089c7ab476a943eb61ba0dd42cba1a421b9d2e2bd16d3e477018cc9e1685` |
+| T2 三档案合同 | `agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json` | 文件 SHA-256=`475e9bdd6cdceb3d497706eff25ff77329016941c5f4dec389c2099a59de412c` |
+| S2 q=6 候选审计 | `agents-results/2026-08-31/problem-intelligence-plane/evidence/s2-fixtures/q6-candidate-audit.json` | 文件 SHA-256=`ff12700db3bcfb9c469a95f65dd7f1ef5da8d67d876cd54a5a313dbf0d245d05` |
+
+R1/T2 fixture 是来源固定的只读输入，不是实时生产证据。若文件、来源提交或 `consumer_surface_digest` 改变，旧渲染证据立即失效，必须重新捕获。
+
+#### T2 三种真实档案
+
+| 档案 ID | 预期问题状态 | 主题/人工边界 | 晋升边界 |
+|---|---|---|---|
+| `P-FRANKL-Q6` | `OPEN_REPORTED` | 保留既有覆盖；不作新颖性宣传 | `expected_promotion_allowed=false` |
+| `P-ARXIV-2601-22401-COLLISION` | `RESOLVED_REPORTED` | 历史数据库曾标 `open` 但当前来源已解决；`HIGH_RISK_EVENT`，新颖性 `PENDING_HUMAN_AUDIT` | `expected_promotion_allowed=false` |
+| `P-FRANKL-Q6-FOUR-OR-MORE-SMALL-OUTSIDE-PARTS` | `OPEN_REPORTED` | `MANUAL_REVIEW`，原因 `BUDGET_EXHAUSTED` | `expected_promotion_allowed=false` |
+
+三例只验证资料、状态、预算、重放和人工闭环。它们不证明开放状态、结果新颖性、数学结论、生产部署或公开授权。`campaign` 夹具 ID 仅为 `c7`、`q6`；所有进程作用域案例必须显式绑定其中一个 ID。
+
+### 9.6 交互、状态与安全语义
+
+#### 渲染和焦点
+
+- `S` 保存当前视图、命题/版本、选中 `campaign`、折叠状态、主题、回退状态、篡改状态以及实时载荷状态；`V[view_id]` 是纯渲染入口，`render()` 整页重渲染后必须按稳定 ID 找回输入焦点和光标位置。
+- 点击使用 `data-act` 委托；动作处理器必须先校验动作数据和当前作用域，再改变状态。未知动作、未知视图或过期载荷按 `error`，不得静默忽略。
+- 证明链、观察、轮次、实验、工具台账和推理使用就地链式手风琴：`obs`、`round`、`expl`、`tool`、`rsn`、`cev` 的开/关都不应借用其他记录；展开状态须可由键盘和指针观察。
+- 自绘控件须有 `tabindex="0"`、`role="button"` 和可读 `aria-expanded`/名称；Enter 与 Space 都触发同一动作，焦点不能因刷新丢失。
+
+当前门禁的 `dispatch()` 通过临时按钮调用委托处理器，能证明处理器和渲染结果，但不能单独证明真实控件可发现、可点击或可聚焦。正式视觉/交互验收必须再记录真实 DOM 定位、指针/键盘事件和 `before → event → after` 轨迹。
+
+#### 主题、持久化与回退
+
+- 主题是系统/默认、显式浅色、显式深色三态；仅允许 `localStorage` 键 `ma-theme`、`ma-view`、`ma-fold2`，读写全部 `try/catch`。主题变化不得改变后端事实或证据摘要。
+- `console.json`/`/api/console` 载荷必须经过 schema、`run_id`、工作区状态和链头校验；失败时清空陈旧载荷、显示来源和原因，禁止“实时 + 演示”字段混排。
+- `admin_roster`、`admin_cost`、`acct_overview`、`acct_usage`、`acct_billing`、`acct_limits` 属于 fail-closed 视图：没有有效本地投影就显示 `not_configured`/`empty`，不得从演示账本冒充真实运营数据。
+
+#### SSE 与评审
+
+- SSE 连接在 URL 上携带 `after=<last_seen_sequence>`；断线后重连从该游标继续，跨 `run_id` 或序号回退时丢弃旧流并重新加载 `/api/console`。同一事件窗口只触发一次合并刷新。
+- 评审提交只接受同源 `POST /api/review`。`APPROVE` 只要有一项义务不是 `OK` 就返回拒绝（当前服务约定为 `400`），不得产生评审或证据；提交前后令牌都只能存在密码输入和内存，失败后也必须清空。
+- 有效评审必须在服务持久化后读回队列和证据 ID，只有读回成功才进入 `success`；命题修订或 bundle 摘要失配的旧评审转 `SUPERSEDED`，不能继续显示为生效。
+
+### 9.7 证明链、工具与停止条件
+
+#### 哈希和篡改
+
+浏览器复算只用于可核验展示，判定仍以后端为准。`canonical_json` 必须键排序、无空格、非 ASCII 不转义；事件字段来自 `ResearchEvent.unsigned_dict()`，`previous` 按事件声明的哈希前进。`EventLedger.validate()` 必须同时检查：序号连续、前哈希链接、事件哈希正确、事件 ID 唯一。链头还要与工作区外部声明的头一致。
+
+五种篡改模式必须有互不混淆的错误签名：改载荷、删除、对调、插入、整链重写。整链重写即使逐条校验通过，只要链头与外部声明不一致仍失败。不得用截图上的文字或一个总哈希替代逐事件证据。
+
+#### 精确工具与证伪
+
+`default_exact_tool_registry()` 当前且仅注册以下五个模板：
+
+```text
+polynomial_identity
+induction_certificate
+smt_universal_no_counterexample
+smt_existential_witness
+cnf_lrat_unsat
+```
+
+`unknown`（包括超时）必须映射为 `ToolStatus.ERROR`，永不产生证据；SAT 模型必须经过模块内独立纯 Python 求值器，二检不一致为错误；UNSAT 记录求解器信任的精确计算并带局限声明。证伪使用独立的 `KillTestKind` 注册表（`enumeration`、`property_random`、`sat_search`、`instance_eval`），有限枚举不属于精确工具白名单；随机测试未找到反例只能是 `INCONCLUSIVE`。
+
+`ToolCallRecord` 至少要保存 `call_id`、`purpose`、`status`、输入/输出/环境摘要、`independence_group`、`replay_command` 和 `expected_discriminator`。只有四项（输入、输出、环境、回放命令）齐全才可标记 `replayable=true`；`PASS` 但不可重放的调用必须显示告警，关键命题携带此类证据时阻断晋升。
+
+攻克停止原因只允许：
+
+```text
+budget_exhausted
+no_gain_rounds_exhausted
+max_rounds_reached
+release_state_terminal
+```
+
+默认 `max_rounds=20`、`max_rounds_without_gain=5`，具体进程可有更保守参数；页面不得把一次进程的阈值包装为产品常数。
+
+### 9.8 运行与视觉证据身份
+
+每个案例、每个 `campaign` 和每个 viewport 的证据都必须独立可定位。最小身份字段如下，未知值必须显式为未捕获并阻塞 `PASS`，不能写 `...` 或复用另一案例的值：
+
+```yaml
+run_id: <server-owned-run-id>
+machine_layer: e2e
+page_identity: problem-intel-console
+case_id: <one-of-52-case-ids>
+view_id: <one-of-32-view-ids>
+campaign_id: c7|q6
+browser: chromium
+browser_version: <captured-version>
+viewport: <captured-width>x<captured-height>
+captured_at: <iso-8601>
+source_commit: <commit-at-capture>
+consumer_surface_digest: <sha256-of-canonical-consumed-contract>
+fixture_id: <frozen-fixture-id-or-none>
+review_conclusion: PASS
+```
+
+视觉保真记录必须分别保存并绑定内容 SHA-256：`dom_sha256`、`computed_style_sha256`、`contrast_sha256`、`interaction_trace_sha256`。交互轨迹至少包含 `before`、`event`、`after`，并指出作用域、焦点、状态和后端读回。可选 `pixel_comparison` 只能使用冻结夹具、冻结 baseline、实际截图、明确 tolerance 和动态字形专用 mask；mask 只允许覆盖动态文字/数字的字形像素及其明确几何范围，禁止整页、卡片、背景或 live-data 截图掩盖差异。
+
+本合同的浏览器矩阵固定为：桌面宽度 `1240`、`1366`、`1440`、`1536`、`1728`、`1920`，高度 `1080`；移动 `mobile-390=390x844`、`mobile-820=820x1180`，均 `isMobile=true`、触控、DPR 2。门禁组合为 `52 cases × 2 campaigns × 6 desktop widths` 加同案例的两个移动 viewport，共 `832` 个渲染组合。桌面并排两栏在解除拉伸和内滚后须满足高差不超过 `140px` 且低/高比例不低于 `0.62`；页面错误、`undefined`、`NaN`、`[object Object]` 和中文紧贴裸英文标识符均为失败。
+
+### 9.9 来源摘要与失效规则
+
+控制台契约消费的三份直接来源须在每次证据运行中记录路径、提交和 SHA-256：
+
+| 来源 | SHA-256（本修订基线） |
+|---|---|
+| `docs/prototypes/console-dev-blueprint.html` | `6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f` |
+| `docs/prototypes/problem-intel-console.html` | `743cc833830a7b6818498a55552193320cb61d2ac201f286e8984c3b58811f0e` |
+| `scripts/console_browser_gate.mjs` | `6c1eff8bcac96ae2d150be0244cd203e01cd777bc646f659c7680471c37d36f4` |
+
+任一来源、案例动作、endpoint 映射、状态语义、夹具、浏览器矩阵或设计红线发生变化，都必须重新计算 `consumer_surface_digest`，使受影响的 DOM/style/contrast/interaction/pixel 证据失效并重跑。旧截图、旧浏览器版本、旧 `run_id` 或旧 fixture 不得因文件名相同而重新使用。
+
+### 9.10 关闭条件
+
+本节只能支持控制台的源级合同和渲染/交互验收，不能单独把任何 SSOT 节点从 `INVALIDATED` 改为 `ACCEPTED`，也不能证明生产、设备、认证权限、外部文献或数学结论。要声称控制台案例通过，至少需要：
+
+1. 32 个唯一视图和 52 个案例与原型/门禁逐项对账，且无重复 ID、漏项或越权动作；
+2. 五态、后端唯一事实源、campaign 作用域、演示/实时边界和 fail-closed 路径均有负面证据；
+3. 每个渲染组合有完整身份、DOM/style/contrast/interaction 哈希；像素比较若存在，夹具和动态字形 mask 均冻结并可读回；
+4. 手风琴、键盘、主题、焦点恢复、SSE 游标续传、篡改五模式和 M2 评审流程分别有 `before → event → after` 记录；
+5. 所有来源和消费面摘要与当前提交一致，任何失效键触发重捕获，而不是沿用历史 PASS。
+
+上述条件满足前，控制台状态最多记为 `DRAFT` 或相应的局部 `partial`；不得把浏览器门禁的合成点击、静态截图或本地演示数据升级为正式发布证据。
+
+### 9.11 证据分层与视觉工作台边界
+
+为便于把同一控制台的不同问题分别交给机器和人复核，使用以下三个**视图合同 lane** 名称。它们是本节的证据分组，并分别服务 U1/A6/A7；不改变 A4、R1、Q1 或 A5 的 `INVALIDATED` 状态：
+
+| Lane | 覆盖范围 | 最低输出 | 不得宣称 |
+|---|---|---|---|
+| `UI-U1` | 32 个唯一视图的语义、信息架构、作用域和人审入口；`campaigns` 的两个导航入口分别走路由检查，但内容只计一个 `view_id` | 逐项 view 对账、状态/端点/owner 记录、空态和权限负测 | 视觉像素一致、后端持久化或生产可用 |
+| `VIS-A6` | 52 个案例在 6 个桌面宽度和 2 个移动 viewport 的最终渲染态（每个 `campaign` 均独立） | 832 组合的页面/浏览器/viewport/时间身份，以及 DOM、computed-style、contrast 和可选冻结像素证据 | API、权限、评审持久化、部署或设备证明 |
+| `RUN-A7` | 20 个状态动作，加手风琴、开始攻克、五种篡改、数据边界、M1 SSE、M2 评审、Enter/Space 和焦点恢复流程 | 每条流程的 `before → event → after` 轨迹、失败原因和后端读回 | 仅凭合成 `trigger.click()` 证明真实控件可发现/可点击 |
+
+若项目进行视觉选型，`UI-U1`/`VIS-A6` 只能链接到项目自己的二级视觉工作台；工作台必须按 `evidence`、`prototype`、`candidates` 三个 pane 保存产品当前证据、确定性原型和候选方向，并声明 `deep_link` 与按顺序的 `work_plane`：`user-need` → `product-semantics` → `role` → `interaction-structure` → `screen-structure` → `html-prototype` → `visual-exploration` → `selection` → `engineering-handoff`。控制台是只读的三级索引，不得复制工作台、替代候选选择或成为第二个产品决定入口。
+
+### 9.12 生成视图记录的最小字段
+
+若后续创建可选的 `agents-results/2026-08-31/problem-intelligence-plane/.ssot/workbench/generated-view-contract.json`，其每个 view/case 记录至少要有下列字段；缺字段按 `DRAFT`，不能当作运行证据：
+
+```yaml
+view:
+  view_id: <unique-view-id>
+  plane: <research-plane-or-account-or-admin-or-fullscreen>
+  owner: <role>
+  source_refs: [<blueprint-or-prototype-ref>]
+  endpoint: <backend-endpoint-or-not_configured>
+  scope: <workspace-or-campaign-or-claim>
+  interaction_states: [loading, empty, error, ready, success]
+  evidence_class: behavior|visual-fidelity|persistent-runtime
+case:
+  case_id: <one-of-52-case-ids>
+  view_id: <matching-view-id>
+  kind: base|state-variant
+  action: <action-name-or-none>
+  fixture_id: <frozen-fixture-or-none>
+  expected_states: [<subset-of-five-states>]
+  identity: <9.8 identity fields>
+  evidence: <hash-bound records from 9.8>
+```
+
+该文件若被创建，必须以规范化 JSON（键排序、无空格、稳定数组顺序）计算自身和 `consumer_surface_digest`；它仍是视图合同的生成辅助物，不得成为 `.ssot/manifest.json`、节点或后端事实的第二权威。任何 `view_id`、`case_id`、端点、状态、fixture 或 hash 变化都必须触发陈旧检查和对应证据重跑。

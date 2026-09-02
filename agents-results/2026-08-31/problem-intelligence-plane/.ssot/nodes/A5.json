@@ -24,7 +24,12 @@
   ],
   "write_authority": "isolated-record",
   "acceptance_authority": "研究负责人和仓库所有者",
-  "unlocks": [],
+  "unlocks": [
+    "A7"
+  ],
+  "source_requirement_refs": [
+    "SRC-PI-R6-D3-03"
+  ],
   "node_role": "release-decision",
   "execution_actor": "human",
   "execution_contract_ref": "A5.json",

@@ -1,0 +1,102 @@
+{
+  "kind": "workbench",
+  "view_id": "console-visual-workbench",
+  "workbench_path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/console-visual-workbench/index.html",
+  "panes": [
+    "evidence",
+    "prototype",
+    "candidates"
+  ],
+  "deep_link": {
+    "supported": true,
+    "route_pattern": "#/page/{page_id}",
+    "supported_page_ids": [
+      "evidence",
+      "prototype",
+      "candidates"
+    ]
+  },
+  "selection_ref": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/console-visual-baseline/authority/problem-intel-console-31bb970.html",
+    "entity_id": "historical-visual-selection-31bb970",
+    "sha256": "7809b144c49c63b8a3f7cc2975e2ea8c933284fc48c7bf8e38a0f52f07014814"
+  },
+  "review_queue": [
+    {
+      "candidate": "A",
+      "reason": "历史视觉权威原型已核验，当前仅作为待人工比较的基准，尚未完成选择。"
+    },
+    {
+      "candidate": "B",
+      "reason": "独立候选尚未生成，不能声称已完成对比或淘汰。"
+    },
+    {
+      "candidate": "C",
+      "reason": "独立候选尚未生成，不能声称已完成对比或淘汰。"
+    }
+  ],
+  "status": "DRAFT",
+  "work_plane": [
+    {
+      "stage": "user-need",
+      "status": "in-progress",
+      "owner": "产品负责人",
+      "note": "A6 视觉理解与 A7 控件边界的人工问题已起草，尚未获批。"
+    },
+    {
+      "stage": "product-semantics",
+      "status": "in-progress",
+      "owner": "研究负责人",
+      "note": "选题投影、运营账本和不推断边界来自当前蓝图，待人工确认。"
+    },
+    {
+      "stage": "role",
+      "status": "in-progress",
+      "owner": "研究负责人和运营边界负责人",
+      "note": "角色草案已列出，真实账号和职责尚未绑定。"
+    },
+    {
+      "stage": "interaction-structure",
+      "status": "in-progress",
+      "owner": "控制台维护者",
+      "note": "三栏工作台已提供 hash 深链；产品目录、折叠和只读导航仍待逐视图人工核对。"
+    },
+    {
+      "stage": "screen-structure",
+      "status": "in-progress",
+      "owner": "视觉验收人",
+      "note": "当前蓝图清单含 167 条确定性记录和 32 个唯一视图，尚未完成基线与 live 并排确认。"
+    },
+    {
+      "stage": "html-prototype",
+      "status": "in-progress",
+      "owner": "控制台维护者",
+      "note": "主线原型是实现载体；历史视觉权威与当前文件的版本关系待人工确认。"
+    },
+    {
+      "stage": "visual-exploration",
+      "status": "blocked",
+      "owner": "产品负责人",
+      "note": "候选 B/C 尚未生成，且 A6 人工视觉清单尚未批准和执行。"
+    },
+    {
+      "stage": "selection",
+      "status": "not-started",
+      "owner": "产品负责人",
+      "note": "没有已签署的视觉选择记录。"
+    },
+    {
+      "stage": "engineering-handoff",
+      "status": "not-started",
+      "owner": "控制台维护者",
+      "note": "未形成获批合同、活动绑定或发布授权。"
+    }
+  ],
+  "interaction_states": [
+    "loading",
+    "empty",
+    "error",
+    "ready",
+    "success"
+  ]
+}

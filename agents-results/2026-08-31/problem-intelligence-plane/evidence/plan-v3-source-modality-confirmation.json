@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "evidence_id": "EV-PLAN-V3-SOURCE-MODALITY-CONFIRMATION-1",
+  "evidence_type": "human-source-modality-confirmation",
+  "recorded_date": "2026-09-02",
+  "authority_roles": [
+    "research-owner",
+    "repository-owner"
+  ],
+  "source_instruction": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/plan-v3-owner-instruction.txt",
+    "sha256": "5c039f5e291e4365c36ecd8a45681723c016565c728a84d89ffd9ee1f38d7b13"
+  },
+  "decision": "ACCEPTED",
+  "decision_key": "decision.problem-intelligence.console-slices@1",
+  "confirmed_modalities": {
+    "MUST": 21,
+    "SHOULD": 3,
+    "MAY": 0
+  },
+  "scope": "The supplied PLAN_VERSION 3 revision specification authorizes source classification and planning for PI-R6 and PI-R7.",
+  "exclusions": [
+    "This record is not A6 human acceptance.",
+    "This record is not A7 human acceptance.",
+    "This record does not prove console implementation, runtime fidelity, deployment, publication, or production behavior."
+  ]
+}

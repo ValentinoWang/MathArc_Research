@@ -2,12 +2,17 @@
   "ssot_schema_version": 2,
   "machine_validation_profile": "release",
   "artifact_class": "ssot-development",
-  "plan_version": 2,
-  "dag_version": 1,
+  "plan_version": 3,
+  "dag_version": 2,
   "interface_freeze_version": 2,
   "node_contract_version": 2,
   "parallelism_contract_version": 1,
   "execution_contract_validation": "strict",
+  "normative_executable_artifact_contract": {
+    "mode": "strict",
+    "source_milestone_authority": "source",
+    "source_requirements": "source-requirements.json"
+  },
   "main_thread_policy": "orchestration-only",
   "main_thread_source_write": false,
   "target_evidence_level": "source",
@@ -29,7 +34,7 @@
   "actor_pools": {
     "codex-primary": {
       "actor": "codex",
-      "capacity": 1
+      "capacity": 2
     },
     "human-review": {
       "actor": "human",
@@ -41,7 +46,7 @@
     {
       "view_id": "main",
       "source": "view-sources/00-main.md",
-      "source_sha256": "22798c46cd19edcdb05b6755ab1cd9614c26713869f0a24363c36f3c7da0826a",
+      "source_sha256": "ff98667237e86dc28b3383e35658f5317333e7876e15f930eec64375a243a1c6",
       "output": "../ssot-development-paths.md"
     }
   ],
@@ -119,12 +124,46 @@
         "T1",
         "R1"
       ]
+    },
+    {
+      "external_dependency_id": "EXT-CONSOLE-BLUEPRINT",
+      "authority_path": "docs/prototypes/console-dev-blueprint.html",
+      "authority_commit": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
+      "authority_sha256": "6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f",
+      "required_state": "ACCEPTED",
+      "consumers": [
+        "CHARTER",
+        "F1",
+        "D1",
+        "D2",
+        "A1",
+        "L1",
+        "L2",
+        "A2",
+        "S1",
+        "S2",
+        "A3",
+        "T1",
+        "T2",
+        "A4",
+        "R1",
+        "Q1",
+        "A5",
+        "D3",
+        "U1",
+        "U2",
+        "U3",
+        "A6",
+        "U4",
+        "U5",
+        "A7"
+      ]
     }
   ],
   "validation_report": {
     "path": "validation-report.json",
-    "sha256": "4a02573b4cee4d4c1ffd27ea0c2e6ec31a597a87783cba06f1b181b8d2ab6f5d",
-    "manifest_identity_sha256": "6ce68b9d9c9ff5c6138762d3eb076a193e14430cc5e9dff3a632f61e89899b32",
-    "bundle_content_sha256": "3722513c57cd8f7b52c4ce9e51f5798bfa0998ae4151f30de831866e400d59fe"
+    "sha256": "f5aa22911d066ad122cc72f8da9da5a4671338d07e299fc375184c6211c31150",
+    "manifest_identity_sha256": "49379d6d61d565de4325f3a1dc0ce5d7fa5717a51d2f72514d6ac6e4f058f993",
+    "bundle_content_sha256": "8c3dc412d63750d5245b6c8fe837ea31695cc3bf7e0e6900e51dde557ab8abb2"
   }
 }

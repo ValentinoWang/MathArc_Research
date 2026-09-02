@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-A6-U4",
+  "from": "A6",
+  "to": "U4",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.console-wiring.console-local-projections"],
+  "transferred_input": "已验收的控制台接线与视觉证据",
+  "gate_evidence": "A6 52 案例、视觉矩阵和五种篡改证据",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "选题投影实现不得绕过控制台接线视觉和交互验收。",
+  "transferred_artifact_ids": ["DL-A6"],
+  "resource_ids": []
+}

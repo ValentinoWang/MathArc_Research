@@ -27,6 +27,9 @@
   "unlocks": [
     "A4"
   ],
+  "source_requirement_refs": [
+    "SRC-PI-R6-D3-02"
+  ],
   "node_role": "leaf",
   "execution_actor": "human",
   "execution_contract_ref": "T2.json",

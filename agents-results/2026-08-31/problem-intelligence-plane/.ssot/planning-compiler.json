@@ -1,6 +1,10 @@
 {
   "planning_compiler_schema_version": 1,
   "ssot_schema_version": 2,
+  "plan_version": 3,
+  "dag_version": 2,
+  "interface_freeze_version": 2,
+  "node_contract_version": 2,
   "machine_validation_profile": "release",
   "parallelism_contract_version": 1,
   "execution_contract_validation": "strict",
@@ -13,6 +17,14 @@
     "selection_authority": "planning-model",
     "rationale": "该请求把跨文献来源、问题状态、新颖性审计、人工复核和五个独立发布切片纳入同一条长期路线；当前 DEV_PATH_V03.md 仍是唯一工程决策入口，因此需要可回溯的发布型 SSOT amendment，而不是一次性待办。"
   },
+  "source_inputs": [
+    {
+      "external_dependency_id": "EXT-CONSOLE-BLUEPRINT",
+      "path": "docs/prototypes/console-dev-blueprint.html",
+      "commit": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
+      "sha256": "6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f"
+    }
+  ],
   "external_systems": [
     "arxiv-api",
     "crossref-api",
@@ -49,6 +61,16 @@
       "id": "P4",
       "title": "回归、校准与披露政策",
       "release_ids": ["PI-R5"]
+    },
+    {
+      "id": "P5",
+      "title": "控制台接线",
+      "release_ids": ["PI-R6"]
+    },
+    {
+      "id": "P6",
+      "title": "本地域投影与运营域",
+      "release_ids": ["PI-R7"]
     }
   ],
   "release_slices": [
@@ -136,6 +158,57 @@
       "development_baseline": "candidate:pi-r4-v1",
       "promotion_baseline": "accepted:pi-r4-v1",
       "release_candidate": "candidate:pi-r5-v1"
+    },
+    {
+      "id": "PI-R6",
+      "macro_phase_id": "P5",
+      "title": "控制台接线与视觉还原",
+      "node_ids": ["D3", "U1", "U2", "U3", "A6"],
+      "user_value": "研究者在控制台看到的证明结构、过程链、工具台账、轮次和评审队列全部来自真实工作区，且外观与原型一致。",
+      "independent_acceptance": "门禁全绿、视觉一致性清单完成，并通过人工 H-01 并排验收。",
+      "independent_failure": "任一 live 视图与基线不一致即退回演示标注，不发布。",
+      "acceptance_node_id": "A6",
+      "release_candidate_artifact_id": "candidate:pi-r6-v1",
+      "independent_proof_artifact_id": "proof:pi-r6-console-v1",
+      "acceptance_command": "make ci-full PYTHON=.venv/bin/python",
+      "future_phase_required_for_success": false,
+      "development_baseline": "development-freeze:accepted:pi-r5-v1",
+      "promotion_baseline": "promotion-replay:accepted:pi-r5-v1",
+      "release_candidate": "candidate:pi-r6-v1",
+      "baseline_resolution": {
+        "development_identity": "accepted:pi-r5-v1",
+        "promotion_identity": "accepted:pi-r5-v1",
+        "normalization": "The owner-approved shared source identity is preserved while Harness role identities remain distinct."
+      },
+      "source_completion_requirement_refs": [
+        "SRC-PI-R6-D3-01", "SRC-PI-R6-D3-02", "SRC-PI-R6-D3-03",
+        "SRC-PI-R6-U1-01", "SRC-PI-R6-U1-02", "SRC-PI-R6-U1-03",
+        "SRC-PI-R6-U2-01", "SRC-PI-R6-U2-02", "SRC-PI-R6-U2-03",
+        "SRC-PI-R6-U3-01", "SRC-PI-R6-U3-02", "SRC-PI-R6-U3-03",
+        "SRC-PI-R6-A6-01", "SRC-PI-R6-A6-02", "SRC-PI-R6-A6-03"
+      ]
+    },
+    {
+      "id": "PI-R7",
+      "macro_phase_id": "P6",
+      "title": "本地域投影与运营域",
+      "node_ids": ["U4", "U5", "A7"],
+      "user_value": "选题投影与运营账本只读可见、边界诚实。",
+      "independent_acceptance": "投影不推断状态，重放字节不变，并通过人工 H-01 验收。",
+      "independent_failure": "未配置项显示 not_configured，不发布外部能力。",
+      "acceptance_node_id": "A7",
+      "release_candidate_artifact_id": "candidate:pi-r7-v1",
+      "independent_proof_artifact_id": "proof:pi-r7-console-v1",
+      "acceptance_command": "make ci-full PYTHON=.venv/bin/python",
+      "future_phase_required_for_success": false,
+      "development_baseline": "candidate:pi-r6-v1",
+      "promotion_baseline": "accepted:pi-r6-v1",
+      "release_candidate": "candidate:pi-r7-v1",
+      "source_completion_requirement_refs": [
+        "SRC-PI-R7-U4-01", "SRC-PI-R7-U4-02", "SRC-PI-R7-U4-03",
+        "SRC-PI-R7-U5-01", "SRC-PI-R7-U5-02", "SRC-PI-R7-U5-03",
+        "SRC-PI-R7-A7-01", "SRC-PI-R7-A7-02", "SRC-PI-R7-A7-03"
+      ]
     }
   ],
   "nodes": [
@@ -155,7 +228,181 @@
     {"id": "A4", "kind": "validation", "goal": "验收一次性主题观测和三例真实档案。", "dependencies": ["T2"], "acceptance": "重放、恢复、去重和三种失败模式证据全部可查。", "owner": "验收负责人"},
     {"id": "R1", "kind": "implementation", "goal": "建立四条检索路线的回归集和消融记录。", "dependencies": ["A4"], "acceptance": "能比较路线增量但不把小样本结果包装成统计性能。", "owner": "评测负责人"},
     {"id": "Q1", "kind": "validation", "goal": "建立难度 rubric、实验性预测和分级披露模板。", "dependencies": ["R1"], "acceptance": "未校准预测标记为 UNCALIBRATED，科学优先级与传播准备度分离。", "owner": "研究负责人"},
-    {"id": "A5", "kind": "validation", "goal": "作出问题情报平面 v0 的发布决定。", "dependencies": ["Q1"], "acceptance": "仅发布已验收范围，并明确未解决、新颖性未确认和校准不足事项。", "owner": "研究负责人和仓库所有者"}
+    {"id": "A5", "kind": "validation", "goal": "作出问题情报平面 v0 的发布决定。", "dependencies": ["Q1"], "acceptance": "仅发布已验收范围，并明确未解决、新颖性未确认和校准不足事项。", "owner": "研究负责人和仓库所有者"},
+    {
+      "id": "D3",
+      "kind": "decision",
+      "work_kind": "decision-acceptance",
+      "semantic_key": "decision.problem-intelligence.console-slices",
+      "goal": "决定是否把控制台两个切片纳入问题情报平面修订。",
+      "dependencies": ["A1"],
+      "acceptance": "研究负责人和仓库所有者记录决定；写入 openproblem.md 工程附录。",
+      "owner": "研究负责人和仓库所有者",
+      "execution_actor": "human",
+      "side_effect_class": "none",
+      "candidate_identity_policy": "none",
+      "decision_refs": [],
+      "invalidation_keys": ["decision.problem-intelligence.console-slices"],
+      "source_requirement_refs": []
+    },
+    {
+      "id": "U1",
+      "kind": "implementation",
+      "work_kind": "contract-compile",
+      "semantic_key": "contract.problem-intelligence.console-visual-baseline",
+      "goal": "冻结控制台视觉基线与建设状态合同。",
+      "dependencies": ["D3"],
+      "acceptance": "基线清单落盘且哈希不可变；§5 每行绑定归属节点。",
+      "owner": "验收负责人（用户授权）",
+      "execution_actor": "codex",
+      "execution_profile": "primary lw-luna",
+      "side_effect_class": "reversible",
+      "candidate_identity_policy": "none",
+      "decision_refs": ["decision.problem-intelligence.console-slices@1"],
+      "invalidation_keys": ["contract.problem-intelligence.console-visual-baseline"],
+      "acceptance_commands": ["python3 -m unittest tests.test_console_prototype"],
+      "source_requirement_refs": ["SRC-PI-R6-U1-01", "SRC-PI-R6-U1-02", "SRC-PI-R6-U1-03"]
+    },
+    {
+      "id": "U2",
+      "kind": "implementation",
+      "work_kind": "implementation",
+      "semantic_key": "implementation.problem-intelligence.console-readonly-wiring",
+      "goal": "正式化 M0 只读导出与 M1 观察站接线，并补齐 §9 缺失断言。",
+      "dependencies": ["U1"],
+      "acceptance": "门禁全绿；live 视图对基线的结构签名与样式令牌一致。",
+      "owner": "研究基础设施负责人",
+      "execution_actor": "codex",
+      "execution_profile": "primary lw-luna",
+      "side_effect_class": "reversible",
+      "candidate_identity_policy": "none",
+      "decision_refs": ["decision.problem-intelligence.console-slices@1"],
+      "invalidation_keys": ["implementation.problem-intelligence.console-readonly-wiring"],
+      "acceptance_commands": [
+        "make ci-full PYTHON=.venv/bin/python",
+        "node scripts/console_browser_gate.mjs",
+        "node scripts/console_visual_parity.mjs",
+        "python3 scripts/check_blueprint_projection.py",
+        "python3 -m unittest tests.test_v02_console_export tests.test_v02_console_observatory tests.test_console_prototype"
+      ],
+      "source_requirement_refs": ["SRC-PI-R6-U2-01", "SRC-PI-R6-U2-02", "SRC-PI-R6-U2-03"]
+    },
+    {
+      "id": "U3",
+      "kind": "implementation",
+      "work_kind": "implementation",
+      "semantic_key": "implementation.problem-intelligence.console-review-loop",
+      "goal": "正式化 M2 评审闭环。",
+      "dependencies": ["U2"],
+      "acceptance": "真服务下 APPROVE 含非 OK 义务被拒并如实呈现；有效评审持久化后队列刷新；令牌只驻内存。",
+      "owner": "研究基础设施负责人",
+      "execution_actor": "codex",
+      "execution_profile": "primary lw-luna",
+      "side_effect_class": "reversible",
+      "candidate_identity_policy": "none",
+      "decision_refs": ["decision.problem-intelligence.console-slices@1"],
+      "invalidation_keys": ["implementation.problem-intelligence.console-review-loop"],
+      "acceptance_commands": [
+        "make ci-full PYTHON=.venv/bin/python",
+        "node scripts/console_browser_gate.mjs",
+        "node scripts/console_visual_parity.mjs",
+        "python3 scripts/check_blueprint_projection.py",
+        "python3 -m unittest tests.test_v03_review_server"
+      ],
+      "source_requirement_refs": ["SRC-PI-R6-U3-01", "SRC-PI-R6-U3-02", "SRC-PI-R6-U3-03"]
+    },
+    {
+      "id": "A6",
+      "kind": "validation",
+      "work_kind": "acceptance-design",
+      "semantic_key": "acceptance.problem-intelligence.console-wiring",
+      "goal": "验收控制台接线与视觉还原（平面③、平面②、管理端）。",
+      "dependencies": ["U2", "U3"],
+      "acceptance": "机器证据与人工 H-01 并排验收均完成。",
+      "owner": "验收负责人",
+      "execution_actor": "human",
+      "side_effect_class": "none",
+      "candidate_identity_policy": "none",
+      "decision_refs": ["decision.problem-intelligence.console-slices@1"],
+      "invalidation_keys": ["acceptance.problem-intelligence.console-wiring"],
+      "acceptance_commands": [
+        "make ci-full PYTHON=.venv/bin/python",
+        "node scripts/console_browser_gate.mjs",
+        "node scripts/console_visual_parity.mjs",
+        "python3 scripts/check_blueprint_projection.py"
+      ],
+      "source_requirement_refs": ["SRC-PI-R6-A6-01", "SRC-PI-R6-A6-02", "SRC-PI-R6-A6-03"]
+    },
+    {
+      "id": "U4",
+      "kind": "implementation",
+      "work_kind": "implementation",
+      "semantic_key": "implementation.problem-intelligence.console-local-projections",
+      "goal": "正式化 M3 选题投影：资料核验、四路回归、三例档案、难度、披露。",
+      "dependencies": ["A6", "A4", "R1", "Q1"],
+      "acceptance": "投影只读；不推断开放、已解或新颖；样本不足即未校准且无总分。",
+      "owner": "主题观测负责人",
+      "execution_actor": "codex",
+      "execution_profile": "primary lw-luna",
+      "side_effect_class": "reversible",
+      "candidate_identity_policy": "none",
+      "decision_refs": ["decision.problem-intelligence.console-slices@1"],
+      "invalidation_keys": ["implementation.problem-intelligence.console-local-projections"],
+      "acceptance_commands": [
+        "make ci-full PYTHON=.venv/bin/python",
+        "node scripts/console_browser_gate.mjs",
+        "node scripts/console_visual_parity.mjs",
+        "python3 scripts/check_blueprint_projection.py",
+        "python3 -m unittest tests.test_v02_console_topic tests.test_v02_console_local_projection"
+      ],
+      "source_requirement_refs": ["SRC-PI-R7-U4-01", "SRC-PI-R7-U4-02", "SRC-PI-R7-U4-03"]
+    },
+    {
+      "id": "U5",
+      "kind": "implementation",
+      "work_kind": "implementation",
+      "semantic_key": "implementation.problem-intelligence.console-operations-domain",
+      "goal": "正式化 M4 运营域本地账本。",
+      "dependencies": ["A6"],
+      "acceptance": "账本不在研究工作区；换模型换上游后历史重放逐字节不变；外部身份支付上游均 not_configured。",
+      "owner": "研究基础设施负责人",
+      "execution_actor": "codex",
+      "execution_profile": "primary lw-luna",
+      "side_effect_class": "reversible",
+      "candidate_identity_policy": "none",
+      "decision_refs": ["decision.problem-intelligence.console-slices@1"],
+      "invalidation_keys": ["implementation.problem-intelligence.console-operations-domain"],
+      "acceptance_commands": [
+        "make ci-full PYTHON=.venv/bin/python",
+        "node scripts/console_browser_gate.mjs",
+        "node scripts/console_visual_parity.mjs",
+        "python3 scripts/check_blueprint_projection.py",
+        "python3 -m unittest tests.test_operations_ledger tests.test_v02_operations_ledger tests.test_operations_domain"
+      ],
+      "source_requirement_refs": ["SRC-PI-R7-U5-01", "SRC-PI-R7-U5-02", "SRC-PI-R7-U5-03"]
+    },
+    {
+      "id": "A7",
+      "kind": "validation",
+      "work_kind": "release-decision",
+      "semantic_key": "release.problem-intelligence.console-v0",
+      "goal": "作出控制台 v0 验收与发布决定（平面①、账户端）。",
+      "dependencies": ["U4", "U5", "A5"],
+      "acceptance": "通过人工 H-01；仅发布已验收范围并披露未配置项。",
+      "owner": "研究负责人和仓库所有者",
+      "execution_actor": "human",
+      "side_effect_class": "none",
+      "candidate_identity_policy": "must-match",
+      "decision_refs": ["decision.problem-intelligence.console-slices@1"],
+      "invalidation_keys": ["release.problem-intelligence.console-v0"],
+      "acceptance_commands": [
+        "make ci-full PYTHON=.venv/bin/python",
+        "node scripts/console_browser_gate.mjs",
+        "node scripts/console_visual_parity.mjs",
+        "python3 scripts/check_blueprint_projection.py"
+      ],
+      "source_requirement_refs": ["SRC-PI-R7-A7-01", "SRC-PI-R7-A7-02", "SRC-PI-R7-A7-03"]
+    }
   ],
   "waves": [
     {"id": "W0", "release_id": "PI-R1", "node_ids": ["CHARTER"]},
@@ -173,7 +420,14 @@
     {"id": "W12", "release_id": "PI-R4", "node_ids": ["A4"]},
     {"id": "W13", "release_id": "PI-R5", "node_ids": ["R1"]},
     {"id": "W14", "release_id": "PI-R5", "node_ids": ["Q1"]},
-    {"id": "W15", "release_id": "PI-R5", "node_ids": ["A5"]}
+    {"id": "W15", "release_id": "PI-R5", "node_ids": ["A5"]},
+    {"id": "W16", "release_id": "PI-R6", "node_ids": ["D3"]},
+    {"id": "W17", "release_id": "PI-R6", "node_ids": ["U1"]},
+    {"id": "W18", "release_id": "PI-R6", "node_ids": ["U2"]},
+    {"id": "W19", "release_id": "PI-R6", "node_ids": ["U3"]},
+    {"id": "W20", "release_id": "PI-R6", "node_ids": ["A6"]},
+    {"id": "W21", "release_id": "PI-R7", "node_ids": ["U4", "U5"]},
+    {"id": "W22", "release_id": "PI-R7", "node_ids": ["A7"]}
   ],
   "scheduling_model": "event-driven",
   "scheduling_hints": [
@@ -185,7 +439,7 @@
   "release_boundary_compiler": {
     "boundary_required": true,
     "decision_authority": "MathArc 研究负责人和仓库所有者",
-    "rationale": "五个切片分别拥有独立的用户价值、验收证据和失败半径；文献底座、状态审计、主题消费者和回归政策不能依赖未来大规模平台才能解释成功。"
+    "rationale": "七个切片分别拥有独立的用户价值、验收证据和失败半径；文献底座、状态审计、主题消费者、回归政策和控制台域不能依赖未来大规模平台才能解释成功。"
   },
   "artifacts": {
     "ssot_bundle": true,
@@ -196,13 +450,18 @@
     "evidence_identity_registry": false
   },
   "complexity_budget": {
-    "authority": "规划编排者",
-    "rationale": "保留五个发布切片和最小验收节点；不注册外部 Codex worker，不把每个测试断言拆成独立节点。",
+    "authority": "规划编排者与仓库所有者",
+    "rationale": "在保留五个既有发布切片和最小验收节点的基础上，批准两个控制台发布切片共 8 个节点；不注册外部 Codex worker，不把每个测试断言拆成独立节点。",
     "limits": {
       "total_nodes": 20,
       "implementation_nodes_per_release": 3,
       "codex_worker_nodes": 0,
       "generated_views": 1
+    },
+    "exception": {
+      "reason": "两个控制台发布切片共 8 个节点，作为 PLAN v3/DAG v2 的批准范围扩展。",
+      "approved_by": "规划编排者与仓库所有者",
+      "affected_limits": ["total_nodes"]
     }
   },
   "goal_size_detector": {

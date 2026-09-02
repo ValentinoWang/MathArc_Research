@@ -1,0 +1,33 @@
+{
+  "schema_version": 1,
+  "contract_id": "U3",
+  "node_id": "U3",
+  "semantic_key": "implementation.problem-intelligence.console-review-loop",
+  "work_kind": "implementation",
+  "execution_actor": "codex",
+  "write_authority": "implementation",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "U2"
+  ],
+  "read_set": [
+    "artifact:pi-console-readonly-wiring",
+    "artifact:pi-console-visual-baseline"
+  ],
+  "write_set": [
+    "artifact:pi-console-review-loop"
+  ],
+  "acceptance_commands": [
+    "make ci-full PYTHON=.venv/bin/python",
+    "node scripts/console_browser_gate.mjs",
+    "python3 -m unittest tests.test_v03_review_server"
+  ],
+  "planned_acceptance_commands": [
+    "node scripts/console_visual_parity.mjs",
+    "python3 scripts/check_blueprint_projection.py"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/U3.json"
+  ]
+}

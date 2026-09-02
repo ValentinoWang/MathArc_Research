@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-U2-A6",
+  "from": "U2",
+  "to": "A6",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.console-readonly-wiring.console-wiring-acceptance"],
+  "transferred_input": "控制台只读接线候选及其浏览器证据",
+  "gate_evidence": "U2 静态、浏览器和来源摘要证据",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "控制台接线验收必须检查实际只读候选而非静态计划。",
+  "transferred_artifact_ids": ["DL-U2"],
+  "resource_ids": []
+}

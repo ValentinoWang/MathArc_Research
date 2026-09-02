@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-U4-A7",
+  "from": "U4",
+  "to": "A7",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.console-local-projections.console-release"],
+  "transferred_input": "已实现的选题情报本地投影",
+  "gate_evidence": "U4 投影来源、状态、provenance 和 fail-closed 测试",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "控制台发布决定必须直接检查已实现的选题投影及其来源边界。",
+  "transferred_artifact_ids": ["DL-U4"],
+  "resource_ids": []
+}

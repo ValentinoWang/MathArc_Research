@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-R1-U4",
+  "from": "R1",
+  "to": "U4",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.regression.console-local-projections"],
+  "transferred_input": "已验收的四路检索回归集和消融结果",
+  "gate_evidence": "R1 路线、样本、增量和缺口记录",
+  "reason_code": "data-dependency",
+  "necessity_proof": "本地选题投影必须使用已验收的回归和消融结果，而不能重算或解释研究结论。",
+  "transferred_artifact_ids": ["DL-R1"],
+  "resource_ids": []
+}

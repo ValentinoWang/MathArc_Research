@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-A1-D3",
+  "from": "A1",
+  "to": "D3",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.amendment.console-slices"],
+  "transferred_input": "已接受的问题情报修订决定",
+  "gate_evidence": "A1 修订决定记录和批准身份",
+  "reason_code": "acceptance-dependency",
+  "necessity_proof": "控制台切片决定必须建立在已接受的问题情报修订范围上。",
+  "transferred_artifact_ids": ["DL-A1"],
+  "resource_ids": []
+}

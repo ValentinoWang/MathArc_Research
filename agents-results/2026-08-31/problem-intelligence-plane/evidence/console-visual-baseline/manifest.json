@@ -1,0 +1,472 @@
+{
+  "schema_version": 1,
+  "artifact_id": "pi-console-visual-baseline",
+  "artifact_class": "planned-visual-baseline-contract",
+  "lifecycle": {
+    "status": "planned",
+    "activation": "inactive",
+    "activation_node": "U1",
+    "runtime_evidence_eligible": false,
+    "activation_requirements": [
+      "U1 is active under an approved SSOT plan",
+      "all 256 baseline captures are produced from the pinned authority",
+      "every capture record satisfies capture_record_schema",
+      "all content hashes and the consumer_surface_digest are computed from captured artifacts",
+      "the applicable A6 and A7 H-01 human reviews are executed independently"
+    ]
+  },
+  "authority": {
+    "authority_id": "console-visual-prototype-31bb970",
+    "role": "pinned-historical-visual-authority",
+    "source_commit": "31bb9704689548a69d0f020ec007af9688a6ad43",
+    "source_path": "docs/prototypes/problem-intel-console.html",
+    "archived_source_path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/console-visual-baseline/authority/problem-intel-console-31bb970.html",
+    "source_sha256": "7809b144c49c63b8a3f7cc2975e2ea8c933284fc48c7bf8e38a0f52f07014814",
+    "source_media_type": "text/html",
+    "source_identity_status": "verified-from-git-object",
+    "dimensions": [
+      {
+        "dimension_id": "information-architecture",
+        "authority_scope": "view grouping, navigation hierarchy, and primary-versus-secondary information order"
+      },
+      {
+        "dimension_id": "layout-composition",
+        "authority_scope": "page shell, rail, main and side regions, grids, chains, and density relationships"
+      },
+      {
+        "dimension_id": "typography",
+        "authority_scope": "font-family roles, type hierarchy, weight, size, and line-height relationships"
+      },
+      {
+        "dimension_id": "color-tokens",
+        "authority_scope": "semantic surface, ink, border, accent, success, warning, error, and skip color tokens"
+      },
+      {
+        "dimension_id": "component-geometry",
+        "authority_scope": "card, list, chain, control, border, radius, spacing, and alignment treatment"
+      },
+      {
+        "dimension_id": "responsive-behavior",
+        "authority_scope": "wide and narrow viewport reflow, readable containment, and non-overlap behavior"
+      }
+    ],
+    "excluded_authority": [
+      "backend or API truth",
+      "authentication or authorization behavior",
+      "persistence or replay correctness",
+      "production or physical-device behavior",
+      "mathematical status or novelty conclusions",
+      "human acceptance decisions"
+    ]
+  },
+  "inventory_contract": {
+    "baseline_unit": "one unique view at one viewport",
+    "unique_view_count": 32,
+    "view_ids": [
+      "portfolio",
+      "dossier",
+      "cert",
+      "frontier",
+      "radar",
+      "source",
+      "novelty",
+      "difficulty",
+      "dag",
+      "disclosure",
+      "campaigns",
+      "campaign",
+      "exploration",
+      "conjecture",
+      "routes",
+      "tools",
+      "reasoning",
+      "landing",
+      "login",
+      "acct_overview",
+      "acct_usage",
+      "acct_billing",
+      "acct_limits",
+      "admin_cost",
+      "admin_upstream",
+      "admin_users",
+      "field",
+      "topics",
+      "admin_roles",
+      "admin_roster",
+      "admin_queue",
+      "proofchain"
+    ],
+    "view_groups": {
+      "research_plane_1": [
+        "field",
+        "topics",
+        "radar",
+        "source",
+        "portfolio",
+        "dossier",
+        "cert",
+        "frontier",
+        "difficulty"
+      ],
+      "research_plane_2": [
+        "campaigns",
+        "campaign",
+        "routes",
+        "conjecture",
+        "exploration"
+      ],
+      "research_plane_3": [
+        "campaigns",
+        "dag",
+        "proofchain",
+        "tools",
+        "reasoning",
+        "novelty",
+        "disclosure"
+      ],
+      "account": [
+        "acct_overview",
+        "acct_usage",
+        "acct_billing",
+        "acct_limits"
+      ],
+      "admin": [
+        "admin_roles",
+        "admin_roster",
+        "admin_queue",
+        "admin_cost",
+        "admin_upstream",
+        "admin_users"
+      ],
+      "full_screen_pending_integration": [
+        "landing",
+        "login"
+      ]
+    },
+    "navigation_contract": {
+      "research_plane_navigation_slot_count": 21,
+      "research_plane_unique_view_count": 20,
+      "shared_navigation_view_id": "campaigns",
+      "shared_navigation_occurrences": 2
+    },
+    "browser_regression_contract": {
+      "case_count": 52,
+      "base_case_count": 32,
+      "state_action_variant_count": 20,
+      "state_action_variant_ids": [
+        "source-observation-o1",
+        "source-observation-o3",
+        "dossier-version-1",
+        "dossier-version-2",
+        "dossier-version-3",
+        "frontier-node-n7",
+        "frontier-node-barrier",
+        "campaign-round-1",
+        "campaign-round-3",
+        "campaign-round-7",
+        "exploration-e1",
+        "exploration-e2",
+        "conjecture-c1",
+        "conjecture-c2",
+        "routes-r1",
+        "routes-r2",
+        "tools-call-1",
+        "tools-call-4",
+        "reasoning-step-1",
+        "reasoning-step-2"
+      ],
+      "relationship_to_baseline": "The 52 browser regression cases are 32 base cases plus 20 state/action variants. They are not 52 unique views or 52 proven real interactions and do not change the 256-capture baseline inventory."
+    }
+  },
+  "capture_matrix": {
+    "unique_view_count": 32,
+    "viewport_count": 8,
+    "expected_capture_count": 256,
+    "count_formula": "32 unique views * 8 viewports",
+    "viewports": [
+      {
+        "viewport_id": "desktop-1240",
+        "category": "desktop",
+        "width": 1240,
+        "height": 1080,
+        "expected_capture_count": 32,
+        "capture_records": []
+      },
+      {
+        "viewport_id": "desktop-1366",
+        "category": "desktop",
+        "width": 1366,
+        "height": 1080,
+        "expected_capture_count": 32,
+        "capture_records": []
+      },
+      {
+        "viewport_id": "desktop-1440",
+        "category": "desktop",
+        "width": 1440,
+        "height": 1080,
+        "expected_capture_count": 32,
+        "capture_records": []
+      },
+      {
+        "viewport_id": "desktop-1536",
+        "category": "desktop",
+        "width": 1536,
+        "height": 1080,
+        "expected_capture_count": 32,
+        "capture_records": []
+      },
+      {
+        "viewport_id": "desktop-1728",
+        "category": "desktop",
+        "width": 1728,
+        "height": 1080,
+        "expected_capture_count": 32,
+        "capture_records": []
+      },
+      {
+        "viewport_id": "desktop-1920",
+        "category": "desktop",
+        "width": 1920,
+        "height": 1080,
+        "expected_capture_count": 32,
+        "capture_records": []
+      },
+      {
+        "viewport_id": "mobile-390",
+        "category": "mobile",
+        "width": 390,
+        "height": 844,
+        "is_mobile": true,
+        "has_touch": true,
+        "device_scale_factor": 2,
+        "expected_capture_count": 32,
+        "capture_records": []
+      },
+      {
+        "viewport_id": "mobile-820",
+        "category": "mobile",
+        "width": 820,
+        "height": 1180,
+        "is_mobile": true,
+        "has_touch": true,
+        "device_scale_factor": 2,
+        "expected_capture_count": 32,
+        "capture_records": []
+      }
+    ]
+  },
+  "capture_record_schema": {
+    "record_status_when_complete": "captured",
+    "required_sections": [
+      "capture_identity",
+      "source_identity",
+      "provenance",
+      "png",
+      "dom_structure_signature",
+      "computed_style_samples"
+    ],
+    "capture_identity_required_fields": [
+      "capture_id",
+      "run_id",
+      "machine_layer",
+      "page_identity",
+      "view_id",
+      "viewport_id",
+      "viewport",
+      "browser",
+      "browser_version",
+      "captured_at"
+    ],
+    "capture_identity_constraints": {
+      "machine_layer": "e2e",
+      "page_identity": "problem-intel-console",
+      "view_id_membership": "inventory_contract.view_ids",
+      "viewport_id_membership": "capture_matrix.viewports"
+    },
+    "source_identity_required_fields": [
+      "source_commit",
+      "source_path",
+      "source_sha256",
+      "source_media_type"
+    ],
+    "provenance_required_fields": [
+      "capture_tool",
+      "capture_tool_version",
+      "source_materialization_method",
+      "state_or_fixture_identity",
+      "consumer_surface_digest"
+    ],
+    "png_required_fields": [
+      "path",
+      "sha256",
+      "media_type"
+    ],
+    "png_constraints": {
+      "media_type": "image/png",
+      "path_policy": "project-relative and inside this evidence bundle",
+      "sha256_format": "64 lowercase hexadecimal characters"
+    },
+    "dom_structure_signature": {
+      "required_fields": [
+        "evidence_ref",
+        "sha256",
+        "signature_algorithm",
+        "class_presence"
+      ],
+      "required_class_selectors": [
+        ".card",
+        ".grid2",
+        ".chain",
+        ".li"
+      ],
+      "signature_requirement": "Canonicalize the captured view DOM structure and record selector presence and structure without substituting screenshot text for DOM evidence."
+    },
+    "computed_style_samples": {
+      "required_fields": [
+        "evidence_ref",
+        "sha256",
+        "font_families",
+        "color_tokens",
+        "card"
+      ],
+      "font_family_requirement": "Record computed font-family values for the representative sans, serif, and mono roles present in the captured view.",
+      "color_token_requirement": "Record the resolved visual authority tokens used by the captured view, including surface, ink, line, accent, and applicable semantic status colors.",
+      "card": {
+        "selector": ".card",
+        "required_computed_properties": [
+          "border-radius",
+          "border-top-width",
+          "border-top-style",
+          "border-top-color"
+        ]
+      }
+    }
+  },
+  "acceptance_slices": {
+    "A6": {
+      "status": "future-requirement",
+      "scope": "research planes 2 and 3 plus admin surfaces",
+      "view_count": 17,
+      "view_ids": [
+        "campaigns",
+        "campaign",
+        "routes",
+        "conjecture",
+        "exploration",
+        "dag",
+        "proofchain",
+        "tools",
+        "reasoning",
+        "novelty",
+        "disclosure",
+        "admin_roles",
+        "admin_roster",
+        "admin_queue",
+        "admin_cost",
+        "admin_upstream",
+        "admin_users"
+      ],
+      "human_review": {
+        "item_id": "H-01",
+        "status": "not-executed",
+        "conclusion": null
+      }
+    },
+    "A7": {
+      "status": "future-requirement",
+      "scope": "research plane 1 plus account surfaces",
+      "view_count": 13,
+      "view_ids": [
+        "field",
+        "topics",
+        "radar",
+        "source",
+        "portfolio",
+        "dossier",
+        "cert",
+        "frontier",
+        "difficulty",
+        "acct_overview",
+        "acct_usage",
+        "acct_billing",
+        "acct_limits"
+      ],
+      "human_review": {
+        "item_id": "H-01",
+        "status": "not-executed",
+        "conclusion": null
+      }
+    },
+    "pending_integration_decision": {
+      "status": "unresolved",
+      "view_count": 2,
+      "view_ids": [
+        "landing",
+        "login"
+      ],
+      "reason": "Full-screen entry and authentication ownership has not been assigned to A6 or A7. An explicit integration decision is required before activation."
+    }
+  },
+  "hash_policy": {
+    "algorithm": "sha256",
+    "digest_encoding": "lowercase-hex",
+    "canonical_json": "UTF-8, object keys sorted recursively, no insignificant whitespace, array order preserved",
+    "consumer_surface_digest_status": "not-computed",
+    "consumer_surface_digest_inputs": [
+      "authority source identity",
+      "ordered unique view inventory",
+      "ordered viewport matrix",
+      "capture identity requirements",
+      "DOM structure signature requirements",
+      "computed-style sample requirements",
+      "state or fixture identity"
+    ],
+    "invalidation_keys": [
+      "authority source commit, path, or SHA-256",
+      "unique view membership or order",
+      "viewport dimensions or device properties",
+      "required DOM selectors or signature algorithm",
+      "required computed-style properties or color-token scope",
+      "capture tool, browser, state, or fixture identity"
+    ],
+    "immutability_after_activation": "Completed capture records and their referenced artifacts are immutable. Corrections create a new record that explicitly supersedes the old identity; filenames alone never preserve validity."
+  },
+  "retention": {
+    "ownership": "project",
+    "manifest_media_type": "application/json",
+    "capture_media_type": "image/png",
+    "policy_after_activation": "release",
+    "evidence_location_policy": "project-owned evidence bundle only",
+    "inactive_state_policy": "retain this planning contract without representing absent capture artifacts"
+  },
+  "evidence_state": {
+    "capture_runs": [],
+    "capture_records": [],
+    "screenshot_records": [],
+    "dom_signature_records": [],
+    "computed_style_records": [],
+    "human_review_records": [],
+    "captured_at": null,
+    "browser_identity": null,
+    "consumer_surface_digest": null,
+    "review_conclusion": null,
+    "reason": "The visual baseline is planned and inactive. No U1 capture run or A6/A7 H-01 review has been executed."
+  },
+  "claims": {
+    "proves": [
+      "the pinned visual authority identity",
+      "the planned inventory of 32 unique views and 8 viewports",
+      "the expected total of 256 future baseline captures",
+      "the required future capture, hashing, ownership, and review fields"
+    ],
+    "does_not_prove": [
+      "that any screenshot or capture currently exists",
+      "runtime rendering or visual fidelity",
+      "that any of the 52 browser regression cases represents a real user interaction",
+      "A6 or A7 human acceptance",
+      "API, persistence, permission, deployment, production, or device behavior",
+      "mathematical correctness, problem status, or result novelty"
+    ]
+  }
+}

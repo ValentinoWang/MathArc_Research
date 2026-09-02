@@ -20,6 +20,9 @@
   "unlocks": [
     "F1"
   ],
+  "source_requirement_refs": [
+    "SRC-PI-R6-D3-01"
+  ],
   "node_role": "charter",
   "execution_actor": "human",
   "execution_contract_ref": "CHARTER.json",

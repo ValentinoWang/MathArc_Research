@@ -1,0 +1,28 @@
+{
+  "schema_version": 1,
+  "contract_id": "U1",
+  "node_id": "U1",
+  "semantic_key": "contract.problem-intelligence.console-visual-baseline",
+  "work_kind": "contract-compile",
+  "execution_actor": "codex",
+  "write_authority": "authoritative-contract",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "hard_dependencies": [
+    "D3"
+  ],
+  "read_set": [
+    "artifact:pi-console-slices-decision",
+    "authority:console-visual-prototype-31bb970"
+  ],
+  "write_set": [
+    "artifact:pi-console-visual-baseline",
+    "artifact:pi-console-blueprint-projection-contract"
+  ],
+  "acceptance_commands": [
+    "python3 -m unittest tests.test_console_prototype"
+  ],
+  "evidence_outputs": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/U1.json"
+  ]
+}

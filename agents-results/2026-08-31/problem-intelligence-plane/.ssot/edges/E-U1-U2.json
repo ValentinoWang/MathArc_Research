@@ -1,0 +1,16 @@
+{
+  "edge_id": "E-U1-U2",
+  "from": "U1",
+  "to": "U2",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": ["edge.console-visual-baseline.console-readonly-wiring"],
+  "transferred_input": "已冻结的控制台视觉基线与蓝图投影合同",
+  "gate_evidence": "U1 三态 token、应用壳、视图状态和来源摘要检查",
+  "reason_code": "contract-dependency",
+  "necessity_proof": "只读接线必须以冻结的视图、状态和布局合同为准。",
+  "transferred_artifact_ids": ["DL-U1"],
+  "resource_ids": []
+}

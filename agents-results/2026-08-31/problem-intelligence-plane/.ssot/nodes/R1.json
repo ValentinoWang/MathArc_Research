@@ -25,7 +25,11 @@
   "write_authority": "implementation",
   "acceptance_authority": "评测负责人",
   "unlocks": [
-    "Q1"
+    "Q1",
+    "U4"
+  ],
+  "source_requirement_refs": [
+    "SRC-PI-R6-D3-03"
   ],
   "node_role": "leaf",
   "execution_actor": "human",

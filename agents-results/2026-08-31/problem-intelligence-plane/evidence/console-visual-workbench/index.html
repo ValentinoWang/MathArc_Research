@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>MathArc 控制台视觉工作台</title>
+  <style>
+    :root {
+      color-scheme: light;
+      --canvas: #f4f5f2;
+      --surface: #ffffff;
+      --ink: #171a1d;
+      --muted: #626a70;
+      --line: #d9ddda;
+      --accent: #0b6e55;
+      --warning: #9b5b12;
+      --danger: #a23a37;
+      --pending: #697078;
+      font-family: Inter, "PingFang SC", "Microsoft YaHei", sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      min-height: 100vh;
+      color: var(--ink);
+      background: var(--canvas);
+    }
+
+    header {
+      min-height: 72px;
+      padding: 16px 24px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    h1, h2, p { margin: 0; }
+    h1 { font: 700 20px/1.35 Georgia, "Songti SC", serif; }
+    h2 { font-size: 15px; line-height: 1.35; }
+
+    .subtitle {
+      margin-top: 4px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status {
+      flex: 0 0 auto;
+      color: var(--warning);
+      border: 1px solid #d8b88e;
+      background: #fff8ed;
+      padding: 6px 10px;
+      font: 700 12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    nav {
+      display: none;
+      min-height: 48px;
+      border-bottom: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    nav button {
+      flex: 1;
+      min-height: 48px;
+      border: 0;
+      border-right: 1px solid var(--line);
+      background: transparent;
+      color: var(--muted);
+      font: 700 13px/1.2 inherit;
+      cursor: pointer;
+    }
+
+    nav button[aria-selected="true"] {
+      color: var(--accent);
+      box-shadow: inset 0 -3px 0 var(--accent);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: minmax(240px, 0.8fr) minmax(460px, 1.7fr) minmax(260px, 0.9fr);
+      min-height: calc(100vh - 73px);
+    }
+
+    section {
+      min-width: 0;
+      padding: 20px;
+      border-right: 1px solid var(--line);
+      background: var(--surface);
+    }
+
+    section:last-child { border-right: 0; }
+
+    .pane-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .count {
+      color: var(--muted);
+      font: 600 12px/1.2 ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+
+    .notice {
+      margin: 16px 0;
+      padding: 12px 0 12px 12px;
+      border-left: 3px solid var(--warning);
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.55;
+    }
+
+    dl { margin: 0; }
+    dt {
+      margin-top: 16px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    dd {
+      margin: 5px 0 0;
+      overflow-wrap: anywhere;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 11px;
+    }
+
+    a { color: var(--accent); }
+
+    iframe {
+      width: 100%;
+      height: calc(100vh - 146px);
+      min-height: 560px;
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+    }
+
+    .candidate {
+      padding: 14px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .candidate:last-child { border-bottom: 0; }
+    .candidate-title {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      font-weight: 700;
+      font-size: 13px;
+    }
+    .candidate p {
+      margin-top: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.55;
+    }
+    .tag { color: var(--pending); font-weight: 600; }
+    .tag.reference { color: var(--accent); }
+
+    footer {
+      grid-column: 1 / -1;
+      padding: 12px 20px;
+      border-top: 1px solid var(--line);
+      background: var(--canvas);
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    @media (max-width: 900px) {
+      header { align-items: flex-start; padding: 14px 16px; }
+      nav { display: flex; }
+      main { display: block; min-height: calc(100vh - 121px); }
+      section { display: none; border-right: 0; padding: 16px; }
+      section[data-active="true"] { display: block; }
+      iframe { height: calc(100vh - 220px); min-height: 480px; }
+      footer { display: block; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>
+      <h1>MathArc 控制台视觉工作台</h1>
+      <p class="subtitle">计划修订工作面，不是产品运行界面，也不是验收结论。</p>
+    </div>
+    <span class="status">DRAFT · 0 RUNTIME CAPTURES</span>
+  </header>
+
+  <nav aria-label="工作台区域">
+    <button type="button" data-pane-button="evidence">证据</button>
+    <button type="button" data-pane-button="prototype">原型</button>
+    <button type="button" data-pane-button="candidates">候选</button>
+  </nav>
+
+  <main>
+    <section id="pane-evidence" data-pane="evidence">
+      <div class="pane-head">
+        <h2>证据</h2>
+        <span class="count">0 / 256</span>
+      </div>
+      <p class="notice">当前只有未来捕获合同。没有截图、运行时记录或人工通过结论。</p>
+      <dl>
+        <dt>蓝图权威</dt>
+        <dd><a href="../../../../../docs/prototypes/console-dev-blueprint.html">控制台开发蓝图</a></dd>
+        <dt>计划矩阵</dt>
+        <dd><a href="../console-visual-baseline/manifest.json">32 个唯一视图 × 8 个视口</a></dd>
+        <dt>来源校验值</dt>
+        <dd><code>6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f</code></dd>
+        <dt>证据边界</dt>
+        <dd>本页只能证明来源、工作面和待办关系已被记录，不能证明控制台已实现、已还原或已发布。</dd>
+      </dl>
+    </section>
+
+    <section id="pane-prototype" data-pane="prototype">
+      <div class="pane-head">
+        <h2>原型</h2>
+        <span class="count">31bb970</span>
+      </div>
+      <iframe
+        title="历史视觉权威原型"
+        src="../console-visual-baseline/authority/problem-intel-console-31bb970.html"
+      ></iframe>
+    </section>
+
+    <section id="pane-candidates" data-pane="candidates">
+      <div class="pane-head">
+        <h2>候选</h2>
+        <span class="count">1 reference · 2 pending</span>
+      </div>
+      <article class="candidate">
+        <div class="candidate-title"><span>A · 历史视觉权威</span><span class="tag reference">REFERENCE</span></div>
+        <p>字节来自提交 <code>31bb970</code>。它是视觉一致性参考，不是已签署的视觉选择。</p>
+      </article>
+      <article class="candidate">
+        <div class="candidate-title"><span>B · 独立候选</span><span class="tag">NOT GENERATED</span></div>
+        <p>尚未生成，不能比较、淘汰或接受。</p>
+      </article>
+      <article class="candidate">
+        <div class="candidate-title"><span>C · 独立候选</span><span class="tag">NOT GENERATED</span></div>
+        <p>尚未生成，不能比较、淘汰或接受。</p>
+      </article>
+      <p class="notice">视觉探索仍被阻塞；A6 与 A7 的人工清单均为草稿，未获批准、未执行。</p>
+    </section>
+
+    <footer>工作链：用户需要 → 产品语义 → 角色 → 交互结构 → 页面结构 → HTML 原型 → 视觉探索 → 选择 → 工程交接</footer>
+  </main>
+
+  <script>
+    const panes = ["evidence", "prototype", "candidates"];
+
+    function selectedPane() {
+      const match = location.hash.match(/^#\/page\/(evidence|prototype|candidates)$/);
+      return match ? match[1] : "prototype";
+    }
+
+    function renderPane() {
+      const active = selectedPane();
+      document.querySelectorAll("[data-pane]").forEach((element) => {
+        element.dataset.active = String(element.dataset.pane === active);
+      });
+      document.querySelectorAll("[data-pane-button]").forEach((button) => {
+        button.setAttribute("aria-selected", String(button.dataset.paneButton === active));
+      });
+    }
+
+    document.querySelectorAll("[data-pane-button]").forEach((button) => {
+      button.addEventListener("click", () => {
+        location.hash = `#/page/${button.dataset.paneButton}`;
+      });
+    });
+    addEventListener("hashchange", renderPane);
+    renderPane();
+  </script>
+</body>
+</html>
