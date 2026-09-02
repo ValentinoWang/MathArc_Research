@@ -488,7 +488,7 @@ class ProblemStatusTests(unittest.TestCase):
         )
         self.assertEqual(ProblemStatus.OPEN_REPORTED.value, frankl_residual["expected_report_status"])
         self.assertIn("not a claim about the global Frankl conjecture", frankl_residual["limitations"][0])
-        engineering_progress = (Path(__file__).parents[1] / "docs/engineering-progress.md").read_text(encoding="utf-8")
+        engineering_progress = (Path(__file__).parents[1] / "docs/lessons/engineering-progress.md").read_text(encoding="utf-8")
         self.assertIn("Remaining q=6 counterexample must contain at least four small outside parts; global Frankl remains open", engineering_progress)
 
         collision = payloads["P-ARXIV-2601-22401-COLLISION"]
@@ -529,7 +529,7 @@ class ProblemStatusTests(unittest.TestCase):
         )
         self.assertEqual(ProblemStatus.OPEN_REPORTED.value, four_or_more["expected_report_status"])
         self.assertNotEqual(frankl_residual["case_role"], four_or_more["case_role"])
-        q6_residual_source = (Path(__file__).parents[1] / "docs/frankl-q6-exactly-three-small-outside-parts.md").read_text(encoding="utf-8")
+        q6_residual_source = (Path(__file__).parents[1] / "docs/frankl/frankl-q6-exactly-three-small-outside-parts.md").read_text(encoding="utf-8")
         self.assertIn(f"> {four_or_more['statement']}", q6_residual_source)
         self.assertIn("No statement in this document upgrades the result to the general minimum-three-set case or to Frankl's conjecture.", q6_residual_source)
 

@@ -7,11 +7,11 @@
   "artifacts": {
     "numpy_verifier_source": {
       "path": "../../verifiers/q6_three_small_numpy.py",
-      "sha256": "67b789330148d1075c116a2daaaeafc3ed255634021bfd3fa350ffaa6c3ebc9e"
+      "sha256": "b6ea51b8fab83de65c2f93f56eb64224f705549e2cd7a9cc78e065d0a2a66d82"
     },
     "cpp_verifier_source": {
       "path": "../../verifiers/q6_three_small_core_bound.cpp",
-      "sha256": "8c7419cda82f58486130583c444a630dd021a754710f361c8b060917bbf3fc6b"
+      "sha256": "2b2758ea0556944058f3c95cb21fe109bc62ead1a05a9dbea64d08fd92cfabea"
     },
     "numpy_certificate": {
       "path": "frankl-q6-three-small-python.json",

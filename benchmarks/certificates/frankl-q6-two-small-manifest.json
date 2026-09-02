@@ -7,7 +7,7 @@
   "artifacts": {
     "python_certificate": {
       "path": "frankl-q6-two-small-python.json",
-      "sha256": "445c4743f45e71624a1c6e9b8b6484a77fa80b63c69f7aa771bdb3e38d6aadb4"
+      "sha256": "f0e59a1843e8070c15d8dac27f38cf263ea20e846a53d1cf883733b8856ed1d2"
     },
     "cpp_source": {
       "path": "../../verifiers/q6_two_small_core_bound.cpp",

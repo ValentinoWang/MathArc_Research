@@ -45,8 +45,8 @@ def main() -> None:
         "matharc/dashboard.py",
         "tests/test_codex_runtime.py",
         "tests/test_codex_dashboard.py",
-        "docs/codex-agent-runtime.md",
-        "docs/v0.1-engineering-contract-acceptance.md",
+        "docs/reports/codex-agent-runtime.md",
+        "docs/reports/v0.1-engineering-contract-acceptance.md",
         "benchmarks/v0.1-acceptance-contract.json",
         "experiments/frankl_q6_round4/LATEST_Q6_AUDIT.md",
     ]

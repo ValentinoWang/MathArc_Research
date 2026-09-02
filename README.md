@@ -2,6 +2,8 @@
 
 > A proof-carrying mathematical research runtime with verifier-controlled claims, real Codex workers, public research traces, and replayable evidence.
 
+This is the v0.1-era baseline product doc. For the v0.2 delta — release states, benchmark policy, main files — see [README_V02.md](README_V02.md).
+
 MathArc Research does not repeatedly ask a model to “try harder.” It turns a theorem or conjecture into an auditable state machine:
 
 ```text
@@ -36,7 +38,7 @@ Implemented surfaces include:
 
 Read the frozen contract and acceptance report:
 
-- `docs/v0.1-engineering-contract-acceptance.md`
+- `docs/reports/v0.1-engineering-contract-acceptance.md`
 - `benchmarks/v0.1-acceptance-contract.json`
 
 ## Interactive Codex research console
@@ -75,7 +77,7 @@ It cannot self-assign `VERIFIED` or `ACCEPTED`. Mathematical promotion remains c
 
 The browser defaults to `read-only`; `workspace-write` requires an explicit user selection. Dangerous sandbox bypass is never exposed through the API.
 
-See `docs/codex-agent-runtime.md` for the full execution and security contract.
+See `docs/reports/codex-agent-runtime.md` for the full execution and security contract.
 
 ## Product views
 
@@ -253,9 +255,11 @@ verifiers/                  independent Python/NumPy and C++ verifiers
 experiments/                Frankl q=6 and ES(7) research programs
 benchmarks/certificates/    checked outputs and manifests
 benchmarks/                 acceptance, comparison and capability contracts
-docs/                       architecture, proof lessons, Codex and failure taxonomy
+docs/                       see docs/README.md for the full index (architecture, lessons,
+                             Frankl proof-trace docs, release/acceptance reports, baselines)
 tests/                      fail-closed, mathematical and Codex regression tests
-scripts/                    executable v0.1 acceptance gate
+scripts/                    Gate 0 CI: preflight, unittest runner, workflow-policy checker,
+                             clean-checkout proof, v0.1/v0.2 acceptance, baseline writer, smoke test
 ```
 
 ## What “stronger” means
