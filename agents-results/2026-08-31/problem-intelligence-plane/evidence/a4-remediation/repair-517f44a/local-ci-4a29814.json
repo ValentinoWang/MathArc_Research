@@ -1,0 +1,76 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-remediation-local-ci-4a29814",
+  "recorded_at": "2026-09-02T00:33:23Z",
+  "authority": "authoritative local CI evidence; not A4 acceptance",
+  "source_identity": {
+    "repository": "ValentinoWang/MathArc_Research",
+    "branch": "main",
+    "head": "4a298148cd9311275bbeac645cc5116122fb68a2",
+    "remote_main_readback": "4a298148cd9311275bbeac645cc5116122fb68a2",
+    "remote_readback_transport": "Git HTTPS through http://127.0.0.1:7897"
+  },
+  "execution": {
+    "command": "make ci-full PYTHON=.venv/bin/python",
+    "terminal_session_id": 75021,
+    "exit_code": 0,
+    "result": "PASS"
+  },
+  "gate_results": {
+    "gate_0_formal_preflight": "PASS",
+    "strict_mypy": {
+      "result": "PASS",
+      "source_files": 79
+    },
+    "workflow_policy": "PASS",
+    "publication_technical_preflight_fixture": "PASS",
+    "unittest": {
+      "summary_path": "artifacts/ci/unittest-summary.json",
+      "summary_sha256": "fded9644b25ddcbdf96db959994b327f639dc996dfa6c1d245ef9bb88b071cad",
+      "tests_discovered": 567,
+      "tests_run": 567,
+      "failures": 0,
+      "errors": 0,
+      "skipped": 2,
+      "expected_failures": 0,
+      "unexpected_successes": 0,
+      "smt_tests_discovered": 20,
+      "smt_tests_executed": 20,
+      "smt_tests_skipped": 0,
+      "approved_non_smt_skip_ids": [
+        "unittest.loader.ModuleSkipped.tests.test_api_stream",
+        "unittest.loader.ModuleSkipped.tests.test_codex_agent"
+      ],
+      "unexpected_non_smt_skip_ids": []
+    },
+    "v01_acceptance": "PASS",
+    "v02_acceptance": {
+      "result": "PASS",
+      "gates_passed": 14,
+      "gates_total": 14
+    },
+    "frankl_q6_replay": {
+      "result": "PASS",
+      "generated_semantic_sha256": "445c4743f45e71624a1c6e9b8b6484a77fa80b63c69f7aa771bdb3e38d6aadb4"
+    },
+    "console_browser_gate": {
+      "result": "PASS",
+      "cases": 52,
+      "campaigns": 2,
+      "widths": 6,
+      "mobile_viewports": [
+        "390x844",
+        "820x1180"
+      ],
+      "keyboard_activation": "PASS",
+      "sse_reconnect": "PASS",
+      "review_workflow": "PASS"
+    }
+  },
+  "acceptance_boundary": {
+    "a4_state_changed": false,
+    "r1_contract_changed": false,
+    "human_authority_exercised": false,
+    "next_required_action": "freeze the pushed CI-evidence commit and run independent Luna and Sol zero-write reviews"
+  }
+}
