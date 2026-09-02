@@ -1,0 +1,158 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-review-sol-d77e5c1",
+  "reviewer_route": "gpt-5.6-sol/max independent adversarial zero-write review",
+  "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+  "frozen_head": "d77e5c12d0c7d76df39742065687d01cdf8aa7b4",
+  "implementation_head": "4a298148cd9311275bbeac645cc5116122fb68a2",
+  "reviewed_paths": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/frozen-inputs.json",
+    "matharc/v02/artifact_store.py",
+    "matharc/v02/literature_base.py",
+    "matharc/v02/topic_observation.py",
+    "matharc/v02/source_observation.py",
+    "matharc/v02/budget.py",
+    "matharc/v02/local_store.py",
+    "tests/test_v02_artifact_store_durability.py",
+    "tests/test_v02_literature_base.py",
+    "tests/test_v02_literature_base_integrity.py",
+    "tests/test_v02_topic_observation.py",
+    "tests/test_v02_topic_observation_integrity.py",
+    "tests/test_v02_dogfood_archives.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/coordinator-return.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/local-ci-4a29814.json",
+    "artifacts/ci/unittest-summary.json"
+  ],
+  "commands": [
+    {
+      "command": "git rev-parse HEAD",
+      "result": "PASS",
+      "evidence": "d77e5c12d0c7d76df39742065687d01cdf8aa7b4"
+    },
+    {
+      "command": "git ls-remote --heads origin main",
+      "result": "PASS",
+      "evidence": "origin/main resolved to d77e5c12d0c7d76df39742065687d01cdf8aa7b4 during frozen-input validation"
+    },
+    {
+      "command": "read-only Python validation of agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/frozen-inputs.json",
+      "result": "PASS",
+      "evidence": "All 12 declared paths were normalized beneath the repository, were non-symlink regular files with unique resolved paths/inodes, and matched their declared SHA-256 values. The manifest identities matched frozen HEAD, remote main, and implementation commit."
+    },
+    {
+      "command": "git diff --check 517f44a472d56c4e1c733fc02ea97f45d15c5eca..4a298148cd9311275bbeac645cc5116122fb68a2 -- matharc/v02 tests",
+      "result": "PASS",
+      "evidence": "Exit 0 with no output."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability tests.test_v02_literature_base tests.test_v02_literature_base_integrity tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+      "result": "PASS",
+      "evidence": "Ran 100 tests in 3.753s; 0 failures, 0 errors, and 0 skips."
+    },
+    {
+      "command": "MYPY_CACHE_DIR=/tmp/A4-review-sol-d77e5c1.lH3RL5/mypy-cache .venv/bin/python -m mypy --strict matharc/v02/artifact_store.py matharc/v02/literature_base.py matharc/v02/topic_observation.py",
+      "result": "PASS",
+      "evidence": "Success: no issues found in 3 source files."
+    },
+    {
+      "command": "jq -e CI-count-and-skip predicate artifacts/ci/unittest-summary.json",
+      "result": "PASS",
+      "evidence": "SHA-256 fded9644b25ddcbdf96db959994b327f639dc996dfa6c1d245ef9bb88b071cad; 567 discovered and run; 0 failures/errors; 20 SMT discovered, 20 executed, 0 skipped; exactly two approved non-SMT skips: unittest.loader.ModuleSkipped.tests.test_api_stream and unittest.loader.ModuleSkipped.tests.test_codex_agent; no missing or unexpected skip IDs."
+    },
+    {
+      "command": "git diff --exit-code 517f44a472d56c4e1c733fc02ea97f45d15c5eca..4a298148cd9311275bbeac645cc5116122fb68a2 -- tests/test_v02_topic_observation.py tests/test_v02_dogfood_archives.py",
+      "result": "PASS",
+      "evidence": "Both protected tests were byte-unchanged from the parent baseline and matched their frozen SHA-256 values."
+    },
+    {
+      "command": "bounded /tmp Python probe recording fsync-directory targets while constructing a genuinely absent nested TopicObservationRunner root",
+      "result": "REPRODUCED",
+      "evidence": "Creating root-durability-resolved/new/nested recorded fsyncs for new/nested, new/nested/literature, and new/nested/literature/artifacts, but not for root-durability-resolved after linking new or for root-durability-resolved/new after linking nested."
+    },
+    {
+      "command": "bounded /tmp Python probe for pre-import-budget PENDING evidence followed by a strictly later OBSERVED retry",
+      "result": "REPRODUCED",
+      "evidence": "A zero-budget c0->c1 batch returned MANUAL_REVIEW for persisted OBS-PRE with basis MANUAL_QUEUE, persisted status PENDING, and import_disposition null. The same identity/key/digest later persisted as OBSERVED, but c1->c2 raised TopicObservationError: stored item evidence observation status conflicts with literature."
+    },
+    {
+      "command": "bounded /tmp Python probe for PENDING-to-PENDING metadata replacement and restart",
+      "result": "REPRODUCED",
+      "evidence": "Both c0->c1 and c1->c2 returned PENDING. The second retry changed observed_at from 08:00 to 07:00 and rewrote license_basis, content_summary, and summary_basis. Restart accepted next_cursor c2 and loaded the rewritten fields."
+    },
+    {
+      "command": "find /private/tmp/A4-review-sol-d77e5c1.lH3RL5 -depth -delete; test ! -e /private/tmp/A4-review-sol-d77e5c1.lH3RL5",
+      "result": "PASS",
+      "evidence": "The bounded reproduction and mypy-cache directory was removed before return."
+    }
+  ],
+  "protected_test_integrity": {
+    "result": "PASS",
+    "protected_paths": {
+      "tests/test_v02_topic_observation.py": "bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497",
+      "tests/test_v02_dogfood_archives.py": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242"
+    },
+    "baseline_comparison": "Both protected files are unchanged between 517f44a472d56c4e1c733fc02ea97f45d15c5eca and 4a298148cd9311275bbeac645cc5116122fb68a2 and match frozen-input hashes.",
+    "non_vacuity": "The fresh six-module partition executed 100 tests with zero skips. Added POSIX fork tests were not skipped on this host. Reviewed changes add assertions and fault-injection coverage; no existing skip, expected-failure marker, or assertion was weakened or removed.",
+    "local_ci_accuracy": "The committed local-CI record's unittest counts, SMT counts, approved skip identities, summary hash, and timing are consistent with artifacts/ci/unittest-summary.json. Passing tests do not cover the three reproduced paths below."
+  },
+  "findings": [
+    {
+      "severity": "P1",
+      "title": "A newly created nested runner root is returned before every directory link is durable",
+      "paths": [
+        "matharc/v02/topic_observation.py:656",
+        "matharc/v02/topic_observation.py:657",
+        "tests/test_v02_artifact_store_durability.py"
+      ],
+      "evidence": {
+        "source": "TopicObservationRunner.__init__ calls self.root.mkdir(parents=True, exist_ok=True) before the component-wise durable creation used by the artifact and literature stores. pathlib.mkdir(parents=True) does not fsync each newly modified immediate parent, and this branch has no error-propagating fsync call.",
+        "reproduction": "With only root-durability-resolved pre-existing, construction of root-durability-resolved/new/nested completed and initialized storage. Instrumented real fsync calls covered new/nested, its literature directory, and its artifacts directory, but omitted root-durability-resolved and root-durability-resolved/new. A crash can therefore lose either runner-root directory entry after successful construction."
+      },
+      "repair": "Create the runner root component by component from the nearest existing ancestor and fsync each component's immediate parent immediately after mkdir. Propagate mkdir/fsync failures before any runner state is exposed. Add a regression that begins with a genuinely absent multi-component root, asserts exact fsync order, and injects failure at each parent fsync."
+    },
+    {
+      "severity": "P2",
+      "title": "Pre-import budget evidence rejects a legitimate strictly-later PENDING-to-OBSERVED recovery",
+      "paths": [
+        "matharc/v02/topic_observation.py:876",
+        "matharc/v02/topic_observation.py:890",
+        "matharc/v02/topic_observation.py:2421",
+        "matharc/v02/topic_observation.py:2428",
+        "matharc/v02/literature_base.py:278"
+      ],
+      "evidence": {
+        "source": "The pre-import exhausted-budget branch records MANUAL_QUEUE evidence with import_disposition null even when it references a persisted PENDING observation. Historical-upgrade validation accepts budget MANUAL_QUEUE evidence only when import_disposition equals PENDING, so it excludes this reachable branch.",
+        "reproduction": "Seed OBS-PRE as restricted PENDING, run zero-budget c0->c1, then submit an OPEN c1->c2 retry with the same observation ID, idempotency key, logical identity, digest, and bytes. Literature durably advances OBS-PRE to OBSERVED with a verified artifact, but the topic run raises 'stored item evidence observation status conflicts with literature' because the older evidence has import_disposition null."
+      },
+      "repair": "Represent pre-import versus post-import budget evidence explicitly and admit the pre-import historical upgrade only when a strictly later validated cursor-chain batch proves the same observation ID, idempotency key, logical identity, and digest with a verified artifact. Preserve rejection for every other status mismatch, rewrite, downgrade, or non-later transition. Add restart coverage for both budget phases and negative identity/digest/cursor variants."
+    },
+    {
+      "severity": "P2",
+      "title": "PENDING retries can rewrite immutable historical observation metadata",
+      "paths": [
+        "matharc/v02/literature_base.py:278",
+        "matharc/v02/literature_base.py:417",
+        "matharc/v02/literature_base.py:420",
+        "matharc/v02/literature_base.py:443",
+        "matharc/v02/topic_observation.py:2418"
+      ],
+      "evidence": {
+        "source": "For the same non-empty digest, import_bytes revalidates any existing PENDING record. _record then permits any replacement sharing logical_identity while the existing status is PENDING; it does not require an identical PENDING record or restrict the delta to the allowed PENDING-to-OBSERVED completion.",
+        "reproduction": "A first restricted OBS-P PENDING record at 08:00 was retried at the strictly later cursor with the same ID, key, logical identity, digest, and content but observed_at 07:00 plus changed license_basis, content_summary, and summary_basis. Both calls returned PENDING; restart loaded cursor c2 and the rewritten 07:00 metadata."
+      },
+      "repair": "Reject non-identical PENDING-to-PENDING replacement. Define immutable persisted fields and allow only the narrow, validated PENDING-to-OBSERVED completion delta, including the necessary license/artifact transition while preserving timestamp, summary, identity, version, media type, and digest. Add same-process and restart regressions for backward timestamps and descriptive-field rewrites."
+    }
+  ],
+  "verdict": "FAIL",
+  "proposed_state": "FAILED",
+  "acceptance_self_check": "pass",
+  "failure_class": "filesystem_durability_and_pending_transition_semantics",
+  "failure_origin": "implementation",
+  "unverified_items": [
+    "No physical power-loss or filesystem-device fault campaign was run; directory durability was evaluated from source ordering plus real fsync-target instrumentation.",
+    "The full 567-test local-CI command was not rerun during this zero-write review. Its committed record and current hashed unittest summary were cross-checked, while the required 100-test partition and strict mypy command were run fresh.",
+    "No raw full-CI terminal transcript was declared in frozen-inputs.json, so local-CI accuracy is bounded to the committed record, hashed summary, Git identity, and fresh focused checks."
+  ],
+  "scope_statement": "Independent adversarial implementation-and-evidence review of the A4 topic-observation durability remediation at frozen repository and remote-main identity d77e5c12d0c7d76df39742065687d01cdf8aa7b4, implementation 4a298148cd9311275bbeac645cc5116122fb68a2, and parent 517f44a472d56c4e1c733fc02ea97f45d15c5eca. All eleven requested durability, identity, transition, recovery, semantic-validation, test-integrity, and CI-evidence surfaces were inspected. The only intentional repository write is this return; bounded /tmp reproductions were removed. Harness Engineering was not accessed.",
+  "acceptance_boundary": "This return proposes FAILED for the reviewed implementation only. It does not accept or modify A4, R1, Q1, or A5; it is not human acceptance; it makes no mathematical claim; and it does not authorize public release."
+}

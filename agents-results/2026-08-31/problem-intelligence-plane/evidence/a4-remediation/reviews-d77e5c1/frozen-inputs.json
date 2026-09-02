@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "campaign_id": "A4-remediation-review-d77e5c1",
+  "frozen_head": "d77e5c12d0c7d76df39742065687d01cdf8aa7b4",
+  "remote_head": "d77e5c12d0c7d76df39742065687d01cdf8aa7b4",
+  "implementation_head": "4a298148cd9311275bbeac645cc5116122fb68a2",
+  "inputs": [
+    {"path": "matharc/v02/artifact_store.py", "sha256": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3"},
+    {"path": "matharc/v02/literature_base.py", "sha256": "f986e6a4354dd561cf14bf47e1343a995d012e57f6f9409149c3e16f1af05da1"},
+    {"path": "matharc/v02/topic_observation.py", "sha256": "d60888856685637f6123098857817335c22d4976ef80d569e1b4097c43b90393"},
+    {"path": "tests/test_v02_artifact_store_durability.py", "sha256": "da68ab76a64a38b1a744119fa6840281d2c486bbc94797baf095c828673462e3"},
+    {"path": "tests/test_v02_literature_base.py", "sha256": "fbbba0719d25345796337bf47dbf8bf1ee8c248f7a1256eb529e5af23b72b70d"},
+    {"path": "tests/test_v02_literature_base_integrity.py", "sha256": "43104d71f3e954598144b52fa0a2d5248a994abc7125cbfc71ac41424c4c8c62"},
+    {"path": "tests/test_v02_topic_observation.py", "sha256": "bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497"},
+    {"path": "tests/test_v02_topic_observation_integrity.py", "sha256": "719a3da1710745ff7e27e3f22396965af698af14d07be35722724df7f2e84652"},
+    {"path": "tests/test_v02_dogfood_archives.py", "sha256": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/coordinator-return.json", "sha256": "f9aeddb47db3b2ad6d0e3682f84e4d308da7a40b0e6af30ad8be5de63676d7af"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/local-ci-4a29814.json", "sha256": "5d3ac541bcd64fc2c881597c55fd8aa18b7cc11d41e5462dbc8b58829fbab460"},
+    {"path": "artifacts/ci/unittest-summary.json", "sha256": "fded9644b25ddcbdf96db959994b327f639dc996dfa6c1d245ef9bb88b071cad"}
+  ]
+}

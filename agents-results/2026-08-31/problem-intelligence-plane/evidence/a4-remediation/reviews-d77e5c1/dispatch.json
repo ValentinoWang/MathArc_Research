@@ -1,0 +1,79 @@
+{
+  "schema_version": 1,
+  "campaign_id": "A4-remediation-review-d77e5c1",
+  "authority": "independent zero-write implementation review; no acceptance authority",
+  "frozen_head": "d77e5c12d0c7d76df39742065687d01cdf8aa7b4",
+  "implementation_head": "4a298148cd9311275bbeac645cc5116122fb68a2",
+  "parent_implementation_head": "517f44a472d56c4e1c733fc02ea97f45d15c5eca",
+  "outer_terminal_session_id": 72297,
+  "launched_at": "2026-09-02T00:39:55Z",
+  "ended_at": "2026-09-02T01:25:38Z",
+  "launch_barrier": "both processes started before the first wait",
+  "frozen_inputs": {
+    "path": "frozen-inputs.json",
+    "sha256": "df96fe04e7cb833ab8ae39f848942eafecb3d4e3a9506621298cbc8b506847ff"
+  },
+  "lanes": [
+    {
+      "task_id": "A4-review-luna-d77e5c1",
+      "reviewer_route": "luna-zero-write",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+      "pid": 47503,
+      "codex_session_id": "01a05f8e-e839-7b42-ba1e-17aaabc7a214",
+      "prompt_path": "prompts/A4-review-luna.txt",
+      "prompt_sha256": "ce1a3d56bc22b8a3545460dfc448ed1cfdb2de39cf05822983d273f462d81b2e",
+      "log_path": "logs/A4-review-luna.log",
+      "log_sha256": "b4695bde92b7b96440053bbd91e0b3c44a84665134b5fea279926e48180a58e7",
+      "return_path": "returns/A4-review-luna.json",
+      "return_sha256": "a56f2811d75e55ad5b076ccc159327a8b0b2d397b5eb45c731cae012299180af",
+      "exit_code": 0,
+      "verdict": "FAIL",
+      "proposed_state": "FAILED",
+      "acceptance_self_check": "pass",
+      "failure_class": "filesystem_durability_and_pending_transition_semantics",
+      "failure_origin": "implementation",
+      "provider_transport_note": "two sampling stream disconnects were retried by the wrapper and did not prevent a valid terminal return",
+      "prompt_cleanup": "REMOVED_AFTER_HASH_REGISTRATION",
+      "runtime_handle_cleanup": "COMPLETE",
+      "temporary_runtime_cleanup": "COMPLETE",
+      "codex_transcript_retention": "PRESERVED"
+    },
+    {
+      "task_id": "A4-review-sol-d77e5c1",
+      "reviewer_route": "sol-zero-write",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+      "pid": 47504,
+      "codex_session_id": "01a05f8e-e839-7d43-b19e-32009720665d",
+      "prompt_path": "prompts/A4-review-sol.txt",
+      "prompt_sha256": "c9d7426aead179566db5cfae4675dcde9c471bd73d65bc2a834b71ca6714e092",
+      "log_path": "logs/A4-review-sol.log",
+      "log_sha256": "98ddc5cbe4e61e97cef61834869a84fb1b06c5637f876784c7974fb2a175e52c",
+      "return_path": "returns/A4-review-sol.json",
+      "return_sha256": "2febef29c40b630b47d2005d4abcc0a445d5412027f11d110171faaa630da50f",
+      "exit_code": 0,
+      "verdict": "FAIL",
+      "proposed_state": "FAILED",
+      "acceptance_self_check": "pass",
+      "failure_class": "filesystem_durability_and_pending_transition_semantics",
+      "failure_origin": "implementation",
+      "prompt_cleanup": "REMOVED_AFTER_HASH_REGISTRATION",
+      "runtime_handle_cleanup": "COMPLETE",
+      "temporary_runtime_cleanup": "COMPLETE",
+      "codex_transcript_retention": "PRESERVED"
+    }
+  ],
+  "convergence": {
+    "status": "FAILED_IMPLEMENTATION",
+    "fresh_focused_tests": "100/100 passed with zero skips in both lanes",
+    "strict_mypy": "PASS in both lanes",
+    "protected_test_integrity": "PASS in both lanes",
+    "local_ci_record_cross_check": "567/567, 0 failures, 0 errors, 20/20 SMT, 0 SMT skips, exactly two approved non-SMT skips",
+    "confirmed_findings": [
+      "runner root creation is not durable component by component",
+      "pre-import budget evidence blocks a strictly later PENDING-to-OBSERVED upgrade",
+      "processed replay fails after its historical PENDING observation is upgraded",
+      "PENDING retries can rewrite immutable historical observation evidence"
+    ],
+    "acceptance_boundary": "This campaign does not accept A4, R1, Q1, or A5 and authorizes neither mathematical claims nor public release."
+  }
+}

@@ -1,0 +1,171 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-review-luna-d77e5c1",
+  "reviewer_route": "Luna independent adversarial zero-write review",
+  "wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+  "frozen_head": "d77e5c12d0c7d76df39742065687d01cdf8aa7b4",
+  "implementation_head": "4a298148cd9311275bbeac645cc5116122fb68a2",
+  "reviewed_paths": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/frozen-inputs.json",
+    "matharc/v02/artifact_store.py",
+    "matharc/v02/literature_base.py",
+    "matharc/v02/topic_observation.py",
+    "matharc/v02/source_observation.py",
+    "matharc/v02/budget.py",
+    "matharc/v02/local_store.py",
+    "tests/test_v02_artifact_store_durability.py",
+    "tests/test_v02_literature_base.py",
+    "tests/test_v02_literature_base_integrity.py",
+    "tests/test_v02_topic_observation.py",
+    "tests/test_v02_topic_observation_integrity.py",
+    "tests/test_v02_dogfood_archives.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/coordinator-return.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/local-ci-4a29814.json",
+    "artifacts/ci/unittest-summary.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/returns/A4-review-sol.json"
+  ],
+  "commands": [
+    {
+      "command": "git rev-parse HEAD",
+      "result": "PASS",
+      "evidence": "d77e5c12d0c7d76df39742065687d01cdf8aa7b4"
+    },
+    {
+      "command": "read-only validation of every path and SHA-256 in frozen-inputs.json",
+      "result": "PASS",
+      "evidence": "12 declared inputs checked; zero hash mismatches. Frozen, remote-main, and implementation identities in the manifest match the requested tuple."
+    },
+    {
+      "command": "git diff --check 517f44a472d56c4e1c733fc02ea97f45d15c5eca..4a298148cd9311275bbeac645cc5116122fb68a2 -- matharc/v02 tests",
+      "result": "PASS",
+      "evidence": "Exit 0 with no output."
+    },
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability tests.test_v02_literature_base tests.test_v02_literature_base_integrity tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+      "result": "PASS",
+      "evidence": "Ran 100 tests; 0 failures, 0 errors, and 0 skips. Recovery, fork, cross-match, cursor, semantic-validation, and retired-fence tests all passed, but the uncovered reachable paths below still fail."
+    },
+    {
+      "command": ".venv/bin/python -m mypy --strict matharc/v02/artifact_store.py matharc/v02/literature_base.py matharc/v02/topic_observation.py",
+      "result": "PASS",
+      "evidence": "Success: no issues found in 3 source files."
+    },
+    {
+      "command": "Parse artifacts/ci/unittest-summary.json and cross-check local-ci-4a29814.json",
+      "result": "PASS",
+      "evidence": "567 run, 0 failures, 0 errors; 20/20 SMT, 0 SMT skips; exactly the approved non-SMT skips tests.test_api_stream and tests.test_codex_agent; no unexpected skip IDs. Summary SHA-256 is fded9644b25ddcbdf96db959994b327f639dc996dfa6c1d245ef9bb88b071cad."
+    },
+    {
+      "command": "sha256sum tests/test_v02_topic_observation.py tests/test_v02_dogfood_archives.py",
+      "result": "PASS",
+      "evidence": "Protected hashes match frozen inputs: bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497 and 345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242."
+    },
+    {
+      "command": "git diff --quiet 4a298148cd9311275bbeac645cc5116122fb68a2..HEAD -- matharc/v02 tests",
+      "result": "PASS",
+      "evidence": "Frozen HEAD has no source or test drift relative to implementation commit. Git status contained only coordinator-owned review campaign artifacts."
+    },
+    {
+      "command": "Independent source inspection of atomic publication, in-memory publication, locks, cursor evidence, cross-match validation, budget phases, candidate validation, and recovery fencing",
+      "result": "REVIEWED_WITH_FINDINGS",
+      "evidence": "Confirmed file-fsync -> replace -> immediate parent-directory-fsync ordering in artifact_store.py and topic_observation.py; artifact/literature maps update after durable manifests; PID-local lock state and owner-PID unlock guards; persisted ID/key cross-match checks; immutable cursor-conflict event validation; pre/post budget identity rules; candidate validation before _write_transaction; and active/retired journal fencing. The nested-root durability and pending-transition defects are reported below."
+    },
+    {
+      "command": "Bounded /tmp reproductions for nested root durability, pending transitions, budget phase evidence, and semantic validation",
+      "result": "REPRODUCED",
+      "evidence": "Fresh nested TopicObservationRunner root recorded no topic _fsync_directory calls; an incomplete retry erased a pending record's valid digest; pre-import budget evidence later failed a valid c1 upgrade with 'stored item evidence observation status conflicts with literature'; c0 pending -> c1 observed -> c2 processed replay failed with 'processed duplicate evidence does not match prior evidence' and left the transaction journal; post-import budget evidence passed with PENDING persisted identity; invalid candidate state caused zero _write_transaction calls and left state/authentication bytes unchanged. Temporary directories were removed."
+    }
+  ],
+  "protected_test_integrity": {
+    "result": "PASS",
+    "frozen_input_hashes": "All 12 declared input hashes match the frozen manifest.",
+    "protected_paths": {
+      "tests/test_v02_topic_observation.py": "bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497",
+      "tests/test_v02_dogfood_archives.py": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242"
+    },
+    "baseline_comparison": "Both protected files are byte-unchanged between the parent implementation baseline and implementation commit and match their frozen SHA-256 values. The integrity-test diff adds fault-injection assertions; no existing assertion was weakened or removed.",
+    "non_vacuity": "The fresh six-module partition executed 100 tests with zero skips. POSIX fork tests executed on this host. No broad skip, expected-failure marker, or fixture-specific bypass was found; the fork skip is platform-scoped and inactive here.",
+    "local_ci_accuracy": "The committed local-CI record agrees with the current hashed unittest summary for counts, SMT counts, approved skip identities, and zero failures/errors. This evidence is not promoted to A4 acceptance.",
+    "surface_status": {
+      "atomic_replacement_order": "PASS by source inspection and artifact failure-injection tests",
+      "nested_directory_durability_and_errors": "FAIL for newly created TopicObservationRunner ancestors",
+      "in_memory_state_after_manifest": "PASS by source ordering and failure-injection tests",
+      "pid_bound_fork_lock_and_authority": "PASS in source and fork tests",
+      "persisted_idempotency_cross_match": "PASS in source and integrity test",
+      "immutable_cursor_conflict_snapshots": "PASS in source and restart test",
+      "strict_later_pending_observed_recovery": "FAIL in pre-budget transition and processed replay paths; direct pending-to-observed restart path passes",
+      "budget_phase_and_result_identity": "PASS for isolated pre/post evidence, FAIL for pre-budget strictly-later upgrade",
+      "semantic_validation_before_persistence": "PASS in source and bounded probe",
+      "recovery_fencing_and_retired_fallback": "PASS in source and fault-injection tests"
+    }
+  },
+  "findings": [
+    {
+      "severity": "P1",
+      "title": "A newly created nested runner root is not durably linked component by component",
+      "paths": [
+        "matharc/v02/topic_observation.py:657",
+        "matharc/v02/artifact_store.py:24-52",
+        "tests/test_v02_artifact_store_durability.py:92-112"
+      ],
+      "evidence": {
+        "source": "TopicObservationRunner.__init__ calls self.root.mkdir(parents=True, exist_ok=True). Unlike the component-wise _ensure_directory_durable path used by ArtifactStore and LiteratureBase, this branch does not fsync each newly created directory's immediate parent.",
+        "reproduction": "A fresh /tmp root/deep/root runner initialized successfully while instrumentation of topic_observation._fsync_directory recorded []. The implementation can therefore return a usable runner after directory links that are not crash-durable, and fsync errors from those missing calls cannot propagate."
+      },
+      "repair": "Create the runner root from the nearest existing ancestor one component at a time, fsync each immediate parent immediately after mkdir, and propagate every mkdir/fsync failure before exposing initialized storage. Add exact-order and per-parent failure-injection coverage for a genuinely absent multi-component root."
+    },
+    {
+      "severity": "P1",
+      "title": "Pre-import budget evidence blocks a valid strictly-later PENDING-to-OBSERVED recovery",
+      "paths": [
+        "matharc/v02/topic_observation.py:876-897",
+        "matharc/v02/topic_observation.py:2421-2437",
+        "matharc/v02/literature_base.py:278-300"
+      ],
+      "evidence": {
+        "source": "The pre-import exhausted-budget branch records MANUAL_QUEUE evidence with import_disposition null. Historical status-mismatch handling only permits a budget MANUAL_QUEUE upgrade when import_disposition is PENDING, even though the later budget validator accepts either null or PENDING.",
+        "reproduction": "Seed OBS-PRE as restricted PENDING, run zero-budget c0->c1 for input A, then run an OPEN c1->c2 retry for input B with the same logical identity, observation ID, idempotency key, digest, and bytes. Literature advances to OBSERVED with an artifact, but the later run raises 'stored item evidence observation status conflicts with literature' and leaves the transaction journal."
+      },
+      "repair": "Model pre-import and post-import budget evidence as distinct valid phases. Permit the pre-import historical upgrade only after a strictly later validated cursor-chain batch proves the same observation ID, idempotency key, logical identity, and digest with a verified artifact; reject every other status, identity, digest, or cursor transition."
+    },
+    {
+      "severity": "P1",
+      "title": "A processed replay fails after its historical PENDING observation has been upgraded",
+      "paths": [
+        "matharc/v02/topic_observation.py:838-845",
+        "matharc/v02/topic_observation.py:1052-1084",
+        "matharc/v02/topic_observation.py:2543-2556"
+      ],
+      "evidence": {
+        "source": "The replay branch builds current evidence through _persisted_observation_for_input. After a later upgrade this is OBSERVED evidence, while PROCESSED_INPUT_REPLAY validation requires the persisted identity/status/artifact fields to equal the original batch evidence, which was PENDING.",
+        "reproduction": "Run c0->c1 with restricted PENDING input A, c1->c2 with the same source as observed input B, then c2->c3 replay input A. The operation raises TopicObservationError: processed duplicate evidence does not match prior evidence, and the durable transaction journal remains."
+      },
+      "repair": "Bind a processed replay to the immutable prior disposition snapshot, or explicitly validate the historical pending snapshot against the strictly later upgrade proof without replacing its fields with current literature state. Ensure the replay transaction can commit and clear its journal."
+    },
+    {
+      "severity": "P2",
+      "title": "PENDING retries can rewrite valid historical observation evidence",
+      "paths": [
+        "matharc/v02/literature_base.py:278-300",
+        "matharc/v02/literature_base.py:417-444"
+      ],
+      "evidence": {
+        "source": "_record permits any replacement sharing logical_identity while the existing record is PENDING. It does not require identical pending evidence or restrict the transition to the narrow PENDING-to-OBSERVED completion.",
+        "reproduction": "Record a restricted PENDING OBS-P with a valid digest D, then retry the same ID and logical source as OPEN with no digest. Both calls return PENDING, but the in-memory and persisted record changes to an empty digest and OPEN license, losing the earlier durable evidence."
+      },
+      "repair": "Reject non-identical PENDING-to-PENDING replacements. Preserve immutable identity, version, timestamp, media type, summary, and digest fields, and allow only a validated monotonic PENDING-to-OBSERVED transition with the required open-license and artifact completion. Add same-process and restart regressions for incomplete and backward-metadata retries."
+    }
+  ],
+  "verdict": "FAIL",
+  "proposed_state": "FAILED",
+  "acceptance_self_check": "pass",
+  "failure_class": "filesystem_durability_and_pending_transition_semantics",
+  "failure_origin": "implementation",
+  "unverified_items": [
+    "No physical power-loss or filesystem-device fault campaign was run; directory durability was evaluated with source inspection, real fsync-target instrumentation, and fault injection.",
+    "The full make ci-full terminal command was not rerun in this zero-write review; its committed local-CI record and current hashed summary were cross-checked, while the required focused suite and strict mypy command were run fresh.",
+    "No human acceptance, A4 state transition, R1/Q1/A5 decision, mathematical claim, or public-release authorization was performed."
+  ],
+  "scope_statement": "Independent adversarial implementation-and-evidence review of the A4 topic-observation durability remediation at frozen HEAD d77e5c12d0c7d76df39742065687d01cdf8aa7b4, implementation 4a298148cd9311275bbeac645cc5116122fb68a2, and parent 517f44a472d56c4e1c733fc02ea97f45d15c5eca. All eleven requested durability, identity, transition, budget, recovery, semantic-validation, protected-test, and CI-evidence surfaces were inspected. The bounded /tmp reproductions were removed. No implementation, test, SSOT, contract, acceptance, existing-evidence, or git-state file was intentionally modified; this return is the sole authorized repository write.",
+  "acceptance_boundary": "This return proposes FAILED for the reviewed implementation only. It does not accept or modify A4, R1, Q1, or A5; it is not human acceptance, makes no mathematical claim, and does not authorize public release."
+}
