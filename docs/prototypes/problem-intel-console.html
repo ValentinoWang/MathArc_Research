@@ -1254,11 +1254,6 @@ const gainCol = g => g==="+0.00" ? "var(--muted)" : g.startsWith("−") ? "var(-
 const split = (list, detail) => `<div class="gridpane ld">${list}${detail}</div>`;
 /* 主体在左、操作面板在右 */
 const splitR = (main, aside) => `<div class="gridpane dl">${main}${aside}</div>`;
-/* 一列可选项。sel 是当前选中的键，每项给 [键, 主行, 副行] */
-const pklist = (t, tag, items, sel, act) => card(t, tag,
-  `<div class="scroll">${items.map(([k,a,b])=>`<button class="pk${k===sel?" on":""}"
-      data-act="${act}" data-k="${k}"><span class="t">${a}</span>${b?`<span class="s">${b}</span>`:""}</button>`).join("")}</div>`,
-  "pane");
 /* 单个高元素（矩阵、图、长表）不硬凑分栏，只把它自己关进内部滚动 */
 const capCard = (t, tag, body, kind) => card(t, tag,
   `<div class="${kind||"scroll"}">${body}</div>`, "pane");

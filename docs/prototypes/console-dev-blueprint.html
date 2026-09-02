@@ -364,6 +364,46 @@ html{scroll-behavior:smooth;}
       <tr><td>积分 / 充值 / 席位 / 上游 / 用户 / 登录</td><td>积分、席位、计费与上游配置已有独立本地账本，且拒绝位于研究工作区；外部身份、支付与真实上游连接均为 <code>not_configured</code></td><td><span class="chip c-done">已落地（本地隔离）</span></td></tr>
     </tbody>
   </table></div>
+
+  <h3><span class="no">5.5</span>规范视图标识与建设状态</h3>
+  <p>本表为控制台运行时 <code>view_id</code> 的稳定映射。它与问题情报平面的 32 个视图接线事实逐行对应；摘要表保留面向阅读的分组说明，本表承担机器可核验的身份与状态投影。</p>
+  <div class="tw"><table>
+    <thead><tr><th>view_id</th><th>建设状态</th><th>映射说明</th></tr></thead>
+    <tbody>
+      <tr data-view-id="portfolio"><td><code>portfolio</code></td><td><span class="chip c-done">已落地</span></td><td>候选问题的本地只读投影</td></tr>
+      <tr data-view-id="dossier"><td><code>dossier</code></td><td><span class="chip c-done">已落地</span></td><td>问题陈述档案的本地只读投影</td></tr>
+      <tr data-view-id="cert"><td><code>cert</code></td><td><span class="chip">部分待建</span></td><td>证书与四路检索回归尚待控制台接线</td></tr>
+      <tr data-view-id="frontier"><td><code>frontier</code></td><td><span class="chip c-done">已落地</span></td><td>结果图的本地只读投影</td></tr>
+      <tr data-view-id="radar"><td><code>radar</code></td><td><span class="chip">部分待建</span></td><td>每日变化仍使用演示常量</td></tr>
+      <tr data-view-id="source"><td><code>source</code></td><td><span class="chip c-done">已落地</span></td><td>来源与主题观察的实时投影</td></tr>
+      <tr data-view-id="novelty"><td><code>novelty</code></td><td><span class="chip c-done">已落地</span></td><td>新颖性观察的实时投影</td></tr>
+      <tr data-view-id="difficulty"><td><code>difficulty</code></td><td><span class="chip c-done">已落地</span></td><td>难度台账的本地只读投影</td></tr>
+      <tr data-view-id="dag"><td><code>dag</code></td><td><span class="chip c-done">已落地</span></td><td>工作区验证结构的实时投影</td></tr>
+      <tr data-view-id="disclosure"><td><code>disclosure</code></td><td><span class="chip c-done">已落地</span></td><td>对外披露边界的实时投影</td></tr>
+      <tr data-view-id="campaigns"><td><code>campaigns</code></td><td><span class="chip">待接线</span></td><td>攻克进程列表仍使用演示常量</td></tr>
+      <tr data-view-id="campaign"><td><code>campaign</code></td><td><span class="chip c-done">已落地</span></td><td>当前攻克进程的实时与本地投影</td></tr>
+      <tr data-view-id="exploration"><td><code>exploration</code></td><td><span class="chip">待接线</span></td><td>实验记录仍使用演示常量</td></tr>
+      <tr data-view-id="conjecture"><td><code>conjecture</code></td><td><span class="chip">待接线</span></td><td>猜想队列仍使用演示常量</td></tr>
+      <tr data-view-id="routes"><td><code>routes</code></td><td><span class="chip c-done">已落地</span></td><td>攻克路线的实时投影</td></tr>
+      <tr data-view-id="tools"><td><code>tools</code></td><td><span class="chip c-done">已落地</span></td><td>工具调用台账的实时投影</td></tr>
+      <tr data-view-id="reasoning"><td><code>reasoning</code></td><td><span class="chip c-done">已落地</span></td><td>公开推理的实时投影</td></tr>
+      <tr data-view-id="landing"><td><code>landing</code></td><td><span class="chip">已推迟</span></td><td>静态全屏入口，产品归属已推迟</td></tr>
+      <tr data-view-id="login"><td><code>login</code></td><td><span class="chip">已推迟</span></td><td>静态登录页，外部身份未配置</td></tr>
+      <tr data-view-id="acct_overview"><td><code>acct_overview</code></td><td><span class="chip">需新建</span></td><td>未配置空态</td></tr>
+      <tr data-view-id="acct_usage"><td><code>acct_usage</code></td><td><span class="chip">需新建</span></td><td>未配置空态</td></tr>
+      <tr data-view-id="acct_billing"><td><code>acct_billing</code></td><td><span class="chip">需新建</span></td><td>未配置空态</td></tr>
+      <tr data-view-id="acct_limits"><td><code>acct_limits</code></td><td><span class="chip">需新建</span></td><td>未配置空态</td></tr>
+      <tr data-view-id="admin_cost"><td><code>admin_cost</code></td><td><span class="chip">需新建</span></td><td>未配置空态</td></tr>
+      <tr data-view-id="admin_upstream"><td><code>admin_upstream</code></td><td><span class="chip c-done">已落地</span></td><td>上游账本的本地隔离投影</td></tr>
+      <tr data-view-id="admin_users"><td><code>admin_users</code></td><td><span class="chip c-done">已落地</span></td><td>账户账本的本地隔离投影</td></tr>
+      <tr data-view-id="field"><td><code>field</code></td><td><span class="chip">部分待建</span></td><td>方向信息流仍使用演示常量</td></tr>
+      <tr data-view-id="topics"><td><code>topics</code></td><td><span class="chip c-done">已落地</span></td><td>候选主题的本地只读投影</td></tr>
+      <tr data-view-id="admin_roles"><td><code>admin_roles</code></td><td><span class="chip c-done">已落地</span></td><td>角色策略的实时投影</td></tr>
+      <tr data-view-id="admin_roster"><td><code>admin_roster</code></td><td><span class="chip">部分待建</span></td><td>评审名册尚未配置</td></tr>
+      <tr data-view-id="admin_queue"><td><code>admin_queue</code></td><td><span class="chip c-done">已落地</span></td><td>既有评审服务的只读队列</td></tr>
+      <tr data-view-id="proofchain"><td><code>proofchain</code></td><td><span class="chip c-done">已落地</span></td><td>事件账本与链头的实时投影</td></tr>
+    </tbody>
+  </table></div>
 </section>
 
 <section id="s6">
