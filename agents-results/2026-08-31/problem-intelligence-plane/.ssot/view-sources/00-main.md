@@ -611,6 +611,8 @@ flowchart LR
 | 登记 | §9.15 异常四 | 持久壳的目录谱系标签与 17 个计数徽标中的 16 个恒读演示常量，其中 `cert`、`novelty` 两个是字面量；这使每一屏都同时含真实主体与演示外围 |
 | 登记 | §9.16 | `validateConsolePayload()` 的 `legacy_minimal_payload` 提前返回分支构成第五套状态词汇；七个 live 视图在“载荷已接受但投影缺失”时回落演示常量，且其 `unavailable` 边界分支在任何载荷下都不可达 |
 | 登记 | §9.17 | 更正“改选择器不触发摘要失效”的错误推断（整文件哈希已覆盖），并指出真实缺口是不可审阅、无工具计算；新增 `dom_contract` 键与四条使断言静默通过的门禁缺陷 |
+| 更正 | §9.15 异常三、§9.17 | 归档副本被六份机器源引用而非一份，且六处性质不同，只有捕获来源须改指；两份人工清单并非“不存在”，而是存在于带 `未-` 前缀的目录，与三处声明路径不一致 |
+| 新增 | §9.17 | 逐键固定摘要的取列、行数与顺序；此前只给节号，两人算不出同一值 |
 | 新增 | §9.18 | 基线与实现的循环依赖、验收命令升格、门禁运行环境固定、捕获组合口径四条执行协议 |
 
 修订 3 下捕获的任何渲染、样式、对比度或交互证据一律作废。修订 5 改变了 §9.8、§9.13 至 §9.17 的内容，因而改变 `consumer_surface_digest`（`view_contract_revision` 由 4 升至 5），修订 4 口径下的证据同样作废；当前这两个集合均为空集，因此本次作废没有实际重捕获成本。
@@ -1258,7 +1260,9 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 2. **列表视图与单数视图被混为一谈。**本地工作区索引 `local_console.workspace_index` 只接到了单数的 `campaign`，列表视图 `campaigns` 没有接线；`local_console.exploration_sessions` 同样只在 `campaign` 内部被读取，`exploration` 与 `conjecture` 两个视图本身没有接线。蓝图把它们写在同一行并共享一个已落地芯片，掩盖了这个差别。
 3. **演示数据里曾含有形似真实自然人的身份信息，本修订已修复。**账户与管理端视图此前硬编码了三个具备真实机构域名形态的邮箱，分别出现在账户总览、账户任务栏和用户与席位表中，共五处。这些地址一旦进入 A6 或 A7 的截图证据并对外传阅，等于以虚构记录呈现可识别个人。现已全部替换为 `demo-user-a@example.invalid`、`demo-user-b@example.invalid`、`demo-user-c@example.invalid`：`.invalid` 是保留顶级域，永远不可解析，`demo-` 前缀同时让演示性质在屏幕上可见。登录页输入框的占位符 `you@university.edu` 只说明格式、不指向任何个人，予以保留。
 
-   两项后续义务仍未完成，不得视为该风险已完全关闭：其一，`U2` 必须在门禁中补一条断言，禁止今后再引入形似真实自然人的联系方式；其二，归档副本 `problem-intel-console-31bb970.html` 仍保留原有的五处地址，而 `evidence/console-visual-baseline/manifest.json` 目前仍把它指定为 256 张基线截图的捕获来源。该归档副本按内容哈希钉定，修改它等于伪造历史记录，因此不得改动；正确处置是在 `U1` 激活前把基线清单的捕获来源改指当前原型，与 §9.9 的唯一视觉权威裁定一致。在此之前不得启动任何基线捕获。
+   两项后续义务仍未完成，不得视为该风险已完全关闭：其一，`U2` 必须在门禁中补一条断言，禁止今后再引入形似真实自然人的联系方式；其二，归档副本 `problem-intel-console-31bb970.html` 仍保留原有的五处地址，而它同时被**六份机器源**引用，不是此前所写的一份：`evidence/console-visual-baseline/manifest.json` 把它定为 256 张基线截图的捕获来源；`.ssot/workbench/console-visual-workbench.json` 把它定为 `selection_ref`；`.ssot/ui-change/console-plan-v3.json` 在 `reference_prototypes` 与 `affected_entity_digests` 两处引用；`.ssot/source-requirements.json` 把它登记为 `historical_visual_authority`；`.ssot/nodes/U1.json` 与 `.ssot/execution-contracts/U1.json` 把它写进 `read_set` 与 `resource_claims`。
+
+该归档副本按内容哈希钉定，修改它等于伪造历史记录，因此不得改动。正确处置是在 `U1` 激活前把**捕获来源**改指当前原型，与 §9.9 的唯一视觉权威裁定一致；但要注意六处引用的性质不同：只有基线清单的捕获来源必须改指，`U1` 的 `read_set` 与 `source-requirements.json` 的历史权威登记应当保留该副本，因为 §9.9 已裁定它是历史视觉参考，仍需可读。改指是一次跨三份机器源的联动（基线清单、工作台 `selection_ref`、ui-change 声明），每份改动后都要重算其 `canonical_digest`。在此之前不得启动任何基线捕获。
 
 4. **持久壳本身没有接线，却一直在显示数字。**本节的接线表有 32 行对应 32 个视图，但持久壳（顶栏、左侧目录树、面包屑）自己也是一个消费数据的界面，此前没有任何一行描述它，而它百分之百由演示常量驱动。具体有两处：
 
@@ -1394,6 +1398,27 @@ consumer_surface:
 
 数组一律按本文件的声明顺序，不重新排序；缺任一键即摘要无效，不得以部分键计算。该对象的取值全部来自本节及 §9.3 至 §9.16，因此这几节任一行变动都会改变摘要，从而使受影响证据失效。
 
+上面的注释指出每个键取自哪一节，但只有节号不足以让两个人算出同一个值：同一节里往往有多张表，一张表里又有多列。下表逐键固定**取哪些列、取多少行、按什么顺序**，这是摘要可复现的最小条件：
+
+| 键 | 取值 | 行数 | 顺序 |
+|---|---|---:|---|
+| `view_contract_revision` | 整数 `5` | 1 | 不适用 |
+| `sources` | §9.9 来源表的 `{path, sha256}` 两列 | 4 | 表中顺序 |
+| `view_ids` | §9.3 代码块中的 `view_id` | 32 | §9.3 声明顺序 |
+| `case_ids` | §9.4 两个代码块与状态案例表中的 `case_id` | 52 | 先 32 个基线（§9.4 代码块顺序），后 20 个状态案例（表中顺序） |
+| `case_actions` | §9.4 状态案例表的 `{case_id, view_id, action, data}` 四列 | 20 | 表中顺序 |
+| `endpoint_map` | §9.15“32 个视图的接线事实”表的全部 8 列 | 32 | 表中顺序 |
+| `state_mapping` | §9.16 的第一张表（两个正交的轴，2 行）、第二张表（四套内部词汇，16 行）与第三张表（后端导出合同取值，6 行）的全部列 | 24 | 三张表依次相接，各按表中顺序 |
+| `action_inventory` | §9.14“57 个动作”表的 `{动作, 所属视图, 类别}` 三列 | 57 | 表中顺序（按动作名升序） |
+| `visual_baseline` | `token_table_sha256`、`class_count`、`class_list_sha256`、§9.13.3 视口布局表全部 3 列（8 行）、§9.13.5 栅格表的 `{类, 列数, 出现次数, 是否真正并排两栏}` 四列（26 行） | 3 个标量加 34 行 | 标量在前，两表依次相接 |
+| `dom_contract` | 本节下一小节的 `element_ids`（13）、`data_locators`（9）、`asserted_strings` 的 `{count, list_sha256}` | 13 + 9 + 1 | 各按该小节规定的排序 |
+| `identity_schema` | §9.8 身份代码块的字段**名**，不含取值 | 20 | 代码块中的声明顺序 |
+| `browser_matrix` | 6 个桌面宽度、2 个移动 viewport 标识、3 个主题、`motion_mode` 与 `font_mode` 的取值域 | 6 + 2 + 3 + 2 + 2 | 按 §9.8 与 §9.18.3 的声明顺序 |
+| `thresholds` | `140`、`0.62`、`4.5`、`3.0` | 4 | 本行顺序 |
+| `fixtures` | §9.5 夹具表的 `{path, sha256}` 两列 | 3 | 表中顺序 |
+
+两点必须说明。其一，`endpoint_map` 此前只写 `{view_id, renderer, consumes, endpoint}` 四列，但该表的平面、门禁断言、导出合同与建设状态四列同样是被消费的合同，改动它们必须使证据失效，因此本修订把取值范围明确为全部 8 列。其二，`state_mapping` 此前写作“§9.16 两张映射表的全部行”，而 §9.16 现有四张表，指代不明；本修订指定为第一、第二、第三张表。第四张表（七个视图的回退判定）是缺陷登记而非被消费的合同，其内容会在 `U2` 完成必补断言后消失，因此**不进入**摘要。
+
 #### `dom_contract`：门禁与原型之间的定位耦合
 
 先更正一个容易得出的错误结论：`sources` 键已经按**整文件** SHA-256 钉住 `docs/prototypes/problem-intel-console.html` 与 `scripts/console_browser_gate.mjs`，因此改动任何一个 id、类名、`data` 属性或被断言的文案，摘要**都会**变。“改选择器不会触发失效”的说法不成立。
@@ -1438,7 +1463,9 @@ consumer_surface:
 | `scripts/check_console_action_inventory.py` | U2 | U2、A6、A7 | §9.14 动作清单与原型实际发射的动作逐项一致 | 未创建 |
 | `scripts/console_browser_gate.mjs` | 已存在 | U2、U3、A6、U4、U5 | 52 案例矩阵、两栏阈值、篡改五模式、SSE 与评审闭环 | 已存在，缺口见下 |
 
-人工清单路径 `acceptance/human/2026-W36/2026-09-02-VIS-A6-console-rendering/checklist.md` 与 `acceptance/human/2026-W36/2026-09-02-RUN-A7-console-controls/checklist.md` 目前不存在。它们由 A6 与 A7 的验收负责人在节点可执行后创建并哈希绑定；在此之前两个 `H-01` 一律记为未执行。
+两份人工清单此前被记为“目前不存在”，与仓库字节不符，修订 5 更正如下：它们**存在**，且各自带有 `checklist.md` 与 `binding.md`，内容完整到 `H-01` 条目一级。不符之处在路径：验收片段、清单自身头部与本节都写作 `acceptance/human/2026-W36/2026-09-02-VIS-A6-console-rendering/`，而磁盘上的目录名带 `未-` 前缀，即 `acceptance/human/2026-W36/未-2026-09-02-VIS-A6-console-rendering/`，`RUN-A7-console-controls` 同理。
+
+结论不变但理由要换：两个 `H-01` 仍一律记为未执行，依据是清单自身声明的“清单状态：草稿”“批准证据：待定（草稿，尚未批准）”，而不是文件缺失。`U1` 激活前必须先消除这处路径分歧——把目录改名为声明路径，或把三处声明改指带前缀的实际路径——否则 `A6`、`A7` 的哈希绑定会指向一个不存在的路径，人工证据无法定位。
 
 #### 现有门禁的证据缺口
 
