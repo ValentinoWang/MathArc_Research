@@ -416,7 +416,12 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | EXT-DISCOVERY-V04 | docs/DISCOVERY_PLANE_V04.md | 0fb8f15f04451834719c929a264260278e1f6727 | 449aff96d31989e85582c04118541cb24368aae180cb0067c638b18ab6f05143 | ACCEPTED | CHARTER,F1,D1,D2,A1 |
 | EXT-SOURCE-REGISTRY | matharc/v02/source_registry.py | 0fb8f15f04451834719c929a264260278e1f6727 | e697f0894d8ac35a19c39ade521a8dfa6d4e42f7c291261a6e0004702c1b3c22 | ACCEPTED | L1,L2 |
 | EXT-BUDGET-V02 | matharc/v02/budget.py | 0fb8f15f04451834719c929a264260278e1f6727 | 24f9b7714324a3120c0addefcd391bc4f00000a84c06692875873a7804beec1e | ACCEPTED | L1,L2,T1,R1 |
+| EXT-CONSOLE-BLUEPRINT | docs/prototypes/console-dev-blueprint.html | 3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80 | 6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f | ACCEPTED | CHARTER,F1,D1,D2,A1,L1,L2,A2,S1,S2,A3,T1,T2,A4,R1,Q1,A5,D3,U1,U2,U3,A6,U4,U5,A7 |
 
+机器源 `.ssot/manifest.json` 的 `external_dependencies` 共 6 条，此前本表只投影了前 5 条，`EXT-CONSOLE-BLUEPRINT` 缺失；修订 5 补入。补入后有两处机器源缺陷必须登记，本修订不改机器源，只记录：
+
+1. **该条缺少 `semantic_key`。**另外五条都有（如 `authority.dev-path-v03`），只有它没有，因此它无法像其他外部依赖那样参与语义键失效传播。补键是机器源改动，须另立修订。
+2. **它的消费者被写成全部 25 个节点。**这意味着按当前机器源判读，修改蓝图会同时使 `CHARTER` 至 `T2` 这 13 个已接受节点的外部依赖身份失效——而 §9.15 异常一恰恰要求修改蓝图。正确范围应只含实际读取蓝图的控制台节点（`D3`、`U1` 至 `U5`、`A6`、`A7`）以及作对账的 `F1`。收窄消费者集合同样是机器源改动，须与蓝图修订同批执行，本修订只登记该阻塞。
 ### 执行合同与 worker 注册
 
 本计划没有实际外部 worker 注册。所有节点由声明的人工负责人执行；`codex-primary` 容量池只用于保持 schema-v2 的路由合同完整，不能解释为已经启动进程。
@@ -448,6 +453,7 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | 1 | L1 | 从评审建议编译为当前计划；未改变运行代码 | PLAN 1, DAG 1, INTERFACE 1, NODE 1, SSOT 2 | 全部计划节点 | 无既有实现证据 | CHARTER、F1 | 规划编排者 | 2026-08-31 |
 | 2 | L1 | 补齐控制台视图合同缺失的令牌、动作、接线、状态映射与工具归属规格；裁定唯一视觉权威；修正与机器源不符的指标和 lane 命名。未改变运行代码、节点、边或任何节点状态 | PLAN 3, DAG 2, INTERFACE 2, NODE 2, SSOT 2 不变；view-contract 3 → 4 | U1、U2、U3、A6、U4、U5、A7（均维持 `BLOCKED`） | 修订 3 下的全部控制台渲染、样式、对比度与交互证据（当前为空集） | 无节点可重跑；A5 恢复后按 W16 至 W22 原顺序执行 | 规划编排者，待验收负责人确认 | 2026-09-02 |
 | 3 | L1 | 按 §9.15 异常三的设计红线，把控制台原型演示数据中五处形似真实自然人的机构邮箱替换为保留域示例地址；只改演示种子数据，不改结构、样式、动作、渲染逻辑或任何后端行为 | 版本号全部不变；`docs/prototypes/problem-intel-console.html` 内容哈希变更 | 无节点状态变化 | 依赖该原型字节的渲染、样式、对比度与交互证据（当前为空集） | 无节点可重跑 | 规划编排者，待验收负责人确认 | 2026-09-02 |
+| 4 | L1 | 对修订 4 的独立复核：更正四处与字节不符的陈述，登记持久壳演示徽标、被接受但不完整载荷、门禁静默通过三项实现缺陷，新增 §9.18 执行协议。只改阅读投影与视图源，未改运行代码、原型字节、节点、边或任何节点状态 | PLAN 3, DAG 2, INTERFACE 2, NODE 2, SSOT 2 均不变；view-contract 4 → 5；`.ssot/view-sources/00-main.md` 与主视图内容哈希变更 | 无节点状态变化；U1、U2、A6、A7 的待补断言集合增加 | 修订 4 消费面摘要下的全部渲染、样式、对比度与交互证据（当前为空集） | 无节点可重跑 | 规划编排者，待验收负责人确认 | 2026-09-02 |
 
 | Changed key | Directly affected nodes | Propagation rule |
 |---|---|---|
@@ -571,15 +577,43 @@ flowchart LR
 
 当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2 保持既有机器状态；A4、R1、Q1、A5 均为 `INVALIDATED`。D3 用户决定内容已批准但新执行节点为 `BLOCKED`；U1-U5、A6、A7 尚未实现或验收，合同与人工清单为 `DRAFT`/`PENDING`。当前停止点是 A4 修复重验及其后续控制台计划，不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。
 
-本修订在缺少 Harness 校验器的环境中编辑，只改动阅读投影源和与之绑定的机器源哈希，未运行 `render_ssot_views.py --check`、`check_ssot_program.py`、`analyze_ssot_parallelism.py`、`check_ssot_structure.py`、`check_chinese_readability.py` 与快照审计。因此 `.ssot/validation-report.json` 记录的是修订前那次运行，其 `bundle.sha256` 与当前字节已不一致：该报告只能作为历史审计材料，不得当作本修订的通过证据。合并前必须在具备 Harness 的环境重跑上述全部校验并生成新的验证报告，同时按项目规则执行 `ssot-obsidian-snapshot`。
+本修订在缺少 Harness 校验器的环境中编辑，只改动阅读投影源和与之绑定的机器源哈希。`.ssot/validation-report.json` 当前记录的那次运行的准确状态如下，此前的描述与文件内容不符，修订 5 予以更正：
+
+| 事实 | 值 |
+|---|---|
+| 生成时间 | `2026-09-02T16:12:21Z` |
+| 运行时项目提交 | `3cce79fa7f35c0069288f57ea4dd2b2fbc52621f` |
+| 运行时工作树 | `project_dirty: true`（在脏树上运行） |
+| 记录的检查项 | `runtime-skill-provenance`、`complexity`、`render`、`machine-program`、`parallelism-analysis`、`structure`、`chinese-readability` 共 7 项，`exit_code` 均为 0 |
+| 总结果 | `pass` |
+| 缺失项 | `archive-check`（`ssot-obsidian-snapshot --check`）在该次运行中未被记录 |
+
+因此“未运行上述校验”的说法不成立：五项渲染与结构校验确实在修订 3 的提交上跑过并通过。但该报告仍不能作为本修订的通过证据，理由是三条独立的身份缺口：其一，它在脏工作树上生成，`project_dirty_diff_sha256` 描述的是当时未提交的差异，不是任何一个提交的字节；其二，快照审计未进入该次运行；其三，本修订又一次改动了 bundle 内容，`manifest.json` 的 `validation_report.bundle_content_sha256` 与 `manifest_identity_sha256` 由此陈旧（`sha256` 字段仍指向未被改动的报告文件本身，仍然匹配）。
+
+这三个由 Harness 计算的字段本修订不重写：在没有校验器的环境里填入自算值等于伪造运行记录。合并前必须在具备 Harness 的干净工作树上重跑 `render_ssot_views.py --check`、`check_ssot_program.py`、`analyze_ssot_parallelism.py`、`check_ssot_structure.py`、`check_chinese_readability.py`，生成新的验证报告并回填这三个字段，同时按项目规则执行 `ssot-obsidian-snapshot`。在此之前，`.ssot/validation-report.json` 只是历史审计材料。
 
 ## 九、控制台视图合同（PLAN v3）
 
 ### 9.1 修订身份与权威边界
 
-本节是问题情报平面控制台的 **view-contract revision 4**。它是本文件的阅读投影补充，对应 PLAN_VERSION 3 / DAG_VERSION 2，并与既有的 8 个控制台节点及 14 条边一致；机器源 `.ssot/manifest.json` 和节点/边分片是结构权威。任何实现、验收或证据若与机器源冲突，以机器源和后端代码为准。
+本节是问题情报平面控制台的 **view-contract revision 5**。它是本文件的阅读投影补充，对应 PLAN_VERSION 3 / DAG_VERSION 2，并与既有的 8 个控制台节点及 14 条边一致；机器源 `.ssot/manifest.json` 和节点/边分片是结构权威。任何实现、验收或证据若与机器源冲突，以机器源和后端代码为准。
 
-修订 4 只补齐视图合同缺失的规格，不新增节点、边或决定，也不改变任何节点状态：新增 §9.13 至 §9.17 五节，分别固定设计令牌与组件基线、动作清单与写入语义、逐视图接线状态、状态词汇映射，以及消费面摘要与证据工具归属；同时修正 §9.8、§9.9、§9.11 与波前指标中与机器源或原型不一致的条目。修订 3 下捕获的任何渲染、样式、对比度或交互证据一律作废，必须在修订 4 的消费面摘要下重新捕获。
+修订 4 只补齐视图合同缺失的规格，不新增节点、边或决定，也不改变任何节点状态：新增 §9.13 至 §9.17 五节，分别固定设计令牌与组件基线、动作清单与写入语义、逐视图接线状态、状态词汇映射，以及消费面摘要与证据工具归属；同时修正 §9.8、§9.9、§9.11 与波前指标中与机器源或原型不一致的条目。
+
+修订 5 是一次对修订 4 的独立复核，同样不新增节点、边或决定，也不改变任何节点状态。它做三件事：**更正**四处与字节不符的陈述，**登记**三项此前未记录的实现缺陷，**新增** §9.18 执行协议。逐项如下：
+
+| 类别 | 位置 | 内容 |
+|---|---|---|
+| 更正 | §八 权威文件外部依赖 | 机器源有 6 条外部依赖，此前只投影 5 条，补入 `EXT-CONSOLE-BLUEPRINT`，并登记它缺 `semantic_key`、消费者被写成全部 25 个节点这两项机器源缺陷 |
+| 更正 | §八 结论段 | 此前称五项校验“未运行”，与 `.ssot/validation-report.json` 内容不符；按报告实际记录改写，并说明它为何仍不能作为本修订的通过证据 |
+| 更正 | §9.13.3、§9.13.4 | 14 条 `@media` 中有 1 条是配色、1 条是动效，不属“内部排布”；两个移动视口的差异精确到第 384 行一条规则加一处容器查询；“加载失败时中文仍由系统字族渲染”不成立，回退链中唯一具备中文覆盖的字族全部来自外部样式表 |
+| 更正 | §9.13.5、§9.15 | 补写并排栅格清单的归属规则与计数方法，登记该方法的四处偏差（恰好相互抵消，故此前看不出）；网络调用由“六处”更正为五处调用点、六个端点 |
+| 登记 | §9.15 异常四 | 持久壳的目录谱系标签与 17 个计数徽标中的 16 个恒读演示常量，其中 `cert`、`novelty` 两个是字面量；这使每一屏都同时含真实主体与演示外围 |
+| 登记 | §9.16 | `validateConsolePayload()` 的 `legacy_minimal_payload` 提前返回分支构成第五套状态词汇；七个 live 视图在“载荷已接受但投影缺失”时回落演示常量，且其 `unavailable` 边界分支在任何载荷下都不可达 |
+| 登记 | §9.17 | 更正“改选择器不触发摘要失效”的错误推断（整文件哈希已覆盖），并指出真实缺口是不可审阅、无工具计算；新增 `dom_contract` 键与四条使断言静默通过的门禁缺陷 |
+| 新增 | §9.18 | 基线与实现的循环依赖、验收命令升格、门禁运行环境固定、捕获组合口径四条执行协议 |
+
+修订 3 下捕获的任何渲染、样式、对比度或交互证据一律作废。修订 5 改变了 §9.8、§9.13 至 §9.17 的内容，因而改变 `consumer_surface_digest`（`view_contract_revision` 由 4 升至 5），修订 4 口径下的证据同样作废；当前这两个集合均为空集，因此本次作废没有实际重捕获成本。
 
 控制台的事实源只有后端工作区投影。前端演示常量、静态导出和本地 UI 状态都不是事实源，且必须带有可见的数据来源标记：
 
@@ -770,6 +804,8 @@ browser: chromium
 browser_version: <captured-version>
 viewport: <captured-width>x<captured-height>
 theme: system|light|dark
+resolved_scheme: light|dark
+motion_mode: default|reduced
 font_mode: webfont-loaded|fallback-local
 shell_layout: three-column|two-column|single-column
 payload_mode: demo-baseline|fixture-live
@@ -780,7 +816,12 @@ fixture_id: <frozen-fixture-id-or-none>
 review_conclusion: PASS
 ```
 
-新增的四个字段是修订 4 的强制项，理由见 §9.13：主题、字体加载模式和壳布局都会改变 `computed_style_sha256` 与两栏高度测量结果，载荷模式决定同一 `case_id` 呈现的是演示基线还是实时夹具。缺任一字段按未捕获处理并阻塞 `PASS`。
+修订 5 再增两个强制字段，理由见 §9.13.3 与 §9.13.4：
+
+- `resolved_scheme`：`theme` 只记录模式，不记录结果。`theme: system` 时页面根元素**不带** `data-theme` 属性，实际生效的是浅色块还是系统深色块，完全取决于捕获时渲染器上报的 `prefers-color-scheme`。当前 `scripts/console_browser_gate.mjs` 在任何位置都没有设置 `colorScheme`、`forcedColors` 或 `reducedMotion`，也从不预置 `ma-theme`，因此它跑在 Playwright 的默认值上（浅色）。两份同样标注 `theme: system` 的证据可以呈现完全不同的调色板而记录里没有任何线索，所以必须另记解析结果。
+- `motion_mode`：样式块有 5 处 `transition`（第 87、160、268、408、438 行），最长 150ms，影响颜色、透明度与一处 `transform` 旋转，没有 `@keyframes`。第 61 行的 `prefers-reduced-motion:reduce` 用 `!important` 可以全部压平，但门禁没有开启它；而门禁的 `dispatch()` 在 `click()` 之后只等 `waitForTimeout(0)`，因此点击后的断言与截图正落在这段最长 150ms 的过渡窗口内。捕获必须固定为 `reduced` 并在身份中声明，否则 `computed_style_sha256` 与像素比较会随机取到过渡中间态。
+
+前述四个字段是修订 4 的强制项，理由见 §9.13：主题、字体加载模式和壳布局都会改变 `computed_style_sha256` 与两栏高度测量结果，载荷模式决定同一 `case_id` 呈现的是演示基线还是实时夹具。缺任一字段按未捕获处理并阻塞 `PASS`。
 
 视觉保真记录必须分别保存并绑定内容 SHA-256：`dom_sha256`、`computed_style_sha256`、`contrast_sha256`、`interaction_trace_sha256`。`contrast_sha256` 只是记录摘要，不是判据；判据是：正文与其背景的对比度不低于 4.5:1，字号不小于 18.66px 或粗体不小于 14px 的文本以及边框、图标等非文本区分要素不低于 3:1，焦点指示与其相邻底色不低于 3:1。逐条记录被测元素选择器、前景色、背景色、计算比值和判定，任一低于阈值即为失败；不得只保存一个总哈希而不保存被测清单。三种主题各自独立测量。交互轨迹至少包含 `before`、`event`、`after`，并指出作用域、焦点、状态和后端读回。可选 `pixel_comparison` 只能使用冻结夹具、冻结 baseline、实际截图、明确 tolerance 和动态字形专用 mask；mask 只允许覆盖动态文字/数字的字形像素及其明确几何范围，禁止整页、卡片、背景或 live-data 截图掩盖差异。
 
@@ -922,11 +963,13 @@ case:
 
 `U1` 的静态合同必须断言：三个块都存在；两个深色块的令牌名集合与取值**逐字节相同**；浅色块比深色块多且仅多上述四个非颜色令牌。当前两个深色块是完全重复的两份调色板，任何深色改动必须同时改两处，静态合同要把这条重复关系钉死，避免其中一处被单独修改后两种进入深色的路径表现不一致。
 
-令牌表摘要按“令牌名、浅色值、系统深色值、显式深色值”四段以竖线连接、按令牌名排序、换行连接后取 SHA-256：
+令牌表摘要按“令牌名、浅色值、系统深色值、显式深色值”四段以竖线连接、按令牌名排序、换行连接后取 SHA-256。填充规则必须写明，否则同一张表会算出两个值：`--serif`、`--sans`、`--mono`、`--topbar-h` 在两个深色块中**不存在**，其深色两段一律参与拼接为**空字符串**，而不是按继承关系回填浅色值；上表这四行的“继承浅色”是渲染语义的说明，不是摘要输入。
 
 ```text
 token_table_sha256 = c45b37e6f8e8da0bfb837efef0209c560109a9a169e2b3a40d1bb5ebc71fb2fb
 ```
+
+若实现者改用继承回填，同一份原型会得到 `913fd72ebac420e1323a4a0822ad522873a76b1791049d7172856a65a9679140`。该值在此登记为**错误规则的判别值**：静态合同一旦算出它，说明用错了填充规则，而不是原型发生了变化。
 
 #### 9.13.2 组件类基线
 
@@ -950,7 +993,9 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 | 106 | `max-width:1240px` | 三列变两列，右侧栏移入第二列并取消粘滞 |
 | 110 | `max-width:820px` | 两列变单列，顶栏换行，预算标记隐藏 |
 
-其余 12 条分别调整证据网格、评审表单、账户卡片、落地页与登录页的内部排布，不改变外壳列数。
+其余 12 条不是同一类东西，此前把它们统称为“内部排布”并不准确：其中 1 条（第 26 行 `prefers-color-scheme:dark`）是配色方案规则，只重写自定义属性的颜色值，不触及任何排布属性；1 条（第 61 行 `prefers-reduced-motion:reduce`）是动效规则，全局关闭 `transition` 与 `animation`；真正调整内部排布的只有 10 条，位于第 250、384、484、538、539、541、581、597、656、680 行，分别作用于九门网格、评审表单、新建主题表单、证据主从面板（三处 `gridpane`）、链事件表头、账户卡片、落地页网格与登录页分栏。
+
+这条更正有实质后果：配色与动效两条规则决定的是主题和运动，属于 §9.8 身份中 `theme` 与新增 `motion_mode` 字段的管辖范围，不能被“内部排布”一词吸收掉，否则静态合同会漏断言这两条。
 
 由此得到必须写入证据身份的视口与布局对应关系。注意 `max-width` 是闭区间，`1240` 与 `820` 都落在各自规则内：
 
@@ -965,11 +1010,21 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 | `390x844` | `max-width:1240px` 与 `max-width:820px` | 单列 |
 | `820x1180` | `max-width:1240px` 与 `max-width:820px` | 单列 |
 
-这带来两个必须记录的后果：第一，§9.8 声明的“六个桌面宽度”实际只覆盖两种外壳布局，其中 `1240` 是唯一的两列样本，因此 `U1` 的 `AC-02` 所说的“三列结构”在 `1240` 下**不成立**，断言必须按本表逐视口给出期望列数，而不是一律要求三列；第二，两个移动视口的外壳布局相同，`mobile-820` 相对 `mobile-390` 的增量只在内部网格，不在外壳。证据身份中的 `shell_layout` 字段取值即由本表决定。
+这带来两个必须记录的后果：第一，§9.8 声明的“六个桌面宽度”实际只覆盖两种外壳布局，其中 `1240` 是唯一的两列样本，因此 `U1` 的 `AC-02` 所说的“三列结构”在 `1240` 下**不成立**，断言必须按本表逐视口给出期望列数，而不是一律要求三列；第二，两个移动视口的外壳布局相同，`mobile-820` 相对 `mobile-390` 的差异不在外壳。该差异要精确到规则而不是笼统说“内部网格”：两者匹配的 `@media` 规则集合只差一条，即第 384 行的 `max-width:700px`（`390 ≤ 700` 命中，`820 > 700` 不命中），它把 `.review-form` 由两列压成一列。除此之外还有一处**不是 `@media`** 的差异：第 490 行 `@container (max-width:560px)` 是绑定在第 489 行 `.topiclist` 上的容器查询，按容器内联尺寸而非视口求值；在单栏外壳下容器宽度贴近视口宽度，因此它在 390 命中而在 820 不命中，构成第二处可见差异。容器查询不计入本表的 14 条 `@media`，但必须计入两个移动视口的证据差异说明，否则 `mobile-820` 会被误当成 `mobile-390` 的纯尺寸放大。证据身份中的 `shell_layout` 字段取值即由本表决定。
 
 #### 9.13.4 字体与外部资源
 
-全文只有一处外部资源：第 7 行指向 `fonts.googleapis.com` 的样式表，请求 `Noto Sans SC`、`Noto Serif SC`、`STIX Two Text` 与 `JetBrains Mono` 四个字族的若干字重。三个字族令牌都带完整回退链，因此该样式表加载失败时页面不会破版，中文仍由系统字族渲染，但字形度量改变。
+全文只有一处外部资源：第 7 行指向 `fonts.googleapis.com` 的样式表，请求 `Noto Sans SC`（400/500/600/700）、`Noto Serif SC`（400/600）、`STIX Two Text`（正体 400/600、斜体 400）与 `JetBrains Mono`（400/500/600）。
+
+“三个字族令牌都带完整回退链，因此加载失败时中文仍由系统字族渲染”这一说法**不成立**，修订 5 予以更正。逐条检查三条回退链可以看到，唯一具备中文字形覆盖的条目全部来自这张外部样式表：
+
+| 令牌 | 回退链 | 链中具备中文覆盖的条目 |
+|---|---|---|
+| `--serif` | `STIX Two Text` → `Noto Serif SC` → `Georgia` → `serif` | 只有 `Noto Serif SC`（外部字体）；`STIX Two Text` 是拉丁与数学字族，`Georgia` 在 Linux 上通常不存在 |
+| `--sans` | `Noto Sans SC` → `PingFang SC` → `-apple-system` → `BlinkMacSystemFont` → `sans-serif` | 只有 `Noto Sans SC`（外部字体）；`PingFang SC` 仅 macOS，两个 `system` 名称在 Linux 上不解析 |
+| `--mono` | `JetBrains Mono` → `ui-monospace` → `SF Mono` → `Consolas` → `monospace` | 无，本链本就只服务标识符与数字 |
+
+因此结论要分环境陈述：在**装有中文字族的机器**上，样式表加载失败只改变字形度量，页面不破版；在**既缺中文字族又无法访问该 CDN 的 Linux 持续集成机**上，本文档是 `lang="zh-CN"` 页面，全部中文正文会退化为缺字形方块，此时任何截图、对比度或两栏高度证据都不成立，必须判为运行环境不合格而不是判为原型失败。`U2` 在决定外链还是内联时，必须把这一条写进基线的前置条件。
 
 这不是一个可以忽略的差异：字形宽度直接改变并排两栏的自然高度，而 §9.8 的判据正是高差不超过 `140px` 且低高比不低于 `0.62`。同一份代码在联网与断网两种情况下可能给出相反结论。因此：
 
@@ -980,38 +1035,53 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 
 #### 9.13.5 并排栅格清单
 
-设计红线要求“并排两栏内容量必须相当”，§9.8 给出高差与比例阈值。但当前门禁只测量 `.grid2` 一个类。样式块实际定义了 26 个产生两列或更多列的类，在标记中共出现 96 次，门禁覆盖其中 6 次：
+设计红线要求“并排两栏内容量必须相当”，§9.8 给出高差与比例阈值。但当前门禁只测量 `.grid2` 一个类。样式块定义了 26 个产生两列或更多列的类，在标记中共出现 96 次，门禁覆盖其中 6 次。这两个数字可复现，但复现它们需要同时写明归属规则与计数方法，此前两者都缺；修订 5 补上，并登记计数方法的三处缺陷。
 
-| 类 | 标记中出现次数 | 门禁是否测量 |
-|---|---:|---|
-| `kv` | 34 | 否 |
-| `gridpane`（含 `ld`、`dl`、`g3` 变体） | 8 | 否 |
-| `grid2` | 6 | 是 |
-| `grid3` | 5 | 否 |
-| `critgrid` | 5 | 否 |
-| `acct` | 5 | 否 |
-| `step` | 4 | 否 |
-| `grid4` | 3 | 否 |
-| `topicrow` | 3 | 否 |
-| `pt` | 3 | 否 |
-| `steps` | 2 | 否 |
-| `tier` | 2 | 否 |
-| `srow` | 2 | 否 |
-| `topichdr` | 2 | 否 |
-| `shell` | 1 | 否 |
-| `gates` | 1 | 否 |
-| `rw` | 1 | 否 |
-| `an` | 1 | 否 |
-| `chk` | 1 | 否 |
-| `review-form` | 1 | 否 |
-| `ntform` | 1 | 否 |
-| `ntrow` | 1 | 否 |
-| `planerow` | 1 | 否 |
-| `grid` | 1 | 否 |
-| `nots` | 1 | 否 |
-| `auth` | 1 | 否 |
+**归属规则。**一条 CSS 规则若声明 `grid-template-columns` 且列数不小于二，则按选择器列表逐个逗号分支处理，每个分支只归属到**最后一个复合选择器的第一个类名**。据此 `.dt .kv` 归 `kv`，`.gridpane.ld`、`.gridpane.dl`、`.gridpane.g3` 一律归 `gridpane`，`.case .grid` 归 `grid`，`.dprof .steps` 归 `steps`，`.shell.nosd` 归 `shell`，`.topichdr,.topicrow` 两个分支分别归 `topichdr` 与 `topicrow`，`.nots div` 因末级复合无类名而不归属任何类。换用“选择器中出现的每个类名都计入”这一规则，同一份原型会得到 34 个类、109 次，两者都不是本表口径。`@media` 与 `@container` 中的覆盖规则不改变类集合，因为本文件里每一条覆盖都对应一条已存在的基础规则。
 
-`A6` 的 `AC-02` 声称“每组成对列都满足阈值”，但当前证据只覆盖 6 处。补齐范围固定为：所有恰好两列且两列均可见的实例，逐实例测量。列数多于二的网格不适用高差判据，改为断言其列数与本表一致，避免因换行导致的隐性降列。使用次数最多的 `kv` 是定义列表布局，`U2` 必须先判定它是否属于“并排两栏”语义，判定结果写入基线，不得默认跳过。
+**计数方法及其三处缺陷。**出现次数按 `class="..."` 属性的字面文本统计。该方法在遇到 JS 模板插值时会在第一个内层引号处截断，由此产生三处已确认的偏差，本表保留原值以维持与既有引用的一致，但 `U2` 必须按修正值实施：
+
+| 类 | 本表值 | 修正值 | 偏差成因 |
+|---|---:|---:|---|
+| `grid2` | 6 | 7 | 第 1294 行 `class="${narrow?"grid2":"grid4"}"` 在首个内层引号处被截断，该动态分支未被计入 |
+| `grid4` | 3 | 4 | 同上 |
+| `acct` | 5 | 4 | 第 3994 行截断片段中含 JS 变量名 `acct`，构成一次假阳性 |
+| `gates` | 1 | 0 | `.gates` 是**死样式**，标记实际使用 `gatebar`；该次计数来自第 1485 行片段中的属性名 `p.gates` |
+
+四处偏差在总数上恰好抵消（+1、+1、−1、−1），这正是 96 在两种计数口径下都显得自洽的原因，不能据此认为方法正确。此外 `nosd` 对任何基于 `class="..."` 的统计都不可见：它只在第 4046 行由 `className` 字符串拼接产生。`U2` 的核对脚本必须解析模板字面量并排除 JS 标识符，不得沿用截断式正则。
+
+| 类 | 列数 | 轨道值要点 | 出现次数 | 是否真正并排两栏 | 门禁是否测量 |
+|---|---:|---|---:|---|---|
+| `kv` | 2 | `max-content 1fr` | 34 | 否，标签值对 | 否 |
+| `gridpane`（含 `ld`、`dl`、`g3`） | 2 或 3 | `1fr 1fr`；`minmax(0,368px) minmax(0,1fr)`；`minmax(0,1fr) minmax(0,392px)` | 8 | **是** | 否 |
+| `grid2` | 2 | `1fr 1fr` | 6（修正 7） | **是** | 是 |
+| `grid3` | 3 | `repeat(3,minmax(0,1fr))` | 5 | 不适用 | 否 |
+| `critgrid` | 6 | `repeat(5,1fr) 34px` | 5 | 否，五内容列加一评分槽 | 否 |
+| `acct` | 4；≤1100px 时 2 | `repeat(4,…)`；`repeat(2,…)` | 5（修正 4） | **是**，仅在其两列响应态 | 否 |
+| `step` | 2 | `44px 1fr` | 4 | 否，窄槽布局 | 否 |
+| `grid4` | 4 | `repeat(4,minmax(0,1fr))` | 3（修正 4） | 不适用 | 否 |
+| `topicrow` | 3；容器 ≤560px 时 2 | `3px minmax(0,1fr) 236px` | 3 | 否，窄槽布局 | 否 |
+| `pt` | 2 | `20px 1fr` | 3 | 否，窄槽布局 | 否 |
+| `steps` | 5 | `repeat(5,1fr)` | 2 | 不适用 | 否 |
+| `tier` | 3 | `118px 1fr max-content` | 2 | 不适用 | 否 |
+| `srow` | 3 | `130px 1fr max-content` | 2 | 不适用 | 否 |
+| `topichdr` | 3 | 与 `topicrow` 同规则 | 2 | 不适用 | 否 |
+| `shell` | 3；`.nosd` 或 ≤1240px 时 2 | `232px minmax(0,1fr) 300px` | 1 | 由 §9.13.3 断点表单独管辖 | 否 |
+| `gates` | 9 | `repeat(9,minmax(0,1fr))` | 1（修正 0） | 不适用，死样式 | 否 |
+| `rw` | 2 | `1fr max-content` | 1 | 否，标签加尾标 | 否 |
+| `an` | 2 | `60px 1fr` | 1 | 否，窄槽布局 | 否 |
+| `chk` | 3 | `26px 1fr max-content` | 1 | 不适用 | 否 |
+| `review-form` | 2 | `repeat(2,minmax(0,1fr))` | 1 | **是** | 否 |
+| `ntform` | 2 | `1fr 1fr` | 1 | **是** | 否 |
+| `ntrow` | 3 | `17px 1fr max-content` | 1 | 不适用 | 否 |
+| `planerow` | 3 | `repeat(3,minmax(0,1fr))` | 1 | 不适用 | 否 |
+| `grid` | 4 | `repeat(4,minmax(0,1fr))` | 1 | 不适用 | 否 |
+| `nots` | 2 | `repeat(2,minmax(0,1fr))` | 1 | **是** | 否 |
+| `auth` | 2 | `1fr 1fr` | 1 | **是** | 否 |
+
+`A6` 的 `AC-02` 声称“每组成对列都满足阈值”，但当前证据只覆盖 6 处。判定已经可以给出：26 个类中有 7 个在某个断点下构成真正的等价内容两栏，即 `gridpane`、`grid2`、`acct`（两列响应态）、`review-form`、`ntform`、`nots`、`auth`，合计 23 次出现；门禁只测其中 `grid2` 的 6 次，其余 17 次是同一种“两块面板可能严重不等高”的形状，却完全没有断言。补齐范围固定为这 7 个类的全部实例，逐实例测量。列数多于二的网格不适用高差判据，改为断言其列数与本表一致，避免因换行导致的隐性降列。
+
+使用次数最多的 `kv` 是定义列表布局，其轨道为 `max-content 1fr`，第一列宽度由内容决定而非等分，因此**不属于**并排两栏语义，不纳入高差判据；此前要求 `U2` 另行判定的事项在此直接裁定，判定依据是轨道值而非使用频次。`step`、`pt`、`an`、`rw`、`ntrow`、`chk` 同理，均为窄槽或标签布局，一并排除。
 
 ### 9.14 动作清单与写入语义
 
@@ -1100,7 +1170,7 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 
 #### 异常
 
-1. **动态发射的动作无法用字面量检索到。**`novroute` 在全文没有任何 `data-act="novroute"` 字面量，它只经由第 1302 行 `routesHtml()` 的模板发射，由 `novelty` 视图调用。任何以字面量 grep 为基础的清单核对都会把它误判为“已分发但从未触发”。因此 `scripts/check_console_action_inventory.py` 必须解析动态模板的调用点，不能只做字面量匹配。
+1. **动态发射的动作无法用字面量检索到。**全文共有三处动态 `data-act` 模板，而不是一处：第 1287 行 `svgNodes()`，由 `frontier` 视图在第 1614 行以 `fnode`、`dag` 视图在第 1937 行以 `cnode` 调用；第 1302 行 `routesHtml()`，由 `cert` 视图在第 1570 行以 `certroute`、`novelty` 视图在第 1780 行以 `novroute` 调用；第 1260 行 `pklist()`，没有调用点，见异常二。其中 `novroute` 在全文没有任何 `data-act="novroute"` 字面量，纯字面量核对会把它误判为“已分发但从未触发”；`fnode`、`cnode`、`certroute` 虽各有字面量，但它们经模板渲染的实际发射数量由运行时数组长度决定，字面量计数同样不等于发射计数。因此 `scripts/check_console_action_inventory.py` 必须解析这三处模板的调用点并按实参解析动作名，不能只做字面量匹配。
 2. **存在一段死代码。**第 1258 行的 `pklist()` 辅助函数内含一处动态 `data-act` 模板，但全文没有任何调用点，其动作永远不会渲染。清单核对必须把它标为死代码并要求 `U2` 删除或启用，不得让它长期停留在“定义了但不可达”的状态。
 3. **选择器字符串会造成假阳性。**第 4205 行的键盘处理器用 `document.querySelector('[data-act="signin"]')` 定位提交按钮，它匹配 `data-act` 的检索模式但不是一次标记发射。核对脚本必须排除选择器字符串，否则发射计数会虚高。
 4. 分发器的 57 个分支与解析动态模板后的 57 个发射动作**完全一一对应**，没有孤立分支，也没有未处理的发射。这一条是当前实现的优点，应写成回归断言加以保持。
@@ -1164,7 +1234,7 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 
 #### 原型实际消费的端点
 
-原型全文只有六处网络调用。后端只读端点中有六个从未被消费，`U2` 不得以“后端已有该端点”推定视图已接线：
+原型全文只有五处网络调用点，合计消费六个端点：第 4827 行 `/api/review-queue`、第 4840 行 `/api/review-bundle/{命题}`、第 4986 行按 `console.json` → `/api/console` 顺序尝试的同一个取数循环（一处调用点，两个端点）、第 5020 行 `/events` 的 `EventSource`、第 5050 行 `POST /api/review`。后端只读端点中有六个从未被消费，`U2` 不得以“后端已有该端点”推定视图已接线：
 
 | 端点 | 原型是否消费 |
 |---|---|
@@ -1190,6 +1260,34 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 
    两项后续义务仍未完成，不得视为该风险已完全关闭：其一，`U2` 必须在门禁中补一条断言，禁止今后再引入形似真实自然人的联系方式；其二，归档副本 `problem-intel-console-31bb970.html` 仍保留原有的五处地址，而 `evidence/console-visual-baseline/manifest.json` 目前仍把它指定为 256 张基线截图的捕获来源。该归档副本按内容哈希钉定，修改它等于伪造历史记录，因此不得改动；正确处置是在 `U1` 激活前把基线清单的捕获来源改指当前原型，与 §9.9 的唯一视觉权威裁定一致。在此之前不得启动任何基线捕获。
 
+4. **持久壳本身没有接线，却一直在显示数字。**本节的接线表有 32 行对应 32 个视图，但持久壳（顶栏、左侧目录树、面包屑）自己也是一个消费数据的界面，此前没有任何一行描述它，而它百分之百由演示常量驱动。具体有两处：
+
+   其一，**目录树的谱系标签**。第 1227 行 `navTree()` 与第 1191 行 `crumbs()` 会调用节点的 `ctx()` 回调；平面二与平面三的树把这些回调写成 `topicName(C().topic)`、`probName(C().pid)`、`C().target` 和 `C().result`，而 `C()`（第 1070 行）是在演示常量 `CAMPAIGNS` 里按 `S.cid` 查找。载荷是否实时对它没有任何影响。
+
+   其二，**目录叶子的计数徽标**。第 1218 行渲染 `VMETA[view].b()`。`VMETA` 共 17 个视图带徽标，其中 16 个读演示常量，只有 `admin_roster` 一个在实现时被改成了载荷感知。被实时或本地投影覆盖的视图里，有 9 个仍挂着演示徽标：
+
+   | 视图 | 徽标表达式 | 该视图的运行时消费 |
+   |---|---|---|
+   | `source` | `OBS.length` | `source_topic`（实时） |
+   | `proofchain` | `EVENTS.length` | `workspace.events`（实时） |
+   | `tools` | `TOOLS.length` | `workspace.trace.tool_calls`（实时） |
+   | `routes` | `ROUTES.length` | `routes.routes`（实时） |
+   | `admin_roles` | `ROLES.length` | `role_policy`（实时） |
+   | `campaign` | `C().detail ? ROUNDS.length+" 轮" : "无记录"` | `campaign`（实时） |
+   | `novelty` | 字面量 `1` | `novelty`（实时） |
+   | `topics` | `TOPICS.length` | `local_console.topic_portfolio` |
+   | `portfolio` | `PROBLEMS.length` | `local_console.candidate_problems` |
+
+   此外 `cert` 的徽标是字面量 `3`、`novelty` 是字面量 `1`，二者连演示数组都不读。
+
+   三条后果必须分开记：
+
+   - 这是 §9.1 禁止的实时与演示同屏混排，而且不是边界情形：持久壳出现在除 `landing`、`login` 外的每一屏，因此**每一张**基线截图和每一次渲染证据都同时含有真实主体与演示外围。左侧写着“证明过程链 12”而主体渲染真实事件数的情况可以直接发生。
+   - 字面量徽标与 `A7` 的 `AC-01`（计数必须由来源派生、禁止编造数字）正面冲突。发布门禁若只看主体不看外壳，会放过它。
+   - 它同时解释了 §9.17 登记的“数字溯源过弱”为什么是阻断项：门禁断言计数的字符串形式出现在 `body.innerText` 中，而演示徽标本身就把这些小整数放进了 `innerText`，这类断言可以完全靠外壳的演示数字通过。
+
+   处置：`U2` 必须把持久壳当作第 33 个消费面登记并接线——谱系标签改为读当前进程报告、徽标改为读对应投影或在未接线时不显示数字（而不是显示演示值）；`A6` 的渲染证据在此之前不得判 `PASS`。本表因此需要在 `U2` 完成后增加一行“持久壳”，本修订只登记缺口，不改表结构。
+
 ### 9.16 状态词汇映射
 
 §9.1 只规定了五态词汇和“映射缺失按 `error` 处理”的规则，没有给出映射本身。原型实际存在四套互不相同的内部状态词汇，后端导出合同又有第五套；不给出映射，每个实现者都会自画一张表。本节固定映射，`U2` 与 `U3` 的断言必须按此判读。
@@ -1212,6 +1310,7 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 | 未设置 | `#console-provenance` 创建时只写文案未写 `dataset.source` | 未定 | `loading` | 当前实现的空隙：首屏到首次 `label()` 之间该标记无机器可读值，`U2` 必须补一个显式初值 |
 | `unloaded` | `S.consolePayloadState.status` | `demo` | 不适用 | 未见任何 JSON 应答，控制台停留演示基线 |
 | `loaded` | `S.consolePayloadState.status` | `live` | `ready` 或 `empty` | 逐视图再按投影是否存在细分 |
+| `legacy_minimal_payload` | `validateConsolePayload()` 的提前返回分支（第 4557 行） | `live`（当前实现判为 `loaded`） | 应为 `error`，当前落到演示 | 第五套词汇，此前未登记；见下方“被接受但不完整的载荷” |
 | `unavailable` | `S.consolePayloadState.status` | `unavailable` | `error` | 已见 JSON 应答但校验不通过，必须清空陈旧载荷 |
 | `fallback` | `#console-provenance` 的 `dataset.source` | `demo` | 不适用 | 文案为“演示数据（`console.json` 不可用）” |
 | `export` | `#console-provenance` 的 `dataset.source` | `live` | `ready` | 已接入工作区，尚未建立事件流 |
@@ -1238,14 +1337,36 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 | `not_configured` | 未配置 | `unavailable` | `empty` |
 | `not_configured_fail_closed` | 未配置且禁止任何回退 | `unavailable` | `empty`，且禁止 `demo` |
 
+#### 被接受但不完整的载荷
+
+上表第五套词汇对应实现里一条此前未登记的路径。`validateConsolePayload()` 在完整校验之前有一个提前返回分支：只要载荷满足 `schema_version` 为 `1.0`、`provenance.run_id` 非空、`workspace.events.events` 是数组，且 `workspace.trace` 与 `workspace.workspace` **都不存在**，就直接返回 `ok:true`，`reason` 为 `legacy_minimal_payload`。`applyExport()` 随即把 `S.consolePayloadState.status` 置为 `loaded`，顶栏 `#console-provenance` 打上“已接入工作区 …”与 `dataset.source="export"`，与一次真实接入完全同形。但该载荷没有 `view_contract` 键，于是 `livePayloadFor()` 对全部 10 个 live 视图一律返回 `null`。
+
+十个 live 视图对“载荷已被接受、但本视图投影缺失”的处置分成两类，而这条分界线此前不在合同里：
+
+| 视图 | 回退判定 | 处置 |
+|---|---|---|
+| `routes`、`disclosure`、`novelty` | 先判 `S.consolePayload` 是否存在，再决定 | 失败关闭，显示“实时投影不可用” |
+| `source`、`dag`、`proofchain`、`tools`、`reasoning`、`admin_roles`、`campaign` | 只判 `!workspace` / `!payload` / `!policy` | 回落演示常量，且 `#view-data-boundary` 显示“演示数据” |
+
+后七个视图的问题不止于这一种载荷，它是一条**结构性死分支**：`render()` 计算 `#view-data-boundary` 时，`unavailable` 的成立条件是“载荷已应答 **且**（视图属于 `routes`/`disclosure`/`novelty` **或** 属于 `FAIL_CLOSED_M2_VIEWS`）**且** 未连接”。这七个视图既不在那三个硬编码名字里，也不在 `FAIL_CLOSED_M2_VIEWS` 里，因此 `unavailable` 分支对它们在**任何**载荷下都不可达，边界标记只会在“真实数据”与“演示数据”之间切换。届时顶栏说已接入工作区、视图标记说演示数据、屏幕上是演示常量，正是 §9.1 禁止的实时与演示同屏混排。
+
+三点必须同时记住：
+
+1. **当前后端导出不会触发它。**`build_console_export()` 恒定输出 `view_contract`，而 `workspace_dashboard_payload()` 恒定输出 `workspace.trace` 与 `workspace.workspace`，因此真实导出必然走完整校验分支。能构造出该形状的只有手工传输夹具。这解释了门禁为何至今没有暴露它：门禁只跑“完全没有载荷”和“完整真实导出”两种全有全无的状态，中间态没有任何用例。
+2. **不能因此判为不可达而免于断言。**该分支存在于交付验收的字节里；任何降级导出、协议演进或中间层截断都可能构成它。`U2` 不得以“当前后端不会产生”为由跳过负测。
+3. **`admin_roles` 与 `admin_roster` 是两个不同视图。**只有后者在 `FAIL_CLOSED_M2_VIEWS` 中。两个名字相差一个词尾而处置相反，任何按名单判读的实现与评审都必须显式区分。
+
+正确范式在同一份文件里已经存在：`localOrDemo()` 的判定是“只要载荷曾被接受（`loaded` 或 `unavailable`）就渲染诚实空态，与本地投影是否存在无关”，六个 fail-closed 账户与管理视图因此在两条轴上都正确。后七个 live 视图应改用同一范式。
+
 #### 由本映射产生的强制断言
 
-以下四条是当前实现与本映射不一致之处，登记为 `U2` 的必补断言，不得写成已满足：
+以下五条是当前实现与本映射不一致之处，登记为 `U2` 的必补断言，不得写成已满足：
 
 1. 首屏加载期间没有 `loading` 呈现。`render()` 是同步整页渲染，载荷在途时屏幕显示的是演示常量，与 §9.1 “加载中不得呈现上一次快照的伪装值”冲突。`U2` 必须为被声明 live 的视图提供显式加载态，或证明加载窗口内该视图不渲染任何计数。
 2. `#console-provenance` 必须在创建时即写入 `dataset.source` 初值。
 3. 未知动作与未知视图必须落到 `error`。当前未知动作在委托末尾静默 `return`，未知视图静默退回 `portfolio`，而 `ma-view` 来自 `localStorage`，可被写入任意值。
 4. 数据边界与五态必须分别落在两个可机器读取的属性上，不能合并为一个文案。
+5. 载荷已被接受但本视图投影缺失时，十个 live 视图必须给出同一种诚实处置。`U2` 须完成三件事：把 `source`、`dag`、`proofchain`、`tools`、`reasoning`、`admin_roles`、`campaign` 七个视图的回退判定改为先看 `consolePayloadWasLoaded()`；把 `#view-data-boundary` 的 `unavailable` 判定由硬编码视图名单改为“凡声明 live 的视图未连接即 `unavailable`”；并补一条以 `legacy_minimal_payload` 形状载荷驱动的负测，断言这七个视图不再渲染演示常量、边界标记不再显示 `demo`。该负测目前在门禁与单元测试中均不存在。
 
 ### 9.17 消费面摘要、证据工具与门禁缺口
 
@@ -1255,7 +1376,7 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 
 ```yaml
 consumer_surface:
-  view_contract_revision: 4
+  view_contract_revision: 5
   sources:            # §9.9 四份来源，按表中顺序，每项 {path, sha256}
   view_ids:           # §9.3 的 32 个 id，按 §9.3 声明顺序
   case_ids:           # §9.4 的 52 个 case_id，按 §9.4 声明顺序
@@ -1264,6 +1385,7 @@ consumer_surface:
   state_mapping:      # §9.16 两张映射表的全部行
   action_inventory:   # §9.14 的 {action, class} 全表
   visual_baseline:    # §9.13 的令牌名与三态取值、组件类清单、断点清单
+  dom_contract:       # 修订 5 新增，见下节：元素 id 清单、定位用 data 属性与复合选择器、被断言字面串摘要
   identity_schema:    # §9.8 的字段名清单
   browser_matrix:     # 6 个桌面宽度、2 个移动 viewport、主题清单
   thresholds:         # 高差 140、比例 0.62、对比度 4.5 与 3.0
@@ -1271,6 +1393,26 @@ consumer_surface:
 ```
 
 数组一律按本文件的声明顺序，不重新排序；缺任一键即摘要无效，不得以部分键计算。该对象的取值全部来自本节及 §9.3 至 §9.16，因此这几节任一行变动都会改变摘要，从而使受影响证据失效。
+
+#### `dom_contract`：门禁与原型之间的定位耦合
+
+先更正一个容易得出的错误结论：`sources` 键已经按**整文件** SHA-256 钉住 `docs/prototypes/problem-intel-console.html` 与 `scripts/console_browser_gate.mjs`，因此改动任何一个 id、类名、`data` 属性或被断言的文案，摘要**都会**变。“改选择器不会触发失效”的说法不成立。
+
+真正的缺口是另外三条，修订 5 为此新增 `dom_contract` 键：
+
+1. **不可审阅。**组件类有 `class_count` 与 `class_list_sha256` 两个抽取出来的条目，评审者能看出改了什么；而元素 id、定位用 `data` 属性、被字符串匹配的文案没有任何抽取项。整文件哈希一变，评审者无法区分“一个承重选择器被移动了”和“一句无关中文改了错别字”，两者对摘要的影响完全相同。
+2. **无工具计算。**§9.17 工具表中四个脚本全部未创建，而已存在的 `scripts/console_browser_gate.mjs` 根本不知道摘要这个概念，既不计算也不校验它。当前 §9.9 的钉值是人工算过一次的结果，没有任何自动机制维持。
+3. **整文件哈希每次提交都变。**它对无关改动同样敏感，因此不能用来判断耦合是否被破坏；粒度过粗等于没有信号。
+
+`dom_contract` 的内容与规范化如下，刻意保持在约 35 条以内，使一次差异可以由人在一次评审内看完：
+
+| 子键 | 内容 | 规范化 |
+|---|---|---|
+| `element_ids` | 门禁与单元测试按 id 定位的全部元素，当前 13 个：`nowtask`、`page`、`console-provenance`、`view-data-boundary`、`budget`、`review-id`、`reviewer-id`、`reviewer-roster-version`、`reviewer-profile-digest`、`review-policy-version`、`review-decision`、`review-statement-correspondence`、`review-token` | 去重，按码位排序，逐条列出而非取哈希：清单短到可以逐条看，增删本身就是要看的信号 |
+| `data_locators` | 用于定位的 `data` 属性**名**（`data-act`、`data-id`、`data-i`、`data-v`、`data-m`、`data-source`、`data-review-verdict`），以及把属性**值**写死在选择器里的复合选择器（`[data-act="compile"]`、`.cev[data-act="obs"][data-id="o1"]`） | 同上。动作**名**本身不在此键，它属于既有的 `action_inventory` |
+| `asserted_strings` | 门禁与测试以 `includes`、`getByText`、`getByRole` 或 `assertIn`/`assertNotIn` 匹配的字面串集合，当前 22 条 | 取 `{count, list_sha256}`：去重后按码位排序、UTF-8、换行连接、非 ASCII 不转义再取 SHA-256，与 `class_list_sha256` 同一算法 |
+
+组件类的裸类名不进入本键，它们已由 `visual_baseline` 覆盖；本键对类名只补那些与具体属性值绑定的复合选择器，因为这类组合在纯类名清单里看不见。
 
 #### 捕获组合数的口径
 
@@ -1311,6 +1453,59 @@ consumer_surface:
 | 焦点恢复未证 | 键盘用例在按键前手动重新聚焦，掩盖了点击后整页重渲染的焦点丢失 | 点击路径也必须断言焦点与光标位置恢复 |
 | 无障碍语义未证 | 对 `aria-expanded`、`role` 与可读名称零断言 | 手风琴展开态与 `aria-expanded` 必须一致 |
 | 全屏页无边界 | `landing` 与 `login` 的断言恒真 | 二者必须有独立错误边界并被负测覆盖 |
-| 主题与字体未固定 | 只跑一种主题；字体走外网 `fonts.googleapis.com`，离线回落系统字族 | 三主题分别断言；字体模式写入身份，并在门禁中固定为可复现的一种 |
+| 主题、动效与字体未固定 | 只跑一种主题，且从不设置 `colorScheme`、`reducedMotion`、`forcedColors`，也不预置 `ma-theme`；字体走外网 `fonts.googleapis.com`，而回退链中唯一具备中文覆盖的两个字族都来自该外部样式表 | 按 §9.18.3 逐项固定并回显；三主题分别断言；`resolved_scheme`、`motion_mode`、`font_mode` 写入身份 |
 | 对比度未测 | 无任何对比度断言 | 按 §9.8 阈值逐元素测量并记录清单 |
 | 演示动作未约束 | 对 `simulated-write` 类动作零断言 | 按 §9.14 规则断言其在 live 数据边界下的处置 |
+| 空集合导致断言静默不执行 | `testAccordions()` 把全部开合断言放在对 `.cev[data-act]` 结果的循环体内，`measureBalance()` 把高差判据放在对 `.grid2` 结果的循环体内，两处都没有“至少匹配到一个”的前置断言 | 两处都必须先断言匹配数大于零并与本合同登记的实例数一致；否则重命名 `.cev` 或 `.grid2` 会使覆盖归零而门禁照常打印通过 |
+| 逐案例的渲染断言恒真 | 每个案例只做 `#nowtask, #page` 的 `count() > 0`；这两个节点是静态外壳，`render()` 只改写它们的 `innerHTML`，从不移除，因此该判据在全部组合下恒为真 | 逐案例断言必须绑定该视图的具体内容锚点，而不是外壳节点是否存在 |
+| 视图声明断言过松 | 单元测试以 `assertIn('"campaign"', page)` 一类的整文件子串存在性代表“该视图有 live 面”，而这些词元在文件中各出现 3 至 10 次（CSS 类名、JSON 键、注释均计入） | 断言必须落到 `LIVE_VIEW_CONTRACTS` 的具体条目与该视图渲染入口，不得用整文件子串代替 |
+
+### 9.18 执行协议
+
+§9.13 至 §9.17 回答“合同是什么”，本节回答“按合同执行会卡在哪”。以下四条是修订 5 从机器源、节点边与脚本现状中识别出的执行阻塞，每条给出固定处置。本节不改变任何节点状态，不新增节点或边，也不解除 `D3` 的人工闸门。
+
+#### 9.18.1 基线与实现之间的循环依赖
+
+`U1` 的职责是冻结基线：235 个组件类、57 个动作、令牌表哈希、原型内容哈希。`U2` 的职责由 §9.14 与 §9.16 规定：隐藏 11 个 `simulated-write`、移除 `promote`、补首屏加载态与 `dataset.source` 初值、改七个 live 视图的回退判定、接线持久壳。这些改动**必然**改变 `U1` 刚冻结的每一个数字，而边只有 `U1 → U2`，没有回边。按字面执行会得到一个死结：`U2` 一旦动手，基线立即与被测对象不符，`A6` 的一致性断言必然失败；若为保住一致性而不动 `U2`，则那些必补断言永远无法满足。
+
+处置是把 `U1` 的基线定义为双版本，不新增边：
+
+| 版本 | 产出节点 | 内容 | 用途 |
+|---|---|---|---|
+| `baseline-v1` | `U1` | 冻结当前字节的清单与哈希 | 只用于证明 `U2` 的每一处改动都是有意的，而不是漂移 |
+| `baseline-v2` | `U2` | `U2` 完成后按同一算法重算，附逐项差异说明 | `A6` 的实际比对基准 |
+
+`A6` 的判据随之有两条而不是一条：其一，live 渲染与 `baseline-v2` 一致；其二，`baseline-v1` 到 `baseline-v2` 的差异集合与 §9.13 至 §9.16 登记的必补断言集合**一一对应**，出现任何未被断言解释的多余差异即为失败。`U1` 节点本身不重跑，`baseline-v2` 记为 `U2` 的交付物，不改写 `U1` 的交付物。这是执行约定；若将来要由机器强制，须另立修订新增 `U2 → U1` 的反馈边并提升 `DAG_VERSION`。
+
+#### 9.18.2 验收命令与证据工具的升格
+
+§9.17 列出的四个工具全部不存在，它们目前只登记在节点的 `planned_acceptance_commands` 中；而真正绑定的 `acceptance_commands` 里，`U1` 只有 `python3 -m unittest tests.test_console_prototype`——该测试的断言全部是“某字符串是否出现在原型或门禁脚本里”，证明不了 `AC-01` 的令牌三态，也证明不了任何渲染行为。
+
+处置：节点激活时必须完成一次合同升格，四步缺一不可，顺序固定：
+
+1. 由产出节点先交付工具本身（`U1` 交 `check_console_visual_baseline.py` 与 `console_visual_parity.mjs`，`U2` 交 `check_blueprint_projection.py` 与 `check_console_action_inventory.py`）；
+2. 把对应条目从 `planned_acceptance_commands` 移入 `acceptance_commands`；
+3. 重算该节点的执行合同文件与 `execution_contract_sha256`；
+4. 在验收片段的 `Protected acceptance tests` 表登记路径与 SHA-256，把 `Test baseline` 由 `PLANNED` 改为已锁定。
+
+在四个工具进入 `acceptance_commands` 之前，`U1` 的 `AC-01`、`AC-02` 与 `A6` 的一致性类判据一律不得判 `PASS`。带 `planned_` 前缀的命令不是验收依据。
+
+#### 9.18.3 门禁运行环境的固定
+
+§9.8 要求把主题、字体模式等写进证据身份，但没有规定这些值由谁固定。当前 `scripts/console_browser_gate.mjs` 不设置 `colorScheme`、`reducedMotion` 或 `forcedColors`，不预置 `ma-theme`，也不控制字体来源，因此这些维度全部由运行机器的默认值决定，跨机器不可复现。门禁必须显式设定并在结果中回显下列五项，缺任一项该次运行不产生有效证据：
+
+| 维度 | 固定方式 | 理由 |
+|---|---|---|
+| 配色 | 三遍：不设 `data-theme` 且 `colorScheme=light`；不设 `data-theme` 且 `colorScheme=dark`；显式 `data-theme="dark"` | 三个 CSS 块必须各自被覆盖；`theme: system` 必须与 `resolved_scheme` 成对记录 |
+| 动效 | `reducedMotion=reduce` | 第 61 行规则以 `!important` 压平全部 5 处 `transition`；否则 `dispatch()` 之后 `waitForTimeout(0)` 的断言与截图落在最长 150ms 的过渡窗口内 |
+| 字体 | 固定为 `webfont-loaded` 或 `fallback-local` 之一并声明；选后者时运行机必须已装中文字族 | 见 §9.13.4：缺中文字族且无法访问该 CDN 时全部中文退化为缺字形方块，此时证据不成立，应判运行环境不合格 |
+| 视口 | 6 个桌面宽度加 2 个移动视口，移动端 `isMobile`、触控、DPR 2 | 沿用 §9.8 |
+| 载荷 | `demo-baseline` 与 `fixture-live` 分别声明 | 沿用 §9.8 |
+
+#### 9.18.4 捕获组合的口径
+
+§9.8 声明门禁组合为 `832`。该数字是**运行次数**，不是独立渲染数，两者不得互相替代。
+
+在 `fixture-live` 下，`V.campaign` 读取 `payload.campaign` 而与 `S.cid` 无关，其余被实时或本地投影覆盖的视图同样只读载荷。因此这一模式下 campaign 轴唯一能改变的，是仍由演示驱动的 `campaigns` 视图高亮，以及 §9.15 异常四所述的持久壳谱系标签与计数徽标——也就是说，该轴此时只在演示外围上变化，对已接线视图不产生新信息。在 `demo-baseline` 下，该轴是有效的。
+
+处置：`832` 保留为运行口径，但证据中必须同时声明独立渲染口径，二者分列。若要让 campaign 轴在 `fixture-live` 下具备真实区分度，夹具工作区必须注册两个不同的真实报告；在此之前不得以该轴宣称覆盖翻倍。
