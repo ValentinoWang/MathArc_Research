@@ -13,7 +13,8 @@
   ],
   "read_set": [
     "artifact:pi-console-slices-decision",
-    "authority:console-visual-prototype-31bb970"
+    "authority:console-visual-prototype-31bb970",
+    "authority:console-visual-prototype-current"
   ],
   "write_set": [
     "artifact:pi-console-visual-baseline",
@@ -21,6 +22,10 @@
   ],
   "acceptance_commands": [
     "python3 -m unittest tests.test_console_prototype"
+  ],
+  "planned_acceptance_commands": [
+    "python3 scripts/check_console_visual_baseline.py",
+    "node scripts/console_visual_parity.mjs"
   ],
   "evidence_outputs": [
     "agents-results/2026-08-31/problem-intelligence-plane/evidence/U1.json"

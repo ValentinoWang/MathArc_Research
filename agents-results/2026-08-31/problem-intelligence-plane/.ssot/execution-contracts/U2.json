@@ -26,7 +26,8 @@
   ],
   "planned_acceptance_commands": [
     "node scripts/console_visual_parity.mjs",
-    "python3 scripts/check_blueprint_projection.py"
+    "python3 scripts/check_blueprint_projection.py",
+    "python3 scripts/check_console_action_inventory.py"
   ],
   "evidence_outputs": [
     "agents-results/2026-08-31/problem-intelligence-plane/evidence/U2.json"

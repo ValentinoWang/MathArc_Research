@@ -330,6 +330,8 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | A4 | A4 | blocked | 四项实现缺陷修复、完整 local CI、内容摘要冻结、独立复核和人工批准 | none | R1 v11 保持不变；Q1/A5 不得越级或由 AI 代签 |
 | console | D3 | blocked | 用户决定内容已批准，但 A5 为 `INVALIDATED`；D3 执行节点不能解锁 U1 | none | A6/A7 合同与人工清单保持 `DRAFT`/`PENDING`；不启动实现或验收 |
 
+控制台前沿的阻塞是**人工闸门，不是图上的边**。机器源里 D3 的唯一硬依赖是已接受的 A1，边分片中不存在 A5 到 D3 的边；A5 对 D3 的约束只写在业主指令、状态台账和本表的阻塞原因里。因此任何调度器在派发 D3 之前必须先读“假设与冲突登记”中的 `D3-CONSOLE-SLICES` 行，不能只看边表判定就绪。A5 重新接受后的重算顺序是：先人工把 D3 的执行状态由 `BLOCKED` 改为可执行并保留原决定身份 `decision.problem-intelligence.console-slices@1`，再依次解锁 U1 至 A6，最后才是 U4、U5 与 A7。若将来需要机器强制该闸门，必须另立修订新增一条 A5 到 D3 的硬边并提升 `DAG_VERSION`，本修订不做此改动。
+
 ### 波前指标
 
 | Metric | Value | Basis |
@@ -340,7 +342,7 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | global-completeness-barriers | 0 | 没有把全局完成度作为普通节点前置条件 |
 | critical-path-length | 17 | 加入 A7 后显式硬边上的最长节点路径 |
 | graph-ready-width | 0 | 没有待执行节点 |
-| graph-antichain-width | 2 | 结构分析器计算的最大反链宽度 |
+| graph-antichain-width | 3 | 结构分析器计算的最大反链宽度 |
 | resource-verified-width | 0 | 没有待执行节点需要资源分配 |
 
 ### 叶交付物清单
@@ -377,8 +379,8 @@ current worktree: A4 invalidation state transition; query git status for the liv
 
 | Parallel batch | Leaf deliverables | Independent deliverables | Conflict-grouped deliverables | Logical lane target | Available worker slots | Wave count | Graph ready width | Graph antichain width | Resource-verified width |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 2 | 1 |
-| W21-console-local-parallel | DL-U4,DL-U5 | 2 | 0 | 2 | 1 | 1 | 2 | 0 |
+| W4-formal-frontier | DL-L1 | 1 | 0 | 1 | 1 | 1 | 3 | 1 |
+| W21-console-local-parallel | DL-U4,DL-U5 | 2 | 0 | 2 | 1 | 1 | 3 | 0 |
 
 并行宽度的逻辑目标由独立交付物决定；A4 当前失效并进入修复，R1、Q1 和 A5 仍须等待其硬依赖恢复。所有历史接受记录都只证明对应旧身份下的本地、固定来源、固定样本和受限发布决定，不向数学证明、外部文献确认、生产或公开发布延伸。
 
@@ -444,6 +446,7 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | Revision | Deviation level | Reason | Changed versions | Affected nodes | Invalidated acceptance/evidence | Nodes to rerun | Approving authority | Timestamp |
 |---|---|---|---|---|---|---|---|---|
 | 1 | L1 | 从评审建议编译为当前计划；未改变运行代码 | PLAN 1, DAG 1, INTERFACE 1, NODE 1, SSOT 2 | 全部计划节点 | 无既有实现证据 | CHARTER、F1 | 规划编排者 | 2026-08-31 |
+| 2 | L1 | 补齐控制台视图合同缺失的令牌、动作、接线、状态映射与工具归属规格；裁定唯一视觉权威；修正与机器源不符的指标和 lane 命名。未改变运行代码、节点、边或任何节点状态 | PLAN 3, DAG 2, INTERFACE 2, NODE 2, SSOT 2 不变；view-contract 3 → 4 | U1、U2、U3、A6、U4、U5、A7（均维持 `BLOCKED`） | 修订 3 下的全部控制台渲染、样式、对比度与交互证据（当前为空集） | 无节点可重跑；A5 恢复后按 W16 至 W22 原顺序执行 | 规划编排者，待验收负责人确认 | 2026-09-02 |
 
 | Changed key | Directly affected nodes | Propagation rule |
 |---|---|---|
@@ -463,6 +466,9 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | artifact:pi-topic-option | plan artifact | bundle-local | plan v1 | D2 | W | pi-d2 | independent |
 | artifact:pi-amendment-decision | plan artifact | bundle-local | plan v1 | A1 | W | pi-a1 | single writer |
 | candidate:pi-r1-v1 | release candidate | bundle-local | candidate v1 | A1 | W | pi-r1 | serialized |
+| authority:console-blueprint | authority file | docs/prototypes/console-dev-blueprint.html | SHA-256 pinned | U1 | R | pi-console | R/R allowed |
+| authority:console-visual-prototype-current | authority file | docs/prototypes/problem-intel-console.html | SHA-256 pinned | U1 | R | pi-console | R/R allowed |
+| authority:console-visual-prototype-31bb970 | archived reference | evidence/console-visual-baseline/authority/problem-intel-console-31bb970.html | SHA-256 pinned | U1 | R | pi-console | R/R allowed |
 
 ### 证据身份与验收层级
 
@@ -564,11 +570,15 @@ flowchart LR
 
 当前 CHARTER、F1、D1、D2、A1、L1、L2、A2、S1、S2、A3、T1、T2 保持既有机器状态；A4、R1、Q1、A5 均为 `INVALIDATED`。D3 用户决定内容已批准但新执行节点为 `BLOCKED`；U1-U5、A6、A7 尚未实现或验收，合同与人工清单为 `DRAFT`/`PENDING`。当前停止点是 A4 修复重验及其后续控制台计划，不得把本状态标记为数学证明、外部文献确认、生产或设备证据、部署完成或公开研究结论。
 
+本修订在缺少 Harness 校验器的环境中编辑，只改动阅读投影源和与之绑定的机器源哈希，未运行 `render_ssot_views.py --check`、`check_ssot_program.py`、`analyze_ssot_parallelism.py`、`check_ssot_structure.py`、`check_chinese_readability.py` 与快照审计。因此 `.ssot/validation-report.json` 记录的是修订前那次运行，其 `bundle.sha256` 与当前字节已不一致：该报告只能作为历史审计材料，不得当作本修订的通过证据。合并前必须在具备 Harness 的环境重跑上述全部校验并生成新的验证报告，同时按项目规则执行 `ssot-obsidian-snapshot`。
+
 ## 九、控制台视图合同（PLAN v3）
 
 ### 9.1 修订身份与权威边界
 
-本节是问题情报平面控制台的 **view-contract revision 3**。它是本文件的阅读投影补充，对应 PLAN_VERSION 3 / DAG_VERSION 2，并与新增的 8 个节点及 14 条边一致；机器源 `.ssot/manifest.json` 和节点/边分片是结构权威。任何实现、验收或证据若与机器源冲突，以机器源和后端代码为准。
+本节是问题情报平面控制台的 **view-contract revision 4**。它是本文件的阅读投影补充，对应 PLAN_VERSION 3 / DAG_VERSION 2，并与既有的 8 个控制台节点及 14 条边一致；机器源 `.ssot/manifest.json` 和节点/边分片是结构权威。任何实现、验收或证据若与机器源冲突，以机器源和后端代码为准。
+
+修订 4 只补齐视图合同缺失的规格，不新增节点、边或决定，也不改变任何节点状态：新增 §9.13 至 §9.17 五节，分别固定设计令牌与组件基线、动作清单与写入语义、逐视图接线状态、状态词汇映射，以及消费面摘要与证据工具归属；同时修正 §9.8、§9.9、§9.11 与波前指标中与机器源或原型不一致的条目。修订 3 下捕获的任何渲染、样式、对比度或交互证据一律作废，必须在修订 4 的消费面摘要下重新捕获。
 
 控制台的事实源只有后端工作区投影。前端演示常量、静态导出和本地 UI 状态都不是事实源，且必须带有可见的数据来源标记：
 
@@ -584,7 +594,7 @@ flowchart LR
 
 ### 9.2 后端端点与视图数据映射
 
-端点是能力边界，不是前端的可选实现。所有数值、枚举、时间、状态、链头和来源摘要必须能在响应中找到同值或可推导的证据；响应缺失、版本不兼容或 provenance 不匹配时，视图进入 `error`/`empty`，不得回填事实。
+端点是能力边界，不是前端的可选实现。本表描述**后端具备什么能力**；原型当前实际接了哪些线、哪些视图仍是演示常量，以 §9.15 为准，两者不得互相推定。所有数值、枚举、时间、状态、链头和来源摘要必须能在响应中找到同值或可推导的证据；响应缺失、版本不兼容或 provenance 不匹配时，视图进入 `error`/`empty`，不得回填事实。
 
 | 后端事实/动作 | 端点 | 主要视图或用途 | 约束 |
 |---|---|---|---|
@@ -691,7 +701,7 @@ R1/T2 fixture 是来源固定的只读输入，不是实时生产证据。若文
 #### 渲染和焦点
 
 - `S` 保存当前视图、命题/版本、选中 `campaign`、折叠状态、主题、回退状态、篡改状态以及实时载荷状态；`V[view_id]` 是纯渲染入口，`render()` 整页重渲染后必须按稳定 ID 找回输入焦点和光标位置。
-- 点击使用 `data-act` 委托；动作处理器必须先校验动作数据和当前作用域，再改变状态。未知动作、未知视图或过期载荷按 `error`，不得静默忽略。
+- 点击使用 `data-act` 委托；动作处理器必须先校验动作数据和当前作用域，再改变状态。未知动作、未知视图或过期载荷按 `error`，不得静默忽略。全部 57 个动作的清单、分类与在实时数据边界下的处置见 §9.14；当前实现对未知动作是静默返回、对未知视图是静默退回 `portfolio`，与本条冲突，已登记为 `U2` 的必补断言。
 - 证明链、观察、轮次、实验、工具台账和推理使用就地链式手风琴：`obs`、`round`、`expl`、`tool`、`rsn`、`cev` 的开/关都不应借用其他记录；展开状态须可由键盘和指针观察。
 - 自绘控件须有 `tabindex="0"`、`role="button"` 和可读 `aria-expanded`/名称；Enter 与 Space 都触发同一动作，焦点不能因刷新丢失。
 
@@ -758,6 +768,10 @@ campaign_id: c7|q6
 browser: chromium
 browser_version: <captured-version>
 viewport: <captured-width>x<captured-height>
+theme: system|light|dark
+font_mode: webfont-loaded|fallback-local
+shell_layout: three-column|two-column|single-column
+payload_mode: demo-baseline|fixture-live
 captured_at: <iso-8601>
 source_commit: <commit-at-capture>
 consumer_surface_digest: <sha256-of-canonical-consumed-contract>
@@ -765,21 +779,33 @@ fixture_id: <frozen-fixture-id-or-none>
 review_conclusion: PASS
 ```
 
-视觉保真记录必须分别保存并绑定内容 SHA-256：`dom_sha256`、`computed_style_sha256`、`contrast_sha256`、`interaction_trace_sha256`。交互轨迹至少包含 `before`、`event`、`after`，并指出作用域、焦点、状态和后端读回。可选 `pixel_comparison` 只能使用冻结夹具、冻结 baseline、实际截图、明确 tolerance 和动态字形专用 mask；mask 只允许覆盖动态文字/数字的字形像素及其明确几何范围，禁止整页、卡片、背景或 live-data 截图掩盖差异。
+新增的四个字段是修订 4 的强制项，理由见 §9.13：主题、字体加载模式和壳布局都会改变 `computed_style_sha256` 与两栏高度测量结果，载荷模式决定同一 `case_id` 呈现的是演示基线还是实时夹具。缺任一字段按未捕获处理并阻塞 `PASS`。
+
+视觉保真记录必须分别保存并绑定内容 SHA-256：`dom_sha256`、`computed_style_sha256`、`contrast_sha256`、`interaction_trace_sha256`。`contrast_sha256` 只是记录摘要，不是判据；判据是：正文与其背景的对比度不低于 4.5:1，字号不小于 18.66px 或粗体不小于 14px 的文本以及边框、图标等非文本区分要素不低于 3:1，焦点指示与其相邻底色不低于 3:1。逐条记录被测元素选择器、前景色、背景色、计算比值和判定，任一低于阈值即为失败；不得只保存一个总哈希而不保存被测清单。三种主题各自独立测量。交互轨迹至少包含 `before`、`event`、`after`，并指出作用域、焦点、状态和后端读回。可选 `pixel_comparison` 只能使用冻结夹具、冻结 baseline、实际截图、明确 tolerance 和动态字形专用 mask；mask 只允许覆盖动态文字/数字的字形像素及其明确几何范围，禁止整页、卡片、背景或 live-data 截图掩盖差异。
 
 本合同的浏览器矩阵固定为：桌面宽度 `1240`、`1366`、`1440`、`1536`、`1728`、`1920`，高度 `1080`；移动 `mobile-390=390x844`、`mobile-820=820x1180`，均 `isMobile=true`、触控、DPR 2。门禁组合为 `52 cases × 2 campaigns × 6 desktop widths` 加同案例的两个移动 viewport，共 `832` 个渲染组合。桌面并排两栏在解除拉伸和内滚后须满足高差不超过 `140px` 且低/高比例不低于 `0.62`；页面错误、`undefined`、`NaN`、`[object Object]` 和中文紧贴裸英文标识符均为失败。
 
 ### 9.9 来源摘要与失效规则
 
-控制台契约消费的三份直接来源须在每次证据运行中记录路径、提交和 SHA-256：
+控制台契约消费的四份直接来源须在每次证据运行中记录路径、提交和 SHA-256：
 
-| 来源 | SHA-256（本修订基线） |
-|---|---|
-| `docs/prototypes/console-dev-blueprint.html` | `6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f` |
-| `docs/prototypes/problem-intel-console.html` | `743cc833830a7b6818498a55552193320cb61d2ac201f286e8984c3b58811f0e` |
-| `scripts/console_browser_gate.mjs` | `6c1eff8bcac96ae2d150be0244cd203e01cd777bc646f659c7680471c37d36f4` |
+| 来源 | 角色 | SHA-256（本修订基线） |
+|---|---|---|
+| `docs/prototypes/console-dev-blueprint.html` | 信息架构、建设状态与后端映射的规范来源 | `6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f` |
+| `docs/prototypes/problem-intel-console.html` | 视觉与交互的**当前**规范来源，也是实现载体 | `743cc833830a7b6818498a55552193320cb61d2ac201f286e8984c3b58811f0e` |
+| `scripts/console_browser_gate.mjs` | 案例清单与机器断言的规范来源 | `6c1eff8bcac96ae2d150be0244cd203e01cd777bc646f659c7680471c37d36f4` |
+| `evidence/console-visual-baseline/authority/problem-intel-console-31bb970.html` | 历史视觉参考，仅供差异说明，非验收基准 | `7809b144c49c63b8a3f7cc2975e2ea8c933284fc48c7bf8e38a0f52f07014814` |
 
-任一来源、案例动作、endpoint 映射、状态语义、夹具、浏览器矩阵或设计红线发生变化，都必须重新计算 `consumer_surface_digest`，使受影响的 DOM/style/contrast/interaction/pixel 证据失效并重跑。旧截图、旧浏览器版本、旧 `run_id` 或旧 fixture 不得因文件名相同而重新使用。
+任一来源、案例动作、endpoint 映射、状态语义、夹具、浏览器矩阵或设计红线发生变化，都必须重新计算 `consumer_surface_digest`，使受影响的 DOM/style/contrast/interaction/pixel 证据失效并重跑。旧截图、旧浏览器版本、旧 `run_id` 或旧 fixture 不得因文件名相同而重新使用。摘要的规范化算法见 §9.17。
+
+#### 视觉权威的唯一化裁定
+
+此前机器源对视觉权威有两处互相冲突的登记：`source-requirements.json` 把提交 `31bb9704689548a69d0f020ec007af9688a6ad43` 的历史原型标为 `informative`，而 `.ssot/ui-change/console-plan-v3.json` 又把同一份归档副本的信息架构、视觉令牌和布局标为 `normative`。本修订裁定如下，机器源按此对齐：
+
+1. **当前文件 `docs/prototypes/problem-intel-console.html` 是唯一视觉与交互规范来源。**理由是它同时是门禁的被测对象和 U2、U3 的实现载体；把验收基准指向一个不在当前分支历史中的提交，会使 A6 的每一次视觉比对都必然不一致。
+2. 归档副本 `problem-intel-console-31bb970.html` 降级为**历史视觉参考**，其全部维度均为 `informative`。它只用于说明差异，不产生 `PASS` 或 `FAIL`。
+3. 两份文件的已知差异必须在 U1 基线中逐项登记为**已批准偏差**，不得当作缺陷：`admin_queue` 由演示评审表改写为真实评审服务表单；顶栏新增 `#console-provenance` 来源标记与宽度不超过 820 的换行规则；新增 `.review-form` 表单样式与 `.n-ok`、`.n-gap`、`.n-acc`、`.n-err`、`.n-skip` 五个图节点类；删除一张演示用扇出说明卡。除此之外当前文件是历史副本的超集。
+4. 该提交对象不在本仓库历史中，只有归档副本。任何引用它的证据必须引用归档副本路径与其 SHA-256，不得写成 `git` 提交可解析的形式。
 
 ### 9.10 关闭条件
 
@@ -789,7 +815,11 @@ review_conclusion: PASS
 2. 五态、后端唯一事实源、campaign 作用域、演示/实时边界和 fail-closed 路径均有负面证据；
 3. 每个渲染组合有完整身份、DOM/style/contrast/interaction 哈希；像素比较若存在，夹具和动态字形 mask 均冻结并可读回；
 4. 手风琴、键盘、主题、焦点恢复、SSE 游标续传、篡改五模式和 M2 评审流程分别有 `before → event → after` 记录；
-5. 所有来源和消费面摘要与当前提交一致，任何失效键触发重捕获，而不是沿用历史 PASS。
+5. 所有来源和消费面摘要与当前提交一致，任何失效键触发重捕获，而不是沿用历史 PASS；
+6. §9.13 的令牌三态、组件类清单摘要、断点与字体模式静态通过，且每个视口按该节的期望列数断言，不再一律要求三列；
+7. §9.14 的 11 个 `simulated-write` 动作在实时数据边界下均有不可触发的负测，页面内共享数组的就地改写已消除，`promote` 动作已按唯一晋升入口边界处理；
+8. §9.15 的 32 行接线状态与蓝图 §5 的建设状态差异，已由蓝图修订消解或已逐项登记为已批准偏差；
+9. §9.17 列出的四个证据工具已产出并进入门禁，且演示数据中不再含有形似真实自然人的身份信息。
 
 上述条件满足前，控制台状态最多记为 `DRAFT` 或相应的局部 `partial`；不得把浏览器门禁的合成点击、静态截图或本地演示数据升级为正式发布证据。
 
@@ -804,6 +834,22 @@ review_conclusion: PASS
 | `RUN-A7` | 20 个状态动作，加手风琴、开始攻克、五种篡改、数据边界、M1 SSE、M2 评审、Enter/Space 和焦点恢复流程 | 每条流程的 `before → event → after` 轨迹、失败原因和后端读回 | 仅凭合成 `trigger.click()` 证明真实控件可发现/可点击 |
 
 若项目进行视觉选型，`UI-U1`/`VIS-A6` 只能链接到项目自己的二级视觉工作台；工作台必须按 `evidence`、`prototype`、`candidates` 三个 pane 保存产品当前证据、确定性原型和候选方向，并声明 `deep_link` 与按顺序的 `work_plane`：`user-need` → `product-semantics` → `role` → `interaction-structure` → `screen-structure` → `html-prototype` → `visual-exploration` → `selection` → `engineering-handoff`。控制台是只读的三级索引，不得复制工作台、替代候选选择或成为第二个产品决定入口。
+
+#### lane 名称与验收片段的对应
+
+上表的三个 lane 是**证据分组**，`acceptance-fragments/` 目录下的七个目录是**按节点划分的验收片段**，两者不是同一套命名，且片段目录名与其内容不完全对应。为免执行者误读，对应关系固定如下；片段目录名保持不变以免破坏既有引用，但判读一律以本表的“实际覆盖”列为准：
+
+| 验收片段目录 | 归属节点 | 实际覆盖 | 所属 lane |
+|---|---|---|---|
+| `UI-U1-console-semantics` | U1 | 设计令牌三态、组件类、应用壳、每视图建设状态 | `UI-U1` |
+| `RUN-U2-sse-runtime` | U2 | M0 导出、M1 只读接线与 SSE 游标续传 | `UI-U1` 与 `RUN-A7` 各取一部分 |
+| `DATA-U3-generated-projections` | U3 | M2 评审闭环；目录名中的 `generated-projections` 与内容不符 | `RUN-A7` |
+| `VIS-A6-console-rendering` | A6 | 52 案例渲染矩阵、两栏阈值、五种篡改 | `VIS-A6` |
+| `RUN-U4-interaction-actions` | U4 | M3 选题只读投影；目录名中的 `interaction-actions` 与内容不符 | `UI-U1` |
+| `VIS-U5-visual-workbench` | U5 | M4 本地运营账本；目录名中的 `visual-workbench` 与内容不符 | `UI-U1` |
+| `RUN-A7-console-controls` | A7 | 发布门禁的编造数字、诚实空态与四态芯片人工复核 | `RUN-A7` |
+
+三个 lane 中只有 `VIS-A6` 与单一片段一一对应；`UI-U1` 与 `RUN-A7` 各自跨多个片段。任何证据都必须同时标注片段目录与 lane，不得只写其中一个。
 
 ### 9.12 生成视图记录的最小字段
 
@@ -831,3 +877,437 @@ case:
 ```
 
 该文件若被创建，必须以规范化 JSON（键排序、无空格、稳定数组顺序）计算自身和 `consumer_surface_digest`；它仍是视图合同的生成辅助物，不得成为 `.ssot/manifest.json`、节点或后端事实的第二权威。任何 `view_id`、`case_id`、端点、状态、fixture 或 hash 变化都必须触发陈旧检查和对应证据重跑。
+
+### 9.13 视觉基线：令牌、组件类、断点与字体
+
+`U1` 的 `AC-01` 要求“保留三种令牌模式与蓝图声明的全部组件类”，`AC-02` 要求“保留顶栏、平面切换与三列结构”，但此前没有任何文件列出这些令牌、类名或断点，静态合同因此没有可断言的对象。本节把它们固定下来。所有取值取自当前原型 `docs/prototypes/problem-intel-console.html` 的样式块（第 8 至 685 行）。
+
+#### 9.13.1 设计令牌三态
+
+三种模式分别是浅色 `:root`、系统深色 `@media (prefers-color-scheme:dark)` 下的 `:root:not([data-theme="light"])`，以及显式深色 `:root[data-theme="dark"]`。浅色定义 30 个令牌，两个深色块各定义 26 个：`--serif`、`--sans`、`--mono`、`--topbar-h` 只在浅色块声明并被深色继承，这是刻意的，不是缺失。
+
+| 令牌 | 浅色 | 深色（两块相同） | 用途 |
+|---|---|---|---|
+| `--ground` | `#F4F7F6` | `#10191A` | 页面底色 |
+| `--surface` | `#FFFFFF` | `#172325` | 卡片与面板底色 |
+| `--surface-2` | `#EDF2F0` | `#1D2C2E` | 次级底色与代码块 |
+| `--ink` | `#1C2B2D` | `#E4ECEA` | 正文字色 |
+| `--muted` | `#5E7173` | `#93A6A4` | 次要说明字色 |
+| `--line` | `#D5DEDC` | `#2C3E40` | 边框与分隔线 |
+| `--accent` | `#0F6B62` | `#4FB3A5` | 主强调色与焦点环 |
+| `--accent-strong` | `#0A544D` | `#6FCABB` | 强调色的加重态 |
+| `--accent-soft` | `#E2EFEC` | `#163A36` | 强调色的底色 |
+| `--ok` | `#2E7D4F` | `#62B385` | 通过态 |
+| `--ok-soft` | `#E3F0E8` | `#17301F` | 通过态底色 |
+| `--gap` | `#B07818` | `#D9A64A` | 缺口态 |
+| `--gap-soft` | `#F6EDDA` | `#3A2E14` | 缺口态底色 |
+| `--err` | `#B3362E` | `#E07A6F` | 错误态 |
+| `--err-soft` | `#F6E3E1` | `#3D1F1C` | 错误态底色 |
+| `--skip` | `#6B7280` | `#9AA3AD` | 不适用态 |
+| `--skip-soft` | `#E9ECEF` | `#262B31` | 不适用态底色 |
+| `--hash` | `#46605D` | `#8FB4AE` | 哈希与摘要字色 |
+| `--e1` | `#DCE7E5` | `#283533` | 证据强度第一级 |
+| `--e2` | `#A9CBC5` | `#3B5A54` | 证据强度第二级 |
+| `--e3` | `#6FADA3` | `#4E8177` | 证据强度第三级 |
+| `--e4` | `#3A8E80` | `#61A697` | 证据强度第四级 |
+| `--e5` | `#125349` | `#7ECBBB` | 证据强度第五级 |
+| `--on-e` | `#EAF4F2` | `#10191A` | 证据色上的字色 |
+| `--on-e-dim` | `#B6D6D0` | `#20423C` | 证据色上的弱字色 |
+| `--shadow` | `0 1px 3px rgba(28,43,45,.08), 0 4px 16px rgba(28,43,45,.06)` | `0 1px 3px rgba(0,0,0,.4), 0 4px 16px rgba(0,0,0,.3)` | 卡片投影 |
+| `--serif` | `"STIX Two Text","Noto Serif SC",Georgia,serif` | 继承浅色 | 命题与标题字族 |
+| `--sans` | `"Noto Sans SC","PingFang SC",-apple-system,BlinkMacSystemFont,sans-serif` | 继承浅色 | 正文字族 |
+| `--mono` | `"JetBrains Mono",ui-monospace,"SF Mono",Consolas,monospace` | 继承浅色 | 标识符与数字字族 |
+| `--topbar-h` | `54px` | 继承浅色 | 顶栏基准高度 |
+
+`U1` 的静态合同必须断言：三个块都存在；两个深色块的令牌名集合与取值**逐字节相同**；浅色块比深色块多且仅多上述四个非颜色令牌。当前两个深色块是完全重复的两份调色板，任何深色改动必须同时改两处，静态合同要把这条重复关系钉死，避免其中一处被单独修改后两种进入深色的路径表现不一致。
+
+令牌表摘要按“令牌名、浅色值、系统深色值、显式深色值”四段以竖线连接、按令牌名排序、换行连接后取 SHA-256：
+
+```text
+token_table_sha256 = c45b37e6f8e8da0bfb837efef0209c560109a9a169e2b3a40d1bb5ebc71fb2fb
+```
+
+#### 9.13.2 组件类基线
+
+样式块共定义 **235** 个类选择器。在治理文件里逐条罗列没有可读性，因此基线用“清单摘要 + 结构类显式清单”两段固定：
+
+清单摘要的算法是：取第 8 至 685 行的样式块，先删除注释，按 `}` 切块，取每块 `{` 之前的选择器文本，抽取其中形如 `.名称` 的全部类名，去重后按码位排序，以换行连接取 SHA-256。
+
+```text
+class_count       = 235
+class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de63334938dcc
+```
+
+应用壳的结构类必须逐个存在，`AC-02` 直接断言这一组：`topbar`、`brand`、`planes`、`nowtask`、`miniprog`、`who`、`shell`、`rail`、`main`、`side`、`nav`、`railhead`、`card`。顶栏内还必须存在两个身份元素：来源标记 `#console-provenance` 与视图数据边界标记 `#view-data-boundary`；前者由桥接层在运行时插入，缺少任一个即视为应用壳不完整。
+
+#### 9.13.3 断点与视口布局
+
+样式块共 14 条 `@media` 规则。其中只有两条改变应用壳的列数：
+
+| 行号 | 条件 | 对应用壳的影响 |
+|---|---|---|
+| 106 | `max-width:1240px` | 三列变两列，右侧栏移入第二列并取消粘滞 |
+| 110 | `max-width:820px` | 两列变单列，顶栏换行，预算标记隐藏 |
+
+其余 12 条分别调整证据网格、评审表单、账户卡片、落地页与登录页的内部排布，不改变外壳列数。
+
+由此得到必须写入证据身份的视口与布局对应关系。注意 `max-width` 是闭区间，`1240` 与 `820` 都落在各自规则内：
+
+| viewport | 命中断点 | 应用壳布局 |
+|---|---|---|
+| `1240x1080` | `max-width:1240px` | 两列 |
+| `1366x1080` | 无 | 三列 |
+| `1440x1080` | 无 | 三列 |
+| `1536x1080` | 无 | 三列 |
+| `1728x1080` | 无 | 三列 |
+| `1920x1080` | 无 | 三列 |
+| `390x844` | `max-width:1240px` 与 `max-width:820px` | 单列 |
+| `820x1180` | `max-width:1240px` 与 `max-width:820px` | 单列 |
+
+这带来两个必须记录的后果：第一，§9.8 声明的“六个桌面宽度”实际只覆盖两种外壳布局，其中 `1240` 是唯一的两列样本，因此 `U1` 的 `AC-02` 所说的“三列结构”在 `1240` 下**不成立**，断言必须按本表逐视口给出期望列数，而不是一律要求三列；第二，两个移动视口的外壳布局相同，`mobile-820` 相对 `mobile-390` 的增量只在内部网格，不在外壳。证据身份中的 `shell_layout` 字段取值即由本表决定。
+
+#### 9.13.4 字体与外部资源
+
+全文只有一处外部资源：第 7 行指向 `fonts.googleapis.com` 的样式表，请求 `Noto Sans SC`、`Noto Serif SC`、`STIX Two Text` 与 `JetBrains Mono` 四个字族的若干字重。三个字族令牌都带完整回退链，因此该样式表加载失败时页面不会破版，中文仍由系统字族渲染，但字形度量改变。
+
+这不是一个可以忽略的差异：字形宽度直接改变并排两栏的自然高度，而 §9.8 的判据正是高差不超过 `140px` 且低高比不低于 `0.62`。同一份代码在联网与断网两种情况下可能给出相反结论。因此：
+
+1. 证据身份必须记录 `font_mode`，取值 `webfont-loaded` 或 `fallback-local`；
+2. 门禁运行必须固定为其中一种并在结果中声明，不得由运行环境的联网状态随机决定；
+3. 持续集成环境若缺少中文字族，`fallback-local` 的度量与开发机不同，因此跨机器复现前必须先声明字体模式一致；
+4. 跨切面适用性表的“外部服务”一项此前只登记 `arXiv`、`Crossref` 与 `OpenAlex` 三个研究侧服务，字体主机 `fonts.googleapis.com` 是控制台引入的第四个外部依赖，`U2` 必须决定是继续外链还是把字体随文件内联，并把决定写进基线。
+
+#### 9.13.5 并排栅格清单
+
+设计红线要求“并排两栏内容量必须相当”，§9.8 给出高差与比例阈值。但当前门禁只测量 `.grid2` 一个类。样式块实际定义了 26 个产生两列或更多列的类，在标记中共出现 96 次，门禁覆盖其中 6 次：
+
+| 类 | 标记中出现次数 | 门禁是否测量 |
+|---|---:|---|
+| `kv` | 34 | 否 |
+| `gridpane`（含 `ld`、`dl`、`g3` 变体） | 8 | 否 |
+| `grid2` | 6 | 是 |
+| `grid3` | 5 | 否 |
+| `critgrid` | 5 | 否 |
+| `acct` | 5 | 否 |
+| `step` | 4 | 否 |
+| `grid4` | 3 | 否 |
+| `topicrow` | 3 | 否 |
+| `pt` | 3 | 否 |
+| `steps` | 2 | 否 |
+| `tier` | 2 | 否 |
+| `srow` | 2 | 否 |
+| `topichdr` | 2 | 否 |
+| `shell` | 1 | 否 |
+| `gates` | 1 | 否 |
+| `rw` | 1 | 否 |
+| `an` | 1 | 否 |
+| `chk` | 1 | 否 |
+| `review-form` | 1 | 否 |
+| `ntform` | 1 | 否 |
+| `ntrow` | 1 | 否 |
+| `planerow` | 1 | 否 |
+| `grid` | 1 | 否 |
+| `nots` | 1 | 否 |
+| `auth` | 1 | 否 |
+
+`A6` 的 `AC-02` 声称“每组成对列都满足阈值”，但当前证据只覆盖 6 处。补齐范围固定为：所有恰好两列且两列均可见的实例，逐实例测量。列数多于二的网格不适用高差判据，改为断言其列数与本表一致，避免因换行导致的隐性降列。使用次数最多的 `kv` 是定义列表布局，`U2` 必须先判定它是否属于“并排两栏”语义，判定结果写入基线，不得默认跳过。
+
+### 9.14 动作清单与写入语义
+
+§9.4 只登记了 20 个带选择动作的案例，§9.6 只描述了手风琴一类交互。原型实际注册了 **57** 个委托动作，其中 43 个从未出现在任何合同或门禁里。没有清单，就无法回答“控制台上哪些按钮会让人以为发生了持久化”这个问题，而这正是 §9.1 与 `A7` 的 `AC-02` 要挡的事。
+
+#### 分类与处置规则
+
+| 类别 | 判定 | 数量 | 在 live 数据边界下的处置 |
+|---|---|---:|---|
+| `navigate` | 只改变当前视图、平面或滚动位置 | 9 | 保留 |
+| `local-ui-state` | 只改变选中、展开、筛选等本地渲染状态 | 34 | 保留 |
+| `simulated-write` | 弹出成功语气的提示、置位业务标志位，或就地修改页面内共享数组，而实际没有任何持久化 | 11 | **必须隐藏或禁用**，且一律不得出现成功语气文案 |
+| `wired-read` | 触发真实后端读取 | 2 | 保留 |
+| `wired-write` | 提交到真实后端写口 | 1 | 保留 |
+
+`simulated-write` 的处置是本节的核心约束，规则如下：
+
+1. 当所在视图的数据边界为 `live` 时，该控件必须隐藏或处于禁用态，且不得触发任何提示；只有数据边界为 `demo` 时才允许出现，并且必须与可见的演示标记同屏。
+2. 任何情况下都不得修改页面内的共享数据数组。当前 `ntadd` 直接向 `TOPICS` 追加记录，`startwatch` 与 `stopwatch` 通过取到的数组元素引用就地改写 `st` 字段，这三处的效果会跨视图残留，读者无法区分它与一次真实持久化。`U2` 必须把它们改为不可跨视图残留的实现，或在 live 数据边界下彻底移除。
+3. 成功语气的判定不看措辞是否带“演示动作”前缀。`compile`、`sign`、`promote` 三个动作不带该前缀却置位 `S.compiled`、`S.signed`、`S.promoted`，并让界面呈现出编译、签署、晋升已经完成的样子，同样按 `simulated-write` 处置。
+4. `promote` 尤其不能保留：§9.1 明确控制台永远不拥有 `ResearchTrace.promote_claim()`，而该动作的文案是“已晋升为已核验来源”。即使它只改前端标志位，也与唯一晋升入口的边界正面冲突。
+
+#### 57 个动作
+
+| 动作 | 所属视图 | 效果 | 类别 | 门禁覆盖 |
+|---|---|---|---|---|
+| `cactor` | proofchain | 按执行者筛选链 | `local-ui-state` | 否 |
+| `camp` | campaigns | 切换攻克进程 | `navigate` | 是 |
+| `certroute` | cert | 展开证伪路线结果 | `local-ui-state` | 否 |
+| `cev` | proofchain | 展开或收起链事件 | `local-ui-state` | 否 |
+| `cfg` | admin_upstream | 演示：配置上游端点 | `simulated-write` | 否 |
+| `cnode` | dag | 选中依赖图节点 | `local-ui-state` | 否 |
+| `compile` | frontier | 把缺口编译为根命题 | `simulated-write` | 是 |
+| `conj` | conjecture | 选中猜想条目 | `local-ui-state` | 是 |
+| `cround` | proofchain | 按轮次筛选证明链 | `local-ui-state` | 否 |
+| `csubj` | proofchain | 按主体筛选链 | `local-ui-state` | 否 |
+| `delta` | radar | 选中语义增益条目 | `local-ui-state` | 否 |
+| `demo` | landing、login | 进入访客演示模式 | `navigate` | 否 |
+| `enter` | landing | 访客进入某平面 | `navigate` | 否 |
+| `expl` | exploration | 展开探索会话记录 | `local-ui-state` | 是 |
+| `export` | acct_billing | 演示：导出调用记录 | `simulated-write` | 否 |
+| `fill` | disclosure | 载入措辞示例文案 | `local-ui-state` | 否 |
+| `filter` | portfolio | 筛选候选问题列表 | `local-ui-state` | 否 |
+| `fnode` | frontier | 选中前沿图节点 | `local-ui-state` | 是 |
+| `fold` | 持久壳导航 | 折叠导航分组 | `local-ui-state` | 否 |
+| `foldall` | 持久壳导航 | 全部展开或收起导航 | `local-ui-state` | 否 |
+| `funnel` | radar | 按层级筛选漏斗 | `local-ui-state` | 否 |
+| `gate` | portfolio | 展开或收起某道门 | `local-ui-state` | 否 |
+| `go` | 持久壳与 21 个视图 | 切换视图 | `navigate` | 是 |
+| `knowl` | dossier | 展开知识提示词 | `local-ui-state` | 否 |
+| `leadseed` | field | 用线索起草新主题 | `local-ui-state` | 否 |
+| `newtopic` | topics | 切换新建主题表单 | `local-ui-state` | 否 |
+| `novroute` | novelty | 展开新颖性路线 | `local-ui-state` | 否 |
+| `ntadd` | topics | 把草稿加入候选主题 | `simulated-write` | 否 |
+| `ntcrit` | topics | 勾选预评估标准 | `local-ui-state` | 否 |
+| `obs` | source | 展开或收起观察 | `local-ui-state` | 是 |
+| `pick` | portfolio | 选定问题并跳转档案 | `navigate` | 是 |
+| `plan` | acct_billing | 演示：变更席位套餐 | `simulated-write` | 否 |
+| `plane` | 持久壳顶栏 | 切换研究平面 | `navigate` | 否 |
+| `promote` | source | 晋升为已核验来源 | `simulated-write` | 否 |
+| `recheck` | proofchain | 本地重算哈希链 | `local-ui-state` | 否 |
+| `review-bundle` | admin_queue | 加载送审包 | `wired-read` | 否 |
+| `review-refresh` | admin_queue | 刷新评审队列 | `wired-read` | 否 |
+| `review-submit` | admin_queue | 提交评审记录 | `wired-write` | 否 |
+| `role` | 持久壳顶栏 | 切换管理员身份 | `local-ui-state` | 否 |
+| `round` | campaign | 展开或收起某轮次 | `local-ui-state` | 是 |
+| `rsn` | reasoning | 展开推理步骤 | `local-ui-state` | 是 |
+| `rt` | routes | 选中路线条目 | `local-ui-state` | 是 |
+| `rub` | difficulty | 打分难度评估维度 | `local-ui-state` | 否 |
+| `rubsel` | difficulty | 选中评分维度行 | `local-ui-state` | 否 |
+| `scroll` | landing | 平滑滚动到锚点 | `navigate` | 否 |
+| `sign` | cert | 记为第二审计人签署 | `simulated-write` | 否 |
+| `signin` | login | 演示登录进入控制台 | `simulated-write` | 否 |
+| `startwatch` | portfolio、topics | 启动监测该主题 | `simulated-write` | 否 |
+| `stopwatch` | portfolio、topics | 停止监测该主题 | `simulated-write` | 否 |
+| `tamper` | proofchain | 切换篡改演示模式 | `local-ui-state` | 是 |
+| `tier` | disclosure | 选中披露等级 | `local-ui-state` | 否 |
+| `tool` | tools | 展开工具调用记录 | `local-ui-state` | 是 |
+| `topic` | topics | 切换监测主题 | `navigate` | 否 |
+| `toproof` | campaign | 跳转并筛选证明链 | `navigate` | 否 |
+| `topup` | acct_billing | 演示：充值增加额度 | `simulated-write` | 否 |
+| `usetable` | acct_usage | 切换积分明细视图 | `local-ui-state` | 否 |
+| `ver` | dossier | 切换陈述版本 | `local-ui-state` | 是 |
+
+门禁覆盖 14 个动作，占 57 个中的四分之一；11 个 `simulated-write` 中只有 `compile` 被覆盖，其余 10 个零断言。`U2` 必须为每个 `simulated-write` 动作补一条“live 边界下不可触发”的负测，为每个 `wired-read` 与 `wired-write` 动作补一条读回断言。
+
+#### 异常
+
+1. **动态发射的动作无法用字面量检索到。**`novroute` 在全文没有任何 `data-act="novroute"` 字面量，它只经由第 1302 行 `routesHtml()` 的模板发射，由 `novelty` 视图调用。任何以字面量 grep 为基础的清单核对都会把它误判为“已分发但从未触发”。因此 `scripts/check_console_action_inventory.py` 必须解析动态模板的调用点，不能只做字面量匹配。
+2. **存在一段死代码。**第 1258 行的 `pklist()` 辅助函数内含一处动态 `data-act` 模板，但全文没有任何调用点，其动作永远不会渲染。清单核对必须把它标为死代码并要求 `U2` 删除或启用，不得让它长期停留在“定义了但不可达”的状态。
+3. **选择器字符串会造成假阳性。**第 4205 行的键盘处理器用 `document.querySelector('[data-act="signin"]')` 定位提交按钮，它匹配 `data-act` 的检索模式但不是一次标记发射。核对脚本必须排除选择器字符串，否则发射计数会虚高。
+4. 分发器的 57 个分支与解析动态模板后的 57 个发射动作**完全一一对应**，没有孤立分支，也没有未处理的发射。这一条是当前实现的优点，应写成回归断言加以保持。
+
+### 9.15 逐视图接线状态
+
+§9.2 的端点表描述的是**后端具备什么能力**，不是原型接了什么线。两者被反复混读，因此本节按视图固定运行时事实。表中每一行都可由原型的 `V` 注册表、`matharc/v02/console_export.py` 的导出载荷和 `scripts/console_browser_gate.mjs` 的断言三方对账。
+
+#### 建设状态的判定规则
+
+`U1` 的 `AC-03` 要求每个视图恰好一个建设状态。判定规则固定如下，不得凭印象赋值：
+
+| 建设状态 | 判定条件 |
+|---|---|
+| 已落地 | 运行时定义消费到后端投影，且门禁有一条绑定该视图的断言 |
+| 待接线 | 导出载荷里已存在对应投影键，但没有任何视图消费它 |
+| 部分待建 | 后端已有存储或适配器，但导出载荷没有对应投影键 |
+| 需新建 | 后端没有对应只读模型 |
+| 已推迟 | 权威文档明确推迟，或产品归属尚未决定 |
+
+“运行时定义”指该 `view_id` 的**最后一次** `V` 赋值。原型对 32 个视图共有 56 处 `V` 赋值：32 处演示定义，10 处实时数据覆盖，14 处 M3 本地投影覆盖；后写的覆盖先写的。
+
+#### 32 个视图的接线事实
+
+| view_id | 平面 | 渲染器 | 运行时消费 | 端点 | 门禁断言 | 导出合同 | 建设状态 |
+|---|---|---|---|---|---|---|---|
+| `portfolio` | 选题情报 | 本地投影覆盖 | `local_console.candidate_problems.candidates` | `/api/console` | 有 | 未登记 | 已落地 |
+| `dossier` | 选题情报 | 本地投影覆盖 | `local_console.candidate_problems.statements` | `/api/console` | 有 | 未登记 | 已落地 |
+| `cert` | 选题情报 | 仅演示 | 演示常量 `PROBLEMS`、`STATUS` | 无 | 无 | 未登记 | 部分待建 |
+| `frontier` | 选题情报 | 本地投影覆盖 | `local_console.candidate_problems.graph` | `/api/console` | 有 | 未登记 | 已落地 |
+| `radar` | 选题情报 | 仅演示 | 演示常量 `DELTAS` | 无 | 无 | 未登记 | 部分待建 |
+| `source` | 选题情报 | 实时覆盖 | `source_topic` | `/api/console` | 有 | `source_registry_projection: live` | 已落地 |
+| `novelty` | 验证发布 | 实时覆盖 | `novelty` | `/api/console` | 有 | `novelty_projection: live_if_configured` | 已落地 |
+| `difficulty` | 选题情报 | 本地投影覆盖 | `local_console.difficulty_ledger` | `/api/console` | 有 | 未登记 | 已落地 |
+| `dag` | 验证发布 | 实时覆盖 | `workspace.trace.claims`、`workspace.trace.evidence` | `/api/console` | 有 | `verification_publication: live` | 已落地 |
+| `disclosure` | 验证发布 | 实时覆盖 | `disclosure` | `/api/console` | 有 | `disclosure_projection: live` | 已落地 |
+| `campaigns` | 攻克过程与验证发布 | 仅演示 | 演示常量 `CAMPAIGNS` | 无 | 无 | 未登记 | 待接线 |
+| `campaign` | 攻克过程 | 实时与本地双覆盖 | `campaign`，回退 `local_console.workspace_index` 与 `local_console.exploration_sessions` | `/api/console` | 有 | `campaign_observatory: live_if_current_workspace_campaign_is_registered` | 已落地 |
+| `exploration` | 攻克过程 | 仅演示 | 演示常量 `EXPL` | 无 | 无 | 未登记 | 待接线 |
+| `conjecture` | 攻克过程 | 仅演示 | 演示常量 `CONJ` | 无 | 无 | 未登记 | 待接线 |
+| `routes` | 攻克过程 | 实时覆盖 | `routes.routes` | `/api/console` | 有 | `routes_projection: live` | 已落地 |
+| `tools` | 验证发布 | 实时覆盖 | `workspace.trace.tool_calls` | `/api/console` | 有 | `verification_publication: live` | 已落地 |
+| `reasoning` | 验证发布 | 实时覆盖 | `workspace.trace.public_reasoning` | `/api/console` | 有 | `verification_publication: live` | 已落地 |
+| `landing` | 全屏 | 仅演示 | 静态模板，无数据读取 | 无 | 无 | 未登记 | 已推迟 |
+| `login` | 全屏 | 仅演示 | 静态模板，无数据读取 | 无 | 无 | 未登记 | 已推迟 |
+| `acct_overview` | 账户 | 本地投影覆盖 | 无对应键，恒为未配置空态 | `/api/console` | 无 | `acct_overview: not_configured_fail_closed` | 需新建 |
+| `acct_usage` | 账户 | 本地投影覆盖 | 无对应键，恒为未配置空态 | `/api/console` | 无 | `acct_usage: not_configured_fail_closed` | 需新建 |
+| `acct_billing` | 账户 | 本地投影覆盖 | 无对应键，恒为未配置空态 | `/api/console` | 无 | `acct_billing: not_configured_fail_closed` | 需新建 |
+| `acct_limits` | 账户 | 本地投影覆盖 | 无对应键，恒为未配置空态 | `/api/console` | 无 | `acct_limits: not_configured_fail_closed` | 需新建 |
+| `admin_cost` | 管理端 | 本地投影覆盖 | 无对应键，恒为未配置空态 | `/api/console` | 无 | `admin_cost: not_configured_fail_closed` | 需新建 |
+| `admin_upstream` | 管理端 | 本地投影覆盖 | `local_console.operations.upstreams` | `/api/console` | 有 | `operations: isolated_local_ledger_only` | 已落地 |
+| `admin_users` | 管理端 | 本地投影覆盖 | `local_console.operations.accounts` | `/api/console` | 有 | `operations: isolated_local_ledger_only` | 已落地 |
+| `field` | 选题情报 | 仅演示 | 演示常量 `FIELD` | 无 | 无 | 未登记 | 部分待建 |
+| `topics` | 选题情报 | 本地投影覆盖 | `local_console.topic_portfolio` | `/api/console` | 有 | 未登记 | 已落地 |
+| `admin_roles` | 管理端 | 实时覆盖 | `role_policy` | `/api/console` | 有 | `verification_publication: live` | 已落地 |
+| `admin_roster` | 管理端 | 本地投影覆盖 | 无对应键，恒为未配置空态 | `/api/console` | 无 | `admin_roster: not_configured_fail_closed` | 部分待建 |
+| `admin_queue` | 管理端 | 评审服务 | `ReviewConsole` 的内存状态 | `/api/review-queue`、`/api/review-bundle/{命题}` | 有，在 M2 流程用例中 | `review_submission: existing_review_service_only` | 已落地 |
+| `proofchain` | 验证发布 | 实时覆盖 | `workspace.events.events`、`workspace.events.head_hash` | `/api/console` | 有 | `verification_publication: live` | 已落地 |
+
+建设状态分布：已落地 18，待接线 3，部分待建 4，需新建 5，已推迟 2，合计 32。
+
+#### 原型实际消费的端点
+
+原型全文只有六处网络调用。后端只读端点中有六个从未被消费，`U2` 不得以“后端已有该端点”推定视图已接线：
+
+| 端点 | 原型是否消费 |
+|---|---|
+| `GET /api/console` | 是 |
+| `GET /events` | 是 |
+| `GET /api/review-queue` | 是 |
+| `GET /api/review-bundle/{命题}` | 是 |
+| `POST /api/review` | 是，唯一写口 |
+| `GET /` 与 `/index.html` | 否 |
+| `GET /api/health` | 否 |
+| `GET /api/workspace` | 否 |
+| `GET /api/campaign` | 否 |
+| `GET /api/audit` | 否 |
+| `GET /api/artifacts` | 否 |
+
+因此 §9.2 中把 `portfolio`、`dossier`、`cert`、`frontier`、`radar`、`difficulty`、`field`、`topics` 映射到 `GET /api/workspace`，以及把 `campaign` 映射到 `GET /api/campaign` 的两行，描述的是后端能力而非原型接线：这些视图的数据实际全部来自 `GET /api/console` 的内嵌字段，或根本没有接线。§9.2 保留能力口径，接线口径以本节为准。
+
+#### 异常
+
+1. **蓝图 §5 的建设状态与代码不符。**蓝图把 `cert`、`radar`、`campaigns`、`exploration`、`conjecture`、`field` 和 `login` 对应的中文名称标为已落地，但这七个视图在原型中只有一处演示定义，从未被实时或本地投影覆盖。蓝图自身的规则是“与代码冲突时，改本文”，因此修复对象是蓝图而不是本表。但蓝图是被 `EXT-CONSOLE-BLUEPRINT` 按提交和 SHA-256 钉住的规范来源，修改它会使该外部依赖身份失效：必须另立修订同时更新蓝图内容、重新钉住哈希并重算消费面摘要，本修订不做此改动，只登记差异。
+2. **列表视图与单数视图被混为一谈。**本地工作区索引 `local_console.workspace_index` 只接到了单数的 `campaign`，列表视图 `campaigns` 没有接线；`local_console.exploration_sessions` 同样只在 `campaign` 内部被读取，`exploration` 与 `conjecture` 两个视图本身没有接线。蓝图把它们写在同一行并共享一个已落地芯片，掩盖了这个差别。
+3. **演示数据里含有形似真实自然人的身份信息。**账户与管理端视图硬编码了 `wang@tsinghua.edu.cn`、`lin@pku.edu.cn`、`zhou@sjtu.edu.cn` 三个机构邮箱作为演示数据，分别出现在账户总览、账户任务栏和用户与席位表中。这些地址具备真实机构域名形态，一旦进入 A6 或 A7 的截图证据并对外传阅，等于以虚构记录呈现可识别个人。`U2` 必须在任何视觉证据捕获之前把它们替换为明确不可解析的示例地址，并在门禁中加一条断言禁止再次引入形似真实自然人的联系方式。该项按设计红线处理，不进入视觉偏差豁免。
+
+### 9.16 状态词汇映射
+
+§9.1 只规定了五态词汇和“映射缺失按 `error` 处理”的规则，没有给出映射本身。原型实际存在四套互不相同的内部状态词汇，后端导出合同又有第五套；不给出映射，每个实现者都会自画一张表。本节固定映射，`U2` 与 `U3` 的断言必须按此判读。
+
+#### 两个正交的轴
+
+五态描述的是**某个视图的后端投影处于什么状态**，它不包含“演示数据”。因此判读必须先分两个轴，不能把演示数据塞进 `empty`：
+
+| 轴 | 取值 | 含义 |
+|---|---|---|
+| 数据边界 | `demo` / `live` / `unavailable` | 该视图这一屏的数字来自演示常量、来自后端投影，还是后端已应答但该投影不可用 |
+| 五态 | `loading` / `empty` / `error` / `ready` / `success` | 仅在数据边界为 `live` 或 `unavailable` 时适用 |
+
+规则：数据边界为 `demo` 时不得声明五态中的任何一种，且必须带可见的演示标记；被声明为 live 的视图和 fail-closed 视图一旦载荷已应答就不得回落 `demo`；`success` 不是视图状态，只属于一次受控写入动作的读回结果。
+
+#### 四套内部词汇的映射
+
+| 内部值 | 出处 | 数据边界 | 五态 | 备注 |
+|---|---|---|---|---|
+| 未设置 | `#console-provenance` 创建时只写文案未写 `dataset.source` | 未定 | `loading` | 当前实现的空隙：首屏到首次 `label()` 之间该标记无机器可读值，`U2` 必须补一个显式初值 |
+| `unloaded` | `S.consolePayloadState.status` | `demo` | 不适用 | 未见任何 JSON 应答，控制台停留演示基线 |
+| `loaded` | `S.consolePayloadState.status` | `live` | `ready` 或 `empty` | 逐视图再按投影是否存在细分 |
+| `unavailable` | `S.consolePayloadState.status` | `unavailable` | `error` | 已见 JSON 应答但校验不通过，必须清空陈旧载荷 |
+| `fallback` | `#console-provenance` 的 `dataset.source` | `demo` | 不适用 | 文案为“演示数据（`console.json` 不可用）” |
+| `export` | `#console-provenance` 的 `dataset.source` | `live` | `ready` | 已接入工作区，尚未建立事件流 |
+| `live` | `#console-provenance` 的 `dataset.source` | `live` | `ready` | 事件流已连接并带游标 |
+| `demo` | `#view-data-boundary` 的 `dataset.source` | `demo` | 不适用 | 该视图未接线 |
+| `live` | `#view-data-boundary` 的 `dataset.source` | `live` | `ready` | 该视图消费到真实投影 |
+| `unavailable` | `#view-data-boundary` 的 `dataset.source` | `unavailable` | `error` | 载荷已应答但该视图是 fail-closed 或声明 live 却无投影 |
+| `unloaded` | `ReviewConsole` 的 `state.source` | 未定 | `loading` | 队列尚未请求 |
+| `loading` | `ReviewConsole` 的 `state.source` | 未定 | `loading` | 队列请求进行中 |
+| `live` | `ReviewConsole` 的 `state.source` | `live` | `ready`，提交读回后为 `success` | 唯一能进入 `success` 的路径 |
+| `demo` | `ReviewConsole` 的 `state.source` | `demo` | 不适用 | 仅 `file:` 协议下成立 |
+| `unavailable` | `ReviewConsole` 的 `state.source` | `unavailable` | `error` | 评审服务不可用，且不得显示演示队列 |
+
+#### 后端导出合同取值的映射
+
+`matharc/v02/console_export.py` 的 `view_contract` 与 `local_console` 各投影的 `state` 字段是能力声明，不是渲染状态；映射如下：
+
+| 导出取值 | 含义 | 允许的数据边界 | 允许的五态 |
+|---|---|---|---|
+| `live` | 该投影必然随导出提供 | `live` | `ready`、`empty` |
+| `live_if_configured` | 显式配置且身份相符时提供 | `live` 或 `unavailable` | `ready`、`empty`、`error` |
+| `live_if_current_workspace_campaign_is_registered` | 仅当前工作区注册了报告时提供 | `live` 或 `unavailable` | `ready`、`empty` |
+| `live_with_stale_records` | 提供，但含与当前工作区不匹配并已隔离的记录 | `live` | `ready` 且必须同屏显示隔离条数 |
+| `not_configured` | 未配置 | `unavailable` | `empty` |
+| `not_configured_fail_closed` | 未配置且禁止任何回退 | `unavailable` | `empty`，且禁止 `demo` |
+
+#### 由本映射产生的强制断言
+
+以下四条是当前实现与本映射不一致之处，登记为 `U2` 的必补断言，不得写成已满足：
+
+1. 首屏加载期间没有 `loading` 呈现。`render()` 是同步整页渲染，载荷在途时屏幕显示的是演示常量，与 §9.1 “加载中不得呈现上一次快照的伪装值”冲突。`U2` 必须为被声明 live 的视图提供显式加载态，或证明加载窗口内该视图不渲染任何计数。
+2. `#console-provenance` 必须在创建时即写入 `dataset.source` 初值。
+3. 未知动作与未知视图必须落到 `error`。当前未知动作在委托末尾静默 `return`，未知视图静默退回 `portfolio`，而 `ma-view` 来自 `localStorage`，可被写入任意值。
+4. 数据边界与五态必须分别落在两个可机器读取的属性上，不能合并为一个文案。
+
+### 9.17 消费面摘要、证据工具与门禁缺口
+
+#### `consumer_surface_digest` 的规范化算法
+
+此前七份验收片段都写“摘要待计算”，但没有算法，两个人算不出同一个值。本节固定算法：构造下列**规范对象**，以键排序、无空格、UTF-8 且非 ASCII 不转义的 JSON 序列化，取其 SHA-256。
+
+```yaml
+consumer_surface:
+  view_contract_revision: 4
+  sources:            # §9.9 四份来源，按表中顺序，每项 {path, sha256}
+  view_ids:           # §9.3 的 32 个 id，按 §9.3 声明顺序
+  case_ids:           # §9.4 的 52 个 case_id，按 §9.4 声明顺序
+  case_actions:       # §9.4 后 20 例的 {case_id, view_id, action, data}
+  endpoint_map:       # §9.15 逐视图的 {view_id, renderer, consumes, endpoint}
+  state_mapping:      # §9.16 两张映射表的全部行
+  action_inventory:   # §9.14 的 {action, class} 全表
+  visual_baseline:    # §9.13 的令牌名与三态取值、组件类清单、断点清单
+  identity_schema:    # §9.8 的字段名清单
+  browser_matrix:     # 6 个桌面宽度、2 个移动 viewport、主题清单
+  thresholds:         # 高差 140、比例 0.62、对比度 4.5 与 3.0
+  fixtures:           # §9.5 三份夹具的 {path, sha256}
+```
+
+数组一律按本文件的声明顺序，不重新排序；缺任一键即摘要无效，不得以部分键计算。该对象的取值全部来自本节及 §9.3 至 §9.16，因此这几节任一行变动都会改变摘要，从而使受影响证据失效。
+
+#### 捕获组合数的口径
+
+三处组合数此前互相矛盾，现固定各自口径，它们本就不是同一个清单：
+
+| 清单 | 组合数 | 口径 |
+|---|---|---|
+| 浏览器门禁矩阵 | `832` | 52 案例 × 2 个 `campaign` × 6 个桌面宽度，加同样 52 案例 × 2 个 `campaign` 的 2 个移动 viewport |
+| 视觉基线截图 | `256` | 32 个唯一视图 × 8 个 viewport，只在 `system` 主题下捕获 |
+| 结构与样式证据 | `768` | 32 个唯一视图 × 8 个 viewport × 3 个主题，覆盖 `dom-structure` 与 `computed-style` |
+
+`.ssot/ui-change/console-plan-v3.json` 的 `themes` 三值适用于 `dom-structure` 与 `computed-style` 两类证据；`fixed-browser-screenshot` 只在 `system` 主题捕获，显式浅色与显式深色由 §9.13 的令牌合同静态覆盖，另加一条主题切换的交互轨迹。三个清单各自独立，任一方的通过不替代另外两方。
+
+#### 证据工具的归属
+
+七份验收片段引用了两个当前**不存在**的脚本，且没有任何节点被指定生产它们；`U1` 的验收命令 `python3 -m unittest tests.test_console_prototype` 只断言当前文件里的字符串是否存在，无法证明 `AC-01` 的令牌三态。工具归属固定如下，未产出前对应 `AC` 不得判 `PASS`：
+
+| 工具 | 生产节点 | 消费节点 | 断言对象 | 现状 |
+|---|---|---|---|---|
+| `scripts/check_console_visual_baseline.py` | U1 | U1、A6 | §9.13 的令牌三态、组件类、应用壳、断点与建设状态 | 未创建 |
+| `scripts/console_visual_parity.mjs` | U1 | U2、U3、A6、U4、U5、A7 | 视觉基线与 live 渲染的结构签名和样式令牌一致 | 未创建 |
+| `scripts/check_blueprint_projection.py` | U2 | U2、U3、A6、U4、U5、A7 | §9.15 接线表与蓝图 §5 建设状态逐行一致 | 未创建 |
+| `scripts/check_console_action_inventory.py` | U2 | U2、A6、A7 | §9.14 动作清单与原型实际发射的动作逐项一致 | 未创建 |
+| `scripts/console_browser_gate.mjs` | 已存在 | U2、U3、A6、U4、U5 | 52 案例矩阵、两栏阈值、篡改五模式、SSE 与评审闭环 | 已存在，缺口见下 |
+
+人工清单路径 `acceptance/human/2026-W36/2026-09-02-VIS-A6-console-rendering/checklist.md` 与 `acceptance/human/2026-W36/2026-09-02-RUN-A7-console-controls/checklist.md` 目前不存在。它们由 A6 与 A7 的验收负责人在节点可执行后创建并哈希绑定；在此之前两个 `H-01` 一律记为未执行。
+
+#### 现有门禁的证据缺口
+
+`scripts/console_browser_gate.mjs` 当前能证明处理器与渲染结果，但下列各项它不能证明，登记为 `U2` 与 `U3` 的必补断言：
+
+| 缺口 | 现状 | 必补断言 |
+|---|---|---|
+| 并排栅格覆盖不全 | 只测量 `.grid2` | 按 §9.13 的并排栅格清单逐类测量 |
+| 数字溯源过弱 | 断言 `body.innerText` 是否包含计数的字符串形式，计数为个位数时近乎恒真 | 计数必须绑定到具体选择器，并与响应 JSON 的同一字段逐项比对 |
+| 无证据身份 | 不输出 `run_id`、`case_id`、浏览器版本、时间戳与各项哈希 | 每个组合按 §9.8 输出完整身份与四个哈希 |
+| 真实控件可达性未证 | 用临时按钮调用委托处理器 | 以真实 DOM 定位、指针与键盘事件走 `before → event → after` |
+| 焦点恢复未证 | 键盘用例在按键前手动重新聚焦，掩盖了点击后整页重渲染的焦点丢失 | 点击路径也必须断言焦点与光标位置恢复 |
+| 无障碍语义未证 | 对 `aria-expanded`、`role` 与可读名称零断言 | 手风琴展开态与 `aria-expanded` 必须一致 |
+| 全屏页无边界 | `landing` 与 `login` 的断言恒真 | 二者必须有独立错误边界并被负测覆盖 |
+| 主题与字体未固定 | 只跑一种主题；字体走外网 `fonts.googleapis.com`，离线回落系统字族 | 三主题分别断言；字体模式写入身份，并在门禁中固定为可复现的一种 |
+| 对比度未测 | 无任何对比度断言 | 按 §9.8 阈值逐元素测量并记录清单 |
+| 演示动作未约束 | 对 `simulated-write` 类动作零断言 | 按 §9.14 规则断言其在 live 数据边界下的处置 |

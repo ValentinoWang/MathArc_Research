@@ -46,7 +46,7 @@
     {
       "view_id": "main",
       "source": "view-sources/00-main.md",
-      "source_sha256": "ff98667237e86dc28b3383e35658f5317333e7876e15f930eec64375a243a1c6",
+      "source_sha256": "f4f1e878e7a1be1c56f20a5a4718d902e0c00e344a1c464d7a534ccf81587c14",
       "output": "../ssot-development-paths.md"
     }
   ],
