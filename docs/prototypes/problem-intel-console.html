@@ -2859,7 +2859,7 @@ function billing(){
     maxCny: Math.max(...rows.map(r=>r.cny), ...non.map(n=>n.cny)) };
 }
 const acctRail = () => card("账户","",bd(`
-    <dl class="kv"><dt>邮箱</dt><dd>${S.guest?"未登录":"wang@tsinghua.edu.cn"}</dd>
+    <dl class="kv"><dt>邮箱</dt><dd>${S.guest?"未登录":"demo-user-a@example.invalid"}</dd>
       <dt>席位</dt><dd>研究预览</dd>
       <dt>邀请码</dt><dd class="mono" style="font-size:11px">MA-2026-0001</dd>
       <dt>绑定方向</dt><dd>${FIELD.n}</dd>
@@ -2870,7 +2870,7 @@ const acctRail = () => card("账户","",bd(`
 V.acct_overview = () => {
   const b = billing();
   return {
-    task:`账户 · <b>${S.guest?"访客":"wang@tsinghua.edu.cn"}</b> · 实时积分 ${b.leftPt.toLocaleString()}`,
+    task:`账户 · <b>${S.guest?"访客":"demo-user-a@example.invalid"}</b> · 实时积分 ${b.leftPt.toLocaleString()}`,
     rail: acctRail(),
     main: card("实时积分","计费周期 08-01 至 08-31", `<div class="body">
         <div class="row" style="align-items:flex-end;gap:20px;flex-wrap:wrap">
@@ -3140,13 +3140,13 @@ V.admin_users = () => ({
   main: card("用户","本演示环境", `<div class="tw"><table>
       <thead><tr><th style="width:26%">用户</th><th>席位</th><th>方向</th><th>本月积分</th><th>成本</th><th>状态</th></tr></thead>
       <tbody>
-        <tr><td>wang@tsinghua.edu.cn</td><td>研究预览</td><td class="mut">组合数学</td>
+        <tr><td>demo-user-a@example.invalid</td><td>研究预览</td><td class="mut">组合数学</td>
           <td class="mono">4 090</td><td class="mono">¥409.0</td><td>${pill("ok","活跃")}</td></tr>
-        <tr><td>lin@pku.edu.cn</td><td>研究预览</td><td class="mut">数论</td>
+        <tr><td>demo-user-b@example.invalid</td><td>研究预览</td><td class="mut">数论</td>
           <td class="mono">1 260</td><td class="mono">¥126.0</td><td>${pill("ok","活跃")}</td></tr>
         <tr><td>combinatorics-lab</td><td>课题组</td><td class="mut">组合数学 · 图论</td>
           <td class="mono">18 420</td><td class="mono">¥1 842.0</td><td>${pill("ok","活跃")}</td></tr>
-        <tr><td>zhou@sjtu.edu.cn</td><td>研究预览</td><td class="mut">离散几何</td>
+        <tr><td>demo-user-c@example.invalid</td><td>研究预览</td><td class="mut">离散几何</td>
           <td class="mono">0</td><td class="mono">¥0.0</td><td>${pill("skip","未激活")}</td></tr>
       </tbody></table></div>
       <div class="body">

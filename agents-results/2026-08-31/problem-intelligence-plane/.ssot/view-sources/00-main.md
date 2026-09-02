@@ -447,6 +447,7 @@ current worktree: A4 invalidation state transition; query git status for the liv
 |---|---|---|---|---|---|---|---|---|
 | 1 | L1 | 从评审建议编译为当前计划；未改变运行代码 | PLAN 1, DAG 1, INTERFACE 1, NODE 1, SSOT 2 | 全部计划节点 | 无既有实现证据 | CHARTER、F1 | 规划编排者 | 2026-08-31 |
 | 2 | L1 | 补齐控制台视图合同缺失的令牌、动作、接线、状态映射与工具归属规格；裁定唯一视觉权威；修正与机器源不符的指标和 lane 命名。未改变运行代码、节点、边或任何节点状态 | PLAN 3, DAG 2, INTERFACE 2, NODE 2, SSOT 2 不变；view-contract 3 → 4 | U1、U2、U3、A6、U4、U5、A7（均维持 `BLOCKED`） | 修订 3 下的全部控制台渲染、样式、对比度与交互证据（当前为空集） | 无节点可重跑；A5 恢复后按 W16 至 W22 原顺序执行 | 规划编排者，待验收负责人确认 | 2026-09-02 |
+| 3 | L1 | 按 §9.15 异常三的设计红线，把控制台原型演示数据中五处形似真实自然人的机构邮箱替换为保留域示例地址；只改演示种子数据，不改结构、样式、动作、渲染逻辑或任何后端行为 | 版本号全部不变；`docs/prototypes/problem-intel-console.html` 内容哈希变更 | 无节点状态变化 | 依赖该原型字节的渲染、样式、对比度与交互证据（当前为空集） | 无节点可重跑 | 规划编排者，待验收负责人确认 | 2026-09-02 |
 
 | Changed key | Directly affected nodes | Propagation rule |
 |---|---|---|
@@ -792,7 +793,7 @@ review_conclusion: PASS
 | 来源 | 角色 | SHA-256（本修订基线） |
 |---|---|---|
 | `docs/prototypes/console-dev-blueprint.html` | 信息架构、建设状态与后端映射的规范来源 | `6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f` |
-| `docs/prototypes/problem-intel-console.html` | 视觉与交互的**当前**规范来源，也是实现载体 | `743cc833830a7b6818498a55552193320cb61d2ac201f286e8984c3b58811f0e` |
+| `docs/prototypes/problem-intel-console.html` | 视觉与交互的**当前**规范来源，也是实现载体 | `68ece74d81a92d8285c7f1240f9d65597d8a781d12e41c286147a65171e949f2` |
 | `scripts/console_browser_gate.mjs` | 案例清单与机器断言的规范来源 | `6c1eff8bcac96ae2d150be0244cd203e01cd777bc646f659c7680471c37d36f4` |
 | `evidence/console-visual-baseline/authority/problem-intel-console-31bb970.html` | 历史视觉参考，仅供差异说明，非验收基准 | `7809b144c49c63b8a3f7cc2975e2ea8c933284fc48c7bf8e38a0f52f07014814` |
 
@@ -1185,7 +1186,9 @@ class_list_sha256 = 7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de6333493
 
 1. **蓝图 §5 的建设状态与代码不符。**蓝图把 `cert`、`radar`、`campaigns`、`exploration`、`conjecture`、`field` 和 `login` 对应的中文名称标为已落地，但这七个视图在原型中只有一处演示定义，从未被实时或本地投影覆盖。蓝图自身的规则是“与代码冲突时，改本文”，因此修复对象是蓝图而不是本表。但蓝图是被 `EXT-CONSOLE-BLUEPRINT` 按提交和 SHA-256 钉住的规范来源，修改它会使该外部依赖身份失效：必须另立修订同时更新蓝图内容、重新钉住哈希并重算消费面摘要，本修订不做此改动，只登记差异。
 2. **列表视图与单数视图被混为一谈。**本地工作区索引 `local_console.workspace_index` 只接到了单数的 `campaign`，列表视图 `campaigns` 没有接线；`local_console.exploration_sessions` 同样只在 `campaign` 内部被读取，`exploration` 与 `conjecture` 两个视图本身没有接线。蓝图把它们写在同一行并共享一个已落地芯片，掩盖了这个差别。
-3. **演示数据里含有形似真实自然人的身份信息。**账户与管理端视图硬编码了 `wang@tsinghua.edu.cn`、`lin@pku.edu.cn`、`zhou@sjtu.edu.cn` 三个机构邮箱作为演示数据，分别出现在账户总览、账户任务栏和用户与席位表中。这些地址具备真实机构域名形态，一旦进入 A6 或 A7 的截图证据并对外传阅，等于以虚构记录呈现可识别个人。`U2` 必须在任何视觉证据捕获之前把它们替换为明确不可解析的示例地址，并在门禁中加一条断言禁止再次引入形似真实自然人的联系方式。该项按设计红线处理，不进入视觉偏差豁免。
+3. **演示数据里曾含有形似真实自然人的身份信息，本修订已修复。**账户与管理端视图此前硬编码了三个具备真实机构域名形态的邮箱，分别出现在账户总览、账户任务栏和用户与席位表中，共五处。这些地址一旦进入 A6 或 A7 的截图证据并对外传阅，等于以虚构记录呈现可识别个人。现已全部替换为 `demo-user-a@example.invalid`、`demo-user-b@example.invalid`、`demo-user-c@example.invalid`：`.invalid` 是保留顶级域，永远不可解析，`demo-` 前缀同时让演示性质在屏幕上可见。登录页输入框的占位符 `you@university.edu` 只说明格式、不指向任何个人，予以保留。
+
+   两项后续义务仍未完成，不得视为该风险已完全关闭：其一，`U2` 必须在门禁中补一条断言，禁止今后再引入形似真实自然人的联系方式；其二，归档副本 `problem-intel-console-31bb970.html` 仍保留原有的五处地址，而 `evidence/console-visual-baseline/manifest.json` 目前仍把它指定为 256 张基线截图的捕获来源。该归档副本按内容哈希钉定，修改它等于伪造历史记录，因此不得改动；正确处置是在 `U1` 激活前把基线清单的捕获来源改指当前原型，与 §9.9 的唯一视觉权威裁定一致。在此之前不得启动任何基线捕获。
 
 ### 9.16 状态词汇映射
 
