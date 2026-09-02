@@ -1,38 +1,98 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-09-02T17:10:58.909218+00:00",
+  "generated_at": "2026-09-02T17:48:41.029160+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
-    "commit": "928556ced521716e82ddc331b0e83921bb67bb3c",
-    "dirty": false,
-    "dirty_files": [],
-    "dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "commit": "dafc0f0eceace7a09d5871d2952913ec05de678b",
+    "dirty": true,
+    "dirty_files": [
+      "AGENTS.md",
+      "HARNESS-LAYERING.md",
+      "Harness-Engineering-SSOT-A+C-Link-Mode-\\345\\274\\200\\345\\217\\221\\346\\226\\271\\346\\241\\210.md",
+      "README.md",
+      "Users/vsiyo/.codex/worktrees/harness-delivery-console-v2/actions-v041/tools/console/templates/workbench-sync.service",
+      "Users/vsiyo/.codex/worktrees/harness-delivery-console-v2/actions-v041/tools/console/templates/workbench-sync.timer",
+      "Users/vsiyo/.codex/worktrees/harness-delivery-console-v2/actions-v041/tools/console/tests/test_project_actions_extended.py",
+      "agents-results/2026-09-01/harness-delivery-console-v2/README.md",
+      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/athlete-os.json",
+      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/harness-engineering.json",
+      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/hongru.json",
+      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/index.json",
+      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/matharc.json",
+      "agents-results/2026-09-01/harness-delivery-console-v2/console-data/skills-index.json",
+      "agents-results/2026-09-01/harness-delivery-console-v2/harness-console-legacy.html",
+      "agents-results/2026-09-01/harness-delivery-console-v2/harness-console.html",
+      "agents-results/2026-09-01/harness-delivery-console-v2/index.html",
+      "agents-results/2026-09-01/harness-delivery-console-v2/manifest.json",
+      "agents-results/2026-09-01/harness-delivery-console-v2/reference-workbench.html",
+      "agents-results/2026-09-01/harness-delivery-console-v2/version.json",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/static/runs/20260901T201122Z-main-e965c5/evidence/commands.txt",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/static/runs/20260901T201122Z-main-e965c5/result.md",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/unit/runs/20260901T201121Z-main-e965c5/evidence/commands.txt",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/acceptance-fragments/C1-manual-acceptance-log-contract/acceptance/machine/unit/runs/20260901T201121Z-main-e965c5/result.md",
+      "agents-results/2026-09-01/manual-acceptance-log-v0-1/ssot-development-paths.md",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-2/ssot-development-paths.md",
+      "agents-results/2026-09-01/product-aware-frontend-design-v0-3/ssot-development-paths.md",
+      "agents-results/2026-09-02/delivery-console-html-export/page-conservation.json",
+      "agents-results/2026-09-02/delivery-console-html-export/parallel-development/contract-guard/worker.log",
+      "agents-results/2026-09-02/delivery-console-html-export/parallel-development/route-model/worker.log",
+      "agents-results/2026-09-02/harness-console-skill-catalog/acceptance/machine/e2e/runs/20260902T140000Z-local-chromium-skill/evidence/screenshot-manifest.json",
+      "agents-results/2026-09-02/harness-console-skill-catalog/acceptance/machine/e2e/runs/20260902T140000Z-local-chromium-skill/evidence/screenshots/desktop-1440x900.png",
+      "agents-results/2026-09-02/harness-console-skill-catalog/acceptance/machine/e2e/runs/20260902T140000Z-local-chromium-skill/evidence/screenshots/mobile-390x844.png",
+      "agents-results/2026-09-02/harness-delivery-console-v2/.ssot/validation-report.json",
+      "agents-results/2026-09-02/harness-delivery-console-v2/ssot-development-paths.md",
+      "console/templates/workbench-sync.service",
+      "console/templates/workbench-sync.timer",
+      "console/tests/test_project_actions_extended.py",
+      "tools/console/README.md",
+      "tools/console/generate_console.py",
+      "tools/console/generated/console-data/athlete-os.json",
+      "tools/console/generated/console-data/harness-engineering.json",
+      "tools/console/generated/console-data/hongru.json",
+      "tools/console/generated/console-data/index.json",
+      "tools/console/generated/console-data/matharc.json",
+      "tools/console/generated/console-data/skills-index.json",
+      "tools/console/generated/index.html",
+      "tools/console/generated/manifest.json",
+      "tools/console/generated/reference-workbench.html",
+      "tools/console/generated/version.json",
+      "tools/console/requirements.txt",
+      "tools/console/route_contract.py",
+      "tools/console/skill_catalog.py",
+      "tools/console/smoke.mjs",
+      "tools/console/tests/test_artifact_sync.py",
+      "tools/console/tests/test_generate_console.py",
+      "tools/console/tests/test_page_conservation.py",
+      "tools/console/tests/test_route_contract.py",
+      "tools/console/tests/test_skill_catalog.py"
+    ],
+    "dirty_diff_sha256": "c926f2647c38bdd303367d02673ff60a7d7098ebabb4e978e46b3ca83abda421",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
-    "skill_realpath": "/private/tmp/matharc-harness-git-928556c.Pt1n18/Core/skills/report-to-ssot-development-paths",
-    "skill_sha256": "653cd9fbbb3afaeff289cb34978b3449440f2de4fe91149eeaeaa70c9e0888da",
-    "checker_bundle_sha256": "6b346fe7a25bdd9d2238a2566602e6f8e45ef039ef0fc54ef603f587854d8d48",
-    "validation_contract": "strict-schema-v2-release-v1"
+    "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
+    "skill_sha256": "1258fdc3c4229cebd7c4a9c1c3818cdcf2b9c4637d08d9a99de1e105a42765c1",
+    "checker_bundle_sha256": "df7a265bb038c401c7fe82c76386f1e9bf10801d6f9d86b55520fba3d29a04da"
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "project_commit": "5baa96d75cd1eada71ebb787af8609594621e5eb",
+    "tree_commit": "dfc0acfc2e3c0179c44b6ccfef17d0abf1663459",
+    "project_commit": "dfc0acfc2e3c0179c44b6ccfef17d0abf1663459",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "292f2bda2f87ae5c7946f0c9c7bce60fe718d6747484dff0bb254e9b62b8d379",
+    "project_dirty_diff_sha256": "03c44c650957c98b2fe5555f2dc2eb7ff4c917c0048726c00d3643fe4462b815",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
-    "sha256": "1dab65e74068c02cf36d3e0bfb6a0ff4ba18b92f21e037bb93880ab1b66d9559",
-    "content_sha256": "1dab65e74068c02cf36d3e0bfb6a0ff4ba18b92f21e037bb93880ab1b66d9559",
-    "manifest_sha256": "bb2fb36c81e1b4320ef68fc29fe4992128626515b6dd431b4483ab5030420372",
-    "manifest_identity_sha256": "bb2fb36c81e1b4320ef68fc29fe4992128626515b6dd431b4483ab5030420372"
+    "sha256": "6ba325dc05132f40835311a1622f1ab05a2a94b9f6f541ab7679cd589b27886a",
+    "content_sha256": "6ba325dc05132f40835311a1622f1ab05a2a94b9f6f541ab7679cd589b27886a",
+    "manifest_sha256": "5b72515e7da9d062a5ee3a30df70cc8f1ce9798e6150226bd5a8cc382f9f33fa",
+    "manifest_identity_sha256": "5b72515e7da9d062a5ee3a30df70cc8f1ce9798e6150226bd5a8cc382f9f33fa"
   },
   "checks": [
     {
       "id": "runtime-skill-provenance",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/private/tmp/matharc-harness-git-928556c.Pt1n18/tools/harnessctl.py",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/tools/harnessctl.py",
         "doctor",
         "--project",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
@@ -40,81 +100,167 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 45\nruntime_skill_check: enabled\nWARN Harness source dirty files: 45\ndoctor: ok\n"
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 45\nruntime_skill_check: enabled\nWARN Harness source dirty files: 45\ndoctor: ok\n",
+      "class": "self-consistency"
     },
     {
       "id": "complexity",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/private/tmp/matharc-harness-git-928556c.Pt1n18/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/planning-compiler.json"
       ],
-      "exit_code": 0,
-      "result": "passed",
-      "output": "SSOT complexity check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/planning-compiler.json (depth=L2, releases=7, nodes=25, workers=0)\n"
+      "exit_code": 1,
+      "result": "failed",
+      "output": "SSOT complexity check failed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/planning-compiler.json\n- acceptance-fragments/A4-topic-observation-dogfood/acceptance-contract.md missing metadata: AC budget\n- acceptance-fragments/A4-topic-observation-dogfood/acceptance-contract.md Acceptance criteria missing table headers: class\n- acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md missing metadata: AC budget\n- acceptance-fragments/A5-problem-intelligence-v0-release/acceptance-contract.md Acceptance criteria missing table headers: class\n- acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md missing metadata: AC budget\n- acceptance-fragments/Q1-calibration-disclosure/acceptance-contract.md Acceptance criteria missing table headers: class\n- acceptance-fragments/R1-regression-evaluation/acceptance-contract.md missing metadata: AC budget\n- acceptance-fragments/R1-regression-evaluation/acceptance-contract.md Acceptance criteria missing table headers: class\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "source-requirements",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_coverage.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
+      ],
+      "exit_code": 1,
+      "result": "failed",
+      "output": "ERROR: planning-compiler.external_systems[0] must be an object\nERROR: planning-compiler.external_systems[1] must be an object\nERROR: planning-compiler.external_systems[2] must be an object\nERROR: governance.design_acceptance_contract_ref escapes project root\nERROR: governance.runtime_visual_verification_ref escapes project root\nERROR: governance.visual_collaboration_contract_ref escapes project root\n",
+      "class": "world-verification"
     },
     {
       "id": "render",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/private/tmp/matharc-harness-git-928556c.Pt1n18/Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
         "--check",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "SSOT views verified: 1 manifest(s)\n"
+      "output": "SSOT views verified: 1 manifest(s)\n",
+      "class": "self-consistency"
     },
     {
       "id": "machine-program",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/private/tmp/matharc-harness-git-928556c.Pt1n18/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "SSOT program check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json (nodes=25, formal_ready=0, conditional_ready=0)\n"
+      "output": "SSOT program check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json (nodes=25, formal_ready=0, conditional_ready=0)\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "acceptance-contracts",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_acceptance_contracts.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT acceptance contract check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json (contracts=7)\n",
+      "class": "self-consistency"
     },
     {
       "id": "parallelism-analysis",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/private/tmp/matharc-harness-git-928556c.Pt1n18/Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "{\n  \"actor_pools\": {\n    \"codex-primary\": {\n      \"actor\": \"codex\",\n      \"capacity\": 2\n    },\n    \"human-review\": {\n      \"actor\": \"human\",\n      \"capacity\": 1\n    }\n  },\n  \"critical_path_edges\": 16,\n  \"current_ready_nodes\": [],\n  \"current_ready_width\": 0,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"CHARTER\",\n      \"unlocks\": [\n        \"F1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"F1\",\n      \"unlocks\": [\n        \"D1\",\n        \"D2\"\n      ],\n      \"waits_for\": [\n        \"CHARTER\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D1\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D2\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A1\",\n      \"unlocks\": [\n        \"D3\",\n        \"L1\"\n      ],\n      \"waits_for\": [\n        \"D1\",\n        \"D2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D3\",\n      \"unlocks\": [\n        \"U1\"\n      ],\n      \"waits_for\": [\n        \"A1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L1\",\n      \"unlocks\": [\n        \"L2\"\n      ],\n      \"waits_for\": [\n        \"A1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L2\",\n      \"unlocks\": [\n        \"A2\"\n      ],\n      \"waits_for\": [\n        \"L1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A2\",\n      \"unlocks\": [\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"L2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"S2\"\n      ],\n      \"waits_for\": [\n        \"A2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S2\",\n      \"unlocks\": [\n        \"A3\"\n      ],\n      \"waits_for\": [\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A3\",\n      \"unlocks\": [\n        \"T1\"\n      ],\n      \"waits_for\": [\n        \"S2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T1\",\n      \"unlocks\": [\n        \"T2\"\n      ],\n      \"waits_for\": [\n        \"A3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T2\",\n      \"unlocks\": [\n        \"A4\"\n      ],\n      \"waits_for\": [\n        \"T1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A4\",\n      \"unlocks\": [\n        \"R1\",\n        \"U4\"\n      ],\n      \"waits_for\": [\n        \"T2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"R1\",\n      \"unlocks\": [\n        \"Q1\",\n        \"U4\"\n      ],\n      \"waits_for\": [\n        \"A4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"Q1\",\n      \"unlocks\": [\n        \"A5\",\n        \"U4\"\n      ],\n      \"waits_for\": [\n        \"R1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A5\",\n      \"unlocks\": [\n        \"A7\"\n      ],\n      \"waits_for\": [\n        \"Q1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"U1\",\n      \"unlocks\": [\n        \"U2\"\n      ],\n      \"waits_for\": [\n        \"D3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"U2\",\n      \"unlocks\": [\n        \"A6\",\n        \"U3\"\n      ],\n      \"waits_for\": [\n        \"U1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"U3\",\n      \"unlocks\": [\n        \"A6\"\n      ],\n      \"waits_for\": [\n        \"U2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A6\",\n      \"unlocks\": [\n        \"U4\",\n        \"U5\"\n      ],\n      \"waits_for\": [\n        \"U2\",\n        \"U3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"U4\",\n      \"unlocks\": [\n        \"A7\"\n      ],\n      \"waits_for\": [\n        \"A4\",\n        \"A6\",\n        \"Q1\",\n        \"R1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"U5\",\n      \"unlocks\": [\n        \"A7\"\n      ],\n      \"waits_for\": [\n        \"A6\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 3,\n  \"parallelism_contract_activation_error\": null,\n  \"parallelism_contract_active\": true,\n  \"resource_verified_antichain_width\": null,\n  \"resource_verified_width\": 0,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n"
+      "output": "{\n  \"actor_pools\": {\n    \"codex-primary\": {\n      \"actor\": \"codex\",\n      \"capacity\": 2\n    },\n    \"human-review\": {\n      \"actor\": \"human\",\n      \"capacity\": 1\n    }\n  },\n  \"critical_path_edges\": 16,\n  \"current_ready_nodes\": [],\n  \"current_ready_width\": 0,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"CHARTER\",\n      \"unlocks\": [\n        \"F1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"F1\",\n      \"unlocks\": [\n        \"D1\",\n        \"D2\"\n      ],\n      \"waits_for\": [\n        \"CHARTER\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D1\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D2\",\n      \"unlocks\": [\n        \"A1\"\n      ],\n      \"waits_for\": [\n        \"F1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A1\",\n      \"unlocks\": [\n        \"D3\",\n        \"L1\"\n      ],\n      \"waits_for\": [\n        \"D1\",\n        \"D2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"D3\",\n      \"unlocks\": [\n        \"U1\"\n      ],\n      \"waits_for\": [\n        \"A1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L1\",\n      \"unlocks\": [\n        \"L2\"\n      ],\n      \"waits_for\": [\n        \"A1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"L2\",\n      \"unlocks\": [\n        \"A2\"\n      ],\n      \"waits_for\": [\n        \"L1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A2\",\n      \"unlocks\": [\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"L2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"S2\"\n      ],\n      \"waits_for\": [\n        \"A2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S2\",\n      \"unlocks\": [\n        \"A3\"\n      ],\n      \"waits_for\": [\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A3\",\n      \"unlocks\": [\n        \"T1\"\n      ],\n      \"waits_for\": [\n        \"S2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T1\",\n      \"unlocks\": [\n        \"T2\"\n      ],\n      \"waits_for\": [\n        \"A3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"T2\",\n      \"unlocks\": [\n        \"A4\"\n      ],\n      \"waits_for\": [\n        \"T1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A4\",\n      \"unlocks\": [\n        \"R1\",\n        \"U4\"\n      ],\n      \"waits_for\": [\n        \"T2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"R1\",\n      \"unlocks\": [\n        \"Q1\",\n        \"U4\"\n      ],\n      \"waits_for\": [\n        \"A4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"Q1\",\n      \"unlocks\": [\n        \"A5\",\n        \"U4\"\n      ],\n      \"waits_for\": [\n        \"R1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A5\",\n      \"unlocks\": [\n        \"A7\"\n      ],\n      \"waits_for\": [\n        \"Q1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"U1\",\n      \"unlocks\": [\n        \"U2\"\n      ],\n      \"waits_for\": [\n        \"D3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"U2\",\n      \"unlocks\": [\n        \"A6\",\n        \"U3\"\n      ],\n      \"waits_for\": [\n        \"U1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"U3\",\n      \"unlocks\": [\n        \"A6\"\n      ],\n      \"waits_for\": [\n        \"U2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"A6\",\n      \"unlocks\": [\n        \"U4\",\n        \"U5\"\n      ],\n      \"waits_for\": [\n        \"U2\",\n        \"U3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"U4\",\n      \"unlocks\": [\n        \"A7\"\n      ],\n      \"waits_for\": [\n        \"A4\",\n        \"A6\",\n        \"Q1\",\n        \"R1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"U5\",\n      \"unlocks\": [\n        \"A7\"\n      ],\n      \"waits_for\": [\n        \"A6\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 3,\n  \"resource_verified_width\": 0,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n",
+      "class": "self-consistency"
     },
     {
       "id": "structure",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/private/tmp/matharc-harness-git-928556c.Pt1n18/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md"
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "SSOT structure check passed.\n"
+      "output": "SSOT structure check passed.\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "facts",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_facts.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md",
+        "--allow-legacy"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "WARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md: facts registry not enabled; legacy SSOT requires migration\nSSOT facts check passed.\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "source-requirement-conservation",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_conservation.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "source requirement conservation skipped: handled by strict source registry\n",
+      "class": "world-verification"
     },
     {
       "id": "chinese-readability",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/private/tmp/matharc-harness-git-928556c.Pt1n18/Core/skills/report-to-ssot-development-paths/scripts/check_chinese_readability.py",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_chinese_readability.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/openproblem.md"
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "中文可读性检查通过。\n"
+      "output": "中文可读性检查通过。\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "execution-ledger",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "execution ledger check skipped: not opted in\n",
+      "class": "policy"
+    },
+    {
+      "id": "push-gate",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_push_gate.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "push gate check skipped: not opted in\n",
+      "class": "policy"
     },
     {
       "id": "archive-check",
       "command": [
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
-        "/private/tmp/matharc-harness-git-928556c.Pt1n18/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
         "--source",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane",
         "--project-root",
@@ -123,7 +269,8 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "{\n  \"status\": \"verified\",\n  \"source\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane\",\n  \"destination\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-08-31/matharc-research/problem-intelligence-plane\",\n  \"project_name\": \"matharc-research\",\n  \"ssot_name\": \"problem-intelligence-plane\",\n  \"snapshot_date\": \"2026-08-31\",\n  \"main_document\": \"ssot-development-paths.md\",\n  \"file_count\": 2,\n  \"contains_openproblem\": true\n}\n"
+      "output": "{\n  \"status\": \"verified\",\n  \"source\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane\",\n  \"destination\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-08-31/matharc-research/problem-intelligence-plane\",\n  \"project_name\": \"matharc-research\",\n  \"ssot_name\": \"problem-intelligence-plane\",\n  \"snapshot_date\": \"2026-08-31\",\n  \"main_document\": \"ssot-development-paths.md\",\n  \"file_count\": 2,\n  \"contains_openproblem\": true\n}\n",
+      "class": "policy"
     }
   ],
   "parallelism": {
@@ -370,12 +517,9 @@
     ],
     "manifest": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/.ssot/manifest.json",
     "maximum_antichain_width": 3,
-    "parallelism_contract_activation_error": null,
-    "parallelism_contract_active": true,
-    "resource_verified_antichain_width": null,
     "resource_verified_width": 0,
     "scheduling_model": "event-driven",
     "static_waves_are_authority": false
   },
-  "result": "pass"
+  "result": "fail"
 }

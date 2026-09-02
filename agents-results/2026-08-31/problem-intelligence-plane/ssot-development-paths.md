@@ -416,7 +416,7 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | EXT-DISCOVERY-V04 | docs/DISCOVERY_PLANE_V04.md | 0fb8f15f04451834719c929a264260278e1f6727 | 449aff96d31989e85582c04118541cb24368aae180cb0067c638b18ab6f05143 | ACCEPTED | CHARTER,F1,D1,D2,A1 |
 | EXT-SOURCE-REGISTRY | matharc/v02/source_registry.py | 0fb8f15f04451834719c929a264260278e1f6727 | e697f0894d8ac35a19c39ade521a8dfa6d4e42f7c291261a6e0004702c1b3c22 | ACCEPTED | L1,L2 |
 | EXT-BUDGET-V02 | matharc/v02/budget.py | 0fb8f15f04451834719c929a264260278e1f6727 | 24f9b7714324a3120c0addefcd391bc4f00000a84c06692875873a7804beec1e | ACCEPTED | L1,L2,T1,R1 |
-| EXT-CONSOLE-BLUEPRINT | docs/prototypes/console-dev-blueprint.html | 9ed8c8c23ab280e5c4b16d8053fcad3d3b99dd2f | d205bcf1cd5a0f0045f97dc7f79cc424b2579a946b967f5196c16bc622846014 | ACCEPTED | CHARTER,F1,D1,D2,A1,L1,L2,A2,S1,S2,A3,T1,T2,A4,R1,Q1,A5,D3,U1,U2,U3,A6,U4,U5,A7 |
+| EXT-CONSOLE-BLUEPRINT | docs/prototypes/console-dev-blueprint.html | 9ed8c8c08f244603fac9f1f7b176d045e0fab429 | d205bcf1cd5a0f0045f97dc7f79cc424b2579a946b967f5196c16bc622846014 | ACCEPTED | CHARTER,F1,D1,D2,A1,L1,L2,A2,S1,S2,A3,T1,T2,A4,R1,Q1,A5,D3,U1,U2,U3,A6,U4,U5,A7 |
 
 机器源 `.ssot/manifest.json` 的 `external_dependencies` 共 6 条，此前本表只投影了前 5 条，`EXT-CONSOLE-BLUEPRINT` 缺失；修订 5 补入。补入后有两处机器源缺陷必须登记，本修订不改机器源，只记录：
 

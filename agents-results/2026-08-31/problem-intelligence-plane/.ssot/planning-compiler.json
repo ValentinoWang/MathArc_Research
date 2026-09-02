@@ -21,7 +21,7 @@
     {
       "external_dependency_id": "EXT-CONSOLE-BLUEPRINT",
       "path": "docs/prototypes/console-dev-blueprint.html",
-      "commit": "9ed8c8c23ab280e5c4b16d8053fcad3d3b99dd2f",
+      "commit": "9ed8c8c08f244603fac9f1f7b176d045e0fab429",
       "sha256": "d205bcf1cd5a0f0045f97dc7f79cc424b2579a946b967f5196c16bc622846014"
     }
   ],
