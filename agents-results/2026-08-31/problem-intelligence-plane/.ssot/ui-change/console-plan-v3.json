@@ -7,7 +7,7 @@
   "source_requirements_ref": {
     "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/source-requirements.json",
     "entity_id": "problem-intelligence-console-source-requirements-v3",
-    "canonical_digest": "a9f131f78314ad73df35b309d8af6e3eb647f6dd233ac68acba1334bab97a0cf"
+    "canonical_digest": "7a086ed92f9a1f842f54a6cbfa022b43f1ff25c4c11c2fdea6d52a7e91203104"
   },
   "affected_surfaces": [
     {
@@ -15,31 +15,31 @@
       "resolved_surface_contract_ref": {
         "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
         "entity_id": "problem-intelligence-console-resolved-surface-v3",
-        "canonical_digest": "e64750b41e373c5c9b6478c65e526aa5e1bd94fc4c046bf5b8d255d2e8d8a64c"
+        "canonical_digest": "6ee09c520fc1ae306618f8e570520783c5091a5c541489e5204c08d1a7fe5ed0"
       }
     }
   ],
   "product_context_ref": {
     "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
     "entity_id": "problem-intelligence-console-product-context-v3",
-    "canonical_digest": "e64750b41e373c5c9b6478c65e526aa5e1bd94fc4c046bf5b8d255d2e8d8a64c"
+    "canonical_digest": "6ee09c520fc1ae306618f8e570520783c5091a5c541489e5204c08d1a7fe5ed0"
   },
   "role_context_refs": [
     {
       "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
       "entity_id": "problem-intelligence-console-role-context-v3",
-      "canonical_digest": "e64750b41e373c5c9b6478c65e526aa5e1bd94fc4c046bf5b8d255d2e8d8a64c"
+      "canonical_digest": "6ee09c520fc1ae306618f8e570520783c5091a5c541489e5204c08d1a7fe5ed0"
     }
   ],
   "screen_contract_ref": {
     "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
     "entity_id": "problem-intelligence-console-screen-contract-v3",
-    "canonical_digest": "e64750b41e373c5c9b6478c65e526aa5e1bd94fc4c046bf5b8d255d2e8d8a64c"
+    "canonical_digest": "6ee09c520fc1ae306618f8e570520783c5091a5c541489e5204c08d1a7fe5ed0"
   },
   "reference_prototypes": [
     {
       "path": "docs/prototypes/console-dev-blueprint.html",
-      "sha256": "6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f",
+      "sha256": "d205bcf1cd5a0f0045f97dc7f79cc424b2579a946b967f5196c16bc622846014",
       "media_type": "text/html",
       "authority_by_dimension": {
         "information_architecture": "normative",
@@ -52,7 +52,7 @@
     },
     {
       "path": "docs/prototypes/problem-intel-console.html",
-      "sha256": "68ece74d81a92d8285c7f1240f9d65597d8a781d12e41c286147a65171e949f2",
+      "sha256": "2c235f0dbf005e5776e1c779240b00a9d0a96e9649d749d519ed0f23e6455b9e",
       "media_type": "text/html",
       "authority_role": "current-visual-and-interaction-source",
       "authority_by_dimension": {
@@ -140,7 +140,7 @@
   "interaction_matrix_ref": {
     "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
     "entity_id": "problem-intelligence-console-interaction-matrix-v3",
-    "canonical_digest": "e64750b41e373c5c9b6478c65e526aa5e1bd94fc4c046bf5b8d255d2e8d8a64c"
+    "canonical_digest": "6ee09c520fc1ae306618f8e570520783c5091a5c541489e5204c08d1a7fe5ed0"
   },
   "visual_evidence_types": [
     "dom-structure",
@@ -157,12 +157,12 @@
     {
       "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/source-requirements.json",
       "entity_id": "problem-intelligence-console-source-requirements-v3",
-      "canonical_digest": "a9f131f78314ad73df35b309d8af6e3eb647f6dd233ac68acba1334bab97a0cf"
+      "canonical_digest": "7a086ed92f9a1f842f54a6cbfa022b43f1ff25c4c11c2fdea6d52a7e91203104"
     },
     {
       "path": "agents-results/2026-08-31/problem-intelligence-plane/.ssot/view-sources/00-main.md",
       "entity_id": "problem-intelligence-console-view-contract-v3",
-      "canonical_digest": "e64750b41e373c5c9b6478c65e526aa5e1bd94fc4c046bf5b8d255d2e8d8a64c"
+      "canonical_digest": "6ee09c520fc1ae306618f8e570520783c5091a5c541489e5204c08d1a7fe5ed0"
     },
     {
       "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/console-visual-baseline/manifest.json",
@@ -176,13 +176,13 @@
     },
     {
       "path": "docs/prototypes/console-dev-blueprint.html",
-      "entity_id": "problem-intelligence-console-blueprint-3353d6a",
-      "canonical_digest": "6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f"
+      "entity_id": "problem-intelligence-console-blueprint-9ed8c8c",
+      "canonical_digest": "d205bcf1cd5a0f0045f97dc7f79cc424b2579a946b967f5196c16bc622846014"
     },
     {
       "path": "docs/prototypes/problem-intel-console.html",
       "entity_id": "problem-intelligence-console-prototype-current",
-      "canonical_digest": "68ece74d81a92d8285c7f1240f9d65597d8a781d12e41c286147a65171e949f2"
+      "canonical_digest": "2c235f0dbf005e5776e1c779240b00a9d0a96e9649d749d519ed0f23e6455b9e"
     },
     {
       "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/console-visual-baseline/authority/problem-intel-console-31bb970.html",

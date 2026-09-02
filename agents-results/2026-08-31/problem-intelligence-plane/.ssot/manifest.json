@@ -46,7 +46,7 @@
     {
       "view_id": "main",
       "source": "view-sources/00-main.md",
-      "source_sha256": "e64750b41e373c5c9b6478c65e526aa5e1bd94fc4c046bf5b8d255d2e8d8a64c",
+      "source_sha256": "6ee09c520fc1ae306618f8e570520783c5091a5c541489e5204c08d1a7fe5ed0",
       "output": "../ssot-development-paths.md"
     }
   ],
@@ -128,8 +128,8 @@
     {
       "external_dependency_id": "EXT-CONSOLE-BLUEPRINT",
       "authority_path": "docs/prototypes/console-dev-blueprint.html",
-      "authority_commit": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
-      "authority_sha256": "6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f",
+      "authority_commit": "9ed8c8c23ab280e5c4b16d8053fcad3d3b99dd2f",
+      "authority_sha256": "d205bcf1cd5a0f0045f97dc7f79cc424b2579a946b967f5196c16bc622846014",
       "required_state": "ACCEPTED",
       "consumers": [
         "CHARTER",

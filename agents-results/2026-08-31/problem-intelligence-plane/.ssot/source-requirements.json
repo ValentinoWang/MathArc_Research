@@ -5,9 +5,9 @@
       "artifact_id": "SRC-ART-CURRENT",
       "external_dependency_id": "EXT-CONSOLE-BLUEPRINT",
       "path": "docs/prototypes/console-dev-blueprint.html",
-      "commit": "3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80",
-      "git_blob_sha1": "f540ae9f1cb8e2c701607a6357b1de8ed46eac5e",
-      "sha256": "6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f",
+      "commit": "9ed8c8c23ab280e5c4b16d8053fcad3d3b99dd2f",
+      "git_blob_sha1": "bdb8c11b5c206bb4c3d7e7f4145be245ab3644d4",
+      "sha256": "d205bcf1cd5a0f0045f97dc7f79cc424b2579a946b967f5196c16bc622846014",
       "media_type": "text/html",
       "authority_by_dimension": {
         "information_architecture": "normative",
@@ -965,6 +965,346 @@
       "inventory_id": "INV-CURRENT-0091",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "heading",
+      "locator": "html:h3[17]",
+      "text": "5.5 规范视图标识与建设状态",
+      "content_sha256": "f527355283aaa905236f0a329dad1d8bfce3e0d7bc762718021d22b60932bfa5",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0092",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[58]",
+      "text": "view_id 建设状态 映射说明",
+      "content_sha256": "b0c77375b1c362dc903fed7541ccbcbc14ec5ca7704a0ddaa5d80c51ae1c2b6f",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0093",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[59]",
+      "text": "portfolio 已落地 候选问题的本地只读投影",
+      "content_sha256": "5c557bfb5f1554ab22cb962b35f0339a19bbbba8875f895696726a0bf648e680",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0094",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[60]",
+      "text": "dossier 已落地 问题陈述档案的本地只读投影",
+      "content_sha256": "cd11ac31976697778add5469c61a9f694b16950c8dbfcc4e7885b5098748fdba",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0095",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[61]",
+      "text": "cert 部分待建 证书与四路检索回归尚待控制台接线",
+      "content_sha256": "29543b58b33e4ce8d38a2a8cedab70feb167bbbd14ea9a90ffc3bafe8b60a884",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0096",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[62]",
+      "text": "frontier 已落地 结果图的本地只读投影",
+      "content_sha256": "659f17a75f0cf06374070b0fff3238d183175e366daf067dd5fd9806d5a9c9c5",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0097",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[63]",
+      "text": "radar 部分待建 每日变化仍使用演示常量",
+      "content_sha256": "02cdda69a41df1e36e6e8b8cb044247f1ae584808f1f291a678f71f51aaf2a62",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0098",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[64]",
+      "text": "source 已落地 来源与主题观察的实时投影",
+      "content_sha256": "c361871524dadb525a9bddc90a3f753cfba518953a4b04c1369b4fd74470f5c3",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0099",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[65]",
+      "text": "novelty 已落地 新颖性观察的实时投影",
+      "content_sha256": "6806312b0f6755e0a5ad00f91a6e5e2d7d268891ce820fa0fb79a74db5c5c6cb",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0100",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[66]",
+      "text": "difficulty 已落地 难度台账的本地只读投影",
+      "content_sha256": "95d64de7bf2591d0c8f941e42c6c1f227d5ee61089a2f68670cd4c3776dd1a71",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0101",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[67]",
+      "text": "dag 已落地 工作区验证结构的实时投影",
+      "content_sha256": "4f4d7f7c940ef854a9a908fa879cfcf3554b29cfde95ea768f4edda858d93521",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0102",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[68]",
+      "text": "disclosure 已落地 对外披露边界的实时投影",
+      "content_sha256": "87d7a0f7ae2e83b58775268c38b8a70c713611162e18cc5ece3edd3f6e1e823e",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0103",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[69]",
+      "text": "campaigns 待接线 攻克进程列表仍使用演示常量",
+      "content_sha256": "f5fd15161c35de3cc697a648cfefd9e2e1dba5bfe966e79ab106ff46b1f5d91d",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0104",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[70]",
+      "text": "campaign 已落地 当前攻克进程的实时与本地投影",
+      "content_sha256": "2891ea95894d05cd22e80db56ab1da4359e5ae53294fd44d92debfbee8c88f5c",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0105",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[71]",
+      "text": "exploration 待接线 实验记录仍使用演示常量",
+      "content_sha256": "915ba89e8a63c0230c08d6f84e77694d0d03f73af6a90928a6ff6ffcf81fdd79",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0106",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[72]",
+      "text": "conjecture 待接线 猜想队列仍使用演示常量",
+      "content_sha256": "3a6b2a3ec92d180661aee2ed894bf0abbf9375ace6ee63cfcf772bd9aa7fcd4c",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0107",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[73]",
+      "text": "routes 已落地 攻克路线的实时投影",
+      "content_sha256": "91b1aa83731b4091753feac02a5cb2fa4a0cb9bd2dc61a644bac90c07ab11e9a",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0108",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[74]",
+      "text": "tools 已落地 工具调用台账的实时投影",
+      "content_sha256": "45fa23d04cfdc7c9c9ce4cc8f5d8022441179c3fc4442f65f0ab716358f4b49e",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0109",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[75]",
+      "text": "reasoning 已落地 公开推理的实时投影",
+      "content_sha256": "3e302c7873fe2ada4dcfd26c304c6d85f27237965f089f10fcc3f1bf954c7996",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0110",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[76]",
+      "text": "landing 已推迟 静态全屏入口，产品归属已推迟",
+      "content_sha256": "3bee091d07816eb6ba9e85b5986e4b0b1f7bc66af3728af330215db081d947ad",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0111",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[77]",
+      "text": "login 已推迟 静态登录页，外部身份未配置",
+      "content_sha256": "4387a483faf2dbab08d975b20f5e79dc4f3be2e3369d8e39f3b73f25c2872b2b",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0112",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[78]",
+      "text": "acct_overview 需新建 未配置空态",
+      "content_sha256": "780671c6d2844292ccde0fcd52fa1dc00d35dd40f2d5e0bc3649a55c4e77a931",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0113",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[79]",
+      "text": "acct_usage 需新建 未配置空态",
+      "content_sha256": "3b0c7c2e6224ea42b3c1ef54faad9839135799ecdf6353225db55eac1dfddd43",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0114",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[80]",
+      "text": "acct_billing 需新建 未配置空态",
+      "content_sha256": "eed6f12913658c814bafab0986797a6bd30c7b8a2aa970ff9aadc92ec1feaa73",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0115",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[81]",
+      "text": "acct_limits 需新建 未配置空态",
+      "content_sha256": "36ef9c338da844227bbd68d19e63f346b5e6e1ec73f36b7d136dab93a674afcd",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0116",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[82]",
+      "text": "admin_cost 需新建 未配置空态",
+      "content_sha256": "c0f887f5f504928bfbd63934563728f1d40d61fc2ad6df8163bfcc348954623c",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0117",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[83]",
+      "text": "admin_upstream 已落地 上游账本的本地隔离投影",
+      "content_sha256": "885f494def7e46bd4aac4f00ee8df36297952b3ab43cb5ba7109b06f447bca8c",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0118",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[84]",
+      "text": "admin_users 已落地 账户账本的本地隔离投影",
+      "content_sha256": "b4a9fab57c2d03c41e2d669b36a40fa68e103b49affdf47e5b698d613bdff25b",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0119",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[85]",
+      "text": "field 部分待建 方向信息流仍使用演示常量",
+      "content_sha256": "59a968c62e42da15fe0b9f8e197dff6ae1c18400a8fc2146f8069608ceab3ef2",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0120",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[86]",
+      "text": "topics 已落地 候选主题的本地只读投影",
+      "content_sha256": "dc12507e6be5b40534f78071601afe09ce83b6be81823df1f95c0a0d5ec6a48b",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0121",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[87]",
+      "text": "admin_roles 已落地 角色策略的实时投影",
+      "content_sha256": "b565703b55c97d74a646a84653ba5f8109737ce8a02ba9caa79a5c2b52f9505d",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0122",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[88]",
+      "text": "admin_roster 部分待建 评审名册尚未配置",
+      "content_sha256": "897efdfbb228a56e59998784f4352e198f72aa0e4ca1c47ccfaaf8154c8359ac",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0123",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[89]",
+      "text": "admin_queue 已落地 既有评审服务的只读队列",
+      "content_sha256": "b215002bbdf5d093223c3508996ad69364155dea135c829f796e277149dd3021",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0124",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "table-row",
+      "locator": "html:tr[90]",
+      "text": "proofchain 已落地 事件账本与链头的实时投影",
+      "content_sha256": "e155884e9d566356ad279d2d1f88b098c022f0f81d07ca91dc58378d4bb15a7c",
+      "disposition": "informative",
+      "rationale": "规范视图身份与建设状态的机械投影；实现约束由既有接线合同和专用门禁承担。"
+    },
+    {
+      "inventory_id": "INV-CURRENT-0125",
+      "artifact_id": "SRC-ART-CURRENT",
+      "kind": "heading",
       "locator": "html:h2[6]",
       "text": "§6 剩余差距与本地落地边界",
       "content_sha256": "87fda4c5b82a02c955f54837b0d2b3361770de60d0522d7403e871edc90c9a50",
@@ -972,77 +1312,77 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0092",
+      "inventory_id": "INV-CURRENT-0126",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[58]",
+      "locator": "html:tr[91]",
       "text": "项 现状 备注",
       "content_sha256": "87647f44264b1da1f3eddf897f0a8615e76e454f300fccd9c13112bf7c2df871",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0093",
+      "inventory_id": "INV-CURRENT-0127",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[59]",
+      "locator": "html:tr[92]",
       "text": "外部文献适配器（W2-6） matharc/v02/literature.py 已提供 arXiv/Crossref 标准库适配器、有限重试、内容寻址和 LiteratureBase 导入桥 适配器只产生观察报告；外部实时连接需显式注入，控制台保持 not_configured 边界",
       "content_sha256": "4b2a0bedb9ac6a178f9facdbd3724e6d1d3f8d134c4ffeb78d3163c5b9c51658",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0094",
+      "inventory_id": "INV-CURRENT-0128",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[60]",
+      "locator": "html:tr[93]",
       "text": "选题门控引擎（九道门） 本地引擎已落地 以既有人工审读为回归样本；没有外部检索、开放状态或新颖性裁定权",
       "content_sha256": "fafc7bcf516817827a51ff0d60a31430774f3134c3e6b030b211476b69f97ec5",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0095",
+      "inventory_id": "INV-CURRENT-0129",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[61]",
+      "locator": "html:tr[94]",
       "text": "难度量表 + 预测台账存储 本地台账已落地 样本不足二十条一律未校准，界面禁一切总分呈现；不产生统计性能声明",
       "content_sha256": "7abd1e6b3ccde1482dd19d75408da76f98e64fa569a107718d1ad1f7974cbd47",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0096",
+      "inventory_id": "INV-CURRENT-0130",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[62]",
+      "locator": "html:tr[95]",
       "text": "运营域（积分/席位/计费/上游路由） 本地隔离账本已落地；外部提供方未配置 独立于研究内核；身份、支付与真实上游路由必须另行批准和接入",
       "content_sha256": "b2e32f8fa91a407fd1c3ddee6735706fd307a5ab57a981a78625d3a37bc5b7b1",
       "disposition": "requirement",
       "requirement_ref": "SRC-PI-R7-U5-02"
     },
     {
-      "inventory_id": "INV-CURRENT-0097",
+      "inventory_id": "INV-CURRENT-0131",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[63]",
+      "locator": "html:tr[96]",
       "text": "受治理扇出（D4） spawn_requests 由编排器逐项裁决，深度/轮次/预算上限和不可变 spawn_log 已接线 只生成待执行描述符，不解禁 Task 或任意进程；实际用量仍进入既有预算账本",
       "content_sha256": "6bed91c11e7c36f748829861f564c782b3215d7a5ef5c6f054fadd3b34900f10",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0098",
+      "inventory_id": "INV-CURRENT-0132",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[64]",
+      "locator": "html:tr[97]",
       "text": "转化派生路线（X1） transformation_catalog.py + derived_from_failure/transformation_id 已接线 目录条目必须有真实 provenance；同机制签名、未知或不适用算子逐项拒绝，事件链保留失败→变换→路线关系",
       "content_sha256": "b3632c379470a2ccf65dd0dc85aebb5b5b728c96de75e1df800e18fd86dbf2b9",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0099",
+      "inventory_id": "INV-CURRENT-0133",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "heading",
       "locator": "html:h2[7]",
@@ -1052,17 +1392,17 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0100",
+      "inventory_id": "INV-CURRENT-0134",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "heading",
-      "locator": "html:h3[17]",
+      "locator": "html:h3[18]",
       "text": "7.1 两种接线形态",
       "content_sha256": "d0639c89a51a90adafcb88757dee6b2bd17881915f572cb75e2b4fa17e260dfc",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0101",
+      "inventory_id": "INV-CURRENT-0135",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "list-item",
       "locator": "html:li[12]",
@@ -1072,7 +1412,7 @@
       "requirement_ref": "SRC-PI-R6-U2-01"
     },
     {
-      "inventory_id": "INV-CURRENT-0102",
+      "inventory_id": "INV-CURRENT-0136",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "list-item",
       "locator": "html:li[13]",
@@ -1082,87 +1422,87 @@
       "requirement_ref": "SRC-PI-R6-U2-03"
     },
     {
-      "inventory_id": "INV-CURRENT-0103",
+      "inventory_id": "INV-CURRENT-0137",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "heading",
-      "locator": "html:h3[18]",
+      "locator": "html:h3[19]",
       "text": "7.2 端点总表",
       "content_sha256": "0b213456dd71361081c2d7d8d547c06315fa8fdffc2e542f58b65c702ed8a49c",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0104",
+      "inventory_id": "INV-CURRENT-0138",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[65]",
+      "locator": "html:tr[98]",
       "text": "端点 来源 里程碑",
       "content_sha256": "79af412cc098b7024ac105aaad0a412b3c806cdb086038ef95c34ad0cabb8493",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0105",
+      "inventory_id": "INV-CURRENT-0139",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[66]",
+      "locator": "html:tr[99]",
       "text": "GET /api/workspace · /api/audit · /api/events · /api/artifacts · /api/health · /events(SSE) 已有（观察站） M1",
       "content_sha256": "1b4f7fcb5ca47ca2424d266eff14bcf628a4b1649ecea407cd137a975826b8ac",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0106",
+      "inventory_id": "INV-CURRENT-0140",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[67]",
+      "locator": "html:tr[100]",
       "text": "GET /api/console · /api/campaign 已落地，只读；campaign 严格绑定工作区 provenance M0/M1",
       "content_sha256": "8836a979a8e060434b09d4efc05e9c1716dd71b3826fe8d1a9173658c11ce6a6",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0107",
+      "inventory_id": "INV-CURRENT-0141",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[68]",
+      "locator": "html:tr[101]",
       "text": "GET /api/console （ local_console.route_regression / dogfood_archives ） 已落地；显式配置时读取固定 R1/T2 文件并绑定当前工作区 provenance，缺失时 not_configured M0/M3",
       "content_sha256": "f85988184202c79eea08776cb27d0202cce44a8dd139a4d265da20e122cc254f",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0108",
+      "inventory_id": "INV-CURRENT-0142",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[69]",
+      "locator": "html:tr[102]",
       "text": "GET /api/review-queue · /api/review-bundle/{命题} 已有（评审服务） M2",
       "content_sha256": "6ff8c6a7fb4a8a33ebbc918487dc1b8ce124c257a22d685c2124e0f4195807c0",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0109",
+      "inventory_id": "INV-CURRENT-0143",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[70]",
+      "locator": "html:tr[103]",
       "text": "POST /api/review （名册令牌） 已有；全系统唯一写口 M2",
       "content_sha256": "750bec8973cbffe3cd2ea5d7c60c1a3be7b000d111eff2f5cdfe19386cee7a2c",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0110",
+      "inventory_id": "INV-CURRENT-0144",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[71]",
+      "locator": "html:tr[104]",
       "text": "选题/运营域 API 随 §6 各项新建，另立服务 M3/M4",
       "content_sha256": "18ac9abbdf55fef19ab55b18df9d1494c02443b1c7915107ac8a8d5011b47ccb",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0111",
+      "inventory_id": "INV-CURRENT-0145",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "heading",
       "locator": "html:h2[8]",
@@ -1172,67 +1512,67 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0112",
+      "inventory_id": "INV-CURRENT-0146",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[72]",
+      "locator": "html:tr[105]",
       "text": "档 内容 验收",
       "content_sha256": "28bff3cb4585dc192887d71a23a157176f5094bd4d55ef4691da13c62d93ba8f",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0113",
+      "inventory_id": "INV-CURRENT-0147",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[73]",
+      "locator": "html:tr[106]",
       "text": "M0 只读真数据（已落地） cli export + 数据层切换；平面③四个视图 + 角色矩阵已吃真数据 同一工作区：前端复算链头 = 后端 validate() 链头；工具台账逐字段与 to_dict 相等；相关视图演示标注删除",
       "content_sha256": "e6428034512a2c74d8e1ae5c4a29a494feb5133e7fa8bd806e50b2d38f1e0c7b",
       "disposition": "informative",
       "rationale": "Registered as informative source milestone metadata M0; it does not create or replace a planning-compiler release slice."
     },
     {
-      "inventory_id": "INV-CURRENT-0114",
+      "inventory_id": "INV-CURRENT-0148",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[74]",
+      "locator": "html:tr[107]",
       "text": "M1 live 观察站（已落地） SSE 接证明链与轮次； /api/campaign ；攻克中合并刷新 跑一次 cli run ，控制台不刷新即见新事件；断线重连按 after 游标续传无缺口",
       "content_sha256": "b728f8aa06d6fc21456c9a70f0ee442f2c788ee3f12252c3444b5da98afa36e2",
       "disposition": "informative",
       "rationale": "Registered as informative source milestone metadata M1; it does not create or replace a planning-compiler release slice."
     },
     {
-      "inventory_id": "INV-CURRENT-0115",
+      "inventory_id": "INV-CURRENT-0149",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[75]",
+      "locator": "html:tr[108]",
       "text": "M2 评审闭环（已落地） 评审队列/送审包已接真服务；义务逐条判定 + 整体决定经唯一 POST /api/review 提交 浏览器门禁以真实服务验证：APPROVE 含非 OK 义务被后端拒绝并在界面如实呈现；有效评审持久化后队列刷新，令牌仅存内存",
       "content_sha256": "28d294156bf0cb439bdaf9018831c05cfa8b11f0525adb86f182c1bb3cac4749",
       "disposition": "informative",
       "rationale": "Registered as informative source milestone metadata M2; it does not create or replace a planning-compiler release slice."
     },
     {
-      "inventory_id": "INV-CURRENT-0116",
+      "inventory_id": "INV-CURRENT-0150",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[76]",
+      "locator": "html:tr[109]",
       "text": "M3 选题最小闭环（已落地） 资料核验读模型接 SourceRegistry 与已存在的单主题观察存储；主题/标准存储；外部适配器落地后才开检索侧 五项核对状态机与后端一致；配置的存储仅只读投影观察、游标与人工队列；外部适配器未落地的视图仍无统计数字，且不推断开放/已解决/新颖性状态",
       "content_sha256": "598d75d57f4e2afb79f1074ad4fc0a5e636d2071d75b6626bcaf31f128a6c6e9",
       "disposition": "informative",
       "rationale": "Registered as informative source milestone metadata M3; it does not create or replace a planning-compiler release slice."
     },
     {
-      "inventory_id": "INV-CURRENT-0117",
+      "inventory_id": "INV-CURRENT-0151",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[77]",
+      "locator": "html:tr[110]",
       "text": "M4 运营域（已落地本地隔离账本） 积分/席位/计费/上游独立服务；本地账本从冻结工作区派生绑定，服务化另立审批 换模型/换上游后，历史结论重放逐字节不变；账本不能位于研究工作区，且无法跨工作区复用（这是硬验收，不是口号）",
       "content_sha256": "9735eef0574a2f98b7bceaec65bf10c594ff1c4613e9bbedc584b1bfa22076a4",
       "disposition": "informative",
       "rationale": "Registered as informative source milestone metadata M4; it does not create or replace a planning-compiler release slice."
     },
     {
-      "inventory_id": "INV-CURRENT-0118",
+      "inventory_id": "INV-CURRENT-0152",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "heading",
       "locator": "html:h2[9]",
@@ -1242,67 +1582,67 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0119",
+      "inventory_id": "INV-CURRENT-0153",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[78]",
+      "locator": "html:tr[111]",
       "text": "套件 断言",
       "content_sha256": "73c0f6292c43556e46d5b516106ff06c418bf200b24a6ea34e23bca87fb3e7fb",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0120",
+      "inventory_id": "INV-CURRENT-0154",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[79]",
+      "locator": "html:tr[112]",
       "text": "全视图扫描 52 个视图 × 两个攻克进程逐一渲染：零页面错误、零 undefined/NaN/[object Object] 文案",
       "content_sha256": "853af427bb6518ba0e50e475888f87e29a7fcb64c086d1d16e5fa14b60cf9fdf",
       "disposition": "requirement",
       "requirement_ref": "SRC-PI-R6-A6-01"
     },
     {
-      "inventory_id": "INV-CURRENT-0121",
+      "inventory_id": "INV-CURRENT-0155",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[80]",
+      "locator": "html:tr[113]",
       "text": "两栏均衡 1240–1920 六档宽度下，任何并排两栏自然内容高差 ≤140px 且比 ≥0.62（临时解除拉伸与内滚再量）",
       "content_sha256": "ab3da4a6d25e13a93c71ade649baa300e556ce704a4ff1460c9b3a3982bc0975",
       "disposition": "requirement",
       "requirement_ref": "SRC-PI-R6-A6-02"
     },
     {
-      "inventory_id": "INV-CURRENT-0122",
+      "inventory_id": "INV-CURRENT-0156",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[81]",
+      "locator": "html:tr[114]",
       "text": "篡改五模式 改载荷=1 错、删除/对调/插入=各自签名、整链重写=逐条全过但链头不一致——与 validate() 语义逐项一致",
       "content_sha256": "eb53cf699f80e535d9aa650dd6de121383275dba2fb99d6c002ab00c49ffb344",
       "disposition": "requirement",
       "requirement_ref": "SRC-PI-R6-A6-03"
     },
     {
-      "inventory_id": "INV-CURRENT-0123",
+      "inventory_id": "INV-CURRENT-0157",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[82]",
+      "locator": "html:tr[115]",
       "text": "手风琴与流程 全部就地展开可开合；九门未过时开工按钮禁用，缺口表恰一条可编译，编译落在攻克进程",
       "content_sha256": "ae045ac81bbbe8e7d1e4354a5518242b331f6b819e31124e1a21763a87e3f5d9",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0124",
+      "inventory_id": "INV-CURRENT-0158",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[83]",
+      "locator": "html:tr[116]",
       "text": "中英夹杂扫描 剔除 .mono/.hash 刻意引用后，渲染文案中中文紧贴裸英文标识符 = 0 处",
       "content_sha256": "1b2b5ffde6b515b28a3b72a1b754c53f5d8688cc333f28c902515254b0794961",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0125",
+      "inventory_id": "INV-CURRENT-0159",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "heading",
       "locator": "html:h2[10]",
@@ -1312,97 +1652,97 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0126",
+      "inventory_id": "INV-CURRENT-0160",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[84]",
+      "locator": "html:tr[117]",
       "text": "界面用语 后端标识 界面用语 后端标识",
       "content_sha256": "62c6c613f72150f6581557d8b7ca307f9c955728e30bb667f665a9cd93a7ba55",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0127",
+      "inventory_id": "INV-CURRENT-0161",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[85]",
+      "locator": "html:tr[118]",
       "text": "命题 ClaimRecord 晋升 promote_claim",
       "content_sha256": "c2c69d6396796a454e274582bc612d9569d5329eeb2a24ae509cef505a2df4bb",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0128",
+      "inventory_id": "INV-CURRENT-0162",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[86]",
+      "locator": "html:tr[119]",
       "text": "路线 ResearchRoute 证伪测试 KillTestSpec / KillTestKind",
       "content_sha256": "502e8e631ac9d7de5408037c48db6943867e73393f195a28da61c3741db3cb87",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0129",
+      "inventory_id": "INV-CURRENT-0163",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[87]",
+      "locator": "html:tr[120]",
       "text": "证据档位 EvidenceKind 可冷重放 ToolCallRecord.replayable",
       "content_sha256": "5b8acf562af528f6c32d7a9c252055bd07b70ef1bda25206b7d4011b7eaaa3be",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0130",
+      "inventory_id": "INV-CURRENT-0164",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[88]",
+      "locator": "html:tr[121]",
       "text": "封存事件 ResearchEvent 账本 / 链头 EventLedger / head_hash",
       "content_sha256": "07c495b3aaf2c1464076e08221505bf6df7dda12263593a522723f7ee218b150",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0131",
+      "inventory_id": "INV-CURRENT-0165",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[89]",
+      "locator": "html:tr[122]",
       "text": "独立性分组 independence_group 预先声明的成功判据 expected_discriminator",
       "content_sha256": "ec62ba7f21b023526ae82b9da586f52e0ec8b54cf9d95555392d3fc8087a1172",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0132",
+      "inventory_id": "INV-CURRENT-0166",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[90]",
+      "locator": "html:tr[123]",
       "text": "五项核对 SourceClaim 五字段 语句对应 statement_correspondence",
       "content_sha256": "3f2300f62a9656c9f203b8acd5e97b944566a6f000160f611ff06ce290ebfad0",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0133",
+      "inventory_id": "INV-CURRENT-0167",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[91]",
+      "locator": "html:tr[124]",
       "text": "保证等级 RequiredAssurance 名册 ReviewerRoster",
       "content_sha256": "0026dd3a3c9ca010710ee5d1a9ce158337e24d8e6366c886aea5567a10fff588",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0134",
+      "inventory_id": "INV-CURRENT-0168",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[92]",
+      "locator": "html:tr[125]",
       "text": "停止原因 stop_reason 四分支 语义增益 四类事件（新增可采信证据/状态改变/路线排除/障碍确认）",
       "content_sha256": "20ae76ad799b91a8a21c0bffcba13a98747ea1050df3a866117d922b8ec7077c",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0135",
+      "inventory_id": "INV-CURRENT-0169",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "heading",
       "locator": "html:h2[11]",
@@ -1412,87 +1752,87 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0136",
+      "inventory_id": "INV-CURRENT-0170",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[93]",
+      "locator": "html:tr[126]",
       "text": "前端表 后端枚举 基数",
       "content_sha256": "d50ba12a7cd7240f4a75f49c4abe867e51c0a8de47b42cc957d1b1afa4fc8265",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0137",
+      "inventory_id": "INV-CURRENT-0171",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[94]",
+      "locator": "html:tr[127]",
       "text": "ETYPE event_type （封存于 _seal_transition ；权威源： event_log.py:EVENT_TYPES ） 21（演示链用其 14）",
       "content_sha256": "dd58c6584c6ec795d4c4174238f9aa5336a35211886dbc9ca658e8dbb6db297e",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0138",
+      "inventory_id": "INV-CURRENT-0172",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[95]",
+      "locator": "html:tr[128]",
       "text": "TSTATUS ToolStatus 5",
       "content_sha256": "291f0ce8c1da20f3b2013167fe5b5d2322fe65f5b6524100e2769cbef5ad7025",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0139",
+      "inventory_id": "INV-CURRENT-0173",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[96]",
+      "locator": "html:tr[129]",
       "text": "VERDICTS / DECISIONS ObligationVerdictKind / ReviewDecision 4 / 3",
       "content_sha256": "12e21988296256e32251a8a9271793ccd57f8af1168cc5e3024025b43a21a119",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0140",
+      "inventory_id": "INV-CURRENT-0174",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[97]",
+      "locator": "html:tr[130]",
       "text": "ASSURE RequiredAssurance 3",
       "content_sha256": "0ce5d80fb929a73c70ff0c337aa905ee4cc524400718804db1f4ea7d3611419d",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0141",
+      "inventory_id": "INV-CURRENT-0175",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[98]",
+      "locator": "html:tr[131]",
       "text": "KILLKINDS KillTestKind 4",
       "content_sha256": "ae0b089ccb7cfc2cae174a9ef45fa92d860e0603ec6508aac0540a25bc8ca2a1",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0142",
+      "inventory_id": "INV-CURRENT-0176",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[99]",
+      "locator": "html:tr[132]",
       "text": "ACTORROLE 角色策略 8 角色 8（能力 15 项）",
       "content_sha256": "e26a8a0691930b847bc3370d8cbd895b00d96ef42465d10900ce9861a1f5d823",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0143",
+      "inventory_id": "INV-CURRENT-0177",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "table-row",
-      "locator": "html:tr[100]",
+      "locator": "html:tr[133]",
       "text": "ev1–ev5 视觉阶 不是枚举——是证据强度的视觉色阶，与 EvidenceKind （9 值）非一一对应，禁止当映射用 —",
       "content_sha256": "028836b743bc1d6a6105e61764413a41361e59cda53e3dcb877d8db400b97a79",
       "disposition": "informative",
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0144",
+      "inventory_id": "INV-CURRENT-0178",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "heading",
       "locator": "html:h2[12]",
@@ -1502,7 +1842,7 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0145",
+      "inventory_id": "INV-CURRENT-0179",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "list-item",
       "locator": "html:li[14]",
@@ -1512,7 +1852,7 @@
       "requirement_ref": "SRC-PI-R7-A7-01"
     },
     {
-      "inventory_id": "INV-CURRENT-0146",
+      "inventory_id": "INV-CURRENT-0180",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "list-item",
       "locator": "html:li[15]",
@@ -1522,7 +1862,7 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0147",
+      "inventory_id": "INV-CURRENT-0181",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "list-item",
       "locator": "html:li[16]",
@@ -1532,7 +1872,7 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0148",
+      "inventory_id": "INV-CURRENT-0182",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "list-item",
       "locator": "html:li[17]",
@@ -1542,7 +1882,7 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0149",
+      "inventory_id": "INV-CURRENT-0183",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "list-item",
       "locator": "html:li[18]",
@@ -1552,7 +1892,7 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0150",
+      "inventory_id": "INV-CURRENT-0184",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "list-item",
       "locator": "html:li[19]",
@@ -1562,7 +1902,7 @@
       "rationale": "Supporting blueprint context, heading, table header, duplicate detail, or non-selected implementation note retained for provenance; it is not an independent requirement in the bounded 24-requirement console plan."
     },
     {
-      "inventory_id": "INV-CURRENT-0151",
+      "inventory_id": "INV-CURRENT-0185",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "list-item",
       "locator": "html:li[20]",
@@ -1572,7 +1912,7 @@
       "requirement_ref": "SRC-PI-R7-A7-02"
     },
     {
-      "inventory_id": "INV-CURRENT-0152",
+      "inventory_id": "INV-CURRENT-0186",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "list-item",
       "locator": "html:li[21]",
@@ -1582,7 +1922,7 @@
       "requirement_ref": "SRC-PI-R7-A7-03"
     },
     {
-      "inventory_id": "INV-CURRENT-0153",
+      "inventory_id": "INV-CURRENT-0187",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[1]",
@@ -1592,7 +1932,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0154",
+      "inventory_id": "INV-CURRENT-0188",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[2]",
@@ -1602,7 +1942,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0155",
+      "inventory_id": "INV-CURRENT-0189",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[3]",
@@ -1612,7 +1952,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0156",
+      "inventory_id": "INV-CURRENT-0190",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[4]",
@@ -1622,7 +1962,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0157",
+      "inventory_id": "INV-CURRENT-0191",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[5]",
@@ -1632,7 +1972,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0158",
+      "inventory_id": "INV-CURRENT-0192",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[6]",
@@ -1642,7 +1982,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0159",
+      "inventory_id": "INV-CURRENT-0193",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[7]",
@@ -1652,7 +1992,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0160",
+      "inventory_id": "INV-CURRENT-0194",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[8]",
@@ -1662,7 +2002,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0161",
+      "inventory_id": "INV-CURRENT-0195",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[9]",
@@ -1672,7 +2012,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0162",
+      "inventory_id": "INV-CURRENT-0196",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[10]",
@@ -1682,7 +2022,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0163",
+      "inventory_id": "INV-CURRENT-0197",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[11]",
@@ -1692,7 +2032,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0164",
+      "inventory_id": "INV-CURRENT-0198",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[12]",
@@ -1702,7 +2042,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0165",
+      "inventory_id": "INV-CURRENT-0199",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[13]",
@@ -1712,7 +2052,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0166",
+      "inventory_id": "INV-CURRENT-0200",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[14]",
@@ -1722,7 +2062,7 @@
       "rationale": "Parser-derived sentence retained for provenance; its enforceable semantics are conserved by the selected canonical structural requirement or by an informative structural record, so it is not duplicated as an independent requirement."
     },
     {
-      "inventory_id": "INV-CURRENT-0167",
+      "inventory_id": "INV-CURRENT-0201",
       "artifact_id": "SRC-ART-CURRENT",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[15]",
@@ -1761,23 +2101,23 @@
         "human"
       ],
       "external_system_refs": [],
-    "release_refs": [
-      "PI-R6"
-    ],
-    "node_refs": [
-      "CHARTER",
-      "F1",
-      "D1",
-      "D2",
-      "A1",
-      "L1",
-      "L2",
-      "A2",
-      "S1",
-      "S2",
-      "A3",
-      "D3"
-    ]
+      "release_refs": [
+        "PI-R6"
+      ],
+      "node_refs": [
+        "CHARTER",
+        "F1",
+        "D1",
+        "D2",
+        "A1",
+        "L1",
+        "L2",
+        "A2",
+        "S1",
+        "S2",
+        "A3",
+        "D3"
+      ]
     },
     {
       "requirement_id": "SRC-PI-R6-D3-02",
@@ -1806,15 +2146,15 @@
         "human"
       ],
       "external_system_refs": [],
-    "release_refs": [
-      "PI-R6"
-    ],
-    "node_refs": [
-      "T1",
-      "T2",
-      "A4",
-      "D3"
-    ]
+      "release_refs": [
+        "PI-R6"
+      ],
+      "node_refs": [
+        "T1",
+        "T2",
+        "A4",
+        "D3"
+      ]
     },
     {
       "requirement_id": "SRC-PI-R6-D3-03",
@@ -1843,15 +2183,15 @@
         "human"
       ],
       "external_system_refs": [],
-    "release_refs": [
-      "PI-R6"
-    ],
-    "node_refs": [
-      "R1",
-      "Q1",
-      "A5",
-      "D3"
-    ]
+      "release_refs": [
+        "PI-R6"
+      ],
+      "node_refs": [
+        "R1",
+        "Q1",
+        "A5",
+        "D3"
+      ]
     },
     {
       "requirement_id": "SRC-PI-R6-U1-01",
@@ -2416,7 +2756,7 @@
       "requirement_id": "SRC-PI-R7-U5-02",
       "source": {
         "artifact_id": "SRC-ART-CURRENT",
-        "locator": "html:tr[62]",
+        "locator": "html:tr[95]",
         "content_sha256": "b2e32f8fa91a407fd1c3ddee6735706fd307a5ab57a981a78625d3a37bc5b7b1"
       },
       "dimension": "runtime",
@@ -2502,7 +2842,7 @@
       "requirement_id": "SRC-PI-R6-A6-01",
       "source": {
         "artifact_id": "SRC-ART-CURRENT",
-        "locator": "html:tr[79]",
+        "locator": "html:tr[112]",
         "content_sha256": "853af427bb6518ba0e50e475888f87e29a7fcb64c086d1d16e5fa14b60cf9fdf"
       },
       "dimension": "visual",
@@ -2545,7 +2885,7 @@
       "requirement_id": "SRC-PI-R6-A6-02",
       "source": {
         "artifact_id": "SRC-ART-CURRENT",
-        "locator": "html:tr[80]",
+        "locator": "html:tr[113]",
         "content_sha256": "ab3da4a6d25e13a93c71ade649baa300e556ce704a4ff1460c9b3a3982bc0975"
       },
       "dimension": "visual",
@@ -2588,7 +2928,7 @@
       "requirement_id": "SRC-PI-R6-A6-03",
       "source": {
         "artifact_id": "SRC-ART-CURRENT",
-        "locator": "html:tr[81]",
+        "locator": "html:tr[114]",
         "content_sha256": "eb53cf699f80e535d9aa650dd6de121383275dba2fb99d6c002ab00c49ffb344"
       },
       "dimension": "runtime",

@@ -416,7 +416,7 @@ current worktree: A4 invalidation state transition; query git status for the liv
 | EXT-DISCOVERY-V04 | docs/DISCOVERY_PLANE_V04.md | 0fb8f15f04451834719c929a264260278e1f6727 | 449aff96d31989e85582c04118541cb24368aae180cb0067c638b18ab6f05143 | ACCEPTED | CHARTER,F1,D1,D2,A1 |
 | EXT-SOURCE-REGISTRY | matharc/v02/source_registry.py | 0fb8f15f04451834719c929a264260278e1f6727 | e697f0894d8ac35a19c39ade521a8dfa6d4e42f7c291261a6e0004702c1b3c22 | ACCEPTED | L1,L2 |
 | EXT-BUDGET-V02 | matharc/v02/budget.py | 0fb8f15f04451834719c929a264260278e1f6727 | 24f9b7714324a3120c0addefcd391bc4f00000a84c06692875873a7804beec1e | ACCEPTED | L1,L2,T1,R1 |
-| EXT-CONSOLE-BLUEPRINT | docs/prototypes/console-dev-blueprint.html | 3353d6aa8ce0e2511773b4ba2f2985bd2dc05a80 | 6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f | ACCEPTED | CHARTER,F1,D1,D2,A1,L1,L2,A2,S1,S2,A3,T1,T2,A4,R1,Q1,A5,D3,U1,U2,U3,A6,U4,U5,A7 |
+| EXT-CONSOLE-BLUEPRINT | docs/prototypes/console-dev-blueprint.html | 9ed8c8c23ab280e5c4b16d8053fcad3d3b99dd2f | d205bcf1cd5a0f0045f97dc7f79cc424b2579a946b967f5196c16bc622846014 | ACCEPTED | CHARTER,F1,D1,D2,A1,L1,L2,A2,S1,S2,A3,T1,T2,A4,R1,Q1,A5,D3,U1,U2,U3,A6,U4,U5,A7 |
 
 机器源 `.ssot/manifest.json` 的 `external_dependencies` 共 6 条，此前本表只投影了前 5 条，`EXT-CONSOLE-BLUEPRINT` 缺失；修订 5 补入。补入后有两处机器源缺陷必须登记，本修订不改机器源，只记录：
 
@@ -835,8 +835,8 @@ review_conclusion: PASS
 
 | 来源 | 角色 | SHA-256（本修订基线） |
 |---|---|---|
-| `docs/prototypes/console-dev-blueprint.html` | 信息架构、建设状态与后端映射的规范来源 | `6741be0f3308470528182ae4262219276ab38d8de502e26688dfaaa6e39bc30f` |
-| `docs/prototypes/problem-intel-console.html` | 视觉与交互的**当前**规范来源，也是实现载体 | `68ece74d81a92d8285c7f1240f9d65597d8a781d12e41c286147a65171e949f2` |
+| `docs/prototypes/console-dev-blueprint.html` | 信息架构、建设状态与后端映射的规范来源 | `d205bcf1cd5a0f0045f97dc7f79cc424b2579a946b967f5196c16bc622846014` |
+| `docs/prototypes/problem-intel-console.html` | 视觉与交互的**当前**规范来源，也是实现载体 | `2c235f0dbf005e5776e1c779240b00a9d0a96e9649d749d519ed0f23e6455b9e` |
 | `scripts/console_browser_gate.mjs` | 案例清单与机器断言的规范来源 | `6c1eff8bcac96ae2d150be0244cd203e01cd777bc646f659c7680471c37d36f4` |
 | `evidence/console-visual-baseline/authority/problem-intel-console-31bb970.html` | 历史视觉参考，仅供差异说明，非验收基准 | `7809b144c49c63b8a3f7cc2975e2ea8c933284fc48c7bf8e38a0f52f07014814` |
 
