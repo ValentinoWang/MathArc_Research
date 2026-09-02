@@ -24,7 +24,7 @@
   "deliverable_ids": ["DL-U1"],
   "side_effect_class": "reversible",
   "candidate_identity_policy": "none",
-  "read_set": ["artifact:pi-console-slices-decision", "authority:console-visual-prototype-current", "authority:console-visual-prototype-31bb970"],
+  "read_set": ["artifact:pi-console-slices-decision", "authority:console-visual-prototype-31bb970", "authority:console-visual-prototype-current"],
   "write_set": ["artifact:pi-console-visual-baseline", "artifact:pi-console-blueprint-projection-contract"],
   "resource_claims": [
     {"resource_id": "artifact:pi-console-slices-decision", "mode": "R", "isolation_key": "pi-u1"},
