@@ -111,6 +111,34 @@ class ArtifactStoreDurabilityTests(unittest.TestCase):
             fsynced,
         )
 
+    def test_nested_directory_fsync_failures_propagate_before_store_initialization(self) -> None:
+        original_fsync_directory = artifact_store_module._fsync_directory
+
+        for failure_index in range(3):
+            with self.subTest(failure_index=failure_index), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory) / "new" / "nested"
+                fsynced: list[Path] = []
+
+                def fail_at_selected_parent(path: Path) -> None:
+                    fsynced.append(path)
+                    if len(fsynced) == failure_index + 1:
+                        raise OSError("simulated nested-directory parent fsync failure")
+                    original_fsync_directory(path)
+
+                with patch.object(
+                    artifact_store_module,
+                    "_fsync_directory",
+                    side_effect=fail_at_selected_parent,
+                ):
+                    with self.assertRaisesRegex(
+                        OSError,
+                        "nested-directory parent fsync failure",
+                    ):
+                        ArtifactStore(root)
+
+                self.assertEqual(failure_index + 1, len(fsynced))
+                self.assertFalse((root / "manifest.json").exists())
+
     def test_file_fsync_failure_cleans_temp_and_keeps_artifact_map(self) -> None:
         original_fsync = artifact_store_module.os.fsync
 

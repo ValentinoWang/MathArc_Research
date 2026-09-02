@@ -1,0 +1,39 @@
+Task: A4-LIT-PENDING
+
+Implement the confirmed LiteratureBase PENDING immutability repair at frozen project baseline `0fe86cf4501dc9829d5d95784c4984821d971aff`.
+
+Authority and finding:
+- Current A4 state is INVALIDATED/BLOCKED by `EV-A4-REOPENED-4`.
+- Independent reviews proved that an incomplete retry can replace an existing PENDING SourceObservation and rewrite immutable historical evidence.
+- This task repairs implementation behavior only. It does not accept A4 or change any SSOT, contract, human decision, release record, branch, commit, or remote ref.
+
+Frozen inputs:
+- `matharc/v02/literature_base.py` SHA-256 `f986e6a4354dd561cf14bf47e1343a995d012e57f6f9409149c3e16f1af05da1`
+- `tests/test_v02_literature_base.py` SHA-256 `fbbba0719d25345796337bf47dbf8bf1ee8c248f7a1256eb529e5af23b72b70d`
+
+Exclusive write scope:
+- `matharc/v02/literature_base.py`
+- `tests/test_v02_literature_base.py`
+- the exact STRUCTURED_RETURN_PATH supplied by the supervisor
+
+Forbidden writes:
+- every other source or test file
+- all `agents-results/**` except the exact STRUCTURED_RETURN_PATH
+- `.ssot/**`, acceptance contracts, protected tests, human acceptance, indexes, manifests, evidence, git refs, commits, branches, remotes, lockfiles, and Harness Engineering
+
+Required behavior:
+1. Once a logical identity has a persisted PENDING observation, an incomplete retry that remains PENDING must return the original stored observation and must not mutate the manifest or in-memory record.
+2. A retry may advance PENDING to OBSERVED only through the existing validated completion path: same observation ID, idempotency key, logical identity, and digest, valid open-license completion, matching bytes, and verified artifact.
+3. Preserve immutable historical metadata across completion unless the model's existing contract explicitly requires a field to change. In particular, incomplete retries cannot rewrite observation timestamp, source/version identity, media type, content summary, summary basis, or digest.
+4. Keep conflicts, observed replay, budget rejection, artifact integrity, writer locking, and fail-closed behavior intact.
+5. Add focused regressions for same-digest PENDING-to-PENDING metadata rewrite and restart readback. Include an incomplete retry with weakened or missing metadata where applicable.
+
+Acceptance commands:
+- `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature_base`
+- `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m mypy --strict matharc/v02/literature_base.py`
+- `git diff --check -- matharc/v02/literature_base.py tests/test_v02_literature_base.py`
+
+Return requirements:
+- Write valid JSON to STRUCTURED_RETURN_PATH.
+- Include task_id, baseline, changed_files, commands/results, invariant summary, unverified_items, proposed_state, acceptance_self_check, failure_class, and failure_origin.
+- Use proposed_state IMPLEMENTED and acceptance_self_check pass only if every acceptance command passes and all writes stay in scope.

@@ -1,0 +1,125 @@
+{
+  "artifact_dir": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/artifacts/literature",
+  "attempts": [
+    {
+      "attempt_executor": "lw-luna",
+      "attempt_role": "primary",
+      "attempt_wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+      "classification": {
+        "attempt_executor": "lw-luna",
+        "attempt_role": "primary",
+        "attempt_wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+        "decision": "complete",
+        "effective_failure_class": "none",
+        "effective_failure_origin": "none",
+        "primary_executor": "lw-luna",
+        "primary_wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+        "reason": "worker return and acceptance command completed"
+      },
+      "classifier_exit_code": 0,
+      "codex_session_identifier": "unavailable-from-wrapper-transport",
+      "command": [
+        "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+        "$(< /Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/artifacts/literature/prompts/A4-LIT-PENDING-primary.txt)"
+      ],
+      "ended_at": "2026-09-02T02:27:11.411932+00:00",
+      "exit_code": 0,
+      "frozen_input_drift": [],
+      "log_path": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/artifacts/literature/logs/A4-LIT-PENDING-primary.log",
+      "pid": 78726,
+      "primary_executor": "lw-luna",
+      "primary_wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+      "prior_attempt_index": null,
+      "project_root": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research",
+      "prompt_cleanup_state": "deleted",
+      "prompt_path": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/artifacts/literature/prompts/A4-LIT-PENDING-primary.txt",
+      "prompt_sha256": "66f76105e562b3a15ea7470bc5aa42b25565a6c6aba3678af28b9896aa8244d4",
+      "started_at": "2026-09-02T02:12:42.458691+00:00",
+      "structured_return": {
+        "acceptance_self_check": "pass",
+        "baseline": {
+          "commit": "0fe86cf4501dc9829d5d95784c4984821d971aff",
+          "frozen_inputs": {
+            "matharc/v02/literature_base.py": "f986e6a4354dd561cf14bf47e1343a995d012e57f6f9409149c3e16f1af05da1",
+            "tests/test_v02_literature_base.py": "fbbba0719d25345796337bf47dbf8bf1ee8c248f7a1256eb529e5af23b72b70d"
+          }
+        },
+        "changed_files": [
+          "matharc/v02/literature_base.py",
+          "tests/test_v02_literature_base.py",
+          "agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/artifacts/literature/returns/A4-LIT-PENDING-primary.json"
+        ],
+        "commands": [
+          "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature_base",
+          "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m mypy --strict matharc/v02/literature_base.py",
+          "git diff --check -- matharc/v02/literature_base.py tests/test_v02_literature_base.py"
+        ],
+        "failure_class": "none",
+        "failure_origin": "none",
+        "invariant_summary": [
+          "A persisted PENDING observation is returned unchanged for incomplete retries with the same logical identity and digest; no manifest or in-memory record mutation occurs.",
+          "PENDING can advance only through the existing validated completion path with matching observation ID, idempotency key, logical identity, non-empty matching digest, open license, matching bytes, and verified artifact.",
+          "Completion preserves historical observation timestamp, source/version identity, media type, content summary, summary basis, and digest while updating only the required license, status, and artifact fields.",
+          "Conflict handling, observed replay, budget rejection, artifact integrity, writer locking, and fail-closed behavior remain covered by the existing tests."
+        ],
+        "post_change_sha256": {
+          "matharc/v02/literature_base.py": "d3ab25e35f2f8bd0be914711f57ef4b1a65ba14baad045fe34707d603b2b7789",
+          "tests/test_v02_literature_base.py": "3070ced14da43b04b02ba84ad17bae000e9adffaa51d6c938699750f5a333429"
+        },
+        "proposed_state": "IMPLEMENTED",
+        "results": {
+          "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m mypy --strict matharc/v02/literature_base.py": {
+            "detail": "Success: no issues found in 1 source file",
+            "status": "pass"
+          },
+          "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature_base": {
+            "detail": "19 tests passed",
+            "status": "pass"
+          },
+          "git diff --check -- matharc/v02/literature_base.py tests/test_v02_literature_base.py": {
+            "detail": "no whitespace errors",
+            "status": "pass"
+          }
+        },
+        "task_id": "A4-LIT-PENDING",
+        "unverified_items": [
+          "The pre-existing uncommitted matharc/v02/topic_observation.py change was preserved and was outside this task's write and acceptance scope."
+        ]
+      },
+      "structured_return_path": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/artifacts/literature/returns/A4-LIT-PENDING-primary.json",
+      "structured_return_state": "loaded",
+      "task_sha256": "317f93a6532053bf604a0ce5b7fa82dc16849a801aa7e088fe7323463327e0c5",
+      "timed_out": false,
+      "validation_command_sha256": "d4bf27ecd9cee1729673072c3fa2e2cc37fa2534d119c515d3e49327b9f39d3d",
+      "validation_ended_at": "2026-09-02T02:27:11.798057+00:00",
+      "validation_exit_code": 0,
+      "validation_log_path": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/artifacts/literature/logs/A4-LIT-PENDING-primary.validation.log",
+      "validation_pid": 84315,
+      "validation_started_at": "2026-09-02T02:27:11.412182+00:00",
+      "validation_timed_out": false,
+      "wrapper_path": "/Users/vsiyo/.codex/workers/run-lw-luna.sh"
+    }
+  ],
+  "automatic_executor_switch": false,
+  "automatic_l4_fallback": false,
+  "ended_at": "2026-09-02T02:27:11.826214+00:00",
+  "final_decision": "complete",
+  "l3_escalation_limit": 1,
+  "l3_wrapper": "/Users/vsiyo/.codex/workers/run-l3.sh",
+  "ledger_path": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/artifacts/literature/ledger/A4-LIT-PENDING.json",
+  "primary_executor": "lw-luna",
+  "primary_retry_limit": 1,
+  "primary_role": "primary",
+  "primary_wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+  "project_root": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research",
+  "schema_version": 2,
+  "spawn_agent_fallback": false,
+  "started_at": "2026-09-02T02:12:42.457812+00:00",
+  "task_file": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/tasks/A4-LIT-PENDING.txt",
+  "task_id": "A4-LIT-PENDING",
+  "task_sha256": "317f93a6532053bf604a0ce5b7fa82dc16849a801aa7e088fe7323463327e0c5",
+  "terminal_state": "IMPLEMENTED",
+  "validation_command_file": "/Users/vsiyo/Desktop/\u521b\u4e1a\u9879\u76ee/AI4Math/Project/MathArc_Research/agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/validation/A4-LIT-PENDING.sh",
+  "validation_command_sha256": "d4bf27ecd9cee1729673072c3fa2e2cc37fa2534d119c515d3e49327b9f39d3d",
+  "validation_execution_mode": "prelaunch-bytes-via-stdin"
+}

@@ -260,6 +260,28 @@ def _fsync_directory(directory: Path) -> None:
         os.close(directory_fd)
 
 
+def _ensure_directory_durable(directory: Path) -> None:
+    missing: list[Path] = []
+    current = directory
+    while True:
+        try:
+            metadata = current.lstat()
+        except FileNotFoundError:
+            missing.append(current)
+        else:
+            if stat.S_ISLNK(metadata.st_mode) or not stat.S_ISDIR(metadata.st_mode):
+                raise NotADirectoryError(f"directory path is not a directory: {current}")
+            break
+        parent = current.parent
+        if parent == current:
+            raise FileNotFoundError(f"could not find directory parent: {current}")
+        current = parent
+
+    for child in reversed(missing):
+        child.mkdir()
+        _fsync_directory(child.parent)
+
+
 def _atomic_write_bytes(path: Path, content: bytes, mode: int) -> None:
     temporary_name: str | None = None
     try:
@@ -653,8 +675,9 @@ class TopicObservationRunner:
         initial_cursor: str,
         budget: BudgetLedger | None = None,
     ) -> None:
-        self.root = external_root(root)
-        self.root.mkdir(parents=True, exist_ok=True)
+        root_path = external_root(root)
+        _ensure_directory_durable(root_path)
+        self.root = root_path
         self.topic_id = _require_nonempty(topic_id, "topic_id")
         self.initial_cursor = _require_nonempty(initial_cursor, "initial_cursor")
         if budget is not None and not isinstance(budget, BudgetLedger):
@@ -819,8 +842,13 @@ class TopicObservationRunner:
                     raise TopicObservationError(
                         "processed input replay has no prior batch record"
                     )
+                prior_batch = state["batches"].get(prior_cursor)
+                if not isinstance(prior_batch, dict):
+                    raise TopicObservationError(
+                        "processed input replay prior batch is missing"
+                    )
                 prior_result = TopicBatchResult.from_dict(
-                    state["batches"][prior_cursor]["result"]
+                    prior_batch["result"]
                 )
                 prior_items = {
                     prior_item.input_id: prior_item
@@ -829,6 +857,16 @@ class TopicObservationRunner:
                 if item.input_id not in prior_items:
                     raise TopicObservationError(
                         "processed input replay prior result is missing"
+                    )
+                prior_disposition_evidence = prior_batch.get("disposition_evidence")
+                if not isinstance(prior_disposition_evidence, Mapping):
+                    raise TopicObservationError(
+                        "processed input replay prior evidence is missing"
+                    )
+                prior_evidence = prior_disposition_evidence.get(item.input_id)
+                if not isinstance(prior_evidence, Mapping):
+                    raise TopicObservationError(
+                        "processed input replay prior evidence is missing"
                     )
                 result = TopicItemResult(
                     item.input_id,
@@ -839,7 +877,7 @@ class TopicObservationRunner:
                     item,
                     result,
                     "PROCESSED_INPUT_REPLAY",
-                    persisted=self._persisted_observation_for_input(item),
+                    persisted_snapshot=prior_evidence,
                     prior_cursor=prior_cursor,
                     prior_input_id=item.input_id,
                 )
@@ -1003,6 +1041,7 @@ class TopicObservationRunner:
         basis: str,
         *,
         persisted: SourceObservation | None = None,
+        persisted_snapshot: Mapping[str, Any] | None = None,
         manual_id: str | None = None,
         manual_reason: ManualReviewReason | None = None,
         import_disposition: ImportDisposition | None = None,
@@ -1014,7 +1053,24 @@ class TopicObservationRunner:
         persisted_content_digest = None
         persisted_artifact_id = None
         persisted_artifact_sha256 = None
-        if persisted is not None:
+        if persisted is not None and persisted_snapshot is not None:
+            raise TopicObservationError(
+                "topic item evidence cannot use live and historical persisted snapshots"
+            )
+        if persisted_snapshot is not None:
+            _require_fields(
+                persisted_snapshot,
+                _ITEM_EVIDENCE_FIELDS,
+                "historical topic-item evidence",
+            )
+            persisted_status = persisted_snapshot["persisted_observation_status"]
+            persisted_observation_id = persisted_snapshot["persisted_observation_id"]
+            persisted_content_digest = persisted_snapshot[
+                "persisted_content_digest_sha256"
+            ]
+            persisted_artifact_id = persisted_snapshot["persisted_artifact_id"]
+            persisted_artifact_sha256 = persisted_snapshot["persisted_artifact_sha256"]
+        elif persisted is not None:
             persisted_status = persisted.status.value
             persisted_observation_id = persisted.observation_id
             persisted_content_digest = persisted.content_digest_sha256
@@ -1096,6 +1152,69 @@ class TopicObservationRunner:
             and stored.get("input_fingerprints", {}).get(input_id) == fingerprint
         ]
         return sorted(matches)[0] if matches else None
+
+    @staticmethod
+    def _pending_evidence_can_upgrade(evidence: Mapping[str, Any]) -> bool:
+        if evidence.get("persisted_observation_status") != ObservationStatus.PENDING.value:
+            return False
+        basis = evidence.get("basis")
+        import_disposition = evidence.get("import_disposition")
+        if basis == "PENDING_OBSERVATION":
+            return import_disposition == ImportDisposition.PENDING.value
+        return (
+            basis == "MANUAL_QUEUE"
+            and evidence.get("manual_reason") == ManualReviewReason.BUDGET_EXHAUSTED.value
+            and import_disposition in {None, ImportDisposition.PENDING.value}
+        )
+
+    @staticmethod
+    def _processed_replay_prior_evidence(
+        evidence: Mapping[str, Any],
+        result: TopicItemResult,
+        fingerprint: str,
+        *,
+        cursor: str,
+        all_stored_batches: Mapping[str, Any],
+    ) -> Mapping[str, Any]:
+        prior_cursor = evidence["prior_cursor"]
+        if (
+            not isinstance(prior_cursor, str)
+            or not prior_cursor
+            or prior_cursor == cursor
+            or evidence["prior_input_id"] != result.input_id
+        ):
+            raise TopicObservationError("processed duplicate evidence has no valid prior input")
+        prior_batch = all_stored_batches.get(prior_cursor)
+        if not isinstance(prior_batch, Mapping):
+            raise TopicObservationError(
+                "processed duplicate evidence references an unknown prior batch"
+            )
+        prior_fingerprints = prior_batch.get("input_fingerprints")
+        if (
+            not isinstance(prior_fingerprints, Mapping)
+            or prior_fingerprints.get(result.input_id) != fingerprint
+        ):
+            raise TopicObservationError("processed duplicate evidence fingerprint conflicts")
+        prior_disposition_evidence = prior_batch.get("disposition_evidence")
+        if not isinstance(prior_disposition_evidence, Mapping):
+            raise TopicObservationError("processed duplicate evidence prior record is missing")
+        prior_evidence = prior_disposition_evidence.get(result.input_id)
+        if not isinstance(prior_evidence, Mapping):
+            raise TopicObservationError("processed duplicate evidence prior record is missing")
+        for field in (
+            "observation_id",
+            "input_idempotency_key",
+            "persisted_observation_id",
+            "persisted_observation_status",
+            "persisted_content_digest_sha256",
+            "persisted_artifact_id",
+            "persisted_artifact_sha256",
+        ):
+            if evidence[field] != prior_evidence.get(field):
+                raise TopicObservationError(
+                    "processed duplicate evidence does not match prior evidence"
+                )
+        return prior_evidence
 
     @staticmethod
     def _record_manual_event(
@@ -2097,7 +2216,7 @@ class TopicObservationRunner:
                     literature_by_id=literature_by_id,
                     seen_observation_keys=set(payload["seen_observation_keys"]),
                 )
-                if historical_pending_upgrade:
+                if historical_pending_upgrade and evidence["basis"] != "PROCESSED_INPUT_REPLAY":
                     historical_pending_upgrades.append((cursor, evidence))
                 if evidence["basis"] in {"NEW_IMPORT", "EXISTING_OBSERVED"}:
                     derived_seen_observation_keys.add(evidence["input_idempotency_key"])
@@ -2121,6 +2240,7 @@ class TopicObservationRunner:
             validated_batches[cursor] = result
             validated_batch_records[cursor] = {
                 "input_fingerprints": input_fingerprints,
+                "input_projections": canonical_projections,
                 "disposition_evidence": disposition_evidence,
                 "result": result,
             }
@@ -2222,20 +2342,53 @@ class TopicObservationRunner:
         cursor_position = {batch_cursor: index for index, batch_cursor in enumerate(cursor_order)}
         for historical_cursor, historical_evidence in historical_pending_upgrades:
             historical_position = cursor_position[historical_cursor]
+            historical_record = validated_batch_records[historical_cursor]
+            historical_projections = historical_record["input_projections"]
+            historical_projection = historical_projections.get(
+                historical_evidence["input_id"]
+            )
+            if not isinstance(historical_projection, Mapping):
+                raise TopicObservationError(
+                    "historical pending evidence input projection is missing"
+                )
+            historical_observation = SourceObservation.from_dict(
+                historical_projection["observation"]
+            )
             upgrade_proven = False
             for later_cursor in cursor_order[historical_position + 1 :]:
-                later_evidence = validated_batch_records[later_cursor]["disposition_evidence"]
-                if any(
-                    candidate["basis"] in {"NEW_IMPORT", "EXISTING_OBSERVED"}
-                    and candidate["persisted_observation_id"]
-                    == historical_evidence["persisted_observation_id"]
-                    and candidate["input_idempotency_key"]
-                    == historical_evidence["input_idempotency_key"]
-                    and candidate["persisted_content_digest_sha256"]
-                    == historical_evidence["persisted_content_digest_sha256"]
-                    for candidate in later_evidence.values()
-                ):
-                    upgrade_proven = True
+                later_record = validated_batch_records[later_cursor]
+                later_evidence = later_record["disposition_evidence"]
+                later_projections = later_record["input_projections"]
+                for candidate in later_evidence.values():
+                    if candidate["basis"] not in {"NEW_IMPORT", "EXISTING_OBSERVED"}:
+                        continue
+                    candidate_projection = later_projections.get(candidate["input_id"])
+                    if not isinstance(candidate_projection, Mapping):
+                        raise TopicObservationError(
+                            "observed upgrade evidence input projection is missing"
+                        )
+                    candidate_observation = SourceObservation.from_dict(
+                        candidate_projection["observation"]
+                    )
+                    if (
+                        candidate["persisted_observation_id"]
+                        == historical_evidence["persisted_observation_id"]
+                        and candidate["input_idempotency_key"]
+                        == historical_evidence["input_idempotency_key"]
+                        and candidate["input_content_digest_sha256"]
+                        == historical_evidence["input_content_digest_sha256"]
+                        and candidate["input_content_sha256"]
+                        == historical_evidence["input_content_sha256"]
+                        and candidate["persisted_content_digest_sha256"]
+                        == historical_evidence["persisted_content_digest_sha256"]
+                        and candidate_projection["observation"]["observation_id"]
+                        == historical_projection["observation"]["observation_id"]
+                        and candidate_observation.logical_identity
+                        == historical_observation.logical_identity
+                    ):
+                        upgrade_proven = True
+                        break
+                if upgrade_proven:
                     break
             if not upgrade_proven:
                 raise TopicObservationError(
@@ -2379,6 +2532,15 @@ class TopicObservationRunner:
             raise TopicObservationError(
                 "stored disposition evidence is not bound to its batch input projection"
             )
+        processed_prior_evidence: Mapping[str, Any] | None = None
+        if basis == "PROCESSED_INPUT_REPLAY":
+            processed_prior_evidence = self._processed_replay_prior_evidence(
+                evidence,
+                result,
+                fingerprint,
+                cursor=cursor,
+                all_stored_batches=all_stored_batches,
+            )
         _require_nonempty(evidence["input_observation_id"], "stored input observation id")
         _require_sha256(evidence["input_idempotency_key"], "stored input idempotency key")
         _require_sha256_or_empty(
@@ -2422,15 +2584,11 @@ class TopicObservationRunner:
                 historical_pending_upgrade = (
                     persisted_status == ObservationStatus.PENDING.value
                     and persisted.status is ObservationStatus.OBSERVED
-                    and (
-                        basis == "PENDING_OBSERVATION"
-                        or (
-                            basis == "MANUAL_QUEUE"
-                            and evidence["manual_reason"]
-                            == ManualReviewReason.BUDGET_EXHAUSTED.value
-                            and evidence["import_disposition"]
-                            == ImportDisposition.PENDING.value
-                        )
+                    and self._pending_evidence_can_upgrade(
+                        processed_prior_evidence
+                        if basis == "PROCESSED_INPUT_REPLAY"
+                        and processed_prior_evidence is not None
+                        else evidence
                     )
                 )
                 if not historical_pending_upgrade:
@@ -2532,28 +2690,8 @@ class TopicObservationRunner:
         elif basis == "PROCESSED_INPUT_REPLAY":
             if import_disposition is not None:
                 raise TopicObservationError("processed duplicate evidence must not claim an import disposition")
-            prior_cursor = evidence["prior_cursor"]
-            if prior_cursor is None or prior_cursor == cursor or evidence["prior_input_id"] != result.input_id:
-                raise TopicObservationError("processed duplicate evidence has no valid prior input")
-            prior_batch = all_stored_batches.get(prior_cursor)
-            if not isinstance(prior_batch, dict):
-                raise TopicObservationError("processed duplicate evidence references an unknown prior batch")
-            if prior_batch.get("input_fingerprints", {}).get(result.input_id) != fingerprint:
-                raise TopicObservationError("processed duplicate evidence fingerprint conflicts")
-            prior_evidence = prior_batch.get("disposition_evidence", {}).get(result.input_id)
-            if not isinstance(prior_evidence, dict):
+            if processed_prior_evidence is None:
                 raise TopicObservationError("processed duplicate evidence prior record is missing")
-            for field in (
-                "observation_id",
-                "input_idempotency_key",
-                "persisted_observation_id",
-                "persisted_observation_status",
-                "persisted_content_digest_sha256",
-                "persisted_artifact_id",
-                "persisted_artifact_sha256",
-            ):
-                if evidence[field] != prior_evidence.get(field):
-                    raise TopicObservationError("processed duplicate evidence does not match prior evidence")
         elif basis == "MANUAL_QUEUE":
             if evidence["manual_id"] is None or evidence["prior_cursor"] is not None or evidence["prior_input_id"] is not None:
                 raise TopicObservationError("manual item evidence has invalid linkage fields")

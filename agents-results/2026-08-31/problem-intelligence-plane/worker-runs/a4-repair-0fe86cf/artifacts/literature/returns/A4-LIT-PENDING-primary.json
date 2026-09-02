@@ -1,0 +1,51 @@
+{
+  "task_id": "A4-LIT-PENDING",
+  "baseline": {
+    "commit": "0fe86cf4501dc9829d5d95784c4984821d971aff",
+    "frozen_inputs": {
+      "matharc/v02/literature_base.py": "f986e6a4354dd561cf14bf47e1343a995d012e57f6f9409149c3e16f1af05da1",
+      "tests/test_v02_literature_base.py": "fbbba0719d25345796337bf47dbf8bf1ee8c248f7a1256eb529e5af23b72b70d"
+    }
+  },
+  "changed_files": [
+    "matharc/v02/literature_base.py",
+    "tests/test_v02_literature_base.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/worker-runs/a4-repair-0fe86cf/artifacts/literature/returns/A4-LIT-PENDING-primary.json"
+  ],
+  "post_change_sha256": {
+    "matharc/v02/literature_base.py": "d3ab25e35f2f8bd0be914711f57ef4b1a65ba14baad045fe34707d603b2b7789",
+    "tests/test_v02_literature_base.py": "3070ced14da43b04b02ba84ad17bae000e9adffaa51d6c938699750f5a333429"
+  },
+  "commands": [
+    "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature_base",
+    "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m mypy --strict matharc/v02/literature_base.py",
+    "git diff --check -- matharc/v02/literature_base.py tests/test_v02_literature_base.py"
+  ],
+  "results": {
+    "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature_base": {
+      "status": "pass",
+      "detail": "19 tests passed"
+    },
+    "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m mypy --strict matharc/v02/literature_base.py": {
+      "status": "pass",
+      "detail": "Success: no issues found in 1 source file"
+    },
+    "git diff --check -- matharc/v02/literature_base.py tests/test_v02_literature_base.py": {
+      "status": "pass",
+      "detail": "no whitespace errors"
+    }
+  },
+  "invariant_summary": [
+    "A persisted PENDING observation is returned unchanged for incomplete retries with the same logical identity and digest; no manifest or in-memory record mutation occurs.",
+    "PENDING can advance only through the existing validated completion path with matching observation ID, idempotency key, logical identity, non-empty matching digest, open license, matching bytes, and verified artifact.",
+    "Completion preserves historical observation timestamp, source/version identity, media type, content summary, summary basis, and digest while updating only the required license, status, and artifact fields.",
+    "Conflict handling, observed replay, budget rejection, artifact integrity, writer locking, and fail-closed behavior remain covered by the existing tests."
+  ],
+  "unverified_items": [
+    "The pre-existing uncommitted matharc/v02/topic_observation.py change was preserved and was outside this task's write and acceptance scope."
+  ],
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_self_check": "pass",
+  "failure_class": "none",
+  "failure_origin": "none"
+}

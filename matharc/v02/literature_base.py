@@ -215,6 +215,7 @@ class LiteratureBase:
         if existing_id is not None and existing_id.logical_identity != observation.logical_identity:
             rejected = self._rejected(observation)
             return ImportResult(ImportDisposition.REJECTED, rejected, reason="observation_id already names another logical identity")
+        pending_observation: SourceObservation | None = None
         existing_identity = sorted(
             (item for item in self.observations if item.logical_identity == observation.logical_identity),
             key=lambda item: item.status is not ObservationStatus.OBSERVED,
@@ -280,8 +281,15 @@ class LiteratureBase:
                     and observation.content_digest_sha256
                     and item.content_digest_sha256 == observation.content_digest_sha256
                 ):
-                    # A pending record is intentionally revalidated below so a
-                    # later license/digest confirmation can complete import.
+                    if (
+                        item.status is ObservationStatus.PENDING
+                        and item.observation_id == observation.observation_id
+                        and item.idempotency_key == observation.idempotency_key
+                        and item.logical_identity == observation.logical_identity
+                    ):
+                        pending_observation = item
+                    # A matching pending record is revalidated below so a
+                    # later license confirmation can complete import.
                     continue
                 if (
                     item.content_digest_sha256
@@ -298,6 +306,12 @@ class LiteratureBase:
                         )
                     self._record(conflict)
                     return ImportResult(ImportDisposition.CONFLICT, conflict, reason="same identity has a different digest")
+                if item.status is ObservationStatus.PENDING:
+                    return ImportResult(
+                        ImportDisposition.PENDING,
+                        item,
+                        reason="pending record cannot be replaced by an incomplete retry",
+                    )
 
         for existing in self._observations.values():
             if (
@@ -312,41 +326,70 @@ class LiteratureBase:
                 )
 
         if self.budget is not None and self.budget.exhausted():
-            pending = self._pending(observation)
-            self._record(pending)
-            return ImportResult(ImportDisposition.PENDING, pending, reason="budget exhausted")
+            return self._pending_result(observation, pending_observation, "budget exhausted")
         if observation.license_status is not LicenseStatus.OPEN:
-            pending = self._pending(observation)
-            self._record(pending)
-            return ImportResult(ImportDisposition.PENDING, pending, reason="license is not confirmed open")
+            return self._pending_result(
+                observation,
+                pending_observation,
+                "license is not confirmed open",
+            )
         if not observation.content_digest_sha256:
-            pending = self._pending(observation)
-            self._record(pending)
-            return ImportResult(ImportDisposition.PENDING, pending, reason="content digest is missing")
+            return self._pending_result(
+                observation,
+                pending_observation,
+                "content digest is missing",
+            )
         if actual_digest != observation.content_digest_sha256:
-            pending = self._pending(observation)
-            self._record(pending)
-            return ImportResult(ImportDisposition.PENDING, pending, reason="content digest mismatch")
+            return self._pending_result(
+                observation,
+                pending_observation,
+                "content digest mismatch",
+            )
 
+        completion_observation = (
+            pending_observation if pending_observation is not None else observation
+        )
         artifact_id = "lit-" + hashlib.sha256(
-            f"{observation.logical_identity}|{actual_digest}".encode("utf-8")
+            f"{completion_observation.logical_identity}|{actual_digest}".encode("utf-8")
         ).hexdigest()[:32]
         try:
             artifact = self._reuse_or_put_artifact(
                 artifact_id,
                 content,
-                observation,
+                completion_observation,
                 source_filename,
             )
         except (KeyError, ValueError) as exc:
-            pending = self._pending(observation)
-            self._record(pending)
-            return ImportResult(ImportDisposition.PENDING, pending, reason=f"artifact persistence failed: {exc}")
+            return self._pending_result(
+                observation,
+                pending_observation,
+                f"artifact persistence failed: {exc}",
+            )
+        observed_payload = completion_observation.to_dict()
+        if pending_observation is not None:
+            observed_payload["license_status"] = observation.license_status.value
+            observed_payload["license_basis"] = observation.license_basis
         observed = SourceObservation.from_dict(
-            {**observation.to_dict(), "status": ObservationStatus.OBSERVED.value, "artifact_id": artifact.artifact_id}
+            {
+                **observed_payload,
+                "status": ObservationStatus.OBSERVED.value,
+                "artifact_id": artifact.artifact_id,
+            }
         )
         self._record(observed)
         return ImportResult(ImportDisposition.IMPORTED, observed, artifact)
+
+    def _pending_result(
+        self,
+        observation: SourceObservation,
+        existing: SourceObservation | None,
+        reason: str,
+    ) -> ImportResult:
+        if existing is not None:
+            return ImportResult(ImportDisposition.PENDING, existing, reason=reason)
+        pending = self._pending(observation)
+        self._record(pending)
+        return ImportResult(ImportDisposition.PENDING, pending, reason=reason)
 
     def _pending(self, observation: SourceObservation) -> SourceObservation:
         return SourceObservation.from_dict(
@@ -423,6 +466,25 @@ class LiteratureBase:
                 or existing.status is not ObservationStatus.PENDING
             ):
                 raise ValueError(f"refusing to overwrite observation id: {observation.observation_id}")
+            if (
+                observation.status is not ObservationStatus.OBSERVED
+                or existing.observation_id != observation.observation_id
+                or existing.idempotency_key != observation.idempotency_key
+                or existing.logical_identity != observation.logical_identity
+                or existing.canonical_uri != observation.canonical_uri
+                or existing.pinned_version != observation.pinned_version
+                or existing.observed_at != observation.observed_at
+                or existing.content_summary != observation.content_summary
+                or existing.summary_basis != observation.summary_basis
+                or existing.media_type != observation.media_type
+                or existing.content_digest_sha256 != observation.content_digest_sha256
+                or not observation.content_digest_sha256
+                or observation.license_status is not LicenseStatus.OPEN
+                or not observation.artifact_id
+            ):
+                raise ValueError(
+                    f"refusing to rewrite immutable pending observation: {observation.observation_id}"
+                )
         for existing in candidate_observations.values():
             if (
                 existing.observation_id != observation.observation_id

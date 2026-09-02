@@ -42,6 +42,138 @@ class LiteratureBaseTests(unittest.TestCase):
             self.assertEqual(result.observation.status, ObservationStatus.OBSERVED)
             self.assertEqual(result.artifact.size_bytes if result.artifact else None, len(content))
 
+    def test_pending_retry_cannot_rewrite_same_digest_metadata(self) -> None:
+        content = b"pending metadata immutability"
+        digest = hashlib.sha256(content).hexdigest()
+        initial = new_observation(
+            observation_id="pending-metadata",
+            canonical_uri="https://example.test/pending-metadata",
+            pinned_version="v1",
+            observed_at="2026-09-02T08:00:00+00:00",
+            license_status=LicenseStatus.RESTRICTED,
+            license_basis="original restriction",
+            content_summary="Original descriptive metadata",
+            summary_basis="original abstract",
+            media_type="application/pdf",
+            content_digest_sha256=digest,
+        )
+        weakened_retry = new_observation(
+            observation_id=initial.observation_id,
+            canonical_uri=initial.canonical_uri,
+            pinned_version=initial.pinned_version,
+            observed_at="2026-09-02T07:00:00+00:00",
+            license_status=LicenseStatus.UNKNOWN,
+            license_basis="weakened retry basis",
+            content_summary="Rewritten descriptive metadata",
+            summary_basis="rewritten abstract",
+            media_type="text/plain",
+            content_digest_sha256=digest,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            base = LiteratureBase(directory)
+            first = base.import_bytes(initial, content)
+            self.assertEqual(first.disposition, ImportDisposition.PENDING)
+            manifest_path = Path(directory) / "observations.json"
+            before = manifest_path.read_bytes()
+
+            result = base.import_bytes(weakened_retry, content)
+
+            self.assertEqual(result.disposition, ImportDisposition.PENDING)
+            self.assertEqual(result.observation, first.observation)
+            self.assertEqual(base.observations, (first.observation,))
+            self.assertEqual(manifest_path.read_bytes(), before)
+
+    def test_pending_retry_with_missing_digest_survives_restart_readback(self) -> None:
+        content = b"pending restart immutability"
+        digest = hashlib.sha256(content).hexdigest()
+        initial = new_observation(
+            observation_id="pending-restart",
+            canonical_uri="https://example.test/pending-restart",
+            pinned_version="v1",
+            observed_at="2026-09-02T08:00:00+00:00",
+            license_status=LicenseStatus.RESTRICTED,
+            license_basis="original restriction",
+            content_summary="Original restart metadata",
+            summary_basis="original source",
+            media_type="application/pdf",
+            content_digest_sha256=digest,
+        )
+        missing_digest_retry = new_observation(
+            observation_id=initial.observation_id,
+            canonical_uri=initial.canonical_uri,
+            pinned_version=initial.pinned_version,
+            observed_at="2026-09-02T07:00:00+00:00",
+            license_status=LicenseStatus.OPEN,
+            license_basis="confirmed but incomplete",
+            content_summary="Rewritten restart metadata",
+            summary_basis="rewritten source",
+            media_type="text/plain",
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            base = LiteratureBase(directory)
+            first = base.import_bytes(initial, content)
+            self.assertEqual(first.disposition, ImportDisposition.PENDING)
+            manifest_path = Path(directory) / "observations.json"
+            before = manifest_path.read_bytes()
+
+            restarted = LiteratureBase(directory)
+            result = restarted.import_bytes(missing_digest_retry, content)
+            read_back = LiteratureBase(directory)
+
+            self.assertEqual(result.disposition, ImportDisposition.PENDING)
+            self.assertEqual(result.observation, first.observation)
+            self.assertEqual(read_back.observations, (first.observation,))
+            self.assertEqual(manifest_path.read_bytes(), before)
+
+    def test_pending_completion_preserves_historical_metadata(self) -> None:
+        content = b"pending completion metadata"
+        digest = hashlib.sha256(content).hexdigest()
+        initial = new_observation(
+            observation_id="pending-completion",
+            canonical_uri="https://example.test/pending-completion",
+            pinned_version="v1",
+            observed_at="2026-09-02T08:00:00+00:00",
+            license_status=LicenseStatus.RESTRICTED,
+            license_basis="original restriction",
+            content_summary="Original completion metadata",
+            summary_basis="original source",
+            media_type="application/pdf",
+            content_digest_sha256=digest,
+        )
+        confirmed_retry = new_observation(
+            observation_id=initial.observation_id,
+            canonical_uri=initial.canonical_uri,
+            pinned_version=initial.pinned_version,
+            observed_at="2026-09-02T07:00:00+00:00",
+            license_status=LicenseStatus.OPEN,
+            license_basis="confirmed open license",
+            content_summary="Rewritten completion metadata",
+            summary_basis="rewritten source",
+            media_type="text/plain",
+            content_digest_sha256=digest,
+        )
+        with tempfile.TemporaryDirectory() as directory:
+            base = LiteratureBase(directory)
+            first = base.import_bytes(initial, content)
+            result = base.import_bytes(confirmed_retry, content, source_filename="paper.pdf")
+
+            self.assertEqual(first.disposition, ImportDisposition.PENDING)
+            self.assertEqual(result.disposition, ImportDisposition.IMPORTED)
+            self.assertIsNotNone(result.artifact)
+            assert result.artifact is not None
+            self.assertEqual(result.artifact.media_type, initial.media_type)
+            self.assertEqual(result.observation.observation_id, initial.observation_id)
+            self.assertEqual(result.observation.canonical_uri, initial.canonical_uri)
+            self.assertEqual(result.observation.pinned_version, initial.pinned_version)
+            self.assertEqual(result.observation.observed_at, initial.observed_at)
+            self.assertEqual(result.observation.content_summary, initial.content_summary)
+            self.assertEqual(result.observation.summary_basis, initial.summary_basis)
+            self.assertEqual(result.observation.media_type, initial.media_type)
+            self.assertEqual(result.observation.content_digest_sha256, digest)
+            self.assertEqual(result.observation.license_status, LicenseStatus.OPEN)
+            self.assertEqual(result.observation.license_basis, confirmed_retry.license_basis)
+            self.assertEqual(result.observation.status, ObservationStatus.OBSERVED)
+
     def test_import_idempotency_conflict_and_reload(self) -> None:
         content = b"%PDF-1.7 sample"
         digest = hashlib.sha256(content).hexdigest()

@@ -1,0 +1,90 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-REPAIR-CONVERGENCE",
+  "baseline": "0fe86cf4501dc9829d5d95784c4984821d971aff",
+  "lane_results": {
+    "A4-LIT-PENDING": {
+      "ledger": "artifacts/literature/ledger/A4-LIT-PENDING.json",
+      "terminal_state": "IMPLEMENTED",
+      "attempts": 1,
+      "validation_exit_code": 0
+    },
+    "A4-TOPIC-REPLAY": {
+      "ledger": "artifacts/topic/ledger/A4-TOPIC-REPLAY.json",
+      "terminal_state": "IMPLEMENTED",
+      "attempts": 2,
+      "first_attempt_failure_class": "transport",
+      "first_attempt_failure_origin": "worker-transport",
+      "retry_validation_exit_code": 0
+    }
+  },
+  "worker_return_metadata_finding": {
+    "status": "DISCLOSED_NON_CODE_EVIDENCE_TYPO",
+    "path": "artifacts/topic/returns/A4-TOPIC-REPLAY-primary-retry.json",
+    "field": "protected_test_hash_readback.tests/test_v02_dogfood_archives.py",
+    "reported_value": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242c",
+    "actual_value": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242",
+    "disposition": "The raw worker return is preserved. Both supervisor validation logs and the coordinator readback used the actual 64-character hash and passed."
+  },
+  "compressed_sampling_logs": {
+    "artifacts/literature/logs/A4-LIT-PENDING-primary.log.gz": {
+      "original_sha256": "2916b437bcf1de644221843c7df68cb12bd791416763a78efabad76e2bca59f4",
+      "compression_check": "PASS"
+    },
+    "artifacts/topic/logs/A4-TOPIC-REPLAY-primary.log.gz": {
+      "original_sha256": "e8897f2216864606b15794a2db51c31dacb2ae466fa021c552cb57a3407008cc",
+      "compression_check": "PASS"
+    },
+    "artifacts/topic/logs/A4-TOPIC-REPLAY-primary-retry.log.gz": {
+      "original_sha256": "9bc9942f08cdb5b32ea2f3ad6c1129ec69093ab2ac9fe919dfbe27943c7ebe59",
+      "compression_check": "PASS"
+    }
+  },
+  "coordinator_validation": {
+    "focused_unittest": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_literature_base tests.test_v02_topic_observation_integrity tests.test_v02_artifact_store_durability tests.test_v02_topic_observation tests.test_v02_dogfood_archives",
+      "result": "PASS",
+      "tests_run": 104,
+      "failures": 0,
+      "errors": 0,
+      "skips": 0
+    },
+    "strict_mypy": {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m mypy --strict matharc/v02/literature_base.py matharc/v02/topic_observation.py",
+      "result": "PASS",
+      "files": 2
+    },
+    "diff_check": {
+      "command": "git diff --check",
+      "result": "PASS"
+    },
+    "protected_test_hashes": {
+      "tests/test_v02_topic_observation.py": "bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497",
+      "tests/test_v02_dogfood_archives.py": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242"
+    },
+    "ci_full": {
+      "command": "make ci-full PYTHON=.venv/bin/python",
+      "result": "PASS",
+      "unittest": {
+        "discovered": 575,
+        "run": 575,
+        "failures": 0,
+        "errors": 0,
+        "skipped": 2,
+        "skip_policy": "Exact two-entry non-SMT whitelist matched"
+      },
+      "smt": {
+        "discovered": 20,
+        "executed": 20,
+        "skipped": 0
+      },
+      "mypy_source_files": 79,
+      "v01_acceptance": "PASS",
+      "v02_acceptance": "14/14 PASS",
+      "frankl_replay": "PASS",
+      "console_browser_gate": "52 cases x 2 campaigns x 6 widths PASS"
+    }
+  },
+  "proposed_state": "IMPLEMENTED",
+  "acceptance_boundary": "This convergence record does not accept A4, does not change R1 v11, does not sign any human decision, and does not authorize mathematical or public-release claims."
+}

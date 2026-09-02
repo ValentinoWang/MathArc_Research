@@ -1,0 +1,44 @@
+Task: A4-TOPIC-REPLAY
+
+Implement the three confirmed TopicObservationRunner repairs at frozen project baseline `0fe86cf4501dc9829d5d95784c4984821d971aff`.
+
+Authority and findings:
+- Current A4 state is INVALIDATED/BLOCKED by `EV-A4-REOPENED-4`.
+- Independent reviews proved: nested runner roots are not made crash-durable component by component; pre-import budget evidence blocks a valid strictly later PENDING-to-OBSERVED recovery; and processed replay fails after its historical PENDING observation is upgraded.
+- This task repairs implementation behavior only. It does not accept A4 or change any SSOT, contract, human decision, release record, branch, commit, or remote ref.
+
+Frozen inputs:
+- `matharc/v02/topic_observation.py` SHA-256 `d60888856685637f6123098857817335c22d4976ef80d569e1b4097c43b90393`
+- `tests/test_v02_topic_observation_integrity.py` SHA-256 `719a3da1710745ff7e27e3f22396965af698af14d07be35722724df7f2e84652`
+- `tests/test_v02_artifact_store_durability.py` SHA-256 `da68ab76a64a38b1a744119fa6840281d2c486bbc94797baf095c828673462e3`
+- protected read-only tests: `tests/test_v02_topic_observation.py` SHA-256 `bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497`; `tests/test_v02_dogfood_archives.py` SHA-256 `345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242`
+
+Exclusive write scope:
+- `matharc/v02/topic_observation.py`
+- `tests/test_v02_topic_observation_integrity.py`
+- `tests/test_v02_artifact_store_durability.py`
+- the exact STRUCTURED_RETURN_PATH supplied by the supervisor
+
+Forbidden writes:
+- `matharc/v02/literature_base.py`, `tests/test_v02_literature_base.py`, and every other source/test file
+- protected tests `tests/test_v02_topic_observation.py` and `tests/test_v02_dogfood_archives.py`
+- all `agents-results/**` except the exact STRUCTURED_RETURN_PATH
+- `.ssot/**`, acceptance contracts, human acceptance, indexes, manifests, evidence, git refs, commits, branches, remotes, lockfiles, and Harness Engineering
+
+Required behavior:
+1. Create a genuinely absent multi-component runner root one component at a time from the nearest existing ancestor and fsync each newly modified immediate parent before exposing initialized storage. Propagate mkdir/fsync failures.
+2. Treat pre-import and post-import exhausted-budget evidence as distinct valid phases. Permit historical pre-import PENDING evidence with null import disposition to upgrade only when a strictly later validated cursor-chain batch proves the same observation ID, idempotency key, logical identity, and digest and the current artifact is verified. Preserve every negative identity/digest/cursor check.
+3. A processed replay must bind to the immutable prior disposition snapshot. If a later validated batch upgraded the observation from PENDING to OBSERVED, replay the historical input without replacing its prior evidence with current literature fields; validate the later transition instead and commit/clear the transaction.
+4. Keep fail-closed state authentication, transaction recovery, budget enforcement, protected-test behavior, and all unrelated replay/manual-queue invariants intact.
+5. Add exact regressions for multi-component root fsync order/failure, pre-import budget PENDING-to-OBSERVED recovery with restart, processed replay after the upgrade, and negative identity/digest/cursor variants as proportionate.
+
+Acceptance commands:
+- `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_topic_observation_integrity tests.test_v02_artifact_store_durability tests.test_v02_topic_observation tests.test_v02_dogfood_archives`
+- `PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m mypy --strict matharc/v02/topic_observation.py`
+- `git diff --check -- matharc/v02/topic_observation.py tests/test_v02_topic_observation_integrity.py tests/test_v02_artifact_store_durability.py`
+- verify both protected test SHA-256 values remain exactly frozen
+
+Return requirements:
+- Write valid JSON to STRUCTURED_RETURN_PATH.
+- Include task_id, baseline, changed_files, commands/results, invariant summary, protected-test hash readback, unverified_items, proposed_state, acceptance_self_check, failure_class, and failure_origin.
+- Use proposed_state IMPLEMENTED and acceptance_self_check pass only if every acceptance command passes and all writes stay in scope.

@@ -1,0 +1,25 @@
+test_budget_blocks_before_write_and_does_not_create_claims (tests.test_v02_literature_base.LiteratureBaseTests.test_budget_blocks_before_write_and_does_not_create_claims) ... ok
+test_conflict_id_does_not_overwrite_unrelated_observed_record (tests.test_v02_literature_base.LiteratureBaseTests.test_conflict_id_does_not_overwrite_unrelated_observed_record) ... ok
+test_conflict_record_does_not_hide_observed_replay (tests.test_v02_literature_base.LiteratureBaseTests.test_conflict_record_does_not_hide_observed_replay) ... ok
+test_digest_errors_and_missing_digest_remain_pending (tests.test_v02_literature_base.LiteratureBaseTests.test_digest_errors_and_missing_digest_remain_pending) ... ok
+test_duplicate_observation_id_cannot_overwrite_another_identity (tests.test_v02_literature_base.LiteratureBaseTests.test_duplicate_observation_id_cannot_overwrite_another_identity) ... ok
+test_failures_remain_pending_without_artifacts (tests.test_v02_literature_base.LiteratureBaseTests.test_failures_remain_pending_without_artifacts) ... ok
+test_idempotent_replay_fails_closed_when_blob_is_corrupted (tests.test_v02_literature_base.LiteratureBaseTests.test_idempotent_replay_fails_closed_when_blob_is_corrupted) ... ok
+test_import_idempotency_conflict_and_reload (tests.test_v02_literature_base.LiteratureBaseTests.test_import_idempotency_conflict_and_reload) ... ok
+test_observed_record_cannot_be_downgraded_by_incomplete_retry (tests.test_v02_literature_base.LiteratureBaseTests.test_observed_record_cannot_be_downgraded_by_incomplete_retry) ... ok
+test_observed_replay_requires_open_license_and_budget (tests.test_v02_literature_base.LiteratureBaseTests.test_observed_replay_requires_open_license_and_budget) ... ok
+test_pending_completion_preserves_historical_metadata (tests.test_v02_literature_base.LiteratureBaseTests.test_pending_completion_preserves_historical_metadata) ... ok
+test_pending_license_can_be_retried_after_license_confirmation (tests.test_v02_literature_base.LiteratureBaseTests.test_pending_license_can_be_retried_after_license_confirmation) ... ok
+test_pending_retry_cannot_rewrite_same_digest_metadata (tests.test_v02_literature_base.LiteratureBaseTests.test_pending_retry_cannot_rewrite_same_digest_metadata) ... ok
+test_pending_retry_with_missing_digest_survives_restart_readback (tests.test_v02_literature_base.LiteratureBaseTests.test_pending_retry_with_missing_digest_survives_restart_readback) ... ok
+test_registry_is_not_created_or_mutated (tests.test_v02_literature_base.LiteratureBaseTests.test_registry_is_not_created_or_mutated) ... ok
+test_replay_recovers_artifact_written_before_observation_manifest (tests.test_v02_literature_base.LiteratureBaseTests.test_replay_recovers_artifact_written_before_observation_manifest) ... ok
+test_replay_rejects_conflicting_artifact_metadata (tests.test_v02_literature_base.LiteratureBaseTests.test_replay_rejects_conflicting_artifact_metadata) ... ok
+test_two_instances_merge_distinct_writes_from_the_same_root (tests.test_v02_literature_base.LiteratureBaseTests.test_two_instances_merge_distinct_writes_from_the_same_root) ... ok
+test_unsupported_media_is_rejected_by_observation_contract (tests.test_v02_literature_base.LiteratureBaseTests.test_unsupported_media_is_rejected_by_observation_contract) ... ok
+
+----------------------------------------------------------------------
+Ran 19 tests in 0.032s
+
+OK
+Success: no issues found in 1 source file

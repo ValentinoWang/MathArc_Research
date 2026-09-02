@@ -17,7 +17,12 @@ import matharc.v02.topic_observation as topic_observation_module
 from matharc.v02.budget import BudgetLedger
 from matharc.v02.literature_base import LiteratureBase
 from matharc.v02.schema import digest_json
-from matharc.v02.source_observation import LicenseStatus, SourceObservation, new_observation
+from matharc.v02.source_observation import (
+    LicenseStatus,
+    ObservationStatus,
+    SourceObservation,
+    new_observation,
+)
 from matharc.v02.topic_observation import (
     ManualReviewReason,
     TopicItemStatus,
@@ -56,6 +61,67 @@ def batch(cursor: str, next_cursor: str, *inputs: TopicObservationInput) -> Topi
 
 
 class TopicObservationIntegrityTests(unittest.TestCase):
+    def test_absent_nested_runner_root_fsyncs_each_component_before_storage(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            base = Path(directory).resolve()
+            root = base / "runner" / "nested"
+            fsynced: list[Path] = []
+            original_fsync_directory = topic_observation_module._fsync_directory
+
+            def record_fsync(path: Path) -> None:
+                fsynced.append(path)
+                self.assertFalse((root / "literature").exists())
+                self.assertFalse((root / ".topic-observation.lock").exists())
+                original_fsync_directory(path)
+
+            with patch.object(
+                topic_observation_module,
+                "_fsync_directory",
+                side_effect=record_fsync,
+            ):
+                TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                )
+
+            self.assertEqual([base, base / "runner"], fsynced)
+            self.assertTrue(root.is_dir())
+
+    def test_absent_nested_runner_root_fsync_failure_stops_initialization(self) -> None:
+        original_fsync_directory = topic_observation_module._fsync_directory
+
+        for failure_index in range(2):
+            with self.subTest(failure_index=failure_index), tempfile.TemporaryDirectory() as directory:
+                base = Path(directory)
+                root = base / "runner" / "nested"
+                fsynced: list[Path] = []
+
+                def fail_at_selected_parent(path: Path) -> None:
+                    fsynced.append(path)
+                    if len(fsynced) == failure_index + 1:
+                        raise OSError("simulated runner-root parent fsync failure")
+                    original_fsync_directory(path)
+
+                with patch.object(
+                    topic_observation_module,
+                    "_fsync_directory",
+                    side_effect=fail_at_selected_parent,
+                ):
+                    with self.assertRaisesRegex(
+                        OSError,
+                        "runner-root parent fsync failure",
+                    ):
+                        TopicObservationRunner(
+                            root,
+                            topic_id="integrity-topic",
+                            initial_cursor="c0",
+                        )
+
+                self.assertEqual(failure_index + 1, len(fsynced))
+                self.assertFalse((root / "literature").exists())
+                self.assertFalse((root / ".topic-observation.lock").exists())
+
     def test_authentication_files_are_private_and_restartable(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             runner = TopicObservationRunner(directory, topic_id="integrity-topic", initial_cursor="c0")
@@ -783,6 +849,223 @@ class TopicObservationIntegrityTests(unittest.TestCase):
                 ],
             )
             self.assertEqual("OBSERVED", restarted.literature.observations[0].status.value)
+
+    def test_pre_import_budget_upgrade_and_processed_replay_survive_restart(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            content = b"pre-import budget replay source"
+            digest = hashlib.sha256(content).hexdigest()
+            pending_observation = new_observation(
+                observation_id="OBS-PRE",
+                canonical_uri="https://integrity.example/pre-import-budget",
+                pinned_version="v1",
+                license_status=LicenseStatus.RESTRICTED,
+                license_basis="restricted fixture",
+                content_summary="Descriptive pre-import budget fixture.",
+                summary_basis="fixture",
+                media_type="text/plain",
+                content_digest_sha256=digest,
+                observed_at="2026-09-02T08:00:00+00:00",
+            )
+            open_observation = SourceObservation.from_dict(
+                {
+                    **pending_observation.to_dict(),
+                    "license_status": LicenseStatus.OPEN.value,
+                    "license_basis": "open fixture",
+                }
+            )
+            pending_input = TopicObservationInput("A", pending_observation, content)
+            open_input = TopicObservationInput("B", open_observation, content)
+
+            seed = TopicObservationRunner(
+                root,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            )
+            self.assertEqual(
+                "PENDING",
+                seed.literature.import_bytes(pending_observation, content).disposition.value,
+            )
+
+            exhausted = TopicObservationRunner(
+                root,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+                budget=BudgetLedger(cost_usd_limit=0.0),
+            )
+            first = exhausted.run(batch("c0", "c1", pending_input))
+            self.assertEqual(TopicItemStatus.MANUAL_REVIEW, first.item_results[0].status)
+            first_evidence = json.loads(exhausted.state_path.read_text(encoding="utf-8"))["batches"]["c0"][
+                "disposition_evidence"
+            ]["A"]
+            self.assertEqual("MANUAL_QUEUE", first_evidence["basis"])
+            self.assertEqual("BUDGET_EXHAUSTED", first_evidence["manual_reason"])
+            self.assertEqual("PENDING", first_evidence["persisted_observation_status"])
+            self.assertIsNone(first_evidence["import_disposition"])
+
+            restarted_before_upgrade = TopicObservationRunner(
+                root,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+                budget=BudgetLedger(cost_usd_limit=0.0),
+            )
+            self.assertEqual("c1", restarted_before_upgrade.next_cursor)
+
+            upgrader = TopicObservationRunner(
+                root,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            )
+            second = upgrader.run(batch("c1", "c2", open_input))
+            self.assertEqual(TopicItemStatus.IMPORTED, second.item_results[0].status)
+            self.assertEqual("OBS-PRE", second.item_results[0].observation_id)
+            self.assertEqual("OBSERVED", upgrader.literature.observations[0].status.value)
+            self.assertTrue(upgrader.literature.artifacts.verify()["valid"])
+
+            replay = TopicObservationRunner(
+                root,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            ).run(batch("c2", "c3", pending_input))
+            self.assertEqual(TopicItemStatus.DUPLICATE, replay.item_results[0].status)
+            self.assertEqual("OBS-PRE", replay.item_results[0].observation_id)
+            self.assertFalse((root / ".topic-observation-transaction.json").exists())
+            self.assertFalse((root / ".topic-observation-transaction.retiring.json").exists())
+
+            stored = json.loads(
+                (root / "topic-observation-state.json").read_text(encoding="utf-8")
+            )
+            replay_evidence = stored["batches"]["c2"]["disposition_evidence"]["A"]
+            self.assertEqual("PROCESSED_INPUT_REPLAY", replay_evidence["basis"])
+            self.assertEqual("PENDING", replay_evidence["persisted_observation_status"])
+            self.assertIsNone(replay_evidence["import_disposition"])
+            self.assertIsNone(replay_evidence["persisted_artifact_id"])
+            self.assertIsNone(replay_evidence["persisted_artifact_sha256"])
+
+            restarted_after_replay = TopicObservationRunner(
+                root,
+                topic_id="integrity-topic",
+                initial_cursor="c0",
+            )
+            self.assertEqual("c3", restarted_after_replay.next_cursor)
+
+    def test_pending_upgrade_rejects_identity_digest_and_cursor_variants(self) -> None:
+        content = b"pending upgrade negative fixture"
+        digest = hashlib.sha256(content).hexdigest()
+        changed_content = b"pending upgrade changed digest"
+        changed_digest = hashlib.sha256(changed_content).hexdigest()
+        restricted_observation = new_observation(
+            observation_id="OBS-NEGATIVE",
+            canonical_uri="https://integrity.example/pending-negative",
+            pinned_version="v1",
+            license_status=LicenseStatus.RESTRICTED,
+            license_basis="restricted fixture",
+            content_summary="Descriptive negative upgrade fixture.",
+            summary_basis="fixture",
+            media_type="text/plain",
+            content_digest_sha256=digest,
+            observed_at="2026-09-02T08:00:00+00:00",
+        )
+        open_observation = SourceObservation.from_dict(
+            {
+                **restricted_observation.to_dict(),
+                "license_status": LicenseStatus.OPEN.value,
+                "license_basis": "open fixture",
+            }
+        )
+        identity_variant = SourceObservation.from_dict(
+            {
+                **open_observation.to_dict(),
+                "canonical_uri": "https://integrity.example/pending-negative-other",
+            }
+        )
+        digest_variant = SourceObservation.from_dict(
+            {
+                **open_observation.to_dict(),
+                "content_digest_sha256": changed_digest,
+            }
+        )
+        cases = {
+            "identity": (
+                batch(
+                    "c1",
+                    "c2",
+                    TopicObservationInput("B", identity_variant, content),
+                ),
+                TopicItemStatus.MANUAL_REVIEW,
+                "c2",
+            ),
+            "digest": (
+                batch(
+                    "c1",
+                    "c2",
+                    TopicObservationInput("B", digest_variant, changed_content),
+                ),
+                TopicItemStatus.MANUAL_REVIEW,
+                "c2",
+            ),
+            "cursor": (
+                batch(
+                    "c0",
+                    "c2",
+                    TopicObservationInput("B", open_observation, content),
+                ),
+                TopicItemStatus.MANUAL_REVIEW,
+                "c1",
+            ),
+        }
+
+        for variant, (candidate_batch, expected_status, expected_cursor) in cases.items():
+            with self.subTest(variant=variant), tempfile.TemporaryDirectory() as directory:
+                root = Path(directory)
+                seed = TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                )
+                self.assertEqual(
+                    "PENDING",
+                    seed.literature.import_bytes(
+                        restricted_observation,
+                        content,
+                    ).disposition.value,
+                )
+                exhausted = TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                    budget=BudgetLedger(cost_usd_limit=0.0),
+                )
+                first = exhausted.run(
+                    batch(
+                        "c0",
+                        "c1",
+                        TopicObservationInput("A", restricted_observation, content),
+                    )
+                )
+                self.assertEqual(TopicItemStatus.MANUAL_REVIEW, first.item_results[0].status)
+
+                candidate_runner = TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                )
+                candidate = candidate_runner.run(candidate_batch)
+                self.assertEqual(expected_status, candidate.item_results[0].status)
+                self.assertEqual(expected_cursor, candidate_runner.next_cursor)
+                current = next(
+                    observation
+                    for observation in candidate_runner.literature.observations
+                    if observation.observation_id == restricted_observation.observation_id
+                )
+                self.assertEqual(ObservationStatus.PENDING, current.status)
+
+                restarted = TopicObservationRunner(
+                    root,
+                    topic_id="integrity-topic",
+                    initial_cursor="c0",
+                )
+                self.assertEqual(expected_cursor, restarted.next_cursor)
 
     def test_manual_ids_are_delimiter_safe_across_batches(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
