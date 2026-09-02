@@ -162,8 +162,8 @@
   ],
   "validation_report": {
     "path": "validation-report.json",
-    "sha256": "e9f8c4bc09b5c5d4aadc777cfdc8317eb74bb8579d7b38d64e883551c8e981a0",
-    "manifest_identity_sha256": "8610a031990e9e3a70a6cb7c6c2a64e2e989cde16314c8cb3d0a48bfcec38275",
-    "bundle_content_sha256": "577fabcb78569f3f0c93a34e9b4f507b3de0f0efc5e70c308518df7348e6b22b"
+    "sha256": "149c6cd0c2bac8e17b9af9631df91525d13210c42ab267cd4c309cfe0c67a86a",
+    "manifest_identity_sha256": "bb2fb36c81e1b4320ef68fc29fe4992128626515b6dd431b4483ab5030420372",
+    "bundle_content_sha256": "1dab65e74068c02cf36d3e0bfb6a0ff4ba18b92f21e037bb93880ab1b66d9559"
   }
 }
