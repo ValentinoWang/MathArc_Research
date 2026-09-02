@@ -1,0 +1,301 @@
+diff --git a/tests/test_v02_dogfood_archives.py b/tests/test_v02_dogfood_archives.py
+index ca2ee82..39b76e2 100644
+--- a/tests/test_v02_dogfood_archives.py
++++ b/tests/test_v02_dogfood_archives.py
+@@ -1,7 +1,6 @@
+ from __future__ import annotations
+ 
+ import copy
+-import hashlib
+ import json
+ import shutil
+ import tempfile
+@@ -12,12 +11,23 @@ from matharc.v02.dogfood_archives import DogfoodArchiveError, DogfoodArchiveRunn
+ from matharc.v02.schema import digest_json
+ from matharc.v02.topic_observation import TopicObservationError
+ 
+-
+ ROOT = Path(__file__).parents[1]
+ S1_FIXTURES = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/s1-fixtures"
+ T2_FIXTURE = ROOT / "agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json"
+ 
+ 
++def manual_id_for(fields: dict[str, str]) -> str:
++    return "manual-" + digest_json(
++        {
++            "schema_version": "1.0",
++            **{
++                key: fields[key]
++                for key in ("topic_id", "cursor", "input_id", "reason", "detail")
++            },
++        }
++    )[:24]
++
++
+ class DogfoodArchiveTests(unittest.TestCase):
+     def test_three_real_archives_persist_replay_budget_and_nonpromotion_boundaries(self) -> None:
+         contract = json.loads(T2_FIXTURE.read_text(encoding="utf-8"))
+@@ -92,7 +102,7 @@ class DogfoodArchiveTests(unittest.TestCase):
+ 
+     def test_unknown_case_missing_provenance_and_tampered_archive_fail_closed(self) -> None:
+         with tempfile.TemporaryDirectory() as directory:
+-            fixture_root = Path(directory) / "fixtures"
++            fixture_root = Path(directory) / "s1-fixtures"
+             fixture_root.mkdir()
+             for path in S1_FIXTURES.glob("*.json"):
+                 (fixture_root / path.name).write_text(path.read_text(encoding="utf-8"), encoding="utf-8")
+@@ -125,6 +135,27 @@ class DogfoodArchiveTests(unittest.TestCase):
+             with self.assertRaisesRegex(DogfoodArchiveError, "budget snapshot"):
+                 DogfoodArchiveRunner(directory, S1_FIXTURES).run()
+ 
++    def test_contract_boundary_and_fixture_directory_are_immutable(self) -> None:
++        for field, value, message in (
++            ("non_claim_boundary", "authorizes public mathematical claims", "non-claim boundary identity drift"),
++            ("source_fixture_directory", "/tmp/evil", "source fixture directory identity drift"),
++        ):
++            with self.subTest(field=field), tempfile.TemporaryDirectory() as directory:
++                fixture_root = Path(directory) / "s1-fixtures"
++                fixture_root.mkdir()
++                for path in S1_FIXTURES.glob("*.json"):
++                    shutil.copy2(path, fixture_root / path.name)
++                contract_root = Path(directory) / "t2-fixtures"
++                contract_root.mkdir()
++                contract = json.loads(T2_FIXTURE.read_text(encoding="utf-8"))
++                contract[field] = value
++                (contract_root / T2_FIXTURE.name).write_text(
++                    json.dumps(contract), encoding="utf-8"
++                )
++                shutil.copytree(T2_FIXTURE.parent / "sources", contract_root / "sources")
++                with self.assertRaisesRegex(DogfoodArchiveError, message):
++                    DogfoodArchiveRunner(Path(directory) / "run", fixture_root).run()
++
+     def test_recomputed_budget_digests_cannot_accept_budget_snapshot_drift(self) -> None:
+         def archive_digest(payload: dict) -> str:
+             return digest_json({key: value for key, value in payload.items() if key not in {"archive_digest_sha256", "replayed"}})
+@@ -315,16 +346,9 @@ class DogfoodArchiveTests(unittest.TestCase):
+             state = json.loads(state_path.read_text(encoding="utf-8"))
+             queue_entry = state["manual_queue"][0]
+             tampered_detail = queue_entry["detail"] + " tampered"
+-            identity = "|".join(
+-                (
+-                    queue_entry["topic_id"],
+-                    queue_entry["cursor"],
+-                    queue_entry["input_id"],
+-                    queue_entry["reason"],
+-                    tampered_detail,
+-                )
++            tampered_manual_id = manual_id_for(
++                {**queue_entry, "detail": tampered_detail}
+             )
+-            tampered_manual_id = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+             queue_entry.update(detail=tampered_detail, manual_id=tampered_manual_id)
+             stored = state["batches"]["dogfood-c2"]
+             stored["result"]["item_results"][0]["manual_id"] = tampered_manual_id
+diff --git a/tests/test_v02_topic_observation.py b/tests/test_v02_topic_observation.py
+index e619114..a42cbc8 100644
+--- a/tests/test_v02_topic_observation.py
++++ b/tests/test_v02_topic_observation.py
+@@ -18,6 +18,8 @@ from matharc.v02.topic_observation import (
+     TopicObservationInput,
+     TopicObservationRunner,
+     TopicRunStatus,
++    _input_projection_binding_digest,
++    _input_projection_digest,
+ )
+ 
+ 
+@@ -46,6 +48,18 @@ def batch(cursor: str, next_cursor: str, *inputs: TopicObservationInput) -> Topi
+     return TopicObservationBatch("union-closed", cursor, next_cursor, tuple(inputs))
+ 
+ 
++def manual_id_for(fields: dict[str, str]) -> str:
++    return "manual-" + digest_json(
++        {
++            "schema_version": "1.0",
++            **{
++                key: fields[key]
++                for key in ("topic_id", "cursor", "input_id", "reason", "detail")
++            },
++        }
++    )[:24]
++
++
+ class TopicObservationTests(unittest.TestCase):
+     def test_single_topic_batch_replays_after_restart_without_second_import(self) -> None:
+         with tempfile.TemporaryDirectory() as directory:
+@@ -229,11 +243,7 @@ class TopicObservationTests(unittest.TestCase):
+             manual = state["manual_queue"][0]
+             old_manual_id = manual["manual_id"]
+             manual["topic_id"] = "foreign-topic"
+-            identity = "|".join(
+-                manual[field]
+-                for field in ("topic_id", "cursor", "input_id", "reason", "detail")
+-            )
+-            manual["manual_id"] = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
++            manual["manual_id"] = manual_id_for(manual)
+             state["manual_events"][0]["manual_id"] = manual["manual_id"]
+             self.assertNotEqual(old_manual_id, manual["manual_id"])
+             state_path.write_text(json.dumps(state), encoding="utf-8")
+@@ -250,11 +260,7 @@ class TopicObservationTests(unittest.TestCase):
+             state = json.loads(state_path.read_text(encoding="utf-8"))
+             queue_item = state["manual_queue"][0]
+             queue_item["topic_id"] = "foreign-topic"
+-            identity = "|".join(
+-                queue_item[field]
+-                for field in ("topic_id", "cursor", "input_id", "reason", "detail")
+-            )
+-            queue_item["manual_id"] = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
++            queue_item["manual_id"] = manual_id_for(queue_item)
+             stored = state["batches"]["c0"]
+             stored["result"]["item_results"][0]["manual_id"] = queue_item["manual_id"]
+             stored["disposition_evidence"]["A"]["manual_id"] = queue_item["manual_id"]
+@@ -454,11 +460,7 @@ class TopicObservationTests(unittest.TestCase):
+             state = json.loads(state_path.read_text(encoding="utf-8"))
+             orphan = dict(state["manual_queue"][0])
+             orphan["detail"] += " independent orphan"
+-            identity = "|".join(
+-                orphan[field]
+-                for field in ("topic_id", "cursor", "input_id", "reason", "detail")
+-            )
+-            orphan["manual_id"] = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
++            orphan["manual_id"] = manual_id_for(orphan)
+             state["manual_queue"].append(orphan)
+             state_path.write_text(json.dumps(state), encoding="utf-8")
+ 
+@@ -525,6 +527,104 @@ class TopicObservationTests(unittest.TestCase):
+             with self.assertRaisesRegex(TopicObservationError, "projection|fingerprint"):
+                 TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
+ 
++    def test_full_cross_batch_rewrite_cannot_reuse_a_successful_observation(self) -> None:
++        """A rewritten state must not turn one observed source into two imports."""
++        with tempfile.TemporaryDirectory() as directory:
++            runner = TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0")
++            runner.run(batch("c0", "c1", input_for("A")))
++            runner.run(batch("c1", "c2", input_for("B")))
++
++            state_path = Path(directory) / "topic-observation-state.json"
++            state = json.loads(state_path.read_text(encoding="utf-8"))
++            stored_a = state["batches"]["c0"]
++            stored_b = state["batches"]["c1"]
++            source_b = input_for("B")
++            swapped = TopicObservationInput("A", source_b.observation, source_b.content)
++
++            # Rewrite every digest-bearing field for batch c0 to be internally
++            # coherent with B. The cursor-ordered replay check must still reject
++            # the second successful import of B's idempotency key.
++            stored_a["input_projections"]["A"] = swapped.input_projection
++            stored_a["input_fingerprints"]["A"] = swapped.fingerprint_sha256
++            stored_a["input_observation_ids"]["A"] = source_b.observation.observation_id
++            evidence = dict(stored_b["disposition_evidence"]["B"])
++            evidence["input_id"] = "A"
++            stored_a["disposition_evidence"]["A"] = evidence
++            stored_a["result"]["item_results"][0]["observation_id"] = source_b.observation.observation_id
++            state["processed_input_ids"]["A"] = swapped.fingerprint_sha256
++            state["seen_observation_keys"] = [
++                stored_b["disposition_evidence"]["B"]["input_idempotency_key"]
++            ]
++            stored_a["batch_digest_sha256"] = batch("c0", "c1", swapped).batch_digest_sha256
++            stored_a["input_projection_digest_sha256"] = _input_projection_digest(
++                topic_id="union-closed",
++                cursor="c0",
++                next_cursor="c1",
++                batch_digest_sha256=stored_a["batch_digest_sha256"],
++                input_projections=stored_a["input_projections"],
++            )
++            evidence["input_projection_binding_sha256"] = _input_projection_binding_digest(
++                topic_id="union-closed",
++                cursor="c0",
++                next_cursor="c1",
++                batch_digest_sha256=stored_a["batch_digest_sha256"],
++                input_projection=swapped.input_projection,
++            )
++            stored_a["result_digest_sha256"] = digest_json(stored_a["result"])
++            state_path.write_text(json.dumps(state), encoding="utf-8")
++
++            with self.assertRaisesRegex(TopicObservationError, "successful import repeats"):
++                TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
++
++    def test_cross_batch_rewrite_cannot_hide_the_original_literature_record(self) -> None:
++        with tempfile.TemporaryDirectory() as directory:
++            runner = TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0")
++            runner.run(batch("c0", "c1", input_for("A")))
++            runner.run(batch("c1", "c2", input_for("B")))
++
++            state_path = Path(directory) / "topic-observation-state.json"
++            state = json.loads(state_path.read_text(encoding="utf-8"))
++            stored_a = state["batches"]["c0"]
++            stored_b = state["batches"]["c1"]
++            source_b = input_for("B")
++            swapped = TopicObservationInput("A", source_b.observation, source_b.content)
++
++            stored_a["input_projections"]["A"] = swapped.input_projection
++            stored_a["input_fingerprints"]["A"] = swapped.fingerprint_sha256
++            stored_a["input_observation_ids"]["A"] = source_b.observation.observation_id
++            evidence_a = dict(stored_b["disposition_evidence"]["B"])
++            evidence_a["input_id"] = "A"
++            stored_a["disposition_evidence"]["A"] = evidence_a
++            stored_a["result"]["item_results"][0]["observation_id"] = source_b.observation.observation_id
++            state["processed_input_ids"]["A"] = swapped.fingerprint_sha256
++            state["seen_observation_keys"] = [evidence_a["input_idempotency_key"]]
++            stored_a["batch_digest_sha256"] = batch("c0", "c1", swapped).batch_digest_sha256
++            stored_a["input_projection_digest_sha256"] = _input_projection_digest(
++                topic_id="union-closed",
++                cursor="c0",
++                next_cursor="c1",
++                batch_digest_sha256=stored_a["batch_digest_sha256"],
++                input_projections=stored_a["input_projections"],
++            )
++            evidence_a["input_projection_binding_sha256"] = _input_projection_binding_digest(
++                topic_id="union-closed",
++                cursor="c0",
++                next_cursor="c1",
++                batch_digest_sha256=stored_a["batch_digest_sha256"],
++                input_projection=swapped.input_projection,
++            )
++            stored_a["result_digest_sha256"] = digest_json(stored_a["result"])
++
++            stored_b["result"]["item_results"][0]["status"] = TopicItemStatus.DUPLICATE.value
++            evidence_b = stored_b["disposition_evidence"]["B"]
++            evidence_b["basis"] = "SEEN_OBSERVATION_KEY"
++            evidence_b["import_disposition"] = None
++            stored_b["result_digest_sha256"] = digest_json(stored_b["result"])
++            state_path.write_text(json.dumps(state), encoding="utf-8")
++
++            with self.assertRaisesRegex(TopicObservationError, "literature observations"):
++                TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0").next_cursor
++
+     def test_disposition_evidence_rejects_cross_batch_projection_binding_swap(self) -> None:
+         with tempfile.TemporaryDirectory() as directory:
+             runner = TopicObservationRunner(directory, topic_id="union-closed", initial_cursor="c0")
+@@ -558,10 +658,15 @@ class TopicObservationTests(unittest.TestCase):
+                 evidence = stored["disposition_evidence"]["A"]
+                 self.assertEqual([], stored["input_projections"]["A"]["risk_flags"])
+                 detail = "High-risk flags require human review: forged-risk"
+-                identity = "|".join(
+-                    ("union-closed", "c0", "A", ManualReviewReason.HIGH_RISK_EVENT.value, detail)
++                manual_id = manual_id_for(
++                    {
++                        "topic_id": "union-closed",
++                        "cursor": "c0",
++                        "input_id": "A",
++                        "reason": ManualReviewReason.HIGH_RISK_EVENT.value,
++                        "detail": detail,
++                    }
+                 )
+-                manual_id = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
+                 item_result.update(status=TopicItemStatus.MANUAL_REVIEW.value, manual_id=manual_id)
+                 stored["result"]["status"] = TopicRunStatus.MANUAL_REVIEW.value
+                 evidence.update(
+@@ -608,11 +713,7 @@ class TopicObservationTests(unittest.TestCase):
+             budget_item = next(item for item in state["manual_queue"] if item["cursor"] == "c1")
+             queue_item["reason"] = budget_item["reason"]
+             queue_item["detail"] = budget_item["detail"]
+-            identity = "|".join(
+-                queue_item[field]
+-                for field in ("topic_id", "cursor", "input_id", "reason", "detail")
+-            )
+-            queue_item["manual_id"] = "manual-" + hashlib.sha256(identity.encode("utf-8")).hexdigest()[:24]
++            queue_item["manual_id"] = manual_id_for(queue_item)
+             stored["result"]["item_results"][0]["manual_id"] = queue_item["manual_id"]
+             stored["disposition_evidence"]["A"].update(
+                 manual_id=queue_item["manual_id"],

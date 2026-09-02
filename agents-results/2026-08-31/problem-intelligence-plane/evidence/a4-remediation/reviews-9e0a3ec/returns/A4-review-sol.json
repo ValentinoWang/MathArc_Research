@@ -1,0 +1,126 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-review-sol-9e0a3ec",
+  "lane": "sol-zero-write",
+  "reviewer_route": "independent bounded zero-write closure review",
+  "wrapper": "caller-provided external Codex wrapper; no nested wrapper, subagent, agent, or collaboration tool invoked",
+  "frozen_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "implementation_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "review_status": "PROTOCOL_FAILURE",
+  "reviewed_paths": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-9e0a3ec/frozen-inputs.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-9e0a3ec/frozen-inputs/protected-test-diff-v2-to-v3.patch",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/returns/A4-review-luna.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/returns/A4-review-sol.json"
+  ],
+  "identity_verification": {
+    "result": "FAIL",
+    "checks": [
+      {
+        "check": "repository and commit identities",
+        "result": "PASS",
+        "evidence": "pwd -P and git rev-parse --show-toplevel both returned /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research. git rev-parse --verify HEAD and refs/remotes/origin/main both returned 9e0a3eccc4b614ad777c818e0f986690414b652e. The recorded implementation baseline 7a29d00b1896b41654f3c1d86645114b71b8c4d2 and contract revision 9e0a3eccc4b614ad777c818e0f986690414b652e both resolved as commits. d77e5c1 resolved to d77e5c12d0c7d76df39742065687d01cdf8aa7b4."
+      },
+      {
+        "check": "manifest structure, paths, and current input hashes",
+        "result": "PASS",
+        "evidence": "jq validation confirmed schema_version 1, campaign/profile identity, relative traversal-free unique paths, and duplicate hash bindings. All 21 inputs existed as files and shasum -a 256 matched every declared input SHA-256, including the contract, prior returns, frozen patch, current protected tests, remediation records, and unittest summary."
+      },
+      {
+        "check": "current protected-test v3 hashes",
+        "result": "PASS",
+        "evidence": "tests/test_v02_topic_observation.py = bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497; tests/test_v02_dogfood_archives.py = 345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242. Both equal frozen-inputs.json protected_tests_v3."
+      },
+      {
+        "check": "frozen v2-to-v3 protected-test transition identity",
+        "result": "FAIL",
+        "evidence": "frozen-inputs.json:18-20 declares the v2 dogfood file SHA-256 as e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873. protected-test-diff-v2-to-v3.patch:1-2 declares old blob ca2ee82. git rev-parse --verify 'ca2ee82^{blob}' returned ca2ee82d30201d82ee2a3d0ed84a9c90a1b2d203, and git cat-file blob ca2ee82d30201d82ee2a3d0ed84a9c90a1b2d203 | shasum -a 256 returned 40f9350211415a32b59daa219971b34c45faafb7751d5f3516d3935502500635. The patch old side therefore does not match the manifest's v2 dogfood identity. As a control, the patch old topic blob e6191140d864dfaa1dd7666b57c4be14ee7f6867 hashes to the declared v2 topic SHA-256 1b505da5b1757b66a37ce859a8745fd20ac34c651ee1c7f53f9102bc18cfaa56, and both patch new blobs hash to their declared v3 values."
+      },
+      {
+        "check": "recorded v2 dogfood content provenance",
+        "result": "PASS_WITH_NONBINDING_PROVENANCE",
+        "evidence": "git log --all --format='%H' -- tests/test_v02_dogfood_archives.py with per-revision git show hashing found e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873 at commit 5af1d9ff6fde02d86633cca50cf815ef04661d4a, while the patch old blob content 40f9350211415a32b59daa219971b34c45faafb7751d5f3516d3935502500635 occurs at 2e47f5040d3a833e10de07286d68f017efec5d42. This confirms that both contents exist but the frozen patch is not bound to the declared v2 dogfood content."
+      }
+    ],
+    "failure": "The frozen protected-test diff is not identity-consistent with the manifest's protected_tests_v2 dogfood hash. Per the review protocol, substantive review stopped immediately after confirming this mismatch."
+  },
+  "commands": [
+    {
+      "command": "git rev-parse --verify HEAD; git rev-parse --verify refs/remotes/origin/main; git rev-parse --verify 7a29d00b1896b41654f3c1d86645114b71b8c4d2^{commit}; git rev-parse --verify 9e0a3eccc4b614ad777c818e0f986690414b652e^{commit}; git rev-parse --verify d77e5c1^{commit}",
+      "result": "PASS",
+      "evidence": "HEAD and origin/main = 9e0a3eccc4b614ad777c818e0f986690414b652e; baseline and contract commits resolved exactly; d77e5c1 = d77e5c12d0c7d76df39742065687d01cdf8aa7b4."
+    },
+    {
+      "command": "jq structural checks plus shasum -a 256 for every frozen-inputs.json inputs entry",
+      "result": "PASS",
+      "evidence": "21/21 declared current input paths matched; zero missing paths and zero current-input hash mismatches."
+    },
+    {
+      "command": "git rev-parse --verify 'ca2ee82^{blob}'; git cat-file blob ca2ee82d30201d82ee2a3d0ed84a9c90a1b2d203 | shasum -a 256",
+      "result": "FAIL",
+      "evidence": "Patch old dogfood blob SHA-256 = 40f9350211415a32b59daa219971b34c45faafb7751d5f3516d3935502500635; manifest protected_tests_v2 expected e1efa41cf802015ace54c35faaeb176bb22e5263f0e2824aea4bf9d82f779873."
+    },
+    {
+      "command": "git log --all --format='%H' -- tests/test_v02_dogfood_archives.py with git show <commit>:tests/test_v02_dogfood_archives.py | shasum -a 256",
+      "result": "CONFIRMED_MISMATCH_PROVENANCE",
+      "evidence": "Expected v2 content is at 5af1d9ff6fde02d86633cca50cf815ef04661d4a; patch old content is at 2e47f5040d3a833e10de07286d68f017efec5d42."
+    }
+  ],
+  "findings": [
+    {
+      "finding_id": "F1",
+      "title": "A newly created nested runner root is not durably linked component by component",
+      "disposition": null,
+      "status": "NOT_EVALUATED_PROTOCOL_FAILURE",
+      "evidence": "No contract/source review or reproduction was performed after frozen-input identity failed."
+    },
+    {
+      "finding_id": "F2",
+      "title": "Pre-import budget evidence blocks a valid strictly-later PENDING-to-OBSERVED recovery",
+      "disposition": null,
+      "status": "NOT_EVALUATED_PROTOCOL_FAILURE",
+      "evidence": "No contract/source review or reproduction was performed after frozen-input identity failed."
+    },
+    {
+      "finding_id": "F3",
+      "title": "A processed replay fails after its historical PENDING observation has been upgraded to OBSERVED",
+      "disposition": null,
+      "status": "NOT_EVALUATED_PROTOCOL_FAILURE",
+      "evidence": "No contract/source review or reproduction was performed after frozen-input identity failed."
+    },
+    {
+      "finding_id": "F4",
+      "title": "Incomplete PENDING retries can rewrite immutable historical observation metadata and digest",
+      "disposition": null,
+      "status": "NOT_EVALUATED_PROTOCOL_FAILURE",
+      "evidence": "No contract/source review or reproduction was performed after frozen-input identity failed."
+    }
+  ],
+  "protected_test_integrity": {
+    "result": "FAIL",
+    "failure": "The supplied frozen diff does not start from the manifest-declared v2 dogfood file, so it cannot prove the required v2-to-v3 transition.",
+    "checks": {
+      "no_existing_test_method_removed": "NOT_EVALUATED_PROTOCOL_FAILURE",
+      "no_existing_test_method_renamed": "NOT_EVALUATED_PROTOCOL_FAILURE",
+      "no_existing_assertion_removed": "NOT_EVALUATED_PROTOCOL_FAILURE",
+      "no_existing_assertion_weakened": "NOT_EVALUATED_PROTOCOL_FAILURE",
+      "no_skip_skipIf_skipUnless_expectedFailure_introduced": "NOT_EVALUATED_PROTOCOL_FAILURE",
+      "current_protected_test_files_match_v3_hashes": "PASS",
+      "all_focused_suites_named_in_manifest_pass": "NOT_RUN_PROTOCOL_FAILURE"
+    }
+  },
+  "residual_risk": [],
+  "verdict": "FAIL",
+  "proposed_state": "UNCHANGED",
+  "acceptance_self_check": "protocol_failure",
+  "failure_class": "frozen_input_identity_mismatch",
+  "failure_origin": "review_protocol",
+  "unverified_items": [
+    "A4 acceptance contract version 3 and its Invariants and Risks and open decisions sections were not read after the identity gate failed.",
+    "The implementation files and d77e5c1..9e0a3eccc4b614ad777c818e0f986690414b652e candidate diff were not substantively reviewed.",
+    "F1-F4 were not dispositioned because issuing any allowed substantive disposition would violate the mandatory identity-gate stop condition.",
+    "No focused test suite and no TemporaryDirectory probe was run."
+  ],
+  "scope_statement": "Independent bounded closure lane for A4-review-sol-9e0a3ec at pinned HEAD/origin-main 9e0a3eccc4b614ad777c818e0f986690414b652e. Review terminated at frozen-input identity verification. No implementation, test, contract, SSOT, human acceptance, existing evidence, dispatch, git state, or remote ref was modified; this return is the sole repository write.",
+  "acceptance_boundary": "This lane does not accept A4, does not create a new blocking implementation finding, and makes no substantive closure judgment for F1-F4. FAIL is solely the required protected-test/protocol result caused by the inconsistent frozen transition input."
+}

@@ -1,0 +1,125 @@
+You are already inside an external Codex wrapper. Never invoke another wrapper, subagent, agent, or collaboration tool.
+
+Perform an independent zero-write CLOSURE review for task A4-review-luna-a4v3r2, lane luna-zero-write.
+
+The pinned reviewed candidate is:
+
+HEAD = origin/main = 9e0a3eccc4b614ad777c818e0f986690414b652e
+
+First verify every identity, path, hash, and SHA recorded in agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-a4v3r2/frozen-inputs.json. The frozen manifest is an external campaign artifact and need not exist in the pinned commit; verify its declared candidate inputs against the pinned commit. If identity verification fails, report protocol failure and do not continue substantive review.
+
+This is a bounded closure review, not an adversarial exploration.
+
+Read only:
+
+1. agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-a4v3r2/frozen-inputs.json;
+2. the exact files named by that manifest;
+3. A4 acceptance contract version 3;
+4. the contract sections "Invariants" and "Risks and open decisions", which bind this review;
+5. the two prior returns under:
+   agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/returns/
+6. the protected-test diff named in the frozen manifest;
+7. the diff:
+   d77e5c1..9e0a3eccc4b614ad777c818e0f986690414b652e
+
+You may run only the focused tests explicitly named in the frozen manifest.
+
+You may create bounded TemporaryDirectory probes only when necessary to reproduce one of F1-F4 below.
+
+You must not search for new findings.
+
+Your only substantive task is to disposition these four findings from reviews-d77e5c1:
+
+F1. A newly created nested runner root is not durably linked component by component.
+
+F2. Pre-import budget evidence blocks a valid strictly-later PENDING-to-OBSERVED recovery.
+
+F3. A processed replay fails after its historical PENDING observation has been upgraded to OBSERVED.
+
+F4. Incomplete PENDING retries can rewrite immutable historical observation metadata and digest.
+
+For every finding use exactly one disposition:
+
+CLOSED_BY_IMPLEMENTATION
+
+The implementation now prevents the model-in-scope failure. Provide exact command, result, and file:line evidence.
+
+CLOSED_BY_CONTRACT_BOUNDARY
+
+The only remaining failure mode is explicitly outside contract v3's threat or durability model. Cite the exact contract clause.
+
+NOT_CLOSED
+
+A reproducible failure inside contract v3's model remains. Provide exact reproduction command, output, and file:line evidence.
+
+F1 must be evaluated only under contract v3's process-crash durability model.
+
+Power loss, OS crash, directory-entry power-loss durability and component-by-component fsync guarantees are explicitly outside this contract and cannot make F1 NOT_CLOSED.
+
+Do not introduce attacker capabilities that contract v3 excludes, including:
+
+* malicious same-user writer
+* sidecar restore by a hostile process
+* key access by a hostile same-user process
+* symlink substitution
+* hard-link substitution
+* TOCTOU
+* fork-lock inheritance attack
+* same-user rollback attack
+
+If you happen to notice something outside F1-F4, do not investigate it.
+
+Record it only as:
+
+residual_risk:
+
+* severity: P3
+  blocking: false
+  observation: "<one line>"
+
+Such observations must not affect verdict.
+
+Also verify the protected-test transition using the frozen diff:
+
+1. no existing test method was removed;
+2. no existing test method was renamed;
+3. no existing assertion was removed;
+4. no existing assertion was weakened;
+5. no skip/skipIf/skipUnless/expectedFailure was introduced;
+6. the two current protected test files exactly match the v3 hashes;
+7. all focused suites named in the manifest pass.
+
+Authority is zero-write except the sole return path agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-a4v3r2/returns/A4-review-luna.json
+
+Do not edit:
+
+* implementation
+* tests
+* contracts
+* SSOT
+* human acceptance
+* existing evidence
+* dispatch
+* git
+* remote refs
+
+The return must satisfy the existing reviews-d77e5c1 JSON schema and include:
+
+* identity verification;
+* F1-F4 dispositions;
+* evidence for every disposition;
+* protected-test assessment;
+* residual_risk list;
+* verdict.
+
+Verdict must be exactly PASS if and only if:
+
+* F1-F4 are each either CLOSED_BY_IMPLEMENTATION or CLOSED_BY_CONTRACT_BOUNDARY; and
+* the protected-test assessment passes.
+
+Verdict must be exactly FAIL only if:
+
+* one or more of F1-F4 is NOT_CLOSED; or
+* one of the protected-test checks fails.
+
+This lane has no authority to accept A4 and no authority to create a new blocking finding.

@@ -1,0 +1,229 @@
+{
+  "schema_version": 1,
+  "task_id": "A4-review-luna-a4v3r2",
+  "lane": "luna-zero-write",
+  "reviewer_route": "Luna independent zero-write closure review",
+  "wrapper": "none; direct execution inside the existing external Codex wrapper",
+  "frozen_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "implementation_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "remote_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "implementation_baseline_commit": "0cf567af98f8e32d4ddead6435ea2c49bbb272de",
+  "contract_revision_commit": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "reviewed_diff": "d77e5c12d0c7d76df39742065687d01cdf8aa7b4..9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "reviewed_paths": [
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-a4v3r2/frozen-inputs.json",
+    "matharc/v02/artifact_store.py",
+    "matharc/v02/literature_base.py",
+    "matharc/v02/topic_observation.py",
+    "matharc/v02/source_observation.py",
+    "matharc/v02/budget.py",
+    "matharc/v02/local_store.py",
+    "tests/test_v02_artifact_store_durability.py",
+    "tests/test_v02_literature_base.py",
+    "tests/test_v02_literature_base_integrity.py",
+    "tests/test_v02_topic_observation.py",
+    "tests/test_v02_topic_observation_integrity.py",
+    "tests/test_v02_dogfood_archives.py",
+    "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A4-topic-observation-dogfood/acceptance-contract.md",
+    "acceptance/human/A4-topic-observation-dogfood/binding.md",
+    "acceptance/human/A4-topic-observation-dogfood/checklist.md",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/returns/A4-review-luna.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/returns/A4-review-sol.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-a4v3r2/frozen-inputs/protected-test-diff-v2-to-v3.patch",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/coordinator-return.json",
+    "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/local-ci-4a29814.json",
+    "artifacts/ci/unittest-summary.json"
+  ],
+  "identity_verification": {
+    "result": "PASS",
+    "manifest": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-a4v3r2/frozen-inputs.json:2-43",
+    "manifest_identity": {
+      "frozen_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+      "remote_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+      "implementation_baseline_commit": "0cf567af98f8e32d4ddead6435ea2c49bbb272de",
+      "contract_revision_commit": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+      "contract_revision_sha256": "5b68d4370e287d3d84d9b97bee597e0966ccd2ad61bc91b99bad3e31184bbe1b"
+    },
+    "commands": [
+      {
+        "command": "git rev-parse --verify HEAD",
+        "result": "PASS",
+        "evidence": "9e0a3eccc4b614ad777c818e0f986690414b652e"
+      },
+      {
+        "command": "git rev-parse --verify refs/remotes/origin/main",
+        "result": "PASS",
+        "evidence": "9e0a3eccc4b614ad777c818e0f986690414b652e"
+      },
+      {
+        "command": "git rev-parse --verify d77e5c1^{commit}",
+        "result": "PASS",
+        "evidence": "d77e5c12d0c7d76df39742065687d01cdf8aa7b4"
+      },
+      {
+        "command": "git rev-parse --verify 0cf567af98f8e32d4ddead6435ea2c49bbb272de^{commit}",
+        "result": "PASS",
+        "evidence": "0cf567af98f8e32d4ddead6435ea2c49bbb272de"
+      },
+      {
+        "command": "read-only SHA-256 validation of every path and identity declared by frozen-inputs.json",
+        "result": "PASS",
+        "evidence": "21/21 declared input hashes match: 19 pinned-commit inputs, the external protected-test diff, and the ignored frozen CI summary. Candidate v3 protected hashes, baseline v2 hashes, and the contract revision hash also match."
+      }
+    ]
+  },
+  "commands": [
+    {
+      "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability tests.test_v02_literature_base tests.test_v02_literature_base_integrity tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+      "result": "PASS",
+      "evidence": "Exit code 0; Ran 108 tests in 33.572s; OK; 0 skips. Relevant F1, F2, F3, and F4 regression methods all passed."
+    },
+    {
+      "command": "git diff --check --find-renames --find-copies d77e5c12d0c7d76df39742065687d01cdf8aa7b4..9e0a3eccc4b614ad777c818e0f986690414b652e -- matharc/v02/artifact_store.py matharc/v02/literature_base.py matharc/v02/topic_observation.py tests/test_v02_artifact_store_durability.py tests/test_v02_literature_base.py tests/test_v02_topic_observation_integrity.py",
+      "result": "PASS",
+      "evidence": "Exit code 0 with no output."
+    }
+  ],
+  "protected_test_integrity": {
+    "result": "PASS",
+    "frozen_diff": {
+      "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-a4v3r2/frozen-inputs/protected-test-diff-v2-to-v3.patch:1-301",
+      "sha256": "2ca89d8e0dcfbbe991e46010c69f1372819497778a68b0679486ae07fd24017e",
+      "transition": "The patch contains only helper/import adjustments, fixture-path adjustment, and added tests; no existing test method or assertion hunk is removed or weakened."
+    },
+    "protected_paths": {
+      "tests/test_v02_topic_observation.py": "bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497",
+      "tests/test_v02_dogfood_archives.py": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242"
+    },
+    "baseline_v2_hashes": {
+      "tests/test_v02_topic_observation.py": "1b505da5b1757b66a37ce859a8745fd20ac34c651ee1c7f53f9102bc18cfaa56",
+      "tests/test_v02_dogfood_archives.py": "40f9350211415a32b59daa219971b34c45faafb7751d5f3516d3935502500635"
+    },
+    "checks": {
+      "existing_test_method_removed": {
+        "result": "PASS",
+        "command": "Compare baseline and candidate '^    def test_' method sets; inspect frozen patch for removed test methods.",
+        "evidence": "Topic test methods: baseline 28, candidate 30, all 28 baseline methods retained; dogfood methods: baseline 12, candidate 13, all 12 baseline methods retained. Frozen patch has no removed or renamed test-method line; additions are at protected-test-diff-v2-to-v3.patch:51, 169, 218."
+      },
+      "existing_test_method_renamed": {
+        "result": "PASS",
+        "command": "Compare baseline and candidate '^    def test_' method sets.",
+        "evidence": "Baseline method-set difference is empty for both protected files; only the three listed new method names are added."
+      },
+      "existing_assertion_removed": {
+        "result": "PASS",
+        "command": "Compare baseline and candidate assertion lines and inspect removed patch lines.",
+        "evidence": "Baseline assertion-line difference is empty for both protected files; frozen patch has no removed assertion line."
+      },
+      "existing_assertion_weakened": {
+        "result": "PASS",
+        "command": "Inspect every changed hunk in protected-test-diff-v2-to-v3.patch for existing assertion changes.",
+        "evidence": "No existing assertion line is changed. Added assertions are at protected-test-diff-v2-to-v3.patch:69, 215, 264 and the existing assertion lines remain byte-identical."
+      },
+      "skip_controls_introduced": {
+        "result": "PASS",
+        "command": "rg '^\\+[^+].*(skip|expectedFailure)' protected-test-diff-v2-to-v3.patch.",
+        "evidence": "No output; no skip, skipIf, skipUnless, or expectedFailure was introduced."
+      },
+      "current_v3_hashes": {
+        "result": "PASS",
+        "command": "shasum -a 256 tests/test_v02_topic_observation.py tests/test_v02_dogfood_archives.py.",
+        "evidence": "Both current files match the manifest v3 hashes exactly."
+      },
+      "focused_suites": {
+        "result": "PASS",
+        "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability tests.test_v02_literature_base tests.test_v02_literature_base_integrity tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+        "evidence": "Exit code 0; Ran 108 tests in 33.572s; OK; 0 skips."
+      }
+    }
+  },
+  "findings": [
+    {
+      "id": "F1",
+      "severity": "P1",
+      "title": "A newly created nested runner root is not durably linked component by component",
+      "disposition": "CLOSED_BY_IMPLEMENTATION",
+      "paths": [
+        "matharc/v02/topic_observation.py:263-282",
+        "matharc/v02/topic_observation.py:678-679",
+        "tests/test_v02_topic_observation_integrity.py:64-123"
+      ],
+      "evidence": {
+        "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability tests.test_v02_literature_base tests.test_v02_literature_base_integrity tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+        "result": "PASS; exit code 0; 108 tests, 0 skips, OK. The two absent-nested-runner-root fsync and fsync-failure propagation tests passed.",
+        "source": "TopicObservationRunner calls the local component-wise _ensure_directory_durable before assigning runner state at topic_observation.py:678-679. That helper walks to the nearest existing ancestor, creates each missing component, and fsyncs its immediate parent at topic_observation.py:263-282. The exact-order and failure-propagation regressions are at tests/test_v02_topic_observation_integrity.py:64-123.",
+        "contract_boundary": "Evaluated only under contract v3 Invariants #3 at acceptance-contract.md:63-75: process termination followed by restart on the same OS/filesystem is in scope; OS crash, power loss, device cache loss, filesystem failure, directory-entry power-loss durability, and component-by-component directory fsync are outside the contract. Under the in-scope process-crash model, the implementation now prevents the reviewed missing-parent-link failure."
+      }
+    },
+    {
+      "id": "F2",
+      "severity": "P1",
+      "title": "Pre-import budget evidence blocks a valid strictly-later PENDING-to-OBSERVED recovery",
+      "disposition": "CLOSED_BY_IMPLEMENTATION",
+      "paths": [
+        "matharc/v02/topic_observation.py:914-935",
+        "matharc/v02/topic_observation.py:1157-1168",
+        "matharc/v02/topic_observation.py:2342-2395",
+        "matharc/v02/topic_observation.py:2575-2617",
+        "matharc/v02/topic_observation.py:2766-2783",
+        "tests/test_v02_topic_observation_integrity.py:853-923",
+        "tests/test_v02_topic_observation_integrity.py:952-1068"
+      ],
+      "evidence": {
+        "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability tests.test_v02_literature_base tests.test_v02_literature_base_integrity tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+        "result": "PASS; exit code 0; 108 tests, 0 skips, OK. The pre-import budget upgrade/restart test and identity, digest, and cursor negative variants passed.",
+        "source": "The budget-before-import path records the existing PENDING observation without rewriting it at topic_observation.py:914-935. _pending_evidence_can_upgrade explicitly admits budget MANUAL_QUEUE evidence with import_disposition None or PENDING at topic_observation.py:1157-1168. The validator searches only the strictly later cursor chain and requires matching observation ID, idempotency key, input and persisted digests, bytes digest, projection observation ID, and logical identity at topic_observation.py:2342-2395; observed artifact integrity is checked at topic_observation.py:2575-2617."
+      }
+    },
+    {
+      "id": "F3",
+      "severity": "P1",
+      "title": "A processed replay fails after its historical PENDING observation has been upgraded",
+      "disposition": "CLOSED_BY_IMPLEMENTATION",
+      "paths": [
+        "matharc/v02/topic_observation.py:835-883",
+        "matharc/v02/topic_observation.py:1171-1217",
+        "matharc/v02/topic_observation.py:2535-2543",
+        "matharc/v02/topic_observation.py:2584-2617",
+        "tests/test_v02_topic_observation_integrity.py:925-950"
+      ],
+      "evidence": {
+        "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability tests.test_v02_literature_base tests.test_v02_literature_base_integrity tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+        "result": "PASS; exit code 0; 108 tests, 0 skips, OK. The processed replay after upgrade committed, cleared both transaction markers, and survived restart.",
+        "source": "The processed replay branch now obtains the prior batch evidence and passes it as persisted_snapshot at topic_observation.py:835-883. _processed_replay_prior_evidence verifies prior cursor, fingerprint, linkage, and immutable historical fields at topic_observation.py:1171-1217. Validation uses that historical snapshot when allowing a PENDING-to-OBSERVED live-status difference and verifies the upgraded artifact at topic_observation.py:2535-2543 and topic_observation.py:2584-2617. The end-to-end restart and journal-clear assertions are at tests/test_v02_topic_observation_integrity.py:925-950."
+      }
+    },
+    {
+      "id": "F4",
+      "severity": "P2",
+      "title": "PENDING retries can rewrite valid historical observation evidence",
+      "disposition": "CLOSED_BY_IMPLEMENTATION",
+      "paths": [
+        "matharc/v02/literature_base.py:218-314",
+        "matharc/v02/literature_base.py:328-392",
+        "matharc/v02/literature_base.py:460-487",
+        "tests/test_v02_literature_base.py:45-175"
+      ],
+      "evidence": {
+        "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_artifact_store_durability tests.test_v02_literature_base tests.test_v02_literature_base_integrity tests.test_v02_topic_observation tests.test_v02_topic_observation_integrity tests.test_v02_dogfood_archives",
+        "result": "PASS; exit code 0; 108 tests, 0 skips, OK. Same-digest metadata rewrite, missing-digest restart, and completion metadata preservation tests passed.",
+        "source": "Matching pending identity is retained in pending_observation and incomplete retries return the existing record through _pending_result without _record at literature_base.py:218-314 and literature_base.py:328-392. _record now permits only a validated PENDING-to-OBSERVED transition and rejects any immutable-field rewrite at literature_base.py:460-487. The same-process and restart regressions, plus the allowed completion case, are at tests/test_v02_literature_base.py:45-175."
+      }
+    }
+  ],
+  "residual_risk": [
+    {
+      "severity": "P3",
+      "blocking": false,
+      "observation": "The frozen ignored CI summary is 575 tests with SHA fc156001a110ce209080409182d88e8e51f0300453384c795dfbb13626b4c9a6, while the older repair local-CI record declares 567 with SHA fded9644b25ddcbdf96db959994b327f639dc996dfa6c1d245ef9bb88b071cad; this outside-F1-F4 discrepancy was not investigated."
+    }
+  ],
+  "verdict": "PASS",
+  "proposed_state": "PASS",
+  "acceptance_self_check": "pass",
+  "failure_class": "none",
+  "failure_origin": "none",
+  "scope_statement": "Independent bounded closure review of A4-review-luna-a4v3r2 at frozen HEAD 9e0a3eccc4b614ad777c818e0f986690414b652e in lane luna-zero-write. Only F1-F4 were dispositioned. No new blocking finding was created; no implementation, test, contract, SSOT, human acceptance, existing evidence, dispatch, git state, or remote ref was modified. The sole repository write is this return.",
+  "acceptance_boundary": "This return does not accept A4 and does not exercise human acceptance authority. PASS means only that F1-F4 are closed by implementation and the protected-test assessment passes under contract v3. It makes no mathematical, production, device, or public-release claim.",
+  "acceptance_authority_exercised": false
+}

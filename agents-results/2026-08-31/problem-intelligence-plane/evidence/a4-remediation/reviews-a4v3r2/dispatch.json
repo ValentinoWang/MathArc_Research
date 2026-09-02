@@ -1,0 +1,80 @@
+{
+  "schema_version": 2,
+  "campaign_id": "A4-remediation-review-a4v3r2",
+  "authority": "independent zero-write closure review convergence; no A4 acceptance authority",
+  "frozen_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "remote_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "implementation_baseline_commit": "0cf567af98f8e32d4ddead6435ea2c49bbb272de",
+  "contract_revision_commit": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "outer_terminal_session_ids": [39746, 46816],
+  "launched_at": "2026-09-02T04:20:05Z",
+  "ended_at": "2026-09-02T04:33:42Z",
+  "launch_barrier": "both processes started before the first wait",
+  "frozen_inputs": {
+    "path": "frozen-inputs.json",
+    "sha256": "c0d9db825e6319dfccedb2ecf87a3a98a583b0a52bdf94ce1c181aa59d78054f"
+  },
+  "lanes": [
+    {
+      "task_id": "A4-review-luna-a4v3r2",
+      "reviewer_route": "luna-zero-write",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-lw-luna.sh",
+      "model_route": "gpt-5.6-luna/max",
+      "sandbox_capability": "danger-full-access",
+      "write_authority": "returns/A4-review-luna.json only",
+      "terminal_session_id": 39746,
+      "codex_session_id": "01a06058-77ef-73a2-8153-16d21cf03997",
+      "prompt": "prompts/A4-review-luna.txt",
+      "prompt_sha256": "40708b6f40fc287fda562ed550cf6e84b19ce61ca20e81b11af69285485288aa",
+      "return": "returns/A4-review-luna.json",
+      "return_sha256": "667372d3c69a59d850ca8a86ee37dea159aa066a8cdbe6a2cf6cba81edb98ece",
+      "exit_code": 0,
+      "verdict": "PASS",
+      "proposed_state": "PASS",
+      "acceptance_self_check": "pass",
+      "failure_class": "none",
+      "failure_origin": "none",
+      "runtime_handle_cleanup": "COMPLETE",
+      "temporary_runtime_cleanup": "COMPLETE",
+      "codex_transcript_retention": "PRESERVED"
+    },
+    {
+      "task_id": "A4-review-sol-a4v3r2",
+      "reviewer_route": "sol-zero-write",
+      "wrapper": "/Users/vsiyo/.codex/workers/run-l4.sh",
+      "model_route": "gpt-5.6-sol/max",
+      "sandbox_capability": "danger-full-access",
+      "write_authority": "returns/A4-review-sol.json only",
+      "terminal_session_id": 46816,
+      "codex_session_id": "01a06058-77ef-7cf3-8cdc-1774666b0087",
+      "prompt": "prompts/A4-review-sol.txt",
+      "prompt_sha256": "9d828966d5f987ba6eecebc4a15ca55d8f6a4249671a72ce558a62b9db28fb27",
+      "return": "returns/A4-review-sol.json",
+      "return_sha256": "c54d1b31b904b70273834bc0134b657693c481e6be74e5867625154ac47cbd55",
+      "exit_code": 0,
+      "verdict": "PASS",
+      "proposed_state": "UNCHANGED",
+      "acceptance_self_check": "pass",
+      "failure_class": "none",
+      "failure_origin": "none",
+      "runtime_handle_cleanup": "COMPLETE",
+      "temporary_runtime_cleanup": "COMPLETE",
+      "codex_transcript_retention": "PRESERVED"
+    }
+  ],
+  "convergence": {
+    "status": "PASSED_CLOSURE_REVIEW",
+    "effective_verdicts": ["PASS", "PASS"],
+    "finding_dispositions": {
+      "F1": "CLOSED_BY_IMPLEMENTATION or CLOSED_BY_CONTRACT_BOUNDARY",
+      "F2": "CLOSED_BY_IMPLEMENTATION",
+      "F3": "CLOSED_BY_IMPLEMENTATION",
+      "F4": "CLOSED_BY_IMPLEMENTATION"
+    },
+    "protected_test_integrity": "PASS in both lanes; no test method/assertion removed or weakened, no skip introduced, v3 hashes match",
+    "fresh_focused_tests": "108/108 passed in both lanes, zero failures, errors, or skips",
+    "remote_main_readback": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+    "residual_risk": "Luna recorded one P3 non-blocking CI-summary count discrepancy outside F1-F4; Sol recorded none. It does not affect this bounded closure verdict.",
+    "acceptance_boundary": "This convergence does not accept A4, exercise H-01, change SSOT state, make a mathematical/production/device claim, or authorize public release."
+  }
+}

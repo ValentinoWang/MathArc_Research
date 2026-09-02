@@ -1,0 +1,45 @@
+{
+  "schema_version": 1,
+  "review_campaign_id": "A4-remediation-review-a4v3r2",
+  "input_profile": "a4-topic-observation-v3-closure",
+  "frozen_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "remote_head": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "implementation_baseline_commit": "0cf567af98f8e32d4ddead6435ea2c49bbb272de",
+  "contract_revision_commit": "9e0a3eccc4b614ad777c818e0f986690414b652e",
+  "contract_revision_sha256": "5b68d4370e287d3d84d9b97bee597e0966ccd2ad61bc91b99bad3e31184bbe1b",
+  "protected_test_diff": {
+    "path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-a4v3r2/frozen-inputs/protected-test-diff-v2-to-v3.patch",
+    "sha256": "2ca89d8e0dcfbbe991e46010c69f1372819497778a68b0679486ae07fd24017e"
+  },
+  "protected_tests_v3": {
+    "tests/test_v02_topic_observation.py": "bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497",
+    "tests/test_v02_dogfood_archives.py": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242"
+  },
+  "protected_tests_v2": {
+    "tests/test_v02_topic_observation.py": "1b505da5b1757b66a37ce859a8745fd20ac34c651ee1c7f53f9102bc18cfaa56",
+    "tests/test_v02_dogfood_archives.py": "40f9350211415a32b59daa219971b34c45faafb7751d5f3516d3935502500635"
+  },
+  "inputs": [
+    {"path": "matharc/v02/artifact_store.py", "sha256": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3"},
+    {"path": "matharc/v02/literature_base.py", "sha256": "d3ab25e35f2f8bd0be914711f57ef4b1a65ba14baad045fe34707d603b2b7789"},
+    {"path": "matharc/v02/topic_observation.py", "sha256": "d2c2307fa92dfa49af609619394ef2f302bbd58305c294dd513347d5410790ee"},
+    {"path": "matharc/v02/source_observation.py", "sha256": "733ce581fb21023d2930cade9e70880453d9f6f05ea3b08f5e15b5c1652b2880"},
+    {"path": "matharc/v02/budget.py", "sha256": "24f9b7714324a3120c0addefcd391bc4f00000a84c06692875873a7804beec1e"},
+    {"path": "matharc/v02/local_store.py", "sha256": "9c6803a36bb02bdd51afef049e3ce19ea48bf206a73c6aefbf957f27de241f20"},
+    {"path": "tests/test_v02_artifact_store_durability.py", "sha256": "7b8f7301e6c37adc1d272f7b6a5df2e227a7e29618b4843e95e216c5d3c7cc2e"},
+    {"path": "tests/test_v02_literature_base.py", "sha256": "3070ced14da43b04b02ba84ad17bae000e9adffaa51d6c938699750f5a333429"},
+    {"path": "tests/test_v02_literature_base_integrity.py", "sha256": "43104d71f3e954598144b52fa0a2d5248a994abc7125cbfc71ac41424c4c8c62"},
+    {"path": "tests/test_v02_topic_observation.py", "sha256": "bccdbb46c5bb8bb256d7f2c403e3fcbcf7c6c51976134fd8c18b23bc4b2ce497"},
+    {"path": "tests/test_v02_topic_observation_integrity.py", "sha256": "5e7fbdea460fcfd1a2dab2d1202658e8d6974822a414aac4cf93bca5b744691a"},
+    {"path": "tests/test_v02_dogfood_archives.py", "sha256": "345a2c94299df3f001757606ac2c9db6f7243a20dd42d150a77360e28c678242"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/acceptance-fragments/A4-topic-observation-dogfood/acceptance-contract.md", "sha256": "5b68d4370e287d3d84d9b97bee597e0966ccd2ad61bc91b99bad3e31184bbe1b"},
+    {"path": "acceptance/human/A4-topic-observation-dogfood/binding.md", "sha256": "ab7a377815e79cb9465946c21f7136dc19668cc2c5f47b0f33abdbd36f89b457"},
+    {"path": "acceptance/human/A4-topic-observation-dogfood/checklist.md", "sha256": "c7b6959231900949bf932936d7b5f759b8711843406856ab77dc6a54ad77847c"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/returns/A4-review-luna.json", "sha256": "a56f2811d75e55ad5b076ccc159327a8b0b2d397b5eb45c731cae012299180af"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-d77e5c1/returns/A4-review-sol.json", "sha256": "2febef29c40b630b47d2005d4abcc0a445d5412027f11d110171faaa630da50f"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/reviews-a4v3r2/frozen-inputs/protected-test-diff-v2-to-v3.patch", "sha256": "2ca89d8e0dcfbbe991e46010c69f1372819497778a68b0679486ae07fd24017e"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/coordinator-return.json", "sha256": "f9aeddb47db3b2ad6d0e3682f84e4d308da7a40b0e6af30ad8be5de63676d7af"},
+    {"path": "agents-results/2026-08-31/problem-intelligence-plane/evidence/a4-remediation/repair-517f44a/local-ci-4a29814.json", "sha256": "5d3ac541bcd64fc2c881597c55fd8aa18b7cc11d41e5462dbc8b58829fbab460"},
+    {"path": "artifacts/ci/unittest-summary.json", "sha256": "fc156001a110ce209080409182d88e8e51f0300453384c795dfbb13626b4c9a6"}
+  ]
+}
