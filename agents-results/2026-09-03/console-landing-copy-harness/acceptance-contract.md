@@ -6,14 +6,14 @@
 - Test baseline: PLANNED
 - Acceptance owner: 项目负责人
 - Approval evidence: 本轮仅建立草稿，尚未获得人类批准
-- Request source: 2026-09-03 user request：首页视觉与滚动体验、全站文案检查、并把原因沉淀回 Harness
+- Request source: 2026-09-03 user request：首页视觉与滚动体验、全站文案检查、并把原因沉淀回 Harness；同日复核后追加一轮调色与风格改版（向仪器台方向加强科技感）
 - SSOT node: none
 - SSOT path: none
 - Readiness mode: FORMAL
 - Decision refs: none
 - Assumption IDs: none
-- Invalidation keys: console.landing.visual; console.copy.lexicon
-- AC budget: 4
+- Invalidation keys: console.landing.visual; console.copy.lexicon; console.visual.token-table
+- AC budget: 5
 - Baseline identity: main@530de20757520cd340c18f5da8f728122537cf05 plus the uncommitted landing/copy candidate reviewed on 2026-09-03
 - Product Context refs: agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md#九控制台视图合同plan-v3
 - Role Context refs: agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md#911证据分层与视觉工作台边界
@@ -58,7 +58,9 @@ And 进入视口的内容全部完成渐显
 
 ## Invariants
 
-- 落地页样式不新增设计令牌、类名或 `@media` 规则；`check_console_visual_baseline.py` 保持通过。
+- 落地页与调色板改版均不新增设计令牌名、类名或 `@media` 规则；`check_console_visual_baseline.py` 保持通过。
+- 令牌取值改版必须同步重钉 `token_table_sha256`、改写合同 §9.13.1 的令牌表与错误规则判别值，并更新红夹具的强调色字面量；三者缺一即视为绕过基线。
+- 强调色与证据色上的文字一律取随主题翻转的令牌，不得写死 `#fff` 或深色字面量。
 - 不新增 `data-act` 动作值。
 - 演示数据的三行状态与控制台演示常量一致，不编造数字。
 - 截图清单记录 `font_mode` 与 `review_note`，PASS 只表示门禁断言成立。
@@ -83,6 +85,7 @@ And 进入视口的内容全部完成渐显
 | AC-02 | behavior | none | machine/e2e | 首页滚动体验：粘性导航状态、四个锚点偏移、渐显完成、单行控件、减少动效可见性、深色主题；五张哈希绑定截图 | Browser E2E | Automatic | Yes |
 | AC-03 | behavior | none | machine/e2e | 全部视图 × 进程 × 视口的渲染文本不含机器标识或占位符；准入流程文案更新后流程与截图仍通过 | Browser E2E | Automatic | Yes |
 | AC-04 | behavior | none | human | 目标研究者能说出首页在讲什么、给谁用、下一步做什么，并且控制台任一句话都不需要实现知识即可理解 | Human product review | Human | Yes |
+| AC-05 | behavior | none | machine/static | 调色板改版后令牌名称集合、三态结构、235 个组件类与 14 条 `@media` 全部未变；`token_table_sha256` 已重钉并与合同 §9.13.1 一致，红夹具仍能判红 | Static baseline guard and its red/green fixtures | Automatic | Yes |
 
 ## Human acceptance
 
@@ -104,6 +107,7 @@ And 进入视口的内容全部完成渐显
 | AC-02 | scripts/console_browser_gate.mjs testLandingScrollExperience | agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-screenshot-manifest.json | Automatic | Yes |
 | AC-03 | scripts/console_browser_gate.mjs scanCopyQuality + access workflow | agents-results/2026-09-03/console-landing-copy-harness/evidence/screenshot-manifest.json | Automatic | Yes |
 | AC-04 | Human product review | acceptance/human/2026-W36/2026-09-03-FEAT-20260903-02/checklist.md#h-01 | Human | Yes |
+| AC-05 | scripts/check_console_visual_baseline.py; tests.test_console_visual_baseline | agents-results/2026-09-03/console-landing-copy-harness/acceptance/machine/static/ | Automatic | Yes |
 
 ## Exploratory testing
 
@@ -115,4 +119,4 @@ And 进入视口的内容全部完成渐显
 
 ## Risks and open decisions
 
-人工尚未审阅首页层级与文案；`fallback-local` 字体模式下的截图与联网机器不同；§9.14 动作清单漂移是本次之前已存在的缺口。
+人工尚未审阅首页层级、配色与文案；`fallback-local` 字体模式下的截图与联网机器不同；§9.14 动作清单漂移是本次之前已存在的缺口；冻结的 `review-console.html` 与 `review_bundle.py` 仍用旧调色板，两者的对齐需要单独的解冻决定。

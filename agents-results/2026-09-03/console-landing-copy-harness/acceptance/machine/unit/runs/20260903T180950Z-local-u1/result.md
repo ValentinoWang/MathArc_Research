@@ -1,11 +1,11 @@
 # Machine acceptance result: unit
 
-- Run ID: 20260903T174943Z-local-u1
+- Run ID: 20260903T180950Z-local-u1
 - Task ID: FEAT-20260903-02
 - Lane: machine/unit
 - Status: PASS
 - Contract version: 1
-- Source identity: landing-copy-candidate@7cd12399cd57a2bcca66a3ffc9532defdf95d6d11602bdb2c5ee07415b919a2b
+- Source identity: landing-copy-candidate@1dbac14796b1fbbe98a04e5e8ef36c787d1e4fb13c1fbd9b7b62ea297dcbd444
 - Runtime identity: local-python3.11 (z3 unavailable: DEGRADED for Gate 0, irrelevant to this task's assertions)
 - Covers: AC-01
 

@@ -15,7 +15,7 @@ import sys
 from pathlib import Path
 
 
-TOKEN_TABLE_SHA256 = "c45b37e6f8e8da0bfb837efef0209c560109a9a169e2b3a40d1bb5ebc71fb2fb"
+TOKEN_TABLE_SHA256 = "4ac72b36168eef86bdbcc9a3a0d9db7af8a49a76a08928c573aac5fc7b519c96"
 CLASS_COUNT = 235
 CLASS_LIST_SHA256 = "7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de63334938dcc"
 LIGHT_ONLY_TOKENS = frozenset({"--serif", "--sans", "--mono", "--topbar-h"})

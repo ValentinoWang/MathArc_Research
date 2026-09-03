@@ -24,3 +24,19 @@ with the lexicon in `docs/quality-gates/ui-copy-lexicon.json`. Landing styling s
 frozen U1 static contract (no new tokens, class names or `@media` rules): new behaviour is
 expressed through attribute selectors (`data-scrolled`, `data-reveal`, `aria-current`) and IDs.
 
+### Palette divergence from the frozen review console (2026-09-03)
+
+`problem-intel-console.html` moved to a cooler "instrument console" palette (revision 6 of
+§9.13.1 in the U1 view contract): cool-graphite neutrals, a cyan-leaning teal accent, and a
+deeper blue-black dark theme. `review-console.html` is `FROZEN_RECRUITING_DEMO` and a palette
+change is not one of its allowed unfreeze exceptions (security, privacy, accessibility only),
+so it keeps the original warm-green palette, and so does `render_review_bundle_html` in
+`matharc/v02/review_bundle.py`, which instantiates the frozen tokens.
+
+The two therefore no longer share one palette. This is a recorded, deliberate divergence, not
+drift: aligning the review console and the review-bundle renderer needs the freeze conditions
+in [`../DEV_PATH_V03.md`](../DEV_PATH_V03.md#5-prototype-freeze) to hold, or an explicit
+project decision to lift the freeze for this purpose. Until then, do not "fix" either side to
+match the other. Token *names* remain identical across all three, so the alignment, when it is
+funded, is a values-only change.
+

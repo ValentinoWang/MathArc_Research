@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "artifact_kind": "matharc-browser-access-evidence",
-  "generated_at": "2026-09-03T17:47:37.413Z",
+  "generated_at": "2026-09-03T18:06:39.126Z",
   "page_identity": "MathArc research preview access and console",
   "browser": "chromium",
   "font_mode": "fallback-local",
@@ -10,7 +10,7 @@
   "captures": [
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/desktop-application-pending.png",
-      "sha256": "58f940bd32148237bbe789ef5ffd1e77bf91297dbb500a9dfd7d2bcb06acb11a",
+      "sha256": "76d937fb923892d6e9b35ae842cf388215710aa67d21206b9e19a88af58e3a8b",
       "scenario": "application pending",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -22,12 +22,12 @@
         "height": 1080
       },
       "font_mode": "fallback-local",
-      "captured_at": "2026-09-03T17:47:33.328Z",
+      "captured_at": "2026-09-03T18:06:34.681Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/mobile-application-pending.png",
-      "sha256": "a42195f4673e1b13bd166e0af62cf6dd3064cd81916b0f4260473cfc49e45c8b",
+      "sha256": "ded81c8d0a76775f97a5eb4faecbc141d90c8c5fde595b3f6e2c861b92f4da6c",
       "scenario": "application pending",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -39,12 +39,12 @@
         "height": 844
       },
       "font_mode": "fallback-local",
-      "captured_at": "2026-09-03T17:47:33.443Z",
+      "captured_at": "2026-09-03T18:06:34.814Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/desktop-invalid-invite.png",
-      "sha256": "a5f8f5024d95685972b1599692d1eff7e09aea7bf4e20d6894d17f8cc6ca5a8b",
+      "sha256": "9d4aa29020d72e40106c33e27e80777faa77a8e301b4ce4254a4e28f1c0ad56b",
       "scenario": "invalid invitation rejected",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -56,12 +56,12 @@
         "height": 1080
       },
       "font_mode": "fallback-local",
-      "captured_at": "2026-09-03T17:47:33.943Z",
+      "captured_at": "2026-09-03T18:06:35.381Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/mobile-invalid-invite.png",
-      "sha256": "8d4e596f228acd280be1bd5bb63c0bb007e3a9d661f5e071ea1fcc643cfb3afc",
+      "sha256": "ffddf85f154f781f91c1510e93541bd78b67eda39efe2b69b9f298b470e2230e",
       "scenario": "invalid invitation rejected",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -73,12 +73,12 @@
         "height": 844
       },
       "font_mode": "fallback-local",
-      "captured_at": "2026-09-03T17:47:34.077Z",
+      "captured_at": "2026-09-03T18:06:35.515Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/desktop-session-restored.png",
-      "sha256": "b1b477384394fca30e40731249daf978f072dcfacbb587f9d9a4bb2dd6fbda50",
+      "sha256": "47c2d8e6d607832a96963a349b479d47f197d3bcb01c982901c3d83c9b4554fd",
       "scenario": "Cookie session restored",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -90,12 +90,12 @@
         "height": 1080
       },
       "font_mode": "fallback-local",
-      "captured_at": "2026-09-03T17:47:35.076Z",
+      "captured_at": "2026-09-03T18:06:36.631Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/mobile-session-restored.png",
-      "sha256": "1ea1c46634d41a02a1dfa38693202f92beafbb952e53edbe70b71dc3662b9215",
+      "sha256": "f99827e4acf0f214f65ff93226711c8974e13314753b9a288efeda9f8088d66c",
       "scenario": "Cookie session restored",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -107,12 +107,12 @@
         "height": 844
       },
       "font_mode": "fallback-local",
-      "captured_at": "2026-09-03T17:47:35.193Z",
+      "captured_at": "2026-09-03T18:06:36.797Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/desktop-logged-out.png",
-      "sha256": "9f7c469fc2fdf14a3dbecf73742b873c61b48ef006d73769c4bbc685b9e9b09e",
+      "sha256": "cf7d1718bd0aaf3a76e3796969c638a77274b180ee4c8add920b52e2d5b31035",
       "scenario": "logged-out public state",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -124,12 +124,12 @@
         "height": 1080
       },
       "font_mode": "fallback-local",
-      "captured_at": "2026-09-03T17:47:36.575Z",
+      "captured_at": "2026-09-03T18:06:38.253Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/mobile-logged-out.png",
-      "sha256": "a4e1e7b1de7b2fb7eb274c6c00f231f0c50aaa96269471c7151a0dd35a79ae17",
+      "sha256": "8c89b414abaa226d857c36619b86aaeb115ffd26cd338d030d29b37a26cb04a6",
       "scenario": "logged-out public state",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -141,12 +141,12 @@
         "height": 844
       },
       "font_mode": "fallback-local",
-      "captured_at": "2026-09-03T17:47:36.726Z",
+      "captured_at": "2026-09-03T18:06:38.415Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/desktop-guest-demo.png",
-      "sha256": "d6510db3fc122cb4a38142771f2c44a3b5f0db050415e0e8a23a1f933bb35ca6",
+      "sha256": "48d44617dcf658aac527f4b6f3b6315ad65460d04924c0bd305ac212b9386e2b",
       "scenario": "guest demo boundary",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -158,12 +158,12 @@
         "height": 1080
       },
       "font_mode": "fallback-local",
-      "captured_at": "2026-09-03T17:47:37.194Z",
+      "captured_at": "2026-09-03T18:06:38.897Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/mobile-guest-demo.png",
-      "sha256": "0020178c3bdab3127dc3bafdd24e73217999ad49fdc519adf3b5993920171bc4",
+      "sha256": "0bf7e6b011402fd73808943baf2596ee61e64b44214ee1bb60a7c8a8ea5568ee",
       "scenario": "guest demo boundary",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -175,7 +175,7 @@
         "height": 844
       },
       "font_mode": "fallback-local",
-      "captured_at": "2026-09-03T17:47:37.360Z",
+      "captured_at": "2026-09-03T18:06:39.065Z",
       "review_result": "PASS"
     }
   ]

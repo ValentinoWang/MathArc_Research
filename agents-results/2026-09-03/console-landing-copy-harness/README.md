@@ -50,6 +50,36 @@ concentrated in three places: developer vocabulary in access and live-view messa
 sentences that chained undefined terms or used literal translations (`杀手测试`). Two adjacent topbar
 labels both read `演示数据` for different facts. Every rewrite with its reason is in `copy-review.md`.
 
+### Palette revision (second round, same day)
+
+The owner reviewed the published prototype and asked for a stronger technical character. The
+page moved from "academic paper" to **instrument console**, deliberately keeping STIX Two Text
+for mathematical statements — a geometric sans would have read as a generic tech template and
+would have thrown away the subject's own typesetting convention. The tech character comes from
+the frame instead:
+
+- neutrals re-cut from warm green to cool graphite (`--ground` `#F4F7F6` → `#E9EFF2`);
+- accent given more chroma and a cyan lean (`#0F6B62` → `#00736B`; dark `#4FB3A5` → `#3BD6C4`);
+- dark theme rebuilt as a deep blue-black housing (`#10191A` → `#060D10`);
+- a hairline technical grid anchored to the top of the full-screen pages, masked out below;
+- eyebrow labels moved to the monospace face, which the page already used for identifiers;
+- corner radii tightened (11/10/9/8 px → 7/7/6/6 px).
+
+Two accessibility defects surfaced and were fixed rather than carried forward: buttons on the
+accent and gate colours had a hardcoded `#fff` that failed against the bright dark-theme accent,
+and evidence badges `.ev2`/`.ev3` had hardcoded dark text that was dark-on-dark in the dark
+theme. Both now use tokens that flip with the theme (`--on-e`, `--ink`).
+
+**Contract handling.** The U1 static visual baseline pins the token table by SHA-256. The token
+*names* (30 light / 26 dark), the three-mode structure, the 235 component class names and the 14
+`@media` rules are all unchanged, so this is a values-only revision: `token_table_sha256` was
+recomputed and re-pinned in `scripts/check_console_visual_baseline.py`, §9.13.1 of the view
+contract was rewritten with the new values and a revision-6 note, the registered
+wrong-fill-rule discriminant was recomputed, and the red fixture in
+`tests/test_console_visual_baseline.py` was updated to the new accent literal. The frozen
+`review-console.html` and `review_bundle.py` keep the old palette; that divergence is recorded
+in `docs/prototypes/README.md` and needs a separate decision.
+
 ## Root causes, and where each one now lives in the Harness
 
 | Symptom | Why it happened | Harness change |

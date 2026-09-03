@@ -30,7 +30,7 @@ class ConsoleVisualBaselineTests(unittest.TestCase):
         with TemporaryDirectory() as temporary_directory:
             prototype, blueprint, contract = self._copy_authorities(Path(temporary_directory))
             prototype.write_text(
-                prototype.read_text(encoding="utf-8").replace("--accent:#0F6B62", "--accent:#000000", 1),
+                prototype.read_text(encoding="utf-8").replace("--accent:#00736B", "--accent:#000000", 1),
                 encoding="utf-8",
             )
             failures = validate_baseline(prototype, blueprint, contract)
