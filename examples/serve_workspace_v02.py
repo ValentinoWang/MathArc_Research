@@ -8,6 +8,7 @@ import sys
 from pathlib import Path
 
 try:
+    from matharc.v02.access import InvitationAccessStore
     from matharc.v02.workspace_server import make_server
 except ModuleNotFoundError as exc:
     # `python examples/serve_workspace_v02.py ...` sets sys.path[0] to the
@@ -22,6 +23,7 @@ except ModuleNotFoundError as exc:
     project_root_text = str(project_root)
     if project_root_text not in sys.path:
         sys.path.insert(0, project_root_text)
+    from matharc.v02.access import InvitationAccessStore
     from matharc.v02.workspace_server import make_server
 
 
@@ -51,9 +53,23 @@ def main() -> None:
     parser.add_argument("--port", type=int, default=8000)
     parser.add_argument("--dashboard")
     parser.add_argument(
+        "--access-store",
+        help="external directory for hashed invitation and session state",
+    )
+    parser.add_argument(
+        "--issue-preview-email",
+        help="issue one invitation for this email and print it once at startup",
+    )
+    parser.add_argument(
+        "--topic-scope",
+        action="append",
+        default=[],
+        help="scope metadata for the issued invitation; repeat for multiple values",
+    )
+    parser.add_argument(
         "--allow-remote",
         action="store_true",
-        help="explicitly allow a non-loopback bind; no authentication is provided",
+        help="explicitly allow a non-loopback bind; TLS remains an external responsibility",
     )
     parser.add_argument("--sse-poll-seconds", type=float, default=0.5)
     parser.add_argument("--sse-lifetime-seconds", type=float, default=30.0)
@@ -66,8 +82,12 @@ def main() -> None:
     if not _is_loopback_host(args.host) and not args.allow_remote:
         raise SystemExit(
             "Refusing a non-loopback bind without --allow-remote. The observatory "
-            "has no authentication or TLS layer."
+            "does not provide a TLS layer."
         )
+    if args.issue_preview_email and not args.access_store:
+        raise SystemExit("--issue-preview-email requires --access-store")
+    if args.topic_scope and not args.issue_preview_email:
+        raise SystemExit("--topic-scope requires --issue-preview-email")
 
     workspace = Path(args.workspace).resolve()
     dashboard = Path(args.dashboard).resolve() if args.dashboard else None
@@ -78,16 +98,30 @@ def main() -> None:
         dashboard_path=dashboard,
         sse_poll_seconds=args.sse_poll_seconds,
         sse_lifetime_seconds=args.sse_lifetime_seconds,
+        access_store_root=args.access_store,
+    )
+    invitation = None
+    if args.issue_preview_email:
+        invitation = InvitationAccessStore(args.access_store).issue_invitation(
+            email=args.issue_preview_email,
+            topic_scopes=args.topic_scope or ["research-preview"],
     )
     bound_host, bound_port = server.server_address[:2]
+    bound_host_text = (
+        bound_host.decode("ascii") if isinstance(bound_host, bytes) else str(bound_host)
+    )
     startup = {
         "schema_version": "1.0",
         "workspace": str(workspace),
-        "url": f"http://{bound_host}:{bound_port}/",
-        "health": f"http://{bound_host}:{bound_port}/api/health",
-        "events": f"http://{bound_host}:{bound_port}/events",
+        "url": f"http://{bound_host_text}:{bound_port}/",
+        "health": f"http://{bound_host_text}:{bound_port}/api/health",
+        "events": f"http://{bound_host_text}:{bound_port}/events",
         "read_only": True,
-        "authentication": False,
+        "authentication": bool(args.access_store),
+        "access_store": str(Path(args.access_store).resolve()) if args.access_store else None,
+        "preview_email": args.issue_preview_email,
+        "preview_invitation_code": invitation.code if invitation else None,
+        "topic_scopes": list(invitation.invitation.topic_scopes) if invitation else [],
         "tls": False,
         "remote_binding_explicitly_allowed": bool(args.allow_remote),
         "verification_policy": "full workspace reload and hash validation per request",

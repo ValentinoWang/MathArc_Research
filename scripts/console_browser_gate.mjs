@@ -3,20 +3,22 @@
  * Guard card: console-prototype-browser-regression
  * Failure class: a browser-rendered console view diverges from the declared
  * prototype contract (broken render, responsive imbalance, falsified ledger,
- * inaccessible in-place disclosure, lost data-origin boundary, or component
- * descendant-selector leakage that collapses a nested text column).
- * Scope: docs/prototypes/problem-intel-console.html only; this does not prove
- * authenticated production behaviour. Landing prohibition cards are checked
- * for six icon/text pairs, a usable text width, and a non-vertical heading at
- * every covered viewport. Repair: scope the layout selector to the component's
- * direct child and preserve minmax(0, 1fr) for nested text content; update this
- * card and the static baseline only when the approved card contract changes.
+ * inaccessible in-place disclosure, lost data-origin boundary, broken access
+ * lifecycle, secret retention, or component descendant-selector leakage that
+ * collapses a nested text column). Scope: the local workspace/access fixture
+ * and docs/prototypes/problem-intel-console.html; this does not prove deployed
+ * or production behaviour. Runtime access captures are SHA-256-bound to a
+ * manifest, and live console checks run with a server-issued Cookie session.
+ * Repair: restore the declared browser/API boundary, keep secret values out of
+ * persistence and evidence, and update this card only when the approved local
+ * browser contract changes.
  */
 import { createRequire } from "node:module";
+import { createHash } from "node:crypto";
 import { execFileSync, spawn, spawnSync } from "node:child_process";
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdirSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 
 const require = createRequire(import.meta.url);
 const ROOT = resolve(import.meta.dirname, "..");
@@ -24,6 +26,12 @@ const PAGE_PATH = resolve(ROOT, "docs/prototypes/problem-intel-console.html");
 const PAGE_SOURCE = readFileSync(PAGE_PATH, "utf8");
 const BLUEPRINT_PATH = resolve(ROOT, "docs/prototypes/console-dev-blueprint.html");
 const BLUEPRINT_SOURCE = readFileSync(BLUEPRINT_PATH, "utf8");
+const ACCESS_EVIDENCE_DIR = resolve(ROOT, "agents-results/2026-09-03/research-preview-access");
+const ACCESS_COOKIE_NAME = "matharc_access_session";
+const ACCESS_SCREENSHOT_VIEWPORTS = [
+  { name: "desktop", width: 1240, height: 1080 },
+  { name: "mobile", width: 390, height: 844 },
+];
 const WIDTHS = [1240, 1366, 1440, 1536, 1728, 1920];
 const MOBILE_VIEWPORTS = [
   { name: "mobile-390", width: 390, height: 844 },
@@ -105,6 +113,7 @@ import sys
 import subprocess
 from pathlib import Path
 
+from matharc.v02.access import InvitationAccessStore
 from matharc.v02.console_export import ConsoleLocalProjectionConfig
 from matharc.v02.difficulty_ledger import DifficultyLedger, DifficultyOutcome, DifficultyPrediction, OrdinalLevel, DIFFICULTY_DIMENSIONS
 from matharc.v02.falsification import (
@@ -141,6 +150,7 @@ dashboard = Path(sys.argv[2])
 workspace_root = root / "workspace"
 review_trace_path = root / "review-trace.json"
 review_token = "browser-review-token"
+access_root = root / "access-domain"
 reviewer = ReviewerProfile(
     reviewer_id="reviewer-A", name="A", affiliation="", independence_group="group-A"
 )
@@ -251,6 +261,18 @@ nominate_for_review(trace, "C")
 set_reviewer_roster(trace, ReviewerRoster(roster_version="roster-1", reviewers=(reviewer,)))
 save_trace(trace, review_trace_path)
 
+access_store = InvitationAccessStore(access_root, session_ttl_seconds=43200)
+ui_invitation_email = "browser-access@example.edu"
+ui_invitation = access_store.issue_invitation(
+    email=ui_invitation_email,
+    topic_scopes=("combinatorics", "formal-proof"),
+)
+gate_invitation_email = "browser-gate@example.edu"
+gate_invitation = access_store.issue_invitation(
+    email=gate_invitation_email,
+    topic_scopes=("browser-regression",),
+)
+
 server = make_server(
     workspace_root, host="127.0.0.1", port=0, dashboard_path=dashboard,
     sse_poll_seconds=0.02, sse_lifetime_seconds=0.35,
@@ -265,6 +287,7 @@ server = make_server(
         dogfood_archive_path=Path.cwd() / "agents-results/2026-08-31/problem-intelligence-plane/evidence/t2-fixtures/three-real-archives.json",
     ),
     review_trace_path=review_trace_path, review_write_token=review_token,
+    access_store_root=access_root,
 )
 print(json.dumps({
     "origin": f"http://127.0.0.1:{server.server_address[1]}",
@@ -272,6 +295,11 @@ print(json.dumps({
     "review_token": review_token, "reviewer_id": reviewer.reviewer_id,
     "reviewer_profile_digest": reviewer.digest_sha256,
     "cli_executable": str(fake_claude),
+    "access_state_path": str(access_store.path),
+    "ui_invitation_email": ui_invitation_email,
+    "ui_invitation_code": ui_invitation.code,
+    "gate_invitation_email": gate_invitation_email,
+    "gate_invitation_code": gate_invitation.code,
 }), flush=True)
 server.serve_forever(poll_interval=0.02)
 `;
@@ -410,6 +438,254 @@ async function startServer() {
       rmSync(directory, { recursive: true, force: true });
     },
   };
+}
+
+function assertInvitationSecretsNotPersisted(server) {
+  const state = readFileSync(server.access_state_path, "utf8");
+  for (const code of [server.ui_invitation_code, server.gate_invitation_code]) {
+    assert(!state.includes(code), "access state persisted a plaintext invitation code");
+  }
+}
+
+async function settleVisualLayout(page) {
+  await page.evaluate(async () => {
+    await document.fonts.ready;
+    await new Promise(resolveFrame => requestAnimationFrame(() => requestAnimationFrame(resolveFrame)));
+  });
+}
+
+async function captureAccessScenario(page, scenario, basename, manifestEntries) {
+  for (const viewport of ACCESS_SCREENSHOT_VIEWPORTS) {
+    await page.setViewportSize({ width: viewport.width, height: viewport.height });
+    await settleVisualLayout(page);
+    const filename = `${viewport.name}-${basename}.png`;
+    const outputPath = join(ACCESS_EVIDENCE_DIR, filename);
+    const capturedAt = new Date().toISOString();
+    await page.screenshot({ path: outputPath, fullPage: false });
+    const digest = createHash("sha256").update(readFileSync(outputPath)).digest("hex");
+    manifestEntries.push({
+      file: relative(ROOT, outputPath),
+      sha256: digest,
+      scenario,
+      page_identity: {
+        title: await page.title(),
+        path: new URL(page.url()).pathname,
+      },
+      browser: "chromium",
+      viewport: { width: viewport.width, height: viewport.height },
+      captured_at: capturedAt,
+      review_result: "PASS",
+    });
+  }
+}
+
+async function openPublicRoot(page, origin) {
+  const sessionResponse = page.waitForResponse(response => {
+    const url = new URL(response.url());
+    return url.pathname === "/api/access/session" && response.request().method() === "GET";
+  });
+  await page.goto(`${origin}/`, { waitUntil: "domcontentloaded" });
+  const response = await sessionResponse;
+  assert(response.status() === 401, "fresh public context unexpectedly restored an access session");
+  await page.getByRole("button", { name: "登录", exact: true }).waitFor({ state: "visible" });
+}
+
+function assertExactKeys(value, expected, label) {
+  const actual = Object.keys(value || {}).sort();
+  const wanted = [...expected].sort();
+  assert(JSON.stringify(actual) === JSON.stringify(wanted), `${label} fields drifted: ${actual.join(",")}`);
+}
+
+async function assertNoAccessCookie(context, origin, label) {
+  const cookies = await context.cookies(origin);
+  assert(!cookies.some(cookie => cookie.name === ACCESS_COOKIE_NAME), `${label} created or retained an access cookie`);
+}
+
+async function testAccessWorkflow(browser, server) {
+  mkdirSync(ACCESS_EVIDENCE_DIR, { recursive: true });
+  const manifestEntries = [];
+
+  const anonymousContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+  try {
+    const response = await anonymousContext.request.get(`${server.origin}/api/console`);
+    assert(response.status() === 401, "anonymous protected console request was not rejected");
+    const payload = await response.json();
+    assert(payload.error === "access_required", "anonymous protected response lost its access_required contract");
+    await assertNoAccessCookie(anonymousContext, server.origin, "anonymous protected request");
+  } finally {
+    await anonymousContext.close();
+  }
+
+  const applicationContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+  try {
+    const page = await applicationContext.newPage();
+    await openPublicRoot(page, server.origin);
+    await page.getByRole("button", { name: "登录", exact: true }).click();
+    await page.getByRole("button", { name: "没有邀请码？申请研究预览", exact: true }).click();
+    await page.locator("#f-mail").fill("browser-applicant@example.edu");
+    await page.locator("#f-institution").fill("Example Mathematics Institute");
+    await page.locator("#f-research-role").fill("Research fellow");
+    await page.locator("#f-research-direction").fill("Combinatorics and formal proof");
+    await page.locator("#f-purpose").fill("Evaluate evidence-bound mathematical research workflows.");
+    const submitted = page.waitForResponse(response => {
+      const url = new URL(response.url());
+      return url.pathname === "/api/access/applications" && response.request().method() === "POST";
+    });
+    await page.getByRole("button", { name: "提交申请", exact: true }).click();
+    const response = await submitted;
+    assert(response.status() === 202, "public application did not return 202");
+    const payload = await response.json();
+    assertExactKeys(payload, ["application"], "application response");
+    assertExactKeys(payload.application, ["application_id", "email", "status", "submitted_at"], "public application");
+    assert(payload.application.status === "PENDING", "public application was not left pending");
+    await page.getByText(/申请已提交并进入待审核队列/).waitFor({ state: "visible" });
+    await assertNoAccessCookie(applicationContext, server.origin, "pending application");
+    await captureAccessScenario(page, "application pending", "application-pending", manifestEntries);
+  } finally {
+    await applicationContext.close();
+  }
+
+  const invalidContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+  try {
+    const page = await invalidContext.newPage();
+    await openPublicRoot(page, server.origin);
+    await page.getByRole("button", { name: "登录", exact: true }).click();
+    await page.locator("#f-mail").fill(server.ui_invitation_email);
+    await page.locator("#f-code").fill("invalid-browser-invitation");
+    const rejected = page.waitForResponse(response => {
+      const url = new URL(response.url());
+      return url.pathname === "/api/access/redeem" && response.request().method() === "POST";
+    });
+    await page.getByRole("button", { name: "进入", exact: true }).click();
+    const response = await rejected;
+    assert(response.status() === 401, "invalid invitation was not rejected");
+    const payload = await response.json();
+    assert(payload.error === "invalid_credentials" && payload.message === "邮箱或邀请码无效。", "invalid invitation response was not generic");
+    await page.getByText("邮箱或邀请码无效。", { exact: true }).waitFor({ state: "visible" });
+    assert(await page.locator("#f-code").inputValue() === "", "invalid invitation secret remained in the form");
+    await assertNoAccessCookie(invalidContext, server.origin, "invalid invitation");
+    await captureAccessScenario(page, "invalid invitation rejected", "invalid-invite", manifestEntries);
+  } finally {
+    await invalidContext.close();
+  }
+
+  const invitationContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+  let restoredPage;
+  try {
+    const page = await invitationContext.newPage();
+    await openPublicRoot(page, server.origin);
+    await page.getByRole("button", { name: "登录", exact: true }).click();
+    await page.locator("#f-mail").fill(server.ui_invitation_email);
+    await page.locator("#f-code").fill(server.ui_invitation_code);
+    const redeemed = page.waitForResponse(response => {
+      const url = new URL(response.url());
+      return url.pathname === "/api/access/redeem" && response.request().method() === "POST";
+    });
+    await page.getByRole("button", { name: "进入", exact: true }).click();
+    const response = await redeemed;
+    assert(response.status() === 200, "valid invitation was not redeemed");
+    const payload = await response.json();
+    assert(payload.authenticated === true && payload.session.email === server.ui_invitation_email, "valid invitation returned the wrong session");
+    const setCookie = await response.headerValue("set-cookie") || "";
+    assert(/(?:^|;)\s*Path=\//i.test(setCookie), "session cookie lost Path=/");
+    assert(/(?:^|;)\s*HttpOnly(?:;|$)/i.test(setCookie), "session cookie lost HttpOnly");
+    assert(/(?:^|;)\s*SameSite=Strict(?:;|$)/i.test(setCookie), "session cookie lost SameSite=Strict");
+    assert(/(?:^|;)\s*Max-Age=\d+(?:;|$)/i.test(setCookie), "session cookie lost bounded Max-Age");
+    assert(!/(?:^|;)\s*Domain=/i.test(setCookie), "local session cookie unexpectedly declared Domain");
+    assert(!/(?:^|;)\s*Secure(?:;|$)/i.test(setCookie), "local HTTP session cookie unexpectedly declared Secure");
+    const cookies = await invitationContext.cookies(server.origin);
+    const accessCookie = cookies.find(cookie => cookie.name === ACCESS_COOKIE_NAME);
+    assert(accessCookie && accessCookie.httpOnly && accessCookie.sameSite === "Strict" && accessCookie.path === "/", "browser did not store the hardened session cookie");
+    await page.getByText("身份与研究预览会话已由服务端确认。", { exact: true }).waitFor({ state: "visible" });
+    assert(await page.locator("#f-code").count() === 0, "redeemed invitation secret remained in the rendered DOM");
+    assert(!(await page.locator("body").innerText()).includes(server.ui_invitation_code), "redeemed invitation secret became visible");
+    const protectedResponse = await invitationContext.request.get(`${server.origin}/api/console`);
+    assert(protectedResponse.status() === 200, "redeemed browser session did not authorize the console");
+
+    restoredPage = await invitationContext.newPage();
+    const sessionResponse = restoredPage.waitForResponse(candidate => {
+      const url = new URL(candidate.url());
+      return url.pathname === "/api/access/session" && candidate.request().method() === "GET";
+    });
+    await restoredPage.goto(`${server.origin}/`, { waitUntil: "domcontentloaded" });
+    assert((await sessionResponse).status() === 200, "same-context page did not restore the Cookie session");
+    await restoredPage.locator("#access-logout").waitFor({ state: "visible" });
+    await waitFor(
+      () => restoredPage.locator("#view-data-boundary").evaluate(node => node.dataset.source === "live"),
+      "restored session did not render the protected live console",
+    );
+    await page.close();
+    await captureAccessScenario(restoredPage, "Cookie session restored", "session-restored", manifestEntries);
+
+    const replayContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+    try {
+      const replayPage = await replayContext.newPage();
+      await openPublicRoot(replayPage, server.origin);
+      await replayPage.getByRole("button", { name: "登录", exact: true }).click();
+      await replayPage.locator("#f-mail").fill(server.ui_invitation_email);
+      await replayPage.locator("#f-code").fill(server.ui_invitation_code);
+      const replayed = replayPage.waitForResponse(candidate => {
+        const url = new URL(candidate.url());
+        return url.pathname === "/api/access/redeem" && candidate.request().method() === "POST";
+      });
+      await replayPage.getByRole("button", { name: "进入", exact: true }).click();
+      const replayResponse = await replayed;
+      assert(replayResponse.status() === 401, "consumed invitation replay was not rejected");
+      const replayPayload = await replayResponse.json();
+      assert(replayPayload.error === "invalid_credentials" && replayPayload.message === "邮箱或邀请码无效。", "invitation replay leaked a distinct failure reason");
+      assert(await replayPage.locator("#f-code").inputValue() === "", "replayed invitation secret remained in the form");
+      await assertNoAccessCookie(replayContext, server.origin, "invitation replay");
+    } finally {
+      await replayContext.close();
+    }
+
+    await restoredPage.setViewportSize({ width: 1240, height: 1080 });
+    const loggedOut = restoredPage.waitForResponse(candidate => {
+      const url = new URL(candidate.url());
+      return url.pathname === "/api/access/logout" && candidate.request().method() === "POST";
+    });
+    await restoredPage.locator("#access-logout").click();
+    const logoutResponse = await loggedOut;
+    assert(logoutResponse.status() === 204, "logout did not return its empty success response");
+    await restoredPage.getByRole("button", { name: "登录", exact: true }).waitFor({ state: "visible" });
+    await restoredPage.getByText("已退出研究预览会话。", { exact: true }).waitFor({ state: "visible" });
+    await assertNoAccessCookie(invitationContext, server.origin, "logout");
+    const afterLogout = await invitationContext.request.get(`${server.origin}/api/console`);
+    assert(afterLogout.status() === 401, "logged-out context retained protected console access");
+    await captureAccessScenario(restoredPage, "logged-out public state", "logged-out", manifestEntries);
+  } finally {
+    await invitationContext.close();
+  }
+
+  const guestContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+  try {
+    const page = await guestContext.newPage();
+    await openPublicRoot(page, server.origin);
+    await page.getByRole("button", { name: "以访客身份浏览演示数据", exact: true }).click();
+    await page.getByText("访客只读模式", { exact: true }).waitFor({ state: "visible" });
+    assert(await page.locator("#view-data-boundary").getAttribute("data-source") === "demo", "guest surface lost its demo-data boundary");
+    await assertNoAccessCookie(guestContext, server.origin, "guest demo");
+    const protectedResponse = await guestContext.request.get(`${server.origin}/api/console`);
+    assert(protectedResponse.status() === 401, "guest demo crossed the protected console boundary");
+    await captureAccessScenario(page, "guest demo boundary", "guest-demo", manifestEntries);
+  } finally {
+    await guestContext.close();
+  }
+
+  assertInvitationSecretsNotPersisted(server);
+  assert(manifestEntries.length === 10, `access evidence expected 10 screenshots, got ${manifestEntries.length}`);
+  assert(new Set(manifestEntries.map(entry => entry.file)).size === 10, "access evidence screenshot names were not unique");
+  const manifest = {
+    schema_version: "1.0",
+    artifact_kind: "matharc-browser-access-evidence",
+    generated_at: new Date().toISOString(),
+    page_identity: "MathArc research preview access and console",
+    browser: "chromium",
+    review_result: "PASS",
+    captures: manifestEntries,
+  };
+  writeFileSync(join(ACCESS_EVIDENCE_DIR, "screenshot-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+  return manifestEntries.length;
 }
 
 async function dispatch(page, action, data = {}) {
@@ -575,19 +851,26 @@ async function testKeyboardControls(page) {
   );
 }
 
-async function testMobileViewports(browser, server) {
+async function testMobileViewports(browser, server, accessCookies) {
   for (const viewport of MOBILE_VIEWPORTS) {
     const context = await browser.newContext({
       viewport: { width: viewport.width, height: viewport.height },
       isMobile: true,
       hasTouch: true,
       deviceScaleFactor: 2,
+      storageState: { cookies: accessCookies, origins: [] },
     });
     const page = await context.newPage();
     const pageErrors = [];
     page.on("pageerror", error => pageErrors.push(error.stack || error.message));
     try {
+      const initialConsoleResponse = page.waitForResponse(response => {
+        const url = new URL(response.url());
+        return url.pathname === "/api/console" && response.request().method() === "GET";
+      });
       await page.goto(`${server.origin}/`, { waitUntil: "domcontentloaded" });
+      assert((await initialConsoleResponse).status() === 200, `${viewport.name} did not authenticate its initial console export`);
+      assert(await page.evaluate(() => window.MathArcConsole.loadExport("/api/console")), `${viewport.name} could not load its authenticated console export`);
       await page.locator("#console-provenance").waitFor({ state: "attached" });
       const fellBackToDemo = await page.evaluate(() => window.MathArcConsole.loadExport("/missing-console.json"));
       assert(!fellBackToDemo, `${viewport.name} did not enter its declared demo-data baseline`);
@@ -721,7 +1004,9 @@ async function testM3LocalProjections(page, exportPayload) {
 }
 
 async function testM1SseAndReconnect(page, server, eventCursors) {
-  const initial = await (await fetch(`${server.origin}/api/console`)).json();
+  const initialResponse = await page.context().request.get(`${server.origin}/api/console`);
+  assert(initialResponse.status() === 200, "M1 authenticated fixture could not read the initial console export");
+  const initial = await initialResponse.json();
   const initialTail = initial.workspace.events.events.at(-1).sequence;
   await renderCase(page, "c7", { name: "proofchain-before-sse", view: "proofchain" });
   const beforeSse = await page.locator("body").innerText();
@@ -843,15 +1128,10 @@ async function main() {
 
   const playwright = loadPlaywright();
   const server = await startServer();
-  let exportResponse;
-  try {
-    exportResponse = await fetch(`${server.origin}/api/console`);
-  } catch (error) {
-    fail(`initial console export fetch failed: ${error.message}; fixture stderr: ${server.diagnostics()}`);
-  }
-  const exportPayload = await exportResponse.json();
   const browser = await playwright.chromium.launch({ headless: true });
-  const page = await browser.newPage({ viewport: { width: WIDTHS[0], height: 1080 } });
+  let accessCaptureCount = 0;
+  const context = await browser.newContext({ viewport: { width: WIDTHS[0], height: 1080 } });
+  const page = await context.newPage();
   const pageErrors = [];
   const eventCursors = [];
   page.on("pageerror", error => pageErrors.push(error.stack || error.message));
@@ -862,7 +1142,36 @@ async function main() {
     if (Number.isInteger(cursor)) eventCursors.push(cursor);
   });
   try {
+    assertInvitationSecretsNotPersisted(server);
+    accessCaptureCount = await testAccessWorkflow(browser, server);
+    const authentication = await context.request.post(`${server.origin}/api/access/redeem`, {
+      data: { email: server.gate_invitation_email, code: server.gate_invitation_code },
+    });
+    assert(authentication.status() === 200, "main browser context could not redeem its gate invitation");
+    const authenticationPayload = await authentication.json();
+    assert(
+      authenticationPayload.authenticated === true
+        && authenticationPayload.session.email === server.gate_invitation_email,
+      "main browser context received the wrong authenticated session",
+    );
+    assertInvitationSecretsNotPersisted(server);
+    const accessCookies = (await context.cookies(server.origin)).filter(cookie => cookie.name === ACCESS_COOKIE_NAME);
+    assert(accessCookies.length === 1, "main browser context did not retain exactly one access cookie");
+    const exportResponse = await context.request.get(`${server.origin}/api/console`);
+    assert(exportResponse.status() === 200, "authenticated initial console export fetch failed");
+    const exportPayload = await exportResponse.json();
+    const restoredSession = page.waitForResponse(response => {
+      const url = new URL(response.url());
+      return url.pathname === "/api/access/session" && response.request().method() === "GET";
+    });
+    const initialConsole = page.waitForResponse(response => {
+      const url = new URL(response.url());
+      return url.pathname === "/api/console" && response.request().method() === "GET";
+    });
     await page.goto(`${server.origin}/`, { waitUntil: "domcontentloaded" });
+    assert((await restoredSession).status() === 200, "main browser page did not restore its authenticated session");
+    assert((await initialConsole).status() === 200, "main browser page did not authenticate its initial console export");
+    assert(await page.evaluate(() => window.MathArcConsole.loadExport("/api/console")), "main browser page could not load its authenticated console export");
     await page.locator("#console-provenance").waitFor({ state: "attached" });
     const fellBackToDemo = await page.evaluate(() => window.MathArcConsole.loadExport("/missing-console.json"));
     assert(!fellBackToDemo, "prototype regression cases did not enter their declared demo-data baseline");
@@ -884,14 +1193,16 @@ async function main() {
     await testM3LocalProjections(page, exportPayload);
     const m1 = await testM1SseAndReconnect(page, server, eventCursors);
     const m2 = await testM2ReviewWorkflow(page, server);
-    await testMobileViewports(browser, server);
+    await testMobileViewports(browser, server, accessCookies);
     assert(pageErrors.length === 0, `page errors: ${pageErrors.join("\n")}`);
+    console.log(`access workflow passed: protected boundary, pending application, invalid/valid invite, Cookie restoration, replay rejection, logout, guest demo; ${accessCaptureCount} hash-bound screenshots`);
     console.log(`console browser gate passed: ${VIEW_CASES.length} cases x ${CAMPAIGNS.length} campaigns x ${WIDTHS.length} widths`);
     console.log(`mobile viewport checks passed: ${MOBILE_VIEWPORTS.map(viewport => `${viewport.name}=${viewport.width}x${viewport.height}`).join(", ")}`);
     console.log("keyboard checks passed: tabindex disclosures activated with Enter and Space");
     console.log(`M1 SSE workflow: ${m1}`);
     console.log(`M2 review workflow: ${m2}`);
   } finally {
+    await context.close();
     await browser.close();
     await server.close();
   }

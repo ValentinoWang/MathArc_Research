@@ -17,8 +17,10 @@ from .._workspace_server_impl import (
     WorkspaceRequestHandler as _WorkspaceRequestHandlerImpl,
 )
 from .._workspace_server_impl import WorkspaceSnapshot
-from ..review_server import ReviewAPI, ReviewServerConfig
+from ..access import InvitationAccessStore
+from ..access_server import AccessAPI
 from ..console_export import ConsoleLocalProjectionConfig
+from ..review_server import ReviewAPI, ReviewServerConfig
 from ..topic_observation import TopicObservationRunner
 from ..workspace import ResearchWorkspace
 
@@ -46,6 +48,7 @@ class WorkspaceHTTPServer(_WorkspaceHTTPServerImpl):
         review_api: ReviewAPI | None = None,
         topic_store: TopicObservationRunner | None = None,
         local_projection_config: ConsoleLocalProjectionConfig | None = None,
+        access_api: AccessAPI | None = None,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
@@ -54,6 +57,7 @@ class WorkspaceHTTPServer(_WorkspaceHTTPServerImpl):
         self.review_api = review_api
         self.topic_store = topic_store
         self.local_projection_config = local_projection_config
+        self.access_api = access_api
         ThreadingHTTPServer.__init__(
             self,
             server_address,
@@ -75,6 +79,8 @@ def make_server(
     topic_id: str | None = None,
     topic_initial_cursor: str | None = None,
     local_projection_config: ConsoleLocalProjectionConfig | None = None,
+    access_store_root: str | Path | None = None,
+    access_cookie_secure: bool = False,
 ) -> WorkspaceHTTPServer:
     from ..console_topic import TopicStoreConfig
 
@@ -113,6 +119,11 @@ def make_server(
         if resolved_review_trace_path is not None and review_write_token is not None
         else None
     )
+    access_api = (
+        AccessAPI(InvitationAccessStore(access_store_root), cookie_secure=access_cookie_secure)
+        if access_store_root is not None
+        else None
+    )
     return WorkspaceHTTPServer(
         (host, port),
         repository,
@@ -122,13 +133,14 @@ def make_server(
         review_api=review_api,
         topic_store=topic_store,
         local_projection_config=local_projection_config,
+        access_api=access_api,
     )
 
 
 __all__ = [
-    "WorkspaceSnapshot",
+    "WorkspaceHTTPServer",
     "WorkspaceRepository",
     "WorkspaceRequestHandler",
-    "WorkspaceHTTPServer",
+    "WorkspaceSnapshot",
     "make_server",
 ]

@@ -10,6 +10,7 @@ quality:
   static_guards:
     - PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_frozen_review_inputs
     - PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_regression_evaluation
+    - PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_access tests.test_v02_access_server tests.test_console_prototype
   formatting: []
   guard_policy:
     evidence_root: agents-results
@@ -18,8 +19,10 @@ quality:
     release_gate_commands:
       - python3 scripts/validate_frozen_review_inputs.py <campaign>/frozen-inputs.json --project-root .
 qa:
-  screenshot: []
-  integration: []
+  screenshot:
+    - agents-results/2026-09-03/research-preview-access/screenshot-manifest.json
+  integration:
+    - node scripts/console_browser_gate.mjs
   evidence_root: agents-results
 skills:
   enabled: []

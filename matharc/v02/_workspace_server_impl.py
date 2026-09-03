@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import json
-import mimetypes
 import threading
 import time
 from dataclasses import dataclass
@@ -11,10 +10,17 @@ from pathlib import Path
 from typing import Any
 from urllib.parse import parse_qs, urlparse
 
-from .console_export import ConsoleLocalProjectionConfig, campaign_snapshot, build_console_export
+from .access import (
+    AccessStateError,
+    AccessValidationError,
+    InvalidCredentialsError,
+    InvitationAccessStore,
+)
+from .access_server import AccessAPI, AccessHTTPResponse
+from .console_export import ConsoleLocalProjectionConfig, build_console_export, campaign_snapshot
 from .console_topic import TopicStoreConfig
-from .topic_observation import TopicObservationRunner
 from .review_server import ReviewAPI, ReviewHTTPResponse, ReviewServerConfig
+from .topic_observation import TopicObservationRunner
 from .workspace import ResearchWorkspace
 from .workspace_visualization import workspace_dashboard_payload
 
@@ -71,6 +77,7 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         review_api: ReviewAPI | None = None,
         topic_store: TopicObservationRunner | None = None,
         local_projection_config: ConsoleLocalProjectionConfig | None = None,
+        access_api: AccessAPI | None = None,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
@@ -81,15 +88,20 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         self.review_api = review_api
         self.topic_store = topic_store
         self.local_projection_config = local_projection_config
+        self.access_api = access_api
         super().__init__(server_address, WorkspaceRequestHandler)
 
 
 class WorkspaceRequestHandler(BaseHTTPRequestHandler):
     server: WorkspaceHTTPServer
 
-    def do_GET(self) -> None:  # noqa: N802
+    def do_GET(self) -> None:
         parsed = urlparse(self.path)
         try:
+            if self._dispatch_access_get(parsed.path):
+                return
+            if self._access_required(parsed.path) and not self._require_access_session():
+                return
             if self._dispatch_review_get(parsed.path):
                 return
             if parsed.path in {"/", "/index.html"}:
@@ -175,8 +187,12 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
                 {"error": type(exc).__name__, "message": str(exc)},
             )
 
-    def do_POST(self) -> None:  # noqa: N802
+    def do_POST(self) -> None:
         parsed = urlparse(self.path)
+        if self._dispatch_access_post(parsed.path):
+            return
+        if self._access_required(parsed.path) and not self._require_access_session():
+            return
         if self._dispatch_review_post(parsed.path):
             return
         self._json(
@@ -187,13 +203,13 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
             },
         )
 
-    def do_PUT(self) -> None:  # noqa: N802
+    def do_PUT(self) -> None:
         self._reject_non_post_review_or_observatory()
 
-    def do_PATCH(self) -> None:  # noqa: N802
+    def do_PATCH(self) -> None:
         self._reject_non_post_review_or_observatory()
 
-    def do_DELETE(self) -> None:  # noqa: N802
+    def do_DELETE(self) -> None:
         self._reject_non_post_review_or_observatory()
 
     def log_message(self, format: str, *args: object) -> None:
@@ -218,7 +234,13 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
         self.end_headers()
         self.wfile.write(content)
 
-    def _json(self, status: HTTPStatus, payload: Any) -> None:
+    def _json(
+        self,
+        status: HTTPStatus,
+        payload: Any,
+        *,
+        headers: tuple[tuple[str, str], ...] = (),
+    ) -> None:
         content = (
             json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n"
         ).encode("utf-8")
@@ -227,8 +249,84 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
         self.send_header("Content-Length", str(len(content)))
         self.send_header("Cache-Control", "no-store")
         self.send_header("X-Content-Type-Options", "nosniff")
+        for name, value in headers:
+            self.send_header(name, value)
         self.end_headers()
         self.wfile.write(content)
+
+    def _empty(self, status: HTTPStatus, *, headers: tuple[tuple[str, str], ...] = ()) -> None:
+        self.send_response(status)
+        self.send_header("Content-Length", "0")
+        self.send_header("Cache-Control", "no-store")
+        for name, value in headers:
+            self.send_header(name, value)
+        self.end_headers()
+
+    def _dispatch_access_get(self, path: str) -> bool:
+        api = self.server.access_api
+        if api is None or not api.handles(path):
+            return False
+        self._access_response(api.get(path, self.headers.get("Cookie", "")))
+        return True
+
+    def _dispatch_access_post(self, path: str) -> bool:
+        api = self.server.access_api
+        if api is None or not api.handles(path):
+            return False
+        content_length = self.headers.get("Content-Length")
+        try:
+            length = int(content_length or "0")
+        except ValueError:
+            length = 0
+        body = self.rfile.read(length) if 0 < length <= 32 * 1024 else b""
+        self._access_response(
+            api.post(
+                path,
+                content_type=self.headers.get("Content-Type", ""),
+                content_length=content_length,
+                body=body,
+                cookie_header=self.headers.get("Cookie", ""),
+            )
+        )
+        return True
+
+    def _access_response(self, response: AccessHTTPResponse) -> None:
+        if response.payload is None:
+            self._empty(response.status, headers=response.headers)
+            return
+        self._json(response.status, response.payload, headers=response.headers)
+
+    def _access_required(self, path: str) -> bool:
+        if self.server.access_api is None:
+            return False
+        return path in {
+            "/api/workspace",
+            "/api/campaign",
+            "/api/console",
+            "/api/audit",
+            "/api/events",
+            "/api/artifacts",
+            "/events",
+        } or (self.server.review_api is not None and self.server.review_api.handles(path))
+
+    def _require_access_session(self) -> bool:
+        api = self.server.access_api
+        if api is None:
+            return True
+        try:
+            api.authenticate(self.headers.get("Cookie", ""))
+            return True
+        except (InvalidCredentialsError, AccessValidationError):
+            self._json(
+                HTTPStatus.UNAUTHORIZED,
+                {"error": "access_required", "message": "需要有效的研究预览会话。"},
+            )
+        except AccessStateError:
+            self._json(
+                HTTPStatus.CONFLICT,
+                {"error": "access_state_invalid", "message": "访问状态暂时无法验证。"},
+            )
+        return False
 
     def _campaign_payload(self) -> dict[str, Any]:
         workspace = self.server.repository.load()
@@ -260,6 +358,8 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
 
     def _reject_non_post_review_or_observatory(self) -> None:
         path = urlparse(self.path).path
+        if self._access_required(path) and not self._require_access_session():
+            return
         api = self.server.review_api
         if api is not None and api.handles(path):
             response = api.method_not_allowed()
@@ -293,9 +393,7 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
                         event.to_dict(), ensure_ascii=False, sort_keys=True
                     )
                     self.wfile.write(
-                        f"id: {event.sequence}\nevent: research_event\ndata: {payload}\n\n".encode(
-                            "utf-8"
-                        )
+                        f"id: {event.sequence}\nevent: research_event\ndata: {payload}\n\n".encode()
                     )
                     self.wfile.flush()
                     cursor = event.sequence
@@ -325,6 +423,8 @@ def make_server(
     topic_id: str | None = None,
     topic_initial_cursor: str | None = None,
     local_projection_config: ConsoleLocalProjectionConfig | None = None,
+    access_store_root: str | Path | None = None,
+    access_cookie_secure: bool = False,
 ) -> WorkspaceHTTPServer:
     root = Path(workspace_root).resolve()
     topic_args = (topic_store_root, topic_id, topic_initial_cursor)
@@ -361,6 +461,11 @@ def make_server(
         if resolved_review_trace_path is not None and review_write_token is not None
         else None
     )
+    access_api = (
+        AccessAPI(InvitationAccessStore(access_store_root), cookie_secure=access_cookie_secure)
+        if access_store_root is not None
+        else None
+    )
     return WorkspaceHTTPServer(
         (host, port),
         repository,
@@ -370,4 +475,5 @@ def make_server(
         review_api=review_api,
         topic_store=topic_store,
         local_projection_config=local_projection_config,
+        access_api=access_api,
     )

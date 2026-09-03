@@ -1,0 +1,13 @@
+{
+  "schema_version": "1.0",
+  "ui_change_id": "research-preview-access",
+  "kind": "modify-surface",
+  "user_visible": true,
+  "source_authority_mode": "none",
+  "affected_surfaces": [
+    {
+      "surface_id": "problem-intelligence-console-access"
+    }
+  ],
+  "execution_mode": "incremental"
+}

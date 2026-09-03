@@ -1,0 +1,93 @@
+{
+  "schema_version": 1,
+  "source_identity": "access-surface@4de13b752e6aac834362c65510bf493951507a64730305cf32f6aacfecc2f841",
+  "runtime_identity": "local-playwright-fixture",
+  "review": {
+    "status": "PASS",
+    "reviewer": "independent browser access audit lane",
+    "reviewed_at": "2026-09-03T04:58:53.013Z",
+    "conclusion": "Ten desktop and mobile access states rendered nonblank, remained readable, and matched their independently recalculated SHA-256 digests."
+  },
+  "screenshots": [
+    {
+      "path": "evidence/screenshots/desktop-application-pending.png",
+      "sha256": "6e4548c184278b1d2ff8d9c8df53a2602eca7f8a6cd61f6c7a5e9f6f27a54399",
+      "page_id": "research-preview-access/application-pending",
+      "browser": "chromium",
+      "viewport": {"width": 1240, "height": 1080},
+      "captured_at": "2026-09-03T04:58:36.014Z"
+    },
+    {
+      "path": "evidence/screenshots/mobile-application-pending.png",
+      "sha256": "dfeef6791ea17eee373a49ff80835f45417ed3f553822e79d703305c20ae204a",
+      "page_id": "research-preview-access/application-pending",
+      "browser": "chromium",
+      "viewport": {"width": 390, "height": 844},
+      "captured_at": "2026-09-03T04:58:36.099Z"
+    },
+    {
+      "path": "evidence/screenshots/desktop-invalid-invite.png",
+      "sha256": "81b123b2cb5fe56b08acf9a37d8733ff85e517b3de92a285f99b78c0098c9f15",
+      "page_id": "research-preview-access/invalid-invitation",
+      "browser": "chromium",
+      "viewport": {"width": 1240, "height": 1080},
+      "captured_at": "2026-09-03T04:58:37.582Z"
+    },
+    {
+      "path": "evidence/screenshots/mobile-invalid-invite.png",
+      "sha256": "4374eed0e5e4eb8dcb0c3cb57f1dc93eee317e9ccaac1e2d9e2f8287ecc9f161",
+      "page_id": "research-preview-access/invalid-invitation",
+      "browser": "chromium",
+      "viewport": {"width": 390, "height": 844},
+      "captured_at": "2026-09-03T04:58:37.648Z"
+    },
+    {
+      "path": "evidence/screenshots/desktop-session-restored.png",
+      "sha256": "7de789fdb849ca3aff49c83a96d1a7ffb917626406eaeba259a979cc9ba4c258",
+      "page_id": "research-preview-access/session-restored",
+      "browser": "chromium",
+      "viewport": {"width": 1240, "height": 1080},
+      "captured_at": "2026-09-03T04:58:39.932Z"
+    },
+    {
+      "path": "evidence/screenshots/mobile-session-restored.png",
+      "sha256": "e401e525cc8a24fd91414cf285dd3c97fa5755d9e29f9e4d85807473c46a854e",
+      "page_id": "research-preview-access/session-restored",
+      "browser": "chromium",
+      "viewport": {"width": 390, "height": 844},
+      "captured_at": "2026-09-03T04:58:39.998Z"
+    },
+    {
+      "path": "evidence/screenshots/desktop-logged-out.png",
+      "sha256": "6ebc421f59e70c703c81fe2e48aa6e607513d451c3fb5c55ce1f4e93899c800d",
+      "page_id": "research-preview-access/logged-out",
+      "browser": "chromium",
+      "viewport": {"width": 1240, "height": 1080},
+      "captured_at": "2026-09-03T04:58:46.014Z"
+    },
+    {
+      "path": "evidence/screenshots/mobile-logged-out.png",
+      "sha256": "b1ad979e09840466c8419f82dc3ec31f7feccb91d62c6aa28071936bb095d903",
+      "page_id": "research-preview-access/logged-out",
+      "browser": "chromium",
+      "viewport": {"width": 390, "height": 844},
+      "captured_at": "2026-09-03T04:58:46.081Z"
+    },
+    {
+      "path": "evidence/screenshots/desktop-guest-demo.png",
+      "sha256": "92b4a6d4e1524c9b9f542a4f919e83166ea654f82e9dfc4011f8ecd22a0abd38",
+      "page_id": "research-preview-access/guest-demo",
+      "browser": "chromium",
+      "viewport": {"width": 1240, "height": 1080},
+      "captured_at": "2026-09-03T04:58:52.899Z"
+    },
+    {
+      "path": "evidence/screenshots/mobile-guest-demo.png",
+      "sha256": "a52f78331036cc2edbdcfa6109b07989172565fc1dbaa5a318b009bc3da2f755",
+      "page_id": "research-preview-access/guest-demo",
+      "browser": "chromium",
+      "viewport": {"width": 390, "height": 844},
+      "captured_at": "2026-09-03T04:58:52.980Z"
+    }
+  ]
+}

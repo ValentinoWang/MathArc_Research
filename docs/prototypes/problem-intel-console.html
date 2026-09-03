@@ -671,9 +671,10 @@ mark{background:var(--err-soft);color:var(--err);border-radius:3px;padding:0 3px
 .authbox{width:100%;max-width:360px;display:flex;flex-direction:column;gap:16px;}
 .field{display:flex;flex-direction:column;gap:6px;}
 .field label{font-size:12px;color:var(--muted);}
-.field input{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);
+.field input,.field textarea{padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:var(--surface);
   color:var(--ink);font-family:var(--sans);font-size:13.5px;}
-.field input:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent);}
+.field textarea{resize:vertical;min-height:82px;line-height:1.55;}
+.field input:focus,.field textarea:focus{outline:2px solid var(--accent);outline-offset:-1px;border-color:var(--accent);}
 .field .hint{font-size:11px;color:var(--muted);}
 .field .hint.bad{color:var(--err);}
 .or{display:flex;align-items:center;gap:12px;color:var(--muted);font-size:11.5px;}
@@ -695,7 +696,7 @@ mark{background:var(--err-soft);color:var(--err);border-radius:3px;padding:0 3px
   <span class="miniprog" id="budget"></span>
   <button class="btn" id="themebtn">深色</button>
   <div class="who"><button class="avatar" id="avatar" data-act="go" data-v="acct_overview" style="border:0" title="我的">研</button>
-    <button class="btn" data-act="go" data-v="landing">退出</button></div>
+    <button class="btn" id="access-logout" data-act="logout">退出</button></div>
 </div>
 <div class="shell" id="shell">
   <div class="rail">
@@ -1034,10 +1035,12 @@ const S = {
   fnode:"n7", cnode:"enum", obs:"o1", delta:0, tier:2,
   certRoute:0, novRoute:0, funnel:null,
   rub:{intel:1, math:3, agent:1, verify:1}, rubSel:"math",
-  signed:false, compiled:false, promoted:false, text:"", guest:false, plane:"p", useTable:false, topic:"uc", role:"user", collapsed:{},
+  signed:false, compiled:false, promoted:false, text:"", guest:true, plane:"p", useTable:false, topic:"uc", role:"user", collapsed:{},
   tamper:null, chainActor:"*", chainSubj:"*", chainRound:"*", chainOpen:0,
   round:0, expl:0, conj:0, rt:0, tool:0, rsn:0,
   consolePayloadState:{status:"unloaded", projections:{}},
+  access:{ mode:"redeem", email:"", institution:"", researchRole:"", researchDirection:"", purpose:"",
+    redeemStatus:"idle", redeemMessage:"", applicationStatus:"idle", applicationMessage:"", logoutStatus:"idle", session:null },
   draft:{ n:"", what:"", why:"", crit:[0,0,0,0,0] }, cid:"c7", newTopic:false,
 };
 try{ const t=localStorage.getItem("ma-theme"); if(t) document.documentElement.setAttribute("data-theme",t);
@@ -2760,7 +2763,12 @@ V.landing = () => ({ page: `
   </div>
 </div>` });
 
-V.login = () => ({ page: `
+const accessNotice = (status, message) => message ? `<div class="banner ${status==="error"?"err":status==="success"?"acc":"gap"}" role="status" aria-live="polite"><div>${esc(message)}</div></div>` : "";
+
+V.login = () => {
+  const a = S.access, applying = a.mode === "application";
+  const loading = applying ? a.applicationStatus === "loading" : a.redeemStatus === "loading";
+  return { page: `
 <div class="auth">
   <div class="authL">
     <div class="brand"><span class="mark">MathArc</span><span class="sub">研究运行时</span></div>
@@ -2775,23 +2783,38 @@ V.login = () => ({ page: `
     </div>
   </div>
   <div class="authR">
-    <div class="authbox">
-      <div><h3 style="font-family:var(--serif);font-size:22px;font-weight:600">进入控制台</h3>
-        <p class="note" style="margin-top:6px">研究预览 · 需邀请码</p></div>
+    <div class="authbox" aria-busy="${loading}">
+      <div><h3 style="font-family:var(--serif);font-size:22px;font-weight:600">${applying?"申请研究预览":"进入控制台"}</h3>
+        <p class="note" style="margin-top:6px">${applying?"提交后等待审核，不会直接开通访问":"研究预览 · 需邀请码"}</p></div>
       <div class="field"><label for="f-mail">邮箱</label>
-        <input id="f-mail" type="email" placeholder="you@university.edu" autocomplete="email">
+        <input id="f-mail" type="email" value="${esc(a.email)}" placeholder="you@university.edu" autocomplete="email"${loading?" disabled":""}>
         <span class="hint" id="h-mail">建议使用机构邮箱，便于核验研究身份。</span></div>
+      ${applying ? `
+      <div class="field"><label for="f-institution">所在机构</label>
+        <input id="f-institution" type="text" value="${esc(a.institution)}" placeholder="高校、研究机构或团队" autocomplete="organization"${loading?" disabled":""}></div>
+      <div class="field"><label for="f-research-role">研究角色</label>
+        <input id="f-research-role" type="text" value="${esc(a.researchRole)}" placeholder="例如：博士研究生、教师、工程研究员" autocomplete="organization-title"${loading?" disabled":""}></div>
+      <div class="field"><label for="f-research-direction">研究方向</label>
+        <input id="f-research-direction" type="text" value="${esc(a.researchDirection)}" placeholder="例如：组合数学、形式化证明"${loading?" disabled":""}></div>
+      <div class="field"><label for="f-purpose">申请用途</label>
+        <textarea id="f-purpose" rows="3" placeholder="请简要说明你想在 MathArc 中评估或完成的研究工作"${loading?" disabled":""}>${esc(a.purpose)}</textarea></div>
+      ${accessNotice(a.applicationStatus, a.applicationMessage)}
+      <button class="bigbtn" data-act="application-submit" style="width:100%"${loading?" disabled":""}>${loading?"正在提交…":"提交申请"}</button>
+      <button class="btn" data-act="access-mode" data-v="redeem" style="align-self:center;background:none;border:0">← 我有邀请码</button>` : `
       <div class="field"><label for="f-code">邀请码</label>
-        <input id="f-code" type="text" placeholder="例如 MA-2026-XXXX" autocomplete="off">
-        <span class="hint" id="h-code">邀请码与一个研究方向绑定，决定你能看到哪些监测主题。</span></div>
-      <button class="bigbtn" data-act="signin" style="width:100%">进入</button>
+        <input id="f-code" type="password" placeholder="例如 MA-2026-XXXX" autocomplete="one-time-code"${loading?" disabled":""}>
+        <span class="hint" id="h-code">邀请码与研究范围绑定，只有服务端确认会话后才会进入控制台。</span></div>
+      ${accessNotice(a.redeemStatus, a.redeemMessage)}
+      <button class="bigbtn" data-act="signin" style="width:100%"${loading?" disabled":""}>${loading?"正在验证…":"进入"}</button>
+      <button class="btn" data-act="access-mode" data-v="application" style="align-self:center;background:none;border:0">没有邀请码？申请研究预览</button>`}
       <div class="or">或</div>
       <button class="bigbtn ghost" data-act="demo" style="width:100%">以访客身份浏览演示数据</button>
       <p class="note" style="text-align:center">访客模式只读，所有操作只改变本地状态。</p>
       <button class="btn" data-act="go" data-v="landing" style="align-self:center;background:none;border:0">← 返回首页</button>
     </div>
   </div>
-</div>` });
+</div>` };
+};
 
 /* ---------------- 账户 ---------------- */
 const USE = [
@@ -2855,18 +2878,17 @@ function billing(){
     maxCny: Math.max(...rows.map(r=>r.cny), ...non.map(n=>n.cny)) };
 }
 const acctRail = () => card("账户","",bd(`
-    <dl class="kv"><dt>邮箱</dt><dd>${S.guest?"未登录":"demo-user-a@example.invalid"}</dd>
+    <dl class="kv"><dt>邮箱</dt><dd>${S.guest?"未登录":esc(S.access.session.email)}</dd>
       <dt>席位</dt><dd>研究预览</dd>
-      <dt>邀请码</dt><dd class="mono" style="font-size:11px">MA-2026-0001</dd>
-      <dt>绑定方向</dt><dd>${FIELD.n}</dd>
-      <dt>可见主题</dt><dd>1 个（${T().n}）</dd></dl>
+      <dt>邀请码</dt><dd>已验证，不再显示</dd>
+      <dt>授权范围</dt><dd>${S.guest?"仅演示数据":(S.access.session.topic_scopes.map(esc).join("、")||"未声明")}</dd></dl>
     <div class="divider"></div>
     <p class="note">积分是个人端唯一的计量单位。它把模型推理、求解器机时、文献接口与人工审计统一折算，你不需要关心背后调用了哪个模型。</p>`));
 
 V.acct_overview = () => {
   const b = billing();
   return {
-    task:`账户 · <b>${S.guest?"访客":"demo-user-a@example.invalid"}</b> · 实时积分 ${b.leftPt.toLocaleString()}`,
+    task:`账户 · <b>${S.guest?"访客":esc(S.access.session.email)}</b> · 实时积分 ${b.leftPt.toLocaleString()}`,
     rail: acctRail(),
     main: card("实时积分","计费周期 08-01 至 08-31", `<div class="body">
         <div class="row" style="align-items:flex-end;gap:20px;flex-wrap:wrap">
@@ -4036,6 +4058,8 @@ function render(){
   }
   $("#budget").textContent = S.guest ? "访客只读模式" : "预算 41% · 剩余 1 060 秒";
   $("#avatar").textContent = S.guest ? "客" : (S.role==="admin" ? "管" : "研");
+  const logoutButton = $("#access-logout");
+  if(logoutButton){ logoutButton.disabled = S.access.logoutStatus === "loading"; logoutButton.textContent = S.access.logoutStatus === "loading" ? "正在退出…" : "退出"; }
   $("#railcard").innerHTML = v.rail;
   $("#main").innerHTML = v.main;
   $("#side").innerHTML = v.side || "";
@@ -4045,6 +4069,230 @@ function render(){
   try{ localStorage.setItem("ma-view", S.view); }catch(e){}
 }
 
+const AccessConsole = (() => {
+  const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const messageFrom = (payload, fallback) => payload && typeof payload.message === "string" && payload.message.trim()
+    ? payload.message.trim() : fallback;
+  const responseJSON = async response => {
+    try{ return await response.json(); }catch(error){ return null; }
+  };
+  const validSession = payload => !!(payload && payload.authenticated === true && payload.session
+    && typeof payload.session.email === "string" && payload.session.email.trim()
+    && Array.isArray(payload.session.topic_scopes) && payload.session.topic_scopes.every(scope => typeof scope === "string")
+    && typeof payload.session.expires_at === "number" && Number.isFinite(payload.session.expires_at));
+  const validPendingApplication = payload => !!(payload && payload.application
+    && typeof payload.application.application_id === "string" && payload.application.application_id.trim()
+    && payload.application.status === "PENDING"
+    && typeof payload.application.email === "string" && payload.application.email.trim()
+    && typeof payload.application.submitted_at === "number" && Number.isFinite(payload.application.submitted_at));
+
+  const setMode = mode => {
+    if(mode !== "redeem" && mode !== "application") return;
+    S.access.mode = mode;
+    render();
+    setTimeout(() => { const input = $("#f-mail"); if(input) input.focus(); }, 0);
+  };
+
+  const redeem = async () => {
+    if(S.access.redeemStatus === "loading") return false;
+    const mailInput = $("#f-mail"), codeInput = $("#f-code");
+    const email = (mailInput && mailInput.value || "").trim();
+    let code = (codeInput && codeInput.value || "").trim();
+    S.access.email = email;
+    if(!emailPattern.test(email) || !code){
+      S.access.redeemStatus = "error";
+      S.access.redeemMessage = !emailPattern.test(email) ? "请填写有效的邮箱地址。" : "请填写邀请码。";
+      render();
+      return false;
+    }
+
+    let request;
+    try{
+      const body = JSON.stringify({email, code});
+      request = fetch("/api/access/redeem", {
+        method:"POST", credentials:"same-origin", headers:{"Content-Type":"application/json"}, body,
+      });
+    }catch(error){
+      codeInput.value = "";
+      code = "";
+      S.access.redeemStatus = "error";
+      S.access.redeemMessage = "暂时无法连接访问服务，请稍后重试。";
+      render();
+      return false;
+    }
+    codeInput.value = "";
+    code = "";
+    S.access.redeemStatus = "loading";
+    S.access.redeemMessage = "正在由服务端验证邮箱、邀请码与会话…";
+    render();
+
+    try{
+      const response = await request;
+      const payload = await responseJSON(response);
+      if(!response.ok){
+        S.access.redeemStatus = "error";
+        S.access.redeemMessage = messageFrom(payload, "邮箱或邀请码无效。");
+        render();
+        return false;
+      }
+      if(!validSession(payload)){
+        S.access.redeemStatus = "error";
+        S.access.redeemMessage = "服务返回了无法确认的会话，未进入控制台。";
+        render();
+        return false;
+      }
+      S.access.session = payload.session;
+      S.access.redeemStatus = "success";
+      S.access.redeemMessage = "身份与会话已确认。";
+      S.guest = false;
+      S.plane = "p";
+      S.view = "portfolio";
+      window.scrollTo({top:0});
+      const loaded = await ConsoleBridge.loadExport("/api/console");
+      if(loaded) ConsoleBridge.connectEvents("/events");
+      else render();
+      toast("身份与研究预览会话已由服务端确认。");
+      return true;
+    }catch(error){
+      S.access.redeemStatus = "error";
+      S.access.redeemMessage = "暂时无法连接访问服务，请稍后重试。";
+      render();
+      return false;
+    }
+  };
+
+  const submitApplication = async () => {
+    if(S.access.applicationStatus === "loading") return false;
+    const application = {
+      email:(S.access.email || "").trim(),
+      institution:(S.access.institution || "").trim(),
+      research_role:(S.access.researchRole || "").trim(),
+      research_direction:(S.access.researchDirection || "").trim(),
+      purpose:(S.access.purpose || "").trim(),
+    };
+    if(!emailPattern.test(application.email) || !application.institution || !application.research_role
+      || !application.research_direction || !application.purpose){
+      S.access.applicationStatus = "error";
+      S.access.applicationMessage = "请填写有效邮箱、所在机构、研究角色、研究方向和申请用途。";
+      render();
+      return false;
+    }
+    S.access.applicationStatus = "loading";
+    S.access.applicationMessage = "正在提交申请…";
+    render();
+    try{
+      const response = await fetch("/api/access/applications", {
+        method:"POST", credentials:"same-origin", headers:{"Content-Type":"application/json"},
+        body:JSON.stringify(application),
+      });
+      const payload = await responseJSON(response);
+      if(response.status !== 202 || !validPendingApplication(payload)){
+        S.access.applicationStatus = "error";
+        S.access.applicationMessage = response.ok
+          ? "服务未确认申请已进入待审核队列，未开通访问。"
+          : messageFrom(payload, "申请提交失败，请检查内容后重试。");
+        render();
+        return false;
+      }
+      S.access.applicationStatus = "success";
+      S.access.applicationMessage = `申请已提交并进入待审核队列（${payload.application.application_id}）。审核通过前不会开通控制台访问。`;
+      render();
+      return true;
+    }catch(error){
+      S.access.applicationStatus = "error";
+      S.access.applicationMessage = "暂时无法连接申请服务，请稍后重试。";
+      render();
+      return false;
+    }
+  };
+
+  const restoreSession = async () => {
+    try{
+      const response = await fetch("/api/access/session", {method:"GET", credentials:"same-origin"});
+      const payload = await responseJSON(response);
+      if(response.ok && validSession(payload)){
+        S.access.session = payload.session;
+        S.access.email = payload.session.email;
+        S.guest = false;
+        if(S.view === "login") S.view = "portfolio";
+        const loaded = await ConsoleBridge.loadExport("/api/console");
+        if(loaded) ConsoleBridge.connectEvents("/events");
+        else render();
+        return true;
+      }
+      if(response.ok && payload && payload.authenticated === false){
+        S.access.session = null;
+        S.guest = true;
+        render();
+        return false;
+      }
+      if(S.view === "login"){
+        S.access.redeemStatus = "error";
+        S.access.redeemMessage = "服务端未能确认当前会话，可重新使用邀请码进入。";
+        render();
+      }
+    }catch(error){
+      if(S.view === "login"){
+        S.access.redeemStatus = "error";
+        S.access.redeemMessage = "暂时无法恢复会话，可重新使用邀请码进入。";
+        render();
+      }
+    }
+    return false;
+  };
+
+  const logout = async () => {
+    if(S.access.logoutStatus === "loading") return false;
+    if(S.guest && !S.access.session){
+      S.view = "landing";
+      render();
+      return true;
+    }
+    S.access.logoutStatus = "loading";
+    render();
+    try{
+      const response = await fetch("/api/access/logout", {
+        method:"POST", credentials:"same-origin", headers:{"Content-Type":"application/json"}, body:"{}",
+      });
+      if(response.status !== 204){
+        S.access.logoutStatus = "error";
+        render();
+        toast("服务端未确认退出，当前会话保持不变。");
+        return false;
+      }
+      S.access.session = null;
+      S.access.logoutStatus = "idle";
+      S.guest = true;
+      S.role = "user";
+      S.view = "landing";
+      ConsoleBridge.clear();
+      render();
+      toast("已退出研究预览会话。");
+      return true;
+    }catch(error){
+      S.access.logoutStatus = "error";
+      render();
+      toast("暂时无法连接退出服务，当前会话保持不变。");
+      return false;
+    }
+  };
+
+  const enterGuest = async () => {
+    if(S.access.session && !(await logout())) return false;
+    ConsoleBridge.clear();
+    S.access.session = null;
+    S.guest = true;
+    S.plane = "p";
+    S.view = "portfolio";
+    window.scrollTo({top:0});
+    render();
+    toast("已进入访客只读模式。界面中的问题、参数与概率均为演示数据，不代表任何问题的真实状态。");
+    return true;
+  };
+
+  return {enterGuest, logout, redeem, restoreSession, setMode, submitApplication};
+})();
+
 document.addEventListener("click", e => {
   if(e.target.id === "themebtn" || e.target.id === "themebtn2"){ toggleTheme(); return; }
   const el = e.target.closest("[data-act]");
@@ -4053,28 +4301,19 @@ document.addEventListener("click", e => {
   if(a==="review-refresh"){ ReviewConsole.loadQueue(true); return; }
   if(a==="review-bundle"){ ReviewConsole.loadBundle(el.dataset.claim); return; }
   if(a==="review-submit"){ ReviewConsole.submit(); return; }
+  if(a==="access-mode"){ AccessConsole.setMode(el.dataset.v); return; }
+  if(a==="signin"){ AccessConsole.redeem(); return; }
+  if(a==="application-submit"){ AccessConsole.submitApplication(); return; }
+  if(a==="logout"){ AccessConsole.logout(); return; }
   if(a==="go"){ S.view = el.dataset.v; S.gate = null;
     if(!ACCT_VIEWS.includes(S.view) && !ADMIN_VIEWS.includes(S.view) && !FULLPAGE.includes(S.view)) S.plane = planeOf(S.view).id;
     if(el.dataset.cn) S.cnode = el.dataset.cn;
     window.scrollTo({top:0}); }
   else if(a==="plane"){ const p = PLANES.find(x=>x.id===el.dataset.v); S.plane = p.id; S.view = p.views[0]; window.scrollTo({top:0}); }
   else if(a==="enter"){ const p = PLANES.find(x=>x.id===el.dataset.v); S.guest = true; S.plane = p.id; S.view = p.views[0]; window.scrollTo({top:0}); }
-  else if(a==="demo"){ S.guest = true; S.plane = "p"; S.view = "portfolio"; window.scrollTo({top:0});
-    toast("已进入访客只读模式。界面中的问题、参数与概率均为演示数据，不代表任何问题的真实状态。"); }
+  else if(a==="demo"){ AccessConsole.enterGuest(); return; }
   else if(a==="scroll"){ const t = document.getElementById("sec-"+el.dataset.v);
     if(t) t.scrollIntoView({behavior:"smooth",block:"start"}); return; }
-  else if(a==="signin"){
-    const mail = ($("#f-mail")||{}).value || "", code = ($("#f-code")||{}).value || "";
-    const okMail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(mail);
-    const hm = $("#h-mail"), hc = $("#h-code");
-    if(hm){ hm.className = "hint" + (okMail || !mail ? "" : " bad");
-      hm.textContent = (!mail) ? "请填写邮箱。" : okMail ? "建议使用机构邮箱，便于核验研究身份。" : "邮箱格式不正确。"; }
-    if(hc){ hc.className = "hint" + (code ? "" : " bad");
-      hc.textContent = code ? "邀请码与一个研究方向绑定，决定你能看到哪些监测主题。" : "研究预览阶段需要邀请码；也可以直接以访客身份浏览。"; }
-    if(!okMail || !code) return;
-    S.guest = false; S.plane = "p"; S.view = "portfolio"; window.scrollTo({top:0});
-    toast("演示动作：已进入控制台。真实系统中此处需要真实的身份核验与邀请码校验。");
-  }
   else if(a==="pick"){ S.pid = el.dataset.id; S.ver = P().ver; S.knowl = false; S.view = "dossier"; window.scrollTo({top:0}); }
   else if(a==="filter"){ S.filter = el.dataset.v; }
   else if(a==="gate"){ const i = +el.dataset.i; S.gate = (S.gate===i ? null : i); }
@@ -4197,13 +4436,24 @@ document.addEventListener("keydown", e => {
   /* 可聚焦但不是原生按钮的元素（图中节点、主题行）用回车/空格触发 */
   const g = e.target.closest("[data-act][tabindex]");
   if(g && (e.key==="Enter" || e.key===" ")){ e.preventDefault(); g.dispatchEvent(new MouseEvent("click",{bubbles:true})); }
-  if(e.key==="Enter" && (e.target.id==="f-mail" || e.target.id==="f-code")){
-    e.preventDefault(); document.querySelector('[data-act="signin"]').click(); }
+  const accessInput = ["f-mail","f-code","f-institution","f-research-role","f-research-direction"].includes(e.target.id);
+  if(e.key==="Enter" && accessInput){
+    const action = S.access.mode === "application" ? "application-submit" : "signin";
+    const button = document.querySelector(`[data-act="${action}"]`);
+    if(button){ e.preventDefault(); button.click(); }
+  }
 }, false);
 
+const ACCESS_FIELDS = {
+  "f-mail":v=>S.access.email=v, "f-institution":v=>S.access.institution=v,
+  "f-research-role":v=>S.access.researchRole=v, "f-research-direction":v=>S.access.researchDirection=v,
+  "f-purpose":v=>S.access.purpose=v,
+};
 const FIELDS = { "ta":v=>S.text=v, "nt-n":v=>S.draft.n=v,
   "nt-what":v=>S.draft.what=v, "nt-why":v=>S.draft.why=v };
 document.addEventListener("input", e => {
+  const accessSet = ACCESS_FIELDS[e.target.id];
+  if(accessSet){ accessSet(e.target.value); return; }
   const set = FIELDS[e.target.id];
   if(!set) return;
   set(e.target.value);
@@ -5035,6 +5285,18 @@ const ConsoleBridge = (() => {
     };
     return true;
   };
+  const clear = () => {
+    clearReconnect();
+    if(eventStream){ eventStream.close(); eventStream = null; }
+    eventEndpoint = null;
+    eventGeneration = null;
+    cursor = -1;
+    refreshScheduled = false;
+    latestLoad += 1;
+    S.consolePayload = null;
+    S.consolePayloadState = {status:"unloaded", projections:{}, reason:"access_session_absent"};
+    label("演示数据", "fallback");
+  };
   const submitReview = async (endpoint, record, tokenInput) => {
     if (!(tokenInput instanceof HTMLInputElement) || tokenInput.type !== "password") throw new Error("review token must come from a password input");
     const target = new URL(endpoint, window.location.href);
@@ -5052,7 +5314,7 @@ const ConsoleBridge = (() => {
       throw error;
     }
   };
-  return { loadExport, connectEvents, submitReview };
+  return { clear, loadExport, connectEvents, submitReview };
 })();
 /* Local-completion projections are opt-in.  They replace a demonstration
    view only after the server exported a validated local record. */
@@ -5142,6 +5404,7 @@ V.acct_limits = () => localOrDemo("acct_limits", "预算与限额", "真实账�
 window.MathArcConsole = ConsoleBridge;
 ConsoleBridge.loadExport().then(loaded => { if (loaded && location.protocol !== "file:") ConsoleBridge.connectEvents("/events"); });
 render();
+if(location.protocol !== "file:") AccessConsole.restoreSession();
 </script>
 </body>
 </html>

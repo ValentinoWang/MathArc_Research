@@ -11,9 +11,9 @@ from pathlib import Path
 from matharc.v02.budget import BudgetLedger
 from matharc.v02.campaign import ResearchCampaign
 from matharc.v02.console_export import build_console_export
+from matharc.v02.workers import StaticProposalWorker
 from matharc.v02.workspace import ResearchWorkspace
 from matharc.v02.workspace_bundle import write_full_workspace_bundle
-from matharc.v02.workers import StaticProposalWorker
 
 
 class ConsolePrototypeTests(unittest.TestCase):
@@ -240,6 +240,156 @@ class ConsolePrototypeTests(unittest.TestCase):
         self.assertIn("#console-provenance{order:2", page)
         self.assertIn(".topbar{height:auto", page)
         self.assertIn('setAttribute("aria-live", "polite")', page)
+
+    def test_research_preview_access_uses_same_origin_json_contracts(self) -> None:
+        page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
+        access = page[page.index("const AccessConsole = (() => {"):page.index('document.addEventListener("click"', page.index("const AccessConsole = (() => {"))]
+        self.assertIn('fetch("/api/access/redeem"', access)
+        self.assertIn('fetch("/api/access/applications"', access)
+        self.assertIn('fetch("/api/access/session"', access)
+        self.assertIn('fetch("/api/access/logout"', access)
+        self.assertEqual(access.count('credentials:"same-origin"'), 4)
+        self.assertIn('JSON.stringify({email, code})', access)
+        self.assertIn("research_role:(S.access.researchRole", access)
+        self.assertIn("research_direction:(S.access.researchDirection", access)
+        self.assertIn('payload.authenticated === true', access)
+        self.assertIn('payload.application.status === "PENDING"', access)
+        self.assertIn('response.status !== 202', access)
+        self.assertIn('type="password"', page)
+        self.assertIn('autocomplete="one-time-code"', page)
+        self.assertNotIn("演示动作：已进入控制台", page)
+        self.assertNotIn('guest:false', page)
+        self.assertLess(access.index('fetch("/api/access/redeem"'), access.index('codeInput.value = ""'))
+        self.assertLess(access.index('codeInput.value = ""'), access.index("const response = await request"))
+
+    def test_access_controller_fails_closed_and_keeps_applications_pending(self) -> None:
+        node = shutil.which("node")
+        if node is None:
+            self.skipTest("node is required for the access-controller regression")
+        script = textwrap.dedent(
+            r"""
+            const fs = require("fs");
+            const vm = require("vm");
+            const page = fs.readFileSync(process.argv[1], "utf8");
+            const start = page.indexOf("const AccessConsole = (() => {");
+            const end = page.indexOf('document.addEventListener("click"', start);
+            if (start < 0 || end < 0) throw new Error("access controller source was not found");
+
+            const elements = {
+              "f-mail": { value: "researcher@example.edu", focus() {} },
+              "f-code": { value: "MA-2026-VALID" },
+            };
+            const requests = [];
+            const S = {
+              guest: true, view: "login", plane: "p",
+              access: {
+                mode: "redeem", email: "", institution: "", researchRole: "", researchDirection: "", purpose: "",
+                redeemStatus: "idle", redeemMessage: "", applicationStatus: "idle", applicationMessage: "", logoutStatus: "idle", session: null,
+              },
+            };
+            let renderCount = 0;
+            const context = {
+              S,
+              $: selector => elements[selector.slice(1)] || null,
+              fetch(url, options) {
+                return new Promise((resolve, reject) => requests.push({ url, options, resolve, reject }));
+              },
+              render() { renderCount += 1; },
+              toast() {},
+              ConsoleBridge: { async loadExport() { renderCount += 1; return true; }, connectEvents() {}, clear() {} },
+              window: { scrollTo() {} },
+              setTimeout(handler) { handler(); },
+            };
+            vm.runInNewContext(page.slice(start, end) + ";this.AccessConsole = AccessConsole;", context);
+            const response = (status, payload) => ({
+              ok: status >= 200 && status < 300,
+              status,
+              json: async () => payload,
+            });
+            const flush = () => new Promise(resolve => setImmediate(resolve));
+
+            (async () => {
+              const redeem = context.AccessConsole.redeem();
+              if (requests.length !== 1) throw new Error("redeem request was not started");
+              if (elements["f-code"].value !== "") throw new Error("invite code remained in the DOM after submission");
+              if (!S.guest || S.access.redeemStatus !== "loading") throw new Error("loading state entered an authenticated console");
+              const redeemRequest = requests[0];
+              if (redeemRequest.url !== "/api/access/redeem") throw new Error("wrong redeem endpoint");
+              if (redeemRequest.options.credentials !== "same-origin") throw new Error("redeem omitted same-origin credentials");
+              const redeemBody = JSON.parse(redeemRequest.options.body);
+              if (redeemBody.email !== "researcher@example.edu" || redeemBody.code !== "MA-2026-VALID") throw new Error("wrong redeem payload");
+              redeemRequest.resolve(response(200, {
+                authenticated: true,
+                session: { email: "researcher@example.edu", topic_scopes: ["combinatorics"], expires_at: 1800003600 },
+              }));
+              if (!(await redeem)) throw new Error("valid authenticated session was rejected");
+              if (S.guest || S.view !== "portfolio" || !S.access.session) throw new Error("valid session did not enter the console");
+
+              S.guest = true;
+              S.view = "login";
+              S.access.session = null;
+              S.access.redeemStatus = "idle";
+              elements["f-code"].value = "MA-2026-MALFORMED";
+              const malformed = context.AccessConsole.redeem();
+              requests[1].resolve(response(200, { authenticated: true, session: { email: "researcher@example.edu" } }));
+              if (await malformed) throw new Error("malformed authenticated session was accepted");
+              if (!S.guest || S.view !== "login" || S.access.session) throw new Error("malformed session crossed the guest boundary");
+              if (!S.access.redeemMessage.includes("无法确认的会话")) throw new Error("malformed session error was not shown");
+
+              S.access.mode = "application";
+              Object.assign(S.access, {
+                email: "applicant@example.edu", institution: "Example University", researchRole: "doctoral researcher",
+                researchDirection: "combinatorics", purpose: "Evaluate governed proof workflows", applicationStatus: "idle",
+              });
+              const application = context.AccessConsole.submitApplication();
+              if (requests.length !== 3) throw new Error("application request was not started");
+              const applicationRequest = requests[2];
+              if (applicationRequest.url !== "/api/access/applications" || applicationRequest.options.credentials !== "same-origin") {
+                throw new Error("application request did not use the same-origin endpoint");
+              }
+              const applicationBody = JSON.parse(applicationRequest.options.body);
+              for (const field of ["email", "institution", "research_role", "research_direction", "purpose"]) {
+                if (!applicationBody[field]) throw new Error(`application omitted ${field}`);
+              }
+              applicationRequest.resolve(response(202, {
+                application: {
+                  application_id: "APP-1", status: "PENDING", email: "applicant@example.edu", submitted_at: 1800000000,
+                },
+              }));
+              if (!(await application)) throw new Error("valid pending application was rejected");
+              if (!S.guest || S.view !== "login" || S.access.session) throw new Error("pending application entered the console");
+              if (S.access.applicationStatus !== "success" || !S.access.applicationMessage.includes("待审核")) {
+                throw new Error("pending application status was not shown");
+              }
+
+              S.guest = false;
+              S.view = "portfolio";
+              S.access.session = { email: "researcher@example.edu", topic_scopes: ["combinatorics"], expires_at: 1800003600 };
+              const logout = context.AccessConsole.logout();
+              if (requests[3].url !== "/api/access/logout" || requests[3].options.method !== "POST") throw new Error("logout request was not sent");
+              requests[3].resolve(response(204, null));
+              if (!(await logout) || !S.guest || S.view !== "landing" || S.access.session) throw new Error("confirmed logout did not clear the session");
+
+              S.view = "login";
+              const restore = context.AccessConsole.restoreSession();
+              if (requests[4].url !== "/api/access/session" || requests[4].options.method !== "GET") throw new Error("session restore request was not sent");
+              requests[4].resolve(response(200, {
+                authenticated: true,
+                session: { email: "restored@example.edu", topic_scopes: [], expires_at: 1800003600 },
+              }));
+              if (!(await restore) || S.guest || S.view !== "portfolio") throw new Error("validated session was not restored");
+              await flush();
+              if (renderCount < 9) throw new Error("access states were not rendered");
+            })().catch(error => { console.error(error.stack || error); process.exitCode = 1; });
+            """
+        )
+        completed = subprocess.run(
+            [node, "-e", script, str(Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html")],
+            text=True,
+            capture_output=True,
+            check=False,
+        )
+        self.assertEqual(completed.returncode, 0, completed.stderr)
 
     def test_bridge_rejects_stale_loads_and_reconnects_on_generation_reset(self) -> None:
         node = shutil.which("node")
