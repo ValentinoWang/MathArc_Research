@@ -57,6 +57,11 @@ def main() -> None:
         help="external directory for hashed invitation and session state",
     )
     parser.add_argument(
+        "--access-cookie-secure",
+        action="store_true",
+        help="mark access-session cookies Secure when TLS terminates upstream",
+    )
+    parser.add_argument(
         "--issue-preview-email",
         help="issue one invitation for this email and print it once at startup",
     )
@@ -86,6 +91,8 @@ def main() -> None:
         )
     if args.issue_preview_email and not args.access_store:
         raise SystemExit("--issue-preview-email requires --access-store")
+    if args.access_cookie_secure and not args.access_store:
+        raise SystemExit("--access-cookie-secure requires --access-store")
     if args.topic_scope and not args.issue_preview_email:
         raise SystemExit("--topic-scope requires --issue-preview-email")
 
@@ -99,6 +106,7 @@ def main() -> None:
         sse_poll_seconds=args.sse_poll_seconds,
         sse_lifetime_seconds=args.sse_lifetime_seconds,
         access_store_root=args.access_store,
+        access_cookie_secure=args.access_cookie_secure,
     )
     invitation = None
     if args.issue_preview_email:
@@ -118,6 +126,7 @@ def main() -> None:
         "events": f"http://{bound_host_text}:{bound_port}/events",
         "read_only": True,
         "authentication": bool(args.access_store),
+        "access_cookie_secure": bool(args.access_cookie_secure),
         "access_store": str(Path(args.access_store).resolve()) if args.access_store else None,
         "preview_email": args.issue_preview_email,
         "preview_invitation_code": invitation.code if invitation else None,

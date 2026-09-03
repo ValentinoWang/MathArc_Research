@@ -5,6 +5,7 @@ import subprocess
 import sys
 import tempfile
 import threading
+import time
 import unittest
 from pathlib import Path
 from urllib.error import HTTPError
@@ -150,6 +151,92 @@ class WorkspaceServerTests(unittest.TestCase):
         )
         self.assertNotEqual(completed.returncode, 0)
         self.assertIn("Refusing a non-loopback bind", completed.stderr)
+
+    def test_cli_secure_cookie_flag_reaches_access_response(self) -> None:
+        project_root = Path(__file__).resolve().parents[1]
+        access_root = Path(self.temporary.name) / "access"
+        process = subprocess.Popen(
+            [
+                sys.executable,
+                "examples/serve_workspace_v02.py",
+                "--workspace",
+                str(self.root),
+                "--host",
+                "127.0.0.1",
+                "--port",
+                "0",
+                "--dashboard",
+                str(self.root / "workspace-dashboard.html"),
+                "--access-store",
+                str(access_root),
+                "--access-cookie-secure",
+                "--issue-preview-email",
+                "researcher@example.edu",
+            ],
+            cwd=project_root,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.PIPE,
+        )
+        try:
+            assert process.stdout is not None
+            startup_lines: list[str] = []
+            deadline = time.monotonic() + 10
+            while time.monotonic() < deadline:
+                line = process.stdout.readline()
+                if not line:
+                    break
+                startup_lines.append(line)
+                if line.strip() == "}":
+                    break
+            startup = json.loads("".join(startup_lines))
+            self.assertTrue(startup["access_cookie_secure"])
+            request = Request(
+                str(startup["url"]) + "api/access/redeem",
+                data=json.dumps(
+                    {
+                        "email": "researcher@example.edu",
+                        "code": startup["preview_invitation_code"],
+                    }
+                ).encode("utf-8"),
+                method="POST",
+                headers={"Content-Type": "application/json"},
+            )
+            with urlopen(request, timeout=5) as response:
+                self.assertEqual(response.status, 200)
+                self.assertIn("Secure", response.headers["Set-Cookie"])
+        finally:
+            process.terminate()
+            try:
+                process.wait(timeout=5)
+            except subprocess.TimeoutExpired:
+                process.kill()
+                process.wait(timeout=5)
+            if process.stdout is not None:
+                process.stdout.close()
+            if process.stderr is not None:
+                process.stderr.close()
+
+    def test_cli_secure_cookie_flag_requires_access_store(self) -> None:
+        project_root = Path(__file__).resolve().parents[1]
+        completed = subprocess.run(
+            [
+                sys.executable,
+                "examples/serve_workspace_v02.py",
+                "--workspace",
+                str(self.root),
+                "--access-cookie-secure",
+            ],
+            cwd=project_root,
+            text=True,
+            capture_output=True,
+            timeout=10,
+            check=False,
+        )
+        self.assertNotEqual(completed.returncode, 0)
+        self.assertIn(
+            "--access-cookie-secure requires --access-store", completed.stderr
+        )
 
 
 if __name__ == "__main__":
