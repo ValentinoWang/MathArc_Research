@@ -1,9 +1,9 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-09-03T22:40:21.159374+00:00",
+  "generated_at": "2026-09-03T23:01:03.078521+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
-    "commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "commit": "6cbe5b80c9341076b85db4537cb741b75c52160c",
     "dirty": false,
     "dirty_files": [],
     "dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
@@ -14,15 +14,15 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "tree_commit": "bed43c3a603305f04e23b69c0a6ce1fbc044fc00",
-    "project_commit": "bed43c3a603305f04e23b69c0a6ce1fbc044fc00",
+    "tree_commit": "1ea571184f68dc112cf558ea4a1d0b244484aa86",
+    "project_commit": "1ea571184f68dc112cf558ea4a1d0b244484aa86",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "0b66497ac2f67911218d7d739eb5962fd8accade22ed17487c28c083c859ae3d",
+    "project_dirty_diff_sha256": "2a1e47e4305ae8e284e0c7f48ec6eff993d7372e0d49424647ee1f4d2ec73339",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane",
-    "content_sha256": "0010b34d8049ea2445e7e4d486df9503457128e7e72aa8248c11125a733f892c",
+    "content_sha256": "76f647bd16248329e6a62468bd832f03aa4ff6bb89e5b28c3e28086765380ef7",
     "manifest_identity_sha256": "12ab8d3bd07472988a5933394aa8e692de21d9787c647f93374cf6e0efd4320d"
   },
   "checks": [
@@ -98,7 +98,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "SSOT program check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json (nodes=9, formal_ready=2, conditional_ready=0)\n",
+      "output": "SSOT program check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json (nodes=9, formal_ready=0, conditional_ready=0)\n",
       "class": "self-consistency"
     },
     {
@@ -124,7 +124,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "{\n  \"actor_pools\": {},\n  \"critical_path_edges\": 5,\n  \"current_ready_nodes\": [\n    \"QR1\",\n    \"QR2\"\n  ],\n  \"current_ready_width\": 2,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"DP1\",\n      \"unlocks\": [\n        \"C1\",\n        \"E1\",\n        \"P1\",\n        \"RI1\",\n        \"S1\",\n        \"V1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"C1\",\n      \"unlocks\": [\n        \"E1\",\n        \"P1\",\n        \"QR1\",\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"E1\",\n      \"unlocks\": [\n        \"QR2\",\n        \"V1\"\n      ],\n      \"waits_for\": [\n        \"C1\",\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"P1\",\n      \"unlocks\": [\n        \"QR1\",\n        \"RI1\"\n      ],\n      \"waits_for\": [\n        \"C1\",\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"QR1\",\n        \"RI1\"\n      ],\n      \"waits_for\": [\n        \"C1\",\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"RI1\",\n      \"unlocks\": [\n        \"QR2\",\n        \"V1\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"P1\",\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"V1\",\n      \"unlocks\": [\n        \"QR2\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"E1\",\n        \"RI1\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 3,\n  \"resource_verified_width\": null,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n",
+      "output": "{\n  \"actor_pools\": {},\n  \"critical_path_edges\": 5,\n  \"current_ready_nodes\": [],\n  \"current_ready_width\": 0,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"DP1\",\n      \"unlocks\": [\n        \"C1\",\n        \"E1\",\n        \"P1\",\n        \"RI1\",\n        \"S1\",\n        \"V1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"C1\",\n      \"unlocks\": [\n        \"E1\",\n        \"P1\",\n        \"QR1\",\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"E1\",\n      \"unlocks\": [\n        \"QR2\",\n        \"V1\"\n      ],\n      \"waits_for\": [\n        \"C1\",\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"P1\",\n      \"unlocks\": [\n        \"QR1\",\n        \"RI1\"\n      ],\n      \"waits_for\": [\n        \"C1\",\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"QR1\",\n        \"RI1\"\n      ],\n      \"waits_for\": [\n        \"C1\",\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"RI1\",\n      \"unlocks\": [\n        \"QR2\",\n        \"V1\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"P1\",\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"V1\",\n      \"unlocks\": [\n        \"QR2\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"E1\",\n        \"RI1\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 3,\n  \"resource_verified_width\": null,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n",
       "class": "self-consistency"
     },
     {
@@ -229,11 +229,8 @@
   "parallelism": {
     "actor_pools": {},
     "critical_path_edges": 5,
-    "current_ready_nodes": [
-      "QR1",
-      "QR2"
-    ],
-    "current_ready_width": 2,
+    "current_ready_nodes": [],
+    "current_ready_width": 0,
     "frontier_transitions": [
       {
         "accepted_node": "DP1",
@@ -331,17 +328,17 @@
   "policy_complete": true,
   "push_gate_eligible": true,
   "release_ready": true,
-  "release_complete": false,
+  "release_complete": true,
   "release_statuses": {
     "R1": {
       "gate_node": "QR1",
-      "execution_state": "READY",
-      "complete": false
+      "execution_state": "ACCEPTED",
+      "complete": true
     },
     "R2": {
       "gate_node": "QR2",
-      "execution_state": "READY",
-      "complete": false
+      "execution_state": "ACCEPTED",
+      "complete": true
     }
   },
   "deprecated_fields": [

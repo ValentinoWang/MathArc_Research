@@ -61,8 +61,8 @@ flowchart LR
   DP1["DP1"]:::accepted
   E1["E1"]:::accepted
   P1["P1"]:::accepted
-  QR1["QR1"]:::pending
-  QR2["QR2"]:::pending
+  QR1["QR1"]:::accepted
+  QR2["QR2"]:::accepted
   RI1["RI1"]:::accepted
   S1["S1"]:::accepted
   V1["V1"]:::accepted
@@ -99,8 +99,8 @@ flowchart LR
 | DP1 | R1 | ACCEPTED |
 | E1 | R2 | ACCEPTED |
 | P1 | R1 | ACCEPTED |
-| QR1 | R1 | READY |
-| QR2 | R2 | READY |
+| QR1 | R1 | ACCEPTED |
+| QR2 | R2 | ACCEPTED |
 | RI1 | R2 | ACCEPTED |
 | S1 | R1 | ACCEPTED |
 | V1 | R2 | ACCEPTED |
@@ -113,8 +113,8 @@ flowchart LR
 | DP1 | decision.execution-plane.scope | ACCEPTED |
 | E1 | requirement.e1 | ACCEPTED |
 | P1 | requirement.p1 | ACCEPTED |
-| QR1 | acceptance.release.r1 | READY |
-| QR2 | acceptance.release.r2 | READY |
+| QR1 | acceptance.release.r1 | ACCEPTED |
+| QR2 | acceptance.release.r2 | ACCEPTED |
 | RI1 | requirement.ri1 | ACCEPTED |
 | S1 | requirement.s1 | ACCEPTED |
 | V1 | requirement.v1 | ACCEPTED |
@@ -127,8 +127,8 @@ flowchart LR
 | DP1 | not-ready |
 | E1 | not-ready |
 | P1 | not-ready |
-| QR1 | ready |
-| QR2 | ready |
+| QR1 | not-ready |
+| QR2 | not-ready |
 | RI1 | not-ready |
 | S1 | not-ready |
 | V1 | not-ready |

@@ -18,7 +18,7 @@
 | E1 | R2 | decision.execution-plane.scope@1 | ACCEPTED | none | acceptance owner | none | none | acceptance-fragments/E1/acceptance-contract.md | QR2; V1 |
 | RI1 | R2 | decision.execution-plane.scope@1 | ACCEPTED | none | acceptance owner | none | none | acceptance-fragments/RI1/acceptance-contract.md | QR2; V1 |
 | V1 | R2 | decision.execution-plane.scope@1 | ACCEPTED | none | acceptance owner | none | none | acceptance-fragments/V1/acceptance-contract.md | QR2 |
-| QR2 | R2 | none | READY | none | release decision owner | none | none | none | none |
+| QR2 | R2 | none | ACCEPTED | none | release decision owner | none | none | none | none |
 
 ### Release R2 deliverables
 

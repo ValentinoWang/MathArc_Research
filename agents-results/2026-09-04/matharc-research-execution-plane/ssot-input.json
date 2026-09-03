@@ -35,14 +35,46 @@
       "title": "声明、状态与推送闭环",
       "user_value": "SSOT 输入、执行完成证据、状态迁移和推送资格使用同一套可验证事实，不再接受仅靠声明的完成或过期验证报告。",
       "independent_acceptance": "声明编译、完成证据、统一状态机、L1 本地执行路径以及推送时重绑定全部通过对应单元和端到端负例。",
-      "independent_failure": "任一负例未被封闭拒绝时，本切片保持未接受，不允许进入 GitHub 主线。"
+      "independent_failure": "任一负例未被封闭拒绝时，本切片保持未接受，不允许进入 GitHub 主线。",
+      "completion": {
+        "state": "ACCEPTED",
+        "implementation_commit": "1ea571184f68dc112cf558ea4a1d0b244484aa86",
+        "test_evidence": {
+          "command": "git ls-remote --heads origin; GitHub Git Data API main/tree readback; local/remote branch and worktree inventory; Git proxy configuration inventory",
+          "result_path": "evidence/release-readback.json",
+          "exit_code": 0,
+          "observed_at": "2026-09-03T22:54:46Z",
+          "environment_identity": "host=192.168.1.7; os=macOS 26.0.1; arch=arm64",
+          "source_commit": "1ea571184f68dc112cf558ea4a1d0b244484aa86",
+          "actor": "main-orchestrator"
+        },
+        "acceptance_record": "evidence/release-readback.json",
+        "accepted_by": "release decision owner",
+        "accepted_at": "2026-09-03T22:54:46Z"
+      }
     },
     {
       "id": "R2",
       "title": "规则守恒与比例治理闭环",
       "user_value": "维护者只读取当前任务触发的规范，规则索引和实际产物双向守恒，证据 lane 与事实登记不再产生不可采集或仪式性内容。",
       "independent_acceptance": "规则索引、版本矩阵、触发式阅读图、真实复杂度盘点、证据 lane 和条件式事实登记全部通过独立负例与 Harness 全量本地 CI。",
-      "independent_failure": "任一规则、视图、采集器或事实类别无法从真实文件反查时，本切片保持未接受且不影响 R1 的已验证能力。"
+      "independent_failure": "任一规则、视图、采集器或事实类别无法从真实文件反查时，本切片保持未接受且不影响 R1 的已验证能力。",
+      "completion": {
+        "state": "ACCEPTED",
+        "implementation_commit": "1ea571184f68dc112cf558ea4a1d0b244484aa86",
+        "test_evidence": {
+          "command": "git ls-remote --heads origin; GitHub Git Data API main/tree readback; local/remote branch and worktree inventory; Git proxy configuration inventory",
+          "result_path": "evidence/release-readback.json",
+          "exit_code": 0,
+          "observed_at": "2026-09-03T22:54:46Z",
+          "environment_identity": "host=192.168.1.7; os=macOS 26.0.1; arch=arm64",
+          "source_commit": "1ea571184f68dc112cf558ea4a1d0b244484aa86",
+          "actor": "main-orchestrator"
+        },
+        "acceptance_record": "evidence/release-readback.json",
+        "accepted_by": "release decision owner",
+        "accepted_at": "2026-09-03T22:54:46Z"
+      }
     }
   ],
   "items": [
@@ -331,19 +363,19 @@
       ],
       "completion": {
         "state": "ACCEPTED",
-        "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+        "implementation_commit": "1ea571184f68dc112cf558ea4a1d0b244484aa86",
         "test_evidence": {
-          "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
-          "result_path": "evidence/harness-ci-result.json",
+          "command": "git ls-remote --heads origin; GitHub Git Data API main/tree readback; local/remote branch and worktree inventory; Git proxy configuration inventory",
+          "result_path": "evidence/release-readback.json",
           "exit_code": 0,
-          "observed_at": "2026-09-03T21:55:29.298723+00:00",
-          "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
-          "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
-          "actor": "orchestrator"
+          "observed_at": "2026-09-03T22:54:46Z",
+          "environment_identity": "host=192.168.1.7; os=macOS 26.0.1; arch=arm64",
+          "source_commit": "1ea571184f68dc112cf558ea4a1d0b244484aa86",
+          "actor": "main-orchestrator"
         },
-        "acceptance_record": "evidence/harness-ci-result.json",
+        "acceptance_record": "evidence/release-readback.json",
         "accepted_by": "Harness 集成验收负责人",
-        "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+        "accepted_at": "2026-09-03T22:54:46Z"
       }
     }
   ]

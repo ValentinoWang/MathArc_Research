@@ -18,16 +18,16 @@ evidence.
 
 The six implementation/validation nodes `C1`, `S1`, `P1`, `RI1`, `E1`, and
 `V1` are `ACCEPTED` in the compiled projection. `DP1` is the accepted decision
-input. Both release gates (`QR1` and `QR2`) are `READY`; their acceptance is
-deliberately held until the release readback and cleanup records contain live
-remote evidence.
+input. Both release gates (`QR1` and `QR2`) are `ACCEPTED`; their completion is
+bound to the live mainline, cleanup, and proxy evidence in
+`evidence/release-readback.json`.
 
 | Gate | Current value | Evidence |
 | --- | --- | --- |
 | `bundle_valid` | `true` | `.ssot/validation-report.json` |
 | `policy_complete` | `true` | Required archive check and collection audit |
 | `push_gate_eligible` | `true` | `check_push_gate.py` and validation report |
-| `release_complete` | `false` | `QR1`/`QR2` are still `READY` |
+| `release_complete` | `true` | `QR1` and `QR2` are `ACCEPTED` |
 | `required_skipped_checks` | `[]` | Validation report |
 | `optional_skipped_checks` | `[]` | Validation report |
 
@@ -42,26 +42,29 @@ remote evidence.
 - `evidence/negative-cases/`: one structured result and command output per case.
 - `execution-orchestration/takeovers/V1.json`: the required main-thread
   takeover record for the unavailable external execution transport.
+- `evidence/release-readback.json`: MathArc and Harness local/remote `main`
+  identities match exactly; each remote branch list contains only `main`, the
+  used Codex refs return 404, and persistent Git/environment proxy settings are
+  empty.
 - Obsidian snapshot: four managed files verified; collection audit passed.
 
 ## Release and publication sequence
 
-1. Publish the Harness `main` fast-forward through the GitHub API because Git
-   smart-HTTP/SSH transport is unavailable; the live tip is recorded in
-   `evidence/release-readback.json`.
-2. Commit only task-owned MathArc bundle and Harness-adapter files on the
-   current Codex branch, merge that branch into local `main`, and publish the
-   resulting `main` tip through the same verified transport.
-3. Read back both live `main` refs, assert ancestry/tree identity, then close
-   the cleanup ledger. Existing unrelated user changes and unrelated remote
-   branches remain untouched.
+1. Recheck standard Git transport after proxy cleanup and refresh both
+   `origin/main` refs.
+2. Reconcile each local/API-published history with a no-content-change merge,
+   then push Harness `main` and MathArc `main` through standard Git HTTPS.
+3. Read back both live `main` refs and trees, then remove the used Codex
+   branches and the two user-authorized extra MathArc remote branches. Preserve
+   unrelated MathArc worktree changes without staging or rewriting them.
 
 ## Proxy state
 
-The current environment, Git repository configuration, and user Git
-configuration contain no `http.proxy`, `https.proxy`, `all_proxy`, or
-`insteadOf` proxy override. Proxy variables in the OpenClaw service are outside
-this repository and are intentionally not changed.
+The current environment, system/user Git configuration, and both repository
+configurations contain no `http.proxy`, `https.proxy`, `all_proxy`, or
+`insteadOf` proxy override. Standard `git ls-remote`, fetch, and push now pass.
+Proxy variables in the OpenClaw service are outside this repository and are
+intentionally not changed.
 
 ## Harness change in this run
 

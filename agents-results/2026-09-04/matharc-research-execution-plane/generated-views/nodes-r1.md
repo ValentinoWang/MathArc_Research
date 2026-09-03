@@ -20,7 +20,7 @@
 | C1 | R1 | decision.execution-plane.scope@1 | ACCEPTED | none | acceptance owner | none | none | acceptance-fragments/C1/acceptance-contract.md | E1; P1; QR1; S1 |
 | P1 | R1 | decision.execution-plane.scope@1 | ACCEPTED | none | acceptance owner | none | none | acceptance-fragments/P1/acceptance-contract.md | QR1; RI1 |
 | S1 | R1 | decision.execution-plane.scope@1 | ACCEPTED | none | acceptance owner | none | none | acceptance-fragments/S1/acceptance-contract.md | QR1; RI1 |
-| QR1 | R1 | none | READY | none | release decision owner | none | none | none | none |
+| QR1 | R1 | none | ACCEPTED | none | release decision owner | none | none | none | none |
 
 ### Release R1 deliverables
 

@@ -4,7 +4,7 @@
   "stage": "R2",
   "work_kind": "release-decision",
   "domain_lane": "r2",
-  "execution_state": "READY",
+  "execution_state": "ACCEPTED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
   "readiness_mode": "FORMAL",
@@ -29,6 +29,23 @@
   "candidate_identity_policy": "must-match",
   "goal": "Accept the R2 candidate against its source completion criteria.",
   "owner": "release decision owner",
+  "accepted_evidence": {
+    "implementation_commit": "1ea571184f68dc112cf558ea4a1d0b244484aa86",
+    "test_evidence": {
+      "command": "git ls-remote --heads origin; GitHub Git Data API main/tree readback; local/remote branch and worktree inventory; Git proxy configuration inventory",
+      "result_path": "evidence/release-readback.json",
+      "exit_code": 0,
+      "observed_at": "2026-09-03T22:54:46Z",
+      "environment_identity": "host=192.168.1.7; os=macOS 26.0.1; arch=arm64",
+      "source_commit": "1ea571184f68dc112cf558ea4a1d0b244484aa86",
+      "actor": "main-orchestrator",
+      "result_sha256": "81ded8743fa2592ae458755d840605a318781da8e12286fb4047ea8f05d828e6",
+      "passed": true
+    },
+    "acceptance_record": "evidence/release-readback.json",
+    "accepted_by": "release decision owner",
+    "accepted_at": "2026-09-03T22:54:46Z"
+  },
   "blocking_reasons": [],
   "readiness_gaps": []
 }
