@@ -122,7 +122,7 @@ class ConsolePrototypeTests(unittest.TestCase):
         live_source = page[start:end]
         self.assertNotIn("SEARCH_PROTO", live_source)
         self.assertIn("实时投影不可用", live_source)
-        self.assertIn("缺少已验证的 novelty audit projection", live_source)
+        self.assertIn("缺少已验证的新颖性审计投影", live_source)
 
     def test_configured_console_never_substitutes_demo_for_unconfigured_local_views(self) -> None:
         node = shutil.which("node")

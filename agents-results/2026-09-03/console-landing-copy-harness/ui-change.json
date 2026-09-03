@@ -1,0 +1,14 @@
+{
+  "schema_version": "1.0",
+  "ui_change_id": "console-landing-copy-harness",
+  "kind": "modify-surface",
+  "user_visible": true,
+  "source_authority_mode": "none",
+  "scroll_surface": true,
+  "affected_surfaces": [
+    { "surface_id": "problem-intelligence-console-landing" },
+    { "surface_id": "problem-intelligence-console-access" },
+    { "surface_id": "problem-intelligence-console-copy" }
+  ],
+  "execution_mode": "incremental"
+}

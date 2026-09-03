@@ -1,0 +1,12 @@
+{
+  "guard": "ui-copy-quality",
+  "status": "PASS",
+  "lexicon": "docs/quality-gates/ui-copy-lexicon.json",
+  "targets": [
+    "docs/prototypes/problem-intel-console.html",
+    "docs/prototypes/review-console.html"
+  ],
+  "error_count": 0,
+  "warning_count": 0,
+  "findings": []
+}

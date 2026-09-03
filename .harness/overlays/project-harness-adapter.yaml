@@ -11,6 +11,9 @@ quality:
     - PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_frozen_review_inputs
     - PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_regression_evaluation
     - PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_v02_access tests.test_v02_access_server tests.test_console_prototype
+    - PYTHONDONTWRITEBYTECODE=1 .venv/bin/python scripts/check_ui_copy_quality.py
+    - PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_ui_copy_quality
+  copy_lexicon: docs/quality-gates/ui-copy-lexicon.json
   formatting: []
   guard_policy:
     evidence_root: agents-results
@@ -21,8 +24,12 @@ quality:
 qa:
   screenshot:
     - agents-results/2026-09-03/research-preview-access/screenshot-manifest.json
+    - agents-results/2026-09-03/console-landing-copy-harness/evidence/screenshot-manifest.json
+    - agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-screenshot-manifest.json
   integration:
     - node scripts/console_browser_gate.mjs
+  # MATHARC_GATE_EVIDENCE_DIR points a new task at its own evidence directory; MATHARC_GATE_FONT_MODE=fallback-local
+  # declares a machine without the font CDN (view contract §9.13.4) instead of letting network state decide.
   evidence_root: agents-results
 skills:
   enabled: []

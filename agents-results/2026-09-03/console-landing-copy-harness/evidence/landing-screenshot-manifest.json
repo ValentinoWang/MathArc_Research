@@ -1,0 +1,107 @@
+{
+  "schema_version": "1.0",
+  "artifact_kind": "matharc-browser-landing-evidence",
+  "generated_at": "2026-09-03T17:47:45.643Z",
+  "page_identity": "MathArc landing page scroll experience",
+  "browser": "chromium",
+  "font_mode": "fallback-local",
+  "review_result": "PASS",
+  "review_note": "PASS means the scroll-experience assertions held for every capture (sticky nav state, anchor offset, reveal completion, single-line controls, reduced-motion visibility). A human still reviews hierarchy and wording.",
+  "captures": [
+    {
+      "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-hero-1440.png",
+      "sha256": "165ae57d2436149f0ea8149636e3cd0ab7078647833be261bee7d71187d27465",
+      "scenario": "landing hero after reveal",
+      "page_identity": {
+        "title": "MathArc 数学研究工作台",
+        "path": "/",
+        "view": "landing"
+      },
+      "browser": "chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "font_mode": "fallback-local",
+      "color_scheme": "light",
+      "captured_at": "2026-09-03T17:47:38.493Z",
+      "review_result": "PASS"
+    },
+    {
+      "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-how-1440.png",
+      "sha256": "e8c8a8f51192927795e35fef9e1fdc9ce9cddf2e212ac91df587b19fc1264496",
+      "scenario": "landing section after anchor scroll",
+      "page_identity": {
+        "title": "MathArc 数学研究工作台",
+        "path": "/",
+        "view": "landing"
+      },
+      "browser": "chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "font_mode": "fallback-local",
+      "color_scheme": "light",
+      "captured_at": "2026-09-03T17:47:41.077Z",
+      "review_result": "PASS"
+    },
+    {
+      "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-nots-1440.png",
+      "sha256": "068b0f4f6834b9ced15d20ebdc22274ee8e103d503faf23a92dc21ddc799318d",
+      "scenario": "landing closing band",
+      "page_identity": {
+        "title": "MathArc 数学研究工作台",
+        "path": "/",
+        "view": "landing"
+      },
+      "browser": "chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "font_mode": "fallback-local",
+      "color_scheme": "light",
+      "captured_at": "2026-09-03T17:47:43.610Z",
+      "review_result": "PASS"
+    },
+    {
+      "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-hero-1440-dark.png",
+      "sha256": "a285809b120ee61f7c6732ed1454241b459a8b9942dead697c898bca1769fe2c",
+      "scenario": "landing hero in dark theme",
+      "page_identity": {
+        "title": "MathArc 数学研究工作台",
+        "path": "/",
+        "view": "landing"
+      },
+      "browser": "chromium",
+      "viewport": {
+        "width": 1440,
+        "height": 900
+      },
+      "font_mode": "fallback-local",
+      "color_scheme": "dark",
+      "captured_at": "2026-09-03T17:47:43.860Z",
+      "review_result": "PASS"
+    },
+    {
+      "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-hero-390.png",
+      "sha256": "c169b6f152777dbda9960f04dba869a47f7f1abb2f061f58f1183d449b052a8d",
+      "scenario": "landing hero on a phone",
+      "page_identity": {
+        "title": "MathArc 数学研究工作台",
+        "path": "/",
+        "view": "landing"
+      },
+      "browser": "chromium",
+      "viewport": {
+        "width": 390,
+        "height": 844
+      },
+      "font_mode": "fallback-local",
+      "color_scheme": "light",
+      "captured_at": "2026-09-03T17:47:45.127Z",
+      "review_result": "PASS"
+    }
+  ]
+}

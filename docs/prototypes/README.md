@@ -13,3 +13,14 @@ prototype behavior is not evidence that the backend contract exists.
 
 `matharc/v02/review_bundle.py`'s `render_review_bundle_html` reuses this
 file's CSS/design tokens — do not restyle it without checking that consumer.
+
+## `problem-intel-console.html`
+
+The console prototype is also the page the workspace server serves as the dashboard
+(`--dashboard`), so the demo and the served console are one source file. Its landing view
+is a scroll surface guarded at runtime by `testLandingScrollExperience` in
+`scripts/console_browser_gate.mjs`; its copy is guarded by `scripts/check_ui_copy_quality.py`
+with the lexicon in `docs/quality-gates/ui-copy-lexicon.json`. Landing styling stays inside the
+frozen U1 static contract (no new tokens, class names or `@media` rules): new behaviour is
+expressed through attribute selectors (`data-scrolled`, `data-reveal`, `aria-current`) and IDs.
+

@@ -1,0 +1,66 @@
+{
+  "actual_non_smt_skip_ids": [
+    "unittest.loader.ModuleSkipped.tests.test_api_stream",
+    "unittest.loader.ModuleSkipped.tests.test_codex_agent"
+  ],
+  "errors": 0,
+  "expected_failures": 0,
+  "expected_non_smt_skip_ids": [
+    "unittest.loader.ModuleSkipped.tests.test_api_stream",
+    "unittest.loader.ModuleSkipped.tests.test_codex_agent"
+  ],
+  "failures": 0,
+  "missing_non_smt_skip_ids": [],
+  "skipped": 10,
+  "skipped_tests": [
+    {
+      "reason": "v0.1 Codex agent API surface is not present on this tree: cannot import name 'create_server' from 'matharc.api' (/home/user/MathArc_Research/matharc/api.py)",
+      "test_id": "unittest.loader.ModuleSkipped.tests.test_api_stream"
+    },
+    {
+      "reason": "v0.1 Codex agent service surface is not present on this tree: No module named 'matharc.codex_agent'",
+      "test_id": "unittest.loader.ModuleSkipped.tests.test_codex_agent"
+    },
+    {
+      "reason": "z3-solver is not installed (optional 'formal' extra)",
+      "test_id": "tests.test_v02_smt_tools.RegistryAndCampaignIntegrationTests.test_campaign_promotes_a_bounded_claim_through_the_smt_template"
+    },
+    {
+      "reason": "z3-solver is not installed (optional 'formal' extra)",
+      "test_id": "tests.test_v02_smt_tools.SmtExistentialTests.test_nonlinear_witness_within_bounds"
+    },
+    {
+      "reason": "z3-solver is not installed (optional 'formal' extra)",
+      "test_id": "tests.test_v02_smt_tools.SmtExistentialTests.test_unsat_existential_is_fail_with_no_evidence"
+    },
+    {
+      "reason": "z3-solver is not installed (optional 'formal' extra)",
+      "test_id": "tests.test_v02_smt_tools.SmtExistentialTests.test_witness_is_independently_verified_and_becomes_exact_certificate"
+    },
+    {
+      "reason": "z3-solver is not installed (optional 'formal' extra)",
+      "test_id": "tests.test_v02_smt_tools.SmtUniversalTests.test_bounded_universal_fails_with_verified_countermodel_and_no_evidence"
+    },
+    {
+      "reason": "z3-solver is not installed (optional 'formal' extra)",
+      "test_id": "tests.test_v02_smt_tools.SmtUniversalTests.test_bounded_universal_holds_produces_solver_trusted_evidence"
+    },
+    {
+      "reason": "z3-solver is not installed (optional 'formal' extra)",
+      "test_id": "tests.test_v02_smt_tools.SmtUniversalTests.test_checker_disagreement_is_an_error_not_a_result"
+    },
+    {
+      "reason": "z3-solver is not installed (optional 'formal' extra)",
+      "test_id": "tests.test_v02_smt_tools.SmtUniversalTests.test_unknown_is_a_hard_error_with_no_evidence"
+    }
+  ],
+  "smt_tests_discovered": 20,
+  "smt_tests_executed": 12,
+  "smt_tests_skipped": 8,
+  "successful": true,
+  "tests_discovered": 618,
+  "tests_run": 618,
+  "unexpected_non_smt_skip_ids": [],
+  "unexpected_successes": 0,
+  "z3_available": false
+}

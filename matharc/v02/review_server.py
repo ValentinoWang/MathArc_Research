@@ -117,9 +117,9 @@ _CLAIM_STATUS_VM: dict[str, str] = {
     "RETRACTED": "已撤回",
 }
 _REQUIRED_ASSURANCE_VM: dict[str, str] = {
-    RequiredAssurance.MACHINE_SUFFICIENT.value: "机器已核实",
-    RequiredAssurance.HUMAN_SINGLE.value: "需要一位评审人判断",
-    RequiredAssurance.HUMAN_DOUBLE.value: "需要两位独立评审人分别判断",
+    RequiredAssurance.MACHINE_SUFFICIENT.value: "机器判定即可",
+    RequiredAssurance.HUMAN_SINGLE.value: "需一名评审人判断",
+    RequiredAssurance.HUMAN_DOUBLE.value: "需两名独立评审人分别判断",
 }
 
 

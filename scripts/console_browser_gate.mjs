@@ -26,7 +26,28 @@ const PAGE_PATH = resolve(ROOT, "docs/prototypes/problem-intel-console.html");
 const PAGE_SOURCE = readFileSync(PAGE_PATH, "utf8");
 const BLUEPRINT_PATH = resolve(ROOT, "docs/prototypes/console-dev-blueprint.html");
 const BLUEPRINT_SOURCE = readFileSync(BLUEPRINT_PATH, "utf8");
-const ACCESS_EVIDENCE_DIR = resolve(ROOT, "agents-results/2026-09-03/research-preview-access");
+// Evidence root: the default keeps the research-preview task's historical captures; a new task points
+// MATHARC_GATE_EVIDENCE_DIR at its own agents-results directory so old evidence is never overwritten.
+const EVIDENCE_DIR = resolve(ROOT, process.env.MATHARC_GATE_EVIDENCE_DIR || "agents-results/2026-09-03/research-preview-access");
+const ACCESS_EVIDENCE_DIR = EVIDENCE_DIR;
+const LANDING_EVIDENCE_DIR = EVIDENCE_DIR;
+// Font mode is part of the evidence identity (view contract §9.13.4): "webfont-loaded" lets the page fetch
+// fonts.googleapis.com; "fallback-local" blocks the font hosts so metrics come from installed system fonts.
+// A machine without the CDN must declare fallback-local instead of letting the network decide.
+const FONT_MODE = process.env.MATHARC_GATE_FONT_MODE || "webfont-loaded";
+// The project copy lexicon is the single place for deliberate identifier exceptions; the runtime
+// scan honours the same allowlist as scripts/check_ui_copy_quality.py so decisions are not duplicated.
+const COPY_LEXICON = JSON.parse(readFileSync(resolve(ROOT, "docs/quality-gates/ui-copy-lexicon.json"), "utf8"));
+const COPY_ALLOW_IDENTIFIERS = new Set(COPY_LEXICON.allow_identifiers || []);
+const COPY_CONTAINER_SELECTOR = [".mono", ".hash", ".ev", ".seq", "code", "kbd", "pre", "samp", "var", "script", "style", "input", "textarea", "option",
+  ...(COPY_LEXICON.identifier_container_classes || []).map(name => `.${name}`)].join(", ");
+assert(FONT_MODE === "webfont-loaded" || FONT_MODE === "fallback-local", `unknown MATHARC_GATE_FONT_MODE ${FONT_MODE}`);
+const FONT_HOSTS = /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\//;
+async function newGateContext(browser, options) {
+  const context = await browser.newContext(options);
+  if (FONT_MODE === "fallback-local") await context.route(FONT_HOSTS, route => route.abort());
+  return context;
+}
 const ACCESS_COOKIE_NAME = "matharc_access_session";
 const ACCESS_SCREENSHOT_VIEWPORTS = [
   { name: "desktop", width: 1240, height: 1080 },
@@ -452,6 +473,17 @@ async function settleVisualLayout(page) {
     await document.fonts.ready;
     await new Promise(resolveFrame => requestAnimationFrame(() => requestAnimationFrame(resolveFrame)));
   });
+  // A capture is evidence of the settled page: wait until nothing in the viewport is still revealing
+  // (bounded, so a stuck attribute fails the reveal assertions instead of hanging the capture).
+  await waitFor(
+    async () => await page.evaluate(() => [...document.querySelectorAll('[data-reveal]')]
+      // an element whose top sits in the bottom 10% of the viewport may legitimately still be pending (the
+      // observer margin excludes that band), so only elements clearly inside the viewport must have settled
+      .filter(node => { const rect = node.getBoundingClientRect(); return rect.bottom > 0 && rect.top < window.innerHeight * 0.9; })
+      .every(node => node.dataset.reveal === "in" && getComputedStyle(node).opacity === "1")),
+    "in-viewport reveal did not settle before capture",
+    3000,
+  );
 }
 
 async function captureAccessScenario(page, scenario, basename, manifestEntries) {
@@ -473,6 +505,7 @@ async function captureAccessScenario(page, scenario, basename, manifestEntries) 
       },
       browser: "chromium",
       viewport: { width: viewport.width, height: viewport.height },
+      font_mode: FONT_MODE,
       captured_at: capturedAt,
       review_result: "PASS",
     });
@@ -505,7 +538,7 @@ async function testAccessWorkflow(browser, server) {
   mkdirSync(ACCESS_EVIDENCE_DIR, { recursive: true });
   const manifestEntries = [];
 
-  const anonymousContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+  const anonymousContext = await newGateContext(browser, { viewport: { width: 1240, height: 1080 } });
   try {
     const response = await anonymousContext.request.get(`${server.origin}/api/console`);
     assert(response.status() === 401, "anonymous protected console request was not rejected");
@@ -516,7 +549,7 @@ async function testAccessWorkflow(browser, server) {
     await anonymousContext.close();
   }
 
-  const applicationContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+  const applicationContext = await newGateContext(browser, { viewport: { width: 1240, height: 1080 } });
   try {
     const page = await applicationContext.newPage();
     await openPublicRoot(page, server.origin);
@@ -545,7 +578,7 @@ async function testAccessWorkflow(browser, server) {
     await applicationContext.close();
   }
 
-  const invalidContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+  const invalidContext = await newGateContext(browser, { viewport: { width: 1240, height: 1080 } });
   try {
     const page = await invalidContext.newPage();
     await openPublicRoot(page, server.origin);
@@ -569,7 +602,7 @@ async function testAccessWorkflow(browser, server) {
     await invalidContext.close();
   }
 
-  const invitationContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+  const invitationContext = await newGateContext(browser, { viewport: { width: 1240, height: 1080 } });
   let restoredPage;
   try {
     const page = await invitationContext.newPage();
@@ -596,7 +629,7 @@ async function testAccessWorkflow(browser, server) {
     const cookies = await invitationContext.cookies(server.origin);
     const accessCookie = cookies.find(cookie => cookie.name === ACCESS_COOKIE_NAME);
     assert(accessCookie && accessCookie.httpOnly && accessCookie.sameSite === "Strict" && accessCookie.path === "/", "browser did not store the hardened session cookie");
-    await page.getByText("身份与研究预览会话已由服务端确认。", { exact: true }).waitFor({ state: "visible" });
+    await page.getByText("邀请码已确认，已进入研究预览。", { exact: true }).waitFor({ state: "visible" });
     assert(await page.locator("#f-code").count() === 0, "redeemed invitation secret remained in the rendered DOM");
     assert(!(await page.locator("body").innerText()).includes(server.ui_invitation_code), "redeemed invitation secret became visible");
     const protectedResponse = await invitationContext.request.get(`${server.origin}/api/console`);
@@ -617,7 +650,7 @@ async function testAccessWorkflow(browser, server) {
     await page.close();
     await captureAccessScenario(restoredPage, "Cookie session restored", "session-restored", manifestEntries);
 
-    const replayContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+    const replayContext = await newGateContext(browser, { viewport: { width: 1240, height: 1080 } });
     try {
       const replayPage = await replayContext.newPage();
       await openPublicRoot(replayPage, server.origin);
@@ -657,7 +690,7 @@ async function testAccessWorkflow(browser, server) {
     await invitationContext.close();
   }
 
-  const guestContext = await browser.newContext({ viewport: { width: 1240, height: 1080 } });
+  const guestContext = await newGateContext(browser, { viewport: { width: 1240, height: 1080 } });
   try {
     const page = await guestContext.newPage();
     await openPublicRoot(page, server.origin);
@@ -681,7 +714,9 @@ async function testAccessWorkflow(browser, server) {
     generated_at: new Date().toISOString(),
     page_identity: "MathArc research preview access and console",
     browser: "chromium",
+    font_mode: FONT_MODE,
     review_result: "PASS",
+    review_note: "PASS here means every capture passed the gate's layout assertions (no vertical text wrap in nav controls, prohibition cards intact, reveal completed, anchors under the sticky nav). It is not a human visual review.",
     captures: manifestEntries,
   };
   writeFileSync(join(ACCESS_EVIDENCE_DIR, "screenshot-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
@@ -793,6 +828,193 @@ async function scanChineseEnglish(page, label) {
   assert(hits.length === 0, `${label} contains Chinese text adjacent to a bare English identifier: ${hits[0]}`);
 }
 
+/* Copy quality at runtime: machine identifiers or rendering leftovers must not reach visible prose.
+   Text inside .mono/.hash/code/kbd containers and form controls is the declared place for identifiers. */
+async function scanCopyQuality(page, label) {
+  const hits = await page.evaluate(({ allowed, containers }) => {
+    const finder = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode(node) {
+        const parent = node.parentElement;
+        if (!parent || parent.closest(containers)) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      },
+    });
+    const bad = [];
+    while (finder.nextNode()) {
+      const text = finder.currentNode.textContent || "";
+      if (!/[㐀-鿿]/.test(text)) continue;
+      const leak = text.match(/(?<![\w./-])(?:[a-z][a-z0-9]*(?:_[a-z0-9]+)+|[A-Z][A-Z0-9]*(?:_[A-Z0-9]+)+)(?![\w./-])/);
+      if (leak && !allowed.includes(leak[0])) bad.push({ kind: "raw-identifier", sample: leak[0], text: text.trim().slice(0, 80) });
+      const leftover = text.match(/\b(?:undefined|NaN|TODO|TBD)\b|\[object Object\]/);
+      if (leftover) bad.push({ kind: "placeholder-token", sample: leftover[0], text: text.trim().slice(0, 80) });
+    }
+    return bad;
+  }, { allowed: [...COPY_ALLOW_IDENTIFIERS], containers: COPY_CONTAINER_SELECTOR });
+  assert(hits.length === 0, `${label} shows machine text as prose: ${JSON.stringify(hits[0])}`);
+}
+
+/* Short inline controls (nav links, pills, buttons in a row) must stay on one line.  The 2026-09-03
+   mobile capture had every landing nav label wrapped into a vertical column of characters while its
+   manifest still said PASS — a screenshot nobody measured is not evidence. */
+async function assertSingleLineControls(page, selector, label) {
+  const tall = await page.evaluate(selector => {
+    return [...document.querySelectorAll(selector)].filter(node => {
+      const style = getComputedStyle(node);
+      if (style.display === "none" || style.visibility === "hidden") return false;
+      const rect = node.getBoundingClientRect();
+      if (rect.width === 0 || rect.height === 0) return false;
+      const lineHeight = parseFloat(style.lineHeight) || parseFloat(style.fontSize) * 1.5;
+      const singleLine = lineHeight + parseFloat(style.paddingTop) + parseFloat(style.paddingBottom)
+        + parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+      // a second text line adds one full line-height on top of the single-line box
+      return rect.height >= singleLine + lineHeight * 0.8;
+    }).map(node => ({ text: node.textContent.trim().slice(0, 30), height: Math.round(node.getBoundingClientRect().height) }));
+  }, selector);
+  assert(tall.length === 0, `${label} wrapped a single-line control onto several lines: ${JSON.stringify(tall[0])}`);
+}
+
+async function captureLandingScene(page, scene, basename, manifestEntries) {
+  mkdirSync(LANDING_EVIDENCE_DIR, { recursive: true });
+  await settleVisualLayout(page);
+  const viewport = page.viewportSize();
+  const outputPath = join(LANDING_EVIDENCE_DIR, `${basename}.png`);
+  const capturedAt = new Date().toISOString();
+  await page.screenshot({ path: outputPath, fullPage: false });
+  const digest = createHash("sha256").update(readFileSync(outputPath)).digest("hex");
+  manifestEntries.push({
+    file: relative(ROOT, outputPath),
+    sha256: digest,
+    scenario: scene,
+    page_identity: { title: await page.title(), path: new URL(page.url()).pathname, view: "landing" },
+    browser: "chromium",
+    viewport,
+    font_mode: FONT_MODE,
+    color_scheme: await page.evaluate(() => document.documentElement.getAttribute("data-theme") || "light"),
+    captured_at: capturedAt,
+    review_result: "PASS",
+  });
+}
+
+/* The landing page is a scroll experience, so the gate walks it instead of only rendering it:
+   sticky nav with the current section marked, anchors landing below the nav, reveal completing
+   for everything in view, and nothing left hidden for readers who asked for reduced motion. */
+async function testLandingScrollExperience(browser, server, manifestEntries) {
+  const context = await newGateContext(browser, { viewport: { width: 1440, height: 900 } });
+  try {
+    const page = await context.newPage();
+    const pageErrors = [];
+    page.on("pageerror", error => pageErrors.push(error.stack || error.message));
+    await openPublicRoot(page, server.origin);
+    await page.locator(".lp .hero h1").waitFor({ state: "visible" });
+    assert(await page.locator(".lpnav").evaluate(node => getComputedStyle(node).position) === "sticky", "landing nav is not sticky");
+    assert(await page.locator('.lp[data-scrolled="false"]').count() === 1, "landing did not start in the unscrolled state");
+    await assertSingleLineControls(page, ".lpnav .links button, .lpnav .btn, .hero .bigbtn, .hero .pill", "landing/1440 header");
+    await waitFor(
+      async () => await page.evaluate(() => [...document.querySelectorAll('.hero [data-reveal]')].every(node => node.dataset.reveal === "in" && getComputedStyle(node).opacity === "1")),
+      "hero reveal did not complete",
+      3000,
+    );
+    assert(await page.locator(".hero > .card").isVisible(), "hero evidence card is missing");
+    await captureLandingScene(page, "landing hero after reveal", "landing-hero-1440", manifestEntries);
+
+    for (const section of ["planes", "how", "case", "nots"]) {
+      await page.locator(`.lpnav .links button[data-v="${section}"]`).click();
+      await waitFor(
+        async () => await page.evaluate(id => {
+          const target = document.getElementById(`sec-${id}`);
+          const nav = document.querySelector(".lpnav");
+          if (!target || !nav) return false;
+          const top = target.getBoundingClientRect().top, navBottom = nav.getBoundingClientRect().bottom;
+          // a section near the end of the page cannot reach the nav once the document is scrolled to its maximum
+          const atPageEnd = window.scrollY + window.innerHeight >= document.documentElement.scrollHeight - 2;
+          return (top >= navBottom - 2 && top <= navBottom + 40) || (atPageEnd && top >= navBottom - 2);
+        }, section),
+        `anchor ${section} did not land below the sticky nav`,
+        4000,
+      );
+      assert(await page.locator('.lp[data-scrolled="true"]').count() === 1, `scrolling to ${section} did not mark the nav as scrolled`);
+      const current = await page.locator('.lpnav .links button[aria-current="true"]').evaluateAll(nodes => nodes.map(node => node.dataset.v));
+      assert(current.length === 1 && current[0] === section, `nav did not mark ${section} as current: ${JSON.stringify(current)}`);
+      await waitFor(
+        async () => await page.evaluate(id => {
+          const target = document.getElementById(`sec-${id}`);
+          const viewportHeight = window.innerHeight;
+          return [...target.querySelectorAll('[data-reveal]')].filter(node => node.getBoundingClientRect().top < viewportHeight * 0.9)
+            .every(node => node.dataset.reveal === "in" && getComputedStyle(node).opacity === "1");
+        }, section),
+        `${section} content in view stayed hidden after scrolling`,
+        3000,
+      );
+      await assertSingleLineControls(page, ".lpnav .links button", `landing/${section} nav`);
+      if (section === "how") await captureLandingScene(page, "landing section after anchor scroll", "landing-how-1440", manifestEntries);
+      if (section === "nots") await captureLandingScene(page, "landing closing band", "landing-nots-1440", manifestEntries);
+    }
+    await measureLandingProhibitionCards(page, "landing/1440", 1440);
+    await scanChineseEnglish(page, "landing/1440");
+    await scanCopyQuality(page, "landing/1440");
+
+    await page.locator("#themebtn2").click();
+    assert(await page.evaluate(() => document.documentElement.getAttribute("data-theme")) === "dark", "landing theme toggle did not switch to dark");
+    await page.evaluate(() => window.scrollTo(0, 0));
+    await waitFor(async () => await page.locator('.lp[data-scrolled="false"]').count() === 1, "scrolling back to top did not clear the scrolled state", 3000);
+    await captureLandingScene(page, "landing hero in dark theme", "landing-hero-1440-dark", manifestEntries);
+    await page.locator("#themebtn2").click();
+    assert(pageErrors.length === 0, `landing page errors: ${pageErrors.join("\n")}`);
+  } finally {
+    await context.close();
+  }
+
+  const mobile = await newGateContext(browser, { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true, deviceScaleFactor: 2 });
+  try {
+    const page = await mobile.newPage();
+    await openPublicRoot(page, server.origin);
+    await page.locator(".lp .hero h1").waitFor({ state: "visible" });
+    await assertSingleLineControls(page, ".lpnav .brand .mark, .lpnav .btn, .hero .bigbtn", "landing/390 header");
+    assert(await page.locator(".lpnav .links").evaluate(node => getComputedStyle(node).display) === "none", "mobile landing still shows the desktop section links");
+    assert(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1), "mobile landing scrolls horizontally");
+    await waitFor(
+      async () => await page.evaluate(() => [...document.querySelectorAll('.hero [data-reveal]')].filter(node => node.getBoundingClientRect().top < window.innerHeight).every(node => node.dataset.reveal === "in")),
+      "mobile hero reveal did not complete",
+      3000,
+    );
+    await captureLandingScene(page, "landing hero on a phone", "landing-hero-390", manifestEntries);
+    await measureLandingProhibitionCards(page, "landing/390", 390);
+    await scanCopyQuality(page, "landing/390");
+  } finally {
+    await mobile.close();
+  }
+
+  const reduced = await newGateContext(browser, { viewport: { width: 1240, height: 900 }, reducedMotion: "reduce" });
+  try {
+    const page = await reduced.newPage();
+    await openPublicRoot(page, server.origin);
+    await page.locator(".lp .hero h1").waitFor({ state: "visible" });
+    assert(await page.locator('[data-reveal]').count() === 0, "reduced-motion readers still received reveal attributes");
+    const hidden = await page.evaluate(() => [...document.querySelectorAll(".sec > h2, .planecard, .step, .nots > div")].filter(node => getComputedStyle(node).opacity !== "1").length);
+    assert(hidden === 0, `reduced-motion landing left ${hidden} elements transparent`);
+    await page.locator('.lpnav .links button[data-v="case"]').click();
+    await waitFor(async () => await page.evaluate(() => document.getElementById("sec-case").getBoundingClientRect().top <= document.querySelector(".lpnav").getBoundingClientRect().bottom + 40), "reduced-motion anchor did not land", 3000);
+  } finally {
+    await reduced.close();
+  }
+}
+
+async function writeLandingManifest(manifestEntries) {
+  assert(manifestEntries.length === 5, `landing evidence expected 5 screenshots, got ${manifestEntries.length}`);
+  const manifest = {
+    schema_version: "1.0",
+    artifact_kind: "matharc-browser-landing-evidence",
+    generated_at: new Date().toISOString(),
+    page_identity: "MathArc landing page scroll experience",
+    browser: "chromium",
+    font_mode: FONT_MODE,
+    review_result: "PASS",
+    review_note: "PASS means the scroll-experience assertions held for every capture (sticky nav state, anchor offset, reveal completion, single-line controls, reduced-motion visibility). A human still reviews hierarchy and wording.",
+    captures: manifestEntries,
+  };
+  writeFileSync(join(LANDING_EVIDENCE_DIR, "landing-screenshot-manifest.json"), `${JSON.stringify(manifest, null, 2)}\n`, "utf8");
+}
+
 async function testAccordions(page) {
   const views = ["source", "campaign", "exploration", "tools", "reasoning", "proofchain"];
   for (const view of views) {
@@ -853,7 +1075,7 @@ async function testKeyboardControls(page) {
 
 async function testMobileViewports(browser, server, accessCookies) {
   for (const viewport of MOBILE_VIEWPORTS) {
-    const context = await browser.newContext({
+    const context = await newGateContext(browser, {
       viewport: { width: viewport.width, height: viewport.height },
       isMobile: true,
       hasTouch: true,
@@ -880,6 +1102,7 @@ async function testMobileViewports(browser, server, accessCookies) {
           await measureBalance(page, `${viewport.name}/${campaignId}/${testCase.name}`, viewport.width);
           if (testCase.view === "landing") await measureLandingProhibitionCards(page, `${viewport.name}/${campaignId}/${testCase.name}`, viewport.width);
           await scanChineseEnglish(page, `${viewport.name}/${campaignId}/${testCase.name}`);
+          await scanCopyQuality(page, `${viewport.name}/${campaignId}/${testCase.name}`);
         }
       }
       await testKeyboardControls(page);
@@ -1130,7 +1353,7 @@ async function main() {
   const server = await startServer();
   const browser = await playwright.chromium.launch({ headless: true });
   let accessCaptureCount = 0;
-  const context = await browser.newContext({ viewport: { width: WIDTHS[0], height: 1080 } });
+  const context = await newGateContext(browser, { viewport: { width: WIDTHS[0], height: 1080 } });
   const page = await context.newPage();
   const pageErrors = [];
   const eventCursors = [];
@@ -1144,6 +1367,9 @@ async function main() {
   try {
     assertInvitationSecretsNotPersisted(server);
     accessCaptureCount = await testAccessWorkflow(browser, server);
+    const landingCaptures = [];
+    await testLandingScrollExperience(browser, server, landingCaptures);
+    await writeLandingManifest(landingCaptures);
     const authentication = await context.request.post(`${server.origin}/api/access/redeem`, {
       data: { email: server.gate_invitation_email, code: server.gate_invitation_code },
     });
@@ -1183,6 +1409,7 @@ async function main() {
           await measureBalance(page, `${campaignId}/${testCase.name}`, width);
           if (testCase.view === "landing") await measureLandingProhibitionCards(page, `${campaignId}/${testCase.name}`, width);
           await scanChineseEnglish(page, `${campaignId}/${testCase.name}`);
+          await scanCopyQuality(page, `${campaignId}/${testCase.name}`);
         }
       }
     }
@@ -1196,6 +1423,7 @@ async function main() {
     await testMobileViewports(browser, server, accessCookies);
     assert(pageErrors.length === 0, `page errors: ${pageErrors.join("\n")}`);
     console.log(`access workflow passed: protected boundary, pending application, invalid/valid invite, Cookie restoration, replay rejection, logout, guest demo; ${accessCaptureCount} hash-bound screenshots`);
+    console.log(`landing scroll experience passed: sticky nav state, 4 anchors, reveal completion, single-line controls, reduced-motion visibility; ${landingCaptures.length} hash-bound screenshots (font mode ${FONT_MODE})`);
     console.log(`console browser gate passed: ${VIEW_CASES.length} cases x ${CAMPAIGNS.length} campaigns x ${WIDTHS.length} widths`);
     console.log(`mobile viewport checks passed: ${MOBILE_VIEWPORTS.map(viewport => `${viewport.name}=${viewport.width}x${viewport.height}`).join(", ")}`);
     console.log("keyboard checks passed: tabindex disclosures activated with Enter and Space");

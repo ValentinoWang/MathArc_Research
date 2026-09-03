@@ -2,7 +2,7 @@ PYTHON ?= python3
 PIP := $(PYTHON) -m pip
 export PYTHONPATH := $(CURDIR)$(if $(PYTHONPATH),:$(PYTHONPATH))
 
-.PHONY: bootstrap bootstrap-full ci-preflight formal-preflight test test-full typecheck architecture workflow-policy publication-gate quality demo validate serve codex-status acceptance v02-demo v02-validate v02-acceptance v02-workspace-acceptance frankl-replay console-browser-gate ci ci-full clean-ci baseline smoke-claude
+.PHONY: bootstrap bootstrap-full ci-preflight formal-preflight test test-full typecheck architecture workflow-policy publication-gate console-copy-gate quality demo validate serve codex-status acceptance v02-demo v02-validate v02-acceptance v02-workspace-acceptance frankl-replay console-browser-gate ci ci-full clean-ci baseline smoke-claude
 
 bootstrap:
 	$(PIP) install -e ".[research,dev]"
@@ -34,7 +34,13 @@ workflow-policy:
 publication-gate:
 	$(PYTHON) scripts/publication_audit_fixture.py
 
-quality: typecheck architecture workflow-policy publication-gate
+# Lexical copy gate for the served console prototype and the frozen review demo.
+# Guard card: .harness/guards/ui-copy-quality.md. It proves the absence of mechanical
+# copy defects only; the meaning review lives in the task's copy-review.md.
+console-copy-gate:
+	$(PYTHON) scripts/check_ui_copy_quality.py
+
+quality: typecheck architecture workflow-policy publication-gate console-copy-gate
 
 demo:
 	$(PYTHON) -m matharc demo --out-dir artifacts/demo
