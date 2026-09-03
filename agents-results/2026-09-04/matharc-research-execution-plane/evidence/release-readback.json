@@ -1,0 +1,38 @@
+{
+  "schema_version": 1,
+  "status": "NOT_RUN",
+  "completion_claim": "none",
+  "targets": {
+    "matharc": {
+      "repository": "ValentinoWang/MathArc_Research",
+      "remote": "https://github.com/ValentinoWang/MathArc_Research.git",
+      "ref": "refs/heads/main",
+      "local_sha": null,
+      "remote_sha": null,
+      "ancestry_verified": null
+    },
+    "harness": {
+      "repository": "ValentinoWang/Harness_Engineering",
+      "remote": "https://github.com/ValentinoWang/Harness_Engineering.git",
+      "ref": "refs/heads/main",
+      "local_sha": null,
+      "remote_sha": null,
+      "ancestry_verified": null
+    }
+  },
+  "branch_cleanup": {
+    "status": "NOT_RUN",
+    "worktrees": null,
+    "local_branches": null,
+    "remote_branches": null
+  },
+  "persistent_git_proxy": {
+    "status": "NOT_RUN",
+    "expected": "empty",
+    "actual": null
+  },
+  "observed_at": null,
+  "environment_identity": null,
+  "source_commit": null,
+  "actor": null
+}

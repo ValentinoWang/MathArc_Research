@@ -1,0 +1,350 @@
+{
+  "schema_version": 1,
+  "depth": "L2",
+  "task_slug": "matharc-research-execution-plane",
+  "governance_reason": "本轮同时修订智能工程平台的声明模式、执行证据、状态模型、推送门禁、规则守恒、复杂度盘点和验收采集器，并由数学研究项目持有跨仓库执行与发布证据；两个独立发布切片需要持久节点状态、验收合同和远端提交回读。",
+  "selection_authority": "user",
+  "world_verification": true,
+  "node_state_model": 2,
+  "acceptance_contract_policy_version": 2,
+  "view_model": 2,
+  "decisions": [
+    {
+      "id": "DP1",
+      "key": "decision.execution-plane.scope",
+      "version": 1,
+      "record": "agents-results/2026-09-04/matharc-research-execution-plane/decisions/DP1.md",
+      "summary": "用户确认本轮 Harness 改造与 MathArc/Harness 主线收口的工程执行范围。"
+    }
+  ],
+  "shared_acceptance_policies": [
+    {
+      "id": "SAP-EXECUTION-PLANE",
+      "version": 1,
+      "path": "agents-results/2026-09-04/matharc-research-execution-plane/shared-acceptance-policy.md",
+      "allowed_sections": [
+        "Performance and reliability",
+        "Protected acceptance tests",
+        "Risks and open decisions"
+      ]
+    }
+  ],
+  "releases": [
+    {
+      "id": "R1",
+      "title": "声明、状态与推送闭环",
+      "user_value": "SSOT 输入、执行完成证据、状态迁移和推送资格使用同一套可验证事实，不再接受仅靠声明的完成或过期验证报告。",
+      "independent_acceptance": "声明编译、完成证据、统一状态机、L1 本地执行路径以及推送时重绑定全部通过对应单元和端到端负例。",
+      "independent_failure": "任一负例未被封闭拒绝时，本切片保持未接受，不允许进入 GitHub 主线。"
+    },
+    {
+      "id": "R2",
+      "title": "规则守恒与比例治理闭环",
+      "user_value": "维护者只读取当前任务触发的规范，规则索引和实际产物双向守恒，证据 lane 与事实登记不再产生不可采集或仪式性内容。",
+      "independent_acceptance": "规则索引、版本矩阵、触发式阅读图、真实复杂度盘点、证据 lane 和条件式事实登记全部通过独立负例与 Harness 全量本地 CI。",
+      "independent_failure": "任一规则、视图、采集器或事实类别无法从真实文件反查时，本切片保持未接受且不影响 R1 的已验证能力。"
+    }
+  ],
+  "items": [
+    {
+      "id": "C1",
+      "release": "R1",
+      "owner": "Harness 声明编译负责人",
+      "decision_refs": ["DP1"],
+      "surfaces": ["ssot-input-schema-and-completion-evidence"],
+      "lanes": ["machine/unit", "machine/integration-contract"],
+      "write_regions": [
+        ".agents/skills/report-to-ssot-development-paths/assets/schemas/ssot-input.schema.json",
+        ".agents/skills/report-to-ssot-development-paths/scripts/compile_ssot.py",
+        ".agents/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py",
+        ".agents/skills/report-to-ssot-development-paths/tests/test_compile_ssot.py",
+        ".agents/skills/report-to-ssot-development-paths/tests/test_execution_gates.py"
+      ],
+      "goal": "执行 Draft 2020-12 schema，并让正式 execution 对象和真实完成证据从输入贯通到节点、worker 台账与运行器记录。",
+      "acceptance_seeds": [
+        "在 .agents/skills/report-to-ssot-development-paths/tests/test_compile_execution_contract.py 中证明未知顶层字段、未知 item 字段、错误 acceptance_contract_policy_version、缺失嵌套字段、错误枚举和错误类型均被 Draft 2020-12 schema 拒绝",
+        "在 .agents/skills/report-to-ssot-development-paths/tests/test_compile_ssot.py 中证明 items[].execution 可编译出 escalation、worker、预算、worker ledger 和 runner registry，旧 multi_executor 不能作为正式输入",
+        "在 .agents/skills/report-to-ssot-development-paths/tests/test_compile_execution_contract.py 中证明不存在的 40 位提交或非通过 result_path 都使完成登记失败；result_sha256 由编译器从 result_path 内容派生而不是由输入声明"
+      ],
+      "protected_tests": [
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_compile_execution_contract.py",
+          "sha256": "dd78a949ce83d0650eae4353520c7c331dad6927575c15e13c646c13930d3f91",
+          "covers": "Draft 2020-12 schema and completion evidence cases"
+        },
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_compile_ssot.py",
+          "sha256": "2d8c40301f4c2bb41687aead0b788f5a9524394cf13bbea27ff13bc65da0d39f",
+          "covers": "Formal execution compilation cases"
+        }
+      ],
+      "completion": {
+        "state": "ACCEPTED",
+        "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+        "test_evidence": {
+          "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
+          "result_path": "evidence/harness-ci-result.json",
+          "exit_code": 0,
+          "observed_at": "2026-09-03T21:55:29.298723+00:00",
+          "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
+          "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+          "actor": "orchestrator"
+        },
+        "acceptance_record": "evidence/harness-ci-result.json",
+        "accepted_by": "Harness 声明编译负责人",
+        "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+      }
+    },
+    {
+      "id": "S1",
+      "release": "R1",
+      "owner": "Harness 状态模型负责人",
+      "decision_refs": ["DP1"],
+      "surfaces": ["execution-state-lifecycle-and-l1-readiness"],
+      "depends_on": ["C1"],
+      "lanes": ["machine/unit", "machine/integration-contract"],
+      "write_regions": [
+        ".agents/skills/report-to-ssot-development-paths/scripts/ssot_state_model.py",
+        ".agents/skills/report-to-ssot-development-paths/scripts/ssot_readiness.py",
+        ".agents/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
+        ".agents/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
+        ".agents/skills/ssot-acceptance-binding/SKILL.md",
+        ".agents/skills/ssot-execution-orchestration/SKILL.md",
+        ".agents/skills/report-to-ssot-development-paths/tests/test_ssot_state_model.py",
+        ".agents/skills/report-to-ssot-development-paths/tests/test_ssot_readiness.py"
+      ],
+      "goal": "建立唯一节点状态转换模型，并让 L1 由当前编排者在零 worker 工件条件下推进到 ACCEPTED。",
+      "acceptance_seeds": [
+        "在 .agents/skills/report-to-ssot-development-paths/tests/test_ssot_state_model.py 中证明 PLANNED、READY、BLOCKED、RUNNING、IMPLEMENTED、VERIFIED、ACCEPTED、FAILED、INVALIDATED 的转换前提只有一个正式定义",
+        "在 .agents/skills/report-to-ssot-development-paths/tests/test_ssot_complexity.py 中证明 L1 bundle 不加载 worker ledger、runner registry 或外部候选工作区，并能由 orchestrator 推进到 ACCEPTED"
+      ],
+      "protected_tests": [
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_ssot_state_model.py",
+          "sha256": "2563becc12061dd45c557e271bd4b983014577fab980366ec04b8cb58d9fc2b6",
+          "covers": "Node state transition cases"
+        },
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_ssot_readiness.py",
+          "sha256": "629547e533dbe9a800d4f5834849125ae1dfeee7b293e6e7f6ee250db2425903",
+          "covers": "Readiness derivation cases"
+        }
+      ],
+      "completion": {
+        "state": "ACCEPTED",
+        "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+        "test_evidence": {
+          "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
+          "result_path": "evidence/harness-ci-result.json",
+          "exit_code": 0,
+          "observed_at": "2026-09-03T21:55:29.298723+00:00",
+          "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
+          "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+          "actor": "orchestrator"
+        },
+        "acceptance_record": "evidence/harness-ci-result.json",
+        "accepted_by": "Harness 状态模型负责人",
+        "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+      }
+    },
+    {
+      "id": "P1",
+      "release": "R1",
+      "owner": "Harness 推送资格负责人",
+      "decision_refs": ["DP1"],
+      "surfaces": ["validation-binding-and-complexity-accounting"],
+      "depends_on": ["C1"],
+      "lanes": ["machine/unit", "machine/integration-contract"],
+      "write_regions": [
+        ".agents/skills/report-to-ssot-development-paths/scripts/ssot_validation_binding.py",
+        ".agents/skills/report-to-ssot-development-paths/scripts/check_push_gate.py",
+        ".agents/skills/report-to-ssot-development-paths/scripts/validate_ssot_bundle.py",
+        ".agents/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
+        ".agents/skills/report-to-ssot-development-paths/tests/test_execution_gates.py",
+        ".agents/skills/report-to-ssot-development-paths/tests/test_ssot_complexity.py"
+      ],
+      "goal": "推送时重新计算并核对 validation report 的完整绑定，同时从 manifest 和磁盘实际产物复算复杂度。",
+      "acceptance_seeds": [
+        "在 .agents/skills/report-to-ssot-development-paths/tests/test_execution_gates.py 中证明 validation 后修改报告或修改 bundle 都会使 check_push_gate.py 失败",
+        "在 .agents/skills/report-to-ssot-development-paths/tests/test_ssot_complexity.py 中证明 strict 单发布 bundle 实际生成四个视图时 inventory 报告四个而不是 planning record 的一个"
+      ],
+      "protected_tests": [
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_execution_gates.py",
+          "sha256": "443d99f0d6734873715135d979bbcd172adc41cff0088f2109de144352c609e7",
+          "covers": "Stale validation binding and push-gate cases"
+        },
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_ssot_complexity.py",
+          "sha256": "a1dfbeee03d028f2fcbe366e79781f663fbc19fd136b3d40261172a75e082873",
+          "covers": "Generated-view complexity cases"
+        }
+      ],
+      "completion": {
+        "state": "ACCEPTED",
+        "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+        "test_evidence": {
+          "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
+          "result_path": "evidence/harness-ci-result.json",
+          "exit_code": 0,
+          "observed_at": "2026-09-03T21:55:29.298723+00:00",
+          "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
+          "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+          "actor": "orchestrator"
+        },
+        "acceptance_record": "evidence/harness-ci-result.json",
+        "accepted_by": "Harness 推送资格负责人",
+        "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+      }
+    },
+    {
+      "id": "RI1",
+      "release": "R2",
+      "owner": "Harness 规则索引负责人",
+      "decision_refs": ["DP1"],
+      "surfaces": ["rules-index-and-triggered-reading-map"],
+      "depends_on": ["S1", "P1"],
+      "lanes": ["machine/static", "machine/unit"],
+      "write_regions": [
+        ".agents/skills/report-to-ssot-development-paths/rules-index.json",
+        ".agents/skills/report-to-ssot-development-paths/reading-map.json",
+        ".agents/skills/report-to-ssot-development-paths/SKILL.md",
+        ".agents/skills/ssot-planning-compiler/SKILL.md",
+        ".agents/skills/report-to-ssot-development-paths/tests/test_rules_index.py",
+        ".agents/skills/report-to-ssot-development-paths/tests/test_audit_ssot_policy_impact.py"
+      ],
+      "goal": "让规则索引双向守恒，补齐版本矩阵并以触发式阅读图限制基础上下文。",
+      "acceptance_seeds": [
+        "在 .agents/skills/report-to-ssot-development-paths/tests/test_rules_index.py 中证明 rules-index.json 保留一条已从 SKILL.md 删除的规则时元测试失败",
+        "在 .agents/skills/report-to-ssot-development-paths/tests/test_rules_index.py 中证明每条规范句都反向绑定唯一 source_clause 摘要且版本矩阵覆盖 node state、acceptance policy、shared policy 和 validation schema",
+        "在 .agents/skills/report-to-ssot-development-paths/reading-map.json 中按 planning、acceptance、execution、views 触发条件声明最小读取路径，并由 test_rules_index.py 校验引用存在"
+      ],
+      "protected_tests": [
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_rules_index.py",
+          "sha256": "14de2f416dad0b1b7cb0dc919be1e4938445ab2681820d0b32670e620029e037",
+          "covers": "Rules index reverse-conservation cases"
+        },
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_audit_ssot_policy_impact.py",
+          "sha256": "77fef160264c9f5268b3c01dc7f8ae33b95977aeb51ed869f6bf995882aeb5fb",
+          "covers": "Policy impact and reading-map cases"
+        }
+      ],
+      "completion": {
+        "state": "ACCEPTED",
+        "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+        "test_evidence": {
+          "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
+          "result_path": "evidence/harness-ci-result.json",
+          "exit_code": 0,
+          "observed_at": "2026-09-03T21:55:29.298723+00:00",
+          "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
+          "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+          "actor": "orchestrator"
+        },
+        "acceptance_record": "evidence/harness-ci-result.json",
+        "accepted_by": "Harness 规则索引负责人",
+        "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+      }
+    },
+    {
+      "id": "E1",
+      "release": "R2",
+      "owner": "Harness 证据与事实负责人",
+      "decision_refs": ["DP1"],
+      "surfaces": ["evidence-lane-registry-and-facts-registry"],
+      "depends_on": ["C1"],
+      "lanes": ["machine/static", "machine/unit"],
+      "write_regions": [
+        ".agents/skills/ssot-acceptance-binding/evidence-lanes.yaml",
+        ".agents/skills/ssot-acceptance-binding/evidence_lane_registry.py",
+        ".agents/skills/report-to-ssot-development-paths/scripts/check_ssot_acceptance_contracts.py",
+        ".agents/skills/report-to-ssot-development-paths/scripts/ssot_policy.py",
+        ".agents/skills/ssot-obsidian-snapshot/scripts/archive_contract.py",
+        ".agents/skills/report-to-ssot-development-paths/tests/test_evidence_lane_registry.py",
+        ".agents/skills/ssot-obsidian-snapshot/tests/test_doc_code_parity.py"
+      ],
+      "goal": "用可解析的证据 lane registry 绑定真实采集器，并按正文实际引用启用 Facts Registry 类别。",
+      "acceptance_seeds": [
+        "在 .agents/skills/report-to-ssot-development-paths/tests/test_evidence_lane_registry.py 中证明合同引用 persistent-runtime 但项目 adapter 没有 collector_key 时验收检查失败",
+        "在 .agents/skills/ssot-obsidian-snapshot/tests/test_doc_code_parity.py 中证明文档没有命令、flag 或 host 时 Facts Registry 不要求且不生成 none 占位事实"
+      ],
+      "protected_tests": [
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_evidence_lane_registry.py",
+          "sha256": "76fd082aefb3be3b093656febca8be26fbb5aadb227d9037620b436b320139f5",
+          "covers": "Evidence collector binding cases"
+        },
+        {
+          "path": ".agents/skills/ssot-obsidian-snapshot/tests/test_doc_code_parity.py",
+          "sha256": "7b2bf22b489e79a981e96ff658b8a99518b7a18181105eb7c0ab1c24fdcc6f97",
+          "covers": "Conditional facts registry cases"
+        }
+      ],
+      "completion": {
+        "state": "ACCEPTED",
+        "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+        "test_evidence": {
+          "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
+          "result_path": "evidence/harness-ci-result.json",
+          "exit_code": 0,
+          "observed_at": "2026-09-03T21:55:29.298723+00:00",
+          "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
+          "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+          "actor": "orchestrator"
+        },
+        "acceptance_record": "evidence/harness-ci-result.json",
+        "accepted_by": "Harness 证据与事实负责人",
+        "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+      }
+    },
+    {
+      "id": "V1",
+      "release": "R2",
+      "owner": "Harness 集成验收负责人",
+      "kind": "validation",
+      "decision_refs": ["DP1"],
+      "surfaces": ["negative-acceptance-matrix-and-release-readback"],
+      "depends_on": ["RI1", "E1"],
+      "lanes": ["machine/unit", "release"],
+      "write_regions": [
+        "agents-results/2026-09-04/matharc-research-execution-plane/evidence/"
+      ],
+      "goal": "在同一源码身份上运行附件规定的 12 个端到端反例和 Harness 全量本地 CI，并记录 GitHub 主线读回与清理结果。",
+      "acceptance_seeds": [
+        "agents-results/2026-09-04/matharc-research-execution-plane/evidence/acceptance-matrix.json 必须逐项记录附件 12 个反例的命令、退出码、Harness 提交和结果文件摘要",
+        "agents-results/2026-09-04/matharc-research-execution-plane/evidence/harness-ci-result.json 必须记录 .github/workflows/ssot-ci.yml 对应本地全量命令全部通过且零跳过",
+        "agents-results/2026-09-04/matharc-research-execution-plane/evidence/release-readback.json 必须记录 MathArc 与 Harness 的 GitHub main SHA、分支清理和持久 Git 代理配置为空"
+      ],
+      "protected_tests": [
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_execution_gates.py",
+          "sha256": "443d99f0d6734873715135d979bbcd172adc41cff0088f2109de144352c609e7",
+          "covers": "Push binding and completion evidence cases"
+        },
+        {
+          "path": ".agents/skills/report-to-ssot-development-paths/tests/test_rules_index.py",
+          "sha256": "14de2f416dad0b1b7cb0dc919be1e4938445ab2681820d0b32670e620029e037",
+          "covers": "Reverse-conservation integration cases"
+        }
+      ],
+      "completion": {
+        "state": "ACCEPTED",
+        "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+        "test_evidence": {
+          "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
+          "result_path": "evidence/harness-ci-result.json",
+          "exit_code": 0,
+          "observed_at": "2026-09-03T21:55:29.298723+00:00",
+          "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
+          "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+          "actor": "orchestrator"
+        },
+        "acceptance_record": "evidence/harness-ci-result.json",
+        "accepted_by": "Harness 集成验收负责人",
+        "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+      }
+    }
+  ]
+}

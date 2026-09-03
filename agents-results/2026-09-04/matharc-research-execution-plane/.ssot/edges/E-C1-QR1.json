@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-C1-QR1",
+  "from": "C1",
+  "to": "QR1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.c1"
+  ],
+  "transferred_input": "执行 Draft 2020-12 schema，并让正式 execution 对象和真实完成证据从输入贯通到节点、worker 台账与运行器记录。",
+  "gate_evidence": "acceptance contract evidence"
+}

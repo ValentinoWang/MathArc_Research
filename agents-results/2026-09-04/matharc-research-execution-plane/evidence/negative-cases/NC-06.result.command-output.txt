@@ -1,0 +1,7 @@
+test_mutating_bundle_after_validation_blocks_push (Core.skills.report-to-ssot-development-paths.tests.test_execution_gates.PushGateBindingRegressionTests.test_mutating_bundle_after_validation_blocks_push) ... push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3
+ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.002s
+
+OK

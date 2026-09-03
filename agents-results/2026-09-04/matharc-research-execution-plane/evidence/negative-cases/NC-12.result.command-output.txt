@@ -1,0 +1,6 @@
+test_facts_registry_omits_unreferenced_operational_categories (Core.skills.report-to-ssot-development-paths.tests.test_compile_ssot.EngineeringAppendixProjectionGuardTests.test_facts_registry_omits_unreferenced_operational_categories) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.000s
+
+OK

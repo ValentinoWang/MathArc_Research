@@ -1,0 +1,6 @@
+test_l1_item_reaches_accepted_without_worker_artifacts (Core.skills.report-to-ssot-development-paths.tests.test_compile_ssot.ExecutorAssignmentTests.test_l1_item_reaches_accepted_without_worker_artifacts) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.289s
+
+OK

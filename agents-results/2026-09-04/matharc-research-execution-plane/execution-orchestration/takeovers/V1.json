@@ -1,0 +1,30 @@
+{
+  "task_id": "V1",
+  "original_executor": "codex",
+  "failure_class": "transport",
+  "taken_over_by": "main-thread",
+  "frozen_inputs": [
+    {
+      "path": "ssot-input.json",
+      "sha256": "63ce0d575ffa931795b942cb29f84dfc7cf51d89a9f7d4dd4b2b118731c86aa1"
+    },
+    {
+      "path": "evidence/acceptance-matrix.json",
+      "sha256": "c82394c43f0efbdbb5ebb635f3556594f6aad430f9e42027e18d46d621ca3586"
+    },
+    {
+      "path": "evidence/harness-ci-result.json",
+      "sha256": "8780f3430dbaa230ddec1b32c34bd904f5adbec79ccf9e00ba1a5054219c6476"
+    },
+    {
+      "path": "evidence/release-readback.json",
+      "sha256": "ccfa50365ee62734b6299268d9f7213d74fc942daa54f11d67e7610e3e78f689"
+    }
+  ],
+  "write_boundary": [
+    "agents-results/2026-09-04/matharc-research-execution-plane/"
+  ],
+  "acceptance_command": "python3 .agents/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json --project-root . && python3 .agents/skills/report-to-ssot-development-paths/scripts/check_push_gate.py agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json --project-root .",
+  "started_at": "2026-09-03T22:11:19Z",
+  "finished_at": "2026-09-03T22:11:19Z"
+}

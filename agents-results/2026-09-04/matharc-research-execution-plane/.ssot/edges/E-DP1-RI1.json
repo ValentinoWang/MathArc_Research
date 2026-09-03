@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-DP1-RI1",
+  "from": "DP1",
+  "to": "RI1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "decision.execution-plane.scope.v1"
+  ],
+  "transferred_input": "用户确认本轮 Harness 改造与 MathArc/Harness 主线收口的工程执行范围。",
+  "gate_evidence": "acceptance contract evidence"
+}

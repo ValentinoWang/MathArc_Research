@@ -1,0 +1,63 @@
+{
+  "ssot_schema_version": 2,
+  "artifact_class": "ssot-development",
+  "machine_validation_profile": "release",
+  "plan_version": 1,
+  "dag_version": 1,
+  "interface_freeze_version": 1,
+  "node_contract_version": 2,
+  "generated_main": "../ssot-development-paths.md",
+  "generated_views": [
+    {
+      "view_id": "main",
+      "source": "view-sources/00-main.md",
+      "source_sha256": "369f5f1ab0d5bfff38358f3344aedfaf4393e398e05bc84427a5c2e746de1eba",
+      "output": "../ssot-development-paths.md"
+    },
+    {
+      "view_id": "topology",
+      "generator": "topology",
+      "output": "../generated-views/topology.md"
+    },
+    {
+      "view_id": "nodes-r1",
+      "generator": "nodes",
+      "release": "R1",
+      "output": "../generated-views/nodes-r1.md"
+    },
+    {
+      "view_id": "nodes-r2",
+      "generator": "nodes",
+      "release": "R2",
+      "output": "../generated-views/nodes-r2.md"
+    }
+  ],
+  "nodes_dir": "nodes",
+  "edges_dir": "edges",
+  "releases_dir": "releases",
+  "assumptions_dir": "assumptions",
+  "conflicts_dir": "conflicts",
+  "world_verification_version": 1,
+  "node_state_model_version": 2,
+  "acceptance_contract_policy_version": 2,
+  "shared_acceptance_policies": [
+    {
+      "id": "SAP-EXECUTION-PLANE",
+      "version": 1,
+      "path": "agents-results/2026-09-04/matharc-research-execution-plane/shared-acceptance-policy.md",
+      "allowed_sections": [
+        "Performance and reliability",
+        "Protected acceptance tests",
+        "Risks and open decisions"
+      ],
+      "summary_sha256": "98dca7e692e4039d380afd456ccaed008f496171d4fd80adce9f53990332de30"
+    }
+  ],
+  "view_model_version": 2,
+  "validation_report": {
+    "path": "validation-report.json",
+    "sha256": "f963dc3b1ca4e46f5595f7bb31e525f361e95784cb257d6bd291945452359121",
+    "manifest_identity_sha256": "12ab8d3bd07472988a5933394aa8e692de21d9787c647f93374cf6e0efd4320d",
+    "bundle_content_sha256": "0010b34d8049ea2445e7e4d486df9503457128e7e72aa8248c11125a733f892c"
+  }
+}

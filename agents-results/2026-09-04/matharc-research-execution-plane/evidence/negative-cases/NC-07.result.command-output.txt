@@ -1,0 +1,15 @@
+test_every_state_has_an_explicit_transition_row (Core.skills.report-to-ssot-development-paths.tests.test_ssot_state_model.SsotStateModelTests.test_every_state_has_an_explicit_transition_row) ... ok
+test_execution_contract_declares_the_shared_states_and_transitions (Core.skills.report-to-ssot-development-paths.tests.test_ssot_state_model.SsotStateModelTests.test_execution_contract_declares_the_shared_states_and_transitions) ... ok
+test_execution_skill_does_not_reintroduce_the_legacy_eight_state_chain (Core.skills.report-to-ssot-development-paths.tests.test_ssot_state_model.SsotStateModelTests.test_execution_skill_does_not_reintroduce_the_legacy_eight_state_chain) ... ok
+test_invalid_transition_fails_closed (Core.skills.report-to-ssot-development-paths.tests.test_ssot_state_model.SsotStateModelTests.test_invalid_transition_fails_closed) ... ok
+test_preexecution_projection_transitions_are_explicit (Core.skills.report-to-ssot-development-paths.tests.test_ssot_state_model.SsotStateModelTests.test_preexecution_projection_transitions_are_explicit) ... ok
+test_progress_states_are_preserved_as_a_separate_subset (Core.skills.report-to-ssot-development-paths.tests.test_ssot_state_model.SsotStateModelTests.test_progress_states_are_preserved_as_a_separate_subset) ... ok
+test_readiness_projection_uses_the_canonical_state_vocabulary (Core.skills.report-to-ssot-development-paths.tests.test_ssot_state_model.SsotStateModelTests.test_readiness_projection_uses_the_canonical_state_vocabulary) ... ok
+test_shared_vocabulary_contains_all_persisted_states (Core.skills.report-to-ssot-development-paths.tests.test_ssot_state_model.SsotStateModelTests.test_shared_vocabulary_contains_all_persisted_states) ... ok
+test_skill_model_readiness_and_checker_form_one_contract (Core.skills.report-to-ssot-development-paths.tests.test_ssot_state_model.SsotStateModelTests.test_skill_model_readiness_and_checker_form_one_contract)
+The documented state machine must reach the production checker. ... ok
+
+----------------------------------------------------------------------
+Ran 9 tests in 0.002s
+
+OK

@@ -1,0 +1,6 @@
+test_persistent_runtime_without_adapter_collector_key_fails (Core.skills.report-to-ssot-development-paths.tests.test_evidence_lane_registry.EvidenceLaneRegistryTests.test_persistent_runtime_without_adapter_collector_key_fails) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.029s
+
+OK

@@ -1,0 +1,38 @@
+{
+  "node_id": "DP1",
+  "semantic_key": "decision.execution-plane.scope",
+  "stage": "R1",
+  "work_kind": "decision-acceptance",
+  "domain_lane": "decision",
+  "execution_state": "ACCEPTED",
+  "decision_state": "ACCEPTED",
+  "decision_version": 1,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [],
+  "invalidation_keys": [
+    "decision.execution-plane.scope.v1"
+  ],
+  "write_authority": "isolated-record",
+  "acceptance_authority": "decision owner",
+  "unlocks": [
+    "C1",
+    "E1",
+    "P1",
+    "RI1",
+    "S1",
+    "V1"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "human",
+  "execution_contract_ref": "nodes/DP1.json",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "goal": "用户确认本轮 Harness 改造与 MathArc/Harness 主线收口的工程执行范围。",
+  "owner": "decision owner",
+  "decision_record_ref": "agents-results/2026-09-04/matharc-research-execution-plane/decisions/DP1.md",
+  "blocking_reasons": [],
+  "readiness_gaps": []
+}

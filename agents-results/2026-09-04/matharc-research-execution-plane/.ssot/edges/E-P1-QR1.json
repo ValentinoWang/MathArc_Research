@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-P1-QR1",
+  "from": "P1",
+  "to": "QR1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.p1"
+  ],
+  "transferred_input": "推送时重新计算并核对 validation report 的完整绑定，同时从 manifest 和磁盘实际产物复算复杂度。",
+  "gate_evidence": "acceptance contract evidence"
+}

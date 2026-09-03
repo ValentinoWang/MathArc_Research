@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "case_id": "NC-12",
+  "status": "PASS",
+  "passed": true,
+  "scenario": "Use a document with no command, flag, or host facts.",
+  "expected_observation": "Facts Registry does not require or create none placeholders.",
+  "observed_observation": "The Facts Registry projection regression passed: unreferenced command, flag-required, flag-forbidden, host-alias, and version categories were omitted and no none placeholder row was emitted.",
+  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python -m unittest -v Core.skills.report-to-ssot-development-paths.tests.test_compile_ssot.EngineeringAppendixProjectionGuardTests.test_facts_registry_omits_unreferenced_operational_categories",
+  "working_directory": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering",
+  "coverage": {
+    "compiler": "Core/skills/report-to-ssot-development-paths/scripts/compile_ssot.py",
+    "facts_policy": "Core/skills/report-to-ssot-development-paths/scripts/ssot_policy.py",
+    "regression_test": "Core/skills/report-to-ssot-development-paths/tests/test_compile_ssot.py::EngineeringAppendixProjectionGuardTests.test_facts_registry_omits_unreferenced_operational_categories"
+  },
+  "test_output_sha256": "5e69bea6c86e96a81b55dbaed3a828d896e1e54e9c942757ea1282136e417085",
+  "metadata": {
+    "exit_code": 0,
+    "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+    "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+    "actor": "orchestrator",
+    "observed_at": "2026-09-03T22:00:33.511342+00:00"
+  },
+  "exit_code": 0,
+  "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+  "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+  "actor": "orchestrator",
+  "observed_at": "2026-09-03T22:00:33.511342+00:00",
+  "result_path": "evidence/negative-cases/NC-12.result.json",
+  "output_path": "evidence/negative-cases/NC-12.result.command-output.txt"
+}

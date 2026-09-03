@@ -1,0 +1,14 @@
+{
+  "release_id": "R1",
+  "release_gate_node": "QR1",
+  "title": "声明、状态与推送闭环",
+  "user_value": "SSOT 输入、执行完成证据、状态迁移和推送资格使用同一套可验证事实，不再接受仅靠声明的完成或过期验证报告。",
+  "independent_failure": "任一负例未被封闭拒绝时，本切片保持未接受，不允许进入 GitHub 主线。",
+  "node_ids": [
+    "DP1",
+    "C1",
+    "S1",
+    "P1",
+    "QR1"
+  ]
+}

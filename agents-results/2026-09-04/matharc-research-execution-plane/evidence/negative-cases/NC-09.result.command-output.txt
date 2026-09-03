@@ -1,0 +1,6 @@
+test_bundle_root_reconciles_four_planning_manifest_and_disk_views (Core.skills.report-to-ssot-development-paths.tests.test_ssot_complexity.SsotComplexityTests.test_bundle_root_reconciles_four_planning_manifest_and_disk_views) ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.003s
+
+OK

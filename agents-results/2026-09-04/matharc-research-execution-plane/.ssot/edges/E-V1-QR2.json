@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-V1-QR2",
+  "from": "V1",
+  "to": "QR2",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "data-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.v1"
+  ],
+  "transferred_input": "在同一源码身份上运行附件规定的 12 个端到端反例和 Harness 全量本地 CI，并记录 GitHub 主线读回与清理结果。",
+  "gate_evidence": "acceptance contract evidence"
+}
