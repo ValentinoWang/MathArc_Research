@@ -17,6 +17,14 @@ from matharc.v02.workspace_bundle import write_full_workspace_bundle
 
 
 class ConsolePrototypeTests(unittest.TestCase):
+    def test_browser_title_uses_the_product_name_not_the_internal_plane_name(self) -> None:
+        page = (
+            Path(__file__).resolve().parents[1]
+            / "docs/prototypes/problem-intel-console.html"
+        ).read_text(encoding="utf-8")
+        self.assertIn("<title>MathArc 数学研究工作台</title>", page)
+        self.assertNotIn("<title>问题情报平面控制台</title>", page)
+
     def test_browser_gate_runs_campaign_through_cli_and_asserts_sse_dom_refresh(self) -> None:
         gate = (Path(__file__).resolve().parents[1] / "scripts/console_browser_gate.mjs").read_text(encoding="utf-8")
         self.assertIn('"-m", "matharc.v02.cli", "run"', gate)

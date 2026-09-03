@@ -1,17 +1,17 @@
 {
   "schema_version": "1.0",
   "artifact_kind": "matharc-browser-access-evidence",
-  "generated_at": "2026-09-03T05:11:25.337Z",
+  "generated_at": "2026-09-03T13:42:42.645Z",
   "page_identity": "MathArc research preview access and console",
   "browser": "chromium",
   "review_result": "PASS",
   "captures": [
     {
       "file": "agents-results/2026-09-03/research-preview-access/desktop-application-pending.png",
-      "sha256": "b3fe1e87412c53d765f0dfa9a307f6d73a2b64e70471e336d74a1cb36daea1f6",
+      "sha256": "f7728dee2dad534819fe8a5077f2c59b1882d6610be1abbdc660e00a99d610bb",
       "scenario": "application pending",
       "page_identity": {
-        "title": "问题情报平面控制台",
+        "title": "MathArc 数学研究工作台",
         "path": "/"
       },
       "browser": "chromium",
@@ -19,7 +19,7 @@
         "width": 1240,
         "height": 1080
       },
-      "captured_at": "2026-09-03T05:11:17.609Z",
+      "captured_at": "2026-09-03T13:42:31.917Z",
       "review_result": "PASS"
     },
     {
@@ -27,7 +27,7 @@
       "sha256": "dfeef6791ea17eee373a49ff80835f45417ed3f553822e79d703305c20ae204a",
       "scenario": "application pending",
       "page_identity": {
-        "title": "问题情报平面控制台",
+        "title": "MathArc 数学研究工作台",
         "path": "/"
       },
       "browser": "chromium",
@@ -35,7 +35,7 @@
         "width": 390,
         "height": 844
       },
-      "captured_at": "2026-09-03T05:11:17.675Z",
+      "captured_at": "2026-09-03T13:42:32.000Z",
       "review_result": "PASS"
     },
     {
@@ -43,7 +43,7 @@
       "sha256": "81b123b2cb5fe56b08acf9a37d8733ff85e517b3de92a285f99b78c0098c9f15",
       "scenario": "invalid invitation rejected",
       "page_identity": {
-        "title": "问题情报平面控制台",
+        "title": "MathArc 数学研究工作台",
         "path": "/"
       },
       "browser": "chromium",
@@ -51,7 +51,7 @@
         "width": 1240,
         "height": 1080
       },
-      "captured_at": "2026-09-03T05:11:19.692Z",
+      "captured_at": "2026-09-03T13:42:34.850Z",
       "review_result": "PASS"
     },
     {
@@ -59,7 +59,7 @@
       "sha256": "4374eed0e5e4eb8dcb0c3cb57f1dc93eee317e9ccaac1e2d9e2f8287ecc9f161",
       "scenario": "invalid invitation rejected",
       "page_identity": {
-        "title": "问题情报平面控制台",
+        "title": "MathArc 数学研究工作台",
         "path": "/"
       },
       "browser": "chromium",
@@ -67,15 +67,15 @@
         "width": 390,
         "height": 844
       },
-      "captured_at": "2026-09-03T05:11:19.758Z",
+      "captured_at": "2026-09-03T13:42:34.916Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/research-preview-access/desktop-session-restored.png",
-      "sha256": "95dba9e5e9f9f613f896fcc95571028c5c0728c5b9556ccfe041e23625de8aab",
+      "sha256": "ee1f8704a8b3aef51443b3f750cb9d689be5c928e8e881e327ea70ff7744465e",
       "scenario": "Cookie session restored",
       "page_identity": {
-        "title": "问题情报平面控制台",
+        "title": "MathArc 数学研究工作台",
         "path": "/"
       },
       "browser": "chromium",
@@ -83,7 +83,7 @@
         "width": 1240,
         "height": 1080
       },
-      "captured_at": "2026-09-03T05:11:22.192Z",
+      "captured_at": "2026-09-03T13:42:38.033Z",
       "review_result": "PASS"
     },
     {
@@ -91,7 +91,7 @@
       "sha256": "e401e525cc8a24fd91414cf285dd3c97fa5755d9e29f9e4d85807473c46a854e",
       "scenario": "Cookie session restored",
       "page_identity": {
-        "title": "问题情报平面控制台",
+        "title": "MathArc 数学研究工作台",
         "path": "/"
       },
       "browser": "chromium",
@@ -99,7 +99,7 @@
         "width": 390,
         "height": 844
       },
-      "captured_at": "2026-09-03T05:11:22.258Z",
+      "captured_at": "2026-09-03T13:42:38.100Z",
       "review_result": "PASS"
     },
     {
@@ -107,7 +107,7 @@
       "sha256": "6ebc421f59e70c703c81fe2e48aa6e607513d451c3fb5c55ce1f4e93899c800d",
       "scenario": "logged-out public state",
       "page_identity": {
-        "title": "问题情报平面控制台",
+        "title": "MathArc 数学研究工作台",
         "path": "/"
       },
       "browser": "chromium",
@@ -115,7 +115,7 @@
         "width": 1240,
         "height": 1080
       },
-      "captured_at": "2026-09-03T05:11:23.492Z",
+      "captured_at": "2026-09-03T13:42:39.850Z",
       "review_result": "PASS"
     },
     {
@@ -123,7 +123,7 @@
       "sha256": "b1ad979e09840466c8419f82dc3ec31f7feccb91d62c6aa28071936bb095d903",
       "scenario": "logged-out public state",
       "page_identity": {
-        "title": "问题情报平面控制台",
+        "title": "MathArc 数学研究工作台",
         "path": "/"
       },
       "browser": "chromium",
@@ -131,7 +131,7 @@
         "width": 390,
         "height": 844
       },
-      "captured_at": "2026-09-03T05:11:23.558Z",
+      "captured_at": "2026-09-03T13:42:39.933Z",
       "review_result": "PASS"
     },
     {
@@ -139,7 +139,7 @@
       "sha256": "020e47ac41256cdb50bf892be5e3393b2ed64237c4c25009712d406ab6178b3e",
       "scenario": "guest demo boundary",
       "page_identity": {
-        "title": "问题情报平面控制台",
+        "title": "MathArc 数学研究工作台",
         "path": "/"
       },
       "browser": "chromium",
@@ -147,7 +147,7 @@
         "width": 1240,
         "height": 1080
       },
-      "captured_at": "2026-09-03T05:11:25.225Z",
+      "captured_at": "2026-09-03T13:42:42.533Z",
       "review_result": "PASS"
     },
     {
@@ -155,7 +155,7 @@
       "sha256": "a52f78331036cc2edbdcfa6109b07989172565fc1dbaa5a318b009bc3da2f755",
       "scenario": "guest demo boundary",
       "page_identity": {
-        "title": "问题情报平面控制台",
+        "title": "MathArc 数学研究工作台",
         "path": "/"
       },
       "browser": "chromium",
@@ -163,7 +163,7 @@
         "width": 390,
         "height": 844
       },
-      "captured_at": "2026-09-03T05:11:25.308Z",
+      "captured_at": "2026-09-03T13:42:42.616Z",
       "review_result": "PASS"
     }
   ]
