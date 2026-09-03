@@ -1,0 +1,7 @@
+test_deleted_or_mismatched_clause_fails_closed (Core.skills.report-to-ssot-development-paths.tests.test_rules_index.RulesIndexSourceConservationTest.test_deleted_or_mismatched_clause_fails_closed)
+Regression: the real source-conservation checker rejects drift. ... ok
+
+----------------------------------------------------------------------
+Ran 1 test in 0.026s
+
+OK

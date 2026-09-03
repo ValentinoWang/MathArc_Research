@@ -1,6 +1,14 @@
 project:
   name: matharc-research
   profile: core
+
+# The project SSOT snapshot is archived in the local Obsidian iCloud vault.
+# Keep the project bundle authoritative; the vault is an audit copy only.
+archive:
+  policy: required
+  provider: obsidian-icloud
+  root: /Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集
+  require_collection_audit: true
 design:
   token_sources: []
   theme_sources: []

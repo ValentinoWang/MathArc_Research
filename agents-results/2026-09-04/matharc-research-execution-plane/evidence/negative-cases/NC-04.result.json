@@ -1,0 +1,30 @@
+{
+  "schema_version": 1,
+  "case_id": "NC-04",
+  "case_type": "negative",
+  "status": "PASS",
+  "passed": true,
+  "scenario": "Use a result_sha256 that does not match result_path contents.",
+  "expected_observation": "Completion registration fails on digest mismatch.",
+  "observed_observation": "The focused push-gate test passed after asserting result_sha256 mismatch against result_path is rejected.",
+  "command": "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/tests/test_execution_gates.py PushGateTestEvidenceTests.test_node_state_model_v2_binds_result_digest_to_result_path",
+  "working_directory": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+  "output_path": "evidence/negative-cases/NC-04.result.command-output.txt",
+  "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "metadata": {
+    "exit_code": 0,
+    "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+    "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+    "actor": "orchestrator",
+    "observed_at": "2026-09-03T22:00:32.567350+00:00"
+  },
+  "exit_code": 0,
+  "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+  "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+  "actor": "orchestrator",
+  "observed_at": "2026-09-03T22:00:32.567350+00:00",
+  "result_path": "evidence/negative-cases/NC-04.result.json"
+}

@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "case_id": "NC-09",
+  "status": "PASS",
+  "passed": true,
+  "scenario": "Compile a strict single-release bundle that emits four generated views.",
+  "expected_observation": "Complexity inventory reports four generated views.",
+  "observed_observation": "The generated-view accounting regression passed with planning, manifest, and disk inventories all reporting four views.",
+  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python -m unittest -v Core.skills.report-to-ssot-development-paths.tests.test_ssot_complexity.SsotComplexityTests.test_bundle_root_reconciles_four_planning_manifest_and_disk_views",
+  "working_directory": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering",
+  "coverage": {
+    "real_checker": "Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
+    "regression_test": "Core/skills/report-to-ssot-development-paths/tests/test_ssot_complexity.py::SsotComplexityTests.test_bundle_root_reconciles_four_planning_manifest_and_disk_views",
+    "inventory_assertions": "planning_generated_view_count=4; manifest_generated_view_count=4; actual_generated_view_count=4"
+  },
+  "test_output_sha256": "220f7bf3b88088783a200727705aa66cd40cb2977287b7a914c57f2c8b3459db",
+  "metadata": {
+    "exit_code": 0,
+    "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+    "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+    "actor": "orchestrator",
+    "observed_at": "2026-09-03T22:00:32.863021+00:00"
+  },
+  "exit_code": 0,
+  "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+  "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+  "actor": "orchestrator",
+  "observed_at": "2026-09-03T22:00:32.863021+00:00",
+  "result_path": "evidence/negative-cases/NC-09.result.json",
+  "output_path": "evidence/negative-cases/NC-09.result.command-output.txt"
+}

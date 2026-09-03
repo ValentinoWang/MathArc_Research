@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "case_id": "NC-11",
+  "status": "PASS",
+  "passed": true,
+  "scenario": "Reference persistent-runtime without a collector_key in the project adapter.",
+  "expected_observation": "Acceptance-contract validation fails on the missing collector.",
+  "observed_observation": "The evidence-lane regression passed after asserting that a persistent-runtime contract without an adapter collector_key is rejected.",
+  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python -m unittest -v Core.skills.report-to-ssot-development-paths.tests.test_evidence_lane_registry.EvidenceLaneRegistryTests.test_persistent_runtime_without_adapter_collector_key_fails",
+  "working_directory": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering",
+  "coverage": {
+    "real_checker": "Core/skills/report-to-ssot-development-paths/scripts/check_ssot_acceptance_contracts.py",
+    "lane_registry": "Core/skills/ssot-acceptance-binding/evidence-lanes.yaml",
+    "regression_test": "Core/skills/report-to-ssot-development-paths/tests/test_evidence_lane_registry.py::EvidenceLaneRegistryTests.test_persistent_runtime_without_adapter_collector_key_fails"
+  },
+  "test_output_sha256": "4820f8964029fc031104908537d47ad8198f03e72e7ceac93b5aae54fad07a0b",
+  "metadata": {
+    "exit_code": 0,
+    "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+    "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+    "actor": "orchestrator",
+    "observed_at": "2026-09-03T22:00:33.399978+00:00"
+  },
+  "exit_code": 0,
+  "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+  "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+  "actor": "orchestrator",
+  "observed_at": "2026-09-03T22:00:33.399978+00:00",
+  "result_path": "evidence/negative-cases/NC-11.result.json",
+  "output_path": "evidence/negative-cases/NC-11.result.command-output.txt"
+}

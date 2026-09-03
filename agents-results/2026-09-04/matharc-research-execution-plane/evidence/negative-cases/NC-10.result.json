@@ -1,0 +1,35 @@
+{
+  "schema_version": 1,
+  "case_id": "NC-10",
+  "status": "PASS",
+  "passed": true,
+  "scenario": "Execute an L1 bundle without worker ledger, runner registry, or candidate workspace.",
+  "expected_observation": "The orchestrator can move the node to ACCEPTED without worker artifacts.",
+  "observed_observation": "The L1 compiler/execution regression passed: the node reached ACCEPTED through orchestrator execution with zero worker budget, no worker ledger, no runner registry, no execution-orchestration workspace, and a clean ledger check.",
+  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python -m unittest -v Core.skills.report-to-ssot-development-paths.tests.test_compile_ssot.ExecutorAssignmentTests.test_l1_item_reaches_accepted_without_worker_artifacts",
+  "working_directory": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering",
+  "coverage": {
+    "compiler": "Core/skills/report-to-ssot-development-paths/scripts/compile_ssot.py",
+    "ledger_checker": "Core/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py",
+    "regression_test": "Core/skills/report-to-ssot-development-paths/tests/test_compile_ssot.py::ExecutorAssignmentTests.test_l1_item_reaches_accepted_without_worker_artifacts"
+  },
+  "test_output_sha256": "34ba73a5e83104016d0da38822b72ec0f13a7bc34e749d7f793cdb41e48d2087",
+  "metadata": {
+    "exit_code": 0,
+    "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+    "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+    "actor": "orchestrator",
+    "observed_at": "2026-09-03T22:00:33.277266+00:00"
+  },
+  "exit_code": 0,
+  "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+  "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+  "actor": "orchestrator",
+  "observed_at": "2026-09-03T22:00:33.277266+00:00",
+  "result_path": "evidence/negative-cases/NC-10.result.json",
+  "output_path": "evidence/negative-cases/NC-10.result.command-output.txt"
+}
