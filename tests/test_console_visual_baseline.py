@@ -47,6 +47,16 @@ class ConsoleVisualBaselineTests(unittest.TestCase):
             failures = validate_baseline(prototype, blueprint, contract)
         self.assertTrue(any("invalid statuses" in failure for failure in failures), failures)
 
+    def test_red_landing_descendant_selector_leakage_fails_closed(self) -> None:
+        with TemporaryDirectory() as temporary_directory:
+            prototype, blueprint, contract = self._copy_authorities(Path(temporary_directory))
+            prototype.write_text(
+                prototype.read_text(encoding="utf-8").replace(".nots > div{", ".nots div{", 1),
+                encoding="utf-8",
+            )
+            failures = validate_baseline(prototype, blueprint, contract)
+        self.assertTrue(any("must not use the descendant selector" in failure for failure in failures), failures)
+
     def test_missing_authority_cannot_pass(self) -> None:
         failures = validate_baseline(ROOT / "missing-prototype.html", BLUEPRINT, CONTRACT)
         self.assertTrue(any("cannot read console prototype" in failure for failure in failures), failures)

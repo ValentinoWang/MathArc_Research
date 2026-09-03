@@ -202,6 +202,26 @@ def _validate_shell(stylesheet: str, page: str, failures: list[str]) -> None:
             failures.append(f"missing documented shell breakpoint rule: {required_css}")
 
 
+def _validate_landing_prohibitions(page: str, stylesheet: str, failures: list[str]) -> None:
+    """Protect the icon/text-card boundary from descendant selector leakage."""
+
+    if re.search(r"\.nots\s+div\s*\{", stylesheet):
+        failures.append(
+            "landing prohibition cards must not use the descendant selector '.nots div'; "
+            "use '.nots > div' so nested text containers retain their natural width"
+        )
+    selector_match = re.search(r"\.nots\s*>\s*div\s*\{([^}]*)\}", stylesheet, re.DOTALL)
+    if selector_match is None:
+        failures.append("landing prohibition cards are missing the direct-child layout selector '.nots > div'")
+    elif "grid-template-columns:20pxminmax(0,1fr)" not in selector_match.group(1).replace(" ", ""):
+        failures.append("landing prohibition cards must reserve one 20px icon column and a minmax text column")
+
+    item_pattern = r'<div><span class="x">×</span><div><b>.*?</b><p>.*?</p></div></div>'
+    item_count = len(re.findall(item_pattern, page, re.DOTALL))
+    if item_count != 6:
+        failures.append(f"landing prohibition section must contain six icon/text cards, found {item_count}")
+
+
 def _validate_build_statuses(contract: str, blueprint: str, failures: list[str]) -> None:
     try:
         rows = _parse_status_rows(contract)
@@ -241,6 +261,7 @@ def validate_baseline(prototype_path: Path, blueprint_path: Path, contract_path:
         return (str(exc),)
     _validate_tokens(stylesheet, failures)
     _validate_shell(stylesheet, page, failures)
+    _validate_landing_prohibitions(page, stylesheet, failures)
     try:
         blueprint = _read(blueprint_path, "console blueprint")
         contract = _read(contract_path, "U1 view contract")

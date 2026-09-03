@@ -3,10 +3,14 @@
  * Guard card: console-prototype-browser-regression
  * Failure class: a browser-rendered console view diverges from the declared
  * prototype contract (broken render, responsive imbalance, falsified ledger,
- * inaccessible in-place disclosure, or a lost data-origin boundary).
+ * inaccessible in-place disclosure, lost data-origin boundary, or component
+ * descendant-selector leakage that collapses a nested text column).
  * Scope: docs/prototypes/problem-intel-console.html only; this does not prove
- * authenticated production behaviour. Repair: update the prototype and this
- * case list together when a deliberately approved view contract changes.
+ * authenticated production behaviour. Landing prohibition cards are checked
+ * for six icon/text pairs, a usable text width, and a non-vertical heading at
+ * every covered viewport. Repair: scope the layout selector to the component's
+ * direct child and preserve minmax(0, 1fr) for nested text content; update this
+ * card and the static baseline only when the approved card contract changes.
  */
 import { createRequire } from "node:module";
 import { execFileSync, spawn, spawnSync } from "node:child_process";
@@ -458,6 +462,41 @@ async function measureBalance(page, label, width) {
   assert(imbalances.length === 0, `${label} at ${width}px has unbalanced two-column content: ${JSON.stringify(imbalances[0])}`);
 }
 
+async function measureLandingProhibitionCards(page, label, width) {
+  const metrics = await page.evaluate(() => {
+    const section = document.querySelector(".nots");
+    if (!section) return { missing: true };
+    return {
+      cards: [...section.children].map(card => {
+        const icon = card.querySelector(":scope > .x");
+        const content = card.querySelector(":scope > div");
+        const title = content?.querySelector(":scope > b");
+        const text = content?.querySelector(":scope > p");
+        return {
+          hasIcon: Boolean(icon),
+          hasContent: Boolean(content),
+          hasTitle: Boolean(title),
+          hasText: Boolean(text),
+          contentWidth: Math.round(content?.getBoundingClientRect().width || 0),
+          titleHeight: Math.round(title?.getBoundingClientRect().height || 0),
+          contentDisplay: content ? getComputedStyle(content).display : "missing",
+        };
+      }),
+    };
+  });
+  assert(!metrics.missing, `${label} at ${width}px omitted the landing prohibition section`);
+  assert(metrics.cards.length === 6, `${label} at ${width}px expected six landing prohibition cards, got ${metrics.cards.length}`);
+  for (const [index, card] of metrics.cards.entries()) {
+    assert(
+      card.hasIcon && card.hasContent && card.hasTitle && card.hasText,
+      `${label} at ${width}px prohibition card ${index + 1} lost its icon/text structure`,
+    );
+    assert(card.contentDisplay !== "grid", `${label} at ${width}px prohibition card ${index + 1} leaked its grid layout into nested text`);
+    assert(card.contentWidth >= 96, `${label} at ${width}px prohibition card ${index + 1} text column collapsed to ${card.contentWidth}px`);
+    assert(card.titleHeight <= 48, `${label} at ${width}px prohibition card ${index + 1} title wrapped vertically (${card.titleHeight}px)`);
+  }
+}
+
 async function scanChineseEnglish(page, label) {
   const hits = await page.evaluate(() => {
     const finder = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
@@ -556,6 +595,7 @@ async function testMobileViewports(browser, server) {
         for (const testCase of VIEW_CASES) {
           await renderCase(page, campaignId, testCase);
           await measureBalance(page, `${viewport.name}/${campaignId}/${testCase.name}`, viewport.width);
+          if (testCase.view === "landing") await measureLandingProhibitionCards(page, `${viewport.name}/${campaignId}/${testCase.name}`, viewport.width);
           await scanChineseEnglish(page, `${viewport.name}/${campaignId}/${testCase.name}`);
         }
       }
@@ -832,6 +872,7 @@ async function main() {
         for (const testCase of VIEW_CASES) {
           await renderCase(page, campaignId, testCase);
           await measureBalance(page, `${campaignId}/${testCase.name}`, width);
+          if (testCase.view === "landing") await measureLandingProhibitionCards(page, `${campaignId}/${testCase.name}`, width);
           await scanChineseEnglish(page, `${campaignId}/${testCase.name}`);
         }
       }
