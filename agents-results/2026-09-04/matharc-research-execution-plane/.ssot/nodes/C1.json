@@ -1,0 +1,74 @@
+{
+  "node_id": "C1",
+  "semantic_key": "requirement.c1",
+  "stage": "R1",
+  "work_kind": "implementation",
+  "domain_lane": "r1",
+  "execution_state": "ACCEPTED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "DP1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.execution-plane.scope",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.c1"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "E1",
+    "P1",
+    "QR1",
+    "S1"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/C1.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    ".agents/skills/report-to-ssot-development-paths/assets/schemas/ssot-input.schema.json",
+    ".agents/skills/report-to-ssot-development-paths/scripts/compile_ssot.py",
+    ".agents/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py",
+    ".agents/skills/report-to-ssot-development-paths/tests/test_compile_ssot.py",
+    ".agents/skills/report-to-ssot-development-paths/tests/test_execution_gates.py"
+  ],
+  "required_lanes": [
+    "machine/unit",
+    "machine/integration-contract"
+  ],
+  "goal": "执行 Draft 2020-12 schema，并让正式 execution 对象和真实完成证据从输入贯通到节点、worker 台账与运行器记录。",
+  "owner": "Harness 声明编译负责人",
+  "acceptance_contract_ref": "acceptance-fragments/C1/acceptance-contract.md",
+  "surface_refs": [
+    "ssot-input-schema-and-completion-evidence"
+  ],
+  "accepted_evidence": {
+    "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+    "test_evidence": {
+      "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
+      "result_path": "evidence/harness-ci-result.json",
+      "exit_code": 0,
+      "observed_at": "2026-09-03T21:55:29.298723+00:00",
+      "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
+      "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+      "actor": "orchestrator",
+      "result_sha256": "8780f3430dbaa230ddec1b32c34bd904f5adbec79ccf9e00ba1a5054219c6476",
+      "passed": true
+    },
+    "acceptance_record": "evidence/harness-ci-result.json",
+    "accepted_by": "Harness 声明编译负责人",
+    "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+  },
+  "blocking_reasons": [],
+  "readiness_gaps": []
+}

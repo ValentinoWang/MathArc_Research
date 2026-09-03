@@ -1,0 +1,69 @@
+{
+  "node_id": "V1",
+  "semantic_key": "requirement.v1",
+  "stage": "R2",
+  "work_kind": "validation",
+  "domain_lane": "r2",
+  "execution_state": "ACCEPTED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "DP1",
+    "RI1",
+    "E1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.execution-plane.scope",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.v1"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "QR2"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "codex",
+  "execution_contract_ref": "nodes/V1.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "agents-results/2026-09-04/matharc-research-execution-plane/evidence/"
+  ],
+  "required_lanes": [
+    "machine/unit",
+    "release"
+  ],
+  "goal": "在同一源码身份上运行附件规定的 12 个端到端反例和 Harness 全量本地 CI，并记录 GitHub 主线读回与清理结果。",
+  "owner": "Harness 集成验收负责人",
+  "acceptance_contract_ref": "acceptance-fragments/V1/acceptance-contract.md",
+  "surface_refs": [
+    "negative-acceptance-matrix-and-release-readback"
+  ],
+  "accepted_evidence": {
+    "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+    "test_evidence": {
+      "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
+      "result_path": "evidence/harness-ci-result.json",
+      "exit_code": 0,
+      "observed_at": "2026-09-03T21:55:29.298723+00:00",
+      "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
+      "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+      "actor": "orchestrator",
+      "result_sha256": "8780f3430dbaa230ddec1b32c34bd904f5adbec79ccf9e00ba1a5054219c6476",
+      "passed": true
+    },
+    "acceptance_record": "evidence/harness-ci-result.json",
+    "accepted_by": "Harness 集成验收负责人",
+    "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+  },
+  "blocking_reasons": [],
+  "readiness_gaps": []
+}

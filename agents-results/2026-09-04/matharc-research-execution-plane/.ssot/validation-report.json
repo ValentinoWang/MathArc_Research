@@ -1,0 +1,350 @@
+{
+  "schema_version": 3,
+  "generated_at": "2026-09-03T22:40:21.159374+00:00",
+  "generator": {
+    "repository": "ValentinoWang/Harness_Engineering",
+    "commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+    "dirty": false,
+    "dirty_files": [],
+    "dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "skill_path": "Core/skills/report-to-ssot-development-paths",
+    "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
+    "skill_sha256": "a657fd9a42e3a29f2cc2e23eb1234e5eca88933fe9919de2b67d3026c64ac0ae",
+    "checker_bundle_sha256": "cd090177089a09fb9b919d5caa91c8ea0400e013ea29ed980b2b3bc8de89c9f2"
+  },
+  "runtime": {
+    "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+    "tree_commit": "bed43c3a603305f04e23b69c0a6ce1fbc044fc00",
+    "project_commit": "bed43c3a603305f04e23b69c0a6ce1fbc044fc00",
+    "project_dirty": true,
+    "project_dirty_diff_sha256": "0b66497ac2f67911218d7d739eb5962fd8accade22ed17487c28c083c859ae3d",
+    "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
+  },
+  "bundle": {
+    "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane",
+    "content_sha256": "0010b34d8049ea2445e7e4d486df9503457128e7e72aa8248c11125a733f892c",
+    "manifest_identity_sha256": "12ab8d3bd07472988a5933394aa8e692de21d9787c647f93374cf6e0efd4320d"
+  },
+  "checks": [
+    {
+      "id": "reading-map",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_reading_map.py"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "reading map check passed: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/reading-map.json\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "runtime-skill-provenance",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/tools/harnessctl.py",
+        "doctor",
+        "--project",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+        "--check-runtime-skills"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 48\nruntime_skill_check: enabled\ndoctor: ok\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "complexity",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/planning-compiler.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT complexity check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/planning-compiler.json (depth=L2, releases=2, nodes=9, workers=0, contracts=6, criteria=15)\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "source-requirements",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_coverage.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "source requirement registry passed: mode=skipped covered=0/0\n",
+      "class": "world-verification"
+    },
+    {
+      "id": "render",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
+        "--check",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT views verified: 1 manifest(s)\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "machine-program",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT program check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json (nodes=9, formal_ready=2, conditional_ready=0)\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "acceptance-contracts",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_acceptance_contracts.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SHADOW: 6 of 6 contracts have a 90%+ similar \"Performance and reliability\" section after normalization (e.g. C1, E1, P1, RI1, S1); not blocking -- collecting false-positive rate before this can become a hard gate\nSSOT acceptance contract check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json (contracts=6, dedup=ok, ac_specificity=ok)\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "parallelism-analysis",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "{\n  \"actor_pools\": {},\n  \"critical_path_edges\": 5,\n  \"current_ready_nodes\": [\n    \"QR1\",\n    \"QR2\"\n  ],\n  \"current_ready_width\": 2,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"DP1\",\n      \"unlocks\": [\n        \"C1\",\n        \"E1\",\n        \"P1\",\n        \"RI1\",\n        \"S1\",\n        \"V1\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"C1\",\n      \"unlocks\": [\n        \"E1\",\n        \"P1\",\n        \"QR1\",\n        \"S1\"\n      ],\n      \"waits_for\": [\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"E1\",\n      \"unlocks\": [\n        \"QR2\",\n        \"V1\"\n      ],\n      \"waits_for\": [\n        \"C1\",\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"P1\",\n      \"unlocks\": [\n        \"QR1\",\n        \"RI1\"\n      ],\n      \"waits_for\": [\n        \"C1\",\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"S1\",\n      \"unlocks\": [\n        \"QR1\",\n        \"RI1\"\n      ],\n      \"waits_for\": [\n        \"C1\",\n        \"DP1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"RI1\",\n      \"unlocks\": [\n        \"QR2\",\n        \"V1\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"P1\",\n        \"S1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"V1\",\n      \"unlocks\": [\n        \"QR2\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"E1\",\n        \"RI1\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 3,\n  \"resource_verified_width\": null,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "structure",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/ssot-development-paths.md"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT structure check passed.\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "facts",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_facts.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/ssot-development-paths.md"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT facts check passed.\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "source-requirement-conservation",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_conservation.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "source requirement conservation skipped: strict mode not declared\n",
+      "class": "world-verification"
+    },
+    {
+      "id": "chinese-readability",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_chinese_readability.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/ssot-development-paths.md"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "中文可读性检查通过。\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "execution-ledger",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "execution ledger check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json\n",
+      "class": "policy"
+    },
+    {
+      "id": "archive-check",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
+        "--source",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+        "--check",
+        "--archive-root",
+        "/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集",
+        "--require-snapshot-root"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "{\n  \"status\": \"verified\",\n  \"source\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane\",\n  \"destination\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-09-04/matharc-research/matharc-research-execution-plane\",\n  \"project_name\": \"matharc-research\",\n  \"ssot_name\": \"matharc-research-execution-plane\",\n  \"snapshot_date\": \"2026-09-04\",\n  \"main_document\": \"ssot-development-paths.md\",\n  \"file_count\": 4,\n  \"contains_openproblem\": false\n}\n",
+      "class": "policy"
+    },
+    {
+      "id": "archive-audit",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
+        "--audit-archive",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+        "--archive-root",
+        "/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集",
+        "--require-snapshot-root"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "{\n  \"status\": \"verified\",\n  \"archive_root\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集\",\n  \"bundle_count\": 43,\n  \"problem_document_count\": 23\n}\n",
+      "class": "policy"
+    }
+  ],
+  "parallelism": {
+    "actor_pools": {},
+    "critical_path_edges": 5,
+    "current_ready_nodes": [
+      "QR1",
+      "QR2"
+    ],
+    "current_ready_width": 2,
+    "frontier_transitions": [
+      {
+        "accepted_node": "DP1",
+        "unlocks": [
+          "C1",
+          "E1",
+          "P1",
+          "RI1",
+          "S1",
+          "V1"
+        ],
+        "waits_for": []
+      },
+      {
+        "accepted_node": "C1",
+        "unlocks": [
+          "E1",
+          "P1",
+          "QR1",
+          "S1"
+        ],
+        "waits_for": [
+          "DP1"
+        ]
+      },
+      {
+        "accepted_node": "E1",
+        "unlocks": [
+          "QR2",
+          "V1"
+        ],
+        "waits_for": [
+          "C1",
+          "DP1"
+        ]
+      },
+      {
+        "accepted_node": "P1",
+        "unlocks": [
+          "QR1",
+          "RI1"
+        ],
+        "waits_for": [
+          "C1",
+          "DP1"
+        ]
+      },
+      {
+        "accepted_node": "S1",
+        "unlocks": [
+          "QR1",
+          "RI1"
+        ],
+        "waits_for": [
+          "C1",
+          "DP1"
+        ]
+      },
+      {
+        "accepted_node": "RI1",
+        "unlocks": [
+          "QR2",
+          "V1"
+        ],
+        "waits_for": [
+          "DP1",
+          "P1",
+          "S1"
+        ]
+      },
+      {
+        "accepted_node": "V1",
+        "unlocks": [
+          "QR2"
+        ],
+        "waits_for": [
+          "DP1",
+          "E1",
+          "RI1"
+        ]
+      }
+    ],
+    "manifest": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane/.ssot/manifest.json",
+    "maximum_antichain_width": 3,
+    "resource_verified_width": null,
+    "scheduling_model": "event-driven",
+    "static_waves_are_authority": false
+  },
+  "archive_policy": "required",
+  "integrity_result": "pass",
+  "policy_result": "complete",
+  "required_skipped_checks": [],
+  "optional_skipped_checks": [],
+  "bundle_valid": true,
+  "policy_complete": true,
+  "push_gate_eligible": true,
+  "release_ready": true,
+  "release_complete": false,
+  "release_statuses": {
+    "R1": {
+      "gate_node": "QR1",
+      "execution_state": "READY",
+      "complete": false
+    },
+    "R2": {
+      "gate_node": "QR2",
+      "execution_state": "READY",
+      "complete": false
+    }
+  },
+  "deprecated_fields": [
+    "release_ready"
+  ]
+}

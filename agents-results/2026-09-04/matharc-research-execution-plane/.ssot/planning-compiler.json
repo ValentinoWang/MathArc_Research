@@ -1,0 +1,237 @@
+{
+  "planning_compiler_schema_version": 1,
+  "classification": {
+    "applicability": "ssot",
+    "ssot_depth": "L2",
+    "artifact_policy": "create-ssot",
+    "selection_authority": "user",
+    "rationale": "本轮同时修订智能工程平台的声明模式、执行证据、状态模型、推送门禁、规则守恒、复杂度盘点和验收采集器，并由数学研究项目持有跨仓库执行与发布证据；两个独立发布切片需要持久节点状态、验收合同和远端提交回读。"
+  },
+  "source_inputs": [],
+  "external_systems": [],
+  "acceptance_layers": [
+    "machine/integration-contract",
+    "machine/static",
+    "machine/unit",
+    "release"
+  ],
+  "release_boundary_compiler": {
+    "boundary_required": true,
+    "decision_authority": "user",
+    "rationale": "Each release slice carries its own user value and failure boundary."
+  },
+  "macro_phases": [
+    {
+      "id": "P1",
+      "title": "Delivery",
+      "release_ids": [
+        "R1",
+        "R2"
+      ]
+    }
+  ],
+  "release_slices": [
+    {
+      "id": "R1",
+      "macro_phase_id": "P1",
+      "title": "声明、状态与推送闭环",
+      "user_value": "SSOT 输入、执行完成证据、状态迁移和推送资格使用同一套可验证事实，不再接受仅靠声明的完成或过期验证报告。",
+      "independent_acceptance": "声明编译、完成证据、统一状态机、L1 本地执行路径以及推送时重绑定全部通过对应单元和端到端负例。",
+      "independent_failure": "任一负例未被封闭拒绝时，本切片保持未接受，不允许进入 GitHub 主线。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "DP1",
+        "C1",
+        "S1",
+        "P1",
+        "QR1"
+      ],
+      "source_completion_requirement_refs": [],
+      "development_baseline": "bed43c3a603305f04e23b69c0a6ce1fbc044fc00",
+      "promotion_baseline": "230837c9ad5cda40f87d0c574f6af69377d51bd2",
+      "release_candidate": "673f018b5655f5c158c98cfbea19fb578d8d7382500feb2be0b8bb6157d5817d"
+    },
+    {
+      "id": "R2",
+      "macro_phase_id": "P1",
+      "title": "规则守恒与比例治理闭环",
+      "user_value": "维护者只读取当前任务触发的规范，规则索引和实际产物双向守恒，证据 lane 与事实登记不再产生不可采集或仪式性内容。",
+      "independent_acceptance": "规则索引、版本矩阵、触发式阅读图、真实复杂度盘点、证据 lane 和条件式事实登记全部通过独立负例与 Harness 全量本地 CI。",
+      "independent_failure": "任一规则、视图、采集器或事实类别无法从真实文件反查时，本切片保持未接受且不影响 R1 的已验证能力。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "RI1",
+        "E1",
+        "V1",
+        "QR2"
+      ],
+      "source_completion_requirement_refs": [],
+      "development_baseline": "bed43c3a603305f04e23b69c0a6ce1fbc044fc00",
+      "promotion_baseline": "230837c9ad5cda40f87d0c574f6af69377d51bd2",
+      "release_candidate": "65dd8d7b9bf3dc04c973e8068f720fbf86fba7aa17d6cdafc424008f7763881b"
+    }
+  ],
+  "waves": [
+    {
+      "id": "W-R1",
+      "release_id": "R1",
+      "node_ids": [
+        "DP1",
+        "C1",
+        "S1",
+        "P1",
+        "QR1"
+      ]
+    },
+    {
+      "id": "W-R2",
+      "release_id": "R2",
+      "node_ids": [
+        "RI1",
+        "E1",
+        "V1",
+        "QR2"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "C1",
+      "kind": "implementation",
+      "goal": "执行 Draft 2020-12 schema，并让正式 execution 对象和真实完成证据从输入贯通到节点、worker 台账与运行器记录。",
+      "dependencies": [
+        "DP1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "Harness 声明编译负责人"
+    },
+    {
+      "id": "DP1",
+      "kind": "decision",
+      "goal": "用户确认本轮 Harness 改造与 MathArc/Harness 主线收口的工程执行范围。",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "decision owner"
+    },
+    {
+      "id": "E1",
+      "kind": "implementation",
+      "goal": "用可解析的证据 lane registry 绑定真实采集器，并按正文实际引用启用 Facts Registry 类别。",
+      "dependencies": [
+        "DP1",
+        "C1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "Harness 证据与事实负责人"
+    },
+    {
+      "id": "P1",
+      "kind": "implementation",
+      "goal": "推送时重新计算并核对 validation report 的完整绑定，同时从 manifest 和磁盘实际产物复算复杂度。",
+      "dependencies": [
+        "DP1",
+        "C1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "Harness 推送资格负责人"
+    },
+    {
+      "id": "QR1",
+      "kind": "convergence",
+      "goal": "Accept the R1 candidate against its source completion criteria.",
+      "dependencies": [
+        "C1",
+        "S1",
+        "P1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "release decision owner"
+    },
+    {
+      "id": "QR2",
+      "kind": "convergence",
+      "goal": "Accept the R2 candidate against its source completion criteria.",
+      "dependencies": [
+        "RI1",
+        "E1",
+        "V1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "release decision owner"
+    },
+    {
+      "id": "RI1",
+      "kind": "implementation",
+      "goal": "让规则索引双向守恒，补齐版本矩阵并以触发式阅读图限制基础上下文。",
+      "dependencies": [
+        "DP1",
+        "S1",
+        "P1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "Harness 规则索引负责人"
+    },
+    {
+      "id": "S1",
+      "kind": "implementation",
+      "goal": "建立唯一节点状态转换模型，并让 L1 由当前编排者在零 worker 工件条件下推进到 ACCEPTED。",
+      "dependencies": [
+        "DP1",
+        "C1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "Harness 状态模型负责人"
+    },
+    {
+      "id": "V1",
+      "kind": "implementation",
+      "goal": "在同一源码身份上运行附件规定的 12 个端到端反例和 Harness 全量本地 CI，并记录 GitHub 主线读回与清理结果。",
+      "dependencies": [
+        "DP1",
+        "RI1",
+        "E1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "Harness 集成验收负责人"
+    }
+  ],
+  "artifacts": {
+    "ssot_bundle": true,
+    "generated_views": [
+      "main",
+      "topology",
+      "nodes-r1",
+      "nodes-r2"
+    ],
+    "worker_ledger": false,
+    "evidence_identity_registry": false,
+    "resource_matrix": false,
+    "runner_registry": false
+  },
+  "artifacts_inventory": {
+    "total_nodes": 9,
+    "implementation_nodes": 5,
+    "worker_nodes": 0,
+    "generated_views": 4
+  },
+  "complexity_budget": {
+    "authority": "user",
+    "rationale": "One node per declared item plus decision and release gates.",
+    "limits": {
+      "total_nodes": 9,
+      "implementation_nodes_per_release": 3,
+      "codex_worker_nodes": 0,
+      "generated_views": 4
+    },
+    "exception": null
+  },
+  "goal_size_detector": {
+    "implementation_or_migration_nodes": 5,
+    "external_systems": 0,
+    "release_slices": 2,
+    "production_migrations": 0,
+    "acceptance_layers": 4,
+    "split_required": false,
+    "split_strategy": "release"
+  }
+}

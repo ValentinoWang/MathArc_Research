@@ -1,0 +1,75 @@
+{
+  "node_id": "RI1",
+  "semantic_key": "requirement.ri1",
+  "stage": "R2",
+  "work_kind": "implementation",
+  "domain_lane": "r2",
+  "execution_state": "ACCEPTED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "DP1",
+    "S1",
+    "P1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.execution-plane.scope",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.ri1"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "QR2",
+    "V1"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/RI1.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    ".agents/skills/report-to-ssot-development-paths/rules-index.json",
+    ".agents/skills/report-to-ssot-development-paths/reading-map.json",
+    ".agents/skills/report-to-ssot-development-paths/SKILL.md",
+    ".agents/skills/ssot-planning-compiler/SKILL.md",
+    ".agents/skills/report-to-ssot-development-paths/tests/test_rules_index.py",
+    ".agents/skills/report-to-ssot-development-paths/tests/test_audit_ssot_policy_impact.py"
+  ],
+  "required_lanes": [
+    "machine/static",
+    "machine/unit"
+  ],
+  "goal": "让规则索引双向守恒，补齐版本矩阵并以触发式阅读图限制基础上下文。",
+  "owner": "Harness 规则索引负责人",
+  "acceptance_contract_ref": "acceptance-fragments/RI1/acceptance-contract.md",
+  "surface_refs": [
+    "rules-index-and-triggered-reading-map"
+  ],
+  "accepted_evidence": {
+    "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+    "test_evidence": {
+      "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
+      "result_path": "evidence/harness-ci-result.json",
+      "exit_code": 0,
+      "observed_at": "2026-09-03T21:55:29.298723+00:00",
+      "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
+      "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+      "actor": "orchestrator",
+      "result_sha256": "8780f3430dbaa230ddec1b32c34bd904f5adbec79ccf9e00ba1a5054219c6476",
+      "passed": true
+    },
+    "acceptance_record": "evidence/harness-ci-result.json",
+    "accepted_by": "Harness 规则索引负责人",
+    "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+  },
+  "blocking_reasons": [],
+  "readiness_gaps": []
+}

@@ -1,0 +1,34 @@
+{
+  "node_id": "QR1",
+  "semantic_key": "acceptance.release.r1",
+  "stage": "R1",
+  "work_kind": "release-decision",
+  "domain_lane": "r1",
+  "execution_state": "READY",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "C1",
+    "S1",
+    "P1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [],
+  "invalidation_keys": [
+    "release.r1"
+  ],
+  "write_authority": "shared-generated",
+  "acceptance_authority": "release decision owner",
+  "unlocks": [],
+  "node_role": "acceptance-gate",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/QR1.json",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "must-match",
+  "goal": "Accept the R1 candidate against its source completion criteria.",
+  "owner": "release decision owner",
+  "blocking_reasons": [],
+  "readiness_gaps": []
+}
