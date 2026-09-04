@@ -101,56 +101,113 @@
       "title": "RT-R0 原生运行时章程",
       "user_value": "MathArc 自己拥有执行权威、数据合同和运行边界。",
       "independent_acceptance": "权威边界、后端替换规则和依赖允许清单可被机器检查。",
-      "independent_failure": "不启动真实研究；后续运行时切片保持未接受。"
+      "independent_failure": "不启动真实研究；后续运行时切片保持未接受。",
+      "source_completion_refs": [
+        "SRC-FND1",
+        "SRC-FND2"
+      ]
     },
     {
       "id": "RTR1",
       "title": "RT-R1 单任务运行闭环",
       "user_value": "一个数学任务可以从验证、运行到候选回传形成闭环。",
       "independent_acceptance": "单任务运行合同、运行存储、评价器和第一方协调器可重放。",
-      "independent_failure": "单任务失败不改变数学工作区，也不产生正式证据。"
+      "independent_failure": "单任务失败不改变数学工作区，也不产生正式证据。",
+      "source_completion_refs": [
+        "SRC-RUN1",
+        "SRC-RUN2",
+        "SRC-RUN3",
+        "SRC-RUN4",
+        "SRC-RUN5"
+      ]
     },
     {
       "id": "RTR2",
       "title": "RT-R2 持久化、生命周期与恢复",
       "user_value": "单任务运行可以可靠保存、停止、恢复和幂等导入。",
       "independent_acceptance": "停止、暂停、取消、崩溃恢复和幂等导入都有明确状态。",
-      "independent_failure": "不确定状态不得猜测完成、重复计费或跳过代际。"
+      "independent_failure": "不确定状态不得猜测完成、重复计费或跳过代际。",
+      "source_completion_refs": [
+        "SRC-DUR1",
+        "SRC-DUR2",
+        "SRC-DUR3",
+        "SRC-DUR4",
+        "SRC-DUR5"
+      ]
     },
     {
       "id": "RTR3",
       "title": "RT-R3 多研究成员并行",
       "user_value": "不同研究路线可以在隔离工作区中真实并行执行。",
       "independent_acceptance": "至少三个研究成员基于冻结输入存在真实时间重叠，归并和预算可审计。",
-      "independent_failure": "单成员失败不破坏整轮，且不得伪造并行证据。"
+      "independent_failure": "单成员失败不破坏整轮，且不得伪造并行证据。",
+      "source_completion_refs": [
+        "SRC-PAR1",
+        "SRC-PAR2",
+        "SRC-PAR3",
+        "SRC-PAR4",
+        "SRC-PAR5"
+      ]
     },
     {
       "id": "RTR4",
       "title": "RT-R4 代际学习",
       "user_value": "上一代的失败和研究经历可以改变下一代议程。",
       "independent_acceptance": "第二代明确消费第一代事实，但历史经验不直接改变数学结论。",
-      "independent_failure": "蒸馏失败或缺少出处时，下一代保持未启动。"
+      "independent_failure": "蒸馏失败或缺少出处时，下一代保持未启动。",
+      "source_completion_refs": [
+        "SRC-SYN1",
+        "SRC-SYN2",
+        "SRC-SYN3",
+        "SRC-SYN4",
+        "SRC-SYN5"
+      ]
     },
     {
       "id": "RTR5",
       "title": "RT-R5 数学验证汇合",
       "user_value": "候选结果可以经过独立验证后受控转换为正式证据。",
       "independent_acceptance": "候选身份、验证回执、证据记录和晋升边界可重放。",
-      "independent_failure": "运行成功、模型自报或篡改候选都不能成为证明。"
+      "independent_failure": "运行成功、模型自报或篡改候选都不能成为证明。",
+      "source_completion_refs": [
+        "SRC-VER1",
+        "SRC-VER2",
+        "SRC-VER3",
+        "SRC-VER4",
+        "SRC-VER5",
+        "SRC-VER6"
+      ]
     },
     {
       "id": "RTR6",
       "title": "RT-R6 邀请制产品与试点运行环境",
       "user_value": "受邀用户可以在有持久运维保障的环境中查看并受控操作研究运行。",
       "independent_acceptance": "邀请权限、控制台、健康检查、持久路径、备份、回滚和清理均有证据。",
-      "independent_failure": "浏览器不能执行任意命令、目录、环境变量或未登记后端；运维缺口阻断试点。"
+      "independent_failure": "浏览器不能执行任意命令、目录、环境变量或未登记后端；运维缺口阻断试点。",
+      "source_completion_refs": [
+        "SRC-UX1",
+        "SRC-UX2",
+        "SRC-UX3",
+        "SRC-UX4",
+        "SRC-UX5",
+        "SRC-UX6",
+        "SRC-OPS1",
+        "SRC-OPS2",
+        "SRC-OPS3"
+      ]
     },
     {
       "id": "RTR7",
       "title": "RT-R7 真实任务与用户试点",
       "user_value": "真实两代研究和邀请制试点具备可复核发布证据。",
       "independent_acceptance": "真实并行、恢复、验证、权限和用户理解检查全部有证据。",
-      "independent_failure": "任一错误晋升、越权动作或不可重放结果阻断试点发布."
+      "independent_failure": "任一错误晋升、越权动作或不可重放结果阻断试点发布.",
+      "source_completion_refs": [
+        "SRC-DOG1",
+        "SRC-DOG2",
+        "SRC-DOG3",
+        "SRC-DOG4"
+      ]
     }
   ],
   "items": [
@@ -489,7 +546,8 @@
       ],
       "acceptance_seeds": [
         "在 matharc/v02/scheduler.py 中实现有界并发、独立 execution_id 和隔离工作区",
-        "在 tests/test_runtime_parallelism.py 中证明至少三个不同进程存在真实时间重叠且写入区域无交集"
+        "在 tests/test_runtime_parallelism.py 中证明至少三个不同进程存在真实时间重叠且写入区域无交集",
+        "在 tests/test_runtime_parallelism_contract.py 中验证冻结输入、并发上限和隔离工作区遵守运行时数据合同"
       ],
       "goal": "在持久化和恢复能力之后实现有界并行、冻结输入和隔离工作区调度。",
       "source": {
@@ -1145,7 +1203,7 @@
       "goal": "复用邀请制 Cookie 会话和权限边界，阻断无权用户的运行动作。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[15]"
+        "locator": "html:li[14]"
       },
       "external_systems": [
         "EXT-MATHARC-INVITE-PREVIEW"
@@ -1192,7 +1250,7 @@
       "goal": "提供登记动作的幂等运行控制服务，拒绝任意命令、目录、环境和参数。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[16]"
+        "locator": "html:li[15]"
       }
     },
     {
@@ -1220,12 +1278,13 @@
       ],
       "acceptance_seeds": [
         "在 matharc/v02/view_model.py 中建立统一中文运行视图并递归脱敏",
-        "在 tests/test_runtime_console_redaction.py 中证明密钥、路径、完整命令、环境变量和异常堆栈泄露为零"
+        "在 tests/test_runtime_console_redaction.py 中证明密钥、路径、完整命令、环境变量和异常堆栈泄露为零",
+        "在 tests/test_runtime_console_redaction_visual.py 中验证脱敏后的运行视图不显示敏感字段"
       ],
       "goal": "建立统一中文运行视图并递归脱敏密钥、路径、命令、环境变量和堆栈。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[17]"
+        "locator": "html:li[16]"
       }
     },
     {
@@ -1255,12 +1314,13 @@
       ],
       "acceptance_seeds": [
         "在 docs/prototypes/problem-intel-console.html 中展示研究成员、代际、预算、候选和验证状态",
-        "在 tests/test_runtime_console_reconnect.py 中证明断线后控制台从服务端快照恢复而不是从浏览器缓存猜测"
+        "在 tests/test_runtime_console_reconnect.py 中证明断线后控制台从服务端快照恢复而不是从浏览器缓存猜测",
+        "在 matharc/v02/runtime/reconnect.py 中从服务端快照恢复断线会话并保留运行身份"
       ],
       "goal": "实现断线重连后从服务端快照恢复的实时研究控制台。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[18]"
+        "locator": "html:li[17]"
       }
     },
     {
@@ -1287,13 +1347,14 @@
       ],
       "acceptance_seeds": [
         "在 acceptance/human/runtime-console/desktop-checklist.md 中覆盖桌面邀请制查看和操作流程",
-        "在 tests/test_runtime_console_mobile.py 中覆盖移动端、权限负路径和完整操作流"
+        "在 tests/test_runtime_console_mobile.py 中覆盖移动端、权限负路径和完整操作流",
+        "在 acceptance/human/runtime-console-checklist.md 中记录人类对桌面移动端权限负路径和操作流的验收"
       ],
       "goal": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[19]"
+        "locator": "html:li[18]"
       }
     },
     {
@@ -1324,7 +1385,7 @@
       "goal": "固定首个真实任务、评价器、范围、预算和可重放的单成员基线。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[20]"
+        "locator": "html:li[19]"
       }
     },
     {
@@ -1355,13 +1416,14 @@
       ],
       "acceptance_seeds": [
         "在 experiments/runtime-pilot/two-generation-report.md 中记录三至四研究成员和至少两代真实实验",
-        "在 tests/test_runtime_pilot_generation_consumption.py 中证明第二代消费第一代结果且错误晋升为零"
+        "在 tests/test_runtime_pilot_generation_consumption.py 中证明第二代消费第一代结果且错误晋升为零",
+        "在 acceptance/runtime-pilot/production-checklist.md 中记录真实两代研究的持久运行环境与发布前置"
       ],
       "goal": "在运维闭环完成后执行两代真实并行研究并证明第二代消费第一代事实。",
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[21]"
+        "locator": "html:li[20]"
       }
     },
     {
@@ -1390,13 +1452,14 @@
       ],
       "acceptance_seeds": [
         "在 tests/test_runtime_adversarial_drills.py 中执行崩溃、篡改、虚假反例、重复导入和权限演练",
-        "在 tests/test_runtime_attack_recovery.py 中证明每条攻击路径都被拒绝或安全恢复"
+        "在 tests/test_runtime_attack_recovery.py 中证明每条攻击路径都被拒绝或安全恢复",
+        "在 acceptance/runtime-pilot/production-attack-drills.md 中记录生产试点攻击演练的零容忍结果"
       ],
       "goal": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[22]"
+        "locator": "html:li[21]"
       }
     },
     {
@@ -1427,7 +1490,7 @@
       "goal": "汇编邀请试点的人类验收与发布证据，作出独立发布决策。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[23]"
+        "locator": "html:li[22]"
       }
     },
     {
@@ -1459,8 +1522,14 @@
       "goal": "固定试点部署配置、持久目录、密钥来源和进程守护方式。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[24]"
-      }
+        "locator": "html:li[23]"
+      },
+      "keep_refs": [
+        {
+          "artifact": "SRC-MATHARC-RUNTIME-BASELINE",
+          "locator": "html:li[3]"
+        }
+      ]
     },
     {
       "id": "OPS2",
@@ -1491,7 +1560,7 @@
       "goal": "建立健康检查、日志、配额、备份和恢复观测闭环。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[25]"
+        "locator": "html:li[24]"
       }
     },
     {
@@ -1520,12 +1589,13 @@
       "kind": "validation",
       "acceptance_seeds": [
         "在 tests/test_runtime_ops_release.py 中完成部署、重启、回滚的不可变发布验收",
-        "在 tests/test_runtime_ops_cleanup.py 和 acceptance/runtime-pilot/ops-checklist.md 中验证临时工作区与试点用户数据可清理"
+        "在 tests/test_runtime_ops_cleanup.py 和 acceptance/runtime-pilot/ops-checklist.md 中验证临时工作区与试点用户数据可清理",
+        "在 acceptance/runtime-pilot/ops-release-checklist.md 中记录试点环境的部署、回滚和清理生产收尾"
       ],
       "goal": "独立验收部署、重启、回滚和试点用户数据清理。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[26]"
+        "locator": "html:li[25]"
       }
     }
   ]
