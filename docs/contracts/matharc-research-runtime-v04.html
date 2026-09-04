@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><title>MathArc 原生研究运行时 v0.4 产品合同</title></head>
+<body>
+<h1>MathArc 原生研究运行时 v0.4 产品合同</h1>
+<h2>权威边界</h2>
+<ul>
+<li>MathArc 原生运行时拥有研究运行的执行状态、任务调度、代际提交、恢复计划、候选导入和运行控制权威。</li>
+<li>数学结论仍只由 ResearchTrace 的验证门和晋升方法改变；RuntimeStore 不得把运行成功直接写成 PROVED。</li>
+<li>模型 API、Codex、Claude Code 和本地进程都是可替换后端；后端只返回不可变的 WorkerExecutionResult。</li>
+</ul>
+<h2>运行身份层级</h2>
+<p>运行身份必须按以下层级区分：workspace_id → trace_id → runtime_run_id → generation_id → worker_id → execution_id → candidate_id → evidence_id。</p>
+<p>runtime_run_id 是运行时实例身份，不复用既有 ResearchTrace.run_id 的语义。身份缺失、跨工作区引用或来源摘要不匹配时，导入和恢复均失败关闭。</p>
+<h2>单任务与候选合同</h2>
+<ul>
+<li>RUN1 定义 ResearchRunSpec、ResearchWorkerSpec、WorkerExecutionResult、CandidateEnvelope 和 RuntimeActionReceipt。</li>
+<li>协调器结合评价器摘要、运行身份、源码身份、工具注册表摘要、预算和产物摘要组装 CandidateEnvelope。</li>
+<li>验证阶段只校验 CandidateEnvelope 的身份约束，不负责第一次定义候选包。</li>
+</ul>
+<h2>冻结输入、并行与归并</h2>
+<ul>
+<li>每一代开始时生成不可变 GenerationInputSnapshot，包含 trace_digest、contract_digest、agenda_digest、worker_spec_digest 和 tool_registry_digest。</li>
+<li>成员只能读取冻结快照和隔离工作区，不能直接修改共享 ResearchTrace。</li>
+<li>唯一的 GenerationReducer 负责稳定排序、冲突检查、重复去重、部分失败、最低完成成员数、超时和迟到结果归属，并生成 GenerationCommit。</li>
+<li>GenerationClosePolicy 决定代际关闭；关闭后迟到结果不得改写已关闭代际。</li>
+</ul>
+<h2>持久化、恢复与数学验证</h2>
+<p>运行事件采用哈希链和原子快照，候选、费用和执行回执使用带来源身份的幂等账本。恢复只能从最后一个完整 GenerationCommit 边界生成。验证器产生 VerifierReceipt，只有独立重放和范围检查通过的候选才可转换为 EvidenceRecord。</p>
+<h2>邀请制控制台与试点运行环境</h2>
+<ul>
+<li>邀请制控制台只投影 RuntimeStore，通过 Cookie 会话和权限边界提供登记动作。</li>
+<li>服务端不得接受任意命令、工作目录、环境变量、可执行文件或参数；敏感字段和主机路径必须递归脱敏。</li>
+<li>OPS1、OPS2、OPS3 必须先完成部署守护、健康日志、配额、备份恢复、回滚和数据清理，DOG2 才能进入真实研究。</li>
+</ul>
+<h2>零容忍不变量</h2>
+<ul>
+<li>错误数学晋升、重复执行、重复费用、重复候选导入、跨工作区写入、关闭代际被迟到结果改写、公共接口敏感信息泄露、无权限运行动作均必须为 0。</li>
+</ul>
+</body>
+</html>

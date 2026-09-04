@@ -10,16 +10,30 @@
   "view_model": 2,
   "sources": [
     {
-      "id": "SRC-MATHARC-RUNTIME-CONTRACT",
-      "path": "docs/contracts/matharc-research-runtime-v04.md",
+      "id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "path": "docs/contracts/matharc-research-runtime-v04.html",
       "role": "primary",
+      "media_type": "text/html",
       "authority_by_dimension": {
         "information_architecture": "normative",
         "visual_tokens": "informative",
-        "layout": "informative",
+        "layout": "normative",
         "interaction_behavior": "normative",
         "seed_data": "not-applicable",
         "runtime_side_effects": "normative"
+      }
+    },
+    {
+      "id": "SRC-MATHARC-RUNTIME-CONTRACT",
+      "path": "docs/contracts/matharc-research-runtime-v04.md",
+      "role": "current-implementation",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "not-applicable",
+        "runtime_side_effects": "informative"
       }
     },
     {
@@ -257,7 +271,7 @@
       "acceptance_seeds": [
         "在 scripts/check_runtime_ownership.py 和 tests/test_runtime_ownership.py 中登记 MathArc 原生运行时与治理工具链的允许边界",
         "在 scripts/check_runtime_dependency_allowlist.py 和 tests/test_runtime_dependency_allowlist.py 中对未知运行时依赖 fail-closed",
-        "证明所有实现节点只写入已登记的 MathArc 代码与测试文件"
+        "在 tests/test_runtime_ownership.py 中证明所有实现节点只写入已登记的 MathArc 代码与测试文件"
       ],
       "external_systems": [
         "EXT-HARNESS-GITHUB"
@@ -323,8 +337,8 @@
       ],
       "goal": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
       "source": {
-        "artifact": "SRC-MATHARC-RUNTIME-CONTRACT",
-        "locator": "section:权威边界"
+        "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "locator": "html:heading:MathArc 原生研究运行时 v0.4 产品合同"
       }
     },
     {
@@ -894,7 +908,7 @@
       "acceptance_seeds": [
         "在 matharc/v02/runtime/verification.py 中定义 CandidateEnvelope 进入验证阶段的身份约束和 VerifierReceipt",
         "在 tests/test_candidate_identity.py 中证明任务、源码、评价器、种子、预算或产物变化都会改变候选身份",
-        "证明 CandidateEnvelope 首次定义位于 RUN1，VER1 不反向提供 RUN4 的后端合同"
+        "在 matharc/v02/runtime/contracts.py 和 tests/test_candidate_identity.py 中证明 CandidateEnvelope 首次定义位于 RUN1，VER1 不反向提供 RUN4 的后端合同"
       ],
       "goal": "定义候选进入验证阶段所需的身份约束和 VerifierReceipt，而非重新定义候选包。"
     },
@@ -1370,7 +1384,7 @@
         "UX6"
       ],
       "acceptance_seeds": [
-        "在 deploy/matharc-research.service 和 deploy/matharc-research.env.example 中固定持久目录、密钥来源和进程守护配置",
+        "在 tests/test_runtime_ops_deployment.py 中固定 deploy/matharc-research.service、deploy/matharc-research.env.example 的持久目录、密钥来源和进程守护配置",
         "在 tests/test_runtime_ops_deployment.py 中拒绝临时路径、明文密钥和无守护部署"
       ]
     },
