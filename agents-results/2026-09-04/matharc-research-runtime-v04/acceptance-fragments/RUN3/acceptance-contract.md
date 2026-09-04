@@ -1,12 +1,18 @@
 # Acceptance Contract: RUN3
 
 - Task ID: RUN3
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 评价器负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[3]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-RUN3
 - SSOT node: RUN3
 - SSOT path: .ssot/nodes/RUN3.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item RUN3, the interface declared for RUN3 must continue to satisfy every ac
 
 ## Data impact
 
-Item RUN3 constrains any create, update, or delete reachable through the interface declared for RUN3; only the acceptance seeds below define what data changes are permitted for evaluation-contract. Node-specific data assertions: 在 matharc/v02/evaluator.py 中定义评价器输入、输出、预算和随机种子合同 | 在 tests/test_runtime_evaluator.py 中证明最小试跑失败时不会启动完整研究
+Item RUN3 constrains any create, update, or delete reachable through the interface declared for RUN3; only the acceptance seeds below define what data changes are permitted for evaluation-contract. Node-specific data assertions: 在 matharc/v02/runtime/evaluator.py 中定义评价器输入、输出、预算和随机种子合同 | 在 tests/test_runtime_evaluator.py 中证明最小试跑失败时不会启动完整研究
 
 ## Permissions
 
-Item RUN3 is owned by 评价器负责人; access to the interface declared for RUN3 and evaluation-contract follows the acceptance seeds below and no wider grant.
+Item RUN3 is owned by principal:acceptance-a; access to the interface declared for RUN3 and evaluation-contract follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item RUN3: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-RUN3 | machine/unit | 在 matharc/v02/evaluator.py 中定义评价器输入、输出、预算和随机种子合同 | Unit | Automatic | Yes |
+| AC-01 | behavior | SRC-RUN3 | machine/unit | 在 matharc/v02/runtime/evaluator.py 中定义评价器输入、输出、预算和随机种子合同 | Unit | Automatic | Yes |
 | AC-02 | behavior | SRC-RUN3 | machine/local-runtime | 在 tests/test_runtime_evaluator.py 中证明最小试跑失败时不会启动完整研究 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item RUN3 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Unit | matharc/v02/evaluator.py | Automatic | Yes |
+| AC-01 | Unit | matharc/v02/runtime/evaluator.py | Automatic | Yes |
 | AC-02 | Local runtime | tests/test_runtime_evaluator.py | Automatic | Yes |
 
 ## Exploratory testing

@@ -1,12 +1,18 @@
 # Acceptance Contract: PAR2
 
 - Task ID: PAR2
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 任务审批接线负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[5]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-PAR2
 - SSOT node: PAR2
 - SSOT path: .ssot/nodes/PAR2.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item PAR2, the interface declared for PAR2 must continue to satisfy every ac
 
 ## Data impact
 
-Item PAR2 constrains any create, update, or delete reachable through the interface declared for PAR2; only the acceptance seeds below define what data changes are permitted for approved-task-ingestion. Node-specific data assertions: 在 matharc/v02/orchestrator.py 中消费现有动态派生任务批准记录并保持一次性启动 | 在 tests/test_runtime_approved_task_ingestion.py 中证明拒绝任务和超预算任务永不启动
+Item PAR2 constrains any create, update, or delete reachable through the interface declared for PAR2; only the acceptance seeds below define what data changes are permitted for approved-task-ingestion. Node-specific data assertions: 在 matharc/v02/runtime/coordinator.py 中消费现有动态派生任务批准记录并保持一次性启动 | 在 tests/test_runtime_approved_task_ingestion.py 中证明拒绝任务和超预算任务永不启动
 
 ## Permissions
 
-Item PAR2 is owned by 任务审批接线负责人; access to the interface declared for PAR2 and approved-task-ingestion follows the acceptance seeds below and no wider grant.
+Item PAR2 is owned by principal:acceptance-a; access to the interface declared for PAR2 and approved-task-ingestion follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item PAR2: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-PAR2 | machine/integration-contract | 在 matharc/v02/orchestrator.py 中消费现有动态派生任务批准记录并保持一次性启动 | Integration | Automatic | Yes |
+| AC-01 | behavior | SRC-PAR2 | machine/integration-contract | 在 matharc/v02/runtime/coordinator.py 中消费现有动态派生任务批准记录并保持一次性启动 | Integration | Automatic | Yes |
 | AC-02 | behavior | SRC-PAR2 | machine/local-runtime | 在 tests/test_runtime_approved_task_ingestion.py 中证明拒绝任务和超预算任务永不启动 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item PAR2 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Integration | matharc/v02/orchestrator.py | Automatic | Yes |
+| AC-01 | Integration | matharc/v02/runtime/coordinator.py | Automatic | Yes |
 | AC-02 | Local runtime | tests/test_runtime_approved_task_ingestion.py | Automatic | Yes |
 
 ## Exploratory testing

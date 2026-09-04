@@ -11,10 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S15",
-    "S19",
-    "S52",
-    "S59",
     "FND2"
   ],
   "soft_dependencies": [],
@@ -29,10 +25,10 @@
     "requirement.run1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "运行合同负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "PAR1",
-    "QRTR1",
+    "Q1",
     "RUN2",
     "RUN3",
     "VER1"
@@ -42,19 +38,72 @@
   "execution_contract_ref": "nodes/RUN1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/contracts.py",
-    "matharc/v02/runtime/identity.py",
-    "tests/test_runtime_contracts.py",
-    "tests/test_runtime_identity.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/contracts.py",
+      "mode": "create"
+    },
+    {
+      "path": "matharc/v02/runtime/identity.py",
+      "mode": "create"
+    },
+    {
+      "path": "matharc/v02/runtime/generation.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_contracts.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_identity.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
   "goal": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
-  "owner": "运行合同负责人",
+  "owner": "principal:owner-run1",
   "acceptance_contract_ref": "acceptance-fragments/RUN1/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-run1",
+    "principal_ref": "principal:owner-run1"
+  },
+  "owner_binding": {
+    "role_id": "owner-run1",
+    "principal_ref": "principal:owner-run1"
+  },
   "source_requirement_refs": [
     "SRC-RUN1"
   ],
@@ -74,9 +123,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

@@ -1,12 +1,18 @@
 # Acceptance Contract: DOG2
 
 - Task ID: DOG2
+- Contract kind: validation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: validation result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 真实研究试点负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[20]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-DOG2
 - SSOT node: DOG2
 - SSOT path: .ssot/nodes/DOG2.json
 - Readiness mode: FORMAL
@@ -61,7 +67,7 @@ Item DOG2 constrains any create, update, or delete reachable through the interfa
 
 ## Permissions
 
-Item DOG2 is owned by 真实研究试点负责人; access to the interface declared for DOG2 and real-two-generation-pilot follows the acceptance seeds below and no wider grant.
+Item DOG2 is owned by principal:acceptance-a; access to the interface declared for DOG2 and real-two-generation-pilot follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 

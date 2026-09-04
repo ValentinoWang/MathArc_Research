@@ -1,12 +1,18 @@
 # Acceptance Contract: SYN1
 
 - Task ID: SYN1
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 探索结果接线负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[11]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-SYN1
 - SSOT node: SYN1
 - SSOT path: .ssot/nodes/SYN1.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item SYN1, the interface declared for SYN1 must continue to satisfy every ac
 
 ## Data impact
 
-Item SYN1 constrains any create, update, or delete reachable through the interface declared for SYN1; only the acceptance seeds below define what data changes are permitted for candidate-synthesis. Node-specific data assertions: 在 matharc/v02/synthesis.py 中把普通执行输出标准化为带完整出处的探索候选 | 在 tests/test_runtime_candidate_synthesis.py 中证明标准化候选不会进入正式证据
+Item SYN1 constrains any create, update, or delete reachable through the interface declared for SYN1; only the acceptance seeds below define what data changes are permitted for candidate-synthesis. Node-specific data assertions: 在 matharc/v02/runtime/synthesis.py 中把普通执行输出标准化为带完整出处的探索候选 | 在 tests/test_runtime_candidate_synthesis.py 中证明标准化候选不会进入正式证据
 
 ## Permissions
 
-Item SYN1 is owned by 探索结果接线负责人; access to the interface declared for SYN1 and candidate-synthesis follows the acceptance seeds below and no wider grant.
+Item SYN1 is owned by principal:acceptance-a; access to the interface declared for SYN1 and candidate-synthesis follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item SYN1: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-SYN1 | machine/unit | 在 matharc/v02/synthesis.py 中把普通执行输出标准化为带完整出处的探索候选 | Unit | Automatic | Yes |
+| AC-01 | behavior | SRC-SYN1 | machine/unit | 在 matharc/v02/runtime/synthesis.py 中把普通执行输出标准化为带完整出处的探索候选 | Unit | Automatic | Yes |
 | AC-02 | behavior | SRC-SYN1 | machine/local-runtime | 在 tests/test_runtime_candidate_synthesis.py 中证明标准化候选不会进入正式证据 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item SYN1 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Unit | matharc/v02/synthesis.py | Automatic | Yes |
+| AC-01 | Unit | matharc/v02/runtime/synthesis.py | Automatic | Yes |
 | AC-02 | Local runtime | tests/test_runtime_candidate_synthesis.py | Automatic | Yes |
 
 ## Exploratory testing

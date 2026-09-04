@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S5",
-    "S74",
     "RUN5"
   ],
   "soft_dependencies": [],
@@ -27,27 +25,70 @@
     "requirement.dog1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "试点任务负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG2",
-    "QRTR7"
+    "Q7"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/DOG1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "benchmarks/runtime-pilot-plan.json",
-    "tests/test_runtime_pilot_baseline.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "benchmarks/runtime-pilot-plan.json",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_pilot_baseline.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/e2e",
     "persistent-runtime"
   ],
   "goal": "固定首个真实任务、评价器、范围、预算和可重放的单成员基线。",
-  "owner": "试点任务负责人",
+  "owner": "principal:owner-dog1",
   "acceptance_contract_ref": "acceptance-fragments/DOG1/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-dog1",
+    "principal_ref": "principal:owner-dog1"
+  },
+  "owner_binding": {
+    "role_id": "owner-dog1",
+    "principal_ref": "principal:owner-dog1"
+  },
   "source_requirement_refs": [
     "SRC-DOG1"
   ],
@@ -67,9 +108,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

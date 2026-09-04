@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S8",
-    "S75",
     "PAR5",
     "SYN5",
     "VER6",
@@ -31,19 +29,30 @@
     "requirement.dog2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "真实研究试点负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG3",
-    "QRTR7"
+    "Q7"
   ],
   "node_role": "leaf",
-  "execution_actor": "codex",
+  "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/DOG2.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "experiments/runtime-pilot/two-generation-report.md",
-    "tests/test_runtime_pilot_generation_consumption.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "experiments/runtime-pilot/two-generation-report.md",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_pilot_generation_consumption.py",
+      "mode": "create"
+    },
+    {
+      "path": "acceptance/runtime-pilot/production-checklist.md",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/e2e",
@@ -51,8 +60,50 @@
     "production"
   ],
   "goal": "在运维闭环完成后执行两代真实并行研究并证明第二代消费第一代事实。",
-  "owner": "真实研究试点负责人",
+  "owner": "principal:owner-dog2",
   "acceptance_contract_ref": "acceptance-fragments/DOG2/acceptance-contract.md",
+  "test_oracle": {
+    "mode": "frozen",
+    "writable": false,
+    "spec": "tests/test_v02_dogfood_archives.py",
+    "assertion_authority": "MathArc 真实试点归档测试基线"
+  },
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-dog2",
+    "principal_ref": "principal:owner-dog2"
+  },
+  "owner_binding": {
+    "role_id": "owner-dog2",
+    "principal_ref": "principal:owner-dog2"
+  },
   "source_requirement_refs": [
     "SRC-DOG2"
   ],
@@ -63,9 +114,6 @@
   "readiness_gaps": [
     {
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

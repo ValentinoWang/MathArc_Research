@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-VER5-Q5",
+  "from": "VER5",
+  "to": "Q5",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.ver5"
+  ],
+  "transferred_input": "记录命题、源码、评价器或候选身份变化导致的证据失效。",
+  "gate_evidence": "acceptance contract evidence"
+}

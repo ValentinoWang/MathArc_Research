@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-OPS1-Q6",
+  "from": "OPS1",
+  "to": "Q6",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.ops1"
+  ],
+  "transferred_input": "固定试点部署配置、持久目录、密钥来源和进程守护方式。",
+  "gate_evidence": "acceptance contract evidence"
+}

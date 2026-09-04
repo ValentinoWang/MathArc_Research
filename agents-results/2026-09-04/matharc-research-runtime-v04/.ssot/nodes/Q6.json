@@ -1,0 +1,94 @@
+{
+  "node_id": "Q6",
+  "semantic_key": "acceptance.release.rtr6",
+  "stage": "RTR6",
+  "work_kind": "release-decision",
+  "domain_lane": "rtr6",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "UX1",
+    "UX2",
+    "UX3",
+    "UX4",
+    "UX5",
+    "UX6",
+    "OPS1",
+    "OPS2",
+    "OPS3"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [],
+  "invalidation_keys": [
+    "release.rtr6"
+  ],
+  "write_authority": "shared-generated",
+  "acceptance_authority": "principal:release-a",
+  "unlocks": [],
+  "node_role": "acceptance-gate",
+  "execution_actor": "human",
+  "execution_contract_ref": "nodes/Q6.json",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "must-match",
+  "goal": "按来源完成标准接受 RTR6 候选版本",
+  "owner": "发布决策负责人",
+  "release_authority": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "release-acceptance-a",
+        "principal_ref": "principal:release-a"
+      },
+      {
+        "role_id": "release-acceptance-b",
+        "principal_ref": "principal:release-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "release-acceptance-a",
+      "principal_ref": "principal:release-a"
+    },
+    {
+      "role_id": "release-acceptance-b",
+      "principal_ref": "principal:release-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "source_completion_requirement_refs": [
+    "SRC-UX1",
+    "SRC-UX2",
+    "SRC-UX3",
+    "SRC-UX4",
+    "SRC-UX5",
+    "SRC-UX6",
+    "SRC-OPS1",
+    "SRC-OPS2",
+    "SRC-OPS3"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    }
+  ],
+  "source_requirement_refs": [
+    "SRC-OPS1",
+    "SRC-OPS2",
+    "SRC-OPS3",
+    "SRC-UX1",
+    "SRC-UX2",
+    "SRC-UX3",
+    "SRC-UX4",
+    "SRC-UX5",
+    "SRC-UX6"
+  ]
+}

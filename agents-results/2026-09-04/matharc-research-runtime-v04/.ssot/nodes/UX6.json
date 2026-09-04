@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S1",
-    "S47",
     "UX5"
   ],
   "soft_dependencies": [],
@@ -27,20 +25,27 @@
     "requirement.ux6"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "浏览器产品验收负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG3",
     "OPS1",
-    "QRTR6"
+    "Q6"
   ],
   "node_role": "leaf",
-  "execution_actor": "codex",
+  "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/UX6.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "tests/test_runtime_console_mobile.py",
-    "acceptance/human/runtime-console/desktop-checklist.md"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "tests/test_runtime_console_mobile.py",
+      "mode": "create"
+    },
+    {
+      "path": "acceptance/human/runtime-console/desktop-checklist.md",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/e2e",
@@ -48,8 +53,50 @@
     "human"
   ],
   "goal": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
-  "owner": "浏览器产品验收负责人",
+  "owner": "principal:owner-ux6",
   "acceptance_contract_ref": "acceptance-fragments/UX6/acceptance-contract.md",
+  "test_oracle": {
+    "mode": "frozen",
+    "writable": false,
+    "spec": "tests/test_console_prototype.py",
+    "assertion_authority": "MathArc 控制台浏览器验收测试基线"
+  },
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-ux6",
+    "principal_ref": "principal:owner-ux6"
+  },
+  "owner_binding": {
+    "role_id": "owner-ux6",
+    "principal_ref": "principal:owner-ux6"
+  },
   "source_requirement_refs": [
     "SRC-UX6"
   ],
@@ -60,9 +107,6 @@
   "readiness_gaps": [
     {
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

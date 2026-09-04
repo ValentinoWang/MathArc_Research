@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S29",
-    "S51",
     "UX1",
     "UX2"
   ],
@@ -28,19 +26,30 @@
     "requirement.ux4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "控制台安全视图负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
-    "QRTR6",
+    "Q6",
     "UX5"
   ],
   "node_role": "leaf",
-  "execution_actor": "orchestrator",
+  "execution_actor": "codex",
   "execution_contract_ref": "nodes/UX4.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/view_model.py",
-    "tests/test_runtime_console_redaction.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/view_model.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_console_redaction.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_console_redaction_visual.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/static",
@@ -48,11 +57,79 @@
     "visual-fidelity"
   ],
   "goal": "建立统一中文运行视图并递归脱敏密钥、路径、命令、环境变量和堆栈。",
-  "owner": "控制台安全视图负责人",
+  "owner": "principal:owner-ux4",
   "acceptance_contract_ref": "acceptance-fragments/UX4/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-ux4",
+    "principal_ref": "principal:owner-ux4"
+  },
+  "owner_binding": {
+    "role_id": "owner-ux4",
+    "principal_ref": "principal:owner-ux4"
+  },
   "source_requirement_refs": [
     "SRC-UX4"
   ],
+  "escalation_reasons": [
+    "multi-executor"
+  ],
+  "worker_transport": "external-codex-exec",
+  "worker": {
+    "execution_identity": "worker-UX4",
+    "runtime": "codex-exec",
+    "return_path": "workers/UX4.md",
+    "resource_locks": [
+      "write:matharc/v02/runtime/view_model.py",
+      "write:tests/test_runtime_console_redaction.py",
+      "write:tests/test_runtime_console_redaction_visual.py"
+    ]
+  },
+  "worker_registration": {
+    "worker_level": "L2",
+    "wrapper": "/Users/vsiyo/.codex/workers/run-l2.sh",
+    "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+    "invocation": "codex exec -C /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research --skip-git-repo-check --sandbox danger-full-access",
+    "sandbox": "danger-full-access",
+    "sandbox_authority": "writable sandbox",
+    "task_argument": "bounded implementation task UX4",
+    "return_path": "workers/UX4.md",
+    "prompt_path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/execution-orchestration/prompts/UX4.md",
+    "log_path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/execution-orchestration/logs/UX4.log",
+    "prompt_sha256": "capture-before-launch",
+    "launch_barrier": "all wave PIDs registered before first wait",
+    "prompt_cleanup": "delete after exit evidence registration",
+    "runtime_handle_cleanup": "release after exit evidence registration",
+    "codex_transcript_retention": "preserve ~/.codex/sessions and ~/.codex/archived_sessions",
+    "dispatch_state": "NOT_STARTED"
+  },
   "surface_refs": [
     "runtime-disclosure"
   ],
@@ -69,9 +146,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

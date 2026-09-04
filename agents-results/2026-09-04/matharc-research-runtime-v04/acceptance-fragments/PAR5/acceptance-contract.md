@@ -1,19 +1,25 @@
 # Acceptance Contract: PAR5
 
 - Task ID: PAR5
+- Contract kind: validation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: validation result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 并行验收负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[7]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-PAR5
 - SSOT node: PAR5
 - SSOT path: .ssot/nodes/PAR5.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.par5
-- AC budget: 3
+- AC budget: 5
 - Baseline identity: ssot-input.json#items[PAR5]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,11 +63,11 @@ For item PAR5, the interface declared for PAR5 must continue to satisfy every ac
 
 ## Data impact
 
-Item PAR5 constrains any create, update, or delete reachable through the interface declared for PAR5; only the acceptance seeds below define what data changes are permitted for parallel-generation. Node-specific data assertions: 在 tests/test_runtime_parallel_generation.py 中证明每名成员只读取同一 GenerationInputSnapshot 且由单一 GenerationReducer 稳定归并 | 在 tests/test_runtime_partial_failure.py 中证明部分成员失败、必需角色缺失和超时不会伪造完整代际 | 在 tests/test_runtime_late_result_policy.py 中证明关闭代际不接受迟到结果改写
+Item PAR5 constrains any create, update, or delete reachable through the interface declared for PAR5; only the acceptance seeds below define what data changes are permitted for parallel-generation. Node-specific data assertions: 在 tests/test_runtime_parallel_generation.py 中证明每名成员只读取同一 GenerationInputSnapshot 且由单一 GenerationReducer 稳定归并 | 在 tests/test_runtime_partial_failure.py 中证明部分成员失败、必需角色缺失和超时不会伪造完整代际 | 在 tests/test_runtime_late_result_policy.py 中证明关闭代际不接受迟到结果改写 | 在 tests/test_runtime_parallel_generation.py 和 tests/test_runtime_partial_failure.py 中固定并行输入/归并输出、generation_id 幂等键、超时/取消/失败分类、有限重试与恢复判定，并以独立测试身份拒绝伪造完整代际 | tests/test_runtime_parallel_generation.py、tests/test_runtime_partial_failure.py 和 tests/test_runtime_late_result_policy.py 实现后必须在 protected_tests 登记 SHA-256 及归并/部分失败/迟到结果覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
 
 ## Permissions
 
-Item PAR5 is owned by 并行验收负责人; access to the interface declared for PAR5 and parallel-generation follows the acceptance seeds below and no wider grant.
+Item PAR5 is owned by principal:acceptance-a; access to the interface declared for PAR5 and parallel-generation follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -75,6 +81,8 @@ Node-specific increment for item PAR5: the thresholds and failure evidence for t
 | AC-01 | behavior | SRC-PAR5 | machine/e2e | 在 tests/test_runtime_parallel_generation.py 中证明每名成员只读取同一 GenerationInputSnapshot 且由单一 GenerationReducer 稳定归并 | E2E | Automatic | Yes |
 | AC-02 | behavior | SRC-PAR5 | machine/local-runtime | 在 tests/test_runtime_partial_failure.py 中证明部分成员失败、必需角色缺失和超时不会伪造完整代际 | Local runtime | Automatic | Yes |
 | AC-03 | behavior | SRC-PAR5 | machine/e2e | 在 tests/test_runtime_late_result_policy.py 中证明关闭代际不接受迟到结果改写 | E2E | Automatic | Yes |
+| AC-04 | behavior | SRC-PAR5 | machine/local-runtime | 在 tests/test_runtime_parallel_generation.py 和 tests/test_runtime_partial_failure.py 中固定并行输入/归并输出、generation_id 幂等键、超时/取消/失败分类、有限重试与恢复判定，并以独立测试身份拒绝伪造完整代际 | Local runtime | Automatic | Yes |
+| AC-05 | behavior | SRC-PAR5 | machine/e2e | tests/test_runtime_parallel_generation.py、tests/test_runtime_partial_failure.py 和 tests/test_runtime_late_result_policy.py 实现后必须在 protected_tests 登记 SHA-256 及归并/部分失败/迟到结果覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY | E2E | Automatic | Yes |
 
 ## Human acceptance
 
@@ -94,6 +102,8 @@ Item PAR5 is fully determined by its acceptance seeds; outcomes for the interfac
 | AC-01 | E2E | tests/test_runtime_parallel_generation.py | Automatic | Yes |
 | AC-02 | Local runtime | tests/test_runtime_partial_failure.py | Automatic | Yes |
 | AC-03 | E2E | tests/test_runtime_late_result_policy.py | Automatic | Yes |
+| AC-04 | Local runtime | tests/test_runtime_parallel_generation.py | Automatic | Yes |
+| AC-05 | E2E | tests/test_runtime_parallel_generation.py | Automatic | Yes |
 
 ## Exploratory testing
 

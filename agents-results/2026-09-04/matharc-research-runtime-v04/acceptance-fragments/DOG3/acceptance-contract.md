@@ -1,19 +1,25 @@
 # Acceptance Contract: DOG3
 
 - Task ID: DOG3
+- Contract kind: validation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: validation result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 试点攻击演练负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[21]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-DOG3
 - SSOT node: DOG3
 - SSOT path: .ssot/nodes/DOG3.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.dog3
-- AC budget: 3
+- AC budget: 5
 - Baseline identity: ssot-input.json#items[DOG3]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,11 +63,11 @@ For item DOG3, the interface declared for DOG3 must continue to satisfy every ac
 
 ## Data impact
 
-Item DOG3 constrains any create, update, or delete reachable through the interface declared for DOG3; only the acceptance seeds below define what data changes are permitted for pilot-adversarial-drills. Node-specific data assertions: 在 tests/test_runtime_adversarial_drills.py 中执行崩溃、篡改、虚假反例、重复导入和权限演练 | 在 tests/test_runtime_attack_recovery.py 中证明每条攻击路径都被拒绝或安全恢复 | 在 acceptance/runtime-pilot/production-attack-drills.md 中记录生产试点攻击演练的零容忍结果
+Item DOG3 constrains any create, update, or delete reachable through the interface declared for DOG3; only the acceptance seeds below define what data changes are permitted for pilot-adversarial-drills. Node-specific data assertions: 在 tests/test_runtime_adversarial_drills.py 中执行崩溃、篡改、虚假反例、重复导入和权限演练 | 在 tests/test_runtime_attack_recovery.py 中证明每条攻击路径都被拒绝或安全恢复 | 在 acceptance/runtime-pilot/production-attack-drills.md 中记录生产试点攻击演练的零容忍结果 | 在 tests/test_runtime_adversarial_drills.py 和 tests/test_runtime_attack_recovery.py 中固定攻击输入、拒绝或恢复输出、attack_id 幂等键、超时/取消/失败分类、不可重试边界与安全恢复，并以独立验收身份证明错误晋升始终为零 | tests/test_runtime_adversarial_drills.py 和 tests/test_runtime_attack_recovery.py 实现后必须在 protected_tests 登记各自 SHA-256 及攻击拒绝/安全恢复覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
 
 ## Permissions
 
-Item DOG3 is owned by 试点攻击演练负责人; access to the interface declared for DOG3 and pilot-adversarial-drills follows the acceptance seeds below and no wider grant.
+Item DOG3 is owned by principal:acceptance-a; access to the interface declared for DOG3 and pilot-adversarial-drills follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -75,6 +81,8 @@ Node-specific increment for item DOG3: the thresholds and failure evidence for t
 | AC-01 | behavior | SRC-DOG3 | machine/e2e | 在 tests/test_runtime_adversarial_drills.py 中执行崩溃、篡改、虚假反例、重复导入和权限演练 | E2E | Automatic | Yes |
 | AC-02 | behavior | SRC-DOG3 | persistent-runtime | 在 tests/test_runtime_attack_recovery.py 中证明每条攻击路径都被拒绝或安全恢复 | Persistent runtime | Automatic | Yes |
 | AC-03 | behavior | SRC-DOG3 | production | 在 acceptance/runtime-pilot/production-attack-drills.md 中记录生产试点攻击演练的零容忍结果 | Production | Automatic | Yes |
+| AC-04 | behavior | SRC-DOG3 | machine/e2e | 在 tests/test_runtime_adversarial_drills.py 和 tests/test_runtime_attack_recovery.py 中固定攻击输入、拒绝或恢复输出、attack_id 幂等键、超时/取消/失败分类、不可重试边界与安全恢复，并以独立验收身份证明错误晋升始终为零 | E2E | Automatic | Yes |
+| AC-05 | behavior | SRC-DOG3 | persistent-runtime | tests/test_runtime_adversarial_drills.py 和 tests/test_runtime_attack_recovery.py 实现后必须在 protected_tests 登记各自 SHA-256 及攻击拒绝/安全恢复覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY | Persistent runtime | Automatic | Yes |
 
 ## Human acceptance
 
@@ -94,6 +102,8 @@ Item DOG3 is fully determined by its acceptance seeds; outcomes for the interfac
 | AC-01 | E2E | tests/test_runtime_adversarial_drills.py | Automatic | Yes |
 | AC-02 | Persistent runtime | tests/test_runtime_attack_recovery.py | Automatic | Yes |
 | AC-03 | Production | acceptance/runtime-pilot/production-attack-drills.md | Automatic | Yes |
+| AC-04 | E2E | tests/test_runtime_adversarial_drills.py | Automatic | Yes |
+| AC-05 | Persistent runtime | tests/test_runtime_adversarial_drills.py | Automatic | Yes |
 
 ## Exploratory testing
 

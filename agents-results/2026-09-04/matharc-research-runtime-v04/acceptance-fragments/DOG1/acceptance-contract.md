@@ -1,12 +1,18 @@
 # Acceptance Contract: DOG1
 
 - Task ID: DOG1
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 试点任务负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[19]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-DOG1
 - SSOT node: DOG1
 - SSOT path: .ssot/nodes/DOG1.json
 - Readiness mode: FORMAL
@@ -61,7 +67,7 @@ Item DOG1 constrains any create, update, or delete reachable through the interfa
 
 ## Permissions
 
-Item DOG1 is owned by 试点任务负责人; access to the interface declared for DOG1 and pilot-baseline follows the acceptance seeds below and no wider grant.
+Item DOG1 is owned by principal:acceptance-a; access to the interface declared for DOG1 and pilot-baseline follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 

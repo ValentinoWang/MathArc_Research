@@ -1,12 +1,18 @@
 # Acceptance Contract: VER2
 
 - Task ID: VER2
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 命题范围负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:normative-sentence[2]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-VER2
 - SSOT node: VER2
 - SSOT path: .ssot/nodes/VER2.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item VER2, the interface declared for VER2 must continue to satisfy every ac
 
 ## Data impact
 
-Item VER2 constrains any create, update, or delete reachable through the interface declared for VER2; only the acceptance seeds below define what data changes are permitted for claim-binding. Node-specific data assertions: 在 matharc/v02/verification_bridge.py 中将候选绑定到具体命题、量词、对象和范围 | 在 tests/test_candidate_scope_binding.py 中拒绝范围扩大、量词变化和对象错配
+Item VER2 constrains any create, update, or delete reachable through the interface declared for VER2; only the acceptance seeds below define what data changes are permitted for claim-binding. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中将候选绑定到具体命题、量词、对象和范围 | 在 tests/test_candidate_scope_binding.py 中拒绝范围扩大、量词变化和对象错配
 
 ## Permissions
 
-Item VER2 is owned by 命题范围负责人; access to the interface declared for VER2 and claim-binding follows the acceptance seeds below and no wider grant.
+Item VER2 is owned by principal:acceptance-a; access to the interface declared for VER2 and claim-binding follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item VER2: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-VER2 | machine/unit | 在 matharc/v02/verification_bridge.py 中将候选绑定到具体命题、量词、对象和范围 | Unit | Automatic | Yes |
+| AC-01 | behavior | SRC-VER2 | machine/unit | 在 matharc/v02/runtime/verification.py 中将候选绑定到具体命题、量词、对象和范围 | Unit | Automatic | Yes |
 | AC-02 | behavior | SRC-VER2 | machine/integration-contract | 在 tests/test_candidate_scope_binding.py 中拒绝范围扩大、量词变化和对象错配 | Integration | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item VER2 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Unit | matharc/v02/verification_bridge.py | Automatic | Yes |
+| AC-01 | Unit | matharc/v02/runtime/verification.py | Automatic | Yes |
 | AC-02 | Integration | tests/test_candidate_scope_binding.py | Automatic | Yes |
 
 ## Exploratory testing

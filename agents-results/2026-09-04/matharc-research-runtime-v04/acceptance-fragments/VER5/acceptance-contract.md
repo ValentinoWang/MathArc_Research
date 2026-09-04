@@ -1,12 +1,18 @@
 # Acceptance Contract: VER5
 
 - Task ID: VER5
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 证据失效负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:normative-sentence[5]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-VER5
 - SSOT node: VER5
 - SSOT path: .ssot/nodes/VER5.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item VER5, the interface declared for VER5 must continue to satisfy every ac
 
 ## Data impact
 
-Item VER5 constrains any create, update, or delete reachable through the interface declared for VER5; only the acceptance seeds below define what data changes are permitted for evidence-invalidation. Node-specific data assertions: 在 matharc/v02/audit.py 中记录命题、源码、评价器或候选身份变化导致的证据失效 | 在 tests/test_evidence_invalidation.py 中证明失效证据不能继续支撑已晋升结论
+Item VER5 constrains any create, update, or delete reachable through the interface declared for VER5; only the acceptance seeds below define what data changes are permitted for evidence-invalidation. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中记录命题、源码、评价器或候选身份变化导致的证据失效 | 在 tests/test_evidence_invalidation.py 中证明失效证据不能继续支撑已晋升结论
 
 ## Permissions
 
-Item VER5 is owned by 证据失效负责人; access to the interface declared for VER5 and evidence-invalidation follows the acceptance seeds below and no wider grant.
+Item VER5 is owned by principal:acceptance-a; access to the interface declared for VER5 and evidence-invalidation follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item VER5: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-VER5 | machine/unit | 在 matharc/v02/audit.py 中记录命题、源码、评价器或候选身份变化导致的证据失效 | Unit | Automatic | Yes |
+| AC-01 | behavior | SRC-VER5 | machine/unit | 在 matharc/v02/runtime/verification.py 中记录命题、源码、评价器或候选身份变化导致的证据失效 | Unit | Automatic | Yes |
 | AC-02 | behavior | SRC-VER5 | machine/integration-contract | 在 tests/test_evidence_invalidation.py 中证明失效证据不能继续支撑已晋升结论 | Integration | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item VER5 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Unit | matharc/v02/audit.py | Automatic | Yes |
+| AC-01 | Unit | matharc/v02/runtime/verification.py | Automatic | Yes |
 | AC-02 | Integration | tests/test_evidence_invalidation.py | Automatic | Yes |
 
 ## Exploratory testing

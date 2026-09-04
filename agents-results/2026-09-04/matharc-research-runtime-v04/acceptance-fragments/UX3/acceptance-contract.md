@@ -1,19 +1,25 @@
 # Acceptance Contract: UX3
 
 - Task ID: UX3
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 运行动作 API 负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[15]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-UX3
 - SSOT node: UX3
 - SSOT path: .ssot/nodes/UX3.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.ux3
-- AC budget: 2
+- AC budget: 4
 - Baseline identity: ssot-input.json#items[UX3]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,11 +63,11 @@ For item UX3, POST /api/runtime/runs, POST /api/runtime/actions must continue to
 
 ## Data impact
 
-Item UX3 constrains any create, update, or delete reachable through POST /api/runtime/runs, POST /api/runtime/actions; only the acceptance seeds below define what data changes are permitted for runtime-actions-api. Node-specific data assertions: 在 matharc/v02/runtime/service.py 中提供启动、暂停、继续、停止和重新验证的幂等动作 | 在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段
+Item UX3 constrains any create, update, or delete reachable through POST /api/runtime/runs, POST /api/runtime/actions; only the acceptance seeds below define what data changes are permitted for runtime-actions-api. Node-specific data assertions: 在 matharc/v02/runtime/service.py 中提供启动、暂停、继续、停止和重新验证的幂等动作 | 在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段 | 在 matharc/v02/runtime/service.py 中固定登记动作输入、RuntimeActionReceipt 输出、action_id+runtime_run_id 幂等键、超时/取消/失败分类、有限重试与恢复状态；在 tests/test_runtime_command_surface.py 中保护动作白名单和独立验收身份 | tests/test_runtime_command_surface.py 实现后必须在 protected_tests 登记 SHA-256 及动作白名单/任意命令拒绝覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
 
 ## Permissions
 
-Item UX3 is owned by 运行动作 API 负责人; access to POST /api/runtime/runs, POST /api/runtime/actions and runtime-actions-api follows the acceptance seeds below and no wider grant.
+Item UX3 is owned by principal:acceptance-a; access to POST /api/runtime/runs, POST /api/runtime/actions and runtime-actions-api follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -74,6 +80,8 @@ Node-specific increment for item UX3: the thresholds and failure evidence for PO
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | AC-01 | behavior | SRC-UX3 | machine/integration-contract | 在 matharc/v02/runtime/service.py 中提供启动、暂停、继续、停止和重新验证的幂等动作 | Integration | Automatic | Yes |
 | AC-02 | behavior | SRC-UX3 | machine/e2e | 在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段 | E2E | Automatic | Yes |
+| AC-03 | behavior | SRC-UX3 | machine/integration-contract | 在 matharc/v02/runtime/service.py 中固定登记动作输入、RuntimeActionReceipt 输出、action_id+runtime_run_id 幂等键、超时/取消/失败分类、有限重试与恢复状态；在 tests/test_runtime_command_surface.py 中保护动作白名单和独立验收身份 | Integration | Automatic | Yes |
+| AC-04 | behavior | SRC-UX3 | machine/e2e | tests/test_runtime_command_surface.py 实现后必须在 protected_tests 登记 SHA-256 及动作白名单/任意命令拒绝覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY | E2E | Automatic | Yes |
 
 ## Human acceptance
 
@@ -92,6 +100,8 @@ Item UX3 is fully determined by its acceptance seeds; outcomes for POST /api/run
 | --- | --- | --- | --- | --- |
 | AC-01 | Integration | matharc/v02/runtime/service.py | Automatic | Yes |
 | AC-02 | E2E | tests/test_runtime_command_surface.py | Automatic | Yes |
+| AC-03 | Integration | matharc/v02/runtime/service.py | Automatic | Yes |
+| AC-04 | E2E | tests/test_runtime_command_surface.py | Automatic | Yes |
 
 ## Exploratory testing
 

@@ -18,7 +18,7 @@
     "decision.matharc-native-runtime.v1"
   ],
   "write_authority": "isolated-record",
-  "acceptance_authority": "decision owner",
+  "acceptance_authority": "决策负责人",
   "unlocks": [
     "DOG1",
     "DOG2",
@@ -68,7 +68,7 @@
   "side_effect_class": "none",
   "candidate_identity_policy": "none",
   "goal": "MathArc 原生运行时拥有执行状态和数学权威；GitHub Harness 只提供治理工具链。",
-  "owner": "decision owner",
+  "owner": "决策负责人",
   "decision_record_ref": "agents-results/2026-09-04/matharc-research-runtime-v04/decisions/DP1.md",
   "blocking_reasons": [],
   "readiness_gaps": [],

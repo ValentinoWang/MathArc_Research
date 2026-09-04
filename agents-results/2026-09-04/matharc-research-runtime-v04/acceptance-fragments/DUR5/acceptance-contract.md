@@ -1,12 +1,18 @@
 # Acceptance Contract: DUR5
 
 - Task ID: DUR5
+- Contract kind: validation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: validation result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 恢复验收负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h2[6]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-DUR5
 - SSOT node: DUR5
 - SSOT path: .ssot/nodes/DUR5.json
 - Readiness mode: FORMAL
@@ -61,7 +67,7 @@ Item DUR5 constrains any create, update, or delete reachable through the interfa
 
 ## Permissions
 
-Item DUR5 is owned by 恢复验收负责人; access to the interface declared for DUR5 and cold-restart follows the acceptance seeds below and no wider grant.
+Item DUR5 is owned by principal:acceptance-a; access to the interface declared for DUR5 and cold-restart follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 

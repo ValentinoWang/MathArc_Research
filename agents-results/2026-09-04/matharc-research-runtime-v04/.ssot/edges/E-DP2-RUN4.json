@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-DP2-RUN4",
+  "from": "DP2",
+  "to": "RUN4",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "decision.matharc-backend-scope.v1"
+  ],
+  "transferred_input": "首版后端范围固定为 DeterministicTestBackend、CodexBackend 和 LocalExactToolBackend；Claude Code 与通用模型 API 后置，不阻塞首个邀请制试点。",
+  "gate_evidence": "acceptance contract evidence"
+}

@@ -1,12 +1,18 @@
 # Acceptance Contract: PAR1
 
 - Task ID: PAR1
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 研究拓扑负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[4]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-PAR1
 - SSOT node: PAR1
 - SSOT path: .ssot/nodes/PAR1.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item PAR1, the interface declared for PAR1 must continue to satisfy every ac
 
 ## Data impact
 
-Item PAR1 constrains any create, update, or delete reachable through the interface declared for PAR1; only the acceptance seeds below define what data changes are permitted for research-topology. Node-specific data assertions: 在 matharc/v02/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑 | 在 tests/test_runtime_topology.py 中拒绝缺少角色、预算或写入区域的研究成员
+Item PAR1 constrains any create, update, or delete reachable through the interface declared for PAR1; only the acceptance seeds below define what data changes are permitted for research-topology. Node-specific data assertions: 在 matharc/v02/runtime/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑 | 在 tests/test_runtime_topology.py 中拒绝缺少角色、预算或写入区域的研究成员
 
 ## Permissions
 
-Item PAR1 is owned by 研究拓扑负责人; access to the interface declared for PAR1 and research-topology follows the acceptance seeds below and no wider grant.
+Item PAR1 is owned by principal:acceptance-a; access to the interface declared for PAR1 and research-topology follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item PAR1: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-PAR1 | machine/unit | 在 matharc/v02/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑 | Unit | Automatic | Yes |
+| AC-01 | behavior | SRC-PAR1 | machine/unit | 在 matharc/v02/runtime/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑 | Unit | Automatic | Yes |
 | AC-02 | behavior | SRC-PAR1 | machine/integration-contract | 在 tests/test_runtime_topology.py 中拒绝缺少角色、预算或写入区域的研究成员 | Integration | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item PAR1 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Unit | matharc/v02/topology.py | Automatic | Yes |
+| AC-01 | Unit | matharc/v02/runtime/topology.py | Automatic | Yes |
 | AC-02 | Integration | tests/test_runtime_topology.py | Automatic | Yes |
 
 ## Exploratory testing

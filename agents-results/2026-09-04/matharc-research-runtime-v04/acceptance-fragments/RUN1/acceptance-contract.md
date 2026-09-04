@@ -1,19 +1,25 @@
 # Acceptance Contract: RUN1
 
 - Task ID: RUN1
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 运行合同负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h1[1]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-RUN1
 - SSOT node: RUN1
 - SSOT path: .ssot/nodes/RUN1.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.run1
-- AC budget: 4
+- AC budget: 6
 - Baseline identity: ssot-input.json#items[RUN1]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,11 +63,11 @@ For item RUN1, the interface declared for RUN1 must continue to satisfy every ac
 
 ## Data impact
 
-Item RUN1 constrains any create, update, or delete reachable through the interface declared for RUN1; only the acceptance seeds below define what data changes are permitted for run-contracts. Node-specific data assertions: 在 matharc/v02/runtime/contracts.py 中定义 ResearchRunSpec、ResearchWorkerSpec、WorkerExecutionResult、CandidateEnvelope 和 RuntimeActionReceipt 的严格 round-trip | 在 matharc/v02/runtime/identity.py 中定义 workspace_id、trace_id、runtime_run_id、generation_id、worker_id、execution_id、candidate_id、evidence_id 的层级约束 | 在 tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 中拒绝未知字段、未知状态、身份错配和不兼容合同版本 | 在 matharc/v02/runtime/generation.py 中定义 GenerationInputSnapshot、GenerationReducer 和 GenerationClosePolicy 的输入输出边界
+Item RUN1 constrains any create, update, or delete reachable through the interface declared for RUN1; only the acceptance seeds below define what data changes are permitted for run-contracts. Node-specific data assertions: 在 matharc/v02/runtime/contracts.py 中定义 ResearchRunSpec、ResearchWorkerSpec、WorkerExecutionResult、CandidateEnvelope 和 RuntimeActionReceipt 的严格 round-trip | 在 matharc/v02/runtime/identity.py 中定义 workspace_id、trace_id、runtime_run_id、generation_id、worker_id、execution_id、candidate_id、evidence_id 的层级约束 | 在 tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 中拒绝未知字段、未知状态、身份错配和不兼容合同版本 | 在 matharc/v02/runtime/generation.py 中定义 GenerationInputSnapshot、GenerationReducer 和 GenerationClosePolicy 的输入输出边界 | 在 matharc/v02/runtime/contracts.py 中固定输入合同、输出信封、状态转换、幂等键 runtime_run_id+generation_id、超时、取消与失败分类；在 tests/test_runtime_contracts.py 中把合同版本和独立验收身份作为受保护目标 | tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 实现后必须在 protected_tests 登记各自 SHA-256 及覆盖范围；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
 
 ## Permissions
 
-Item RUN1 is owned by 运行合同负责人; access to the interface declared for RUN1 and run-contracts follows the acceptance seeds below and no wider grant.
+Item RUN1 is owned by principal:acceptance-a; access to the interface declared for RUN1 and run-contracts follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -76,6 +82,8 @@ Node-specific increment for item RUN1: the thresholds and failure evidence for t
 | AC-02 | behavior | SRC-RUN1 | machine/integration-contract | 在 matharc/v02/runtime/identity.py 中定义 workspace_id、trace_id、runtime_run_id、generation_id、worker_id、execution_id、candidate_id、evidence_id 的层级约束 | Integration | Automatic | Yes |
 | AC-03 | behavior | SRC-RUN1 | machine/unit | 在 tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 中拒绝未知字段、未知状态、身份错配和不兼容合同版本 | Unit | Automatic | Yes |
 | AC-04 | behavior | SRC-RUN1 | machine/integration-contract | 在 matharc/v02/runtime/generation.py 中定义 GenerationInputSnapshot、GenerationReducer 和 GenerationClosePolicy 的输入输出边界 | Integration | Automatic | Yes |
+| AC-05 | behavior | SRC-RUN1 | machine/unit | 在 matharc/v02/runtime/contracts.py 中固定输入合同、输出信封、状态转换、幂等键 runtime_run_id+generation_id、超时、取消与失败分类；在 tests/test_runtime_contracts.py 中把合同版本和独立验收身份作为受保护目标 | Unit | Automatic | Yes |
+| AC-06 | behavior | SRC-RUN1 | machine/integration-contract | tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 实现后必须在 protected_tests 登记各自 SHA-256 及覆盖范围；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY | Integration | Automatic | Yes |
 
 ## Human acceptance
 
@@ -96,6 +104,8 @@ Item RUN1 is fully determined by its acceptance seeds; outcomes for the interfac
 | AC-02 | Integration | matharc/v02/runtime/identity.py | Automatic | Yes |
 | AC-03 | Unit | tests/test_runtime_contracts.py | Automatic | Yes |
 | AC-04 | Integration | matharc/v02/runtime/generation.py | Automatic | Yes |
+| AC-05 | Unit | matharc/v02/runtime/contracts.py | Automatic | Yes |
+| AC-06 | Integration | tests/test_runtime_contracts.py | Automatic | Yes |
 
 ## Exploratory testing
 

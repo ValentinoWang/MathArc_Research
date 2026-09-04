@@ -1,0 +1,82 @@
+{
+  "node_id": "Q4",
+  "semantic_key": "acceptance.release.rtr4",
+  "stage": "RTR4",
+  "work_kind": "release-decision",
+  "domain_lane": "rtr4",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "SYN1",
+    "SYN2",
+    "SYN3",
+    "SYN4",
+    "SYN5"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [],
+  "invalidation_keys": [
+    "release.rtr4"
+  ],
+  "write_authority": "shared-generated",
+  "acceptance_authority": "principal:release-a",
+  "unlocks": [],
+  "node_role": "acceptance-gate",
+  "execution_actor": "human",
+  "execution_contract_ref": "nodes/Q4.json",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "must-match",
+  "goal": "按来源完成标准接受 RTR4 候选版本",
+  "owner": "发布决策负责人",
+  "release_authority": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "release-acceptance-a",
+        "principal_ref": "principal:release-a"
+      },
+      {
+        "role_id": "release-acceptance-b",
+        "principal_ref": "principal:release-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "release-acceptance-a",
+      "principal_ref": "principal:release-a"
+    },
+    {
+      "role_id": "release-acceptance-b",
+      "principal_ref": "principal:release-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "source_completion_requirement_refs": [
+    "SRC-SYN1",
+    "SRC-SYN2",
+    "SRC-SYN3",
+    "SRC-SYN4",
+    "SRC-SYN5"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    }
+  ],
+  "source_requirement_refs": [
+    "SRC-SYN1",
+    "SRC-SYN2",
+    "SRC-SYN3",
+    "SRC-SYN4",
+    "SRC-SYN5"
+  ]
+}

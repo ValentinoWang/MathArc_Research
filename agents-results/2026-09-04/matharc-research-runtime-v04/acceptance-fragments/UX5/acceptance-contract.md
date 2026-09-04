@@ -1,12 +1,18 @@
 # Acceptance Contract: UX5
 
 - Task ID: UX5
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 实时控制台负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[17]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-UX5
 - SSOT node: UX5
 - SSOT path: .ssot/nodes/UX5.json
 - Readiness mode: FORMAL
@@ -61,7 +67,7 @@ Item UX5 constrains any create, update, or delete reachable through the interfac
 
 ## Permissions
 
-Item UX5 is owned by 实时控制台负责人; access to the interface declared for UX5 and live-runtime-console follows the acceptance seeds below and no wider grant.
+Item UX5 is owned by principal:acceptance-a; access to the interface declared for UX5 and live-runtime-console follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 

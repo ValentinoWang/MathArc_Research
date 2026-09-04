@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-DOG4-Q7",
+  "from": "DOG4",
+  "to": "Q7",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "data-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.dog4"
+  ],
+  "transferred_input": "汇编邀请试点的人类验收与发布证据，作出独立发布决策。",
+  "gate_evidence": "acceptance contract evidence"
+}

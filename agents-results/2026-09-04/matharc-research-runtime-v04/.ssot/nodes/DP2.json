@@ -1,0 +1,38 @@
+{
+  "node_id": "DP2",
+  "semantic_key": "decision.matharc-backend-scope",
+  "stage": "RTRZ",
+  "work_kind": "decision-acceptance",
+  "domain_lane": "decision",
+  "execution_state": "ACCEPTED",
+  "decision_state": "ACCEPTED",
+  "decision_version": 1,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [],
+  "invalidation_keys": [
+    "decision.matharc-backend-scope.v1"
+  ],
+  "write_authority": "isolated-record",
+  "acceptance_authority": "决策负责人",
+  "unlocks": [
+    "RUN4"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "human",
+  "execution_contract_ref": "nodes/DP2.json",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "goal": "首版后端范围固定为 DeterministicTestBackend、CodexBackend 和 LocalExactToolBackend；Claude Code 与通用模型 API 后置，不阻塞首个邀请制试点。",
+  "owner": "决策负责人",
+  "decision_record_ref": "agents-results/2026-09-04/matharc-research-runtime-v04/decisions/DP2.md",
+  "blocking_reasons": [],
+  "readiness_gaps": [],
+  "source_requirement_refs": [
+    "SRC-RUN4"
+  ]
+}

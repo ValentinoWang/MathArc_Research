@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S26",
-    "S53",
     "SYN1"
   ],
   "soft_dependencies": [],
@@ -27,9 +25,9 @@
     "requirement.syn2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "反例复核负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
-    "QRTR4",
+    "Q4",
     "SYN4"
   ],
   "node_role": "leaf",
@@ -37,17 +35,60 @@
   "execution_contract_ref": "nodes/SYN2.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/synthesis.py",
-    "tests/test_runtime_counterexample_review.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/synthesis.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_counterexample_review.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
   "goal": "将疑似反例送入独立复核队列，未复核前不改变研究路线或结论。",
-  "owner": "反例复核负责人",
+  "owner": "principal:owner-syn2",
   "acceptance_contract_ref": "acceptance-fragments/SYN2/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-syn2",
+    "principal_ref": "principal:owner-syn2"
+  },
+  "owner_binding": {
+    "role_id": "owner-syn2",
+    "principal_ref": "principal:owner-syn2"
+  },
   "source_requirement_refs": [
     "SRC-SYN2"
   ],
@@ -67,9 +108,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

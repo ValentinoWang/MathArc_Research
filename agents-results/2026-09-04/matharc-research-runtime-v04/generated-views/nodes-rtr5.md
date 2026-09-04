@@ -6,25 +6,25 @@
 
 | Task ID | Semantic key | Work kind | Write authority | Side effect class | Hard dependencies | Soft dependencies | Decision refs | Execution contract ref | Acceptance contract ref |
 |---|---|---|---|---|---|---|---|---|---|
-| VER1 | requirement.ver1 | implementation | implementation | reversible | F; DP1; S14; S28; S33; RUN1; DUR2 | none | decision.matharc-native-runtime@1 | nodes/VER1.json | acceptance-fragments/VER1/acceptance-contract.md |
-| VER2 | requirement.ver2 | implementation | implementation | reversible | F; DP1; S28; S36; VER1 | none | decision.matharc-native-runtime@1 | nodes/VER2.json | acceptance-fragments/VER2/acceptance-contract.md |
-| VER3 | requirement.ver3 | implementation | implementation | reversible | F; DP1; S28; S34; VER2 | none | decision.matharc-native-runtime@1 | nodes/VER3.json | acceptance-fragments/VER3/acceptance-contract.md |
-| VER4 | requirement.ver4 | implementation | implementation | reversible | F; DP1; S28; S32; VER3 | none | decision.matharc-native-runtime@1 | nodes/VER4.json | acceptance-fragments/VER4/acceptance-contract.md |
-| VER5 | requirement.ver5 | implementation | implementation | reversible | F; DP1; S28; S37; VER4 | none | decision.matharc-native-runtime@1 | nodes/VER5.json | acceptance-fragments/VER5/acceptance-contract.md |
-| VER6 | requirement.ver6 | validation | implementation | reversible | F; DP1; S82; S83; VER5 | none | decision.matharc-native-runtime@1 | nodes/VER6.json | acceptance-fragments/VER6/acceptance-contract.md |
-| QRTR5 | acceptance.release.rtr5 | release-decision | shared-generated | none | VER1; VER2; VER3; VER4; VER5; VER6 | none | none | nodes/QRTR5.json | none |
+| VER1 | requirement.ver1 | implementation | implementation | reversible | F; DP1; RUN1; DUR2 | none | decision.matharc-native-runtime@1 | nodes/VER1.json | acceptance-fragments/VER1/acceptance-contract.md |
+| VER2 | requirement.ver2 | implementation | implementation | reversible | F; DP1; VER1 | none | decision.matharc-native-runtime@1 | nodes/VER2.json | acceptance-fragments/VER2/acceptance-contract.md |
+| VER3 | requirement.ver3 | implementation | implementation | reversible | F; DP1; VER2 | none | decision.matharc-native-runtime@1 | nodes/VER3.json | acceptance-fragments/VER3/acceptance-contract.md |
+| VER4 | requirement.ver4 | implementation | implementation | reversible | F; DP1; VER3 | none | decision.matharc-native-runtime@1 | nodes/VER4.json | acceptance-fragments/VER4/acceptance-contract.md |
+| VER5 | requirement.ver5 | implementation | implementation | reversible | F; DP1; VER4 | none | decision.matharc-native-runtime@1 | nodes/VER5.json | acceptance-fragments/VER5/acceptance-contract.md |
+| VER6 | requirement.ver6 | validation | implementation | reversible | F; DP1; VER5 | none | decision.matharc-native-runtime@1 | nodes/VER6.json | acceptance-fragments/VER6/acceptance-contract.md |
+| Q5 | acceptance.release.rtr5 | release-decision | shared-generated | none | VER1; VER2; VER3; VER4; VER5; VER6 | none | none | nodes/Q5.json | none |
 
 ### Release RTR5 status ledger
 
 | Task ID | Stage | Versions | State | Attempt | Owner | Guard ID | Blocking reason | Evidence | Unlocks |
 |---|---|---|---|---|---|---|---|---|---|
-| VER1 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | 候选身份负责人 | none | none | acceptance-fragments/VER1/acceptance-contract.md | QRTR5; VER2 |
-| VER2 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | 命题范围负责人 | none | none | acceptance-fragments/VER2/acceptance-contract.md | QRTR5; VER3 |
-| VER3 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | 独立重放负责人 | none | none | acceptance-fragments/VER3/acceptance-contract.md | QRTR5; VER4 |
-| VER4 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | 证据转换负责人 | none | none | acceptance-fragments/VER4/acceptance-contract.md | QRTR5; VER5 |
-| VER5 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | 证据失效负责人 | none | none | acceptance-fragments/VER5/acceptance-contract.md | QRTR5; VER6 |
-| VER6 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | 验证汇合负责人 | none | none | acceptance-fragments/VER6/acceptance-contract.md | DOG2; QRTR5; UX5 |
-| QRTR5 | RTR5 | none | PLANNED | none | release decision owner | none | none | none | none |
+| VER1 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER1/acceptance-contract.md | Q5; VER2 |
+| VER2 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER2/acceptance-contract.md | Q5; VER3 |
+| VER3 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER3/acceptance-contract.md | Q5; VER4 |
+| VER4 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER4/acceptance-contract.md | Q5; VER5 |
+| VER5 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER5/acceptance-contract.md | Q5; VER6 |
+| VER6 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER6/acceptance-contract.md | DOG2; Q5; UX5 |
+| Q5 | RTR5 | none | PLANNED | none | principal:release-a | none | none | none | none |
 
 ### Release RTR5 deliverables
 

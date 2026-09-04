@@ -1,12 +1,18 @@
 # Acceptance Contract: SYN4
 
 - Task ID: SYN4
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 代际议程负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h2[7]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-SYN4
 - SSOT node: SYN4
 - SSOT path: .ssot/nodes/SYN4.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item SYN4, the interface declared for SYN4 must continue to satisfy every ac
 
 ## Data impact
 
-Item SYN4 constrains any create, update, or delete reachable through the interface declared for SYN4; only the acceptance seeds below define what data changes are permitted for next-generation-agenda. Node-specific data assertions: 在 matharc/v02/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程 | 在 tests/test_runtime_next_generation_agenda.py 中要求下一代明确引用上一代事实
+Item SYN4 constrains any create, update, or delete reachable through the interface declared for SYN4; only the acceptance seeds below define what data changes are permitted for next-generation-agenda. Node-specific data assertions: 在 matharc/v02/runtime/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程 | 在 tests/test_runtime_next_generation_agenda.py 中要求下一代明确引用上一代事实
 
 ## Permissions
 
-Item SYN4 is owned by 代际议程负责人; access to the interface declared for SYN4 and next-generation-agenda follows the acceptance seeds below and no wider grant.
+Item SYN4 is owned by principal:acceptance-a; access to the interface declared for SYN4 and next-generation-agenda follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item SYN4: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-SYN4 | machine/integration-contract | 在 matharc/v02/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程 | Integration | Automatic | Yes |
+| AC-01 | behavior | SRC-SYN4 | machine/integration-contract | 在 matharc/v02/runtime/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程 | Integration | Automatic | Yes |
 | AC-02 | behavior | SRC-SYN4 | machine/local-runtime | 在 tests/test_runtime_next_generation_agenda.py 中要求下一代明确引用上一代事实 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item SYN4 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Integration | matharc/v02/research_director/agenda.py | Automatic | Yes |
+| AC-01 | Integration | matharc/v02/runtime/research_director/agenda.py | Automatic | Yes |
 | AC-02 | Local runtime | tests/test_runtime_next_generation_agenda.py | Automatic | Yes |
 
 ## Exploratory testing

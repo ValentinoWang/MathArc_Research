@@ -1,15 +1,30 @@
 {
   "release_id": "RTR4",
-  "release_gate_node": "QRTR4",
+  "release_gate_node": "Q4",
   "title": "RT-R4 代际学习",
   "user_value": "上一代的失败和研究经历可以改变下一代议程。",
   "independent_failure": "蒸馏失败或缺少出处时，下一代保持未启动。",
+  "release_authority": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "release-acceptance-a",
+        "principal_ref": "principal:release-a"
+      },
+      {
+        "role_id": "release-acceptance-b",
+        "principal_ref": "principal:release-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
   "node_ids": [
     "SYN1",
     "SYN2",
     "SYN3",
     "SYN4",
     "SYN5",
-    "QRTR4"
+    "Q4"
   ]
 }

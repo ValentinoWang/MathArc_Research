@@ -1,14 +1,29 @@
 {
   "release_id": "RTR7",
-  "release_gate_node": "QRTR7",
+  "release_gate_node": "Q7",
   "title": "RT-R7 真实任务与用户试点",
   "user_value": "真实两代研究和邀请制试点具备可复核发布证据。",
   "independent_failure": "任一错误晋升、越权动作或不可重放结果阻断试点发布.",
+  "release_authority": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "release-acceptance-a",
+        "principal_ref": "principal:release-a"
+      },
+      {
+        "role_id": "release-acceptance-b",
+        "principal_ref": "principal:release-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
   "node_ids": [
     "DOG1",
     "DOG2",
     "DOG3",
     "DOG4",
-    "QRTR7"
+    "Q7"
   ]
 }

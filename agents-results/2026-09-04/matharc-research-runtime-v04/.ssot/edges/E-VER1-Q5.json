@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-VER1-Q5",
+  "from": "VER1",
+  "to": "Q5",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.ver1"
+  ],
+  "transferred_input": "定义候选进入验证阶段所需的身份约束和 VerifierReceipt，而非重新定义候选包。",
+  "gate_evidence": "acceptance contract evidence"
+}

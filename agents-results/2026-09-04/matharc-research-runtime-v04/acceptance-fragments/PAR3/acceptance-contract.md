@@ -1,19 +1,25 @@
 # Acceptance Contract: PAR3
 
 - Task ID: PAR3
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 并发调度负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[6]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-PAR3
 - SSOT node: PAR3
 - SSOT path: .ssot/nodes/PAR3.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.par3
-- AC budget: 3
+- AC budget: 5
 - Baseline identity: ssot-input.json#items[PAR3]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,11 +63,11 @@ For item PAR3, the interface declared for PAR3 must continue to satisfy every ac
 
 ## Data impact
 
-Item PAR3 constrains any create, update, or delete reachable through the interface declared for PAR3; only the acceptance seeds below define what data changes are permitted for bounded-parallelism. Node-specific data assertions: 在 matharc/v02/scheduler.py 中实现有界并发、独立 execution_id 和隔离工作区 | 在 tests/test_runtime_parallelism.py 中证明至少三个不同进程存在真实时间重叠且写入区域无交集 | 在 tests/test_runtime_parallelism_contract.py 中验证冻结输入、并发上限和隔离工作区遵守运行时数据合同
+Item PAR3 constrains any create, update, or delete reachable through the interface declared for PAR3; only the acceptance seeds below define what data changes are permitted for bounded-parallelism. Node-specific data assertions: 在 matharc/v02/runtime/scheduler.py 中实现有界并发、独立 execution_id 和隔离工作区 | 在 tests/test_runtime_parallelism.py 中证明至少三个不同进程存在真实时间重叠且写入区域无交集 | 在 tests/test_runtime_parallelism_contract.py 中验证冻结输入、并发上限和隔离工作区遵守运行时数据合同 | 在 matharc/v02/runtime/scheduler.py 中固定 GenerationInputSnapshot 输入、execution_id 与隔离工作区输出、并发上限、成员幂等键、超时/取消/失败分类、有限重试和恢复回执；在 tests/test_runtime_parallelism.py 与 tests/test_runtime_parallelism_contract.py 中保护真实重叠与独立验收身份 | tests/test_runtime_parallelism.py 和 tests/test_runtime_parallelism_contract.py 实现后必须在 protected_tests 登记各自 SHA-256 及真实重叠/隔离合同覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
 
 ## Permissions
 
-Item PAR3 is owned by 并发调度负责人; access to the interface declared for PAR3 and bounded-parallelism follows the acceptance seeds below and no wider grant.
+Item PAR3 is owned by principal:acceptance-a; access to the interface declared for PAR3 and bounded-parallelism follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,9 +78,11 @@ Node-specific increment for item PAR3: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-PAR3 | machine/non-functional | 在 matharc/v02/scheduler.py 中实现有界并发、独立 execution_id 和隔离工作区 | Non-functional | Automatic | Yes |
+| AC-01 | behavior | SRC-PAR3 | machine/non-functional | 在 matharc/v02/runtime/scheduler.py 中实现有界并发、独立 execution_id 和隔离工作区 | Non-functional | Automatic | Yes |
 | AC-02 | behavior | SRC-PAR3 | machine/local-runtime | 在 tests/test_runtime_parallelism.py 中证明至少三个不同进程存在真实时间重叠且写入区域无交集 | Local runtime | Automatic | Yes |
 | AC-03 | behavior | SRC-PAR3 | machine/integration-contract | 在 tests/test_runtime_parallelism_contract.py 中验证冻结输入、并发上限和隔离工作区遵守运行时数据合同 | Integration | Automatic | Yes |
+| AC-04 | behavior | SRC-PAR3 | machine/non-functional | 在 matharc/v02/runtime/scheduler.py 中固定 GenerationInputSnapshot 输入、execution_id 与隔离工作区输出、并发上限、成员幂等键、超时/取消/失败分类、有限重试和恢复回执；在 tests/test_runtime_parallelism.py 与 tests/test_runtime_parallelism_contract.py 中保护真实重叠与独立验收身份 | Non-functional | Automatic | Yes |
+| AC-05 | behavior | SRC-PAR3 | machine/local-runtime | tests/test_runtime_parallelism.py 和 tests/test_runtime_parallelism_contract.py 实现后必须在 protected_tests 登记各自 SHA-256 及真实重叠/隔离合同覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 
@@ -91,9 +99,11 @@ Item PAR3 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Non-functional | matharc/v02/scheduler.py | Automatic | Yes |
+| AC-01 | Non-functional | matharc/v02/runtime/scheduler.py | Automatic | Yes |
 | AC-02 | Local runtime | tests/test_runtime_parallelism.py | Automatic | Yes |
 | AC-03 | Integration | tests/test_runtime_parallelism_contract.py | Automatic | Yes |
+| AC-04 | Non-functional | matharc/v02/runtime/scheduler.py | Automatic | Yes |
+| AC-05 | Local runtime | tests/test_runtime_parallelism.py | Automatic | Yes |
 
 ## Exploratory testing
 

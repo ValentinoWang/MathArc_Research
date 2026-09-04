@@ -11,9 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S14",
-    "S26",
-    "S45",
     "RUN5",
     "DUR2"
   ],
@@ -29,9 +26,9 @@
     "requirement.syn1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "探索结果接线负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
-    "QRTR4",
+    "Q4",
     "SYN2",
     "SYN3"
   ],
@@ -40,18 +37,64 @@
   "execution_contract_ref": "nodes/SYN1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/synthesis.py",
-    "matharc/v02/runtime/candidate.py",
-    "tests/test_runtime_candidate_synthesis.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/synthesis.py",
+      "mode": "create"
+    },
+    {
+      "path": "matharc/v02/runtime/candidate.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_candidate_synthesis.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/unit",
     "machine/local-runtime"
   ],
   "goal": "把普通执行输出标准化为带完整出处的探索候选，隔离于正式证据。",
-  "owner": "探索结果接线负责人",
+  "owner": "principal:owner-syn1",
   "acceptance_contract_ref": "acceptance-fragments/SYN1/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-syn1",
+    "principal_ref": "principal:owner-syn1"
+  },
+  "owner_binding": {
+    "role_id": "owner-syn1",
+    "principal_ref": "principal:owner-syn1"
+  },
   "source_requirement_refs": [
     "SRC-SYN1"
   ],
@@ -71,9 +114,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

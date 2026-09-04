@@ -5,13 +5,13 @@
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "external_dependency_id": "EXT-MATHARC-RUNTIME-CONTRACT-HTML",
       "path": "docs/contracts/matharc-research-runtime-v04.html",
-      "git_identity": "5ae43a3dddefb1fbb5062bb702969c99368a50f2#blob:71ddae5b281fef0b2b7d2a5fd1ae35b91e88f509",
-      "sha256": "1ee8f49071de1adaabfcb542640e2bd7638447001b5287eb188bfb017269404f",
+      "git_identity": "ce3ad59f777f30705229fbb9dfb2885667bf12c7#blob:8c5dc5689540e3c48a768755cb2f4d81cb0e2184",
+      "sha256": "5bf47c89f1004f2701fbcb96a89ae248b1b5bdeb3522d6f02b8cf6d0acd5a76f",
       "media_type": "text/html",
       "authority_by_dimension": {
         "information_architecture": "normative",
         "visual_tokens": "informative",
-        "layout": "normative",
+        "layout": "not-applicable",
         "interaction_behavior": "normative",
         "seed_data": "not-applicable",
         "runtime_side_effects": "normative"
@@ -22,8 +22,8 @@
       "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
       "external_dependency_id": "EXT-MATHARC-RUNTIME-BASELINE",
       "path": "docs/contracts/matharc-research-runtime-baseline.html",
-      "git_identity": "5ae43a3dddefb1fbb5062bb702969c99368a50f2#blob:b48fb144f9d6786ddd843b9ecf054e7bbcb96028",
-      "sha256": "345a71a9129f2a5a51cdac21ce01d0f8e3ffd30498bbe6c9bb68261b500f3130",
+      "git_identity": "ce3ad59f777f30705229fbb9dfb2885667bf12c7#blob:4a16a5587724f467cf16b283988e72232e6b7a5e",
+      "sha256": "a2cf7bec5fa741620ad886639e8a04eb8216b2b8c9a5f16ca773f6bd625e2acc",
       "media_type": "text/html",
       "authority_by_dimension": {
         "information_architecture": "informative",
@@ -31,7 +31,144 @@
         "layout": "informative",
         "interaction_behavior": "informative",
         "seed_data": "informative",
-        "runtime_side_effects": "normative"
+        "runtime_side_effects": "informative"
+      },
+      "role": "derived",
+      "derived_from": "SRC-MATHARC-RUNTIME-CONTRACT-HTML"
+    },
+    {
+      "artifact_id": "SRC-MATHARC-TRACE-PY",
+      "external_dependency_id": "EXT-MATHARC-TRACE-PY",
+      "path": "matharc/v02/trace.py",
+      "git_identity": "ce3ad59f777f30705229fbb9dfb2885667bf12c7#blob:1e971372131a7287571ce460561d4f9302f2a5b8",
+      "sha256": "7aeb1d85f5cb2aefebc194ea25606073b41cb995c97a8fc36b81ddd3f24900f1",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      },
+      "role": "current-implementation"
+    },
+    {
+      "artifact_id": "SRC-MATHARC-ACCESS-PY",
+      "external_dependency_id": "EXT-MATHARC-ACCESS-PY",
+      "path": "matharc/v02/access.py",
+      "git_identity": "ce3ad59f777f30705229fbb9dfb2885667bf12c7#blob:15916a3c71063ef707a1e50e5fe0a2f3c7d52947",
+      "sha256": "5830ddde64c70436b0a652f9ce642d856fde8c1cdbb268bde6d0349d9ed8d030",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      },
+      "role": "current-implementation"
+    },
+    {
+      "artifact_id": "SRC-MATHARC-ACCESS-SERVER-PY",
+      "external_dependency_id": "EXT-MATHARC-ACCESS-SERVER-PY",
+      "path": "matharc/v02/access_server.py",
+      "git_identity": "ce3ad59f777f30705229fbb9dfb2885667bf12c7#blob:516a07b50175220d8020396611bec7962f5bce05",
+      "sha256": "1a8a0448884d7acc86c3917670702afea940af09390d08c0976cd057b5487792",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      },
+      "role": "current-implementation"
+    },
+    {
+      "artifact_id": "SRC-MATHARC-ARTIFACT-STORE-PY",
+      "external_dependency_id": "EXT-MATHARC-ARTIFACT-STORE-PY",
+      "path": "matharc/v02/artifact_store.py",
+      "git_identity": "ce3ad59f777f30705229fbb9dfb2885667bf12c7#blob:0d8a380c68d9b949f75738961ac99ecfc0dae04d",
+      "sha256": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      },
+      "role": "current-implementation"
+    },
+    {
+      "artifact_id": "SRC-MATHARC-WORKSPACE-IMPL-PY",
+      "external_dependency_id": "EXT-MATHARC-WORKSPACE-IMPL-PY",
+      "path": "matharc/v02/_workspace_impl.py",
+      "git_identity": "ce3ad59f777f30705229fbb9dfb2885667bf12c7#blob:7a59eade41bb26b9cf98818b5588a433ee370803",
+      "sha256": "a78fd477f3377180a4a551dead366c081ea316ce1843bdc36aef215d30128788",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      },
+      "role": "current-implementation"
+    },
+    {
+      "artifact_id": "SRC-MATHARC-WORKSPACE-SERVER-IMPL-PY",
+      "external_dependency_id": "EXT-MATHARC-WORKSPACE-SERVER-IMPL-PY",
+      "path": "matharc/v02/_workspace_server_impl.py",
+      "git_identity": "ce3ad59f777f30705229fbb9dfb2885667bf12c7#blob:9787cd8760b4eddca1b8732c69a51cb2e0c4292d",
+      "sha256": "128d386ff68761e45a003ef1f7c86f09049ed961ecc36102783f316395e04d0c",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      },
+      "role": "current-implementation"
+    },
+    {
+      "artifact_id": "SRC-MATHARC-CAMPAIGN-PY",
+      "external_dependency_id": "EXT-MATHARC-CAMPAIGN-PY",
+      "path": "matharc/v02/campaign.py",
+      "git_identity": "ce3ad59f777f30705229fbb9dfb2885667bf12c7#blob:a2eebfc24a36e06a2b3e655a5d2cd5a494bb7529",
+      "sha256": "5cf446b3195125875852ea3789b3dc4a16f7cbfa3218fa304bfc259fe0921a4e",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      },
+      "role": "current-implementation"
+    },
+    {
+      "artifact_id": "SRC-MATHARC-CONSOLE-EXPORT-PY",
+      "external_dependency_id": "EXT-MATHARC-CONSOLE-EXPORT-PY",
+      "path": "matharc/v02/console_export.py",
+      "git_identity": "ce3ad59f777f30705229fbb9dfb2885667bf12c7#blob:dd967fb6f86dd50575b738f47643270aa85a291e",
+      "sha256": "79adf80dd0b1028c1ddd03ff4de06457cf2c2a2c6312996bf4091b10055f391a",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
       },
       "role": "current-implementation"
     }
@@ -41,414 +178,899 @@
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0001",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "heading",
-      "locator": "html:h1[1]",
+      "locator": "html:requirement-id=contract-title",
       "text": "MathArc 原生研究运行时 v0.4 产品合同",
       "content_sha256": "b4ac59b1a1fca2b839117cfe2bb138ad9d2097d55828994160225677448ea5bb",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-RUN1"
+      "legacy_locator": "html:h1[1]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0002",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "heading",
-      "locator": "html:h2[1]",
+      "locator": "html:requirement-id=authority-boundary",
       "text": "权威边界",
       "content_sha256": "f22b77e3968ff3586a3269104b4b4f8e8fb2ea238dffd1e050d7e53e368842da",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-FND1"
+      "legacy_locator": "html:h2[1]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0003",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[1]",
+      "locator": "html:requirement-id=runtime-authority",
       "text": "MathArc 原生运行时拥有研究运行的执行状态、任务调度、代际提交、恢复计划、候选导入和运行控制权威。",
       "content_sha256": "7acf613425a66df2b38a6f10fe5eff627d14b84f8c99d9a1ead0239cf2da0fb2",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-FND2"
+      "legacy_locator": "html:li[1]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0004",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[2]",
+      "locator": "html:requirement-id=trace-promotion-authority",
       "text": "数学结论仍只由 ResearchTrace 的验证门和晋升方法改变；RuntimeStore 不得把运行成功直接写成 PROVED。",
       "content_sha256": "b5cdc944c7cd4c34d723c9ca9c43518265cbaa45338d23b387ff4ee9cf1faaa7",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-RUN2"
+      "legacy_locator": "html:li[2]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0005",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[3]",
+      "locator": "html:requirement-id=replaceable-backends",
       "text": "模型 API、Codex、Claude Code 和本地进程都是可替换后端；后端只返回不可变的 WorkerExecutionResult。",
       "content_sha256": "d027c43d887725479ee3db8a7cc785c80a8280c445dad73bfcb79e11e4c17356",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-RUN3"
+      "legacy_locator": "html:li[3]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0006",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "heading",
-      "locator": "html:h2[2]",
+      "locator": "html:requirement-id=runtime-identity-hierarchy",
       "text": "运行身份层级",
       "content_sha256": "8d0821dd9b7bd5ef79dfdafc6554fc4e95d48c5e55b024e2091b281100117dac",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-RUN4"
+      "legacy_locator": "html:h2[2]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0007",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "heading",
-      "locator": "html:h2[3]",
+      "locator": "html:requirement-id=single-run-candidate-contract",
       "text": "单任务与候选合同",
       "content_sha256": "43d5edb7b503ce6bece01ae3470a0eb17fecfdf28ccd94e3d351c4801750d5e0",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-RUN5"
+      "legacy_locator": "html:h2[3]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0008",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[4]",
+      "locator": "html:requirement-id=run-contract-types",
       "text": "RUN1 定义 ResearchRunSpec、ResearchWorkerSpec、WorkerExecutionResult、CandidateEnvelope 和 RuntimeActionReceipt。",
       "content_sha256": "be2a5b6ea166fda6dd220c691a49176fea4d10480a614936b61540b969f0e229",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-PAR1"
+      "legacy_locator": "html:li[4]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0009",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[5]",
+      "locator": "html:requirement-id=candidate-assembly",
       "text": "协调器结合评价器摘要、运行身份、源码身份、工具注册表摘要、预算和产物摘要组装 CandidateEnvelope。",
       "content_sha256": "792525b5d8d5ebb5fe430a0ceb7fed5cdf081f2c3fa5f1f066fded6b6bc6fc68",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-PAR2"
+      "legacy_locator": "html:li[5]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0010",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[6]",
+      "locator": "html:requirement-id=verification-boundary",
       "text": "验证阶段只校验 CandidateEnvelope 的身份约束，不负责第一次定义候选包。",
       "content_sha256": "e54abea3c8d37bc60d258f57fc1b28100c6034615c65377e8a63a97109ae742e",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-PAR3"
+      "legacy_locator": "html:li[6]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0011",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "heading",
-      "locator": "html:h2[4]",
+      "locator": "html:requirement-id=frozen-input-parallel-reduction",
       "text": "冻结输入、并行与归并",
       "content_sha256": "7e11aea0678867303c1a32d5e8e5a5a2a871cf0fd3507f13082c6c54093a7114",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-PAR4"
+      "legacy_locator": "html:h2[4]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0012",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[7]",
+      "locator": "html:requirement-id=generation-input-snapshot",
       "text": "每一代开始时生成不可变 GenerationInputSnapshot，包含 trace_digest、contract_digest、agenda_digest、worker_spec_digest 和 tool_registry_digest。",
       "content_sha256": "e547c2f006708450435b7920c88f01655ea3a3ba344d32222f1d4028c337c0ed",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-PAR5"
+      "legacy_locator": "html:li[7]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0013",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[8]",
+      "locator": "html:requirement-id=isolated-worker-writes",
       "text": "成员只能读取冻结快照和隔离工作区，不能直接修改共享 ResearchTrace。",
       "content_sha256": "11f7e40a3b95f32b8773924eda433beff19efc2549f1c398d27787512f44088c",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-DUR1"
+      "legacy_locator": "html:li[8]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0014",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[9]",
+      "locator": "html:requirement-id=single-generation-reducer",
       "text": "唯一的 GenerationReducer 负责稳定排序、冲突检查、重复去重、部分失败、最低完成成员数、超时和迟到结果归属，并生成 GenerationCommit。",
       "content_sha256": "463d7e75e1533e92f904c81649fa10610c1eb916c3c9092ccf23e2659833137e",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-DUR2"
+      "legacy_locator": "html:li[9]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0015",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[10]",
+      "locator": "html:requirement-id=generation-close-policy",
       "text": "GenerationClosePolicy 决定代际关闭；关闭后迟到结果不得改写已关闭代际。",
       "content_sha256": "e6169bc95c88fbe70bf526872337af7d342131e95e14100531619986e4b9e3f5",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-DUR3"
+      "legacy_locator": "html:li[10]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0016",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "heading",
-      "locator": "html:h2[5]",
+      "locator": "html:requirement-id=persistence-recovery-verification",
       "text": "持久化、恢复与数学验证",
       "content_sha256": "1943394ac9a6391f0030ab4c8f91d2c7cc75f26b97ff6fd966171f7ff343c3a5",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-DUR4"
+      "legacy_locator": "html:h2[5]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0017",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "heading",
-      "locator": "html:h2[6]",
+      "locator": "html:requirement-id=invite-console-pilot-runtime",
       "text": "邀请制控制台与试点运行环境",
       "content_sha256": "91ac787e787d33586843ce3769052f316bf05838760471b3aaa27a58975a2a52",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-DUR5"
+      "legacy_locator": "html:h2[6]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0018",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[11]",
+      "locator": "html:requirement-id=invite-console-projection",
       "text": "邀请制控制台只投影 RuntimeStore，通过 Cookie 会话和权限边界提供登记动作。",
       "content_sha256": "7018592c3e04652514335a9d4bbbd29b245c2e5f163a26f39b4d166671680ecd",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-SYN1"
+      "legacy_locator": "html:li[11]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0019",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[12]",
+      "locator": "html:requirement-id=registered-action-boundary",
       "text": "服务端不得接受任意命令、工作目录、环境变量、可执行文件或参数；敏感字段和主机路径必须递归脱敏。",
       "content_sha256": "d576c2f9b1c9c54ece16684e37e8dcc46b26afabb77e47eafc6a360e47cf6b22",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-SYN2"
+      "legacy_locator": "html:li[12]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0020",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[13]",
+      "locator": "html:requirement-id=ops-before-real-research",
       "text": "OPS1、OPS2、OPS3 必须先完成部署守护、健康日志、配额、备份恢复、回滚和数据清理，DOG2 才能进入真实研究。",
       "content_sha256": "d53d3de870b4cd8fcc620d415bb325988b711eff35894680d207171c624401cd",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-SYN3"
+      "legacy_locator": "html:li[13]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0021",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[14]",
+      "locator": "html:requirement-id=verification-promotion-gate",
       "text": "VER6 只能在独立验证、范围检查和来源身份均通过后开放数学证据晋升。",
       "content_sha256": "e7852afe46c9b91ba65434b752479550545f0789b764e97be6202b7befd39436",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-UX2"
+      "legacy_locator": "html:li[14]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0022",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[15]",
+      "locator": "html:requirement-id=invite-principal-boundary",
       "text": "UX2 只允许已邀请主体读取受控运行投影，并拒绝未授权的运行操作。",
       "content_sha256": "85cad267f836fcf2af6569bd0c3c04a0970eef1d50a2151f3180fb594eff0b11",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-UX3"
+      "legacy_locator": "html:li[15]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0023",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[16]",
+      "locator": "html:requirement-id=runtime-action-allowlist",
       "text": "UX3 只接受登记过的运行动作和目标身份，不接受任意命令或参数。",
       "content_sha256": "4652843bcb9c8b063837bd32a4b5b0f32f6dd9a71a887146a91b91cc796cf250",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-UX4"
+      "legacy_locator": "html:li[16]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0024",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[17]",
+      "locator": "html:requirement-id=recursive-redaction",
       "text": "UX4 必须在投影层递归脱敏敏感字段、主机路径、命令和异常堆栈。",
       "content_sha256": "ec3d7ca45959beaa34c7a158af54744da3c9d8a454035888f7ddcac12b877af8",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-UX5"
+      "legacy_locator": "html:li[17]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0025",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[18]",
+      "locator": "html:requirement-id=runtime-console-receipts",
       "text": "UX5 必须从 RuntimeStore 读取运行状态，并展示停止、暂停、继续和重新验证的可审计回执。",
       "content_sha256": "ec68ab8d8ac846a9f8aa33df6a413a2374a97510971759571198717af76f973b",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-UX6"
+      "legacy_locator": "html:li[18]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0026",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[19]",
+      "locator": "html:requirement-id=console-human-acceptance",
       "text": "UX6 的人类验收必须同时记录邀请权限、动作边界和用户对运行状态的理解。",
       "content_sha256": "9b1d063769f538c96cee41ad6770207e8b569097dec79015dc28261325ac9dc3",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-DOG1"
+      "legacy_locator": "html:li[19]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0027",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[20]",
+      "locator": "html:requirement-id=two-generation-pilot",
       "text": "DOG2 必须使用两代真实研究和持久运行时证据，且不得绕过验证晋升。",
       "content_sha256": "b745082c13becde0d4f2d9b04aa12974e47f93b2780b3f7e1494d75affab49ad",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-DOG2"
+      "legacy_locator": "html:li[20]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0028",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[21]",
+      "locator": "html:requirement-id=adversarial-pilot",
       "text": "DOG3 必须通过越权命令、跨工作区写入、重复费用和迟到结果攻击演练。",
       "content_sha256": "d4d59d5f1501ceb34b0f586095caca5037054888d97a78cb7a0e9bc308cb14f3",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-DOG3"
+      "legacy_locator": "html:li[21]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0029",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[22]",
+      "locator": "html:requirement-id=pilot-release-decision",
       "text": "DOG4 必须绑定发布决策、验证报告、部署身份和远端回读证据。",
       "content_sha256": "4d33136c05beb68a5b0b5b580cacb9a84abf452d1b7f987e1bab980bb116e9d0",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-DOG4"
+      "legacy_locator": "html:li[22]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0030",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[23]",
+      "locator": "html:requirement-id=deployment-configuration",
       "text": "OPS1 必须固定部署配置、持久目录、密钥来源和进程守护，并保留可重放日志。",
       "content_sha256": "032fec06efa1ab472213e3496b1bb1c3526503068c49ac6b5759871f7461617a",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-OPS1"
+      "legacy_locator": "html:li[23]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0031",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[24]",
+      "locator": "html:requirement-id=runtime-observability",
       "text": "OPS2 必须提供健康检查、日志、并发与费用配额以及备份恢复的机器证据。",
       "content_sha256": "ec4c63d0164c2082bc2b30784ecc8afa4de0587eb477074e5bbadf2d6d988366",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-OPS2"
+      "legacy_locator": "html:li[24]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0032",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[25]",
+      "locator": "html:requirement-id=deployment-closeout",
       "text": "OPS3 必须提供部署、重启、回滚和用户数据清理的可验证收尾证据。",
       "content_sha256": "2aa9d552e8e5910080578a58ff7e7986b372a8813fa808886a89b03a7111cf44",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-OPS3"
+      "legacy_locator": "html:li[25]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0033",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "heading",
-      "locator": "html:h2[7]",
+      "locator": "html:requirement-id=zero-tolerance-invariants",
       "text": "零容忍不变量",
       "content_sha256": "6af555da53ed0b2b7f5c830c169bd4be52acba681ce0f32e2ab020ad9be0fe7f",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-SYN4"
+      "legacy_locator": "html:h2[7]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0034",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "list-item",
-      "locator": "html:li[26]",
+      "locator": "html:requirement-id=zero-tolerance-set",
       "text": "错误数学晋升、重复执行、重复费用、重复候选导入、跨工作区写入、关闭代际被迟到结果改写、公共接口敏感信息泄露、无权限运行动作均必须为 0。",
       "content_sha256": "43e5100bd015e799d2772e0dc6ce5adfb076a63b20b074ef5546103a541b71c3",
+      "legacy_locator": "html:li[26]",
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0035",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-FND1",
+      "text": "建立 MathArc 原生运行时所有权与依赖允许清单，阻断治理工具链进入产品运行路径。",
+      "content_sha256": "75b243afab0a6d7f3e2e482f714df02084fd52ad7f28c25280d706d378b2cec6",
+      "legacy_locator": "html:li[27]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-FND1"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0036",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-FND2",
+      "text": "保留 ResearchTrace 的数学结论晋升权威，并证明运行状态不能直接变成正式证明。",
+      "content_sha256": "77e3a68f1823d35628940f124c601c763e7bf47e3d97dcefd9a16b833297ae1e",
+      "legacy_locator": "html:li[28]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-FND2"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0037",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-RUN1",
+      "text": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
+      "content_sha256": "ade6c26e20273e5929c1de1a35376e715a4d075a4b5360d764a8f54b6a04efa7",
+      "legacy_locator": "html:li[29]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-RUN1"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0038",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-RUN2",
+      "text": "建立可重放的运行存储，使事件、快照和候选导入在进程重启后保持一致。",
+      "content_sha256": "1e5715d54310ab2c970da561e2b6eee48db799c66e85ce8fb1ea1e56ea0d267a",
+      "legacy_locator": "html:li[30]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-RUN2"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0039",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-RUN3",
+      "text": "建立有预算、种子和最小试跑门槛的评价器合同，失败时不启动完整研究。",
+      "content_sha256": "799e2e05ea605e2c22740380d614866478b2ca7a84ff938cd4ff8682698fe166",
+      "legacy_locator": "html:li[31]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-RUN3"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0040",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-RUN4",
+      "text": "将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。",
+      "content_sha256": "2ca8dd96f23d4b7a547f617e28170d8191cbf8d45d1d4f30771c8929ebdb2c15",
+      "legacy_locator": "html:li[32]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-RUN4"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0041",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-RUN5",
+      "text": "独立验证单任务从试跑、执行到候选回传的闭环，并阻断候选越级晋升。",
+      "content_sha256": "a7b2eb6724946bd49590eb8ea2b465559218e401fae3aaded727c18083a65993",
+      "legacy_locator": "html:li[33]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-RUN5"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0042",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-PAR1",
+      "text": "把研究路线和角色编译为带机制、预算、目标和隔离写入区的运行拓扑。",
+      "content_sha256": "c92993701d5eae3e800b118ea6de5bb7dc2a3bccd40f384f6c387713f40c929c",
+      "legacy_locator": "html:li[34]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-PAR1"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0043",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-PAR2",
+      "text": "接入已批准的动态任务并执行一次性、可审计的任务启动。",
+      "content_sha256": "8513be80f5a058920d0c4b9220f8c140a031aff0352ffcc3445ccd21c1448a00",
+      "legacy_locator": "html:li[35]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-PAR2"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0044",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-PAR3",
+      "text": "在持久化和恢复能力之后实现有界并行、冻结输入和隔离工作区调度。",
+      "content_sha256": "62af19c84afd58dd623ed811112cec0e0b85a0853dc22e8ae6f39c1397c15ef3",
+      "legacy_locator": "html:li[36]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-PAR3"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0045",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-PAR4",
+      "text": "按执行回执记录实际资源消耗，并对语义重复实验做确定性去重。",
+      "content_sha256": "4ae7fa398c012f8e83cb2361319060492a16b7f5f6c6229ac5c0fb5e6409828b",
+      "legacy_locator": "html:li[37]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-PAR4"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0046",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-PAR5",
+      "text": "独立验收多成员一代归并、冲突、部分失败和迟到结果规则。",
+      "content_sha256": "4a3837ebc4d6808c5b48e4c5f04b5e01c0199188e6efb418579006574fee1c2e",
+      "legacy_locator": "html:li[38]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-PAR5"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0047",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-DUR1",
+      "text": "定义冻结输入、代际提交、GenerationReducer 和 GenerationClosePolicy 的持久边界。",
+      "content_sha256": "531baa6a3b91e81a5f8635aadb342eecbc785352339e7a84c88f62c50da793b1",
+      "legacy_locator": "html:li[39]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-DUR1"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0048",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-DUR2",
+      "text": "以带来源身份的幂等账本保存候选、费用和执行回执，拒绝来源漂移。",
+      "content_sha256": "cf9ab335e771d2c1c960a0cf183647c16978d34217b753bdaa7ea7e7a4b2f0f9",
+      "legacy_locator": "html:li[40]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-DUR2"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0049",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-DUR3",
+      "text": "实现停止、排空、暂停、继续和取消的显式运行状态协议。",
+      "content_sha256": "f784790a00d87257355b02de2920340fc49edc20b1a312c401886a404e0d17fc",
+      "legacy_locator": "html:li[41]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-DUR3"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0050",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-DUR4",
+      "text": "从最后一个完整 GenerationCommit 生成可重放的崩溃恢复计划。",
+      "content_sha256": "352090b5b550dd03815bdf9e7d94761fa6b14400688ddc4e878d21a3fdab3879",
+      "legacy_locator": "html:li[42]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-DUR4"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0051",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-DUR5",
+      "text": "独立验收冷启动恢复、幂等恢复和不跳代不重复规则。",
+      "content_sha256": "10741bf733babe8e05152c37d7dfbed318d1730a3f57d33d24fa769c296b7942",
+      "legacy_locator": "html:li[43]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-DUR5"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0052",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-SYN1",
+      "text": "把普通执行输出标准化为带完整出处的探索候选，隔离于正式证据。",
+      "content_sha256": "ad50562e04e6652964d652b59ce39df8ff73ac23b6af5d3baef4cbbc6e006896",
+      "legacy_locator": "html:li[44]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-SYN1"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0053",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-SYN2",
+      "text": "将疑似反例送入独立复核队列，未复核前不改变研究路线或结论。",
+      "content_sha256": "b2f13c5dc5da7d64a73dadce48ee43972dba3260e10019d6aa6bd4b465675976",
+      "legacy_locator": "html:li[45]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-SYN2"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0054",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-SYN3",
+      "text": "从真实运行蒸馏带身份和候选出处的研究记忆。",
+      "content_sha256": "f62372df5da6c5f7f0be7bf160950a7a90b2ef289832f1c7cfd14c4f53fefb18",
+      "legacy_locator": "html:li[46]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-SYN3"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0055",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-SYN4",
+      "text": "把失败、经历和评审缺口编译为明确消费上一代事实的下一代议程。",
+      "content_sha256": "796ba74892947ceeb7f6adf474687a005653da0f1995a7a7dd79b77a84e8b45c",
+      "legacy_locator": "html:li[47]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-SYN4"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0056",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-SYN5",
+      "text": "独立验收连续两代提交、路线变化和上一代事实消费。",
+      "content_sha256": "1a09c1f8555e370745096f7c019aa6b47932f299f2b7667bfe02d3c22d7390fc",
+      "legacy_locator": "html:li[48]",
       "disposition": "requirement",
       "requirement_ref": "SRC-SYN5"
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0035",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0057",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-VER1",
+      "text": "定义候选进入验证阶段所需的身份约束和 VerifierReceipt，而非重新定义候选包。",
+      "content_sha256": "7daebdb6898facc2e1bd50c9204d1009a9da9632c2c78010dfd57d63dcbbed3b",
+      "legacy_locator": "html:li[49]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-VER1"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0058",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-VER2",
+      "text": "把候选绑定到具体命题、量词、对象和范围，拒绝范围扩大与对象错配。",
+      "content_sha256": "18715879257deef9b8c10b448bdfc09b0706ca6b14d23ce659ecfb77d18663dc",
+      "legacy_locator": "html:li[50]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-VER2"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0059",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-VER3",
+      "text": "为候选生成干净环境的独立重放计划，排除同实现自证。",
+      "content_sha256": "0271ca817c125fe7e146505eebf3964dcb5cc703791a8f9869bfc727fa9152d2",
+      "legacy_locator": "html:li[51]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-VER3"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0060",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-VER4",
+      "text": "仅将通过 VerifierReceipt 的候选转换为带出处的 EvidenceRecord。",
+      "content_sha256": "3847c91fbd55640df96b8bca83445ccfb1cd16abc0d5cfd87ce969538b1d5532",
+      "legacy_locator": "html:li[52]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-VER4"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0061",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-VER5",
+      "text": "记录命题、源码、评价器或候选身份变化导致的证据失效。",
+      "content_sha256": "f92cf0aec80fceb4478b53ae64a37f2e30ba1052cadb913fcfb617b07fed67c1",
+      "legacy_locator": "html:li[53]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-VER5"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0062",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-VER6",
+      "text": "独立验收验证汇合、篡改检测、越界阻断和非独立结果拒绝。",
+      "content_sha256": "ee528318287474fd904d61c081d5821f774e3f3c8656174c243f146cbb8f38e0",
+      "legacy_locator": "html:li[54]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-VER6"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0063",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-UX1",
+      "text": "把 RuntimeStore 状态投影到现有控制台数据合同，保持单一真相源。",
+      "content_sha256": "799d2480dc64bbcec76637cbb671d7412694a84ed674fd01f43f2d63a4075591",
+      "legacy_locator": "html:li[55]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-UX1"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0064",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-UX2",
+      "text": "复用邀请制 Cookie 会话和权限边界，阻断无权用户的运行动作。",
+      "content_sha256": "ee34efb9fa3c7fe4b134cda5db8d66b0151c35041fd63dfca617cea821d0a862",
+      "legacy_locator": "html:li[56]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-UX2"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0065",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-UX3",
+      "text": "提供登记动作的幂等运行控制服务，拒绝任意命令、目录、环境和参数。",
+      "content_sha256": "5405fe2085d3414a2d842769b70123e84845c46a0fbc9cac7f8348825d4d9133",
+      "legacy_locator": "html:li[57]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-UX3"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0066",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-UX4",
+      "text": "建立统一中文运行视图并递归脱敏密钥、路径、命令、环境变量和堆栈。",
+      "content_sha256": "43719e61c3c17776544684debe11d2a83ba0a272d9051d47268d900c096d8959",
+      "legacy_locator": "html:li[58]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-UX4"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0067",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-UX5",
+      "text": "实现断线重连后从服务端快照恢复的实时研究控制台。",
+      "content_sha256": "e5a28c9ea09d44516f4bf2d3ff5939e7cdb37fa95277a7fdf00daf4023dec1e8",
+      "legacy_locator": "html:li[59]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-UX5"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0068",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-UX6",
+      "text": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
+      "content_sha256": "8fcf508720eba071a923620c9454ff041b13b858fbc334e5e6174838dcf40d15",
+      "legacy_locator": "html:li[60]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-UX6"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0069",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-DOG1",
+      "text": "固定首个真实任务、评价器、范围、预算和可重放的单成员基线。",
+      "content_sha256": "41bccf00cb1098fa3af72c8c82712f246f7a1f17a07f040512e9c097847a91e1",
+      "legacy_locator": "html:li[61]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-DOG1"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0070",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-DOG2",
+      "text": "在运维闭环完成后执行两代真实并行研究并证明第二代消费第一代事实。",
+      "content_sha256": "bdb580a41bb26a6eba708bbd6a6d4d6446ad202b6afac0ad83637535f0628f5e",
+      "legacy_locator": "html:li[62]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-DOG2"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0071",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-DOG3",
+      "text": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
+      "content_sha256": "15fe362611481f354cd075dd1e127cb37a8f30046df71b8ddffa2f404073db02",
+      "legacy_locator": "html:li[63]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-DOG3"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0072",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-DOG4",
+      "text": "汇编邀请试点的人类验收与发布证据，作出独立发布决策。",
+      "content_sha256": "c0292eb79711a3fa5e43f7e1d1c178898c3d31e2de3b781eaf6b761e113a991e",
+      "legacy_locator": "html:li[64]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-DOG4"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0073",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-OPS1",
+      "text": "固定试点部署配置、持久目录、密钥来源和进程守护方式。",
+      "content_sha256": "249577e449ebce20ad9cda496f225620ee793802312e2c941ede89df30658824",
+      "legacy_locator": "html:li[65]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-OPS1"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0074",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-OPS2",
+      "text": "建立健康检查、日志、配额、备份和恢复观测闭环。",
+      "content_sha256": "1f197985836e2189e327da021f4e6c4174479d8eb67bf98529a4de502ab46fa1",
+      "legacy_locator": "html:li[66]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-OPS2"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0075",
+      "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+      "kind": "list-item",
+      "locator": "html:requirement-id=SRC-OPS3",
+      "text": "独立验收部署、重启、回滚和试点用户数据清理。",
+      "content_sha256": "06cae400001f1dc6e3bc17385cccb14cb49f01886b8baf489685eb0e2a4ef264",
+      "legacy_locator": "html:li[67]",
+      "disposition": "requirement",
+      "requirement_ref": "SRC-OPS3"
+    },
+    {
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0076",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[1]",
       "text": "RuntimeStore 不得把运行成功直接写成 PROVED。",
       "content_sha256": "0a1bcfeece9900f9808cb2fc39818a13a8fbf9fc8822c52317ef725f52810790",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-VER1"
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0036",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0077",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[2]",
       "text": "运行身份层级 运行身份必须按以下层级区分：workspace_id → trace_id → runtime_run_id → generation_id → worker_id → execution_id → candidate_id → evidence_id。",
       "content_sha256": "278e2831abdc56e6e195b168ff1eebfdb4ab1f91803be948fd84930bbf16eb12",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-VER2"
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0037",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0078",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[3]",
       "text": "关闭后迟到结果不得改写已关闭代际。",
       "content_sha256": "baaeeeb16f44a630286bfb632455fffa817542bae558ff272c18b1d61f8f45ef",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-VER3"
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0038",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0079",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[4]",
       "text": "服务端不得接受任意命令、工作目录、环境变量、可执行文件或参数；",
       "content_sha256": "ecc6fbc8af9fd510e27c29608afe9278b50d90174686cdc10b9da9f4b5537d4a",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-VER4"
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0039",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0080",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[5]",
       "text": "敏感字段和主机路径必须递归脱敏。",
       "content_sha256": "e5cbdc6e203e8c861a1182ded4f06d33a3cf91d661685e80ef48599cdd2d47e9",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-VER5"
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0040",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0081",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[6]",
       "text": "OPS1、OPS2、OPS3 必须先完成部署守护、健康日志、配额、备份恢复、回滚和数据清理，DOG2 才能进入真实研究。",
       "content_sha256": "d53d3de870b4cd8fcc620d415bb325988b711eff35894680d207171c624401cd",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-VER6"
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0041",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0082",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[7]",
       "text": "UX4 必须在投影层递归脱敏敏感字段、主机路径、命令和异常堆栈。",
       "content_sha256": "ec3d7ca45959beaa34c7a158af54744da3c9d8a454035888f7ddcac12b877af8",
-      "disposition": "requirement",
-      "requirement_ref": "SRC-UX1"
+      "disposition": "informative",
+      "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0042",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0083",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[8]",
@@ -458,7 +1080,7 @@
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0043",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0084",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[9]",
@@ -468,7 +1090,7 @@
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0044",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0085",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[10]",
@@ -478,7 +1100,7 @@
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0045",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0086",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[11]",
@@ -488,7 +1110,7 @@
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0046",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0087",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[12]",
@@ -498,7 +1120,7 @@
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0047",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0088",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[13]",
@@ -508,7 +1130,7 @@
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0048",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0089",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[14]",
@@ -518,7 +1140,7 @@
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0049",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0090",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[15]",
@@ -528,7 +1150,7 @@
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
     {
-      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0050",
+      "inventory_id": "INV-SRC-MATHARC-RUNTIME-CONTRACT-HTML-0091",
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "kind": "normative-sentence",
       "locator": "html:normative-sentence[16]",
@@ -541,9 +1163,10 @@
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-BASELINE-0001",
       "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
       "kind": "heading",
-      "locator": "html:h1[1]",
+      "locator": "html:requirement-id=baseline-title",
       "text": "MathArc 运行时现状基线",
       "content_sha256": "f769a8f8729aaf8af50f3e8088c5a2a5522d42f9b9c934af59aae6b57c304424",
+      "legacy_locator": "html:h1[1]",
       "disposition": "informative",
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
@@ -551,9 +1174,10 @@
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-BASELINE-0002",
       "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
       "kind": "list-item",
-      "locator": "html:li[1]",
+      "locator": "html:requirement-id=BASELINE-TRACE-AUTHORITY",
       "text": "现有 ResearchTrace 仍是数学结论晋升的唯一权威，运行状态不得直接写成 PROVED。",
       "content_sha256": "c3bdb0d3ef4fd12e033d52ac8fc920a43739047a03146f47231567f192c16be1",
+      "legacy_locator": "html:li[1]",
       "disposition": "informative",
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
@@ -561,9 +1185,10 @@
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-BASELINE-0003",
       "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
       "kind": "list-item",
-      "locator": "html:li[2]",
+      "locator": "html:requirement-id=BASELINE-INVITE-SESSION",
       "text": "现有 Cookie 会话和邀请边界继续作为预览控制台的访问前置条件。",
       "content_sha256": "cc863c737d13164154b4f6169d9cde5c345f0b3d66c6fa8756f7480b49d7b3b3",
+      "legacy_locator": "html:li[2]",
       "disposition": "informative",
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
@@ -571,9 +1196,10 @@
       "inventory_id": "INV-SRC-MATHARC-RUNTIME-BASELINE-0004",
       "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
       "kind": "list-item",
-      "locator": "html:li[3]",
+      "locator": "html:requirement-id=BASELINE-ARTIFACT-PROVENANCE",
       "text": "现有运行产物必须保留来源摘要，恢复和导入不得猜测未知状态。",
       "content_sha256": "23058182a615aa5c11a16277443bb2f7255e19de111613a0aa8c2cef91d04790",
+      "legacy_locator": "html:li[3]",
       "disposition": "informative",
       "rationale": "Deterministic HTML structure captured for completeness; no item binds a MUST source requirement to this locator."
     },
@@ -613,8 +1239,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[1]",
-        "content_sha256": "f22b77e3968ff3586a3269104b4b4f8e8fb2ea238dffd1e050d7e53e368842da"
+        "locator": "html:requirement-id=SRC-FND1",
+        "content_sha256": "75b243afab0a6d7f3e2e482f714df02084fd52ad7f28c25280d706d378b2cec6"
       },
       "summary": "建立 MathArc 原生运行时所有权与依赖允许清单，阻断治理工具链进入产品运行路径。",
       "required_lanes": [
@@ -661,8 +1287,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[1]",
-        "content_sha256": "7acf613425a66df2b38a6f10fe5eff627d14b84f8c99d9a1ead0239cf2da0fb2"
+        "locator": "html:requirement-id=SRC-FND2",
+        "content_sha256": "77e3a68f1823d35628940f124c601c763e7bf47e3d97dcefd9a16b833297ae1e"
       },
       "summary": "保留 ResearchTrace 的数学结论晋升权威，并证明运行状态不能直接变成正式证明。",
       "required_lanes": [
@@ -693,9 +1319,9 @@
       "scope_deviation_ref": null,
       "baseline_refs": [
         {
-          "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
-          "locator": "html:li[1]",
-          "content_sha256": "c3bdb0d3ef4fd12e033d52ac8fc920a43739047a03146f47231567f192c16be1"
+          "artifact_id": "SRC-MATHARC-TRACE-PY",
+          "locator": "file:content",
+          "content_sha256": "7aeb1d85f5cb2aefebc194ea25606073b41cb995c97a8fc36b81ddd3f24900f1"
         }
       ]
     },
@@ -713,8 +1339,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h1[1]",
-        "content_sha256": "b4ac59b1a1fca2b839117cfe2bb138ad9d2097d55828994160225677448ea5bb"
+        "locator": "html:requirement-id=SRC-RUN1",
+        "content_sha256": "ade6c26e20273e5929c1de1a35376e715a4d075a4b5360d764a8f54b6a04efa7"
       },
       "summary": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
       "required_lanes": [
@@ -728,7 +1354,9 @@
         "RUN1/AC-01",
         "RUN1/AC-02",
         "RUN1/AC-03",
-        "RUN1/AC-04"
+        "RUN1/AC-04",
+        "RUN1/AC-05",
+        "RUN1/AC-06"
       ],
       "evidence_targets": [
         {
@@ -762,8 +1390,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[2]",
-        "content_sha256": "b5cdc944c7cd4c34d723c9ca9c43518265cbaa45338d23b387ff4ee9cf1faaa7"
+        "locator": "html:requirement-id=SRC-RUN2",
+        "content_sha256": "1e5715d54310ab2c970da561e2b6eee48db799c66e85ce8fb1ea1e56ea0d267a"
       },
       "summary": "建立可重放的运行存储，使事件、快照和候选导入在进程重启后保持一致。",
       "required_lanes": [
@@ -794,9 +1422,9 @@
       "scope_deviation_ref": null,
       "baseline_refs": [
         {
-          "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
-          "locator": "html:li[3]",
-          "content_sha256": "23058182a615aa5c11a16277443bb2f7255e19de111613a0aa8c2cef91d04790"
+          "artifact_id": "SRC-MATHARC-ARTIFACT-STORE-PY",
+          "locator": "file:content",
+          "content_sha256": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3"
         }
       ]
     },
@@ -814,8 +1442,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[3]",
-        "content_sha256": "d027c43d887725479ee3db8a7cc785c80a8280c445dad73bfcb79e11e4c17356"
+        "locator": "html:requirement-id=SRC-RUN3",
+        "content_sha256": "799e2e05ea605e2c22740380d614866478b2ca7a84ff938cd4ff8682698fe166"
       },
       "summary": "建立有预算、种子和最小试跑门槛的评价器合同，失败时不启动完整研究。",
       "required_lanes": [
@@ -859,8 +1487,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[2]",
-        "content_sha256": "8d0821dd9b7bd5ef79dfdafc6554fc4e95d48c5e55b024e2091b281100117dac"
+        "locator": "html:requirement-id=SRC-RUN4",
+        "content_sha256": "2ca8dd96f23d4b7a547f617e28170d8191cbf8d45d1d4f30771c8929ebdb2c15"
       },
       "summary": "将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。",
       "required_lanes": [
@@ -872,7 +1500,9 @@
       ],
       "acceptance_refs": [
         "RUN4/AC-01",
-        "RUN4/AC-02"
+        "RUN4/AC-02",
+        "RUN4/AC-03",
+        "RUN4/AC-04"
       ],
       "evidence_targets": [
         {
@@ -904,8 +1534,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[3]",
-        "content_sha256": "43d5edb7b503ce6bece01ae3470a0eb17fecfdf28ccd94e3d351c4801750d5e0"
+        "locator": "html:requirement-id=SRC-RUN5",
+        "content_sha256": "a7b2eb6724946bd49590eb8ea2b465559218e401fae3aaded727c18083a65993"
       },
       "summary": "独立验证单任务从试跑、执行到候选回传的闭环，并阻断候选越级晋升。",
       "required_lanes": [
@@ -949,8 +1579,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[4]",
-        "content_sha256": "be2a5b6ea166fda6dd220c691a49176fea4d10480a614936b61540b969f0e229"
+        "locator": "html:requirement-id=SRC-PAR1",
+        "content_sha256": "c92993701d5eae3e800b118ea6de5bb7dc2a3bccd40f384f6c387713f40c929c"
       },
       "summary": "把研究路线和角色编译为带机制、预算、目标和隔离写入区的运行拓扑。",
       "required_lanes": [
@@ -994,8 +1624,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[5]",
-        "content_sha256": "792525b5d8d5ebb5fe430a0ceb7fed5cdf081f2c3fa5f1f066fded6b6bc6fc68"
+        "locator": "html:requirement-id=SRC-PAR2",
+        "content_sha256": "8513be80f5a058920d0c4b9220f8c140a031aff0352ffcc3445ccd21c1448a00"
       },
       "summary": "接入已批准的动态任务并执行一次性、可审计的任务启动。",
       "required_lanes": [
@@ -1039,8 +1669,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[6]",
-        "content_sha256": "e54abea3c8d37bc60d258f57fc1b28100c6034615c65377e8a63a97109ae742e"
+        "locator": "html:requirement-id=SRC-PAR3",
+        "content_sha256": "62af19c84afd58dd623ed811112cec0e0b85a0853dc22e8ae6f39c1397c15ef3"
       },
       "summary": "在持久化和恢复能力之后实现有界并行、冻结输入和隔离工作区调度。",
       "required_lanes": [
@@ -1054,7 +1684,9 @@
       "acceptance_refs": [
         "PAR3/AC-01",
         "PAR3/AC-02",
-        "PAR3/AC-03"
+        "PAR3/AC-03",
+        "PAR3/AC-04",
+        "PAR3/AC-05"
       ],
       "evidence_targets": [
         {
@@ -1077,9 +1709,9 @@
       "scope_deviation_ref": null,
       "baseline_refs": [
         {
-          "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
-          "locator": "html:li[3]",
-          "content_sha256": "23058182a615aa5c11a16277443bb2f7255e19de111613a0aa8c2cef91d04790"
+          "artifact_id": "SRC-MATHARC-WORKSPACE-IMPL-PY",
+          "locator": "file:content",
+          "content_sha256": "a78fd477f3377180a4a551dead366c081ea316ce1843bdc36aef215d30128788"
         }
       ]
     },
@@ -1097,8 +1729,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[4]",
-        "content_sha256": "7e11aea0678867303c1a32d5e8e5a5a2a871cf0fd3507f13082c6c54093a7114"
+        "locator": "html:requirement-id=SRC-PAR4",
+        "content_sha256": "4ae7fa398c012f8e83cb2361319060492a16b7f5f6c6229ac5c0fb5e6409828b"
       },
       "summary": "按执行回执记录实际资源消耗，并对语义重复实验做确定性去重。",
       "required_lanes": [
@@ -1142,8 +1774,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[7]",
-        "content_sha256": "e547c2f006708450435b7920c88f01655ea3a3ba344d32222f1d4028c337c0ed"
+        "locator": "html:requirement-id=SRC-PAR5",
+        "content_sha256": "4a3837ebc4d6808c5b48e4c5f04b5e01c0199188e6efb418579006574fee1c2e"
       },
       "summary": "独立验收多成员一代归并、冲突、部分失败和迟到结果规则。",
       "required_lanes": [
@@ -1156,7 +1788,9 @@
       "acceptance_refs": [
         "PAR5/AC-01",
         "PAR5/AC-02",
-        "PAR5/AC-03"
+        "PAR5/AC-03",
+        "PAR5/AC-04",
+        "PAR5/AC-05"
       ],
       "evidence_targets": [
         {
@@ -1188,8 +1822,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[8]",
-        "content_sha256": "11f7e40a3b95f32b8773924eda433beff19efc2549f1c398d27787512f44088c"
+        "locator": "html:requirement-id=SRC-DUR1",
+        "content_sha256": "531baa6a3b91e81a5f8635aadb342eecbc785352339e7a84c88f62c50da793b1"
       },
       "summary": "定义冻结输入、代际提交、GenerationReducer 和 GenerationClosePolicy 的持久边界。",
       "required_lanes": [
@@ -1202,7 +1836,9 @@
       "acceptance_refs": [
         "DUR1/AC-01",
         "DUR1/AC-02",
-        "DUR1/AC-03"
+        "DUR1/AC-03",
+        "DUR1/AC-04",
+        "DUR1/AC-05"
       ],
       "evidence_targets": [
         {
@@ -1234,8 +1870,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[9]",
-        "content_sha256": "463d7e75e1533e92f904c81649fa10610c1eb916c3c9092ccf23e2659833137e"
+        "locator": "html:requirement-id=SRC-DUR2",
+        "content_sha256": "cf9ab335e771d2c1c960a0cf183647c16978d34217b753bdaa7ea7e7a4b2f0f9"
       },
       "summary": "以带来源身份的幂等账本保存候选、费用和执行回执，拒绝来源漂移。",
       "required_lanes": [
@@ -1279,8 +1915,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[10]",
-        "content_sha256": "e6169bc95c88fbe70bf526872337af7d342131e95e14100531619986e4b9e3f5"
+        "locator": "html:requirement-id=SRC-DUR3",
+        "content_sha256": "f784790a00d87257355b02de2920340fc49edc20b1a312c401886a404e0d17fc"
       },
       "summary": "实现停止、排空、暂停、继续和取消的显式运行状态协议。",
       "required_lanes": [
@@ -1324,8 +1960,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[5]",
-        "content_sha256": "1943394ac9a6391f0030ab4c8f91d2c7cc75f26b97ff6fd966171f7ff343c3a5"
+        "locator": "html:requirement-id=SRC-DUR4",
+        "content_sha256": "352090b5b550dd03815bdf9e7d94761fa6b14400688ddc4e878d21a3fdab3879"
       },
       "summary": "从最后一个完整 GenerationCommit 生成可重放的崩溃恢复计划。",
       "required_lanes": [
@@ -1337,7 +1973,9 @@
       ],
       "acceptance_refs": [
         "DUR4/AC-01",
-        "DUR4/AC-02"
+        "DUR4/AC-02",
+        "DUR4/AC-03",
+        "DUR4/AC-04"
       ],
       "evidence_targets": [
         {
@@ -1369,8 +2007,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[6]",
-        "content_sha256": "91ac787e787d33586843ce3769052f316bf05838760471b3aaa27a58975a2a52"
+        "locator": "html:requirement-id=SRC-DUR5",
+        "content_sha256": "10741bf733babe8e05152c37d7dfbed318d1730a3f57d33d24fa769c296b7942"
       },
       "summary": "独立验收冷启动恢复、幂等恢复和不跳代不重复规则。",
       "required_lanes": [
@@ -1414,8 +2052,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[11]",
-        "content_sha256": "7018592c3e04652514335a9d4bbbd29b245c2e5f163a26f39b4d166671680ecd"
+        "locator": "html:requirement-id=SRC-SYN1",
+        "content_sha256": "ad50562e04e6652964d652b59ce39df8ff73ac23b6af5d3baef4cbbc6e006896"
       },
       "summary": "把普通执行输出标准化为带完整出处的探索候选，隔离于正式证据。",
       "required_lanes": [
@@ -1459,8 +2097,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[12]",
-        "content_sha256": "d576c2f9b1c9c54ece16684e37e8dcc46b26afabb77e47eafc6a360e47cf6b22"
+        "locator": "html:requirement-id=SRC-SYN2",
+        "content_sha256": "b2f13c5dc5da7d64a73dadce48ee43972dba3260e10019d6aa6bd4b465675976"
       },
       "summary": "将疑似反例送入独立复核队列，未复核前不改变研究路线或结论。",
       "required_lanes": [
@@ -1504,8 +2142,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[13]",
-        "content_sha256": "d53d3de870b4cd8fcc620d415bb325988b711eff35894680d207171c624401cd"
+        "locator": "html:requirement-id=SRC-SYN3",
+        "content_sha256": "f62372df5da6c5f7f0be7bf160950a7a90b2ef289832f1c7cfd14c4f53fefb18"
       },
       "summary": "从真实运行蒸馏带身份和候选出处的研究记忆。",
       "required_lanes": [
@@ -1549,8 +2187,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[7]",
-        "content_sha256": "6af555da53ed0b2b7f5c830c169bd4be52acba681ce0f32e2ab020ad9be0fe7f"
+        "locator": "html:requirement-id=SRC-SYN4",
+        "content_sha256": "796ba74892947ceeb7f6adf474687a005653da0f1995a7a7dd79b77a84e8b45c"
       },
       "summary": "把失败、经历和评审缺口编译为明确消费上一代事实的下一代议程。",
       "required_lanes": [
@@ -1594,8 +2232,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[26]",
-        "content_sha256": "43e5100bd015e799d2772e0dc6ce5adfb076a63b20b074ef5546103a541b71c3"
+        "locator": "html:requirement-id=SRC-SYN5",
+        "content_sha256": "1a09c1f8555e370745096f7c019aa6b47932f299f2b7667bfe02d3c22d7390fc"
       },
       "summary": "独立验收连续两代提交、路线变化和上一代事实消费。",
       "required_lanes": [
@@ -1639,8 +2277,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[1]",
-        "content_sha256": "0a1bcfeece9900f9808cb2fc39818a13a8fbf9fc8822c52317ef725f52810790"
+        "locator": "html:requirement-id=SRC-VER1",
+        "content_sha256": "7daebdb6898facc2e1bd50c9204d1009a9da9632c2c78010dfd57d63dcbbed3b"
       },
       "summary": "定义候选进入验证阶段所需的身份约束和 VerifierReceipt，而非重新定义候选包。",
       "required_lanes": [
@@ -1685,8 +2323,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[2]",
-        "content_sha256": "278e2831abdc56e6e195b168ff1eebfdb4ab1f91803be948fd84930bbf16eb12"
+        "locator": "html:requirement-id=SRC-VER2",
+        "content_sha256": "18715879257deef9b8c10b448bdfc09b0706ca6b14d23ce659ecfb77d18663dc"
       },
       "summary": "把候选绑定到具体命题、量词、对象和范围，拒绝范围扩大与对象错配。",
       "required_lanes": [
@@ -1730,8 +2368,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[3]",
-        "content_sha256": "baaeeeb16f44a630286bfb632455fffa817542bae558ff272c18b1d61f8f45ef"
+        "locator": "html:requirement-id=SRC-VER3",
+        "content_sha256": "0271ca817c125fe7e146505eebf3964dcb5cc703791a8f9869bfc727fa9152d2"
       },
       "summary": "为候选生成干净环境的独立重放计划，排除同实现自证。",
       "required_lanes": [
@@ -1743,7 +2381,9 @@
       ],
       "acceptance_refs": [
         "VER3/AC-01",
-        "VER3/AC-02"
+        "VER3/AC-02",
+        "VER3/AC-03",
+        "VER3/AC-04"
       ],
       "evidence_targets": [
         {
@@ -1775,8 +2415,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[4]",
-        "content_sha256": "ecc6fbc8af9fd510e27c29608afe9278b50d90174686cdc10b9da9f4b5537d4a"
+        "locator": "html:requirement-id=SRC-VER4",
+        "content_sha256": "3847c91fbd55640df96b8bca83445ccfb1cd16abc0d5cfd87ce969538b1d5532"
       },
       "summary": "仅将通过 VerifierReceipt 的候选转换为带出处的 EvidenceRecord。",
       "required_lanes": [
@@ -1788,7 +2428,9 @@
       ],
       "acceptance_refs": [
         "VER4/AC-01",
-        "VER4/AC-02"
+        "VER4/AC-02",
+        "VER4/AC-03",
+        "VER4/AC-04"
       ],
       "evidence_targets": [
         {
@@ -1820,8 +2462,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[5]",
-        "content_sha256": "e5cbdc6e203e8c861a1182ded4f06d33a3cf91d661685e80ef48599cdd2d47e9"
+        "locator": "html:requirement-id=SRC-VER5",
+        "content_sha256": "f92cf0aec80fceb4478b53ae64a37f2e30ba1052cadb913fcfb617b07fed67c1"
       },
       "summary": "记录命题、源码、评价器或候选身份变化导致的证据失效。",
       "required_lanes": [
@@ -1865,8 +2507,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[6]",
-        "content_sha256": "d53d3de870b4cd8fcc620d415bb325988b711eff35894680d207171c624401cd"
+        "locator": "html:requirement-id=SRC-VER6",
+        "content_sha256": "ee528318287474fd904d61c081d5821f774e3f3c8656174c243f146cbb8f38e0"
       },
       "summary": "独立验收验证汇合、篡改检测、越界阻断和非独立结果拒绝。",
       "required_lanes": [
@@ -1878,7 +2520,9 @@
       ],
       "acceptance_refs": [
         "VER6/AC-01",
-        "VER6/AC-02"
+        "VER6/AC-02",
+        "VER6/AC-03",
+        "VER6/AC-04"
       ],
       "evidence_targets": [
         {
@@ -1910,8 +2554,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[7]",
-        "content_sha256": "ec3d7ca45959beaa34c7a158af54744da3c9d8a454035888f7ddcac12b877af8"
+        "locator": "html:requirement-id=SRC-UX1",
+        "content_sha256": "799d2480dc64bbcec76637cbb671d7412694a84ed674fd01f43f2d63a4075591"
       },
       "summary": "把 RuntimeStore 状态投影到现有控制台数据合同，保持单一真相源。",
       "required_lanes": [
@@ -1942,9 +2586,9 @@
       "scope_deviation_ref": null,
       "baseline_refs": [
         {
-          "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
-          "locator": "html:li[2]",
-          "content_sha256": "cc863c737d13164154b4f6169d9cde5c345f0b3d66c6fa8756f7480b49d7b3b3"
+          "artifact_id": "SRC-MATHARC-CONSOLE-EXPORT-PY",
+          "locator": "file:content",
+          "content_sha256": "79adf80dd0b1028c1ddd03ff4de06457cf2c2a2c6312996bf4091b10055f391a"
         }
       ]
     },
@@ -1962,8 +2606,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[14]",
-        "content_sha256": "e7852afe46c9b91ba65434b752479550545f0789b764e97be6202b7befd39436"
+        "locator": "html:requirement-id=SRC-UX2",
+        "content_sha256": "ee34efb9fa3c7fe4b134cda5db8d66b0151c35041fd63dfca617cea821d0a862"
       },
       "summary": "复用邀请制 Cookie 会话和权限边界，阻断无权用户的运行动作。",
       "required_lanes": [
@@ -1993,7 +2637,19 @@
       "release_refs": [
         "RTR6"
       ],
-      "scope_deviation_ref": null
+      "scope_deviation_ref": null,
+      "baseline_refs": [
+        {
+          "artifact_id": "SRC-MATHARC-ACCESS-PY",
+          "locator": "file:content",
+          "content_sha256": "5830ddde64c70436b0a652f9ce642d856fde8c1cdbb268bde6d0349d9ed8d030"
+        },
+        {
+          "artifact_id": "SRC-MATHARC-ACCESS-SERVER-PY",
+          "locator": "file:content",
+          "content_sha256": "1a8a0448884d7acc86c3917670702afea940af09390d08c0976cd057b5487792"
+        }
+      ]
     },
     {
       "requirement_id": "SRC-UX3",
@@ -2009,8 +2665,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[15]",
-        "content_sha256": "85cad267f836fcf2af6569bd0c3c04a0970eef1d50a2151f3180fb594eff0b11"
+        "locator": "html:requirement-id=SRC-UX3",
+        "content_sha256": "5405fe2085d3414a2d842769b70123e84845c46a0fbc9cac7f8348825d4d9133"
       },
       "summary": "提供登记动作的幂等运行控制服务，拒绝任意命令、目录、环境和参数。",
       "required_lanes": [
@@ -2022,7 +2678,9 @@
       ],
       "acceptance_refs": [
         "UX3/AC-01",
-        "UX3/AC-02"
+        "UX3/AC-02",
+        "UX3/AC-03",
+        "UX3/AC-04"
       ],
       "evidence_targets": [
         {
@@ -2054,8 +2712,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[16]",
-        "content_sha256": "4652843bcb9c8b063837bd32a4b5b0f32f6dd9a71a887146a91b91cc796cf250"
+        "locator": "html:requirement-id=SRC-UX4",
+        "content_sha256": "43719e61c3c17776544684debe11d2a83ba0a272d9051d47268d900c096d8959"
       },
       "summary": "建立统一中文运行视图并递归脱敏密钥、路径、命令、环境变量和堆栈。",
       "required_lanes": [
@@ -2105,8 +2763,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[17]",
-        "content_sha256": "ec3d7ca45959beaa34c7a158af54744da3c9d8a454035888f7ddcac12b877af8"
+        "locator": "html:requirement-id=SRC-UX5",
+        "content_sha256": "e5a28c9ea09d44516f4bf2d3ff5939e7cdb37fa95277a7fdf00daf4023dec1e8"
       },
       "summary": "实现断线重连后从服务端快照恢复的实时研究控制台。",
       "required_lanes": [
@@ -2156,8 +2814,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[18]",
-        "content_sha256": "ec68ab8d8ac846a9f8aa33df6a413a2374a97510971759571198717af76f973b"
+        "locator": "html:requirement-id=SRC-UX6",
+        "content_sha256": "8fcf508720eba071a923620c9454ff041b13b858fbc334e5e6174838dcf40d15"
       },
       "summary": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
       "required_lanes": [
@@ -2207,8 +2865,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[19]",
-        "content_sha256": "9b1d063769f538c96cee41ad6770207e8b569097dec79015dc28261325ac9dc3"
+        "locator": "html:requirement-id=SRC-DOG1",
+        "content_sha256": "41bccf00cb1098fa3af72c8c82712f246f7a1f17a07f040512e9c097847a91e1"
       },
       "summary": "固定首个真实任务、评价器、范围、预算和可重放的单成员基线。",
       "required_lanes": [
@@ -2252,8 +2910,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[20]",
-        "content_sha256": "b745082c13becde0d4f2d9b04aa12974e47f93b2780b3f7e1494d75affab49ad"
+        "locator": "html:requirement-id=SRC-DOG2",
+        "content_sha256": "bdb580a41bb26a6eba708bbd6a6d4d6446ad202b6afac0ad83637535f0628f5e"
       },
       "summary": "在运维闭环完成后执行两代真实并行研究并证明第二代消费第一代事实。",
       "required_lanes": [
@@ -2303,8 +2961,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[21]",
-        "content_sha256": "d4d59d5f1501ceb34b0f586095caca5037054888d97a78cb7a0e9bc308cb14f3"
+        "locator": "html:requirement-id=SRC-DOG3",
+        "content_sha256": "15fe362611481f354cd075dd1e127cb37a8f30046df71b8ddffa2f404073db02"
       },
       "summary": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
       "required_lanes": [
@@ -2318,7 +2976,9 @@
       "acceptance_refs": [
         "DOG3/AC-01",
         "DOG3/AC-02",
-        "DOG3/AC-03"
+        "DOG3/AC-03",
+        "DOG3/AC-04",
+        "DOG3/AC-05"
       ],
       "evidence_targets": [
         {
@@ -2354,13 +3014,12 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[22]",
-        "content_sha256": "4d33136c05beb68a5b0b5b580cacb9a84abf452d1b7f987e1bab980bb116e9d0"
+        "locator": "html:requirement-id=SRC-DOG4",
+        "content_sha256": "c0292eb79711a3fa5e43f7e1d1c178898c3d31e2de3b781eaf6b761e113a991e"
       },
       "summary": "汇编邀请试点的人类验收与发布证据，作出独立发布决策。",
       "required_lanes": [
-        "human",
-        "release"
+        "human"
       ],
       "node_refs": [
         "DOG4"
@@ -2373,10 +3032,6 @@
         {
           "lane": "human",
           "path": "acceptance-fragments/DOG4/acceptance/human/runs/<run-id>/result.md"
-        },
-        {
-          "lane": "release",
-          "path": "acceptance-fragments/DOG4/acceptance/release/runs/<run-id>/result.md"
         }
       ],
       "external_system_refs": [],
@@ -2399,8 +3054,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[23]",
-        "content_sha256": "032fec06efa1ab472213e3496b1bb1c3526503068c49ac6b5759871f7461617a"
+        "locator": "html:requirement-id=SRC-OPS1",
+        "content_sha256": "249577e449ebce20ad9cda496f225620ee793802312e2c941ede89df30658824"
       },
       "summary": "固定试点部署配置、持久目录、密钥来源和进程守护方式。",
       "required_lanes": [
@@ -2412,7 +3067,9 @@
       ],
       "acceptance_refs": [
         "OPS1/AC-01",
-        "OPS1/AC-02"
+        "OPS1/AC-02",
+        "OPS1/AC-03",
+        "OPS1/AC-04"
       ],
       "evidence_targets": [
         {
@@ -2428,14 +3085,7 @@
       "release_refs": [
         "RTR6"
       ],
-      "scope_deviation_ref": null,
-      "baseline_refs": [
-        {
-          "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
-          "locator": "html:li[3]",
-          "content_sha256": "23058182a615aa5c11a16277443bb2f7255e19de111613a0aa8c2cef91d04790"
-        }
-      ]
+      "scope_deviation_ref": null
     },
     {
       "requirement_id": "SRC-OPS2",
@@ -2451,8 +3101,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[24]",
-        "content_sha256": "ec4c63d0164c2082bc2b30784ecc8afa4de0587eb477074e5bbadf2d6d988366"
+        "locator": "html:requirement-id=SRC-OPS2",
+        "content_sha256": "1f197985836e2189e327da021f4e6c4174479d8eb67bf98529a4de502ab46fa1"
       },
       "summary": "建立健康检查、日志、配额、备份和恢复观测闭环。",
       "required_lanes": [
@@ -2496,8 +3146,8 @@
       },
       "source": {
         "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[25]",
-        "content_sha256": "2aa9d552e8e5910080578a58ff7e7986b372a8813fa808886a89b03a7111cf44"
+        "locator": "html:requirement-id=SRC-OPS3",
+        "content_sha256": "06cae400001f1dc6e3bc17385cccb14cb49f01886b8baf489685eb0e2a4ef264"
       },
       "summary": "独立验收部署、重启、回滚和试点用户数据清理。",
       "required_lanes": [
@@ -2666,11 +3316,319 @@
         "implementation": "[data-surface=\"matharc-runtime-contract\"]"
       },
       {
+        "source": "[data-requirement-id=\"SRC-FND1\"]",
+        "locator": "dom:data-requirement-id=\"SRC-FND1\"",
+        "content_sha256": "63191da82c68d727863ca02030a8abbb626e537c93e3519b6bc3e79d28a1fb9b",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-FND1\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-FND2\"]",
+        "locator": "dom:data-requirement-id=\"SRC-FND2\"",
+        "content_sha256": "d6d8a567c45c1c400c48ef540a129243264f3cf616d0fd2a0ad2045ee13f7fbd",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-FND2\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-RUN1\"]",
+        "locator": "dom:data-requirement-id=\"SRC-RUN1\"",
+        "content_sha256": "446bad11c842efc1211bf585a106b1fcf2914a9a35e277fb6181f3e3981457a0",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-RUN1\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-RUN2\"]",
+        "locator": "dom:data-requirement-id=\"SRC-RUN2\"",
+        "content_sha256": "a1efc05f5f355b6ce61f0e6cb41f40a617dc018637f50b19932e823b2bbcdcb2",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-RUN2\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-RUN3\"]",
+        "locator": "dom:data-requirement-id=\"SRC-RUN3\"",
+        "content_sha256": "bebfe9f04df687a6ab07ea228ef9c35e1ce2f3e8198d0a317c0c04d2b8b981a6",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-RUN3\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-RUN4\"]",
+        "locator": "dom:data-requirement-id=\"SRC-RUN4\"",
+        "content_sha256": "38242f43544e15db3d2244f9389acbbb2b631cde2f480f52b7cee606b85d85c4",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-RUN4\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-RUN5\"]",
+        "locator": "dom:data-requirement-id=\"SRC-RUN5\"",
+        "content_sha256": "0f3244d10ad2ba7ec7eff7144172abbb53cf1445eccb26ed54aa4a5d695c1f22",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-RUN5\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-PAR1\"]",
+        "locator": "dom:data-requirement-id=\"SRC-PAR1\"",
+        "content_sha256": "c1ce0a10c75c98b01c114d5779c88cacd462d25b33d8a1a58ff3d2e28a189372",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-PAR1\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-PAR2\"]",
+        "locator": "dom:data-requirement-id=\"SRC-PAR2\"",
+        "content_sha256": "e5554d8ab378b250fd02550df6372ea3f8e85e89f7fc3f0d5b5863b8b7317f98",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-PAR2\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-PAR3\"]",
+        "locator": "dom:data-requirement-id=\"SRC-PAR3\"",
+        "content_sha256": "6220f47cd3dc564c2a764510d69e716f1511d52d27cd82bef23609aee9f307e3",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-PAR3\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-PAR4\"]",
+        "locator": "dom:data-requirement-id=\"SRC-PAR4\"",
+        "content_sha256": "ced08597b6183bda3a27639936b359ebcb2811c76f5f963c3488ea88391db4e9",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-PAR4\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-PAR5\"]",
+        "locator": "dom:data-requirement-id=\"SRC-PAR5\"",
+        "content_sha256": "683a112ba94107fe2c1d59d1267f6573d00a4fc3fca469649d79183dd9ea9a98",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-PAR5\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-DUR1\"]",
+        "locator": "dom:data-requirement-id=\"SRC-DUR1\"",
+        "content_sha256": "1a828d37f01a4b568fc2064ee1eff5e741bb21038cff9db760254122b7937122",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-DUR1\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-DUR2\"]",
+        "locator": "dom:data-requirement-id=\"SRC-DUR2\"",
+        "content_sha256": "b5e43a225f611a986d886af8bcbff1d936ff08372163873866b4d6ad10bd5013",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-DUR2\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-DUR3\"]",
+        "locator": "dom:data-requirement-id=\"SRC-DUR3\"",
+        "content_sha256": "e5726d853bb706ee98ab964962bd83bac424b540dd960ac12408f3f03acda10e",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-DUR3\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-DUR4\"]",
+        "locator": "dom:data-requirement-id=\"SRC-DUR4\"",
+        "content_sha256": "7d90d58c50b32dcc7337f0ad2b16b75ab6219443ab99343a100b53538f3a7747",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-DUR4\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-DUR5\"]",
+        "locator": "dom:data-requirement-id=\"SRC-DUR5\"",
+        "content_sha256": "c6c6709248445795c542a6274398831ff7f6545586b15b62469522daafd0aebe",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-DUR5\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-SYN1\"]",
+        "locator": "dom:data-requirement-id=\"SRC-SYN1\"",
+        "content_sha256": "06c91f8a5f6a06891bb5384740669dff3a2cc31e5628827e4b824c552ccc65fd",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-SYN1\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-SYN2\"]",
+        "locator": "dom:data-requirement-id=\"SRC-SYN2\"",
+        "content_sha256": "773c46177e12c8de990a0887fb2c4385b616ec8fd44ce724fbf32342b674118a",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-SYN2\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-SYN3\"]",
+        "locator": "dom:data-requirement-id=\"SRC-SYN3\"",
+        "content_sha256": "da103473ffb579446a5cd42c081bbf8b9275328685a16d70dbccc551292aeba2",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-SYN3\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-SYN4\"]",
+        "locator": "dom:data-requirement-id=\"SRC-SYN4\"",
+        "content_sha256": "74adb2658d92e9e2b2af3f4aecab39d04240ac00a94185f70054d88638007acf",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-SYN4\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-SYN5\"]",
+        "locator": "dom:data-requirement-id=\"SRC-SYN5\"",
+        "content_sha256": "8add33169a92eb55aa1624625eb34181bd6756c6005a6522c1daf8f7f0c7de49",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-SYN5\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-VER1\"]",
+        "locator": "dom:data-requirement-id=\"SRC-VER1\"",
+        "content_sha256": "47550fb74941215e89756b6ed329307da00ca65116a4d46ec2dc0bc259c940f6",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-VER1\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-VER2\"]",
+        "locator": "dom:data-requirement-id=\"SRC-VER2\"",
+        "content_sha256": "510e1c120ec65b75351743d54f3c1355026dd65bbfc07f9723881fad64b7f64a",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-VER2\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-VER3\"]",
+        "locator": "dom:data-requirement-id=\"SRC-VER3\"",
+        "content_sha256": "9da873bc7485207550b83c5fb605a9506f54e77633d333325d2864ade93e00e1",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-VER3\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-VER4\"]",
+        "locator": "dom:data-requirement-id=\"SRC-VER4\"",
+        "content_sha256": "c3598193a5141b4cec45a1a00d472517a8be21ca6ac8ad2a9db5a1ceb726d047",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-VER4\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-VER5\"]",
+        "locator": "dom:data-requirement-id=\"SRC-VER5\"",
+        "content_sha256": "2caa1fe0013fddd259c9c783f5e6220e09823fc3a00825b264f7eb73474ae7b0",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-VER5\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-VER6\"]",
+        "locator": "dom:data-requirement-id=\"SRC-VER6\"",
+        "content_sha256": "5099e445835dd720eb53779bf461f1bcc7217b69364487263430277f17c83dd2",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-VER6\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-UX1\"]",
+        "locator": "dom:data-requirement-id=\"SRC-UX1\"",
+        "content_sha256": "11c0aa94fcf8dfd6b50d7f9d08cd963f95fce04087b4a776465391cecc69aa3f",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-UX1\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-UX2\"]",
+        "locator": "dom:data-requirement-id=\"SRC-UX2\"",
+        "content_sha256": "826892af0d9c86a9cbf5a0aa4c9a6d3e86ecc0f64d503c648b0c72c12673eedf",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-UX2\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-UX3\"]",
+        "locator": "dom:data-requirement-id=\"SRC-UX3\"",
+        "content_sha256": "0091753dedc1a4b565ca974feb9b8aee153606fe7033094e63f27e61808a85e3",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-UX3\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-UX4\"]",
+        "locator": "dom:data-requirement-id=\"SRC-UX4\"",
+        "content_sha256": "6b20e4aaba1d86fd12d454b338049919fea52d191e795eda9cb2b4017d2ddfd4",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-UX4\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-UX5\"]",
+        "locator": "dom:data-requirement-id=\"SRC-UX5\"",
+        "content_sha256": "675d7ce0dd24f0b3e96ca2a671a1d14544a7d782b5895c8af459fafc5ff5ae93",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-UX5\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-UX6\"]",
+        "locator": "dom:data-requirement-id=\"SRC-UX6\"",
+        "content_sha256": "6dad2794912068c4d0a6f22e4b006e6564f36acbae002efb8b7e35f1e10f1ff1",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-UX6\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-DOG1\"]",
+        "locator": "dom:data-requirement-id=\"SRC-DOG1\"",
+        "content_sha256": "b0642dad710282044ea59213e06986574609afcf6cd386e2e23037f8ce8f8924",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-DOG1\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-DOG2\"]",
+        "locator": "dom:data-requirement-id=\"SRC-DOG2\"",
+        "content_sha256": "20c03bd8ea581ab865259ef602bfe1a169cabfa26a5f2ed7ecdc0dc80b081482",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-DOG2\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-DOG3\"]",
+        "locator": "dom:data-requirement-id=\"SRC-DOG3\"",
+        "content_sha256": "02c728ae346362ee1409ee314644385ac7c1cb73f861544491327645aa08eb33",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-DOG3\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-DOG4\"]",
+        "locator": "dom:data-requirement-id=\"SRC-DOG4\"",
+        "content_sha256": "3182f897b67adb82e27ce83598a9a1a24dbca996de755e741cfcafe8ec8400c0",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-DOG4\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-OPS1\"]",
+        "locator": "dom:data-requirement-id=\"SRC-OPS1\"",
+        "content_sha256": "1f6125130b04b28f2767ffc8e072c584030b55451a4e1447646e1d57627e9ea9",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-OPS1\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-OPS2\"]",
+        "locator": "dom:data-requirement-id=\"SRC-OPS2\"",
+        "content_sha256": "be1d16997bab58485bf1e1a45284540b16006655f6a7e11c9765b354a1f73422",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-OPS2\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"SRC-OPS3\"]",
+        "locator": "dom:data-requirement-id=\"SRC-OPS3\"",
+        "content_sha256": "8984c187b74311861c21bdcf808345a576b4c8c553572d88bf3bd1e9d096a5e3",
+        "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
+        "implementation": "[data-requirement-id=\"SRC-OPS3\"]"
+      },
+      {
         "source": "[data-surface=\"matharc-runtime-baseline\"]",
         "locator": "dom:data-surface=\"matharc-runtime-baseline\"",
         "content_sha256": "d98de30826385a7a7267a96b865c6e73832068188b66b488b6de35957ba940bd",
         "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
         "implementation": "[data-surface=\"matharc-runtime-baseline\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"BASELINE-TRACE-AUTHORITY\"]",
+        "locator": "dom:data-requirement-id=\"BASELINE-TRACE-AUTHORITY\"",
+        "content_sha256": "35ba94f447407a73de6216d032d5ae680042f65b3f29b1a2c32aa7ddab206c17",
+        "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
+        "implementation": "[data-requirement-id=\"BASELINE-TRACE-AUTHORITY\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"BASELINE-INVITE-SESSION\"]",
+        "locator": "dom:data-requirement-id=\"BASELINE-INVITE-SESSION\"",
+        "content_sha256": "62e685cd5ea1ae94aa17b888d7f31cdc029a8acd573adbb264130ae63464b40e",
+        "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
+        "implementation": "[data-requirement-id=\"BASELINE-INVITE-SESSION\"]"
+      },
+      {
+        "source": "[data-requirement-id=\"BASELINE-ARTIFACT-PROVENANCE\"]",
+        "locator": "dom:data-requirement-id=\"BASELINE-ARTIFACT-PROVENANCE\"",
+        "content_sha256": "9cab30faf0b2c991c9df3ef3f76be0e113a211bfc012b9aef319cfad1c610b69",
+        "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
+        "implementation": "[data-requirement-id=\"BASELINE-ARTIFACT-PROVENANCE\"]"
       }
     ],
     "exclusions": [],

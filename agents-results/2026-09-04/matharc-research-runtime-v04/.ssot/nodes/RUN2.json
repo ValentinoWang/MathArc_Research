@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S22",
-    "S79",
     "RUN1"
   ],
   "soft_dependencies": [],
@@ -27,30 +25,104 @@
     "requirement.run2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "运行存储负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
-    "QRTR1",
+    "Q1",
     "RUN4"
   ],
   "node_role": "leaf",
-  "execution_actor": "orchestrator",
+  "execution_actor": "codex",
   "execution_contract_ref": "nodes/RUN2.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/run_store.py",
-    "tests/test_runtime_store_replay.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/run_store.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_store_replay.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/unit",
     "machine/local-runtime"
   ],
   "goal": "建立可重放的运行存储，使事件、快照和候选导入在进程重启后保持一致。",
-  "owner": "运行存储负责人",
+  "owner": "principal:owner-run2",
   "acceptance_contract_ref": "acceptance-fragments/RUN2/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-run2",
+    "principal_ref": "principal:owner-run2"
+  },
+  "owner_binding": {
+    "role_id": "owner-run2",
+    "principal_ref": "principal:owner-run2"
+  },
   "source_requirement_refs": [
     "SRC-RUN2"
   ],
+  "escalation_reasons": [
+    "multi-executor"
+  ],
+  "worker_transport": "external-codex-exec",
+  "worker": {
+    "execution_identity": "worker-RUN2",
+    "runtime": "codex-exec",
+    "return_path": "workers/RUN2.md",
+    "resource_locks": [
+      "write:matharc/v02/runtime/run_store.py",
+      "write:tests/test_runtime_store_replay.py"
+    ]
+  },
+  "worker_registration": {
+    "worker_level": "L2",
+    "wrapper": "/Users/vsiyo/.codex/workers/run-l2.sh",
+    "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+    "invocation": "codex exec -C /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research --skip-git-repo-check --sandbox danger-full-access",
+    "sandbox": "danger-full-access",
+    "sandbox_authority": "writable sandbox",
+    "task_argument": "bounded implementation task RUN2",
+    "return_path": "workers/RUN2.md",
+    "prompt_path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/execution-orchestration/prompts/RUN2.md",
+    "log_path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/execution-orchestration/logs/RUN2.log",
+    "prompt_sha256": "capture-before-launch",
+    "launch_barrier": "all wave PIDs registered before first wait",
+    "prompt_cleanup": "delete after exit evidence registration",
+    "runtime_handle_cleanup": "release after exit evidence registration",
+    "codex_transcript_retention": "preserve ~/.codex/sessions and ~/.codex/archived_sessions",
+    "dispatch_state": "NOT_STARTED"
+  },
   "surface_refs": [
     "run-store"
   ],
@@ -67,9 +139,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

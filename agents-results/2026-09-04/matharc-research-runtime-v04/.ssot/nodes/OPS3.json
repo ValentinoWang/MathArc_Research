@@ -11,9 +11,7 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S3",
-    "S66",
-    "S69",
+    "DP3",
     "OPS2"
   ],
   "soft_dependencies": [],
@@ -22,26 +20,44 @@
     {
       "semantic_key": "decision.matharc-native-runtime",
       "version": 1
+    },
+    {
+      "semantic_key": "decision.matharc-pilot-deployment",
+      "version": 1
     }
   ],
   "invalidation_keys": [
     "requirement.ops3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "试点发布运维负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG2",
-    "QRTR6"
+    "Q6"
   ],
   "node_role": "leaf",
-  "execution_actor": "codex",
+  "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/OPS3.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "tests/test_runtime_ops_release.py",
-    "tests/test_runtime_ops_cleanup.py",
-    "acceptance/runtime-pilot/ops-checklist.md"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "tests/test_runtime_ops_release.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_ops_cleanup.py",
+      "mode": "create"
+    },
+    {
+      "path": "acceptance/runtime-pilot/ops-checklist.md",
+      "mode": "create"
+    },
+    {
+      "path": "acceptance/runtime-pilot/ops-release-checklist.md",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/e2e",
@@ -49,8 +65,50 @@
     "production"
   ],
   "goal": "独立验收部署、重启、回滚和试点用户数据清理。",
-  "owner": "试点发布运维负责人",
+  "owner": "principal:owner-ops3",
   "acceptance_contract_ref": "acceptance-fragments/OPS3/acceptance-contract.md",
+  "test_oracle": {
+    "mode": "frozen",
+    "writable": false,
+    "spec": "tests/test_v02_release_decision.py",
+    "assertion_authority": "MathArc 运维发布测试基线"
+  },
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-ops3",
+    "principal_ref": "principal:owner-ops3"
+  },
+  "owner_binding": {
+    "role_id": "owner-ops3",
+    "principal_ref": "principal:owner-ops3"
+  },
   "source_requirement_refs": [
     "SRC-OPS3"
   ],
@@ -61,9 +119,6 @@
   "readiness_gaps": [
     {
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S57",
-    "S81",
     "SYN4",
     "DUR5",
     "PAR5"
@@ -29,27 +27,76 @@
     "requirement.syn5"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "连续代际验收负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG2",
-    "QRTR4"
+    "Q4"
   ],
   "node_role": "leaf",
-  "execution_actor": "codex",
+  "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/SYN5.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "tests/test_runtime_two_generation_synthesis.py",
-    "tests/test_runtime_generation_delta.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "tests/test_runtime_two_generation_synthesis.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_generation_delta.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/e2e",
     "machine/local-runtime"
   ],
   "goal": "独立验收连续两代提交、路线变化和上一代事实消费。",
-  "owner": "连续代际验收负责人",
+  "owner": "principal:owner-syn5",
   "acceptance_contract_ref": "acceptance-fragments/SYN5/acceptance-contract.md",
+  "test_oracle": {
+    "mode": "frozen",
+    "writable": false,
+    "spec": "tests/test_v02_episode_memory.py",
+    "assertion_authority": "MathArc 研究记忆与代际消费测试基线"
+  },
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-syn5",
+    "principal_ref": "principal:owner-syn5"
+  },
+  "owner_binding": {
+    "role_id": "owner-syn5",
+    "principal_ref": "principal:owner-syn5"
+  },
   "source_requirement_refs": [
     "SRC-SYN5"
   ],
@@ -60,9 +107,6 @@
   "readiness_gaps": [
     {
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

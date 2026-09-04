@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S40",
-    "S42",
     "DOG2",
     "DUR5",
     "UX6"
@@ -29,19 +27,30 @@
     "requirement.dog3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "试点攻击演练负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG4",
-    "QRTR7"
+    "Q7"
   ],
   "node_role": "leaf",
-  "execution_actor": "codex",
+  "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/DOG3.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "tests/test_runtime_adversarial_drills.py",
-    "tests/test_runtime_attack_recovery.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "tests/test_runtime_adversarial_drills.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_attack_recovery.py",
+      "mode": "create"
+    },
+    {
+      "path": "acceptance/runtime-pilot/production-attack-drills.md",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/e2e",
@@ -49,8 +58,50 @@
     "production"
   ],
   "goal": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
-  "owner": "试点攻击演练负责人",
+  "owner": "principal:owner-dog3",
   "acceptance_contract_ref": "acceptance-fragments/DOG3/acceptance-contract.md",
+  "test_oracle": {
+    "mode": "frozen",
+    "writable": false,
+    "spec": "tests/test_v03_falsification.py",
+    "assertion_authority": "MathArc 反例与攻击演练测试基线"
+  },
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-dog3",
+    "principal_ref": "principal:owner-dog3"
+  },
+  "owner_binding": {
+    "role_id": "owner-dog3",
+    "principal_ref": "principal:owner-dog3"
+  },
   "source_requirement_refs": [
     "SRC-DOG3"
   ],
@@ -61,9 +112,6 @@
   "readiness_gaps": [
     {
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

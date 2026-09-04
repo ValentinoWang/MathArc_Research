@@ -1,12 +1,18 @@
 # Acceptance Contract: RUN2
 
 - Task ID: RUN2
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 运行存储负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[2]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-RUN2
 - SSOT node: RUN2
 - SSOT path: .ssot/nodes/RUN2.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item RUN2, the interface declared for RUN2 must continue to satisfy every ac
 
 ## Data impact
 
-Item RUN2 constrains any create, update, or delete reachable through the interface declared for RUN2; only the acceptance seeds below define what data changes are permitted for run-store. Node-specific data assertions: 在 matharc/v02/run_store.py 中写入哈希链运行事件和原子快照 | 在 tests/test_runtime_store_replay.py 中拒绝截断、损坏和摘要不匹配的运行快照
+Item RUN2 constrains any create, update, or delete reachable through the interface declared for RUN2; only the acceptance seeds below define what data changes are permitted for run-store. Node-specific data assertions: 在 matharc/v02/runtime/run_store.py 中写入哈希链运行事件和原子快照 | 在 tests/test_runtime_store_replay.py 中拒绝截断、损坏和摘要不匹配的运行快照
 
 ## Permissions
 
-Item RUN2 is owned by 运行存储负责人; access to the interface declared for RUN2 and run-store follows the acceptance seeds below and no wider grant.
+Item RUN2 is owned by principal:acceptance-a; access to the interface declared for RUN2 and run-store follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item RUN2: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-RUN2 | machine/unit | 在 matharc/v02/run_store.py 中写入哈希链运行事件和原子快照 | Unit | Automatic | Yes |
+| AC-01 | behavior | SRC-RUN2 | machine/unit | 在 matharc/v02/runtime/run_store.py 中写入哈希链运行事件和原子快照 | Unit | Automatic | Yes |
 | AC-02 | behavior | SRC-RUN2 | machine/local-runtime | 在 tests/test_runtime_store_replay.py 中拒绝截断、损坏和摘要不匹配的运行快照 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item RUN2 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Unit | matharc/v02/run_store.py | Automatic | Yes |
+| AC-01 | Unit | matharc/v02/runtime/run_store.py | Automatic | Yes |
 | AC-02 | Local runtime | tests/test_runtime_store_replay.py | Automatic | Yes |
 
 ## Exploratory testing

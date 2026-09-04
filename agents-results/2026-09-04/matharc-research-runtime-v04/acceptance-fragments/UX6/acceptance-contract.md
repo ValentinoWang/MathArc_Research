@@ -1,12 +1,18 @@
 # Acceptance Contract: UX6
 
 - Task ID: UX6
+- Contract kind: validation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: validation result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 浏览器产品验收负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[18]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-UX6
 - SSOT node: UX6
 - SSOT path: .ssot/nodes/UX6.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item UX6, the interface declared for UX6 must continue to satisfy every acce
 
 ## Data impact
 
-Item UX6 constrains any create, update, or delete reachable through the interface declared for UX6; only the acceptance seeds below define what data changes are permitted for console-human-acceptance. Node-specific data assertions: 在 acceptance/human/runtime-console/desktop-checklist.md 中覆盖桌面邀请制查看和操作流程 | 在 tests/test_runtime_console_mobile.py 中覆盖移动端、权限负路径和完整操作流 | 在 acceptance/human/runtime-console-checklist.md 中记录人类对桌面移动端权限负路径和操作流的验收
+Item UX6 constrains any create, update, or delete reachable through the interface declared for UX6; only the acceptance seeds below define what data changes are permitted for console-human-acceptance. Node-specific data assertions: 在 acceptance/human/runtime-console/desktop-checklist.md 中覆盖桌面邀请制查看和操作流程 | 在 tests/test_runtime_console_mobile.py 中覆盖移动端、权限负路径和完整操作流 | 在 acceptance/human/runtime-console/desktop-checklist.md 中记录人类对桌面移动端权限负路径和操作流的验收
 
 ## Permissions
 
-Item UX6 is owned by 浏览器产品验收负责人; access to the interface declared for UX6 and console-human-acceptance follows the acceptance seeds below and no wider grant.
+Item UX6 is owned by principal:acceptance-a; access to the interface declared for UX6 and console-human-acceptance follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -74,7 +80,7 @@ Node-specific increment for item UX6: the thresholds and failure evidence for th
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | AC-01 | behavior | SRC-UX6 | machine/e2e | 在 acceptance/human/runtime-console/desktop-checklist.md 中覆盖桌面邀请制查看和操作流程 | E2E | Automatic | Yes |
 | AC-02 | behavior | SRC-UX6 | visual-fidelity | 在 tests/test_runtime_console_mobile.py 中覆盖移动端、权限负路径和完整操作流 | Visual fidelity | Automatic | Yes |
-| AC-03 | behavior | SRC-UX6 | human | 在 acceptance/human/runtime-console-checklist.md 中记录人类对桌面移动端权限负路径和操作流的验收 | Human | Automatic | Yes |
+| AC-03 | behavior | SRC-UX6 | human | 在 acceptance/human/runtime-console/desktop-checklist.md 中记录人类对桌面移动端权限负路径和操作流的验收 | Human | Manual / Authority-attested | Yes |
 
 ## Human acceptance
 
@@ -93,7 +99,7 @@ Item UX6 is fully determined by its acceptance seeds; outcomes for the interface
 | --- | --- | --- | --- | --- |
 | AC-01 | E2E | acceptance/human/runtime-console/desktop-checklist.md | Automatic | Yes |
 | AC-02 | Visual fidelity | tests/test_runtime_console_mobile.py | Automatic | Yes |
-| AC-03 | Human | acceptance/human/runtime-console-checklist.md | Automatic | Yes |
+| AC-03 | Human | acceptance/human/runtime-console/desktop-checklist.md | Manual / Authority-attested | Yes |
 
 ## Exploratory testing
 

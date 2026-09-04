@@ -1,12 +1,18 @@
 # Acceptance Contract: SYN2
 
 - Task ID: SYN2
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 反例复核负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[12]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-SYN2
 - SSOT node: SYN2
 - SSOT path: .ssot/nodes/SYN2.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item SYN2, the interface declared for SYN2 must continue to satisfy every ac
 
 ## Data impact
 
-Item SYN2 constrains any create, update, or delete reachable through the interface declared for SYN2; only the acceptance seeds below define what data changes are permitted for counterexample-review. Node-specific data assertions: 在 matharc/v02/synthesis.py 中把疑似反例放入独立复核队列 | 在 tests/test_runtime_counterexample_review.py 中证明未复核反例不会改变路线或结论
+Item SYN2 constrains any create, update, or delete reachable through the interface declared for SYN2; only the acceptance seeds below define what data changes are permitted for counterexample-review. Node-specific data assertions: 在 matharc/v02/runtime/synthesis.py 中把疑似反例放入独立复核队列 | 在 tests/test_runtime_counterexample_review.py 中证明未复核反例不会改变路线或结论
 
 ## Permissions
 
-Item SYN2 is owned by 反例复核负责人; access to the interface declared for SYN2 and counterexample-review follows the acceptance seeds below and no wider grant.
+Item SYN2 is owned by principal:acceptance-a; access to the interface declared for SYN2 and counterexample-review follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item SYN2: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-SYN2 | machine/unit | 在 matharc/v02/synthesis.py 中把疑似反例放入独立复核队列 | Unit | Automatic | Yes |
+| AC-01 | behavior | SRC-SYN2 | machine/unit | 在 matharc/v02/runtime/synthesis.py 中把疑似反例放入独立复核队列 | Unit | Automatic | Yes |
 | AC-02 | behavior | SRC-SYN2 | machine/integration-contract | 在 tests/test_runtime_counterexample_review.py 中证明未复核反例不会改变路线或结论 | Integration | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item SYN2 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Unit | matharc/v02/synthesis.py | Automatic | Yes |
+| AC-01 | Unit | matharc/v02/runtime/synthesis.py | Automatic | Yes |
 | AC-02 | Integration | tests/test_runtime_counterexample_review.py | Automatic | Yes |
 
 ## Exploratory testing

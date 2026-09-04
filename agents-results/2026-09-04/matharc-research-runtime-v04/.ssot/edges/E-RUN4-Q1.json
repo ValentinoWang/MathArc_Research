@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-RUN4-Q1",
+  "from": "RUN4",
+  "to": "Q1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.run4"
+  ],
+  "transferred_input": "将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。",
+  "gate_evidence": "acceptance contract evidence"
+}

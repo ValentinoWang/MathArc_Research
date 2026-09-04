@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S18",
-    "S63",
     "SYN2",
     "SYN3"
   ],
@@ -28,9 +26,9 @@
     "requirement.syn4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "代际议程负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
-    "QRTR4",
+    "Q4",
     "SYN5"
   ],
   "node_role": "leaf",
@@ -38,17 +36,64 @@
   "execution_contract_ref": "nodes/SYN4.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/generation.py",
-    "tests/test_runtime_next_generation_agenda.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/generation.py",
+      "mode": "create"
+    },
+    {
+      "path": "matharc/v02/runtime/research_director/agenda.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_next_generation_agenda.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/local-runtime"
   ],
   "goal": "把失败、经历和评审缺口编译为明确消费上一代事实的下一代议程。",
-  "owner": "代际议程负责人",
+  "owner": "principal:owner-syn4",
   "acceptance_contract_ref": "acceptance-fragments/SYN4/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-syn4",
+    "principal_ref": "principal:owner-syn4"
+  },
+  "owner_binding": {
+    "role_id": "owner-syn4",
+    "principal_ref": "principal:owner-syn4"
+  },
   "source_requirement_refs": [
     "SRC-SYN4"
   ],
@@ -68,9 +113,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

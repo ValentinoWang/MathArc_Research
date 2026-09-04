@@ -1,12 +1,18 @@
 # Acceptance Contract: PAR4
 
 - Task ID: PAR4
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 资源记账负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h2[4]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-PAR4
 - SSOT node: PAR4
 - SSOT path: .ssot/nodes/PAR4.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item PAR4, the interface declared for PAR4 must continue to satisfy every ac
 
 ## Data impact
 
-Item PAR4 constrains any create, update, or delete reachable through the interface declared for PAR4; only the acceptance seeds below define what data changes are permitted for resource-accounting. Node-specific data assertions: 在 matharc/v02/budget.py 中按运行回执记录实际费用而不是模型自报费用 | 在 tests/test_runtime_semantic_deduplication.py 中证明同一语义实验不会重复运行
+Item PAR4 constrains any create, update, or delete reachable through the interface declared for PAR4; only the acceptance seeds below define what data changes are permitted for resource-accounting. Node-specific data assertions: 在 matharc/v02/runtime/budget.py 中按运行回执记录实际费用而不是模型自报费用 | 在 tests/test_runtime_semantic_deduplication.py 中证明同一语义实验不会重复运行
 
 ## Permissions
 
-Item PAR4 is owned by 资源记账负责人; access to the interface declared for PAR4 and resource-accounting follows the acceptance seeds below and no wider grant.
+Item PAR4 is owned by principal:acceptance-a; access to the interface declared for PAR4 and resource-accounting follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item PAR4: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-PAR4 | machine/unit | 在 matharc/v02/budget.py 中按运行回执记录实际费用而不是模型自报费用 | Unit | Automatic | Yes |
+| AC-01 | behavior | SRC-PAR4 | machine/unit | 在 matharc/v02/runtime/budget.py 中按运行回执记录实际费用而不是模型自报费用 | Unit | Automatic | Yes |
 | AC-02 | behavior | SRC-PAR4 | machine/non-functional | 在 tests/test_runtime_semantic_deduplication.py 中证明同一语义实验不会重复运行 | Non-functional | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item PAR4 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Unit | matharc/v02/budget.py | Automatic | Yes |
+| AC-01 | Unit | matharc/v02/runtime/budget.py | Automatic | Yes |
 | AC-02 | Non-functional | tests/test_runtime_semantic_deduplication.py | Automatic | Yes |
 
 ## Exploratory testing

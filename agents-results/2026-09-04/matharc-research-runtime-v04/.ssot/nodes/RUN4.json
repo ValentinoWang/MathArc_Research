@@ -11,13 +11,7 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S9",
-    "S10",
-    "S11",
-    "S12",
-    "S13",
-    "S16",
-    "S44",
+    "DP2",
     "RUN2",
     "RUN3"
   ],
@@ -27,16 +21,20 @@
     {
       "semantic_key": "decision.matharc-native-runtime",
       "version": 1
+    },
+    {
+      "semantic_key": "decision.matharc-backend-scope",
+      "version": 1
     }
   ],
   "invalidation_keys": [
     "requirement.run4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "第一方后端负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "PAR2",
-    "QRTR1",
+    "Q1",
     "RUN5"
   ],
   "node_role": "leaf",
@@ -44,22 +42,72 @@
   "execution_contract_ref": "nodes/RUN4.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/coordinator.py",
-    "matharc/v02/runtime/backends/base.py",
-    "matharc/v02/runtime/backends/codex.py",
-    "matharc/v02/runtime/backends/claude_code.py",
-    "matharc/v02/runtime/backends/model_api.py",
-    "matharc/v02/runtime/backends/local_process.py",
-    "tests/test_runtime_backend_contract.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/coordinator.py",
+      "mode": "create"
+    },
+    {
+      "path": "matharc/v02/runtime/backends/base.py",
+      "mode": "create"
+    },
+    {
+      "path": "matharc/v02/runtime/backends/codex.py",
+      "mode": "create"
+    },
+    {
+      "path": "matharc/v02/runtime/backends/local_process.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_backend_contract.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/local-runtime"
   ],
   "goal": "将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。",
-  "owner": "第一方后端负责人",
+  "owner": "principal:owner-run4",
   "acceptance_contract_ref": "acceptance-fragments/RUN4/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-run4",
+    "principal_ref": "principal:owner-run4"
+  },
+  "owner_binding": {
+    "role_id": "owner-run4",
+    "principal_ref": "principal:owner-run4"
+  },
   "source_requirement_refs": [
     "SRC-RUN4"
   ],
@@ -79,9 +127,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

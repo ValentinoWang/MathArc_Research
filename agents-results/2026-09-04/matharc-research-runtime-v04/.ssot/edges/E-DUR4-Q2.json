@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-DUR4-Q2",
+  "from": "DUR4",
+  "to": "Q2",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.dur4"
+  ],
+  "transferred_input": "从最后一个完整 GenerationCommit 生成可重放的崩溃恢复计划。",
+  "gate_evidence": "acceptance contract evidence"
+}

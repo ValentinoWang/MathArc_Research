@@ -1,12 +1,18 @@
 # Acceptance Contract: UX1
 
 - Task ID: UX1
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 控制台投影负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:normative-sentence[7]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-UX1
 - SSOT node: UX1
 - SSOT path: .ssot/nodes/UX1.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item UX1, the interface declared for UX1 must continue to satisfy every acce
 
 ## Data impact
 
-Item UX1 constrains any create, update, or delete reachable through the interface declared for UX1; only the acceptance seeds below define what data changes are permitted for runtime-console-projection. Node-specific data assertions: 在 matharc/v02/console_export.py 中将 RuntimeStore 状态投影到现有控制台数据合同 | 在 tests/test_runtime_console_projection.py 中证明投影不是第二真相源且不暴露主机绝对路径
+Item UX1 constrains any create, update, or delete reachable through the interface declared for UX1; only the acceptance seeds below define what data changes are permitted for runtime-console-projection. Node-specific data assertions: 在 matharc/v02/runtime/view_model.py 中将 RuntimeStore 状态投影到现有控制台数据合同 | 在 tests/test_runtime_console_projection.py 中证明投影不是第二真相源且不暴露主机绝对路径
 
 ## Permissions
 
-Item UX1 is owned by 控制台投影负责人; access to the interface declared for UX1 and runtime-console-projection follows the acceptance seeds below and no wider grant.
+Item UX1 is owned by principal:acceptance-a; access to the interface declared for UX1 and runtime-console-projection follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item UX1: the thresholds and failure evidence for th
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-UX1 | machine/integration-contract | 在 matharc/v02/console_export.py 中将 RuntimeStore 状态投影到现有控制台数据合同 | Integration | Automatic | Yes |
+| AC-01 | behavior | SRC-UX1 | machine/integration-contract | 在 matharc/v02/runtime/view_model.py 中将 RuntimeStore 状态投影到现有控制台数据合同 | Integration | Automatic | Yes |
 | AC-02 | behavior | SRC-UX1 | machine/e2e | 在 tests/test_runtime_console_projection.py 中证明投影不是第二真相源且不暴露主机绝对路径 | E2E | Automatic | Yes |
 
 ## Human acceptance
@@ -90,7 +96,7 @@ Item UX1 is fully determined by its acceptance seeds; outcomes for the interface
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Integration | matharc/v02/console_export.py | Automatic | Yes |
+| AC-01 | Integration | matharc/v02/runtime/view_model.py | Automatic | Yes |
 | AC-02 | E2E | tests/test_runtime_console_projection.py | Automatic | Yes |
 
 ## Exploratory testing

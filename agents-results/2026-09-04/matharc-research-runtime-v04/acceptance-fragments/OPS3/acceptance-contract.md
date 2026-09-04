@@ -1,16 +1,22 @@
 # Acceptance Contract: OPS3
 
 - Task ID: OPS3
+- Contract kind: validation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: validation result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 试点发布运维负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[25]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-OPS3
 - SSOT node: OPS3
 - SSOT path: .ssot/nodes/OPS3.json
 - Readiness mode: FORMAL
-- Decision refs: decision.matharc-native-runtime@1
+- Decision refs: decision.matharc-native-runtime@1, decision.matharc-pilot-deployment@1
 - Assumption IDs: none
 - Invalidation keys: task.ops3
 - AC budget: 3
@@ -61,7 +67,7 @@ Item OPS3 constrains any create, update, or delete reachable through the interfa
 
 ## Permissions
 
-Item OPS3 is owned by 试点发布运维负责人; access to the interface declared for OPS3 and pilot-operations follows the acceptance seeds below and no wider grant.
+Item OPS3 is owned by principal:acceptance-a; access to the interface declared for OPS3 and pilot-operations follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 

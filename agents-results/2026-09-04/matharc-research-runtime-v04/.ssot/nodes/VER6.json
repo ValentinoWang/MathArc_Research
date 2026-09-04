@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S82",
-    "S83",
     "VER5"
   ],
   "soft_dependencies": [],
@@ -27,28 +25,77 @@
     "requirement.ver6"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "验证汇合负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG2",
-    "QRTR5",
+    "Q5",
     "UX5"
   ],
   "node_role": "leaf",
-  "execution_actor": "codex",
+  "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/VER6.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "tests/test_verification_convergence.py",
-    "tests/test_verification_negative_paths.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "tests/test_verification_convergence.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_verification_negative_paths.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/e2e",
     "machine/integration-contract"
   ],
   "goal": "独立验收验证汇合、篡改检测、越界阻断和非独立结果拒绝。",
-  "owner": "验证汇合负责人",
+  "owner": "principal:owner-ver6",
   "acceptance_contract_ref": "acceptance-fragments/VER6/acceptance-contract.md",
+  "test_oracle": {
+    "mode": "frozen",
+    "writable": false,
+    "spec": "tests/test_v02_release_decision.py",
+    "assertion_authority": "MathArc 验证汇合与发布决策测试基线"
+  },
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-ver6",
+    "principal_ref": "principal:owner-ver6"
+  },
+  "owner_binding": {
+    "role_id": "owner-ver6",
+    "principal_ref": "principal:owner-ver6"
+  },
   "source_requirement_refs": [
     "SRC-VER6"
   ],
@@ -59,9 +106,6 @@
   "readiness_gaps": [
     {
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

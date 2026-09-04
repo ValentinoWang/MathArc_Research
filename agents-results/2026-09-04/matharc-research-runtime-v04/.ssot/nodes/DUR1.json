@@ -11,10 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S18",
-    "S21",
-    "S38",
-    "S39",
     "RUN5"
   ],
   "soft_dependencies": [],
@@ -29,30 +25,83 @@
     "requirement.dur1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "代际提交负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DUR2",
     "DUR3",
-    "QRTR2"
+    "Q2"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/DUR1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/generation.py",
-    "matharc/v02/runtime/reducer.py",
-    "tests/test_generation_input_snapshot.py",
-    "tests/test_generation_commit.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/generation.py",
+      "mode": "create"
+    },
+    {
+      "path": "matharc/v02/runtime/reducer.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_generation_input_snapshot.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_generation_commit.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_late_result_policy.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/unit",
     "machine/local-runtime"
   ],
   "goal": "定义冻结输入、代际提交、GenerationReducer 和 GenerationClosePolicy 的持久边界。",
-  "owner": "代际提交负责人",
+  "owner": "principal:owner-dur1",
   "acceptance_contract_ref": "acceptance-fragments/DUR1/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-dur1",
+    "principal_ref": "principal:owner-dur1"
+  },
+  "owner_binding": {
+    "role_id": "owner-dur1",
+    "principal_ref": "principal:owner-dur1"
+  },
   "source_requirement_refs": [
     "SRC-DUR1"
   ],
@@ -72,9 +121,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

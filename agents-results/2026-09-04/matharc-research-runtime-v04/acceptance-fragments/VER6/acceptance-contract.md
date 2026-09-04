@@ -1,19 +1,25 @@
 # Acceptance Contract: VER6
 
 - Task ID: VER6
+- Contract kind: validation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: validation result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 验证汇合负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:normative-sentence[6]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-VER6
 - SSOT node: VER6
 - SSOT path: .ssot/nodes/VER6.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.ver6
-- AC budget: 2
+- AC budget: 4
 - Baseline identity: ssot-input.json#items[VER6]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,11 +63,11 @@ For item VER6, the interface declared for VER6 must continue to satisfy every ac
 
 ## Data impact
 
-Item VER6 constrains any create, update, or delete reachable through the interface declared for VER6; only the acceptance seeds below define what data changes are permitted for verification-gate. Node-specific data assertions: 在 tests/test_verification_convergence.py 中证明真实候选通过独立验证后才形成正式证据 | 在 tests/test_verification_negative_paths.py 中阻止假候选、篡改包、越界和非独立结果
+Item VER6 constrains any create, update, or delete reachable through the interface declared for VER6; only the acceptance seeds below define what data changes are permitted for verification-gate. Node-specific data assertions: 在 tests/test_verification_convergence.py 中证明真实候选通过独立验证后才形成正式证据 | 在 tests/test_verification_negative_paths.py 中阻止假候选、篡改包、越界和非独立结果 | 在 tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 中固定候选输入、验证/证据输出、candidate_id+verification_digest 幂等键、超时/取消/失败分类、拒绝重试与安全恢复，并以独立验收身份覆盖全部负路径 | tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 实现后必须在 protected_tests 登记各自 SHA-256 及正向汇合/全部负路径覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
 
 ## Permissions
 
-Item VER6 is owned by 验证汇合负责人; access to the interface declared for VER6 and verification-gate follows the acceptance seeds below and no wider grant.
+Item VER6 is owned by principal:acceptance-a; access to the interface declared for VER6 and verification-gate follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -74,6 +80,8 @@ Node-specific increment for item VER6: the thresholds and failure evidence for t
 | --- | --- | --- | --- | --- | --- | --- | --- |
 | AC-01 | behavior | SRC-VER6 | machine/e2e | 在 tests/test_verification_convergence.py 中证明真实候选通过独立验证后才形成正式证据 | E2E | Automatic | Yes |
 | AC-02 | behavior | SRC-VER6 | machine/integration-contract | 在 tests/test_verification_negative_paths.py 中阻止假候选、篡改包、越界和非独立结果 | Integration | Automatic | Yes |
+| AC-03 | behavior | SRC-VER6 | machine/e2e | 在 tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 中固定候选输入、验证/证据输出、candidate_id+verification_digest 幂等键、超时/取消/失败分类、拒绝重试与安全恢复，并以独立验收身份覆盖全部负路径 | E2E | Automatic | Yes |
+| AC-04 | behavior | SRC-VER6 | machine/integration-contract | tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 实现后必须在 protected_tests 登记各自 SHA-256 及正向汇合/全部负路径覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY | Integration | Automatic | Yes |
 
 ## Human acceptance
 
@@ -92,6 +100,8 @@ Item VER6 is fully determined by its acceptance seeds; outcomes for the interfac
 | --- | --- | --- | --- | --- |
 | AC-01 | E2E | tests/test_verification_convergence.py | Automatic | Yes |
 | AC-02 | Integration | tests/test_verification_negative_paths.py | Automatic | Yes |
+| AC-03 | E2E | tests/test_verification_convergence.py | Automatic | Yes |
+| AC-04 | Integration | tests/test_verification_convergence.py | Automatic | Yes |
 
 ## Exploratory testing
 

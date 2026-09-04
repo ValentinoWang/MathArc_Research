@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S23",
-    "S72",
     "PAR2",
     "DUR5"
   ],
@@ -28,19 +26,30 @@
     "requirement.par3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "并发调度负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "PAR4",
-    "QRTR3"
+    "Q3"
   ],
   "node_role": "leaf",
-  "execution_actor": "orchestrator",
+  "execution_actor": "codex",
   "execution_contract_ref": "nodes/PAR3.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/scheduler.py",
-    "tests/test_runtime_parallelism.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/scheduler.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_parallelism.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_parallelism_contract.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/non-functional",
@@ -48,11 +57,79 @@
     "machine/integration-contract"
   ],
   "goal": "在持久化和恢复能力之后实现有界并行、冻结输入和隔离工作区调度。",
-  "owner": "并发调度负责人",
+  "owner": "principal:owner-par3",
   "acceptance_contract_ref": "acceptance-fragments/PAR3/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-par3",
+    "principal_ref": "principal:owner-par3"
+  },
+  "owner_binding": {
+    "role_id": "owner-par3",
+    "principal_ref": "principal:owner-par3"
+  },
   "source_requirement_refs": [
     "SRC-PAR3"
   ],
+  "escalation_reasons": [
+    "multi-executor"
+  ],
+  "worker_transport": "external-codex-exec",
+  "worker": {
+    "execution_identity": "worker-PAR3",
+    "runtime": "codex-exec",
+    "return_path": "workers/PAR3.md",
+    "resource_locks": [
+      "write:matharc/v02/runtime/scheduler.py",
+      "write:tests/test_runtime_parallelism.py",
+      "write:tests/test_runtime_parallelism_contract.py"
+    ]
+  },
+  "worker_registration": {
+    "worker_level": "L2",
+    "wrapper": "/Users/vsiyo/.codex/workers/run-l2.sh",
+    "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+    "invocation": "codex exec -C /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research --skip-git-repo-check --sandbox danger-full-access",
+    "sandbox": "danger-full-access",
+    "sandbox_authority": "writable sandbox",
+    "task_argument": "bounded implementation task PAR3",
+    "return_path": "workers/PAR3.md",
+    "prompt_path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/execution-orchestration/prompts/PAR3.md",
+    "log_path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/execution-orchestration/logs/PAR3.log",
+    "prompt_sha256": "capture-before-launch",
+    "launch_barrier": "all wave PIDs registered before first wait",
+    "prompt_cleanup": "delete after exit evidence registration",
+    "runtime_handle_cleanup": "release after exit evidence registration",
+    "codex_transcript_retention": "preserve ~/.codex/sessions and ~/.codex/archived_sessions",
+    "dispatch_state": "NOT_STARTED"
+  },
   "surface_refs": [
     "bounded-parallelism"
   ],
@@ -69,9 +146,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

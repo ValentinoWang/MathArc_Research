@@ -11,9 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S60",
-    "S71",
-    "S73",
     "PAR4"
   ],
   "soft_dependencies": [],
@@ -28,29 +25,81 @@
     "requirement.par5"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "并行验收负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG2",
-    "QRTR3",
+    "Q3",
     "SYN5"
   ],
   "node_role": "leaf",
-  "execution_actor": "codex",
+  "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/PAR5.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "tests/test_runtime_parallel_generation.py",
-    "tests/test_runtime_partial_failure.py",
-    "tests/test_runtime_late_result_policy.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "tests/test_runtime_parallel_generation.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_partial_failure.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_late_result_policy.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/e2e",
     "machine/local-runtime"
   ],
   "goal": "独立验收多成员一代归并、冲突、部分失败和迟到结果规则。",
-  "owner": "并行验收负责人",
+  "owner": "principal:owner-par5",
   "acceptance_contract_ref": "acceptance-fragments/PAR5/acceptance-contract.md",
+  "test_oracle": {
+    "mode": "frozen",
+    "writable": false,
+    "spec": "tests/test_v02_governed_fanout.py",
+    "assertion_authority": "MathArc 并行研究归并测试基线"
+  },
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-par5",
+    "principal_ref": "principal:owner-par5"
+  },
+  "owner_binding": {
+    "role_id": "owner-par5",
+    "principal_ref": "principal:owner-par5"
+  },
   "source_requirement_refs": [
     "SRC-PAR5"
   ],
@@ -61,9 +110,6 @@
   "readiness_gaps": [
     {
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

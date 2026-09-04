@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "source.identity"
   ],
-  "transferred_input": "Freeze the readable identity of every normative source artifact.",
+  "transferred_input": "建立来源身份基线",
   "gate_evidence": "acceptance contract evidence"
 }

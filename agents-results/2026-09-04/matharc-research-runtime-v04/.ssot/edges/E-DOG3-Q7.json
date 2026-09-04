@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-DOG3-Q7",
+  "from": "DOG3",
+  "to": "Q7",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "data-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.dog3"
+  ],
+  "transferred_input": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
+  "gate_evidence": "acceptance contract evidence"
+}

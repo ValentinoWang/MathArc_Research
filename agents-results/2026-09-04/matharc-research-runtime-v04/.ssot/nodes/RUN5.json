@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S35",
-    "S78",
     "RUN4"
   ],
   "soft_dependencies": [],
@@ -27,29 +25,78 @@
     "requirement.run5"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "单任务验收负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG1",
     "DUR1",
-    "QRTR1",
+    "Q1",
     "SYN1"
   ],
   "node_role": "leaf",
-  "execution_actor": "codex",
+  "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/RUN5.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "tests/test_runtime_single_run.py",
-    "tests/test_candidate_promotion_boundary.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "tests/test_runtime_single_run.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_candidate_promotion_boundary.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/e2e",
     "machine/local-runtime"
   ],
   "goal": "独立验证单任务从试跑、执行到候选回传的闭环，并阻断候选越级晋升。",
-  "owner": "单任务验收负责人",
+  "owner": "principal:owner-run5",
   "acceptance_contract_ref": "acceptance-fragments/RUN5/acceptance-contract.md",
+  "test_oracle": {
+    "mode": "frozen",
+    "writable": false,
+    "spec": "tests/test_v02_release_decision.py",
+    "assertion_authority": "MathArc 单任务候选边界测试基线"
+  },
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-run5",
+    "principal_ref": "principal:owner-run5"
+  },
+  "owner_binding": {
+    "role_id": "owner-run5",
+    "principal_ref": "principal:owner-run5"
+  },
   "source_requirement_refs": [
     "SRC-RUN5"
   ],
@@ -60,9 +107,6 @@
   "readiness_gaps": [
     {
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

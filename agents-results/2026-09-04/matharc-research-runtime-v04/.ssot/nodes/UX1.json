@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S29",
-    "S49",
     "DUR2"
   ],
   "soft_dependencies": [],
@@ -27,9 +25,9 @@
     "requirement.ux1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "控制台投影负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
-    "QRTR6",
+    "Q6",
     "UX4"
   ],
   "node_role": "leaf",
@@ -37,17 +35,60 @@
   "execution_contract_ref": "nodes/UX1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/view_model.py",
-    "tests/test_runtime_console_projection.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/view_model.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_console_projection.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/e2e"
   ],
   "goal": "把 RuntimeStore 状态投影到现有控制台数据合同，保持单一真相源。",
-  "owner": "控制台投影负责人",
+  "owner": "principal:owner-ux1",
   "acceptance_contract_ref": "acceptance-fragments/UX1/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-ux1",
+    "principal_ref": "principal:owner-ux1"
+  },
+  "owner_binding": {
+    "role_id": "owner-ux1",
+    "principal_ref": "principal:owner-ux1"
+  },
   "source_requirement_refs": [
     "SRC-UX1"
   ],
@@ -67,9 +108,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

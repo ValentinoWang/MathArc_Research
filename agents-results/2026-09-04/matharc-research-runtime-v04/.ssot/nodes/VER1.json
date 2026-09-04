@@ -11,9 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S14",
-    "S28",
-    "S33",
     "RUN1",
     "DUR2"
   ],
@@ -29,9 +26,9 @@
     "requirement.ver1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "候选身份负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
-    "QRTR5",
+    "Q5",
     "VER2"
   ],
   "node_role": "leaf",
@@ -39,18 +36,64 @@
   "execution_contract_ref": "nodes/VER1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/candidate.py",
-    "matharc/v02/runtime/verification.py",
-    "tests/test_candidate_identity.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/candidate.py",
+      "mode": "create"
+    },
+    {
+      "path": "matharc/v02/runtime/verification.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_candidate_identity.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
   "goal": "定义候选进入验证阶段所需的身份约束和 VerifierReceipt，而非重新定义候选包。",
-  "owner": "候选身份负责人",
+  "owner": "principal:owner-ver1",
   "acceptance_contract_ref": "acceptance-fragments/VER1/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-ver1",
+    "principal_ref": "principal:owner-ver1"
+  },
+  "owner_binding": {
+    "role_id": "owner-ver1",
+    "principal_ref": "principal:owner-ver1"
+  },
   "source_requirement_refs": [
     "SRC-VER1"
   ],
@@ -70,9 +113,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

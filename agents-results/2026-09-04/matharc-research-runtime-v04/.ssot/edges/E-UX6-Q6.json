@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-UX6-Q6",
+  "from": "UX6",
+  "to": "Q6",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "data-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.ux6"
+  ],
+  "transferred_input": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
+  "gate_evidence": "acceptance contract evidence"
+}

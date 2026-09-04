@@ -1,15 +1,30 @@
 {
   "release_id": "RTR2",
-  "release_gate_node": "QRTR2",
+  "release_gate_node": "Q2",
   "title": "RT-R2 持久化、生命周期与恢复",
   "user_value": "单任务运行可以可靠保存、停止、恢复和幂等导入。",
   "independent_failure": "不确定状态不得猜测完成、重复计费或跳过代际。",
+  "release_authority": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "release-acceptance-a",
+        "principal_ref": "principal:release-a"
+      },
+      {
+        "role_id": "release-acceptance-b",
+        "principal_ref": "principal:release-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
   "node_ids": [
     "DUR1",
     "DUR2",
     "DUR3",
     "DUR4",
     "DUR5",
-    "QRTR2"
+    "Q2"
   ]
 }

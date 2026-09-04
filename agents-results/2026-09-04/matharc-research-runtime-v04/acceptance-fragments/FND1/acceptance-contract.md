@@ -1,12 +1,18 @@
 # Acceptance Contract: FND1
 
 - Task ID: FND1
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: MathArc 运行时架构负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h2[1]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-FND1
 - SSOT node: FND1
 - SSOT path: .ssot/nodes/FND1.json
 - Readiness mode: FORMAL
@@ -61,7 +67,7 @@ Item FND1 constrains any create, update, or delete reachable through the interfa
 
 ## Permissions
 
-Item FND1 is owned by MathArc 运行时架构负责人; access to the interface declared for FND1 and runtime-governance follows the acceptance seeds below and no wider grant.
+Item FND1 is owned by principal:acceptance-a; access to the interface declared for FND1 and runtime-governance follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 

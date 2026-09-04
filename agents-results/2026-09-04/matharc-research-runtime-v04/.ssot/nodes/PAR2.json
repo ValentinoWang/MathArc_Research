@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S16",
-    "S41",
     "PAR1",
     "RUN4"
   ],
@@ -28,27 +26,70 @@
     "requirement.par2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "任务审批接线负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "PAR3",
-    "QRTR3"
+    "Q3"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/PAR2.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/coordinator.py",
-    "tests/test_runtime_approved_task_ingestion.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/coordinator.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_approved_task_ingestion.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/local-runtime"
   ],
   "goal": "接入已批准的动态任务并执行一次性、可审计的任务启动。",
-  "owner": "任务审批接线负责人",
+  "owner": "principal:owner-par2",
   "acceptance_contract_ref": "acceptance-fragments/PAR2/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-par2",
+    "principal_ref": "principal:owner-par2"
+  },
+  "owner_binding": {
+    "role_id": "owner-par2",
+    "principal_ref": "principal:owner-par2"
+  },
   "source_requirement_refs": [
     "SRC-PAR2"
   ],
@@ -68,9 +109,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

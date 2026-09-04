@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-DP3-OPS3",
+  "from": "DP3",
+  "to": "OPS3",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "decision.matharc-pilot-deployment.v1"
+  ],
+  "transferred_input": "首版部署目标为 Linux + systemd，使用持久目录、外部 secret source 和反向代理/TLS 边界；生产身份仍需后续部署证据确认。",
+  "gate_evidence": "acceptance contract evidence"
+}

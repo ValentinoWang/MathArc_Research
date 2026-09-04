@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S16",
-    "S77",
     "PAR3"
   ],
   "soft_dependencies": [],
@@ -27,27 +25,70 @@
     "requirement.par4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "资源记账负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "PAR5",
-    "QRTR3"
+    "Q3"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/PAR4.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/coordinator.py",
-    "tests/test_runtime_semantic_deduplication.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/budget.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_semantic_deduplication.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/unit",
     "machine/non-functional"
   ],
   "goal": "按执行回执记录实际资源消耗，并对语义重复实验做确定性去重。",
-  "owner": "资源记账负责人",
+  "owner": "principal:owner-par4",
   "acceptance_contract_ref": "acceptance-fragments/PAR4/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-par4",
+    "principal_ref": "principal:owner-par4"
+  },
+  "owner_binding": {
+    "role_id": "owner-par4",
+    "principal_ref": "principal:owner-par4"
+  },
   "source_requirement_refs": [
     "SRC-PAR4"
   ],
@@ -67,9 +108,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

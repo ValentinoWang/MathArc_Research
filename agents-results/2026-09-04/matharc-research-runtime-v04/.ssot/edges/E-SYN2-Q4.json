@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-SYN2-Q4",
+  "from": "SYN2",
+  "to": "Q4",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.syn2"
+  ],
+  "transferred_input": "将疑似反例送入独立复核队列，未复核前不改变研究路线或结论。",
+  "gate_evidence": "acceptance contract evidence"
+}

@@ -1,0 +1,42 @@
+{
+  "node_id": "DP3",
+  "semantic_key": "decision.matharc-pilot-deployment",
+  "stage": "RTRZ",
+  "work_kind": "decision-acceptance",
+  "domain_lane": "decision",
+  "execution_state": "ACCEPTED",
+  "decision_state": "ACCEPTED",
+  "decision_version": 1,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [],
+  "invalidation_keys": [
+    "decision.matharc-pilot-deployment.v1"
+  ],
+  "write_authority": "isolated-record",
+  "acceptance_authority": "决策负责人",
+  "unlocks": [
+    "OPS1",
+    "OPS2",
+    "OPS3"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "human",
+  "execution_contract_ref": "nodes/DP3.json",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "none",
+  "goal": "首版部署目标为 Linux + systemd，使用持久目录、外部 secret source 和反向代理/TLS 边界；生产身份仍需后续部署证据确认。",
+  "owner": "决策负责人",
+  "decision_record_ref": "agents-results/2026-09-04/matharc-research-runtime-v04/decisions/DP3.md",
+  "blocking_reasons": [],
+  "readiness_gaps": [],
+  "source_requirement_refs": [
+    "SRC-OPS1",
+    "SRC-OPS2",
+    "SRC-OPS3"
+  ]
+}

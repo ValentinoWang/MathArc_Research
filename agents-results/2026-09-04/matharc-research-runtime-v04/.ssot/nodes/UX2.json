@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S24",
-    "S48",
     "FND2"
   ],
   "soft_dependencies": [],
@@ -27,9 +25,9 @@
     "requirement.ux2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "邀请权限负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
-    "QRTR6",
+    "Q6",
     "UX3",
     "UX4"
   ],
@@ -38,17 +36,60 @@
   "execution_contract_ref": "nodes/UX2.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/service.py",
-    "tests/test_runtime_console_permissions.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/service.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_console_permissions.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/e2e"
   ],
   "goal": "复用邀请制 Cookie 会话和权限边界，阻断无权用户的运行动作。",
-  "owner": "邀请权限负责人",
+  "owner": "principal:owner-ux2",
   "acceptance_contract_ref": "acceptance-fragments/UX2/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-ux2",
+    "principal_ref": "principal:owner-ux2"
+  },
+  "owner_binding": {
+    "role_id": "owner-ux2",
+    "principal_ref": "principal:owner-ux2"
+  },
   "source_requirement_refs": [
     "SRC-UX2"
   ],
@@ -68,9 +109,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

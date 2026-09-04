@@ -11,9 +11,7 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S6",
-    "S7",
-    "S67",
+    "DP3",
     "UX6"
   ],
   "soft_dependencies": [],
@@ -22,37 +20,119 @@
     {
       "semantic_key": "decision.matharc-native-runtime",
       "version": 1
+    },
+    {
+      "semantic_key": "decision.matharc-pilot-deployment",
+      "version": 1
     }
   ],
   "invalidation_keys": [
     "requirement.ops1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "试点部署负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "OPS2",
-    "QRTR6"
+    "Q6"
   ],
   "node_role": "leaf",
-  "execution_actor": "orchestrator",
+  "execution_actor": "codex",
   "execution_contract_ref": "nodes/OPS1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "deploy/matharc-research.service",
-    "deploy/matharc-research.env.example",
-    "tests/test_runtime_ops_deployment.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "deploy/matharc-research.service",
+      "mode": "create"
+    },
+    {
+      "path": "deploy/matharc-research.env.example",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_ops_deployment.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/static",
     "persistent-runtime"
   ],
   "goal": "固定试点部署配置、持久目录、密钥来源和进程守护方式。",
-  "owner": "试点部署负责人",
+  "owner": "principal:owner-ops1",
   "acceptance_contract_ref": "acceptance-fragments/OPS1/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-ops1",
+    "principal_ref": "principal:owner-ops1"
+  },
+  "owner_binding": {
+    "role_id": "owner-ops1",
+    "principal_ref": "principal:owner-ops1"
+  },
   "source_requirement_refs": [
     "SRC-OPS1"
   ],
+  "escalation_reasons": [
+    "multi-executor"
+  ],
+  "worker_transport": "external-codex-exec",
+  "worker": {
+    "execution_identity": "worker-OPS1",
+    "runtime": "codex-exec",
+    "return_path": "workers/OPS1.md",
+    "resource_locks": [
+      "write:deploy/matharc-research.service",
+      "write:deploy/matharc-research.env.example",
+      "write:tests/test_runtime_ops_deployment.py"
+    ]
+  },
+  "worker_registration": {
+    "worker_level": "L2",
+    "wrapper": "/Users/vsiyo/.codex/workers/run-l2.sh",
+    "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+    "invocation": "codex exec -C /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research --skip-git-repo-check --sandbox danger-full-access",
+    "sandbox": "danger-full-access",
+    "sandbox_authority": "writable sandbox",
+    "task_argument": "bounded implementation task OPS1",
+    "return_path": "workers/OPS1.md",
+    "prompt_path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/execution-orchestration/prompts/OPS1.md",
+    "log_path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/execution-orchestration/logs/OPS1.log",
+    "prompt_sha256": "capture-before-launch",
+    "launch_barrier": "all wave PIDs registered before first wait",
+    "prompt_cleanup": "delete after exit evidence registration",
+    "runtime_handle_cleanup": "release after exit evidence registration",
+    "codex_transcript_retention": "preserve ~/.codex/sessions and ~/.codex/archived_sessions",
+    "dispatch_state": "NOT_STARTED"
+  },
   "surface_refs": [
     "pilot-operations"
   ],
@@ -69,9 +149,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

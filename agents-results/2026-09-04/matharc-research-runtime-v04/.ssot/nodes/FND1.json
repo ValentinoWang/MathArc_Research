@@ -10,11 +10,7 @@
   "readiness_mode": "FORMAL",
   "hard_dependencies": [
     "F",
-    "DP1",
-    "S30",
-    "S31",
-    "S55",
-    "S70"
+    "DP1"
   ],
   "soft_dependencies": [],
   "assumption_ids": [],
@@ -28,29 +24,78 @@
     "requirement.fnd1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "MathArc 运行时架构负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "FND2",
-    "QRTRZ"
+    "QZ"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/FND1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "scripts/check_runtime_ownership.py",
-    "tests/test_runtime_ownership.py",
-    "scripts/check_runtime_dependency_allowlist.py",
-    "tests/test_runtime_dependency_allowlist.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "scripts/check_runtime_ownership.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_ownership.py",
+      "mode": "create"
+    },
+    {
+      "path": "scripts/check_runtime_dependency_allowlist.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_runtime_dependency_allowlist.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/static",
     "machine/unit"
   ],
   "goal": "建立 MathArc 原生运行时所有权与依赖允许清单，阻断治理工具链进入产品运行路径。",
-  "owner": "MathArc 运行时架构负责人",
+  "owner": "principal:owner-fnd1",
   "acceptance_contract_ref": "acceptance-fragments/FND1/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-fnd1",
+    "principal_ref": "principal:owner-fnd1"
+  },
+  "owner_binding": {
+    "role_id": "owner-fnd1",
+    "principal_ref": "principal:owner-fnd1"
+  },
   "source_requirement_refs": [
     "SRC-FND1"
   ],
@@ -60,9 +105,6 @@
   "blocking_reasons": [],
   "readiness_gaps": [
     {
-      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
-    },
-    {
       "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
     },
     {
@@ -70,9 +112,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

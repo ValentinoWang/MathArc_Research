@@ -1,12 +1,18 @@
 # Acceptance Contract: SYN5
 
 - Task ID: SYN5
+- Contract kind: validation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: validation result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 连续代际验收负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[26]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-SYN5
 - SSOT node: SYN5
 - SSOT path: .ssot/nodes/SYN5.json
 - Readiness mode: FORMAL
@@ -61,7 +67,7 @@ Item SYN5 constrains any create, update, or delete reachable through the interfa
 
 ## Permissions
 
-Item SYN5 is owned by 连续代际验收负责人; access to the interface declared for SYN5 and two-generation-synthesis follows the acceptance seeds below and no wider grant.
+Item SYN5 is owned by principal:acceptance-a; access to the interface declared for SYN5 and two-generation-synthesis follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 

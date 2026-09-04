@@ -1,16 +1,22 @@
 # Acceptance Contract: OPS2
 
 - Task ID: OPS2
+- Contract kind: validation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: validation result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 试点运维观测负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[24]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-OPS2
 - SSOT node: OPS2
 - SSOT path: .ssot/nodes/OPS2.json
 - Readiness mode: FORMAL
-- Decision refs: decision.matharc-native-runtime@1
+- Decision refs: decision.matharc-native-runtime@1, decision.matharc-pilot-deployment@1
 - Assumption IDs: none
 - Invalidation keys: task.ops2
 - AC budget: 2
@@ -61,7 +67,7 @@ Item OPS2 constrains any create, update, or delete reachable through the interfa
 
 ## Permissions
 
-Item OPS2 is owned by 试点运维观测负责人; access to the interface declared for OPS2 and pilot-operations follows the acceptance seeds below and no wider grant.
+Item OPS2 is owned by principal:acceptance-a; access to the interface declared for OPS2 and pilot-operations follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 

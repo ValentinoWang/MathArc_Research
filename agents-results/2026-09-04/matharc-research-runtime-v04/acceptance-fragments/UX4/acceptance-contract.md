@@ -1,12 +1,18 @@
 # Acceptance Contract: UX4
 
 - Task ID: UX4
+- Contract kind: implementation
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: machine
+- Acceptance mode: Automatic
+- Evidence target: test result
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 控制台安全视图负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: orchestrator
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[16]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-UX4
 - SSOT node: UX4
 - SSOT path: .ssot/nodes/UX4.json
 - Readiness mode: FORMAL
@@ -57,11 +63,11 @@ For item UX4, the interface declared for UX4 must continue to satisfy every acce
 
 ## Data impact
 
-Item UX4 constrains any create, update, or delete reachable through the interface declared for UX4; only the acceptance seeds below define what data changes are permitted for runtime-disclosure. Node-specific data assertions: 在 matharc/v02/view_model.py 中建立统一中文运行视图并递归脱敏 | 在 tests/test_runtime_console_redaction.py 中证明密钥、路径、完整命令、环境变量和异常堆栈泄露为零 | 在 tests/test_runtime_console_redaction_visual.py 中验证脱敏后的运行视图不显示敏感字段
+Item UX4 constrains any create, update, or delete reachable through the interface declared for UX4; only the acceptance seeds below define what data changes are permitted for runtime-disclosure. Node-specific data assertions: 在 matharc/v02/runtime/view_model.py 中建立统一中文运行视图并递归脱敏 | 在 tests/test_runtime_console_redaction.py 中证明密钥、路径、完整命令、环境变量和异常堆栈泄露为零 | 在 tests/test_runtime_console_redaction_visual.py 中验证脱敏后的运行视图不显示敏感字段
 
 ## Permissions
 
-Item UX4 is owned by 控制台安全视图负责人; access to the interface declared for UX4 and runtime-disclosure follows the acceptance seeds below and no wider grant.
+Item UX4 is owned by principal:acceptance-a; access to the interface declared for UX4 and runtime-disclosure follows the acceptance seeds below and no wider grant.
 
 ## Performance and reliability
 
@@ -72,7 +78,7 @@ Node-specific increment for item UX4: the thresholds and failure evidence for th
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-UX4 | machine/static | 在 matharc/v02/view_model.py 中建立统一中文运行视图并递归脱敏 | Static analysis | Automatic | Yes |
+| AC-01 | behavior | SRC-UX4 | machine/static | 在 matharc/v02/runtime/view_model.py 中建立统一中文运行视图并递归脱敏 | Static analysis | Automatic | Yes |
 | AC-02 | behavior | SRC-UX4 | machine/e2e | 在 tests/test_runtime_console_redaction.py 中证明密钥、路径、完整命令、环境变量和异常堆栈泄露为零 | E2E | Automatic | Yes |
 | AC-03 | behavior | SRC-UX4 | visual-fidelity | 在 tests/test_runtime_console_redaction_visual.py 中验证脱敏后的运行视图不显示敏感字段 | Visual fidelity | Automatic | Yes |
 
@@ -91,7 +97,7 @@ Item UX4 is fully determined by its acceptance seeds; outcomes for the interface
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Static analysis | matharc/v02/view_model.py | Automatic | Yes |
+| AC-01 | Static analysis | matharc/v02/runtime/view_model.py | Automatic | Yes |
 | AC-02 | E2E | tests/test_runtime_console_redaction.py | Automatic | Yes |
 | AC-03 | Visual fidelity | tests/test_runtime_console_redaction_visual.py | Automatic | Yes |
 

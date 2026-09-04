@@ -1,12 +1,18 @@
 # Acceptance Contract: DOG4
 
 - Task ID: DOG4
+- Contract kind: release-decision
+- Contract profile: acceptance-contract-kind-profiles@1
+- Verification layer: Human decision
+- Acceptance mode: Manual / Authority-attested
+- Evidence target: signed decision record
 - Contract version: 1
 - Contract status: DRAFT
 - Test baseline: PLANNED
-- Acceptance owner: 试点发布负责人
+- Acceptance owner: principal:acceptance-a
+- Execution actor: human
 - Approval evidence: TBD
-- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[22]
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:requirement-id=SRC-DOG4
 - SSOT node: DOG4
 - SSOT path: .ssot/nodes/DOG4.json
 - Readiness mode: FORMAL
@@ -17,7 +23,7 @@
 - Baseline identity: ssot-input.json#items[DOG4]
 - Product Context refs: none
 - Role Context refs: none
-- Resolved Surface Contract refs: none
+- Resolved Governance Contract refs: none
 - Screen Contract ref: none
 - Visual Contract refs: none
 - UI Change declaration: none
@@ -25,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching pilot-release-evidence drives item DOG4 (unspecified dimension) through the interface declared for DOG4.
+An authorized decision authority reviews the evidence and records the signed decision for item DOG4.
 
 ## Problem
 
-Item DOG4 exists because the interface declared for DOG4 does not yet satisfy the acceptance seeds registered for it, leaving pilot-release-evidence incomplete.
+Item DOG4 remains open because its required governance decision has not yet been recorded in the isolated decision record.
 
 ## Expected outcome
 
-After item DOG4 lands, the interface declared for DOG4 satisfies every acceptance seed below and pilot-release-evidence reflects that behavior.
+After item DOG4 is accepted, the signed decision record exists, is attributable to the declared authority, and is bound to the seeds below.
 
 ## Non-goals
 
-Item DOG4 covers only the interface declared for DOG4 and pilot-release-evidence as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item DOG4 covers only the governance decision and its isolated record; implementation changes are owned by the downstream item named in the seeds.
 
 ## Normal path
 
 ```gherkin
-Given a user reaches pilot-release-evidence for item DOG4
-When the flow defined by the interface declared for DOG4 executes
+Given the declared decision authority reviews item DOG4 evidence
+When the authority records the decision in the isolated decision record
 Then every acceptance seed for item DOG4 holds
 ```
 
 ## Exception paths
 
-If the interface declared for DOG4 fails for item DOG4, pilot-release-evidence must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If item DOG4 lacks an authorized signed decision or its record is invalid, promotion must stop and the failure must be recorded.
 
 ## Invariants
 
-For item DOG4, the interface declared for DOG4 must continue to satisfy every acceptance seed below on every call; pilot-release-evidence must never show a state the seeds forbid.
+Item DOG4 must retain an immutable, attributable decision record; no implementation or runtime state may be inferred from an unsigned recommendation.
 
 ## Data impact
 
-Item DOG4 constrains any create, update, or delete reachable through the interface declared for DOG4; only the acceptance seeds below define what data changes are permitted for pilot-release-evidence. Node-specific data assertions: 在 acceptance/human/runtime-pilot/release-checklist.md 中汇编二至五人邀请试点的人类验收记录 | 在 acceptance/runtime-pilot/release-evidence.json 中证明用户可理解研究状态且本地正式检查与干净重放通过
+Item DOG4 writes only its isolated decision record; it must not modify implementation files, generated nodes, or evidence collectors.
 
 ## Permissions
 
-Item DOG4 is owned by 试点发布负责人; access to the interface declared for DOG4 and pilot-release-evidence follows the acceptance seeds below and no wider grant.
+Only the declared decision authority may accept item DOG4; the execution owner and downstream implementer cannot substitute for that authority.
 
 ## Performance and reliability
 
@@ -72,12 +78,12 @@ Node-specific increment for item DOG4: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | SRC-DOG4 | human | 在 acceptance/human/runtime-pilot/release-checklist.md 中汇编二至五人邀请试点的人类验收记录 | Human | Automatic | Yes |
-| AC-02 | behavior | SRC-DOG4 | release | 在 acceptance/runtime-pilot/release-evidence.json 中证明用户可理解研究状态且本地正式检查与干净重放通过 | Release | Automatic | Yes |
+| AC-01 | behavior | SRC-DOG4 | human | 在 acceptance/human/runtime-pilot/release-checklist.md 中汇编二至五人邀请试点的人类验收记录 | Human decision | Manual / Authority-attested | Yes |
+| AC-02 | behavior | SRC-DOG4 | human | 在 acceptance/runtime-pilot/release-evidence.json 中证明用户可理解研究状态且本地正式检查与干净重放通过 | Human decision | Manual / Authority-attested | Yes |
 
 ## Human acceptance
 
-Item DOG4 is fully determined by its acceptance seeds; outcomes for the interface declared for DOG4 on pilot-release-evidence are machine-verifiable, so no human judgment step is declared.
+Decision item DOG4 requires an authorized human decision against the acceptance seeds; record the signed decision before promotion.
 
 ## Protected acceptance tests
 
@@ -90,16 +96,16 @@ Item DOG4 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Human | acceptance/human/runtime-pilot/release-checklist.md | Automatic | Yes |
-| AC-02 | Release | acceptance/runtime-pilot/release-evidence.json | Automatic | Yes |
+| AC-01 | Human decision | acceptance/human/runtime-pilot/release-checklist.md | Manual / Authority-attested | Yes |
+| AC-02 | Human decision | acceptance/runtime-pilot/release-evidence.json | Manual / Authority-attested | Yes |
 
 ## Exploratory testing
 
-Probe pilot-release-evidence for item DOG4 under retry, interruption, and boundary-value inputs against the interface declared for DOG4, beyond the deterministic acceptance seeds below.
+Review item DOG4 for missing signatures, stale references, duplicate records, and attempts to promote an unsigned recommendation.
 
 ## Production monitoring and rollback
 
-Rollback for item DOG4 reverts the change to the interface declared for DOG4; no bespoke production metric is declared beyond the acceptance seeds below.
+To roll back item DOG4, invalidate its decision record and return the dependent implementation node to its pre-decision state.
 
 ## Risks and open decisions
 

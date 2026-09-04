@@ -11,8 +11,6 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "S28",
-    "S34",
     "VER2"
   ],
   "soft_dependencies": [],
@@ -27,9 +25,9 @@
     "requirement.ver3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "独立重放负责人",
+  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
-    "QRTR5",
+    "Q5",
     "VER4"
   ],
   "node_role": "leaf",
@@ -37,17 +35,60 @@
   "execution_contract_ref": "nodes/VER3.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [
-    "matharc/v02/runtime/verification.py",
-    "tests/test_candidate_independent_replay.py"
+  "write_regions": [],
+  "write_targets": [
+    {
+      "path": "matharc/v02/runtime/verification.py",
+      "mode": "create"
+    },
+    {
+      "path": "tests/test_candidate_independent_replay.py",
+      "mode": "create"
+    }
   ],
   "required_lanes": [
     "machine/e2e",
     "machine/local-runtime"
   ],
   "goal": "为候选生成干净环境的独立重放计划，排除同实现自证。",
-  "owner": "独立重放负责人",
+  "owner": "principal:owner-ver3",
   "acceptance_contract_ref": "acceptance-fragments/VER3/acceptance-contract.md",
+  "acceptance": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "acceptance-a",
+        "principal_ref": "principal:acceptance-a"
+      },
+      {
+        "role_id": "acceptance-b",
+        "principal_ref": "principal:acceptance-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
+  "acceptance_policy": "dual",
+  "acceptance_authorities": [
+    {
+      "role_id": "acceptance-a",
+      "principal_ref": "principal:acceptance-a"
+    },
+    {
+      "role_id": "acceptance-b",
+      "principal_ref": "principal:acceptance-b"
+    }
+  ],
+  "quorum": 2,
+  "minimum_trust": "repository-bound",
+  "owner_principal": {
+    "role_id": "owner-ver3",
+    "principal_ref": "principal:owner-ver3"
+  },
+  "owner_binding": {
+    "role_id": "owner-ver3",
+    "principal_ref": "principal:owner-ver3"
+  },
   "source_requirement_refs": [
     "SRC-VER3"
   ],
@@ -67,9 +108,6 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
-    },
-    {
-      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

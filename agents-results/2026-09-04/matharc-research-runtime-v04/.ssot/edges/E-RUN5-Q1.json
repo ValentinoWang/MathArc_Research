@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-RUN5-Q1",
+  "from": "RUN5",
+  "to": "Q1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "data-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.run5"
+  ],
+  "transferred_input": "独立验证单任务从试跑、执行到候选回传的闭环，并阻断候选越级晋升。",
+  "gate_evidence": "acceptance contract evidence"
+}

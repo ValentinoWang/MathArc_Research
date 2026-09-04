@@ -1,9 +1,24 @@
 {
   "release_id": "RTR5",
-  "release_gate_node": "QRTR5",
+  "release_gate_node": "Q5",
   "title": "RT-R5 数学验证汇合",
   "user_value": "候选结果可以经过独立验证后受控转换为正式证据。",
   "independent_failure": "运行成功、模型自报或篡改候选都不能成为证明。",
+  "release_authority": {
+    "mode": "dual",
+    "authorities": [
+      {
+        "role_id": "release-acceptance-a",
+        "principal_ref": "principal:release-a"
+      },
+      {
+        "role_id": "release-acceptance-b",
+        "principal_ref": "principal:release-b"
+      }
+    ],
+    "quorum": 2,
+    "minimum_trust": "repository-bound"
+  },
   "node_ids": [
     "VER1",
     "VER2",
@@ -11,6 +26,6 @@
     "VER4",
     "VER5",
     "VER6",
-    "QRTR5"
+    "Q5"
   ]
 }
