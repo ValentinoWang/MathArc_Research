@@ -859,6 +859,10 @@
           "operation": "modify"
         },
         {
+          "path": "matharc/v02/runtime/__init__.py",
+          "operation": "modify"
+        },
+        {
           "path": "matharc/v02/runtime/backends/base.py",
           "operation": "modify"
         },
@@ -872,6 +876,10 @@
         },
         {
           "path": "tests/test_runtime_backend_contract.py",
+          "operation": "modify"
+        },
+        {
+          "path": "tests/test_runtime_integration.py",
           "operation": "modify"
         }
       ],
@@ -1260,6 +1268,10 @@
         },
         {
           "path": "tests/test_runtime_late_result_policy.py",
+          "operation": "modify"
+        },
+        {
+          "path": "tests/test_runtime_hardening.py",
           "operation": "modify"
         }
       ],
@@ -2364,6 +2376,18 @@
           "operation": "modify"
         },
         {
+          "path": "matharc/v02/_workspace_server_impl.py",
+          "operation": "modify"
+        },
+        {
+          "path": "matharc/v02/workspace_server/__init__.py",
+          "operation": "modify"
+        },
+        {
+          "path": "scripts/console_browser_gate.mjs",
+          "operation": "modify"
+        },
+        {
           "path": "tests/test_runtime_console_permissions.py",
           "operation": "modify"
         }
@@ -2587,6 +2611,10 @@
         },
         {
           "path": "tests/test_runtime_console_reconnect.py",
+          "operation": "modify"
+        },
+        {
+          "path": "tests/test_runtime_http_integration.py",
           "operation": "modify"
         }
       ],
@@ -2984,7 +3012,15 @@
           "operation": "modify"
         },
         {
+          "path": "matharc/v02/runtime/ops.py",
+          "operation": "modify"
+        },
+        {
           "path": "tests/test_runtime_ops_deployment.py",
+          "operation": "modify"
+        },
+        {
+          "path": "tests/test_runtime_ops_bootstrap.py",
           "operation": "modify"
         }
       ],

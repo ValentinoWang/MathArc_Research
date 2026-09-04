@@ -23,6 +23,14 @@ from .review_server import ReviewAPI, ReviewHTTPResponse, ReviewServerConfig
 from .topic_observation import TopicObservationRunner
 from .workspace import ResearchWorkspace
 from .workspace_visualization import workspace_dashboard_payload
+from .runtime.contracts import ResearchRunSpec
+from .runtime.run_store import RuntimeStore, RuntimeStoreError
+from .runtime.service import ConsoleRuntimeService, PermissionDeniedError
+from .runtime.state_machine import RunState, RunStateMachine
+
+
+class _HandledRequest(Exception):
+    """Internal control flow after an HTTP error has been written."""
 
 
 @dataclass(slots=True)
@@ -78,6 +86,7 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         topic_store: TopicObservationRunner | None = None,
         local_projection_config: ConsoleLocalProjectionConfig | None = None,
         access_api: AccessAPI | None = None,
+        runtime_store: RuntimeStore | None = None,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
@@ -89,6 +98,12 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         self.topic_store = topic_store
         self.local_projection_config = local_projection_config
         self.access_api = access_api
+        self.runtime_store = runtime_store
+        self.runtime_service = ConsoleRuntimeService(
+            repository.root,
+            access_api=access_api,
+            runtime_store=runtime_store,
+        ) if runtime_store is not None else None
         super().__init__(server_address, WorkspaceRequestHandler)
 
 
@@ -138,6 +153,27 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
                     ),
                 )
                 return
+            if parsed.path == "/api/runtime/snapshot":
+                self._runtime_required()
+                snapshot = self.server.runtime_service.snapshot(self.headers.get("Cookie", ""))
+                self._json(HTTPStatus.OK, snapshot.to_dict())
+                return
+            if parsed.path == "/api/runtime/events":
+                self._runtime_required()
+                query = parse_qs(parsed.query)
+                after = int(query.get("after", ["-1"])[0])
+                store = self.server.runtime_store
+                assert store is not None
+                tail = len(store.events) - 1
+                if after < -1 or after > tail:
+                    self._json(HTTPStatus.CONFLICT, {"error": "reload_required", "reason": "cursor_out_of_range", "run_id": self._runtime_run_id()})
+                    return
+                self._json(HTTPStatus.OK, {
+                    "run_id": self._runtime_run_id(), "after": after,
+                    "events": [event.to_dict() for event in store.events if event.sequence > after],
+                    "head_hash": store.head_hash,
+                })
+                return
             if parsed.path == "/api/audit":
                 workspace = self.server.repository.load()
                 self._json(HTTPStatus.OK, workspace.audit().to_dict())
@@ -181,6 +217,8 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
                 HTTPStatus.NOT_FOUND,
                 {"error": "not_found", "path": parsed.path},
             )
+        except _HandledRequest:
+            return
         except (ValueError, OSError, json.JSONDecodeError) as exc:
             self._json(
                 HTTPStatus.CONFLICT,
@@ -194,6 +232,12 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
         if self._access_required(parsed.path) and not self._require_access_session():
             return
         if self._dispatch_review_post(parsed.path):
+            return
+        if parsed.path == "/api/runtime/runs":
+            self._runtime_create_run()
+            return
+        if parsed.path.startswith("/api/runtime/runs/") and parsed.path.endswith("/actions"):
+            self._runtime_action(parsed.path)
             return
         self._json(
             HTTPStatus.METHOD_NOT_ALLOWED,
@@ -307,7 +351,98 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
             "/api/events",
             "/api/artifacts",
             "/events",
-        } or (self.server.review_api is not None and self.server.review_api.handles(path))
+        } or path == "/api/runtime/snapshot" or path == "/api/runtime/events" \
+            or path == "/api/runtime/runs" or (path.startswith("/api/runtime/runs/") and path.endswith("/actions")) \
+            or (self.server.review_api is not None and self.server.review_api.handles(path))
+
+    def _runtime_required(self, *, operation: bool = False) -> Any:
+        if self.server.runtime_service is None:
+            self._json(HTTPStatus.NOT_FOUND, {"error": "runtime_not_configured"})
+            raise _HandledRequest
+        if self.server.access_api is not None:
+            try:
+                return self.server.runtime_service._authorize(self.headers.get("Cookie", ""), require_runtime=operation)
+            except PermissionDeniedError as exc:
+                self._json(HTTPStatus.FORBIDDEN, {"error": "permission_denied", "message": str(exc)})
+                raise _HandledRequest
+
+    def _runtime_run_id(self) -> str | None:
+        store = self.server.runtime_store
+        if store is None:
+            return None
+        runs = store.state.get("runs", {})
+        return next(iter(runs), None)
+
+    def _read_json_body(self) -> dict[str, Any]:
+        content_length = self.headers.get("Content-Length")
+        try:
+            length = int(content_length or "0")
+        except ValueError as exc:
+            raise ValueError("Content-Length is invalid") from exc
+        if length <= 0 or length > 32 * 1024:
+            raise ValueError("request body must contain 1 to 32768 bytes")
+        if self.headers.get("Content-Type", "").partition(";")[0].strip().casefold() != "application/json":
+            raise ValueError("Content-Type must be application/json")
+        value = json.loads(self.rfile.read(length).decode("utf-8"))
+        if not isinstance(value, dict):
+            raise ValueError("request body must be a JSON object")
+        return value
+
+    def _runtime_create_run(self) -> None:
+        try:
+            session = self._runtime_required(operation=True)
+            payload = self._read_json_body()
+            spec = ResearchRunSpec.from_dict(payload)
+            store = self.server.runtime_store
+            assert store is not None
+            run = store.create_run(spec)
+            actor = session.email if session is not None else "console"
+            self.server.runtime_service.create_run(spec.runtime_run_id, cookie_header=self.headers.get("Cookie", ""), actor=actor)
+            self._json(HTTPStatus.CREATED, {"run": run})
+        except _HandledRequest:
+            return
+        except PermissionDeniedError as exc:
+            self._json(HTTPStatus.FORBIDDEN, {"error": "permission_denied", "message": str(exc)})
+        except (ValueError, TypeError, RuntimeStoreError) as exc:
+            self._json(HTTPStatus.BAD_REQUEST, {"error": "invalid_runtime_run", "message": str(exc)})
+
+    def _runtime_action(self, path: str) -> None:
+        try:
+            session = self._runtime_required(operation=True)
+            parts = path.split("/")
+            runtime_run_id = parts[-2]
+            if not runtime_run_id or "/" in runtime_run_id:
+                raise ValueError("runtime_run_id is required")
+            payload = self._read_json_body()
+            allowed = {"action_id", "action", "actor", "payload"}
+            unknown = set(payload) - allowed
+            if unknown:
+                raise ValueError(f"unknown runtime action fields: {sorted(unknown)}")
+            action_id, action = payload.get("action_id"), payload.get("action")
+            if not isinstance(action_id, str) or not action_id.strip() or not isinstance(action, str):
+                raise ValueError("action_id and action are required")
+            store = self.server.runtime_store
+            service = self.server.runtime_service
+            assert store is not None and service is not None
+            prior = next((event.payload for event in store.events if event.event_type == "RUN_ACTION" and event.payload.get("runtime_run_id") == runtime_run_id and event.payload.get("action_id") == action_id), None)
+            if prior is not None:
+                receipt_keys = {"action_id", "action", "actor", "target_runtime_run_id", "status", "previous_state", "resulting_state", "reason", "contract_version"}
+                self._json(HTTPStatus.OK, {"receipt": {key: prior[key] for key in receipt_keys if key in prior}, "replayed": True})
+                return
+            run = store.state.get("runs", {}).get(runtime_run_id)
+            if run is None:
+                self._json(HTTPStatus.NOT_FOUND, {"error": "runtime_run_not_found"})
+                return
+            actor = str(payload.get("actor") or (session.email if session is not None else "console"))
+            receipt = service.runtime_action(runtime_run_id, action, action_id=action_id, actor=actor, cookie_header=self.headers.get("Cookie", ""), payload=payload.get("payload") or {})
+            data = receipt.to_dict() if hasattr(receipt, "to_dict") else dict(receipt.payload or {})
+            self._json(HTTPStatus.OK, {"receipt": data, "replayed": False})
+        except _HandledRequest:
+            return
+        except PermissionDeniedError as exc:
+            self._json(HTTPStatus.FORBIDDEN, {"error": "permission_denied", "message": str(exc)})
+        except (ValueError, TypeError, RuntimeStoreError) as exc:
+            self._json(HTTPStatus.BAD_REQUEST, {"error": "invalid_runtime_action", "message": str(exc)})
 
     def _require_access_session(self) -> bool:
         api = self.server.access_api
@@ -425,6 +560,7 @@ def make_server(
     local_projection_config: ConsoleLocalProjectionConfig | None = None,
     access_store_root: str | Path | None = None,
     access_cookie_secure: bool = False,
+    runtime_store_path: str | Path | None = None,
 ) -> WorkspaceHTTPServer:
     root = Path(workspace_root).resolve()
     topic_args = (topic_store_root, topic_id, topic_initial_cursor)
@@ -466,6 +602,7 @@ def make_server(
         if access_store_root is not None
         else None
     )
+    runtime_store = RuntimeStore(runtime_store_path or (root / ".runtime-store"))
     return WorkspaceHTTPServer(
         (host, port),
         repository,
@@ -476,4 +613,5 @@ def make_server(
         topic_store=topic_store,
         local_projection_config=local_projection_config,
         access_api=access_api,
+        runtime_store=runtime_store,
     )

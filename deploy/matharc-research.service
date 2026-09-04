@@ -10,7 +10,7 @@ Group=matharc
 WorkingDirectory=/opt/matharc-research/current
 EnvironmentFile=/etc/matharc-research/matharc-research.env
 LoadCredential=api-token:/etc/matharc-research/api-token
-ExecStart=/usr/bin/python3 -m matharc.api --run ${MATHARC_RUN_PATH} --host ${MATHARC_BIND_HOST} --port ${MATHARC_PORT} --workspace ${MATHARC_WORKSPACE}
+ExecStart=/usr/bin/python3 -m matharc.v02.runtime.ops serve --run ${MATHARC_RUN_PATH} --host ${MATHARC_BIND_HOST} --port ${MATHARC_PORT} --workspace ${MATHARC_WORKSPACE}
 Restart=on-failure
 RestartSec=5s
 TimeoutStartSec=30s
@@ -34,6 +34,7 @@ LimitNOFILE=4096
 
 # The application exposes /api/health; reverse proxy/TLS belongs at the edge.
 ExecStartPost=/usr/bin/curl --fail --silent --show-error --max-time 5 http://${MATHARC_BIND_HOST}:${MATHARC_PORT}/api/health
+ExecStartPost=/usr/bin/python3 -m matharc.v02.runtime.ops readyz
 
 [Install]
 WantedBy=multi-user.target

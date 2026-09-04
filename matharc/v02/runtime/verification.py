@@ -24,6 +24,29 @@ class VerificationStatus(str, Enum):
     RETRYABLE_FAILURE = "RETRYABLE_FAILURE"
 
 
+def _is_sha256(value: str) -> bool:
+    if not isinstance(value, str) or len(value) != 64:
+        return False
+    try:
+        int(value, 16)
+    except ValueError:
+        return False
+    return True
+
+
+def _receipt_binding_digest(*, candidate_identity_digest: str, replay_digest: str,
+                            result_digest: str, verifier_id: str,
+                            status: VerificationStatus, independent: bool) -> str:
+    return digest_json({
+        "candidate_identity_digest": candidate_identity_digest,
+        "replay_digest": replay_digest,
+        "result_digest": result_digest,
+        "verifier_id": verifier_id,
+        "status": status.value,
+        "independent": independent,
+    })
+
+
 @dataclass(frozen=True, slots=True)
 class ReplayPlan:
     candidate_id: str
@@ -45,6 +68,8 @@ class ReplayPlan:
         env = dict(environment or {"mode": "clean", "network": False, "candidate_id": candidate.candidate_id})
         if env.get("clean_environment") is False or env.get("mode") not in (None, "clean"):
             raise VerificationError("independent replay requires a clean environment")
+        if env.get("network", False) is not False:
+            raise VerificationError("independent replay must not use a networked environment")
         if env.get("candidate_id", candidate.candidate_id) != candidate.candidate_id:
             raise VerificationError("replay environment candidate mismatch")
         digest = digest_json({"candidate": candidate.envelope.to_dict(), "environment": env,
@@ -74,6 +99,8 @@ class VerifierReceipt:
     message: str = ""
     attempts: int = 1
     created_at: str = field(default_factory=utc_now)
+    candidate_identity_digest: str = ""
+    receipt_binding_digest: str = ""
 
     def __post_init__(self) -> None:
         if not isinstance(self.status, VerificationStatus):
@@ -97,7 +124,9 @@ class VerifierReceipt:
                  "status": self.status.value, "verifier_id": self.verifier_id,
                  "independent": self.independent, "result_digest": self.result_digest,
                  "failure_class": self.failure_class, "message": self.message,
-                 "attempts": self.attempts, "created_at": self.created_at}
+                 "attempts": self.attempts, "created_at": self.created_at,
+                 "candidate_identity_digest": self.candidate_identity_digest,
+                 "receipt_binding_digest": self.receipt_binding_digest}
         if include_digest: value["receipt_digest"] = self.receipt_digest
         return value
 
@@ -147,10 +176,28 @@ def independent_replay(candidate: ExplorationCandidate, *, verifier_id: str,
         attempts += 1
         try:
             result = replay(candidate.payload)
-            passed = bool(result) if isinstance(result, bool) else bool(result.get("passed", result.get("ok", False))) if isinstance(result, Mapping) else True
+            if isinstance(result, bool):
+                passed = result
+            elif isinstance(result, Mapping):
+                keys = [key for key in ("passed", "ok") if key in result]
+                if not keys or not isinstance(result[keys[0]], bool):
+                    raise VerificationError(
+                        "replay must return a boolean or a mapping with boolean passed/ok"
+                    )
+                passed = result[keys[0]]
+            else:
+                raise VerificationError(
+                    "replay returned an unsupported result type; verification failed closed"
+                )
             status = VerificationStatus.PASS if passed else VerificationStatus.FAIL
             receipt = VerifierReceipt(candidate.candidate_id, plan.replay_digest, status, verifier_id, True,
-                                      digest_json(result), None if passed else "VERIFICATION_FAILED", "", attempts)
+                                      digest_json(result), None if passed else "VERIFICATION_FAILED", "", attempts,
+                                      candidate_identity_digest=candidate.envelope.identity_digest,
+                                      receipt_binding_digest=_receipt_binding_digest(
+                                          candidate_identity_digest=candidate.envelope.identity_digest,
+                                          replay_digest=plan.replay_digest,
+                                          result_digest=digest_json(result), verifier_id=verifier_id,
+                                          status=status, independent=True))
             return plan, receipt
         except TimeoutError as exc:
             status, failure = VerificationStatus.TIMED_OUT, "TIMEOUT"
@@ -163,7 +210,12 @@ def independent_replay(candidate: ExplorationCandidate, *, verifier_id: str,
             error_message = str(exc)
         if attempts > max_retries:
             return plan, VerifierReceipt(candidate.candidate_id, plan.replay_digest, status, verifier_id, True,
-                                         "", failure, error_message, attempts)
+                                         "", failure, error_message, attempts,
+                                         candidate_identity_digest=candidate.envelope.identity_digest,
+                                         receipt_binding_digest=_receipt_binding_digest(
+                                             candidate_identity_digest=candidate.envelope.identity_digest,
+                                             replay_digest=plan.replay_digest, result_digest="",
+                                             verifier_id=verifier_id, status=status, independent=True))
 
 
 def convert_receipt_to_evidence(candidate: ExplorationCandidate, receipt: VerifierReceipt,
@@ -173,6 +225,20 @@ def convert_receipt_to_evidence(candidate: ExplorationCandidate, receipt: Verifi
         raise VerificationError("receipt candidate identity mismatch")
     if receipt.status is not VerificationStatus.PASS or not receipt.independent:
         raise VerificationError("only an independent PASS receipt can become evidence")
+    if receipt.candidate_identity_digest != candidate.envelope.identity_digest:
+        raise VerificationError("receipt candidate digest does not match candidate envelope")
+    if not _is_sha256(receipt.replay_digest) or not _is_sha256(receipt.result_digest):
+        raise VerificationError("receipt replay and result digests must be SHA-256 values")
+    expected_binding = _receipt_binding_digest(
+        candidate_identity_digest=receipt.candidate_identity_digest,
+        replay_digest=receipt.replay_digest,
+        result_digest=receipt.result_digest,
+        verifier_id=receipt.verifier_id,
+        status=receipt.status,
+        independent=receipt.independent,
+    )
+    if receipt.receipt_binding_digest != expected_binding:
+        raise VerificationError("receipt replay/candidate binding digest mismatch")
     return EvidenceRecord(
         evidence_id="ev-" + receipt.receipt_digest,
         claim_ids=tuple(candidate.claim_ids), kind=EvidenceKind.EXACT_COMPUTATION,
@@ -207,15 +273,21 @@ class EvidenceInvalidator:
     """Tracks the candidate identity consumed by evidence and invalidates drift."""
     def __init__(self) -> None:
         self._identity: dict[str, str] = {}
+        self._payload_digest: dict[str, str] = {}
 
     def register(self, evidence: EvidenceRecord, candidate: ExplorationCandidate) -> None:
+        if not _is_sha256(candidate.envelope.payload_digest):
+            raise VerificationError("candidate envelope has no valid payload digest")
         self._identity[evidence.evidence_id] = candidate.envelope.identity_digest
+        self._payload_digest[evidence.evidence_id] = candidate.envelope.payload_digest
 
     def check(self, evidence: EvidenceRecord, candidate: ExplorationCandidate) -> bool:
         expected = self._identity.get(evidence.evidence_id)
         if expected is None:
             raise VerificationError("evidence has no registered candidate identity")
-        if expected != candidate.envelope.identity_digest:
+        expected_payload = self._payload_digest.get(evidence.evidence_id)
+        payload_changed = expected_payload != digest_json(candidate.payload)
+        if expected != candidate.envelope.identity_digest or payload_changed:
             invalidate_evidence(evidence, reason="candidate identity changed", changed_fields=candidate.envelope.to_dict())
             return False
         return True

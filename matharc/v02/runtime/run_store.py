@@ -4,10 +4,14 @@ from __future__ import annotations
 import json
 import os
 import tempfile
+import threading
 import uuid
+import math
 from dataclasses import dataclass
 from pathlib import Path
 from typing import Any, Iterable, Mapping
+
+import fcntl
 
 from ..schema import canonical_json, digest_json, utc_now
 from .candidate import envelope_dict, source_identity
@@ -89,6 +93,8 @@ class RuntimeStore:
         else:
             self.events_path = self.root / (target.name + ".events.jsonl" if target.suffix else "events.jsonl")
             self.snapshot_path = self.root / (target.name + ".snapshot.json" if target.suffix else "snapshot.json")
+        self.lock_path = self.root / ".runtime.lock"
+        self._mutex = threading.RLock()
         self._events: list[RuntimeEvent] = []
         self._state: dict[str, Any] = {"runs": {}, "candidates": {}, "executions": {}, "costs": {}, "commits": [], "late_results": []}
         self._load(run_spec)
@@ -105,6 +111,13 @@ class RuntimeStore:
     def head_hash(self) -> str: return self._events[-1].event_hash if self._events else GENESIS_HASH
 
     def _load(self, run_spec: Any | None) -> None:
+        self._reload()
+        if run_spec is not None:
+            self.create_run(run_spec)
+
+    def _reload(self) -> None:
+        self._events = []
+        self._state = {"runs": {}, "candidates": {}, "executions": {}, "costs": {}, "commits": [], "late_results": []}
         if self.events_path.exists():
             for line_no, line in enumerate(self.events_path.read_text(encoding="utf-8").splitlines(), 1):
                 if not line.strip():
@@ -123,8 +136,21 @@ class RuntimeStore:
                 raise RuntimeStoreError("runtime snapshot digest mismatch")
             if snap.get("state") != self._state:
                 raise RuntimeStoreError("runtime snapshot state does not match replay")
-        if run_spec is not None:
-            self.create_run(run_spec)
+
+    def _file_lock(self):
+        class _Lock:
+            def __init__(self, path: Path) -> None:
+                self.path = path
+                self.handle = None
+            def __enter__(self):
+                self.handle = self.path.open("a+", encoding="utf-8")
+                fcntl.flock(self.handle.fileno(), fcntl.LOCK_EX)
+                return self
+            def __exit__(self, exc_type, exc, tb):
+                assert self.handle is not None
+                fcntl.flock(self.handle.fileno(), fcntl.LOCK_UN)
+                self.handle.close()
+        return _Lock(self.lock_path)
 
     def _append_validated(self, event: RuntimeEvent) -> None:
         expected = len(self._events)
@@ -146,6 +172,11 @@ class RuntimeStore:
             if run_id in self._state["runs"]: self._state["runs"][run_id]["status"] = data.get("resulting_state")
 
     def append_event(self, event_type: str, payload: Mapping[str, Any] | None = None) -> RuntimeEvent:
+        with self._mutex, self._file_lock():
+            self._reload()
+            return self._append_event_unlocked(event_type, payload)
+
+    def _append_event_unlocked(self, event_type: str, payload: Mapping[str, Any] | None = None) -> RuntimeEvent:
         event = RuntimeEvent.create(len(self._events), event_type, payload or {}, self.head_hash)
         self.root.mkdir(parents=True, exist_ok=True)
         with self.events_path.open("a", encoding="utf-8") as handle:
@@ -156,13 +187,15 @@ class RuntimeStore:
     append = append_event
 
     def append_existing(self, event: RuntimeEvent | Mapping[str, Any]) -> RuntimeEvent:
-        value = event if isinstance(event, RuntimeEvent) else RuntimeEvent.from_dict(event)
-        self._append_validated(value)
-        self._apply(value)
-        with self.events_path.open("a", encoding="utf-8") as handle:
-            handle.write(canonical_json(value.to_dict()) + "\n"); handle.flush(); os.fsync(handle.fileno())
-        self.write_snapshot()
-        return value
+        with self._mutex, self._file_lock():
+            self._reload()
+            value = event if isinstance(event, RuntimeEvent) else RuntimeEvent.from_dict(event)
+            self._append_validated(value)
+            self._apply(value)
+            with self.events_path.open("a", encoding="utf-8") as handle:
+                handle.write(canonical_json(value.to_dict()) + "\n"); handle.flush(); os.fsync(handle.fileno())
+            self.write_snapshot()
+            return value
 
     def write_snapshot(self) -> Path:
         payload = {"schema_version": "1.0", "event_count": len(self._events), "head_hash": self.head_hash,
@@ -210,11 +243,14 @@ class RuntimeStore:
         self.append_event("RUN_CREATED", data); return data
 
     def _idempotent(self, bucket: str, key: str, payload: Mapping[str, Any], event_type: str) -> dict[str, Any]:
-        existing = self._state[bucket].get(key)
-        if existing is not None:
-            if existing != dict(payload): raise RuntimeStoreError(f"{key} already imported with different source identity or payload")
-            return existing
-        self.append_event(event_type, payload); return dict(payload)
+        with self._mutex, self._file_lock():
+            self._reload()
+            existing = self._state[bucket].get(key)
+            if existing is not None:
+                if existing != dict(payload): raise RuntimeStoreError(f"{key} already imported with different source identity or payload")
+                return existing
+            self._append_event_unlocked(event_type, payload)
+            return dict(payload)
 
     def import_candidate(self, candidate: Any) -> dict[str, Any]:
         data = envelope_dict(candidate); data["source_identity"] = source_identity(candidate)
@@ -240,6 +276,8 @@ class RuntimeStore:
             cost_id = str(raw.get("cost_id", raw.get("id", "")))
         if not cost_id or source is None:
             raise RuntimeStoreError("cost_id and source identity are required")
+        if isinstance(amount, bool) or not isinstance(amount, (int, float)) or not math.isfinite(float(amount)) or float(amount) < 0:
+            raise RuntimeStoreError("cost amount must be a finite non-negative number")
         self._require_identity(source)
         payload = {"cost_id": str(cost_id), "amount": amount, "source_identity": dict(source)}
         return self._idempotent("costs", cost_id, payload, "COST_IMPORTED")
@@ -260,8 +298,20 @@ class RuntimeStore:
 
     def record_late_result(self, result: Any) -> dict[str, Any]:
         data = dict(result.to_dict() if hasattr(result, "to_dict") else result)
+        self._require_identity(data)
+        execution_id = data.get("execution_id")
+        if not execution_id:
+            raise RuntimeStoreError("execution_id is required for late result")
         data["disposition"] = "LATE_RESULT_QUARANTINED"
-        self.append_event("LATE_RESULT", data); return data
+        with self._mutex, self._file_lock():
+            self._reload()
+            for existing in self._state["late_results"]:
+                if existing.get("execution_id") == execution_id:
+                    if existing != data:
+                        raise RuntimeStoreError(f"{execution_id} already quarantined with different payload")
+                    return existing
+            self._append_event_unlocked("LATE_RESULT", data)
+            return data
 
     import_result = import_execution_result
     record_execution = import_execution_result

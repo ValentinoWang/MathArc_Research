@@ -43,7 +43,21 @@ class RecoveryPlan:
         return value
 
     @classmethod
-    def from_dict(cls, value: Mapping[str, Any]) -> "RecoveryPlan": return cls(**{k: value[k] for k in value if k != "plan_digest"}, plan_digest=str(value.get("plan_digest", "")))
+    def from_dict(cls, value: Mapping[str, Any]) -> "RecoveryPlan":
+        allowed = {"runtime_run_id", "generation_id", "next_generation_id", "commit_digest", "actions",
+                   "retryable_failures", "rejected_failures", "resulting_state", "plan_digest"}
+        unknown = set(value) - allowed
+        if unknown:
+            raise RecoveryError(f"unknown recovery plan fields: {sorted(unknown)}")
+        required = allowed - {"plan_digest"}
+        missing = required - set(value)
+        if missing:
+            raise RecoveryError(f"missing recovery plan fields: {sorted(missing)}")
+        expected = digest_json({key: value[key] for key in required})
+        supplied = str(value.get("plan_digest", ""))
+        if supplied and supplied != expected:
+            raise RecoveryError("recovery plan digest mismatch")
+        return cls(**{k: value[k] for k in value if k != "plan_digest"}, plan_digest=expected)
 
     @classmethod
     def from_commits(cls, commits: Iterable[Any] | Any, **kwargs: Any) -> "RecoveryPlan":
@@ -63,7 +77,10 @@ def build_recovery_plan(commits: Iterable[Any] | Any, *, runtime_run_id: str | N
     complete = [_as_dict(item) for item in commits if _as_dict(item).get("complete", True)]
     if not complete: raise RecoveryError("no complete GenerationCommit available for recovery")
     commit = complete[-1]
-    run_id = runtime_run_id or commit.get("runtime_run_id")
+    commit_run_id = commit.get("runtime_run_id")
+    if runtime_run_id is not None and commit_run_id and runtime_run_id != commit_run_id:
+        raise RecoveryError("recovery runtime_run_id does not match commit")
+    run_id = runtime_run_id or commit_run_id
     if not run_id: raise RecoveryError("runtime_run_id is required")
     expected_values = dict(expected or {})
     if expected_snapshot is not None:
@@ -71,7 +88,7 @@ def build_recovery_plan(commits: Iterable[Any] | Any, *, runtime_run_id: str | N
     if current_inputs is not None:
         expected_values["snapshot_digest"] = digest_json(current_inputs.to_dict() if hasattr(current_inputs, "to_dict") else current_inputs)
     for key, expected_value in expected_values.items():
-        if key in commit and commit.get(key) != expected_value:
+        if key not in commit or commit.get(key) != expected_value:
             raise RecoveryError(f"recovery identity mismatch for {key}")
     generation = str(commit.get("generation_id", ""))
     if not generation: raise RecoveryError("generation_id is required")

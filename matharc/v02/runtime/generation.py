@@ -53,7 +53,9 @@ class GenerationInputSnapshot:
                     worker_specs: Sequence[ResearchWorkerSpec] | Any,
                     tool_registry: Any, source_payload: Any = None) -> "GenerationInputSnapshot":
         workers = tuple(worker_specs)
-        worker_ids = tuple(sorted(worker.worker_id for worker in workers)) if workers and isinstance(workers[0], ResearchWorkerSpec) else ()
+        if any(not isinstance(worker, ResearchWorkerSpec) for worker in workers):
+            raise GenerationError("worker_specs must contain ResearchWorkerSpec")
+        worker_ids = tuple(sorted(worker.worker_id for worker in workers))
         return cls(workspace_id, trace_id, runtime_run_id, generation_id,
                    digest_json(trace), digest_json(contract), digest_json(agenda),
                    digest_json([worker.to_dict() if hasattr(worker, "to_dict") else worker for worker in workers]),
@@ -126,9 +128,10 @@ class GenerationCommit:
     def __post_init__(self) -> None:
         if not self.commit_digest:
             object.__setattr__(self, "commit_digest", digest_json(self.to_dict(include_digest=False)))
-        if any(result.generation_id != self.generation_id or result.runtime_run_id != self.runtime_run_id
+        if any((result.workspace_id, result.trace_id, result.runtime_run_id, result.generation_id) !=
+               (self.workspace_id, self.trace_id, self.runtime_run_id, self.generation_id)
                for result in self.results):
-            raise GenerationError("commit contains a result from another generation")
+            raise GenerationError("commit contains a result from another runtime identity")
 
     @property
     def idempotency_key(self) -> str:

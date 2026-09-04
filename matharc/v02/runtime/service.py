@@ -88,6 +88,8 @@ class ConsoleRuntimeService:
         self._authorize(cookie_header, view=view)
         if action not in ACTION_CLASSES:
             raise UnknownActionError(f"unknown console action: {action}")
+        if ACTION_CLASSES[action].startswith("wired-") and self.action_handler is None:
+            raise PermissionDeniedError(f"action is not wired: {action}")
         if not isinstance(idempotency_key, str) or not idempotency_key.strip() or len(idempotency_key) > 200:
             raise ValueError("idempotency_key is required")
         if data_boundary not in {"live", "demo"}:
@@ -112,7 +114,8 @@ class ConsoleRuntimeService:
 
     def create_run(self, runtime_run_id: str, *, cookie_header: str = "", actor: str = "console", **metadata: Any) -> dict[str, Any]:
         """Register a bounded runtime identity; no process is spawned here."""
-        self._authorize(cookie_header, require_runtime=True)
+        session = self._authorize(cookie_header, require_runtime=True)
+        self._validate_actor(actor, session)
         if not isinstance(runtime_run_id, str) and hasattr(runtime_run_id, "runtime_run_id"):
             runtime_run_id = str(runtime_run_id.runtime_run_id)
         elif isinstance(runtime_run_id, Mapping) and runtime_run_id.get("runtime_run_id"):
@@ -122,9 +125,18 @@ class ConsoleRuntimeService:
         if FORBIDDEN_INPUT_FIELDS.intersection(metadata):
             raise ValueError("command, cwd, environment, executable, and arguments are not accepted")
         with self._lock:
+            if self.runtime_store is not None:
+                state = getattr(self.runtime_store, "state", {})
+                existing = state.get("runs", {}).get(runtime_run_id) if isinstance(state, Mapping) else None
+                if existing is not None:
+                    return {"runtime_run_id": runtime_run_id, "status": str(existing.get("status", RunState.CREATED.value)), "actor": actor}
             if runtime_run_id in self._runs:
                 return {"runtime_run_id": runtime_run_id, "status": self._runs[runtime_run_id].status.value}
             self._runs[runtime_run_id] = RunStateMachine(RunState.CREATED)
+            if self.runtime_store is not None:
+                creator = getattr(self.runtime_store, "create_run", None)
+                if callable(creator):
+                    creator({"runtime_run_id": runtime_run_id, "status": RunState.CREATED.value, "actor": actor, **metadata})
             return {"runtime_run_id": runtime_run_id, "status": RunState.CREATED.value, "actor": actor}
 
     start_run = create_run
@@ -132,7 +144,8 @@ class ConsoleRuntimeService:
 
     def runtime_action(self, runtime_run_id: str, action: str, *, action_id: str, actor: str = "console", cookie_header: str = "", payload: Mapping[str, Any] | None = None) -> Any:
         """Apply one of five lifecycle verbs and return a durable-shaped receipt."""
-        self._authorize(cookie_header, require_runtime=True)
+        session = self._authorize(cookie_header, require_runtime=True)
+        self._validate_actor(actor, session)
         action = str(action).strip().casefold()
         if action not in RUNTIME_ACTIONS:
             raise UnknownActionError(f"unknown runtime action: {action}")
@@ -143,9 +156,24 @@ class ConsoleRuntimeService:
             raise ValueError("action_id is required")
         key = (runtime_run_id, action_id)
         with self._lock:
+            stored = self._stored_receipt(runtime_run_id, action_id)
+            if stored is not None:
+                self._runtime_receipts[key] = stored
+                return stored
             if key in self._runtime_receipts:
                 return self._runtime_receipts[key]
-            machine = self._runs.setdefault(runtime_run_id, RunStateMachine(RunState.CREATED))
+            machine = self._runs.get(runtime_run_id)
+            if machine is None:
+                initial = RunState.CREATED
+                if self.runtime_store is not None:
+                    state = getattr(self.runtime_store, "state", {})
+                    stored = state.get("runs", {}).get(runtime_run_id) if isinstance(state, Mapping) else None
+                    if isinstance(stored, Mapping):
+                        try:
+                            initial = RunState(str(stored.get("status", RunState.CREATED.value)))
+                        except ValueError as exc:
+                            raise PermissionDeniedError("persisted runtime state is invalid") from exc
+                machine = self._runs.setdefault(runtime_run_id, RunStateMachine(initial))
             previous = machine.status.value
             try:
                 if action == "revalidate":
@@ -163,6 +191,11 @@ class ConsoleRuntimeService:
                 prev_enum = RunStatus(previous) if RunStatus is not None else previous
                 receipt = RuntimeActionReceipt(action_id, action, actor, runtime_run_id, status, prev_enum, prev_enum, str(exc)) if RuntimeActionReceipt is not None else ActionResult(action, "failed", action_id, False, {"runtime_run_id": runtime_run_id, "reason": str(exc)})
             self._runtime_receipts[key] = receipt
+            if self.runtime_store is not None and hasattr(receipt, "to_dict"):
+                recorder = getattr(self.runtime_store, "append_event", None) or getattr(self.runtime_store, "append", None)
+                if callable(recorder):
+                    receipt_data = receipt.to_dict()
+                    recorder("RUN_ACTION", {**receipt_data, "runtime_run_id": runtime_run_id})
             return receipt
 
     post_action = runtime_action
@@ -179,9 +212,9 @@ class ConsoleRuntimeService:
             assert self._reconnect is not None
             return self._reconnect.reconnect(run_id=run_id, after=after, events=events)
 
-    def _authorize(self, cookie_header: str, *, view: str | None = None, require_runtime: bool = False) -> None:
+    def _authorize(self, cookie_header: str, *, view: str | None = None, require_runtime: bool = False) -> Any:
         if self.access_api is None:
-            return
+            return None
         try:
             session = self.access_api.authenticate(cookie_header)
         except Exception as exc:
@@ -192,6 +225,28 @@ class ConsoleRuntimeService:
                 raise PermissionDeniedError("session has no runtime operation permission")
         if view is not None and session.topic_scopes and "*" not in session.topic_scopes and view not in session.topic_scopes:
             raise PermissionDeniedError("session is not scoped to this console view")
+        return session
+
+    @staticmethod
+    def _validate_actor(actor: str, session: Any) -> None:
+        if not isinstance(actor, str) or not actor.strip():
+            raise PermissionDeniedError("actor is required")
+        expected = session.email if session is not None else "console"
+        if actor != expected:
+            raise PermissionDeniedError("actor is not bound to the authenticated session")
+
+    def _stored_receipt(self, runtime_run_id: str, action_id: str) -> Any | None:
+        if self.runtime_store is None:
+            return None
+        events = getattr(self.runtime_store, "events", ())
+        for event in reversed(tuple(events)):
+            payload = getattr(event, "payload", {})
+            if isinstance(payload, Mapping) and payload.get("runtime_run_id") == runtime_run_id and payload.get("action_id") == action_id:
+                try:
+                    return RuntimeActionReceipt.from_dict({key: payload[key] for key in RuntimeActionReceipt.__dataclass_fields__ if key in payload})
+                except Exception:
+                    return None
+        return None
 
 
 __all__ = ["ACTION_CLASSES", "SIMULATED_WRITES", "ActionResult", "ConsoleRuntimeService", "ConsoleRuntimeError", "UnknownActionError", "PermissionDeniedError"]

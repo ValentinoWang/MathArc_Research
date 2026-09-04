@@ -23,6 +23,7 @@ from ..console_export import ConsoleLocalProjectionConfig
 from ..review_server import ReviewAPI, ReviewServerConfig
 from ..topic_observation import TopicObservationRunner
 from ..workspace import ResearchWorkspace
+from ..runtime.run_store import RuntimeStore
 
 
 class WorkspaceRepository(_WorkspaceRepositoryImpl):
@@ -49,6 +50,7 @@ class WorkspaceHTTPServer(_WorkspaceHTTPServerImpl):
         topic_store: TopicObservationRunner | None = None,
         local_projection_config: ConsoleLocalProjectionConfig | None = None,
         access_api: AccessAPI | None = None,
+        runtime_store: RuntimeStore | None = None,
     ) -> None:
         self.repository = repository
         self.dashboard_path = Path(dashboard_path).resolve()
@@ -58,6 +60,9 @@ class WorkspaceHTTPServer(_WorkspaceHTTPServerImpl):
         self.topic_store = topic_store
         self.local_projection_config = local_projection_config
         self.access_api = access_api
+        self.runtime_store = runtime_store
+        from ..runtime.service import ConsoleRuntimeService
+        self.runtime_service = ConsoleRuntimeService(repository.root, access_api=access_api, runtime_store=runtime_store) if runtime_store is not None else None
         ThreadingHTTPServer.__init__(
             self,
             server_address,
@@ -81,6 +86,7 @@ def make_server(
     local_projection_config: ConsoleLocalProjectionConfig | None = None,
     access_store_root: str | Path | None = None,
     access_cookie_secure: bool = False,
+    runtime_store_path: str | Path | None = None,
 ) -> WorkspaceHTTPServer:
     from ..console_topic import TopicStoreConfig
 
@@ -124,6 +130,7 @@ def make_server(
         if access_store_root is not None
         else None
     )
+    runtime_store = RuntimeStore(runtime_store_path or (root / ".runtime-store"))
     return WorkspaceHTTPServer(
         (host, port),
         repository,
@@ -134,6 +141,7 @@ def make_server(
         topic_store=topic_store,
         local_projection_config=local_projection_config,
         access_api=access_api,
+        runtime_store=runtime_store,
     )
 
 

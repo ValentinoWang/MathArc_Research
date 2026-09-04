@@ -34,6 +34,7 @@ class RunStatus(str, Enum):
     COMPLETED = "COMPLETED"
     FAILED = "FAILED"
     CANCELLED = "CANCELLED"
+    STOPPED = "STOPPED"
 
 
 class ActionStatus(str, Enum):

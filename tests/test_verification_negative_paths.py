@@ -60,6 +60,41 @@ class VerificationNegativePathTests(unittest.TestCase):
         with self.assertRaises(VerificationError):
             ReplayPlan.for_candidate(candidate, verifier_id="v", implementation_id="impl",
                                      environment={"mode": "clean", "candidate_id": "other"})
+        with self.assertRaises(VerificationError):
+            ReplayPlan.for_candidate(candidate, verifier_id="v", implementation_id="impl",
+                                     environment={"mode": "clean", "network": True,
+                                                  "candidate_id": candidate.candidate_id})
+
+    def test_unknown_replay_result_fails_closed(self):
+        candidate = _candidate()
+        _, receipt = independent_replay(candidate, verifier_id="v", implementation_id="impl",
+                                        replay=lambda _: None)
+        self.assertEqual(receipt.status, VerificationStatus.RETRYABLE_FAILURE)
+        with self.assertRaises(VerificationError):
+            convert_receipt_to_evidence(candidate, receipt)
+
+    def test_receipt_must_bind_candidate_digest_and_replay_result_digests(self):
+        candidate = _candidate()
+        forged = VerifierReceipt(candidate.candidate_id, "forged", VerificationStatus.PASS,
+                                 "verifier", True, "0" * 64)
+        with self.assertRaises(VerificationError):
+            convert_receipt_to_evidence(candidate, forged)
+
+        _, receipt = independent_replay(candidate, verifier_id="v", implementation_id="impl",
+                                        replay=lambda _: True)
+        tampered = VerifierReceipt(candidate.candidate_id, receipt.replay_digest,
+                                   VerificationStatus.PASS, receipt.verifier_id, True,
+                                   "not-a-digest", candidate_identity_digest=candidate.envelope.identity_digest)
+        with self.assertRaises(VerificationError):
+            convert_receipt_to_evidence(candidate, tampered)
+
+        replay_tampered = VerifierReceipt(candidate.candidate_id, "f" * 64,
+                                          VerificationStatus.PASS, receipt.verifier_id, True,
+                                          receipt.result_digest,
+                                          candidate_identity_digest=candidate.envelope.identity_digest,
+                                          receipt_binding_digest=receipt.receipt_binding_digest)
+        with self.assertRaises(VerificationError):
+            convert_receipt_to_evidence(candidate, replay_tampered)
 
     def test_timeout_is_terminal_failure_and_not_promoted(self):
         candidate = _candidate()

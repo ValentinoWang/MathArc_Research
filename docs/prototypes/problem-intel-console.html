@@ -4354,7 +4354,7 @@ const AccessConsole = (() => {
       S.plane = "p";
       S.view = "portfolio";
       window.scrollTo({top:0});
-      const loaded = await ConsoleBridge.loadExport("/api/console");
+      const loaded = await ConsoleBridge.loadExport("/api/runtime/snapshot");
       if(loaded) ConsoleBridge.connectEvents("/events");
       else render();
       toast("邀请码已确认，已进入研究预览。");
@@ -4421,7 +4421,7 @@ const AccessConsole = (() => {
         S.access.email = payload.session.email;
         S.guest = false;
         if(S.view === "login") S.view = "portfolio";
-        const loaded = await ConsoleBridge.loadExport("/api/console");
+        const loaded = await ConsoleBridge.loadExport("/api/runtime/snapshot");
         if(loaded) ConsoleBridge.connectEvents("/events");
         else render();
         return true;
@@ -5015,7 +5015,7 @@ const validateConsolePayload = payload => {
     && !payload.workspace.trace && !payload.workspace.workspace) {
     return {ok:true, reason:"legacy_minimal_payload", projections:{routes:{ok:false, reason:"projection_missing"}, disclosure:{ok:false, reason:"projection_missing"}}};
   }
-  if(!hasLiveKeys(payload, required, ["routes","disclosure"]) || payload.schema_version !== "1.0"
+  if(!hasLiveKeys(payload, required, ["routes","disclosure","runtime"]) || payload.schema_version !== "1.0"
     || !sameLiveProvenance(payload.provenance, payload.provenance) || !validateLiveWorkspace(payload, payload.provenance)
     || !isLiveObject(payload.view_contract) || !isLiveObject(payload.source_topic) || !isLiveObject(payload.local_console)
     || !isLiveObject(payload.role_policy) || !isLiveObject(payload.unsupported) || !isLiveObject(payload.campaign) || !isLiveObject(payload.novelty)
@@ -5440,13 +5440,18 @@ const ConsoleBridge = (() => {
     const loadId = ++latestLoad;
     let jsonResponseSeen = false;
     try {
-      const endpoints = url ? [url] : ["console.json", "/api/console"];
+      // Legacy fallback contract: const endpoints = url ? [url] : ["console.json", "/api/console"]
+      const endpoints = url ? [url] : ["/api/runtime/snapshot", "console.json", "/api/console"];
       for (const endpoint of endpoints) {
         if (loadId !== latestLoad) return false;
         const response = await fetch(endpoint, { cache:"no-store", credentials:"same-origin" });
         if (!response.ok) continue;
         jsonResponseSeen = true;
-        const payload = await response.json();
+        let payload = await response.json();
+        /* Runtime snapshots wrap the existing console export with cursor and
+           digest metadata. Keep the view contract pointed at the payload so
+           legacy console.json and /api/console remain compatible fallbacks. */
+        if (payload && payload.payload && payload.run_id && Number.isInteger(payload.sequence)) payload = payload.payload;
         if (loadId !== latestLoad) return false;
         if (applyExport(payload, loadId)) {
           if (loadId === latestLoad) renderPreservingFocus();
@@ -5488,7 +5493,7 @@ const ConsoleBridge = (() => {
       label(`实时观察 · 事件 ${cursor}`, "live");
       if (!refreshScheduled) {
         refreshScheduled = true;
-        window.setTimeout(() => { refreshScheduled = false; loadExport("/api/console"); }, 100);
+        window.setTimeout(() => { refreshScheduled = false; loadExport("/api/runtime/snapshot"); }, 100);
       }
     });
     stream.onerror = () => {

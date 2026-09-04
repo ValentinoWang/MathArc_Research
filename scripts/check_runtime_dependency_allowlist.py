@@ -4,7 +4,6 @@ from __future__ import annotations
 import argparse
 import ast
 import json
-import sys
 from collections.abc import Iterable
 from pathlib import Path
 
@@ -12,9 +11,9 @@ from pathlib import Path
 # deliberate review and a new entry here.
 STDLIB_ALLOWLIST = frozenset({
     "__future__", "argparse", "ast", "asyncio", "collections", "contextlib", "copy", "dataclasses",
-    "datetime", "enum", "functools", "hashlib", "hmac", "http", "itertools",
+    "datetime", "enum", "fcntl", "functools", "hashlib", "hmac", "http", "itertools",
     "json", "logging", "math", "os", "pathlib", "re", "shutil", "sqlite3", "sys", "types",
-    "tempfile", "time", "traceback", "typing", "uuid", "zipfile",
+    "tempfile", "time", "traceback", "typing", "uuid", "zipfile", "concurrent", "inspect", "threading",
 })
 LOCAL_ALLOWLIST = frozenset({"matharc"})
 ALLOWED_RUNTIME_DEPENDENCIES = frozenset((*STDLIB_ALLOWLIST, *LOCAL_ALLOWLIST))
@@ -35,11 +34,10 @@ def imported_roots(source: str, filename: str = "<runtime>") -> set[str]:
 def check_dependencies(
     paths: Iterable[str | Path], *, allowed: Iterable[str] = ()
 ) -> dict[str, object]:
-    # ``stdlib_module_names`` is the interpreter's canonical list (available
-    # on supported Python versions); the explicit set documents the intended
-    # baseline and keeps this guard usable on older interpreters.
-    interpreter_stdlib = set(getattr(sys, "stdlib_module_names", ()))
-    permitted = set(STDLIB_ALLOWLIST) | interpreter_stdlib | set(LOCAL_ALLOWLIST) | set(allowed)
+    # Keep the reviewed set explicit.  ``sys.stdlib_module_names`` is useful
+    # for discovery, but unioning it here would silently authorize modules
+    # such as subprocess, socket, pickle, and importlib.
+    permitted = set(STDLIB_ALLOWLIST) | set(LOCAL_ALLOWLIST) | set(allowed)
     files: dict[str, list[str]] = {}
     unknown: dict[str, list[str]] = {}
     for raw in paths:
@@ -52,7 +50,7 @@ def check_dependencies(
         name = str(path)
         roots = sorted(imported_roots(path.read_text(encoding="utf-8"), name))
         files[name] = roots
-        bad = [root for root in roots if root not in permitted and root not in sys.builtin_module_names]
+        bad = [root for root in roots if root not in permitted]
         if bad:
             unknown[name] = bad
     return {"valid": not unknown, "allowed": sorted(permitted), "files": files, "unknown": unknown}

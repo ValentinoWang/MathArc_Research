@@ -8,6 +8,7 @@ from typing import Any, Mapping, Sequence
 
 from ..schema import digest_json
 from .contracts import CandidateEnvelope, ExecutionStatus, ResearchRunSpec, ResearchWorkerSpec, WorkerExecutionResult
+from .generation import GenerationCommit
 from .evaluator import EvaluationContract, EvaluationRequest, EvaluationResult, EvaluationStatus
 from .backends.base import Backend, BackendRequest, DeterministicTestBackend, as_request
 from .backends.codex import CodexBackend
@@ -29,7 +30,7 @@ class CoordinatorRun:
 class RuntimeCoordinator:
     """Run smoke-gated workers and assemble proposal-only candidate envelopes."""
 
-    ALLOWED_BACKENDS = ("deterministic-test", "deterministic", "codex", "local-exact-tool", "local_process")
+    ALLOWED_BACKENDS = ("deterministic-test", "deterministic", "codex", "local", "local-exact-tool", "local_process")
 
     def __init__(self, backends: Mapping[str, Backend] | None = None, *, backend_registry: Mapping[str, Backend] | None = None,
                  runtime_store: Any | None = None, evaluator: EvaluationContract | None = None) -> None:
@@ -38,6 +39,7 @@ class RuntimeCoordinator:
             "deterministic-test": DeterministicTestBackend(),
             "codex": CodexBackend(),
             "local-exact-tool": LocalExactToolBackend(),
+            "local": LocalExactToolBackend(),
         })
         unknown = set(self.backends) - set(self.ALLOWED_BACKENDS)
         if unknown:
@@ -100,7 +102,7 @@ class RuntimeCoordinator:
         req = as_request(request)
         backend_name = backend or str((req.payload or {}).get("backend", "deterministic-test")) if isinstance(req.payload, Mapping) else backend
         backend_name = backend_name or "deterministic-test"
-        aliases = {"deterministic": "deterministic-test", "local_process": "local-exact-tool"}
+        aliases = {"deterministic": "deterministic-test", "local": "local-exact-tool", "local_process": "local-exact-tool"}
         requested_backend = backend_name
         backend_name = aliases.get(backend_name, backend_name)
         if backend_name not in self.backends and requested_backend in self.backends:
@@ -157,6 +159,10 @@ class RuntimeCoordinator:
 
     def run(self, spec: ResearchRunSpec, *, evaluator: EvaluationContract | None = None,
             evaluation_input: Any = None, smoke: EvaluationRequest | None = None) -> CoordinatorRun:
+        if self.runtime_store is not None:
+            creator = getattr(self.runtime_store, "create_run", None)
+            if callable(creator):
+                creator(spec)
         contract = evaluator or self.evaluator
         if contract is None:
             contract = EvaluationContract(spec.task_id, lambda req: True,
@@ -179,7 +185,30 @@ class RuntimeCoordinator:
                 execution_id=f"exec-{spec.runtime_run_id}-{worker.worker_id}", budget=dict(spec.budget or {}))
             result = self.execute_backend(req, backend=worker.backend)
             results.append(result)
-            candidates.extend(self.assemble_candidate(spec, req, result))
+            worker_candidates = self.assemble_candidate(spec, req, result)
+            candidates.extend(worker_candidates)
+            if self.runtime_store is not None:
+                importer = getattr(self.runtime_store, "import_candidate", None)
+                if callable(importer):
+                    for candidate in worker_candidates:
+                        importer(candidate)
+        if self.runtime_store is not None:
+            commit_recorder = getattr(self.runtime_store, "record_generation_commit", None)
+            if callable(commit_recorder):
+                accepted = tuple(result.execution_id for result in results if result.status is ExecutionStatus.SUCCEEDED)
+                failed = tuple(result.execution_id for result in results if result.status is not ExecutionStatus.SUCCEEDED)
+                status = "COMPLETED" if results and not failed else ("PARTIAL" if accepted else "FAILED")
+                commit_recorder(GenerationCommit(
+                    workspace_id=spec.workspace_id,
+                    trace_id=spec.trace_id,
+                    runtime_run_id=spec.runtime_run_id,
+                    generation_id="generation-1",
+                    snapshot_digest=digest_json({"task_id": spec.task_id, "input": evaluation_input}),
+                    results=tuple(results),
+                    accepted_result_ids=accepted,
+                    failed_result_ids=failed,
+                    status=status,
+                ).to_dict())
         return CoordinatorRun(smoke_result=smoke_result, results=tuple(results),
                               candidates=tuple(candidates), started_full_run=True)
 

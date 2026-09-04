@@ -23,6 +23,14 @@ class RuntimeDependencyAllowlistTests(unittest.TestCase):
             self.assertFalse(result["valid"])
             self.assertEqual(result["unknown"][str(path)], ["requests"])
 
+    def test_process_and_network_modules_are_not_implicitly_allowed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "runtime.py"
+            path.write_text("import subprocess\nimport socket\n", encoding="utf-8")
+            result = check_dependencies([path])
+            self.assertFalse(result["valid"], result)
+            self.assertEqual(result["unknown"][str(path)], ["socket", "subprocess"])
+
     def test_ast_parser_does_not_execute_source(self) -> None:
         self.assertEqual(imported_roots("raise RuntimeError('must not execute')"), set())
 

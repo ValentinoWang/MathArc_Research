@@ -36,16 +36,18 @@ RUNTIME_OWNERSHIP = {
 
 
 def normalize(path: str | Path, root: str | Path | None = None) -> str:
+    # Always resolve against a concrete root before classifying.  Without
+    # this, a lexical ``runtime/../develop`` path could bypass the forbidden
+    # prefixes, and symlinked files could be classified by their link name.
+    root_path = Path(root or Path.cwd()).resolve()
     value = Path(path)
-    if root is not None:
-        root_path = Path(root).resolve()
-        if not value.is_absolute():
-            value = root_path / value
-        try:
-            value = value.resolve().relative_to(root_path)
-        except ValueError:
-            return str(value.resolve())
-    return value.as_posix().lstrip("./")
+    if not value.is_absolute():
+        value = root_path / value
+    value = value.resolve(strict=False)
+    try:
+        return value.relative_to(root_path).as_posix()
+    except ValueError:
+        return value.as_posix()
 
 
 def is_runtime_owned(path: str | Path, *, root: str | Path | None = None) -> bool:

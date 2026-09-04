@@ -11,7 +11,7 @@ class RuntimeLateResultTests(unittest.TestCase):
             store = RuntimeStore(Path(tmp) / "runtime")
             commit = {"runtime_run_id": "r", "generation_id": "g1", "complete": True, "status": "COMPLETED"}
             original = store.record_generation_commit(commit)
-            store.record_late_result({"runtime_run_id": "r", "generation_id": "g1", "execution_id": "late", "status": "SUCCEEDED"})
+            store.record_late_result({"workspace_id": "w", "trace_id": "t", "runtime_run_id": "r", "generation_id": "g1", "execution_id": "late", "status": "SUCCEEDED"})
             self.assertEqual(store.state["commits"][0], original)
             self.assertEqual(store.state["late_results"][0]["disposition"], "LATE_RESULT_QUARANTINED")
 

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import unittest
+import tempfile
 from pathlib import Path
 
 from scripts.check_runtime_ownership import check_runtime_ownership, is_runtime_owned
@@ -27,6 +28,18 @@ class RuntimeOwnershipTests(unittest.TestCase):
     def test_repository_absolute_paths_normalize(self) -> None:
         root = Path.cwd()
         self.assertTrue(is_runtime_owned(root / "matharc/v02/trace.py", root=root))
+
+    def test_traversal_cannot_enter_runtime_allowlist(self) -> None:
+        self.assertFalse(is_runtime_owned("matharc/v02/runtime/../../develop/Harness/fullstack-ai-harness.md"))
+        self.assertFalse(is_runtime_owned("matharc/v02/runtime/../../../.harness/overlays/project-harness-adapter.yaml"))
+
+    def test_symlinked_runtime_path_is_classified_by_target(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "outside").mkdir()
+            (root / "matharc/v02").mkdir(parents=True)
+            (root / "matharc/v02/runtime").symlink_to(root / "outside", target_is_directory=True)
+            self.assertFalse(is_runtime_owned("matharc/v02/runtime/escape.py", root=root))
 
 
 if __name__ == "__main__":

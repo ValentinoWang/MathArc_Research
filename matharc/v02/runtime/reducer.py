@@ -17,6 +17,7 @@ class GenerationReducer:
     def __post_init__(self) -> None:
         self._closed_commit: GenerationCommit | None = None
         self._late_results: list[WorkerExecutionResult] = []
+        self._pending_results: dict[str, WorkerExecutionResult] = {}
 
     @property
     def late_results(self) -> tuple[WorkerExecutionResult, ...]:
@@ -36,13 +37,21 @@ class GenerationReducer:
     def reduce(self, results: Sequence[WorkerExecutionResult], *, elapsed_seconds: float | None = None) -> GenerationCommit:
         if self._closed_commit is not None:
             incoming = tuple(results)
-            if incoming and all(r.to_dict() == old.to_dict() for r, old in zip(incoming, self._closed_commit.results)):
+            for result in incoming:
+                self._validate_result(result)
+            ordered_incoming = tuple(sorted(incoming, key=lambda r: (r.generation_id, r.worker_id, r.execution_id, r.result_digest)))
+            if len(ordered_incoming) == len(self._closed_commit.results) and all(
+                    r.to_dict() == old.to_dict() for r, old in zip(ordered_incoming, self._closed_commit.results)):
                 return self._closed_commit
-            for result in incoming: self.submit(result)
+            late_keys = {item.idempotency_key for item in self._late_results}
+            for result in incoming:
+                if result.idempotency_key not in late_keys:
+                    self.submit(result)
+                    late_keys.add(result.idempotency_key)
             return self._closed_commit
         by_key: dict[str, WorkerExecutionResult] = {}
         duplicate: list[str] = []
-        for result in results:
+        for result in tuple(self._pending_results.values()) + tuple(results):
             self._validate_result(result)
             key = result.idempotency_key
             existing = by_key.get(key)
@@ -62,7 +71,22 @@ class GenerationReducer:
                                   self.snapshot.generation_id, self.snapshot.snapshot_digest, ordered,
                                   accepted, tuple(duplicate), failed, status,
                                   self.close_policy.should_close(ordered, elapsed_seconds=elapsed_seconds))
-        if commit.closed: self._closed_commit = commit
+        timed_out = (self.close_policy.timeout_seconds is not None and elapsed_seconds is not None
+                     and elapsed_seconds >= self.close_policy.timeout_seconds)
+        if commit.closed and (self.close_policy.allow_partial or commit.status != "PARTIAL" or timed_out):
+            if timed_out and not self.close_policy.allow_partial and commit.status == "PARTIAL":
+                commit = GenerationCommit(commit.workspace_id, commit.trace_id, commit.runtime_run_id,
+                                          commit.generation_id, commit.snapshot_digest, commit.results,
+                                          commit.accepted_result_ids, commit.duplicate_result_ids,
+                                          commit.failed_result_ids, "FAILED", True)
+            self._closed_commit = commit
+        else:
+            self._pending_results = dict(by_key)
+            if commit.closed:
+                commit = GenerationCommit(commit.workspace_id, commit.trace_id, commit.runtime_run_id,
+                                          commit.generation_id, commit.snapshot_digest, commit.results,
+                                          commit.accepted_result_ids, commit.duplicate_result_ids,
+                                          commit.failed_result_ids, commit.status, False)
         return commit
 
     def commit(self, results: Sequence[WorkerExecutionResult], *, elapsed_seconds: float | None = None) -> GenerationCommit:
