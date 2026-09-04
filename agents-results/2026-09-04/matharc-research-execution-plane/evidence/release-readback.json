@@ -143,6 +143,17 @@
       "push": "PASS (c323ac215e2f3e10127bcf81cd2bf4bab562bc00 -> main; direct Git HTTPS)"
     }
   },
+  "system_network_proxy": {
+    "status": "PASS",
+    "services_checked": "all 7 macOS network services",
+    "http_enabled": false,
+    "https_enabled": false,
+    "socks_enabled": false,
+    "proxy_auto_config_enabled": false,
+    "proxy_auto_discovery_enabled": false,
+    "stored_pac_url": "http://127.0.0.1:33331/commands/pac",
+    "stored_pac_url_effect": "disabled; no system proxy route is active"
+  },
   "observed_at": "2026-09-04T00:22:32+00:00",
   "environment_identity": "host=192.168.1.7; os=macOS 26.0.1; arch=arm64",
   "source_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
