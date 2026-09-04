@@ -56,8 +56,8 @@
   "view_model_version": 2,
   "validation_report": {
     "path": "validation-report.json",
-    "sha256": "ba1180b29a231bfd0ebf09954ddfa042a0fd92561a925d174163c93c7e8965d0",
+    "sha256": "dace9a040c72f1cbf5b2168952331656c2f6cfabee6116da70baf0c7b6444122",
     "manifest_identity_sha256": "12ab8d3bd07472988a5933394aa8e692de21d9787c647f93374cf6e0efd4320d",
-    "bundle_content_sha256": "b4623595ba6f32c74be8e218ff79468d075cfd8fd5e119b3cda0c610e1635e7e"
+    "bundle_content_sha256": "df5311d47a0f6337d5d13c0a43207d69b5bab256fae905810a6d4693d05fb50b"
   }
 }

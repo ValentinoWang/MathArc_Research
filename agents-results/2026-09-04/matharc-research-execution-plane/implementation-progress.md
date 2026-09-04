@@ -24,7 +24,7 @@ bound to the live mainline, cleanup, and proxy evidence in
 against Harness `e4f56a267babafe61480f32250107e3f5a831213`, and the execution
 bundle was pushed to MathArc `main` at `c323ac215e2f3e10127bcf81cd2bf4bab562bc00`.
 The latest verified MathArc `main` closeout before this evidence refresh is
-`5f8069f97487df5448ec89de157697eb8b78723e`.
+`f33820859257010802744306fa1be7b40157b9d7`.
 
 | Gate | Current value | Evidence |
 | --- | --- | --- |

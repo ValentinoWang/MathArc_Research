@@ -47,8 +47,8 @@
         "QR1"
       ],
       "source_completion_requirement_refs": [],
-      "development_baseline": "5f8069f97487df5448ec89de157697eb8b78723e",
-      "promotion_baseline": "6904e4e4a7508c93824f99f231123ff1c214ee62",
+      "development_baseline": "f33820859257010802744306fa1be7b40157b9d7",
+      "promotion_baseline": "046ce5ec34cb981a2e729ccaa39b01eb9be85b4c",
       "release_candidate": "673f018b5655f5c158c98cfbea19fb578d8d7382500feb2be0b8bb6157d5817d"
     },
     {
@@ -66,8 +66,8 @@
         "QR2"
       ],
       "source_completion_requirement_refs": [],
-      "development_baseline": "5f8069f97487df5448ec89de157697eb8b78723e",
-      "promotion_baseline": "6904e4e4a7508c93824f99f231123ff1c214ee62",
+      "development_baseline": "f33820859257010802744306fa1be7b40157b9d7",
+      "promotion_baseline": "046ce5ec34cb981a2e729ccaa39b01eb9be85b4c",
       "release_candidate": "65dd8d7b9bf3dc04c973e8068f720fbf86fba7aa17d6cdafc424008f7763881b"
     }
   ],
