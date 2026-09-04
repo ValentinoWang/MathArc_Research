@@ -1,11 +1,11 @@
 # Machine acceptance result: static
 
-- Run ID: 20260904T051316Z-local-s1
+- Run ID: 20260904T060158Z-local-s1
 - Task ID: FEAT-20260903-02
 - Lane: machine/static
 - Status: PASS
 - Contract version: 1
-- Source identity: landing-copy-candidate@a3fba84505dea0d310710707d48f35b5cb0b45768c9b5117051818363e1b3747
+- Source identity: landing-copy-candidate@9f2e53baa841330aaf6959136cc35020493b00e4d00f4eaef3612a4e96cd3feb
 - Runtime identity: local-python3.11
 - Covers: AC-01
 

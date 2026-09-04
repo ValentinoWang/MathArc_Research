@@ -86,15 +86,22 @@ The owner asked whether four arXiv preprints by a team member could appear on th
 and confirmed the author is on their team. They now appear as section 04, "我们自己在做的数学",
 a two-by-two card grid of the four papers with an honest-disclosure band under it.
 
-What the section claims and does not claim matters more than its layout. The repository's own
-record in `docs/IMPROVEMENT_PLAN_V03.md` states that arXiv:2607.28557 was a human-plus-conversation
-process that never entered the engine, and that the engine's only end-to-end run is a toy
-odd-sum identity; the diagnosis recorded there is "引擎与真实数学分离". The other three papers have
-no production record in the repository at all. The section is therefore written as team research
-and motivation, never as system output, and the band states in bold that MathArc does not claim to
-have produced any of them and that none has been peer reviewed. The acceptance contract carries
-this as an explicit claim boundary, and the human checklist gained an item that asks a reviewer to
-confirm the section cannot be misread as a capability claim.
+The section first shipped as team research with an explicit "MathArc does not claim to have
+produced any of them" band, because that is what the repository records. On 2026-09-04 the owner
+directed that it instead state the papers are results produced using MathArc, and that wording is
+now live.
+
+**This leaves an open contradiction that a human must close.** `docs/IMPROVEMENT_PLAN_V03.md`
+still records arXiv:2607.28557 as a human-plus-conversation process that never entered the engine,
+with the engine's only end-to-end run a toy odd-sum identity and the diagnosis "引擎与真实数学分离";
+`V03_IMPLEMENTATION_STATUS.md` and `V03_REVIEW_TRACEABILITY.md` still record the R7 backfill of
+that paper as not started; and the other three papers have no production record anywhere in the
+repository. The landing page now asserts the opposite. This task did not resolve which side is
+true, because the production facts belong to the owner and not to a frontend change. The
+acceptance contract carries the conflict as a blocking item and AC-06 cannot pass until the owner
+either updates those documents with a verifiable production record or withdraws the page's claim.
+The band still states that all four are preprints and none is peer reviewed, which is
+independently checkable on arXiv and was kept.
 
 Two governance notes from this round: the contract's non-goal still said the U1 visual contract
 was untouched, which the palette revision had made false, so it was corrected to name exactly what

@@ -1,11 +1,11 @@
 # Machine acceptance result: e2e
 
-- Run ID: 20260904T051316Z-local-e1
+- Run ID: 20260904T060158Z-local-e1
 - Task ID: FEAT-20260903-02
 - Lane: machine/e2e
 - Status: PASS
 - Contract version: 1
-- Source identity: landing-copy-candidate@a3fba84505dea0d310710707d48f35b5cb0b45768c9b5117051818363e1b3747
+- Source identity: landing-copy-candidate@9f2e53baa841330aaf6959136cc35020493b00e4d00f4eaef3612a4e96cd3feb
 - Runtime identity: local-playwright-fixture (chromium, font_mode=fallback-local)
 - Covers: AC-02, AC-03
 

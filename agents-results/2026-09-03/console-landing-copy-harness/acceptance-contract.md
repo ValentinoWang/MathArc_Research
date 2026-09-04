@@ -37,7 +37,11 @@
 
 ## Claim boundary for the team-research section
 
-首页新增的「团队研究」一节列出四篇团队成员的 arXiv 预印本。该节**不主张任何一篇由本系统产出**，也不主张它们已通过同行评审。这与 `docs/IMPROVEMENT_PLAN_V03.md` 的记录一致：arXiv:2607.28557 是人加对话流程、未入引擎，引擎至今没有端到端产出过真实数学结果；另外三篇在仓库中没有任何产出记录。该节的作用是说明团队研究方向与建设动机，不是能力证据。任何把它读成系统成果的措辞都属于合同违约。
+首页「团队研究」一节列出四篇团队成员的 arXiv 预印本，并按项目负责人 2026-09-04 的决定，声明它们是**使用 MathArc 做出的成果**。该节仍**不主张**任何一篇已通过同行评审；四篇均为预印本，其可发布层级由分级披露决定。
+
+**未解决的记录冲突（阻塞项）。**`docs/IMPROVEMENT_PLAN_V03.md` 的「真实数学产出」一行目前记着：arXiv:2607.28557 是人加对话流程、**未入引擎**，引擎唯一端到端运行是玩具级恒等式，诊断为「引擎与真实数学分离」；`docs/V03_IMPLEMENTATION_STATUS.md` 与 `V03_REVIEW_TRACEABILITY.md` 记着回灌该论文的 R7 dogfood **尚未开始**；另外三篇在仓库中没有任何产出记录。页面的产出声明与这三份文档直接矛盾。
+
+本合同不裁决哪一方为真——产出事实由项目负责人掌握，不由本次前端任务判定。但该矛盾必须在人工验收签署前由负责人以下列方式之一关闭：更新上述文档以反映真实产出路径并补上可核验的产出记录，或收回页面的产出声明。在此之前，AC-06 不得判为通过。
 
 ## Non-goals
 
@@ -90,7 +94,7 @@ And 进入视口的内容全部完成渐显
 | AC-03 | behavior | none | machine/e2e | 全部视图 × 进程 × 视口的渲染文本不含机器标识或占位符；准入流程文案更新后流程与截图仍通过 | Browser E2E | Automatic | Yes |
 | AC-04 | behavior | none | human | 目标研究者能说出首页在讲什么、给谁用、下一步做什么，并且控制台任一句话都不需要实现知识即可理解 | Human product review | Human | Yes |
 | AC-05 | behavior | none | machine/static | 调色板改版后令牌名称集合、三态结构、235 个组件类与 14 条 `@media` 全部未变；`token_table_sha256` 已重钉并与合同 §9.13.1 一致，红夹具仍能判红 | Static baseline guard and its red/green fixtures | Automatic | Yes |
-| AC-06 | behavior | none | human | 团队研究一节的四条转述与 arXiv 原文相符，且「不声称产出」的边界声明足够显眼，不会被读成系统成果 | Human product review | Human | Yes |
+| AC-06 | behavior | none | human | 团队研究一节的四条转述与 arXiv 原文相符；「使用 MathArc 做出的成果」这一声明与 `IMPROVEMENT_PLAN_V03.md`、`V03_IMPLEMENTATION_STATUS.md`、`V03_REVIEW_TRACEABILITY.md` 的记录冲突已由负责人关闭（更新文档或收回声明），且未暗示已通过同行评审 | Human product review | Human | Yes |
 
 ## Human acceptance
 
@@ -125,4 +129,4 @@ And 进入视口的内容全部完成渐显
 
 ## Risks and open decisions
 
-人工尚未审阅首页层级、配色与文案；`fallback-local` 字体模式下的截图与联网机器不同；§9.14 动作清单漂移是本次之前已存在的缺口；冻结的 `review-console.html` 与 `review_bundle.py` 仍用旧调色板，两者的对齐需要单独的解冻决定。
+首页的产出声明与三份仓库文档的记录直接矛盾，未关闭前不得对外发布；人工尚未审阅首页层级、配色与文案；`fallback-local` 字体模式下的截图与联网机器不同；§9.14 动作清单漂移是本次之前已存在的缺口；冻结的 `review-console.html` 与 `review_bundle.py` 仍用旧调色板，两者的对齐需要单独的解冻决定。

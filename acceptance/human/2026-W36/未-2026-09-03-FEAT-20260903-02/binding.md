@@ -6,9 +6,9 @@
 - SSOT node: none
 - Acceptance contract: agents-results/2026-09-03/console-landing-copy-harness/acceptance-contract.md
 - Contract version: 1
-- Contract SHA-256: b4292a14c10dbc4c9afd74872b1567268a6d2dabe24b586aaadc0e004271bfe9
+- Contract SHA-256: afe60e95f480aa13b35bf780a4eeeed8df2144fbbc734a5250f94a17865c74dc
 - Human checklist: acceptance/human/2026-W36/2026-09-03-FEAT-20260903-02/checklist.md
-- Checklist SHA-256: 8b11efc97d028c640c54cb40c1ad5da6d6c2c7678898473790e0add8a9a99830
+- Checklist SHA-256: 28f7d1135bdf126c9b1a85cfe986146c7630dcf5d31a4a0c59d0840e0948c429
 
 ## Item bindings
 
