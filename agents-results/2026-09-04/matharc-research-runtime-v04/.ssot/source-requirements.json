@@ -5,7 +5,7 @@
       "artifact_id": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "external_dependency_id": "EXT-MATHARC-RUNTIME-CONTRACT-HTML",
       "path": "docs/contracts/matharc-research-runtime-v04.html",
-      "git_identity": "42eb777c6a9307eba00c86f12a271e146c7a90ae#blob:71ddae5b281fef0b2b7d2a5fd1ae35b91e88f509",
+      "git_identity": "5ae43a3dddefb1fbb5062bb702969c99368a50f2#blob:71ddae5b281fef0b2b7d2a5fd1ae35b91e88f509",
       "sha256": "1ee8f49071de1adaabfcb542640e2bd7638447001b5287eb188bfb017269404f",
       "media_type": "text/html",
       "authority_by_dimension": {
@@ -22,7 +22,7 @@
       "artifact_id": "SRC-MATHARC-RUNTIME-BASELINE",
       "external_dependency_id": "EXT-MATHARC-RUNTIME-BASELINE",
       "path": "docs/contracts/matharc-research-runtime-baseline.html",
-      "git_identity": "42eb777c6a9307eba00c86f12a271e146c7a90ae#blob:b48fb144f9d6786ddd843b9ecf054e7bbcb96028",
+      "git_identity": "5ae43a3dddefb1fbb5062bb702969c99368a50f2#blob:b48fb144f9d6786ddd843b9ecf054e7bbcb96028",
       "sha256": "345a71a9129f2a5a51cdac21ce01d0f8e3ffd30498bbe6c9bb68261b500f3130",
       "media_type": "text/html",
       "authority_by_dimension": {

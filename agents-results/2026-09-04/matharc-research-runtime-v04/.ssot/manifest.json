@@ -104,7 +104,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-RUNTIME-CONTRACT-HTML",
       "authority_path": "docs/contracts/matharc-research-runtime-v04.html",
-      "authority_commit": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "authority_commit": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
       "authority_sha256": "1ee8f49071de1adaabfcb542640e2bd7638447001b5287eb188bfb017269404f",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -155,7 +155,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-RUNTIME-BASELINE",
       "authority_path": "docs/contracts/matharc-research-runtime-baseline.html",
-      "authority_commit": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "authority_commit": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
       "authority_sha256": "345a71a9129f2a5a51cdac21ce01d0f8e3ffd30498bbe6c9bb68261b500f3130",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -165,8 +165,8 @@
   ],
   "validation_report": {
     "path": "validation-report.json",
-    "sha256": "47ce49bc5f6144823f3a0ce1c1f3952e4d3bf6252e61ee0185e62db3a7e03454",
-    "manifest_identity_sha256": "42c33f0261e054a8bdb59a5923755f4378c9235adab304a896652450983a30b5",
-    "bundle_content_sha256": "275746ff12499e1a3449554b52c1b372bee654e243796ff4ac783fad27af4dc3"
+    "sha256": "24a5076c5c0a78a53bf3aaf913698685d328946ad26b5449b362e687365ba9ef",
+    "manifest_identity_sha256": "a1d1bb5f2b481dd610a767f68b053e5e5a82798da5ea26a46031264b69d5b21e",
+    "bundle_content_sha256": "439e6f503ef3e08e0306583836303cd66be0d1fcafd35018ee6a3043313156ed"
   }
 }

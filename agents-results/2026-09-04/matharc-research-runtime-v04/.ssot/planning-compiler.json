@@ -11,14 +11,14 @@
     {
       "external_dependency_id": "EXT-MATHARC-RUNTIME-CONTRACT-HTML",
       "path": "docs/contracts/matharc-research-runtime-v04.html",
-      "commit": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "commit": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
       "blob": "71ddae5b281fef0b2b7d2a5fd1ae35b91e88f509",
       "sha256": "1ee8f49071de1adaabfcb542640e2bd7638447001b5287eb188bfb017269404f"
     },
     {
       "external_dependency_id": "EXT-MATHARC-RUNTIME-BASELINE",
       "path": "docs/contracts/matharc-research-runtime-baseline.html",
-      "commit": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "commit": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
       "blob": "b48fb144f9d6786ddd843b9ecf054e7bbcb96028",
       "sha256": "345a71a9129f2a5a51cdac21ce01d0f8e3ffd30498bbe6c9bb68261b500f3130"
     }
@@ -196,8 +196,8 @@
         "SRC-FND1",
         "SRC-FND2"
       ],
-      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
-      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "development_baseline": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
+      "promotion_baseline": "062a61339bd10ebe82784631c0eba392e00df86f",
       "release_candidate": "94600f801e29ca80c7895bc96b60b03eeb6dc39a50977de760f8790053abc399"
     },
     {
@@ -223,8 +223,8 @@
         "SRC-RUN4",
         "SRC-RUN5"
       ],
-      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
-      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "development_baseline": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
+      "promotion_baseline": "062a61339bd10ebe82784631c0eba392e00df86f",
       "release_candidate": "4da173ae9cce3bc2b2969cd6b4951e6c436b793ee9355d3e9f5f5594ba30e0f9"
     },
     {
@@ -250,8 +250,8 @@
         "SRC-DUR4",
         "SRC-DUR5"
       ],
-      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
-      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "development_baseline": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
+      "promotion_baseline": "062a61339bd10ebe82784631c0eba392e00df86f",
       "release_candidate": "7e5b377a6ff67c04ff55d413bfdb88a55a65ad0d50e7d8896115e9f902d1fedd"
     },
     {
@@ -277,8 +277,8 @@
         "SRC-PAR4",
         "SRC-PAR5"
       ],
-      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
-      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "development_baseline": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
+      "promotion_baseline": "062a61339bd10ebe82784631c0eba392e00df86f",
       "release_candidate": "377aaa231b318b572e7dd3bde11f86bdf3a47e886a1ebc71eb4708200e97f756"
     },
     {
@@ -304,8 +304,8 @@
         "SRC-SYN4",
         "SRC-SYN5"
       ],
-      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
-      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "development_baseline": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
+      "promotion_baseline": "062a61339bd10ebe82784631c0eba392e00df86f",
       "release_candidate": "7be8d22f16c3d4605204c1729aa01007450fc152badaa82478a425d25ee82455"
     },
     {
@@ -333,8 +333,8 @@
         "SRC-VER5",
         "SRC-VER6"
       ],
-      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
-      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "development_baseline": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
+      "promotion_baseline": "062a61339bd10ebe82784631c0eba392e00df86f",
       "release_candidate": "c966343568ae22709507c93a8b2bca257e8bb89dc89de900234a12341f345d19"
     },
     {
@@ -368,8 +368,8 @@
         "SRC-OPS2",
         "SRC-OPS3"
       ],
-      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
-      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "development_baseline": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
+      "promotion_baseline": "062a61339bd10ebe82784631c0eba392e00df86f",
       "release_candidate": "5ac893204dfd3da1f62de5405abfa96e4a7eb54125e24f757dfb2b4078070183"
     },
     {
@@ -393,8 +393,8 @@
         "SRC-DOG3",
         "SRC-DOG4"
       ],
-      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
-      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "development_baseline": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
+      "promotion_baseline": "062a61339bd10ebe82784631c0eba392e00df86f",
       "release_candidate": "7d5abfbe26e84d0dec1cc9c8ef35724567d15eeac295cc985cab6702498330ca"
     }
   ],

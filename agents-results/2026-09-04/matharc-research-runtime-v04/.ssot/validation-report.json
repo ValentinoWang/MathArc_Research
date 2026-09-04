@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-09-04T09:41:45.586021+00:00",
+  "generated_at": "2026-09-04T09:52:54.539779+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "a79b5de1a2695eef89366e2c2efb1323752ccba7",
@@ -14,22 +14,22 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "tree_commit": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
-    "project_commit": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+    "tree_commit": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
+    "project_commit": "5ae43a3dddefb1fbb5062bb702969c99368a50f2",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "d83cffc9d4362d0dbb47da6f8827761037184f6bb5c7796ed0ae82bfbbd97fbc",
+    "project_dirty_diff_sha256": "29a4de509f3467f7276c36535b74ba1f913aa211467c2cdb86655c63855afead",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04",
-    "content_sha256": "275746ff12499e1a3449554b52c1b372bee654e243796ff4ac783fad27af4dc3",
-    "manifest_identity_sha256": "42c33f0261e054a8bdb59a5923755f4378c9235adab304a896652450983a30b5"
+    "content_sha256": "439e6f503ef3e08e0306583836303cd66be0d1fcafd35018ee6a3043313156ed",
+    "manifest_identity_sha256": "a1d1bb5f2b481dd610a767f68b053e5e5a82798da5ea26a46031264b69d5b21e"
   },
   "checks": [
     {
       "id": "reading-map",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/check_reading_map.py"
       ],
       "exit_code": 0,
@@ -40,7 +40,7 @@
     {
       "id": "runtime-skill-provenance",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/tools/harnessctl.py",
         "doctor",
         "--project",
@@ -55,7 +55,7 @@
     {
       "id": "complexity",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/planning-compiler.json"
       ],
@@ -67,7 +67,7 @@
     {
       "id": "source-requirements",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_coverage.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
       ],
@@ -79,7 +79,7 @@
     {
       "id": "render",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
         "--check",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
@@ -92,7 +92,7 @@
     {
       "id": "machine-program",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
       ],
@@ -104,7 +104,7 @@
     {
       "id": "acceptance-contracts",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_acceptance_contracts.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json",
         "--project-root",
@@ -118,7 +118,7 @@
     {
       "id": "parallelism-analysis",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
       ],
@@ -130,7 +130,7 @@
     {
       "id": "structure",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md"
       ],
@@ -142,7 +142,7 @@
     {
       "id": "facts",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_facts.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md"
       ],
@@ -154,7 +154,7 @@
     {
       "id": "source-requirement-conservation",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_conservation.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
       ],
@@ -166,7 +166,7 @@
     {
       "id": "chinese-readability",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/check_chinese_readability.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md"
       ],
@@ -178,7 +178,7 @@
     {
       "id": "execution-ledger",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json",
         "--project-root",
@@ -192,7 +192,7 @@
     {
       "id": "archive-check",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
         "--source",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04",
@@ -211,7 +211,7 @@
     {
       "id": "archive-audit",
       "command": [
-        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/Applications/Xcode.app/Contents/Developer/usr/bin/python3",
         "/private/tmp/matharc-harness-a79/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
         "--audit-archive",
         "--project-root",
