@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-09-04T20:44:16.111675+00:00",
+  "generated_at": "2026-09-04T21:05:27.507266+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "221b256d5570b51fef97ec89052f632677b3406a",
@@ -87,6 +87,12 @@
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/nodes/I81.json",
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/nodes/I82.json",
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/nodes/I9.json",
+      "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/nodes/QR1.json",
+      "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/nodes/QR2.json",
+      "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/nodes/QR3.json",
+      "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/nodes/QR4.json",
+      "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/nodes/QR5.json",
+      "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/nodes/QRF.json",
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/planning-compiler.json",
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/validation-report.json",
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/.ssot/view-sources/00-main.md",
@@ -120,18 +126,18 @@
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/ssot-development-paths.md",
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/ssot-input.json"
     ],
-    "dirty_diff_sha256": "adf3f47549c2bc720000d6eed48dffed0a167f116e52590b221d8f9369a36a7b",
+    "dirty_diff_sha256": "39a63ef30fac9fa73cfcf0133726b59a0382d27e40984976216a6d8780058cf8",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
     "skill_sha256": "82337949a41fbdea7c950754fa9c8bb773326ca1960fd4dd5d860405491d0587",
-    "checker_bundle_sha256": "85cf6c39226f31bc86d2170c2f0adce6dc460eda0a92accdafac22830ea27f25"
+    "checker_bundle_sha256": "d3b2c06c17d44d77978d20ad0f57d1e18c12892314e192248e4ccebabd9bb212"
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "tree_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
-    "project_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
-    "project_dirty": true,
-    "project_dirty_diff_sha256": "5129451db73066580fc835b458574f68b5ab97d323ad332a46a326e450586e8a",
+    "tree_commit": "4f37dd14b949a5488313dfb7bfd35e3c315e7276",
+    "project_commit": "4f37dd14b949a5488313dfb7bfd35e3c315e7276",
+    "project_dirty": false,
+    "project_dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
@@ -163,7 +169,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 48\nruntime_skill_check: enabled\nWARN Harness source dirty files: 113\ndoctor: ok\n",
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 48\nruntime_skill_check: enabled\nWARN Harness source dirty files: 119\ndoctor: ok\n",
       "class": "self-consistency"
     },
     {
@@ -334,9 +340,9 @@
         "/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集",
         "--require-snapshot-root"
       ],
-      "exit_code": 0,
-      "result": "passed",
-      "output": "{\n  \"status\": \"verified\",\n  \"archive_root\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集\",\n  \"bundle_count\": 46,\n  \"problem_document_count\": 25\n}\n",
+      "exit_code": 2,
+      "result": "failed",
+      "output": "SSOT snapshot error: archive audit failed:\n- /Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-09-04/Harness_Engineering/acceptance-authority-binding-hardening: snapshot manifest managed_files do not match current source hashes\n",
       "class": "policy"
     }
   ],
@@ -1006,13 +1012,13 @@
   },
   "archive_policy": "required",
   "integrity_result": "pass",
-  "policy_result": "complete",
+  "policy_result": "incomplete",
   "required_skipped_checks": [],
   "optional_skipped_checks": [],
   "bundle_valid": true,
-  "policy_complete": true,
-  "push_gate_eligible": true,
-  "release_ready": true,
+  "policy_complete": false,
+  "push_gate_eligible": false,
+  "release_ready": false,
   "release_complete": false,
   "release_statuses": {
     "RTR1": {
