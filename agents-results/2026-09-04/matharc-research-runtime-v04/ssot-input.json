@@ -1,5 +1,8 @@
 {
   "schema_version": 1,
+  "plan_version": 2,
+  "dag_version": 2,
+  "interface_freeze_version": 2,
   "depth": "L2",
   "task_slug": "matharc-research-runtime-v04",
   "governance_reason": "建立数学研究平台（MathArc）原生、可并行、可恢复、可验证、可进行邀请制测试的自主研究运行时，并保持执行状态、候选结果与数学结论权威相互隔离。",
@@ -17,7 +20,7 @@
       "authority_by_dimension": {
         "information_architecture": "normative",
         "visual_tokens": "informative",
-        "layout": "normative",
+        "layout": "not-applicable",
         "interaction_behavior": "normative",
         "seed_data": "not-applicable",
         "runtime_side_effects": "normative"
@@ -26,7 +29,8 @@
     {
       "id": "SRC-MATHARC-RUNTIME-BASELINE",
       "path": "docs/contracts/matharc-research-runtime-baseline.html",
-      "role": "current-implementation",
+      "role": "derived",
+      "derived_from": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
       "media_type": "text/html",
       "authority_by_dimension": {
         "information_architecture": "informative",
@@ -34,7 +38,119 @@
         "layout": "informative",
         "interaction_behavior": "informative",
         "seed_data": "informative",
-        "runtime_side_effects": "normative"
+        "runtime_side_effects": "informative"
+      }
+    },
+    {
+      "id": "SRC-MATHARC-TRACE-PY",
+      "path": "matharc/v02/trace.py",
+      "role": "current-implementation",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      }
+    },
+    {
+      "id": "SRC-MATHARC-ACCESS-PY",
+      "path": "matharc/v02/access.py",
+      "role": "current-implementation",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      }
+    },
+    {
+      "id": "SRC-MATHARC-ACCESS-SERVER-PY",
+      "path": "matharc/v02/access_server.py",
+      "role": "current-implementation",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      }
+    },
+    {
+      "id": "SRC-MATHARC-ARTIFACT-STORE-PY",
+      "path": "matharc/v02/artifact_store.py",
+      "role": "current-implementation",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      }
+    },
+    {
+      "id": "SRC-MATHARC-WORKSPACE-IMPL-PY",
+      "path": "matharc/v02/_workspace_impl.py",
+      "role": "current-implementation",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      }
+    },
+    {
+      "id": "SRC-MATHARC-WORKSPACE-SERVER-IMPL-PY",
+      "path": "matharc/v02/_workspace_server_impl.py",
+      "role": "current-implementation",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      }
+    },
+    {
+      "id": "SRC-MATHARC-CAMPAIGN-PY",
+      "path": "matharc/v02/campaign.py",
+      "role": "current-implementation",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
+      }
+    },
+    {
+      "id": "SRC-MATHARC-CONSOLE-EXPORT-PY",
+      "path": "matharc/v02/console_export.py",
+      "role": "current-implementation",
+      "media_type": "text/x-python",
+      "authority_by_dimension": {
+        "information_architecture": "informative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "informative",
+        "seed_data": "informative",
+        "runtime_side_effects": "informative"
       }
     }
   ],
@@ -45,6 +161,20 @@
       "version": 1,
       "record": "agents-results/2026-09-04/matharc-research-runtime-v04/decisions/DP1.md",
       "summary": "MathArc 原生运行时拥有执行状态和数学权威；GitHub Harness 只提供治理工具链。"
+    },
+    {
+      "id": "DP2",
+      "key": "decision.matharc-backend-scope",
+      "version": 1,
+      "record": "agents-results/2026-09-04/matharc-research-runtime-v04/decisions/DP2.md",
+      "summary": "首版后端范围固定为 DeterministicTestBackend、CodexBackend 和 LocalExactToolBackend；Claude Code 与通用模型 API 后置，不阻塞首个邀请制试点。"
+    },
+    {
+      "id": "DP3",
+      "key": "decision.matharc-pilot-deployment",
+      "version": 1,
+      "record": "agents-results/2026-09-04/matharc-research-runtime-v04/decisions/DP3.md",
+      "summary": "首版部署目标为 Linux + systemd，使用持久目录、外部 secret source 和反向代理/TLS 边界；生产身份仍需后续部署证据确认。"
     }
   ],
   "shared_acceptance_policies": [
@@ -76,7 +206,7 @@
       "external_system_id": "EXT-MATHARC-MODEL-BACKENDS",
       "kind": "external-runtime",
       "runtime_components": [
-        "Codex, Claude Code, model APIs and approved local processes through a MathArc backend interface",
+        "首版仅使用 DeterministicTestBackend、CodexBackend 和 LocalExactToolBackend；Claude Code 与通用模型 API 仅保留后置兼容接口，通过 MathArc backend interface 接入",
         "backend output is a candidate input and cannot own RuntimeStore, ResearchTrace or claim promotion"
       ],
       "source_requirement_refs": [
@@ -225,12 +355,6 @@
         "machine/static",
         "machine/unit"
       ],
-      "write_regions": [
-        "scripts/check_runtime_ownership.py",
-        "tests/test_runtime_ownership.py",
-        "scripts/check_runtime_dependency_allowlist.py",
-        "tests/test_runtime_dependency_allowlist.py"
-      ],
       "acceptance_seeds": [
         "在 scripts/check_runtime_ownership.py 和 tests/test_runtime_ownership.py 中登记 MathArc 原生运行时与治理工具链的允许边界",
         "在 scripts/check_runtime_dependency_allowlist.py 和 tests/test_runtime_dependency_allowlist.py 中对未知运行时依赖 fail-closed",
@@ -240,11 +364,30 @@
       "goal": "建立 MathArc 原生运行时所有权与依赖允许清单，阻断治理工具链进入产品运行路径。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[1]"
+        "locator": "html:requirement-id=SRC-FND1"
       },
       "external_systems": [
         "EXT-HARNESS-GITHUB"
-      ]
+      ],
+      "write_targets": [
+        {
+          "path": "scripts/check_runtime_ownership.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_ownership.py",
+          "mode": "create"
+        },
+        {
+          "path": "scripts/check_runtime_dependency_allowlist.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_dependency_allowlist.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "FND2",
@@ -260,10 +403,6 @@
         "machine/unit",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "matharc/v02/trace.py",
-        "tests/test_runtime_authority_boundaries.py"
-      ],
       "depends_on": [
         "FND1"
       ],
@@ -274,14 +413,25 @@
       "goal": "保留 ResearchTrace 的数学结论晋升权威，并证明运行状态不能直接变成正式证明。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[1]"
+        "locator": "html:requirement-id=SRC-FND2"
       },
       "keep_refs": [
         {
-          "artifact": "SRC-MATHARC-RUNTIME-BASELINE",
-          "locator": "html:li[1]"
+          "artifact": "SRC-MATHARC-TRACE-PY",
+          "locator": "file:content"
         }
-      ]
+      ],
+      "write_targets": [
+        {
+          "path": "matharc/v02/trace.py",
+          "mode": "modify"
+        },
+        {
+          "path": "tests/test_runtime_authority_boundaries.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "RUN1",
@@ -297,12 +447,6 @@
         "machine/unit",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/contracts.py",
-        "matharc/v02/runtime/identity.py",
-        "tests/test_runtime_contracts.py",
-        "tests/test_runtime_identity.py"
-      ],
       "depends_on": [
         "FND2"
       ],
@@ -310,16 +454,40 @@
         "在 matharc/v02/runtime/contracts.py 中定义 ResearchRunSpec、ResearchWorkerSpec、WorkerExecutionResult、CandidateEnvelope 和 RuntimeActionReceipt 的严格 round-trip",
         "在 matharc/v02/runtime/identity.py 中定义 workspace_id、trace_id、runtime_run_id、generation_id、worker_id、execution_id、candidate_id、evidence_id 的层级约束",
         "在 tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 中拒绝未知字段、未知状态、身份错配和不兼容合同版本",
-        "在 matharc/v02/runtime/generation.py 中定义 GenerationInputSnapshot、GenerationReducer 和 GenerationClosePolicy 的输入输出边界"
+        "在 matharc/v02/runtime/generation.py 中定义 GenerationInputSnapshot、GenerationReducer 和 GenerationClosePolicy 的输入输出边界",
+        "在 matharc/v02/runtime/contracts.py 中固定输入合同、输出信封、状态转换、幂等键 runtime_run_id+generation_id、超时、取消与失败分类；在 tests/test_runtime_contracts.py 中把合同版本和独立验收身份作为受保护目标"
       ],
       "goal": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h1[1]"
+        "locator": "html:requirement-id=SRC-RUN1"
       },
       "external_systems": [
         "EXT-MATHARC-MODEL-BACKENDS"
-      ]
+      ],
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/contracts.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/identity.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/generation.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_contracts.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_identity.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "RUN2",
@@ -335,28 +503,50 @@
         "machine/unit",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/run_store.py",
-        "tests/test_runtime_store_replay.py"
-      ],
       "depends_on": [
         "RUN1"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/run_store.py 中写入哈希链运行事件和原子快照",
+        "在 matharc/v02/runtime/run_store.py 中写入哈希链运行事件和原子快照",
         "在 tests/test_runtime_store_replay.py 中拒绝截断、损坏和摘要不匹配的运行快照"
       ],
       "goal": "建立可重放的运行存储，使事件、快照和候选导入在进程重启后保持一致。",
+      "execution": {
+        "mode": "external-worker",
+        "escalation_reasons": [
+          "multi-executor"
+        ],
+        "worker": {
+          "execution_identity": "worker-RUN2",
+          "runtime": "codex-exec",
+          "return_path": "workers/RUN2.md",
+          "resource_locks": [
+            "write:matharc/v02/runtime/run_store.py",
+            "write:tests/test_runtime_store_replay.py"
+          ]
+        }
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[2]"
+        "locator": "html:requirement-id=SRC-RUN2"
       },
       "keep_refs": [
         {
-          "artifact": "SRC-MATHARC-RUNTIME-BASELINE",
-          "locator": "html:li[3]"
+          "artifact": "SRC-MATHARC-ARTIFACT-STORE-PY",
+          "locator": "file:content"
         }
-      ]
+      ],
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/run_store.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_store_replay.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "RUN3",
@@ -372,29 +562,52 @@
         "machine/unit",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/evaluator.py",
-        "tests/test_runtime_evaluator.py"
-      ],
       "depends_on": [
         "RUN1"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/evaluator.py 中定义评价器输入、输出、预算和随机种子合同",
+        "在 matharc/v02/runtime/evaluator.py 中定义评价器输入、输出、预算和随机种子合同",
         "在 tests/test_runtime_evaluator.py 中证明最小试跑失败时不会启动完整研究"
       ],
       "goal": "建立有预算、种子和最小试跑门槛的评价器合同，失败时不启动完整研究。",
+      "execution": {
+        "mode": "external-worker",
+        "escalation_reasons": [
+          "multi-executor"
+        ],
+        "worker": {
+          "execution_identity": "worker-RUN3",
+          "runtime": "codex-exec",
+          "return_path": "workers/RUN3.md",
+          "resource_locks": [
+            "write:matharc/v02/runtime/evaluator.py",
+            "write:tests/test_runtime_evaluator.py"
+          ]
+        }
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[3]"
-      }
+        "locator": "html:requirement-id=SRC-RUN3"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/evaluator.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_evaluator.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "RUN4",
       "release": "RTR1",
       "owner": "第一方后端负责人",
       "decision_refs": [
-        "DP1"
+        "DP1",
+        "DP2"
       ],
       "surfaces": [
         "backend-coordinator"
@@ -403,28 +616,43 @@
         "machine/integration-contract",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/coordinator.py",
-        "matharc/v02/runtime/backends/base.py",
-        "matharc/v02/runtime/backends/codex.py",
-        "matharc/v02/runtime/backends/claude_code.py",
-        "matharc/v02/runtime/backends/model_api.py",
-        "matharc/v02/runtime/backends/local_process.py",
-        "tests/test_runtime_backend_contract.py"
-      ],
       "depends_on": [
         "RUN2",
         "RUN3"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/runtime/coordinator.py 中把 Codex、Claude Code、API 和本地进程统一为 MathArc 后端请求",
-        "在 tests/test_runtime_backend_contract.py 中证明后端结果只能形成 CandidateEnvelope，不能写入 RuntimeStore 之外的数学状态"
+        "在 matharc/v02/runtime/coordinator.py 中只把 DeterministicTestBackend、CodexBackend 和 LocalExactToolBackend 接入 MathArc 后端请求；Claude Code 与通用模型 API 仅保留后置兼容接口",
+        "在 tests/test_runtime_backend_contract.py 中证明后端结果只能形成 CandidateEnvelope，不能写入 RuntimeStore 之外的数学状态",
+        "在 matharc/v02/runtime/backends/base.py 和 matharc/v02/runtime/coordinator.py 中固定首版后端输入、CandidateEnvelope 输出、execution_id 幂等键、超时/取消/重试和失败分类；在 tests/test_runtime_backend_contract.py 中逐一保护 DeterministicTestBackend、CodexBackend、LocalExactToolBackend 的独立验收身份"
       ],
       "goal": "将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[2]"
-      }
+        "locator": "html:requirement-id=SRC-RUN4"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/coordinator.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/backends/base.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/backends/codex.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/backends/local_process.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_backend_contract.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "RUN5",
@@ -440,10 +668,6 @@
         "machine/e2e",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "tests/test_runtime_single_run.py",
-        "tests/test_candidate_promotion_boundary.py"
-      ],
       "depends_on": [
         "RUN4"
       ],
@@ -455,8 +679,18 @@
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[3]"
-      }
+        "locator": "html:requirement-id=SRC-RUN5"
+      },
+      "write_targets": [
+        {
+          "path": "tests/test_runtime_single_run.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_candidate_promotion_boundary.py",
+          "mode": "create"
+        }
+      ]
     },
     {
       "id": "PAR1",
@@ -472,22 +706,29 @@
         "machine/unit",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/topology.py",
-        "tests/test_runtime_topology.py"
-      ],
       "depends_on": [
         "RUN1"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑",
+        "在 matharc/v02/runtime/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑",
         "在 tests/test_runtime_topology.py 中拒绝缺少角色、预算或写入区域的研究成员"
       ],
       "goal": "把研究路线和角色编译为带机制、预算、目标和隔离写入区的运行拓扑。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[4]"
-      }
+        "locator": "html:requirement-id=SRC-PAR1"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/topology.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_topology.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "PAR2",
@@ -503,23 +744,30 @@
         "machine/integration-contract",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/coordinator.py",
-        "tests/test_runtime_approved_task_ingestion.py"
-      ],
       "depends_on": [
         "PAR1",
         "RUN4"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/orchestrator.py 中消费现有动态派生任务批准记录并保持一次性启动",
+        "在 matharc/v02/runtime/coordinator.py 中消费现有动态派生任务批准记录并保持一次性启动",
         "在 tests/test_runtime_approved_task_ingestion.py 中证明拒绝任务和超预算任务永不启动"
       ],
       "goal": "接入已批准的动态任务并执行一次性、可审计的任务启动。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[5]"
-      }
+        "locator": "html:requirement-id=SRC-PAR2"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/coordinator.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_approved_task_ingestion.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "PAR3",
@@ -536,30 +784,58 @@
         "machine/local-runtime",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/scheduler.py",
-        "tests/test_runtime_parallelism.py"
-      ],
       "depends_on": [
         "PAR2",
         "DUR5"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/scheduler.py 中实现有界并发、独立 execution_id 和隔离工作区",
+        "在 matharc/v02/runtime/scheduler.py 中实现有界并发、独立 execution_id 和隔离工作区",
         "在 tests/test_runtime_parallelism.py 中证明至少三个不同进程存在真实时间重叠且写入区域无交集",
-        "在 tests/test_runtime_parallelism_contract.py 中验证冻结输入、并发上限和隔离工作区遵守运行时数据合同"
+        "在 tests/test_runtime_parallelism_contract.py 中验证冻结输入、并发上限和隔离工作区遵守运行时数据合同",
+        "在 matharc/v02/runtime/scheduler.py 中固定 GenerationInputSnapshot 输入、execution_id 与隔离工作区输出、并发上限、成员幂等键、超时/取消/失败分类、有限重试和恢复回执；在 tests/test_runtime_parallelism.py 与 tests/test_runtime_parallelism_contract.py 中保护真实重叠与独立验收身份"
       ],
       "goal": "在持久化和恢复能力之后实现有界并行、冻结输入和隔离工作区调度。",
+      "execution": {
+        "mode": "external-worker",
+        "escalation_reasons": [
+          "multi-executor"
+        ],
+        "worker": {
+          "execution_identity": "worker-PAR3",
+          "runtime": "codex-exec",
+          "return_path": "workers/PAR3.md",
+          "resource_locks": [
+            "write:matharc/v02/runtime/scheduler.py",
+            "write:tests/test_runtime_parallelism.py",
+            "write:tests/test_runtime_parallelism_contract.py"
+          ]
+        }
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[6]"
+        "locator": "html:requirement-id=SRC-PAR3"
       },
       "keep_refs": [
         {
-          "artifact": "SRC-MATHARC-RUNTIME-BASELINE",
-          "locator": "html:li[3]"
+          "artifact": "SRC-MATHARC-TRACE-PY",
+          "locator": "file:content"
         }
-      ]
+      ],
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/scheduler.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_parallelism.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_parallelism_contract.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "PAR4",
@@ -575,22 +851,29 @@
         "machine/unit",
         "machine/non-functional"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/coordinator.py",
-        "tests/test_runtime_semantic_deduplication.py"
-      ],
       "depends_on": [
         "PAR3"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/budget.py 中按运行回执记录实际费用而不是模型自报费用",
+        "在 matharc/v02/runtime/budget.py 中按运行回执记录实际费用而不是模型自报费用",
         "在 tests/test_runtime_semantic_deduplication.py 中证明同一语义实验不会重复运行"
       ],
       "goal": "按执行回执记录实际资源消耗，并对语义重复实验做确定性去重。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[4]"
-      }
+        "locator": "html:requirement-id=SRC-PAR4"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/budget.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_semantic_deduplication.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "PAR5",
@@ -606,25 +889,35 @@
         "machine/e2e",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "tests/test_runtime_parallel_generation.py",
-        "tests/test_runtime_partial_failure.py",
-        "tests/test_runtime_late_result_policy.py"
-      ],
       "depends_on": [
         "PAR4"
       ],
       "acceptance_seeds": [
         "在 tests/test_runtime_parallel_generation.py 中证明每名成员只读取同一 GenerationInputSnapshot 且由单一 GenerationReducer 稳定归并",
         "在 tests/test_runtime_partial_failure.py 中证明部分成员失败、必需角色缺失和超时不会伪造完整代际",
-        "在 tests/test_runtime_late_result_policy.py 中证明关闭代际不接受迟到结果改写"
+        "在 tests/test_runtime_late_result_policy.py 中证明关闭代际不接受迟到结果改写",
+        "在 tests/test_runtime_parallel_generation.py 和 tests/test_runtime_partial_failure.py 中固定并行输入/归并输出、generation_id 幂等键、超时/取消/失败分类、有限重试与恢复判定，并以独立测试身份拒绝伪造完整代际"
       ],
       "goal": "独立验收多成员一代归并、冲突、部分失败和迟到结果规则。",
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[7]"
-      }
+        "locator": "html:requirement-id=SRC-PAR5"
+      },
+      "write_targets": [
+        {
+          "path": "tests/test_runtime_parallel_generation.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_partial_failure.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_late_result_policy.py",
+          "mode": "create"
+        }
+      ]
     },
     {
       "id": "DUR1",
@@ -640,25 +933,43 @@
         "machine/unit",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/generation.py",
-        "matharc/v02/runtime/reducer.py",
-        "tests/test_generation_input_snapshot.py",
-        "tests/test_generation_commit.py"
-      ],
       "depends_on": [
         "RUN5"
       ],
       "acceptance_seeds": [
         "在 matharc/v02/runtime/generation.py 和 matharc/v02/runtime/reducer.py 中定义冻结输入摘要、稳定归并、冲突、去重、部分失败、迟到结果和 GenerationCommit 边界",
         "在 tests/test_generation_input_snapshot.py 和 tests/test_generation_commit.py 中拒绝共享 ResearchTrace 直接写入和关闭代际后的结果改写",
-        "在 tests/test_runtime_late_result_policy.py 中证明迟到结果只能进入下一代或待处置队列"
+        "在 tests/test_runtime_late_result_policy.py 中证明迟到结果只能进入下一代或待处置队列",
+        "在 matharc/v02/runtime/generation.py 中固定 GenerationInputSnapshot 输入、GenerationCommit 输出、generation_id 幂等键、成员超时/取消/失败分类、有限重试与恢复边界；在 tests/test_generation_commit.py 和 tests/test_runtime_late_result_policy.py 中锁定关闭后不可改写的独立验收身份"
       ],
       "goal": "定义冻结输入、代际提交、GenerationReducer 和 GenerationClosePolicy 的持久边界。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[8]"
-      }
+        "locator": "html:requirement-id=SRC-DUR1"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/generation.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/reducer.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_generation_input_snapshot.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_generation_commit.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_late_result_policy.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "DUR2",
@@ -674,23 +985,33 @@
         "machine/integration-contract",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/run_store.py",
-        "matharc/v02/runtime/candidate.py",
-        "tests/test_runtime_idempotent_import.py"
-      ],
       "depends_on": [
         "DUR1"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/run_store.py 中幂等导入候选、费用和执行回执并保留来源身份",
+        "在 matharc/v02/runtime/run_store.py 中幂等导入候选、费用和执行回执并保留来源身份",
         "在 tests/test_runtime_idempotent_import.py 中证明重复导入结果不变且来源身份变化时拒绝"
       ],
       "goal": "以带来源身份的幂等账本保存候选、费用和执行回执，拒绝来源漂移。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[9]"
-      }
+        "locator": "html:requirement-id=SRC-DUR2"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/run_store.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/candidate.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_idempotent_import.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "DUR3",
@@ -706,22 +1027,29 @@
         "machine/unit",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/state_machine.py",
-        "tests/test_runtime_lifecycle_control.py"
-      ],
       "depends_on": [
         "DUR1"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/state_machine.py 中实现停止、排空、暂停和取消状态协议",
+        "在 matharc/v02/runtime/state_machine.py 中实现停止、排空、暂停和取消状态协议",
         "在 tests/test_runtime_lifecycle_control.py 中证明停止后不再接收新任务且活动任务有明确终止结果"
       ],
       "goal": "实现停止、排空、暂停、继续和取消的显式运行状态协议。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[10]"
-      }
+        "locator": "html:requirement-id=SRC-DUR3"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/state_machine.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_lifecycle_control.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "DUR4",
@@ -737,23 +1065,46 @@
         "machine/local-runtime",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/recovery.py",
-        "tests/test_runtime_recovery_plan.py"
-      ],
       "depends_on": [
         "DUR2",
         "DUR3"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/recovery.py 中从确定的 GenerationCommit 边界生成恢复计划和故障矩阵",
-        "在 tests/test_runtime_recovery_plan.py 中对固定任务、模型或评价器变化拒绝恢复"
+        "在 matharc/v02/runtime/recovery.py 中从确定的 GenerationCommit 边界生成恢复计划和故障矩阵",
+        "在 tests/test_runtime_recovery_plan.py 中对固定任务、模型或评价器变化拒绝恢复",
+        "在 matharc/v02/runtime/recovery.py 中固定 GenerationCommit 摘要输入、RecoveryPlan 输出、(runtime_run_id,generation_id) 幂等键、超时/取消/不可恢复失败分类、一次有限重试与恢复后状态；在 tests/test_runtime_recovery_plan.py 中保护恢复计划独立验收身份"
       ],
       "goal": "从最后一个完整 GenerationCommit 生成可重放的崩溃恢复计划。",
+      "execution": {
+        "mode": "external-worker",
+        "escalation_reasons": [
+          "multi-executor"
+        ],
+        "worker": {
+          "execution_identity": "worker-DUR4",
+          "runtime": "codex-exec",
+          "return_path": "workers/DUR4.md",
+          "resource_locks": [
+            "write:matharc/v02/runtime/recovery.py",
+            "write:tests/test_runtime_recovery_plan.py"
+          ]
+        }
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[5]"
-      }
+        "locator": "html:requirement-id=SRC-DUR4"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/recovery.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_recovery_plan.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "DUR5",
@@ -769,10 +1120,6 @@
         "machine/e2e",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "tests/test_runtime_crash_recovery.py",
-        "tests/test_runtime_no_duplicate_recovery.py"
-      ],
       "depends_on": [
         "DUR4"
       ],
@@ -784,8 +1131,18 @@
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[6]"
-      }
+        "locator": "html:requirement-id=SRC-DUR5"
+      },
+      "write_targets": [
+        {
+          "path": "tests/test_runtime_crash_recovery.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_no_duplicate_recovery.py",
+          "mode": "create"
+        }
+      ]
     },
     {
       "id": "SYN1",
@@ -801,24 +1158,34 @@
         "machine/unit",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/synthesis.py",
-        "matharc/v02/runtime/candidate.py",
-        "tests/test_runtime_candidate_synthesis.py"
-      ],
       "depends_on": [
         "RUN5",
         "DUR2"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/synthesis.py 中把普通执行输出标准化为带完整出处的探索候选",
+        "在 matharc/v02/runtime/synthesis.py 中把普通执行输出标准化为带完整出处的探索候选",
         "在 tests/test_runtime_candidate_synthesis.py 中证明标准化候选不会进入正式证据"
       ],
       "goal": "把普通执行输出标准化为带完整出处的探索候选，隔离于正式证据。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[11]"
-      }
+        "locator": "html:requirement-id=SRC-SYN1"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/synthesis.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/candidate.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_candidate_synthesis.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "SYN2",
@@ -834,22 +1201,29 @@
         "machine/unit",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/synthesis.py",
-        "tests/test_runtime_counterexample_review.py"
-      ],
       "depends_on": [
         "SYN1"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/synthesis.py 中把疑似反例放入独立复核队列",
+        "在 matharc/v02/runtime/synthesis.py 中把疑似反例放入独立复核队列",
         "在 tests/test_runtime_counterexample_review.py 中证明未复核反例不会改变路线或结论"
       ],
       "goal": "将疑似反例送入独立复核队列，未复核前不改变研究路线或结论。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[12]"
-      }
+        "locator": "html:requirement-id=SRC-SYN2"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/synthesis.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_counterexample_review.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "SYN3",
@@ -865,22 +1239,29 @@
         "machine/unit",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/reducer.py",
-        "tests/test_runtime_memory_provenance.py"
-      ],
       "depends_on": [
         "SYN1"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/episode_memory.py 中从真实运行蒸馏 FailureMemory 与 EpisodeMemory 记录",
+        "在 matharc/v02/runtime/episode_memory.py 中从真实运行蒸馏 FailureMemory 与 EpisodeMemory 记录",
         "在 tests/test_runtime_memory_provenance.py 中要求每条记忆携带 run_id、generation_id 和候选出处"
       ],
       "goal": "从真实运行蒸馏带身份和候选出处的研究记忆。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[13]"
-      }
+        "locator": "html:requirement-id=SRC-SYN3"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/episode_memory.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_memory_provenance.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "SYN4",
@@ -896,23 +1277,34 @@
         "machine/integration-contract",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/generation.py",
-        "tests/test_runtime_next_generation_agenda.py"
-      ],
       "depends_on": [
         "SYN2",
         "SYN3"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程",
+        "在 matharc/v02/runtime/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程",
         "在 tests/test_runtime_next_generation_agenda.py 中要求下一代明确引用上一代事实"
       ],
       "goal": "把失败、经历和评审缺口编译为明确消费上一代事实的下一代议程。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:h2[7]"
-      }
+        "locator": "html:requirement-id=SRC-SYN4"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/generation.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/research_director/agenda.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_next_generation_agenda.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "SYN5",
@@ -928,10 +1320,6 @@
         "machine/e2e",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "tests/test_runtime_two_generation_synthesis.py",
-        "tests/test_runtime_generation_delta.py"
-      ],
       "depends_on": [
         "SYN4",
         "DUR5",
@@ -945,8 +1333,18 @@
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[26]"
-      }
+        "locator": "html:requirement-id=SRC-SYN5"
+      },
+      "write_targets": [
+        {
+          "path": "tests/test_runtime_two_generation_synthesis.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_generation_delta.py",
+          "mode": "create"
+        }
+      ]
     },
     {
       "id": "VER1",
@@ -962,11 +1360,6 @@
         "machine/unit",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/candidate.py",
-        "matharc/v02/runtime/verification.py",
-        "tests/test_candidate_identity.py"
-      ],
       "depends_on": [
         "RUN1",
         "DUR2"
@@ -974,13 +1367,28 @@
       "acceptance_seeds": [
         "在 matharc/v02/runtime/verification.py 中定义 CandidateEnvelope 进入验证阶段的身份约束和 VerifierReceipt",
         "在 tests/test_candidate_identity.py 中证明任务、源码、评价器、种子、预算或产物变化都会改变候选身份",
-        "在 matharc/v02/runtime/contracts.py 和 tests/test_candidate_identity.py 中证明 CandidateEnvelope 首次定义位于 RUN1，VER1 不反向提供 RUN4 的后端合同"
+        "在 tests/test_candidate_identity.py 中证明 CandidateEnvelope 首次定义位于 RUN1，VER1 不反向提供 RUN4 的后端合同"
       ],
       "goal": "定义候选进入验证阶段所需的身份约束和 VerifierReceipt，而非重新定义候选包。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[1]"
-      }
+        "locator": "html:requirement-id=SRC-VER1"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/candidate.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/verification.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_candidate_identity.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "VER2",
@@ -996,22 +1404,29 @@
         "machine/unit",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/verification.py",
-        "tests/test_candidate_scope_binding.py"
-      ],
       "depends_on": [
         "VER1"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/verification_bridge.py 中将候选绑定到具体命题、量词、对象和范围",
+        "在 matharc/v02/runtime/verification.py 中将候选绑定到具体命题、量词、对象和范围",
         "在 tests/test_candidate_scope_binding.py 中拒绝范围扩大、量词变化和对象错配"
       ],
       "goal": "把候选绑定到具体命题、量词、对象和范围，拒绝范围扩大与对象错配。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[2]"
-      }
+        "locator": "html:requirement-id=SRC-VER2"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/verification.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_candidate_scope_binding.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "VER3",
@@ -1027,22 +1442,30 @@
         "machine/e2e",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/verification.py",
-        "tests/test_candidate_independent_replay.py"
-      ],
       "depends_on": [
         "VER2"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/verification_bridge.py 中为候选生成干净环境的独立重放计划",
-        "在 tests/test_candidate_independent_replay.py 中证明相同实现的重复执行不算独立验证"
+        "在 matharc/v02/runtime/verification.py 中为候选生成干净环境的独立重放计划",
+        "在 tests/test_candidate_independent_replay.py 中证明相同实现的重复执行不算独立验证",
+        "在 matharc/v02/runtime/verification.py 中固定 CandidateEnvelope 输入、独立 ReplayPlan 与 VerifierReceipt 输出、candidate_id+replay_digest 幂等键、超时/取消/失败分类、有限重试和恢复边界；在 tests/test_candidate_independent_replay.py 中保护独立验收身份"
       ],
       "goal": "为候选生成干净环境的独立重放计划，排除同实现自证。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[3]"
-      }
+        "locator": "html:requirement-id=SRC-VER3"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/verification.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_candidate_independent_replay.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "VER4",
@@ -1058,22 +1481,30 @@
         "machine/integration-contract",
         "machine/unit"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/verification.py",
-        "tests/test_candidate_evidence_conversion.py"
-      ],
       "depends_on": [
         "VER3"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/verification_bridge.py 中只将通过 VerifierReceipt 的候选转换为 EvidenceRecord",
-        "在 tests/test_candidate_evidence_conversion.py 中证明候选转换不会自动调用 ResearchTrace.promote_claim()"
+        "在 matharc/v02/runtime/verification.py 中只将通过 VerifierReceipt 的候选转换为 EvidenceRecord",
+        "在 tests/test_candidate_evidence_conversion.py 中证明候选转换不会自动调用 ResearchTrace.promote_claim()",
+        "在 matharc/v02/runtime/verification.py 中固定 VerifierReceipt 输入、EvidenceRecord 输出、candidate_id+receipt_digest 幂等键、超时/取消/失败分类、有限重试与失效恢复；在 tests/test_candidate_evidence_conversion.py 中保护候选到证据的独立验收身份"
       ],
       "goal": "仅将通过 VerifierReceipt 的候选转换为带出处的 EvidenceRecord。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[4]"
-      }
+        "locator": "html:requirement-id=SRC-VER4"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/verification.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_candidate_evidence_conversion.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "VER5",
@@ -1089,22 +1520,29 @@
         "machine/unit",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/verification.py",
-        "tests/test_evidence_invalidation.py"
-      ],
       "depends_on": [
         "VER4"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/audit.py 中记录命题、源码、评价器或候选身份变化导致的证据失效",
+        "在 matharc/v02/runtime/verification.py 中记录命题、源码、评价器或候选身份变化导致的证据失效",
         "在 tests/test_evidence_invalidation.py 中证明失效证据不能继续支撑已晋升结论"
       ],
       "goal": "记录命题、源码、评价器或候选身份变化导致的证据失效。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[5]"
-      }
+        "locator": "html:requirement-id=SRC-VER5"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/verification.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_evidence_invalidation.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "VER6",
@@ -1120,23 +1558,30 @@
         "machine/e2e",
         "machine/integration-contract"
       ],
-      "write_regions": [
-        "tests/test_verification_convergence.py",
-        "tests/test_verification_negative_paths.py"
-      ],
       "depends_on": [
         "VER5"
       ],
       "acceptance_seeds": [
         "在 tests/test_verification_convergence.py 中证明真实候选通过独立验证后才形成正式证据",
-        "在 tests/test_verification_negative_paths.py 中阻止假候选、篡改包、越界和非独立结果"
+        "在 tests/test_verification_negative_paths.py 中阻止假候选、篡改包、越界和非独立结果",
+        "在 tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 中固定候选输入、验证/证据输出、candidate_id+verification_digest 幂等键、超时/取消/失败分类、拒绝重试与安全恢复，并以独立验收身份覆盖全部负路径"
       ],
       "goal": "独立验收验证汇合、篡改检测、越界阻断和非独立结果拒绝。",
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[6]"
-      }
+        "locator": "html:requirement-id=SRC-VER6"
+      },
+      "write_targets": [
+        {
+          "path": "tests/test_verification_convergence.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_verification_negative_paths.py",
+          "mode": "create"
+        }
+      ]
     },
     {
       "id": "UX1",
@@ -1152,28 +1597,35 @@
         "machine/integration-contract",
         "machine/e2e"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/view_model.py",
-        "tests/test_runtime_console_projection.py"
-      ],
       "depends_on": [
         "DUR2"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/console_export.py 中将 RuntimeStore 状态投影到现有控制台数据合同",
+        "在 matharc/v02/runtime/view_model.py 中将 RuntimeStore 状态投影到现有控制台数据合同",
         "在 tests/test_runtime_console_projection.py 中证明投影不是第二真相源且不暴露主机绝对路径"
       ],
       "goal": "把 RuntimeStore 状态投影到现有控制台数据合同，保持单一真相源。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:normative-sentence[7]"
+        "locator": "html:requirement-id=SRC-UX1"
       },
       "keep_refs": [
         {
-          "artifact": "SRC-MATHARC-RUNTIME-BASELINE",
-          "locator": "html:li[2]"
+          "artifact": "SRC-MATHARC-CONSOLE-EXPORT-PY",
+          "locator": "file:content"
         }
-      ]
+      ],
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/view_model.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_console_projection.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "UX2",
@@ -1189,25 +1641,32 @@
         "machine/integration-contract",
         "machine/e2e"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/service.py",
-        "tests/test_runtime_console_permissions.py"
-      ],
       "depends_on": [
         "FND2"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/access.py 中复用现有邀请制访问和 Cookie 会话边界",
+        "在 matharc/v02/runtime/service.py 中复用现有邀请制访问和 Cookie 会话边界",
         "在 tests/test_runtime_console_permissions.py 中证明没有操作权限的用户不能启动或停止任务"
       ],
       "goal": "复用邀请制 Cookie 会话和权限边界，阻断无权用户的运行动作。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[14]"
+        "locator": "html:requirement-id=SRC-UX2"
       },
       "external_systems": [
         "EXT-MATHARC-INVITE-PREVIEW"
-      ]
+      ],
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/service.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_console_permissions.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "UX3",
@@ -1222,10 +1681,6 @@
       "lanes": [
         "machine/integration-contract",
         "machine/e2e"
-      ],
-      "write_regions": [
-        "matharc/v02/runtime/service.py",
-        "tests/test_runtime_command_surface.py"
       ],
       "depends_on": [
         "UX2",
@@ -1245,13 +1700,25 @@
       ],
       "acceptance_seeds": [
         "在 matharc/v02/runtime/service.py 中提供启动、暂停、继续、停止和重新验证的幂等动作",
-        "在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段"
+        "在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段",
+        "在 matharc/v02/runtime/service.py 中固定登记动作输入、RuntimeActionReceipt 输出、action_id+runtime_run_id 幂等键、超时/取消/失败分类、有限重试与恢复状态；在 tests/test_runtime_command_surface.py 中保护动作白名单和独立验收身份"
       ],
       "goal": "提供登记动作的幂等运行控制服务，拒绝任意命令、目录、环境和参数。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[15]"
-      }
+        "locator": "html:requirement-id=SRC-UX3"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/service.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_command_surface.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "UX4",
@@ -1268,24 +1735,51 @@
         "machine/e2e",
         "visual-fidelity"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/view_model.py",
-        "tests/test_runtime_console_redaction.py"
-      ],
       "depends_on": [
         "UX1",
         "UX2"
       ],
       "acceptance_seeds": [
-        "在 matharc/v02/view_model.py 中建立统一中文运行视图并递归脱敏",
+        "在 matharc/v02/runtime/view_model.py 中建立统一中文运行视图并递归脱敏",
         "在 tests/test_runtime_console_redaction.py 中证明密钥、路径、完整命令、环境变量和异常堆栈泄露为零",
         "在 tests/test_runtime_console_redaction_visual.py 中验证脱敏后的运行视图不显示敏感字段"
       ],
       "goal": "建立统一中文运行视图并递归脱敏密钥、路径、命令、环境变量和堆栈。",
+      "execution": {
+        "mode": "external-worker",
+        "escalation_reasons": [
+          "multi-executor"
+        ],
+        "worker": {
+          "execution_identity": "worker-UX4",
+          "runtime": "codex-exec",
+          "return_path": "workers/UX4.md",
+          "resource_locks": [
+            "write:matharc/v02/runtime/view_model.py",
+            "write:tests/test_runtime_console_redaction.py",
+            "write:tests/test_runtime_console_redaction_visual.py"
+          ]
+        }
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[16]"
-      }
+        "locator": "html:requirement-id=SRC-UX4"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/view_model.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_console_redaction.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_console_redaction_visual.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "UX5",
@@ -1302,11 +1796,6 @@
         "visual-fidelity",
         "machine/local-runtime"
       ],
-      "write_regions": [
-        "matharc/v02/runtime/service.py",
-        "matharc/v02/runtime/view_model.py",
-        "tests/test_runtime_console_reconnect.py"
-      ],
       "depends_on": [
         "UX3",
         "UX4",
@@ -1320,8 +1809,31 @@
       "goal": "实现断线重连后从服务端快照恢复的实时研究控制台。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[17]"
-      }
+        "locator": "html:requirement-id=SRC-UX5"
+      },
+      "write_targets": [
+        {
+          "path": "matharc/v02/runtime/service.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/view_model.py",
+          "mode": "create"
+        },
+        {
+          "path": "matharc/v02/runtime/reconnect.py",
+          "mode": "create"
+        },
+        {
+          "path": "docs/prototypes/problem-intel-console.html",
+          "mode": "modify"
+        },
+        {
+          "path": "tests/test_runtime_console_reconnect.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "UX6",
@@ -1338,24 +1850,30 @@
         "visual-fidelity",
         "human"
       ],
-      "write_regions": [
-        "tests/test_runtime_console_mobile.py",
-        "acceptance/human/runtime-console/desktop-checklist.md"
-      ],
       "depends_on": [
         "UX5"
       ],
       "acceptance_seeds": [
         "在 acceptance/human/runtime-console/desktop-checklist.md 中覆盖桌面邀请制查看和操作流程",
         "在 tests/test_runtime_console_mobile.py 中覆盖移动端、权限负路径和完整操作流",
-        "在 acceptance/human/runtime-console-checklist.md 中记录人类对桌面移动端权限负路径和操作流的验收"
+        "在 acceptance/human/runtime-console/desktop-checklist.md 中记录人类对桌面移动端权限负路径和操作流的验收"
       ],
       "goal": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[18]"
-      }
+        "locator": "html:requirement-id=SRC-UX6"
+      },
+      "write_targets": [
+        {
+          "path": "tests/test_runtime_console_mobile.py",
+          "mode": "create"
+        },
+        {
+          "path": "acceptance/human/runtime-console/desktop-checklist.md",
+          "mode": "create"
+        }
+      ]
     },
     {
       "id": "DOG1",
@@ -1371,10 +1889,6 @@
         "machine/e2e",
         "persistent-runtime"
       ],
-      "write_regions": [
-        "benchmarks/runtime-pilot-plan.json",
-        "tests/test_runtime_pilot_baseline.py"
-      ],
       "depends_on": [
         "RUN5"
       ],
@@ -1385,8 +1899,19 @@
       "goal": "固定首个真实任务、评价器、范围、预算和可重放的单成员基线。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[19]"
-      }
+        "locator": "html:requirement-id=SRC-DOG1"
+      },
+      "write_targets": [
+        {
+          "path": "benchmarks/runtime-pilot-plan.json",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_pilot_baseline.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "DOG2",
@@ -1402,10 +1927,6 @@
         "machine/e2e",
         "persistent-runtime",
         "production"
-      ],
-      "write_regions": [
-        "experiments/runtime-pilot/two-generation-report.md",
-        "tests/test_runtime_pilot_generation_consumption.py"
       ],
       "depends_on": [
         "PAR5",
@@ -1423,8 +1944,22 @@
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[20]"
-      }
+        "locator": "html:requirement-id=SRC-DOG2"
+      },
+      "write_targets": [
+        {
+          "path": "experiments/runtime-pilot/two-generation-report.md",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_pilot_generation_consumption.py",
+          "mode": "create"
+        },
+        {
+          "path": "acceptance/runtime-pilot/production-checklist.md",
+          "mode": "create"
+        }
+      ]
     },
     {
       "id": "DOG3",
@@ -1441,10 +1976,6 @@
         "persistent-runtime",
         "production"
       ],
-      "write_regions": [
-        "tests/test_runtime_adversarial_drills.py",
-        "tests/test_runtime_attack_recovery.py"
-      ],
       "depends_on": [
         "DOG2",
         "DUR5",
@@ -1453,18 +1984,34 @@
       "acceptance_seeds": [
         "在 tests/test_runtime_adversarial_drills.py 中执行崩溃、篡改、虚假反例、重复导入和权限演练",
         "在 tests/test_runtime_attack_recovery.py 中证明每条攻击路径都被拒绝或安全恢复",
-        "在 acceptance/runtime-pilot/production-attack-drills.md 中记录生产试点攻击演练的零容忍结果"
+        "在 acceptance/runtime-pilot/production-attack-drills.md 中记录生产试点攻击演练的零容忍结果",
+        "在 tests/test_runtime_adversarial_drills.py 和 tests/test_runtime_attack_recovery.py 中固定攻击输入、拒绝或恢复输出、attack_id 幂等键、超时/取消/失败分类、不可重试边界与安全恢复，并以独立验收身份证明错误晋升始终为零"
       ],
       "goal": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[21]"
-      }
+        "locator": "html:requirement-id=SRC-DOG3"
+      },
+      "write_targets": [
+        {
+          "path": "tests/test_runtime_adversarial_drills.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_attack_recovery.py",
+          "mode": "create"
+        },
+        {
+          "path": "acceptance/runtime-pilot/production-attack-drills.md",
+          "mode": "create"
+        }
+      ]
     },
     {
       "id": "DOG4",
       "release": "RTR7",
+      "kind": "release-decision",
       "owner": "试点发布负责人",
       "decision_refs": [
         "DP1"
@@ -1476,10 +2023,6 @@
         "human",
         "release"
       ],
-      "write_regions": [
-        "acceptance/human/runtime-pilot/release-checklist.md",
-        "acceptance/runtime-pilot/release-evidence.json"
-      ],
       "depends_on": [
         "DOG3"
       ],
@@ -1490,15 +2033,26 @@
       "goal": "汇编邀请试点的人类验收与发布证据，作出独立发布决策。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[22]"
-      }
+        "locator": "html:requirement-id=SRC-DOG4"
+      },
+      "write_targets": [
+        {
+          "path": "acceptance/human/runtime-pilot/release-checklist.md",
+          "mode": "create"
+        },
+        {
+          "path": "acceptance/runtime-pilot/release-evidence.json",
+          "mode": "create"
+        }
+      ]
     },
     {
       "id": "OPS1",
       "release": "RTR6",
       "owner": "试点部署负责人",
       "decision_refs": [
-        "DP1"
+        "DP1",
+        "DP3"
       ],
       "surfaces": [
         "pilot-operations"
@@ -1507,36 +2061,64 @@
         "machine/static",
         "persistent-runtime"
       ],
-      "write_regions": [
-        "deploy/matharc-research.service",
-        "deploy/matharc-research.env.example",
-        "tests/test_runtime_ops_deployment.py"
-      ],
       "depends_on": [
         "UX6"
       ],
       "acceptance_seeds": [
         "在 tests/test_runtime_ops_deployment.py 中固定 deploy/matharc-research.service、deploy/matharc-research.env.example 的持久目录、密钥来源和进程守护配置",
-        "在 tests/test_runtime_ops_deployment.py 中拒绝临时路径、明文密钥和无守护部署"
+        "在 tests/test_runtime_ops_deployment.py 中拒绝临时路径、明文密钥和无守护部署",
+        "在 deploy/matharc-research.service 和 deploy/matharc-research.env.example 中固定 Linux+systemd 输入、健康检查/运行身份输出、release_id 幂等键、启动超时/取消/失败分类、回滚与恢复边界；在 tests/test_runtime_ops_deployment.py 中保护持久目录、外部 secret source 和独立验收身份"
       ],
       "goal": "固定试点部署配置、持久目录、密钥来源和进程守护方式。",
+      "execution": {
+        "mode": "external-worker",
+        "escalation_reasons": [
+          "multi-executor"
+        ],
+        "worker": {
+          "execution_identity": "worker-OPS1",
+          "runtime": "codex-exec",
+          "return_path": "workers/OPS1.md",
+          "resource_locks": [
+            "write:deploy/matharc-research.service",
+            "write:deploy/matharc-research.env.example",
+            "write:tests/test_runtime_ops_deployment.py"
+          ]
+        }
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[23]"
+        "locator": "html:requirement-id=SRC-OPS1"
       },
       "keep_refs": [
         {
-          "artifact": "SRC-MATHARC-RUNTIME-BASELINE",
-          "locator": "html:li[3]"
+          "artifact": "SRC-MATHARC-ACCESS-SERVER-PY",
+          "locator": "file:content"
         }
-      ]
+      ],
+      "write_targets": [
+        {
+          "path": "deploy/matharc-research.service",
+          "mode": "create"
+        },
+        {
+          "path": "deploy/matharc-research.env.example",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_ops_deployment.py",
+          "mode": "create"
+        }
+      ],
+      "kind": "implementation"
     },
     {
       "id": "OPS2",
       "release": "RTR6",
       "owner": "试点运维观测负责人",
       "decision_refs": [
-        "DP1"
+        "DP1",
+        "DP3"
       ],
       "surfaces": [
         "pilot-operations"
@@ -1544,10 +2126,6 @@
       "lanes": [
         "machine/integration-contract",
         "persistent-runtime"
-      ],
-      "write_regions": [
-        "tests/test_runtime_ops_observability.py",
-        "tests/test_runtime_ops_backup.py"
       ],
       "depends_on": [
         "OPS1"
@@ -1560,15 +2138,26 @@
       "goal": "建立健康检查、日志、配额、备份和恢复观测闭环。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[24]"
-      }
+        "locator": "html:requirement-id=SRC-OPS2"
+      },
+      "write_targets": [
+        {
+          "path": "tests/test_runtime_ops_observability.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_ops_backup.py",
+          "mode": "create"
+        }
+      ]
     },
     {
       "id": "OPS3",
       "release": "RTR6",
       "owner": "试点发布运维负责人",
       "decision_refs": [
-        "DP1"
+        "DP1",
+        "DP3"
       ],
       "surfaces": [
         "pilot-operations"
@@ -1577,11 +2166,6 @@
         "machine/e2e",
         "persistent-runtime",
         "production"
-      ],
-      "write_regions": [
-        "tests/test_runtime_ops_release.py",
-        "tests/test_runtime_ops_cleanup.py",
-        "acceptance/runtime-pilot/ops-checklist.md"
       ],
       "depends_on": [
         "OPS2"
@@ -1595,8 +2179,27 @@
       "goal": "独立验收部署、重启、回滚和试点用户数据清理。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[25]"
-      }
+        "locator": "html:requirement-id=SRC-OPS3"
+      },
+      "write_targets": [
+        {
+          "path": "tests/test_runtime_ops_release.py",
+          "mode": "create"
+        },
+        {
+          "path": "tests/test_runtime_ops_cleanup.py",
+          "mode": "create"
+        },
+        {
+          "path": "acceptance/runtime-pilot/ops-checklist.md",
+          "mode": "create"
+        },
+        {
+          "path": "acceptance/runtime-pilot/ops-release-checklist.md",
+          "mode": "create"
+        }
+      ]
     }
-  ]
+  ],
+  "target_evidence_level": "persistent-runtime"
 }

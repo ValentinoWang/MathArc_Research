@@ -49,5 +49,48 @@
 <ul>
 <li>错误数学晋升、重复执行、重复费用、重复候选导入、跨工作区写入、关闭代际被迟到结果改写、公共接口敏感信息泄露、无权限运行动作均必须为 0。</li>
 </ul>
+<ul id="source-requirement-anchors" hidden aria-hidden="true">
+<li id="requirement-SRC-FND1" data-requirement-id="SRC-FND1">建立 MathArc 原生运行时所有权与依赖允许清单，阻断治理工具链进入产品运行路径。</li>
+<li id="requirement-SRC-FND2" data-requirement-id="SRC-FND2">保留 ResearchTrace 的数学结论晋升权威，并证明运行状态不能直接变成正式证明。</li>
+<li id="requirement-SRC-RUN1" data-requirement-id="SRC-RUN1">定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。</li>
+<li id="requirement-SRC-RUN2" data-requirement-id="SRC-RUN2">建立可重放的运行存储，使事件、快照和候选导入在进程重启后保持一致。</li>
+<li id="requirement-SRC-RUN3" data-requirement-id="SRC-RUN3">建立有预算、种子和最小试跑门槛的评价器合同，失败时不启动完整研究。</li>
+<li id="requirement-SRC-RUN4" data-requirement-id="SRC-RUN4">将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。</li>
+<li id="requirement-SRC-RUN5" data-requirement-id="SRC-RUN5">独立验证单任务从试跑、执行到候选回传的闭环，并阻断候选越级晋升。</li>
+<li id="requirement-SRC-PAR1" data-requirement-id="SRC-PAR1">把研究路线和角色编译为带机制、预算、目标和隔离写入区的运行拓扑。</li>
+<li id="requirement-SRC-PAR2" data-requirement-id="SRC-PAR2">接入已批准的动态任务并执行一次性、可审计的任务启动。</li>
+<li id="requirement-SRC-PAR3" data-requirement-id="SRC-PAR3">在持久化和恢复能力之后实现有界并行、冻结输入和隔离工作区调度。</li>
+<li id="requirement-SRC-PAR4" data-requirement-id="SRC-PAR4">按执行回执记录实际资源消耗，并对语义重复实验做确定性去重。</li>
+<li id="requirement-SRC-PAR5" data-requirement-id="SRC-PAR5">独立验收多成员一代归并、冲突、部分失败和迟到结果规则。</li>
+<li id="requirement-SRC-DUR1" data-requirement-id="SRC-DUR1">定义冻结输入、代际提交、GenerationReducer 和 GenerationClosePolicy 的持久边界。</li>
+<li id="requirement-SRC-DUR2" data-requirement-id="SRC-DUR2">以带来源身份的幂等账本保存候选、费用和执行回执，拒绝来源漂移。</li>
+<li id="requirement-SRC-DUR3" data-requirement-id="SRC-DUR3">实现停止、排空、暂停、继续和取消的显式运行状态协议。</li>
+<li id="requirement-SRC-DUR4" data-requirement-id="SRC-DUR4">从最后一个完整 GenerationCommit 生成可重放的崩溃恢复计划。</li>
+<li id="requirement-SRC-DUR5" data-requirement-id="SRC-DUR5">独立验收冷启动恢复、幂等恢复和不跳代不重复规则。</li>
+<li id="requirement-SRC-SYN1" data-requirement-id="SRC-SYN1">把普通执行输出标准化为带完整出处的探索候选，隔离于正式证据。</li>
+<li id="requirement-SRC-SYN2" data-requirement-id="SRC-SYN2">将疑似反例送入独立复核队列，未复核前不改变研究路线或结论。</li>
+<li id="requirement-SRC-SYN3" data-requirement-id="SRC-SYN3">从真实运行蒸馏带身份和候选出处的研究记忆。</li>
+<li id="requirement-SRC-SYN4" data-requirement-id="SRC-SYN4">把失败、经历和评审缺口编译为明确消费上一代事实的下一代议程。</li>
+<li id="requirement-SRC-SYN5" data-requirement-id="SRC-SYN5">独立验收连续两代提交、路线变化和上一代事实消费。</li>
+<li id="requirement-SRC-VER1" data-requirement-id="SRC-VER1">定义候选进入验证阶段所需的身份约束和 VerifierReceipt，而非重新定义候选包。</li>
+<li id="requirement-SRC-VER2" data-requirement-id="SRC-VER2">把候选绑定到具体命题、量词、对象和范围，拒绝范围扩大与对象错配。</li>
+<li id="requirement-SRC-VER3" data-requirement-id="SRC-VER3">为候选生成干净环境的独立重放计划，排除同实现自证。</li>
+<li id="requirement-SRC-VER4" data-requirement-id="SRC-VER4">仅将通过 VerifierReceipt 的候选转换为带出处的 EvidenceRecord。</li>
+<li id="requirement-SRC-VER5" data-requirement-id="SRC-VER5">记录命题、源码、评价器或候选身份变化导致的证据失效。</li>
+<li id="requirement-SRC-VER6" data-requirement-id="SRC-VER6">独立验收验证汇合、篡改检测、越界阻断和非独立结果拒绝。</li>
+<li id="requirement-SRC-UX1" data-requirement-id="SRC-UX1">把 RuntimeStore 状态投影到现有控制台数据合同，保持单一真相源。</li>
+<li id="requirement-SRC-UX2" data-requirement-id="SRC-UX2">复用邀请制 Cookie 会话和权限边界，阻断无权用户的运行动作。</li>
+<li id="requirement-SRC-UX3" data-requirement-id="SRC-UX3">提供登记动作的幂等运行控制服务，拒绝任意命令、目录、环境和参数。</li>
+<li id="requirement-SRC-UX4" data-requirement-id="SRC-UX4">建立统一中文运行视图并递归脱敏密钥、路径、命令、环境变量和堆栈。</li>
+<li id="requirement-SRC-UX5" data-requirement-id="SRC-UX5">实现断线重连后从服务端快照恢复的实时研究控制台。</li>
+<li id="requirement-SRC-UX6" data-requirement-id="SRC-UX6">独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。</li>
+<li id="requirement-SRC-DOG1" data-requirement-id="SRC-DOG1">固定首个真实任务、评价器、范围、预算和可重放的单成员基线。</li>
+<li id="requirement-SRC-DOG2" data-requirement-id="SRC-DOG2">在运维闭环完成后执行两代真实并行研究并证明第二代消费第一代事实。</li>
+<li id="requirement-SRC-DOG3" data-requirement-id="SRC-DOG3">执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。</li>
+<li id="requirement-SRC-DOG4" data-requirement-id="SRC-DOG4">汇编邀请试点的人类验收与发布证据，作出独立发布决策。</li>
+<li id="requirement-SRC-OPS1" data-requirement-id="SRC-OPS1">固定试点部署配置、持久目录、密钥来源和进程守护方式。</li>
+<li id="requirement-SRC-OPS2" data-requirement-id="SRC-OPS2">建立健康检查、日志、配额、备份和恢复观测闭环。</li>
+<li id="requirement-SRC-OPS3" data-requirement-id="SRC-OPS3">独立验收部署、重启、回滚和试点用户数据清理。</li>
+</ul>
 </body>
 </html>
