@@ -16,8 +16,8 @@ from pathlib import Path
 
 
 TOKEN_TABLE_SHA256 = "4ac72b36168eef86bdbcc9a3a0d9db7af8a49a76a08928c573aac5fc7b519c96"
-CLASS_COUNT = 235
-CLASS_LIST_SHA256 = "7843c36a73d65c6e8be464863c0a46c17aef63944a0e25c1b10de63334938dcc"
+CLASS_COUNT = 250
+CLASS_LIST_SHA256 = "ea3bbaad5b2c4cb6c48da7ae6397de7831ab40363465251bb34870cad44447b1"
 LIGHT_ONLY_TOKENS = frozenset({"--serif", "--sans", "--mono", "--topbar-h"})
 SHELL_CLASSES = frozenset(
     {
@@ -180,8 +180,8 @@ def _validate_shell(stylesheet: str, page: str, failures: list[str]) -> None:
         failures.append(f"class baseline digest drift: expected {CLASS_LIST_SHA256}, observed {observed}")
 
     media_count = len(re.findall(r"@media\s*\(", stylesheet))
-    if media_count != 14:
-        failures.append(f"media-rule count drift: expected 14, observed {media_count}")
+    if media_count != 16:
+        failures.append(f"media-rule count drift: expected 16, observed {media_count}")
     for width, layout in EXPECTED_VIEWPORT_LAYOUTS.items():
         observed_layout = "three-column"
         numeric_width = int(width.split("x", 1)[0])

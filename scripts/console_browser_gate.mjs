@@ -70,7 +70,7 @@ const FAIL_CLOSED_M2_VIEWS = new Set(["admin_roster", "admin_cost", "acct_overvi
 
 const VIEW_CASES = [
   ...[
-    "portfolio", "dossier", "cert", "frontier", "radar", "source", "novelty", "difficulty", "dag", "disclosure",
+    "portfolio", "workbench", "dossier", "cert", "frontier", "radar", "source", "novelty", "difficulty", "dag", "disclosure",
     "campaigns", "campaign", "exploration", "conjecture", "routes", "tools", "reasoning", "landing", "login",
     "acct_overview", "acct_usage", "acct_billing", "acct_limits", "admin_cost", "admin_upstream", "admin_users",
     "field", "topics", "admin_roles", "admin_roster", "admin_queue", "proofchain",
@@ -1076,6 +1076,17 @@ async function testKeyboardControls(page) {
   );
 }
 
+async function testWorkbenchStates(page) {
+  await renderCase(page, "c7", { name: "workbench-state-ready", view: "workbench" });
+  assert((await page.locator("body").innerText()).includes("从一个问题到一份可审结果"), "workbench ready state omitted the end-to-end heading");
+  for (const [state, marker] of [["loading", "正在读取工作区"], ["empty", "还没有可展示的研究运行"], ["error", "工作区载荷无法使用"]]) {
+    await dispatch(page, "wb-state", { v: state });
+    assert((await page.locator("body").innerText()).includes(marker), `workbench ${state} state was not stable`);
+  }
+  await dispatch(page, "wb-state", { v: "ready" });
+  assert((await page.locator("body").innerText()).includes("输入 → 拆解 → 调用 → 验证 → 证据"), "workbench did not recover to ready state");
+}
+
 async function testMobileViewports(browser, server, accessCookies) {
   for (const viewport of MOBILE_VIEWPORTS) {
     const context = await newGateContext(browser, {
@@ -1109,6 +1120,7 @@ async function testMobileViewports(browser, server, accessCookies) {
         }
       }
       await testKeyboardControls(page);
+      await testWorkbenchStates(page);
       assert(pageErrors.length === 0, `${viewport.name} page errors: ${pageErrors.join("\n")}`);
     } finally {
       await context.close();
@@ -1167,6 +1179,7 @@ async function testDataBoundaryAndProvenance(page, server, exportPayload) {
   assert(loaded, "real console export was rejected by the browser bridge");
   const expected = {
     source: exportPayload.source_topic.source_claims.length,
+    workbench: exportPayload.workspace.trace.claims.length,
     dag: exportPayload.workspace.trace.claims.length,
     proofchain: exportPayload.workspace.events.events.length,
     tools: exportPayload.workspace.trace.tool_calls.length,
@@ -1347,7 +1360,7 @@ async function testM2ReviewWorkflow(page, server) {
 }
 
 async function main() {
-  assert(VIEW_CASES.length === 52, `case inventory must remain 52 views, got ${VIEW_CASES.length}`);
+  assert(VIEW_CASES.length === 53, `case inventory must remain 53 views, got ${VIEW_CASES.length}`);
   const declaredViews = new Set([...PAGE_SOURCE.matchAll(/\bV\.([A-Za-z_][A-Za-z0-9_]*)\s*=/g)].map(match => match[1]));
   const coveredViews = new Set(VIEW_CASES.map(testCase => testCase.view));
   for (const view of declaredViews) assert(coveredViews.has(view), `declared view ${view} has no browser case`);

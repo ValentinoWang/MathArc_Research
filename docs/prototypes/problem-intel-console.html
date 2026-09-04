@@ -731,6 +731,42 @@ mark{background:var(--err-soft);color:var(--err);border-radius:3px;padding:0 3px
 .toast{position:fixed;left:50%;bottom:28px;transform:translateX(-50%);z-index:60;
   background:var(--ink);color:var(--ground);padding:9px 16px;border-radius:6px;font-size:12.5px;
   box-shadow:var(--shadow);max-width:min(560px,90vw);line-height:1.6;}
+
+/* 端到端演示工作台：把输入、拆解、调用、验证和证据放在同一条可扫描的路径上。 */
+.wb-head{display:flex;align-items:flex-start;gap:12px;justify-content:space-between;flex-wrap:wrap;}
+.wb-head h2{font-family:var(--serif);font-size:20px;font-weight:600;line-height:1.35;}
+.wb-actions{display:flex;align-items:center;gap:6px;flex-wrap:wrap;}
+.wb-states{display:inline-flex;border:1px solid var(--line);border-radius:7px;overflow:hidden;background:var(--surface);}
+.wb-states button{border:0;border-right:1px solid var(--line);padding:5px 9px;background:transparent;color:var(--muted);font-size:11.5px;}
+.wb-states button:last-child{border-right:0;}
+.wb-states button.on{background:var(--accent-soft);color:var(--accent);font-weight:600;}
+.wb-flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:8px;}
+.wb-step{position:relative;min-height:126px;padding:12px 12px 11px;border:1px solid var(--line);border-radius:7px;background:var(--surface);}
+.wb-step::after{content:"→";position:absolute;right:-9px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:16px;z-index:2;}
+.wb-step:last-child::after{display:none;}
+.wb-step .num{font-family:var(--mono);font-size:10px;color:var(--accent);letter-spacing:.08em;}
+.wb-step h4{font-size:12.5px;font-weight:600;margin-top:5px;}
+.wb-step p{font-size:11.5px;color:var(--muted);line-height:1.55;margin-top:6px;}
+.wb-step .wb-meta{display:flex;align-items:center;gap:6px;margin-top:10px;flex-wrap:wrap;}
+.wb-empty{padding:28px 16px;text-align:center;border:1px dashed var(--line);border-radius:6px;background:var(--surface-2);}
+.wb-empty strong{display:block;font-size:14px;font-weight:600;margin-bottom:5px;}
+.wb-list{display:flex;flex-direction:column;gap:8px;}
+.wb-row{display:flex;align-items:flex-start;gap:9px;padding:9px 10px;border:1px solid var(--line);border-radius:6px;background:var(--surface);}
+.wb-row .wb-icon{width:22px;height:22px;display:grid;place-items:center;border-radius:5px;background:var(--accent-soft);color:var(--accent);font-family:var(--mono);font-size:11px;flex:none;}
+.wb-row b{font-size:12px;font-weight:600;}
+.wb-row small{display:block;color:var(--muted);font-size:10.5px;margin-top:2px;line-height:1.45;}
+.wb-evidence{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+.wb-evidence .stat{min-height:76px;}
+.wb-error{background:var(--err-soft);border:1px solid var(--err);color:var(--err);border-radius:6px;padding:12px;font-size:12px;line-height:1.6;}
+.wb-error b{font-weight:600;}
+.wb-input{display:grid;grid-template-columns:1fr auto;gap:8px;align-items:end;margin:14px 0 12px;padding:11px;border:1px solid var(--line);border-radius:7px;background:var(--surface-2);}
+.wb-input label{display:block;font-size:11px;color:var(--muted);margin-bottom:5px;}
+.wb-input textarea{min-height:58px;resize:vertical;margin:0;background:var(--surface);}
+.wb-input button{white-space:nowrap;min-height:40px;}
+.wb-result{margin-top:10px;padding:10px 12px;border-left:3px solid var(--accent);background:var(--accent-soft);font-size:12px;line-height:1.6;}
+.wb-result b{font-weight:650;}
+@media (max-width:1100px){.wb-flow{grid-template-columns:repeat(3,minmax(0,1fr));}.wb-step:nth-child(3)::after{display:none;}}
+@media (max-width:720px){.wb-flow{grid-template-columns:1fr;}.wb-step{min-height:0;}.wb-step::after{content:"↓";right:auto;top:auto;bottom:-12px;left:50%;transform:translateX(-50%);}.wb-step:nth-child(3)::after{display:block;}.wb-evidence{grid-template-columns:1fr;}.wb-head h2{font-size:18px;}.wb-input{grid-template-columns:1fr;}.wb-input button{width:100%;}}
 </style>
 </head>
 <body>
@@ -1084,7 +1120,8 @@ const S = {
   certRoute:0, novRoute:0, funnel:null,
   rub:{intel:1, math:3, agent:1, verify:1}, rubSel:"math",
   signed:false, compiled:false, promoted:false, text:"", guest:true, plane:"p", useTable:false, topic:"uc", role:"user", collapsed:{},
-  tamper:null, chainActor:"*", chainSubj:"*", chainRound:"*", chainOpen:0,
+  tamper:null, chainActor:"*", chainSubj:"*", chainRound:"*", chainOpen:0, workbenchState:"ready",
+  workbenchQuestion:"Prove that the sum of the first n positive odd integers equals n squared.", workbenchResult:null, workbenchError:"",
   round:0, expl:0, conj:0, rt:0, tool:0, rsn:0,
   consolePayloadState:{status:"unloaded", projections:{}},
   access:{ mode:"redeem", email:"", institution:"", researchRole:"", researchDirection:"", purpose:"",
@@ -1129,7 +1166,7 @@ const PLANES = [
     tree:[
       /* 方向是这一层唯一的先验输入，由席位绑定；信息流与候选主题都在它下面。 */
       { g:"方向", ctx:()=>FIELD.n, kids:[
-        {v:"field"}, {v:"topics"},
+        {v:"workbench"}, {v:"field"}, {v:"topics"},
       { g:"主题", ctx:()=>T().n, kids:[
         { g:"信息层", kids:[ {v:"radar"}, {v:"source"} ] },
         { g:"问题层", kids:[
@@ -1175,6 +1212,7 @@ function treeDepth(nodes){ return Math.max(...nodes.map(n => n.v ? 1 : 1 + treeD
 PLANES.forEach(p => { p.views = treeViews(p.tree); p.depth = treeDepth(p.tree); });
 const VMETA = {
   field:    {n:"方向信息流",   b:()=>LEADS.filter(l=>l.st==="open").length},
+  workbench:{n:"演示工作台",     b:()=>"5 步"},
   topics:   {n:"候选主题",     b:()=>TOPICS.length},
   portfolio:{n:"候选问题",     b:()=>T().st==="active"?PROBLEMS.length:0},
   dossier:  {n:"问题详情"},
@@ -1740,6 +1778,56 @@ V.radar = () => {
       + card("资料范围","",bd(`<p class="note">本主题的监测合同覆盖：正典名称与七个别名、三组语言指纹、四位关键作者、六篇种子论文，以及前向与后向各两层引用邻域。</p>
         <div class="divider"></div>
         <p class="note">单纯按关键词检索会漏掉「不再使用原猜想名称、但实质推进同一问题」的论文，因此结构指纹与引用邻域必须同时启用。</p>`)),
+  };
+};
+
+/* ---------------- 端到端演示工作台 ---------------- */
+V.workbench = () => {
+  const state = S.workbenchState || "ready";
+  const demo = S.workbenchResult;
+  const demoStages = demo && demo.stages || {};
+  const payload = S.consolePayload;
+  const workspace = payload && payload.workspace;
+  const trace = workspace && workspace.trace;
+  const claims = trace && trace.claims;
+  const claimList = Array.isArray(claims) ? claims : (claims && typeof claims === "object" ? Object.values(claims) : []);
+  const toolCalls = trace && Array.isArray(trace.tool_calls) ? trace.tool_calls : [];
+  const evidence = trace && Array.isArray(trace.evidence) ? trace.evidence : [];
+  const events = workspace && workspace.events && Array.isArray(workspace.events.events) ? workspace.events.events : [];
+  const live = Boolean(payload && workspace && payload.provenance);
+  const sourceStatement = demo
+    ? demo.question
+    : live
+    ? ((payload.source_topic && payload.source_topic.topic_name) || claimList[0] && claimList[0].statement || "工作区中的待研究命题")
+    : "有限并集封闭族：外部元素 = 7 时是否存在独立闭合？";
+  const sourceId = demo ? demo.run_id : live ? ((payload.provenance && payload.provenance.run_id) || "当前运行") : "DEMO-INPUT-01";
+  const hasDemo = Boolean(demo);
+  const demoClaims = demoStages.decomposition && Array.isArray(demoStages.decomposition.claims) ? demoStages.decomposition.claims : [];
+  const demoTool = demoStages.tool || {};
+  const demoVerification = demoStages.verification || {};
+  const demoEvidence = demo && demo.evidence;
+  const steps = [
+    {num:"01", title:"输入问题", text:sourceStatement, meta:`${sourceId}`},
+    {num:"02", title:"Agent 拆解", text:hasDemo ? `${demoClaims.length} 个命题 · ${demoStages.decomposition.status}` : live ? `${claimList.length} 个命题 · ${events.length} 条事件` : "目标、前提、反例与验收条件", meta:hasDemo ? "来自 decomposition" : live ? "来自 trace.claims" : "演示分解"},
+    {num:"03", title:"工具 / 模型", text:hasDemo ? `${demoTool.tool || "exact tool"} · ${demoTool.status || "运行"}` : live ? `${toolCalls.length} 次工具调用` : "模型提出路线，确定性工具执行检查", meta:hasDemo ? "proposal + tool" : live ? "来自 trace.tool_calls" : "调用可冷重放"},
+    {num:"04", title:"验证", text:hasDemo ? `${demoVerification.status || "待验证"} · 独立重放` : live ? "沿事件链复算并检查证据绑定" : "范围、判据、独立组逐项核对", meta:hasDemo ? "verifier receipt" : live ? "事件链" : "演示校验"},
+    {num:"05", title:"结果 / 证据", text:hasDemo ? `${demo.status} · ${demoEvidence && demoEvidence.evidence_id || "无证据"}` : live ? `${evidence.length} 条证据记录` : "仅展示可声明范围，不扩大结论", meta:hasDemo ? "result + evidence" : live ? "来自 trace.evidence" : "边界清楚"},
+  ];
+  const stateLabels = {ready:"就绪", loading:"加载中", empty:"空态", error:"错误"};
+  const statePill = state === "ready" ? "ok" : state === "error" ? "err" : state === "empty" ? "gap" : "acc";
+  let center;
+  if(state === "loading") center = `<div class="wb-empty" aria-live="polite"><strong>正在读取工作区</strong><span class="note">等待 /api/console 返回已校验载荷。</span></div>`;
+  else if(state === "empty") center = `<div class="wb-empty" aria-live="polite"><strong>还没有可展示的研究运行</strong><span class="note">输入问题后，Agent 拆解、工具调用与证据记录会依次出现在这里。</span></div>`;
+  else if(state === "error") center = `<div class="wb-error" role="alert"><b>${S.workbenchError ? "演示运行未完成。" : "工作区载荷无法使用。"}</b><br>${S.workbenchError ? esc(S.workbenchError) : "服务没有返回兼容的 /api/console 数据；当前页面不会用演示数字冒充真实运行。"} 可切回“就绪”查看本地演示路径。</div>`;
+  else center = `<div class="wb-flow">${steps.map(step => `<article class="wb-step"><span class="num">${step.num}</span><h4>${step.title}</h4><p>${esc(String(step.text))}</p><div class="wb-meta"><span class="pill ${live && !hasDemo ? "ok" : "acc"}"><span class="dot"></span>${live && !hasDemo ? "真实字段" : "演示字段"}</span><span class="hash">${esc(String(step.meta))}</span></div></article>`).join("")}</div>`;
+  const evidenceStats = state === "ready" ? `<div class="wb-evidence"><div class="stat"><b>${hasDemo ? demoClaims.length : live ? claimList.length : 4}</b><span>拆解命题</span></div><div class="stat"><b>${hasDemo ? (demoTool.tool ? 1 : 0) : live ? toolCalls.length : 3}</b><span>工具 / 模型调用</span></div><div class="stat"><b>${hasDemo ? (demoEvidence ? 1 : 0) : live ? evidence.length : 2}</b><span>证据记录</span></div></div>` : "";
+  const runForm = `<form id="wb-form" class="wb-input"><div><label for="wb-question">输入一个可验证的问题</label><textarea id="wb-question" name="question" maxlength="2000" required>${esc(S.workbenchQuestion || "")}</textarea></div><button class="btn pri" type="submit"${state === "loading" ? " disabled" : ""}>${state === "loading" ? "运行中…" : "运行 Agent"}</button></form>`;
+  const resultSummary = hasDemo && state === "ready" ? `<div class="wb-result" role="status"><b>${esc(demo.status)}</b> · ${esc((demoStages.result && demoStages.result.answer) || "已完成确定性验证")}. <span>promotion_allowed=${String(Boolean(demoStages.result && demoStages.result.promotion_allowed))}</span></div>` : "";
+  return {
+    task:`演示工作台 · <b>${hasDemo ? "刚刚完成" : live ? "已接入工作区" : "本地演示"}</b> · ${stateLabels[state] || "就绪"}`,
+    rail:card("状态与边界", "五步路径", bd(`<div class="row" style="flex-wrap:wrap"><span class="pill ${statePill}"><span class="dot"></span>${stateLabels[state] || "就绪"}</span><span class="pill acc">演示载荷</span></div><div class="divider"></div><p class="note">${hasDemo ? "结果来自本地确定性 Agent runner，可重复生成同一哈希。" : "此处数据只用于演示界面路径，不代表任何问题的真实研究状态。"}</p><p class="note">工具和验证可以通过，仍不会自动晋升定理。</p>`)),
+    main:card("问题智能运行台", "输入 → 拆解 → 调用 → 验证 → 证据", `<div class="body"><div class="wb-head"><div><h2>从一个问题到一份可审结果</h2><p class="note" style="margin-top:4px">每一步都显示来源，结果不会越过证据边界。</p></div><div class="wb-actions"><div class="wb-states" role="group" aria-label="演示状态">${Object.entries(stateLabels).map(([key,label]) => `<button type="button" class="${state===key?"on":""}" data-act="wb-state" data-v="${key}" aria-pressed="${state===key}">${label}</button>`).join("")}</div></div></div>${runForm}${center}${resultSummary}${evidenceStats}</div>`),
+    side:card("运行摘要", hasDemo ? "刚刚运行" : live ? "工作区字段" : "演示字段", bd(`<dl class="kv"><dt>运行</dt><dd class="mono">${esc(String(sourceId))}</dd><dt>问题</dt><dd>${esc(String(sourceStatement))}</dd><dt>拆解</dt><dd>${hasDemo ? `${demoClaims.length} 个命题` : live ? `${claimList.length} 个命题` : "4 个命题"}</dd><dt>工具</dt><dd>${hasDemo ? "1 次" : live ? `${toolCalls.length} 次` : "3 次"}</dd><dt>证据</dt><dd>${hasDemo ? (demoEvidence ? "1 条" : "0 条") : live ? `${evidence.length} 条` : "2 条"}</dd></dl>`)),
   };
 };
 
@@ -4489,7 +4577,7 @@ const AccessConsole = (() => {
     S.access.session = null;
     S.guest = true;
     S.plane = "p";
-    S.view = "portfolio";
+    S.view = "workbench";
     window.scrollTo({top:0});
     render();
     toast("已进入访客只读模式。界面中的问题、参数与概率均为演示数据，不代表任何问题的真实状态。");
@@ -4519,7 +4607,8 @@ document.addEventListener("click", e => {
   if(a==="signin"){ AccessConsole.redeem(); return; }
   if(a==="application-submit"){ AccessConsole.submitApplication(); return; }
   if(a==="logout"){ AccessConsole.logout(); return; }
-  if(a==="go"){ S.view = el.dataset.v; S.gate = null;
+  if(a==="wb-state"){ const next = el.dataset.v; if(["ready","loading","empty","error"].includes(next)) S.workbenchState = next; }
+  else if(a==="go"){ S.view = el.dataset.v; S.gate = null;
     if(!ACCT_VIEWS.includes(S.view) && !ADMIN_VIEWS.includes(S.view) && !FULLPAGE.includes(S.view)) S.plane = planeOf(S.view).id;
     if(el.dataset.cn) S.cnode = el.dataset.cn;
     window.scrollTo({top:0}); }
@@ -4645,6 +4734,31 @@ document.addEventListener("click", e => {
   render();
 }, false);
 
+document.addEventListener("submit", async e => {
+  const form = e.target.closest("#wb-form");
+  if(!form) return;
+  e.preventDefault();
+  const input = form.querySelector("[name=question]");
+  const question = input ? input.value.trim() : "";
+  if(!question) return;
+  S.workbenchQuestion = question;
+  S.workbenchResult = null;
+  S.workbenchError = "";
+  S.workbenchState = "loading";
+  render();
+  try{
+    const response = await fetch("/api/demo/run", {method:"POST", headers:{"Content-Type":"application/json"}, body:JSON.stringify({question})});
+    const body = await response.json().catch(() => ({}));
+    if(!response.ok) throw new Error(body.error || `演示服务返回 ${response.status}`);
+    S.workbenchResult = body;
+    S.workbenchState = body.status === "BLOCKED" ? "error" : "ready";
+  }catch(error){
+    S.workbenchError = String(error && error.message || error);
+    S.workbenchState = "error";
+  }
+  render();
+});
+
 document.addEventListener("keydown", e => {
   /* 可聚焦但不是原生按钮的元素（图中节点、主题行）用回车/空格触发 */
   const g = e.target.closest("[data-act][tabindex]");
@@ -4712,6 +4826,7 @@ function syncThemeBtn(){
    exists. */
 const DEMO_VIEWS = Object.fromEntries(["source","dag","proofchain","tools","reasoning","admin_roles","campaign","routes","disclosure","novelty"].map(id=>[id,V[id]]));
 const LIVE_VIEW_CONTRACTS = {
+  workbench:["verification_publication","live"],
   source:["source_registry_projection","live"], dag:["verification_publication","live"],
   proofchain:["verification_publication","live"], tools:["verification_publication","live"],
   reasoning:["verification_publication","live"], admin_roles:["verification_publication","live"],
