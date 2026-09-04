@@ -246,7 +246,7 @@
   ],
   "validation_report": {
     "path": "validation-report.json",
-    "sha256": "9f7887353918075cd356f79924d5cc09ca623c6d20a548db6d14a0356710a283",
+    "sha256": "571f9a9b4c59169ae1c0db94615b8588c7e9147a839b58c4a404c25323671efc",
     "manifest_identity_sha256": "93c6010f4de9a8c4b07fe5c62dbcda77be10a6820287c002a8c5a06990bf4f6e",
     "bundle_content_sha256": "cffcbcb3403dcc1f6e2e8b22a90656148f54ca20162999f52775dfbd486081db"
   }
