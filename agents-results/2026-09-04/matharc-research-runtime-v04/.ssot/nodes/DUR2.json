@@ -38,19 +38,18 @@
   "execution_contract_ref": "nodes/DUR2.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "matharc/v02/runtime/run_store.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "matharc/v02/runtime/candidate.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_idempotent_import.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

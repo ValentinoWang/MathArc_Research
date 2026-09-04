@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching research-memory drives item SYN3 (unspecified dimension) through the interface declared for SYN3.
+The user reaching research-memory drives item SYN3 (unspecified dimension) through the interface declared for SYN3. Concrete seed references: matharc/v02/runtime/episode_memory.py, tests/test_runtime_memory_provenance.py.
 
 ## Problem
 
-Item SYN3 exists because the interface declared for SYN3 does not yet satisfy the acceptance seeds registered for it, leaving research-memory incomplete.
+Item SYN3 exists because the interface declared for SYN3 does not yet satisfy the acceptance seeds registered for it, leaving research-memory incomplete. Concrete seed references: matharc/v02/runtime/episode_memory.py, tests/test_runtime_memory_provenance.py.
 
 ## Expected outcome
 
-After item SYN3 lands, the interface declared for SYN3 satisfies every acceptance seed below and research-memory reflects that behavior.
+After item SYN3 lands, the interface declared for SYN3 satisfies every acceptance seed below and research-memory reflects that behavior. Concrete seed references: matharc/v02/runtime/episode_memory.py, tests/test_runtime_memory_provenance.py.
 
 ## Non-goals
 
-Item SYN3 covers only the interface declared for SYN3 and research-memory as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item SYN3 covers only the interface declared for SYN3 and research-memory as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/episode_memory.py, tests/test_runtime_memory_provenance.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches research-memory for item SYN3
 When the flow defined by the interface declared for SYN3 executes
-Then every acceptance seed for item SYN3 holds
+Then every acceptance seed for item SYN3 holds  Concrete seed references: matharc/v02/runtime/episode_memory.py, tests/test_runtime_memory_provenance.py.
 ```
 
 ## Exception paths
 
-If the interface declared for SYN3 fails for item SYN3, research-memory must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for SYN3 fails for item SYN3, research-memory must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/episode_memory.py, tests/test_runtime_memory_provenance.py.
 
 ## Invariants
 
-For item SYN3, the interface declared for SYN3 must continue to satisfy every acceptance seed below on every call; research-memory must never show a state the seeds forbid.
+For item SYN3, the interface declared for SYN3 must continue to satisfy every acceptance seed below on every call; research-memory must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/episode_memory.py, tests/test_runtime_memory_provenance.py.
 
 ## Data impact
 
-Item SYN3 constrains any create, update, or delete reachable through the interface declared for SYN3; only the acceptance seeds below define what data changes are permitted for research-memory. Node-specific data assertions: 在 matharc/v02/runtime/episode_memory.py 中从真实运行蒸馏 FailureMemory 与 EpisodeMemory 记录 | 在 tests/test_runtime_memory_provenance.py 中要求每条记忆携带 run_id、generation_id 和候选出处
+Item SYN3 constrains any create, update, or delete reachable through the interface declared for SYN3; only the acceptance seeds below define what data changes are permitted for research-memory. Node-specific data assertions: 在 matharc/v02/runtime/episode_memory.py 中从真实运行蒸馏 FailureMemory 与 EpisodeMemory 记录 | 在 tests/test_runtime_memory_provenance.py 中要求每条记忆携带 run_id、generation_id 和候选出处 Concrete seed references: matharc/v02/runtime/episode_memory.py, tests/test_runtime_memory_provenance.py.
 
 ## Permissions
 
-Item SYN3 is owned by principal:acceptance-a; access to the interface declared for SYN3 and research-memory follows the acceptance seeds below and no wider grant.
+Item SYN3 is owned by principal:acceptance-a; access to the interface declared for SYN3 and research-memory follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/episode_memory.py, tests/test_runtime_memory_provenance.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item SYN3 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item SYN3; executable baseline not yet locked |
+| none | none | Behavior specification only for item SYN3; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/episode_memory.py, tests/test_runtime_memory_provenance.py |
 
 ## Requirements-test traceability
 

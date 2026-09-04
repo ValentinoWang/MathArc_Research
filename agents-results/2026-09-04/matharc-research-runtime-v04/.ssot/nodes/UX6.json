@@ -36,15 +36,14 @@
   "execution_contract_ref": "nodes/UX6.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "tests/test_runtime_console_mobile.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "acceptance/human/runtime-console/desktop-checklist.md",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

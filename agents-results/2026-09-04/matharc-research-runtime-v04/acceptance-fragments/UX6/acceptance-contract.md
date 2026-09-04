@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching console-human-acceptance drives item UX6 (unspecified dimension) through the interface declared for UX6.
+The user reaching console-human-acceptance drives item UX6 (unspecified dimension) through the interface declared for UX6. Concrete seed references: acceptance/human/runtime-console/desktop-checklist.md, tests/test_runtime_console_mobile.py.
 
 ## Problem
 
-Item UX6 exists because the interface declared for UX6 does not yet satisfy the acceptance seeds registered for it, leaving console-human-acceptance incomplete.
+Item UX6 exists because the interface declared for UX6 does not yet satisfy the acceptance seeds registered for it, leaving console-human-acceptance incomplete. Concrete seed references: acceptance/human/runtime-console/desktop-checklist.md, tests/test_runtime_console_mobile.py.
 
 ## Expected outcome
 
-After item UX6 lands, the interface declared for UX6 satisfies every acceptance seed below and console-human-acceptance reflects that behavior.
+After item UX6 lands, the interface declared for UX6 satisfies every acceptance seed below and console-human-acceptance reflects that behavior. Concrete seed references: acceptance/human/runtime-console/desktop-checklist.md, tests/test_runtime_console_mobile.py.
 
 ## Non-goals
 
-Item UX6 covers only the interface declared for UX6 and console-human-acceptance as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item UX6 covers only the interface declared for UX6 and console-human-acceptance as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: acceptance/human/runtime-console/desktop-checklist.md, tests/test_runtime_console_mobile.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches console-human-acceptance for item UX6
 When the flow defined by the interface declared for UX6 executes
-Then every acceptance seed for item UX6 holds
+Then every acceptance seed for item UX6 holds  Concrete seed references: acceptance/human/runtime-console/desktop-checklist.md, tests/test_runtime_console_mobile.py.
 ```
 
 ## Exception paths
 
-If the interface declared for UX6 fails for item UX6, console-human-acceptance must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for UX6 fails for item UX6, console-human-acceptance must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: acceptance/human/runtime-console/desktop-checklist.md, tests/test_runtime_console_mobile.py.
 
 ## Invariants
 
-For item UX6, the interface declared for UX6 must continue to satisfy every acceptance seed below on every call; console-human-acceptance must never show a state the seeds forbid.
+For item UX6, the interface declared for UX6 must continue to satisfy every acceptance seed below on every call; console-human-acceptance must never show a state the seeds forbid. Concrete seed references: acceptance/human/runtime-console/desktop-checklist.md, tests/test_runtime_console_mobile.py.
 
 ## Data impact
 
-Item UX6 constrains any create, update, or delete reachable through the interface declared for UX6; only the acceptance seeds below define what data changes are permitted for console-human-acceptance. Node-specific data assertions: 在 acceptance/human/runtime-console/desktop-checklist.md 中覆盖桌面邀请制查看和操作流程 | 在 tests/test_runtime_console_mobile.py 中覆盖移动端、权限负路径和完整操作流 | 在 acceptance/human/runtime-console/desktop-checklist.md 中记录人类对桌面移动端权限负路径和操作流的验收
+Item UX6 constrains any create, update, or delete reachable through the interface declared for UX6; only the acceptance seeds below define what data changes are permitted for console-human-acceptance. Node-specific data assertions: 在 acceptance/human/runtime-console/desktop-checklist.md 中覆盖桌面邀请制查看和操作流程 | 在 tests/test_runtime_console_mobile.py 中覆盖移动端、权限负路径和完整操作流 | 在 acceptance/human/runtime-console/desktop-checklist.md 中记录人类对桌面移动端权限负路径和操作流的验收 Concrete seed references: acceptance/human/runtime-console/desktop-checklist.md, tests/test_runtime_console_mobile.py.
 
 ## Permissions
 
-Item UX6 is owned by principal:acceptance-a; access to the interface declared for UX6 and console-human-acceptance follows the acceptance seeds below and no wider grant.
+Item UX6 is owned by principal:acceptance-a; access to the interface declared for UX6 and console-human-acceptance follows the acceptance seeds below and no wider grant. Concrete seed references: acceptance/human/runtime-console/desktop-checklist.md, tests/test_runtime_console_mobile.py.
 
 ## Performance and reliability
 
@@ -91,7 +91,7 @@ Item UX6 is fully determined by its acceptance seeds; outcomes for the interface
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item UX6; executable baseline not yet locked |
+| none | none | Behavior specification only for item UX6; executable baseline not yet locked. Concrete seed references: acceptance/human/runtime-console/desktop-checklist.md, tests/test_runtime_console_mobile.py |
 
 ## Requirements-test traceability
 

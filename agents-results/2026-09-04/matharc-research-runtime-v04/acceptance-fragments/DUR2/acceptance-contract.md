@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching durable-import-ledger drives item DUR2 (unspecified dimension) through the interface declared for DUR2.
+The user reaching durable-import-ledger drives item DUR2 (unspecified dimension) through the interface declared for DUR2. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_idempotent_import.py.
 
 ## Problem
 
-Item DUR2 exists because the interface declared for DUR2 does not yet satisfy the acceptance seeds registered for it, leaving durable-import-ledger incomplete.
+Item DUR2 exists because the interface declared for DUR2 does not yet satisfy the acceptance seeds registered for it, leaving durable-import-ledger incomplete. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_idempotent_import.py.
 
 ## Expected outcome
 
-After item DUR2 lands, the interface declared for DUR2 satisfies every acceptance seed below and durable-import-ledger reflects that behavior.
+After item DUR2 lands, the interface declared for DUR2 satisfies every acceptance seed below and durable-import-ledger reflects that behavior. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_idempotent_import.py.
 
 ## Non-goals
 
-Item DUR2 covers only the interface declared for DUR2 and durable-import-ledger as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item DUR2 covers only the interface declared for DUR2 and durable-import-ledger as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_idempotent_import.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches durable-import-ledger for item DUR2
 When the flow defined by the interface declared for DUR2 executes
-Then every acceptance seed for item DUR2 holds
+Then every acceptance seed for item DUR2 holds  Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_idempotent_import.py.
 ```
 
 ## Exception paths
 
-If the interface declared for DUR2 fails for item DUR2, durable-import-ledger must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for DUR2 fails for item DUR2, durable-import-ledger must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_idempotent_import.py.
 
 ## Invariants
 
-For item DUR2, the interface declared for DUR2 must continue to satisfy every acceptance seed below on every call; durable-import-ledger must never show a state the seeds forbid.
+For item DUR2, the interface declared for DUR2 must continue to satisfy every acceptance seed below on every call; durable-import-ledger must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_idempotent_import.py.
 
 ## Data impact
 
-Item DUR2 constrains any create, update, or delete reachable through the interface declared for DUR2; only the acceptance seeds below define what data changes are permitted for durable-import-ledger. Node-specific data assertions: 在 matharc/v02/runtime/run_store.py 中幂等导入候选、费用和执行回执并保留来源身份 | 在 tests/test_runtime_idempotent_import.py 中证明重复导入结果不变且来源身份变化时拒绝
+Item DUR2 constrains any create, update, or delete reachable through the interface declared for DUR2; only the acceptance seeds below define what data changes are permitted for durable-import-ledger. Node-specific data assertions: 在 matharc/v02/runtime/run_store.py 中幂等导入候选、费用和执行回执并保留来源身份 | 在 tests/test_runtime_idempotent_import.py 中证明重复导入结果不变且来源身份变化时拒绝 Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_idempotent_import.py.
 
 ## Permissions
 
-Item DUR2 is owned by principal:acceptance-a; access to the interface declared for DUR2 and durable-import-ledger follows the acceptance seeds below and no wider grant.
+Item DUR2 is owned by principal:acceptance-a; access to the interface declared for DUR2 and durable-import-ledger follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_idempotent_import.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item DUR2 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item DUR2; executable baseline not yet locked |
+| none | none | Behavior specification only for item DUR2; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_idempotent_import.py |
 
 ## Requirements-test traceability
 

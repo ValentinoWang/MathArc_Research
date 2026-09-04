@@ -14,13 +14,13 @@
 
 ### Release RTR7 status ledger
 
-| Task ID | Stage | Versions | State | Attempt | Owner | Guard ID | Blocking reason | Evidence | Unlocks |
-|---|---|---|---|---|---|---|---|---|---|
-| DOG1 | RTR7 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/DOG1/acceptance-contract.md | DOG2; Q7 |
-| DOG2 | RTR7 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/DOG2/acceptance-contract.md | DOG3; Q7 |
-| DOG3 | RTR7 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/DOG3/acceptance-contract.md | DOG4; Q7 |
-| DOG4 | RTR7 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/DOG4/acceptance-contract.md | Q7 |
-| Q7 | RTR7 | none | PLANNED | none | principal:release-a | none | none | none | none |
+| Task ID | Stage | Versions | Execution state | Attempt | Execution owner | Acceptance mode | Acceptance authorities | Quorum | Minimum trust | Guard ID | Blocking reason | Evidence | Unlocks |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| DOG1 | RTR7 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-dog1 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/DOG1/acceptance-contract.md | DOG2; Q7 |
+| DOG2 | RTR7 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-dog2 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/DOG2/acceptance-contract.md | DOG3; Q7 |
+| DOG3 | RTR7 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-dog3 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/DOG3/acceptance-contract.md | DOG4; Q7 |
+| DOG4 | RTR7 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-dog4 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/DOG4/acceptance-contract.md | Q7 |
+| Q7 | RTR7 | none | PLANNED | none | 发布决策负责人 | dual | release-acceptance-a:principal:release-a; release-acceptance-b:principal:release-b | 2 | repository-bound | none | none | none | none |
 
 ### Release RTR7 deliverables
 

@@ -36,15 +36,14 @@
   "execution_contract_ref": "nodes/VER6.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "tests/test_verification_convergence.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_verification_negative_paths.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

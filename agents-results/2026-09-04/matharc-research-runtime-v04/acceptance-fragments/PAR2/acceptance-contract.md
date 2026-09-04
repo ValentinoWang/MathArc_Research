@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching approved-task-ingestion drives item PAR2 (unspecified dimension) through the interface declared for PAR2.
+The user reaching approved-task-ingestion drives item PAR2 (unspecified dimension) through the interface declared for PAR2. Concrete seed references: matharc/v02/runtime/coordinator.py, tests/test_runtime_approved_task_ingestion.py.
 
 ## Problem
 
-Item PAR2 exists because the interface declared for PAR2 does not yet satisfy the acceptance seeds registered for it, leaving approved-task-ingestion incomplete.
+Item PAR2 exists because the interface declared for PAR2 does not yet satisfy the acceptance seeds registered for it, leaving approved-task-ingestion incomplete. Concrete seed references: matharc/v02/runtime/coordinator.py, tests/test_runtime_approved_task_ingestion.py.
 
 ## Expected outcome
 
-After item PAR2 lands, the interface declared for PAR2 satisfies every acceptance seed below and approved-task-ingestion reflects that behavior.
+After item PAR2 lands, the interface declared for PAR2 satisfies every acceptance seed below and approved-task-ingestion reflects that behavior. Concrete seed references: matharc/v02/runtime/coordinator.py, tests/test_runtime_approved_task_ingestion.py.
 
 ## Non-goals
 
-Item PAR2 covers only the interface declared for PAR2 and approved-task-ingestion as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item PAR2 covers only the interface declared for PAR2 and approved-task-ingestion as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/coordinator.py, tests/test_runtime_approved_task_ingestion.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches approved-task-ingestion for item PAR2
 When the flow defined by the interface declared for PAR2 executes
-Then every acceptance seed for item PAR2 holds
+Then every acceptance seed for item PAR2 holds  Concrete seed references: matharc/v02/runtime/coordinator.py, tests/test_runtime_approved_task_ingestion.py.
 ```
 
 ## Exception paths
 
-If the interface declared for PAR2 fails for item PAR2, approved-task-ingestion must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for PAR2 fails for item PAR2, approved-task-ingestion must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/coordinator.py, tests/test_runtime_approved_task_ingestion.py.
 
 ## Invariants
 
-For item PAR2, the interface declared for PAR2 must continue to satisfy every acceptance seed below on every call; approved-task-ingestion must never show a state the seeds forbid.
+For item PAR2, the interface declared for PAR2 must continue to satisfy every acceptance seed below on every call; approved-task-ingestion must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/coordinator.py, tests/test_runtime_approved_task_ingestion.py.
 
 ## Data impact
 
-Item PAR2 constrains any create, update, or delete reachable through the interface declared for PAR2; only the acceptance seeds below define what data changes are permitted for approved-task-ingestion. Node-specific data assertions: 在 matharc/v02/runtime/coordinator.py 中消费现有动态派生任务批准记录并保持一次性启动 | 在 tests/test_runtime_approved_task_ingestion.py 中证明拒绝任务和超预算任务永不启动
+Item PAR2 constrains any create, update, or delete reachable through the interface declared for PAR2; only the acceptance seeds below define what data changes are permitted for approved-task-ingestion. Node-specific data assertions: 在 matharc/v02/runtime/coordinator.py 中消费现有动态派生任务批准记录并保持一次性启动 | 在 tests/test_runtime_approved_task_ingestion.py 中证明拒绝任务和超预算任务永不启动 Concrete seed references: matharc/v02/runtime/coordinator.py, tests/test_runtime_approved_task_ingestion.py.
 
 ## Permissions
 
-Item PAR2 is owned by principal:acceptance-a; access to the interface declared for PAR2 and approved-task-ingestion follows the acceptance seeds below and no wider grant.
+Item PAR2 is owned by principal:acceptance-a; access to the interface declared for PAR2 and approved-task-ingestion follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/coordinator.py, tests/test_runtime_approved_task_ingestion.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item PAR2 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item PAR2; executable baseline not yet locked |
+| none | none | Behavior specification only for item PAR2; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/coordinator.py, tests/test_runtime_approved_task_ingestion.py |
 
 ## Requirements-test traceability
 

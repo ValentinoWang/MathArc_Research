@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching evidence-record drives item VER4 (unspecified dimension) through the interface declared for VER4.
+The user reaching evidence-record drives item VER4 (unspecified dimension) through the interface declared for VER4. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_evidence_conversion.py.
 
 ## Problem
 
-Item VER4 exists because the interface declared for VER4 does not yet satisfy the acceptance seeds registered for it, leaving evidence-record incomplete.
+Item VER4 exists because the interface declared for VER4 does not yet satisfy the acceptance seeds registered for it, leaving evidence-record incomplete. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_evidence_conversion.py.
 
 ## Expected outcome
 
-After item VER4 lands, the interface declared for VER4 satisfies every acceptance seed below and evidence-record reflects that behavior.
+After item VER4 lands, the interface declared for VER4 satisfies every acceptance seed below and evidence-record reflects that behavior. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_evidence_conversion.py.
 
 ## Non-goals
 
-Item VER4 covers only the interface declared for VER4 and evidence-record as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item VER4 covers only the interface declared for VER4 and evidence-record as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_evidence_conversion.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches evidence-record for item VER4
 When the flow defined by the interface declared for VER4 executes
-Then every acceptance seed for item VER4 holds
+Then every acceptance seed for item VER4 holds  Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_evidence_conversion.py.
 ```
 
 ## Exception paths
 
-If the interface declared for VER4 fails for item VER4, evidence-record must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for VER4 fails for item VER4, evidence-record must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_evidence_conversion.py.
 
 ## Invariants
 
-For item VER4, the interface declared for VER4 must continue to satisfy every acceptance seed below on every call; evidence-record must never show a state the seeds forbid.
+For item VER4, the interface declared for VER4 must continue to satisfy every acceptance seed below on every call; evidence-record must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_evidence_conversion.py.
 
 ## Data impact
 
-Item VER4 constrains any create, update, or delete reachable through the interface declared for VER4; only the acceptance seeds below define what data changes are permitted for evidence-record. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中只将通过 VerifierReceipt 的候选转换为 EvidenceRecord | 在 tests/test_candidate_evidence_conversion.py 中证明候选转换不会自动调用 ResearchTrace.promote_claim() | 在 matharc/v02/runtime/verification.py 中固定 VerifierReceipt 输入、EvidenceRecord 输出、candidate_id+receipt_digest 幂等键、超时/取消/失败分类、有限重试与失效恢复；在 tests/test_candidate_evidence_conversion.py 中保护候选到证据的独立验收身份 | tests/test_candidate_evidence_conversion.py 实现后必须在 protected_tests 登记 SHA-256 及候选转证据/禁止直接晋升覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
+Item VER4 constrains any create, update, or delete reachable through the interface declared for VER4; only the acceptance seeds below define what data changes are permitted for evidence-record. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中只将通过 VerifierReceipt 的候选转换为 EvidenceRecord | 在 tests/test_candidate_evidence_conversion.py 中证明候选转换不会自动调用 ResearchTrace.promote_claim() | 在 matharc/v02/runtime/verification.py 中固定 VerifierReceipt 输入、EvidenceRecord 输出、candidate_id+receipt_digest 幂等键、超时/取消/失败分类、有限重试与失效恢复；在 tests/test_candidate_evidence_conversion.py 中保护候选到证据的独立验收身份 | tests/test_candidate_evidence_conversion.py 实现后必须在 protected_tests 登记 SHA-256 及候选转证据/禁止直接晋升覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_evidence_conversion.py.
 
 ## Permissions
 
-Item VER4 is owned by principal:acceptance-a; access to the interface declared for VER4 and evidence-record follows the acceptance seeds below and no wider grant.
+Item VER4 is owned by principal:acceptance-a; access to the interface declared for VER4 and evidence-record follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_evidence_conversion.py.
 
 ## Performance and reliability
 
@@ -92,7 +92,7 @@ Item VER4 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item VER4; executable baseline not yet locked |
+| none | none | Behavior specification only for item VER4; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_evidence_conversion.py |
 
 ## Requirements-test traceability
 

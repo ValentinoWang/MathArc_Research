@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching research-topology drives item PAR1 (unspecified dimension) through the interface declared for PAR1.
+The user reaching research-topology drives item PAR1 (unspecified dimension) through the interface declared for PAR1. Concrete seed references: matharc/v02/runtime/topology.py, tests/test_runtime_topology.py.
 
 ## Problem
 
-Item PAR1 exists because the interface declared for PAR1 does not yet satisfy the acceptance seeds registered for it, leaving research-topology incomplete.
+Item PAR1 exists because the interface declared for PAR1 does not yet satisfy the acceptance seeds registered for it, leaving research-topology incomplete. Concrete seed references: matharc/v02/runtime/topology.py, tests/test_runtime_topology.py.
 
 ## Expected outcome
 
-After item PAR1 lands, the interface declared for PAR1 satisfies every acceptance seed below and research-topology reflects that behavior.
+After item PAR1 lands, the interface declared for PAR1 satisfies every acceptance seed below and research-topology reflects that behavior. Concrete seed references: matharc/v02/runtime/topology.py, tests/test_runtime_topology.py.
 
 ## Non-goals
 
-Item PAR1 covers only the interface declared for PAR1 and research-topology as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item PAR1 covers only the interface declared for PAR1 and research-topology as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/topology.py, tests/test_runtime_topology.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches research-topology for item PAR1
 When the flow defined by the interface declared for PAR1 executes
-Then every acceptance seed for item PAR1 holds
+Then every acceptance seed for item PAR1 holds  Concrete seed references: matharc/v02/runtime/topology.py, tests/test_runtime_topology.py.
 ```
 
 ## Exception paths
 
-If the interface declared for PAR1 fails for item PAR1, research-topology must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for PAR1 fails for item PAR1, research-topology must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/topology.py, tests/test_runtime_topology.py.
 
 ## Invariants
 
-For item PAR1, the interface declared for PAR1 must continue to satisfy every acceptance seed below on every call; research-topology must never show a state the seeds forbid.
+For item PAR1, the interface declared for PAR1 must continue to satisfy every acceptance seed below on every call; research-topology must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/topology.py, tests/test_runtime_topology.py.
 
 ## Data impact
 
-Item PAR1 constrains any create, update, or delete reachable through the interface declared for PAR1; only the acceptance seeds below define what data changes are permitted for research-topology. Node-specific data assertions: 在 matharc/v02/runtime/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑 | 在 tests/test_runtime_topology.py 中拒绝缺少角色、预算或写入区域的研究成员
+Item PAR1 constrains any create, update, or delete reachable through the interface declared for PAR1; only the acceptance seeds below define what data changes are permitted for research-topology. Node-specific data assertions: 在 matharc/v02/runtime/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑 | 在 tests/test_runtime_topology.py 中拒绝缺少角色、预算或写入区域的研究成员 Concrete seed references: matharc/v02/runtime/topology.py, tests/test_runtime_topology.py.
 
 ## Permissions
 
-Item PAR1 is owned by principal:acceptance-a; access to the interface declared for PAR1 and research-topology follows the acceptance seeds below and no wider grant.
+Item PAR1 is owned by principal:acceptance-a; access to the interface declared for PAR1 and research-topology follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/topology.py, tests/test_runtime_topology.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item PAR1 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item PAR1; executable baseline not yet locked |
+| none | none | Behavior specification only for item PAR1; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/topology.py, tests/test_runtime_topology.py |
 
 ## Requirements-test traceability
 

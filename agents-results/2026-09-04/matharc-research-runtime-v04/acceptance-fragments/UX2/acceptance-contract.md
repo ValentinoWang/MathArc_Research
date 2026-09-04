@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching invited-access drives item UX2 (unspecified dimension) through the interface declared for UX2.
+The user reaching invited-access drives item UX2 (unspecified dimension) through the interface declared for UX2. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_console_permissions.py.
 
 ## Problem
 
-Item UX2 exists because the interface declared for UX2 does not yet satisfy the acceptance seeds registered for it, leaving invited-access incomplete.
+Item UX2 exists because the interface declared for UX2 does not yet satisfy the acceptance seeds registered for it, leaving invited-access incomplete. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_console_permissions.py.
 
 ## Expected outcome
 
-After item UX2 lands, the interface declared for UX2 satisfies every acceptance seed below and invited-access reflects that behavior.
+After item UX2 lands, the interface declared for UX2 satisfies every acceptance seed below and invited-access reflects that behavior. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_console_permissions.py.
 
 ## Non-goals
 
-Item UX2 covers only the interface declared for UX2 and invited-access as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item UX2 covers only the interface declared for UX2 and invited-access as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_console_permissions.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches invited-access for item UX2
 When the flow defined by the interface declared for UX2 executes
-Then every acceptance seed for item UX2 holds
+Then every acceptance seed for item UX2 holds  Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_console_permissions.py.
 ```
 
 ## Exception paths
 
-If the interface declared for UX2 fails for item UX2, invited-access must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for UX2 fails for item UX2, invited-access must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_console_permissions.py.
 
 ## Invariants
 
-For item UX2, the interface declared for UX2 must continue to satisfy every acceptance seed below on every call; invited-access must never show a state the seeds forbid.
+For item UX2, the interface declared for UX2 must continue to satisfy every acceptance seed below on every call; invited-access must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_console_permissions.py.
 
 ## Data impact
 
-Item UX2 constrains any create, update, or delete reachable through the interface declared for UX2; only the acceptance seeds below define what data changes are permitted for invited-access. Node-specific data assertions: 在 matharc/v02/runtime/service.py 中复用现有邀请制访问和 Cookie 会话边界 | 在 tests/test_runtime_console_permissions.py 中证明没有操作权限的用户不能启动或停止任务
+Item UX2 constrains any create, update, or delete reachable through the interface declared for UX2; only the acceptance seeds below define what data changes are permitted for invited-access. Node-specific data assertions: 在 matharc/v02/runtime/service.py 中复用现有邀请制访问和 Cookie 会话边界 | 在 tests/test_runtime_console_permissions.py 中证明没有操作权限的用户不能启动或停止任务 Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_console_permissions.py.
 
 ## Permissions
 
-Item UX2 is owned by principal:acceptance-a; access to the interface declared for UX2 and invited-access follows the acceptance seeds below and no wider grant.
+Item UX2 is owned by principal:acceptance-a; access to the interface declared for UX2 and invited-access follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_console_permissions.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item UX2 is fully determined by its acceptance seeds; outcomes for the interface
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item UX2; executable baseline not yet locked |
+| none | none | Behavior specification only for item UX2; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_console_permissions.py |
 
 ## Requirements-test traceability
 

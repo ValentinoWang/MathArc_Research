@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching claim-binding drives item VER2 (unspecified dimension) through the interface declared for VER2.
+The user reaching claim-binding drives item VER2 (unspecified dimension) through the interface declared for VER2. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_scope_binding.py.
 
 ## Problem
 
-Item VER2 exists because the interface declared for VER2 does not yet satisfy the acceptance seeds registered for it, leaving claim-binding incomplete.
+Item VER2 exists because the interface declared for VER2 does not yet satisfy the acceptance seeds registered for it, leaving claim-binding incomplete. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_scope_binding.py.
 
 ## Expected outcome
 
-After item VER2 lands, the interface declared for VER2 satisfies every acceptance seed below and claim-binding reflects that behavior.
+After item VER2 lands, the interface declared for VER2 satisfies every acceptance seed below and claim-binding reflects that behavior. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_scope_binding.py.
 
 ## Non-goals
 
-Item VER2 covers only the interface declared for VER2 and claim-binding as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item VER2 covers only the interface declared for VER2 and claim-binding as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_scope_binding.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches claim-binding for item VER2
 When the flow defined by the interface declared for VER2 executes
-Then every acceptance seed for item VER2 holds
+Then every acceptance seed for item VER2 holds  Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_scope_binding.py.
 ```
 
 ## Exception paths
 
-If the interface declared for VER2 fails for item VER2, claim-binding must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for VER2 fails for item VER2, claim-binding must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_scope_binding.py.
 
 ## Invariants
 
-For item VER2, the interface declared for VER2 must continue to satisfy every acceptance seed below on every call; claim-binding must never show a state the seeds forbid.
+For item VER2, the interface declared for VER2 must continue to satisfy every acceptance seed below on every call; claim-binding must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_scope_binding.py.
 
 ## Data impact
 
-Item VER2 constrains any create, update, or delete reachable through the interface declared for VER2; only the acceptance seeds below define what data changes are permitted for claim-binding. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中将候选绑定到具体命题、量词、对象和范围 | 在 tests/test_candidate_scope_binding.py 中拒绝范围扩大、量词变化和对象错配
+Item VER2 constrains any create, update, or delete reachable through the interface declared for VER2; only the acceptance seeds below define what data changes are permitted for claim-binding. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中将候选绑定到具体命题、量词、对象和范围 | 在 tests/test_candidate_scope_binding.py 中拒绝范围扩大、量词变化和对象错配 Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_scope_binding.py.
 
 ## Permissions
 
-Item VER2 is owned by principal:acceptance-a; access to the interface declared for VER2 and claim-binding follows the acceptance seeds below and no wider grant.
+Item VER2 is owned by principal:acceptance-a; access to the interface declared for VER2 and claim-binding follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_scope_binding.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item VER2 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item VER2; executable baseline not yet locked |
+| none | none | Behavior specification only for item VER2; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_scope_binding.py |
 
 ## Requirements-test traceability
 

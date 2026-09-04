@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching pilot-operations drives item OPS1 (unspecified dimension) through the interface declared for OPS1.
+The user reaching pilot-operations drives item OPS1 (unspecified dimension) through the interface declared for OPS1. Concrete seed references: deploy/matharc-research.service, tests/test_runtime_ops_deployment.py.
 
 ## Problem
 
-Item OPS1 exists because the interface declared for OPS1 does not yet satisfy the acceptance seeds registered for it, leaving pilot-operations incomplete.
+Item OPS1 exists because the interface declared for OPS1 does not yet satisfy the acceptance seeds registered for it, leaving pilot-operations incomplete. Concrete seed references: deploy/matharc-research.service, tests/test_runtime_ops_deployment.py.
 
 ## Expected outcome
 
-After item OPS1 lands, the interface declared for OPS1 satisfies every acceptance seed below and pilot-operations reflects that behavior.
+After item OPS1 lands, the interface declared for OPS1 satisfies every acceptance seed below and pilot-operations reflects that behavior. Concrete seed references: deploy/matharc-research.service, tests/test_runtime_ops_deployment.py.
 
 ## Non-goals
 
-Item OPS1 covers only the interface declared for OPS1 and pilot-operations as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item OPS1 covers only the interface declared for OPS1 and pilot-operations as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: deploy/matharc-research.service, tests/test_runtime_ops_deployment.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches pilot-operations for item OPS1
 When the flow defined by the interface declared for OPS1 executes
-Then every acceptance seed for item OPS1 holds
+Then every acceptance seed for item OPS1 holds  Concrete seed references: deploy/matharc-research.service, tests/test_runtime_ops_deployment.py.
 ```
 
 ## Exception paths
 
-If the interface declared for OPS1 fails for item OPS1, pilot-operations must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for OPS1 fails for item OPS1, pilot-operations must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: deploy/matharc-research.service, tests/test_runtime_ops_deployment.py.
 
 ## Invariants
 
-For item OPS1, the interface declared for OPS1 must continue to satisfy every acceptance seed below on every call; pilot-operations must never show a state the seeds forbid.
+For item OPS1, the interface declared for OPS1 must continue to satisfy every acceptance seed below on every call; pilot-operations must never show a state the seeds forbid. Concrete seed references: deploy/matharc-research.service, tests/test_runtime_ops_deployment.py.
 
 ## Data impact
 
-Item OPS1 constrains any create, update, or delete reachable through the interface declared for OPS1; only the acceptance seeds below define what data changes are permitted for pilot-operations. Node-specific data assertions: 在 tests/test_runtime_ops_deployment.py 中固定 deploy/matharc-research.service、deploy/matharc-research.env.example 的持久目录、密钥来源和进程守护配置 | 在 tests/test_runtime_ops_deployment.py 中拒绝临时路径、明文密钥和无守护部署 | 在 deploy/matharc-research.service 和 deploy/matharc-research.env.example 中固定 Linux+systemd 输入、健康检查/运行身份输出、release_id 幂等键、启动超时/取消/失败分类、回滚与恢复边界；在 tests/test_runtime_ops_deployment.py 中保护持久目录、外部 secret source 和独立验收身份 | tests/test_runtime_ops_deployment.py 实现后必须在 protected_tests 登记 SHA-256 及持久目录/外部密钥/守护进程覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
+Item OPS1 constrains any create, update, or delete reachable through the interface declared for OPS1; only the acceptance seeds below define what data changes are permitted for pilot-operations. Node-specific data assertions: 在 tests/test_runtime_ops_deployment.py 中固定 deploy/matharc-research.service、deploy/matharc-research.env.example 的持久目录、密钥来源和进程守护配置 | 在 tests/test_runtime_ops_deployment.py 中拒绝临时路径、明文密钥和无守护部署 | 在 deploy/matharc-research.service 和 deploy/matharc-research.env.example 中固定 Linux+systemd 输入、健康检查/运行身份输出、release_id 幂等键、启动超时/取消/失败分类、回滚与恢复边界；在 tests/test_runtime_ops_deployment.py 中保护持久目录、外部 secret source 和独立验收身份 | tests/test_runtime_ops_deployment.py 实现后必须在 protected_tests 登记 SHA-256 及持久目录/外部密钥/守护进程覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY Concrete seed references: deploy/matharc-research.service, tests/test_runtime_ops_deployment.py.
 
 ## Permissions
 
-Item OPS1 is owned by principal:acceptance-a; access to the interface declared for OPS1 and pilot-operations follows the acceptance seeds below and no wider grant.
+Item OPS1 is owned by principal:acceptance-a; access to the interface declared for OPS1 and pilot-operations follows the acceptance seeds below and no wider grant. Concrete seed references: deploy/matharc-research.service, tests/test_runtime_ops_deployment.py.
 
 ## Performance and reliability
 
@@ -92,7 +92,7 @@ Item OPS1 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item OPS1; executable baseline not yet locked |
+| none | none | Behavior specification only for item OPS1; executable baseline not yet locked. Concrete seed references: deploy/matharc-research.service, tests/test_runtime_ops_deployment.py |
 
 ## Requirements-test traceability
 

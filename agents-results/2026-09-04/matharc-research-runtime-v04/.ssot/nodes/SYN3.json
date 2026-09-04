@@ -35,15 +35,14 @@
   "execution_contract_ref": "nodes/SYN3.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "matharc/v02/runtime/episode_memory.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_memory_provenance.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

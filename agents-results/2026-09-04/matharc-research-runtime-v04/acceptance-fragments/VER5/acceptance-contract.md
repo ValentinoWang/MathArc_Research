@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching evidence-invalidation drives item VER5 (unspecified dimension) through the interface declared for VER5.
+The user reaching evidence-invalidation drives item VER5 (unspecified dimension) through the interface declared for VER5. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_evidence_invalidation.py.
 
 ## Problem
 
-Item VER5 exists because the interface declared for VER5 does not yet satisfy the acceptance seeds registered for it, leaving evidence-invalidation incomplete.
+Item VER5 exists because the interface declared for VER5 does not yet satisfy the acceptance seeds registered for it, leaving evidence-invalidation incomplete. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_evidence_invalidation.py.
 
 ## Expected outcome
 
-After item VER5 lands, the interface declared for VER5 satisfies every acceptance seed below and evidence-invalidation reflects that behavior.
+After item VER5 lands, the interface declared for VER5 satisfies every acceptance seed below and evidence-invalidation reflects that behavior. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_evidence_invalidation.py.
 
 ## Non-goals
 
-Item VER5 covers only the interface declared for VER5 and evidence-invalidation as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item VER5 covers only the interface declared for VER5 and evidence-invalidation as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_evidence_invalidation.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches evidence-invalidation for item VER5
 When the flow defined by the interface declared for VER5 executes
-Then every acceptance seed for item VER5 holds
+Then every acceptance seed for item VER5 holds  Concrete seed references: matharc/v02/runtime/verification.py, tests/test_evidence_invalidation.py.
 ```
 
 ## Exception paths
 
-If the interface declared for VER5 fails for item VER5, evidence-invalidation must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for VER5 fails for item VER5, evidence-invalidation must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_evidence_invalidation.py.
 
 ## Invariants
 
-For item VER5, the interface declared for VER5 must continue to satisfy every acceptance seed below on every call; evidence-invalidation must never show a state the seeds forbid.
+For item VER5, the interface declared for VER5 must continue to satisfy every acceptance seed below on every call; evidence-invalidation must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_evidence_invalidation.py.
 
 ## Data impact
 
-Item VER5 constrains any create, update, or delete reachable through the interface declared for VER5; only the acceptance seeds below define what data changes are permitted for evidence-invalidation. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中记录命题、源码、评价器或候选身份变化导致的证据失效 | 在 tests/test_evidence_invalidation.py 中证明失效证据不能继续支撑已晋升结论
+Item VER5 constrains any create, update, or delete reachable through the interface declared for VER5; only the acceptance seeds below define what data changes are permitted for evidence-invalidation. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中记录命题、源码、评价器或候选身份变化导致的证据失效 | 在 tests/test_evidence_invalidation.py 中证明失效证据不能继续支撑已晋升结论 Concrete seed references: matharc/v02/runtime/verification.py, tests/test_evidence_invalidation.py.
 
 ## Permissions
 
-Item VER5 is owned by principal:acceptance-a; access to the interface declared for VER5 and evidence-invalidation follows the acceptance seeds below and no wider grant.
+Item VER5 is owned by principal:acceptance-a; access to the interface declared for VER5 and evidence-invalidation follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_evidence_invalidation.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item VER5 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item VER5; executable baseline not yet locked |
+| none | none | Behavior specification only for item VER5; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_evidence_invalidation.py |
 
 ## Requirements-test traceability
 

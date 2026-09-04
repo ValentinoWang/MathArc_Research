@@ -37,19 +37,18 @@
   "execution_contract_ref": "nodes/DOG3.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "tests/test_runtime_adversarial_drills.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_attack_recovery.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "acceptance/runtime-pilot/production-attack-drills.md",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

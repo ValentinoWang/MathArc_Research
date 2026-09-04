@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching live-runtime-console drives item UX5 (unspecified dimension) through the interface declared for UX5.
+The user reaching live-runtime-console drives item UX5 (unspecified dimension) through the interface declared for UX5. Concrete seed references: docs/prototypes/problem-intel-console.html, matharc/v02/runtime/reconnect.py, tests/test_runtime_console_reconnect.py.
 
 ## Problem
 
-Item UX5 exists because the interface declared for UX5 does not yet satisfy the acceptance seeds registered for it, leaving live-runtime-console incomplete.
+Item UX5 exists because the interface declared for UX5 does not yet satisfy the acceptance seeds registered for it, leaving live-runtime-console incomplete. Concrete seed references: docs/prototypes/problem-intel-console.html, matharc/v02/runtime/reconnect.py, tests/test_runtime_console_reconnect.py.
 
 ## Expected outcome
 
-After item UX5 lands, the interface declared for UX5 satisfies every acceptance seed below and live-runtime-console reflects that behavior.
+After item UX5 lands, the interface declared for UX5 satisfies every acceptance seed below and live-runtime-console reflects that behavior. Concrete seed references: docs/prototypes/problem-intel-console.html, matharc/v02/runtime/reconnect.py, tests/test_runtime_console_reconnect.py.
 
 ## Non-goals
 
-Item UX5 covers only the interface declared for UX5 and live-runtime-console as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item UX5 covers only the interface declared for UX5 and live-runtime-console as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: docs/prototypes/problem-intel-console.html, matharc/v02/runtime/reconnect.py, tests/test_runtime_console_reconnect.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches live-runtime-console for item UX5
 When the flow defined by the interface declared for UX5 executes
-Then every acceptance seed for item UX5 holds
+Then every acceptance seed for item UX5 holds  Concrete seed references: docs/prototypes/problem-intel-console.html, matharc/v02/runtime/reconnect.py, tests/test_runtime_console_reconnect.py.
 ```
 
 ## Exception paths
 
-If the interface declared for UX5 fails for item UX5, live-runtime-console must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for UX5 fails for item UX5, live-runtime-console must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: docs/prototypes/problem-intel-console.html, matharc/v02/runtime/reconnect.py, tests/test_runtime_console_reconnect.py.
 
 ## Invariants
 
-For item UX5, the interface declared for UX5 must continue to satisfy every acceptance seed below on every call; live-runtime-console must never show a state the seeds forbid.
+For item UX5, the interface declared for UX5 must continue to satisfy every acceptance seed below on every call; live-runtime-console must never show a state the seeds forbid. Concrete seed references: docs/prototypes/problem-intel-console.html, matharc/v02/runtime/reconnect.py, tests/test_runtime_console_reconnect.py.
 
 ## Data impact
 
-Item UX5 constrains any create, update, or delete reachable through the interface declared for UX5; only the acceptance seeds below define what data changes are permitted for live-runtime-console. Node-specific data assertions: 在 docs/prototypes/problem-intel-console.html 中展示研究成员、代际、预算、候选和验证状态 | 在 tests/test_runtime_console_reconnect.py 中证明断线后控制台从服务端快照恢复而不是从浏览器缓存猜测 | 在 matharc/v02/runtime/reconnect.py 中从服务端快照恢复断线会话并保留运行身份
+Item UX5 constrains any create, update, or delete reachable through the interface declared for UX5; only the acceptance seeds below define what data changes are permitted for live-runtime-console. Node-specific data assertions: 在 docs/prototypes/problem-intel-console.html 中展示研究成员、代际、预算、候选和验证状态 | 在 tests/test_runtime_console_reconnect.py 中证明断线后控制台从服务端快照恢复而不是从浏览器缓存猜测 | 在 matharc/v02/runtime/reconnect.py 中从服务端快照恢复断线会话并保留运行身份 Concrete seed references: docs/prototypes/problem-intel-console.html, matharc/v02/runtime/reconnect.py, tests/test_runtime_console_reconnect.py.
 
 ## Permissions
 
-Item UX5 is owned by principal:acceptance-a; access to the interface declared for UX5 and live-runtime-console follows the acceptance seeds below and no wider grant.
+Item UX5 is owned by principal:acceptance-a; access to the interface declared for UX5 and live-runtime-console follows the acceptance seeds below and no wider grant. Concrete seed references: docs/prototypes/problem-intel-console.html, matharc/v02/runtime/reconnect.py, tests/test_runtime_console_reconnect.py.
 
 ## Performance and reliability
 
@@ -91,7 +91,7 @@ Item UX5 is fully determined by its acceptance seeds; outcomes for the interface
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item UX5; executable baseline not yet locked |
+| none | none | Behavior specification only for item UX5; executable baseline not yet locked. Concrete seed references: docs/prototypes/problem-intel-console.html, matharc/v02/runtime/reconnect.py, tests/test_runtime_console_reconnect.py |
 
 ## Requirements-test traceability
 

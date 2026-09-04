@@ -19,18 +19,18 @@
 
 ### Release RTR6 status ledger
 
-| Task ID | Stage | Versions | State | Attempt | Owner | Guard ID | Blocking reason | Evidence | Unlocks |
-|---|---|---|---|---|---|---|---|---|---|
-| UX1 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/UX1/acceptance-contract.md | Q6; UX4 |
-| UX2 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/UX2/acceptance-contract.md | Q6; UX3; UX4 |
-| UX3 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/UX3/acceptance-contract.md | Q6; UX5 |
-| UX4 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/UX4/acceptance-contract.md | Q6; UX5 |
-| UX5 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/UX5/acceptance-contract.md | Q6; UX6 |
-| UX6 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/UX6/acceptance-contract.md | DOG3; OPS1; Q6 |
-| OPS1 | RTR6 | decision.matharc-native-runtime@1; decision.matharc-pilot-deployment@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/OPS1/acceptance-contract.md | OPS2; Q6 |
-| OPS2 | RTR6 | decision.matharc-native-runtime@1; decision.matharc-pilot-deployment@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/OPS2/acceptance-contract.md | OPS3; Q6 |
-| OPS3 | RTR6 | decision.matharc-native-runtime@1; decision.matharc-pilot-deployment@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/OPS3/acceptance-contract.md | DOG2; Q6 |
-| Q6 | RTR6 | none | PLANNED | none | principal:release-a | none | none | none | none |
+| Task ID | Stage | Versions | Execution state | Attempt | Execution owner | Acceptance mode | Acceptance authorities | Quorum | Minimum trust | Guard ID | Blocking reason | Evidence | Unlocks |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| UX1 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ux1 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/UX1/acceptance-contract.md | Q6; UX4 |
+| UX2 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ux2 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/UX2/acceptance-contract.md | Q6; UX3; UX4 |
+| UX3 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ux3 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/UX3/acceptance-contract.md | Q6; UX5 |
+| UX4 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ux4 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/UX4/acceptance-contract.md | Q6; UX5 |
+| UX5 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ux5 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/UX5/acceptance-contract.md | Q6; UX6 |
+| UX6 | RTR6 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ux6 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/UX6/acceptance-contract.md | DOG3; OPS1; Q6 |
+| OPS1 | RTR6 | decision.matharc-native-runtime@1; decision.matharc-pilot-deployment@1 | PLANNED | none | principal:owner-ops1 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/OPS1/acceptance-contract.md | OPS2; Q6 |
+| OPS2 | RTR6 | decision.matharc-native-runtime@1; decision.matharc-pilot-deployment@1 | PLANNED | none | principal:owner-ops2 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/OPS2/acceptance-contract.md | OPS3; Q6 |
+| OPS3 | RTR6 | decision.matharc-native-runtime@1; decision.matharc-pilot-deployment@1 | PLANNED | none | principal:owner-ops3 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/OPS3/acceptance-contract.md | DOG2; Q6 |
+| Q6 | RTR6 | none | PLANNED | none | 发布决策负责人 | dual | release-acceptance-a:principal:release-a; release-acceptance-b:principal:release-b | 2 | repository-bound | none | none | none | none |
 
 ### Release RTR6 deliverables
 

@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching verification-gate drives item VER6 (unspecified dimension) through the interface declared for VER6.
+The user reaching verification-gate drives item VER6 (unspecified dimension) through the interface declared for VER6. Concrete seed references: tests/test_verification_convergence.py, tests/test_verification_negative_paths.py.
 
 ## Problem
 
-Item VER6 exists because the interface declared for VER6 does not yet satisfy the acceptance seeds registered for it, leaving verification-gate incomplete.
+Item VER6 exists because the interface declared for VER6 does not yet satisfy the acceptance seeds registered for it, leaving verification-gate incomplete. Concrete seed references: tests/test_verification_convergence.py, tests/test_verification_negative_paths.py.
 
 ## Expected outcome
 
-After item VER6 lands, the interface declared for VER6 satisfies every acceptance seed below and verification-gate reflects that behavior.
+After item VER6 lands, the interface declared for VER6 satisfies every acceptance seed below and verification-gate reflects that behavior. Concrete seed references: tests/test_verification_convergence.py, tests/test_verification_negative_paths.py.
 
 ## Non-goals
 
-Item VER6 covers only the interface declared for VER6 and verification-gate as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item VER6 covers only the interface declared for VER6 and verification-gate as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: tests/test_verification_convergence.py, tests/test_verification_negative_paths.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches verification-gate for item VER6
 When the flow defined by the interface declared for VER6 executes
-Then every acceptance seed for item VER6 holds
+Then every acceptance seed for item VER6 holds  Concrete seed references: tests/test_verification_convergence.py, tests/test_verification_negative_paths.py.
 ```
 
 ## Exception paths
 
-If the interface declared for VER6 fails for item VER6, verification-gate must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for VER6 fails for item VER6, verification-gate must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: tests/test_verification_convergence.py, tests/test_verification_negative_paths.py.
 
 ## Invariants
 
-For item VER6, the interface declared for VER6 must continue to satisfy every acceptance seed below on every call; verification-gate must never show a state the seeds forbid.
+For item VER6, the interface declared for VER6 must continue to satisfy every acceptance seed below on every call; verification-gate must never show a state the seeds forbid. Concrete seed references: tests/test_verification_convergence.py, tests/test_verification_negative_paths.py.
 
 ## Data impact
 
-Item VER6 constrains any create, update, or delete reachable through the interface declared for VER6; only the acceptance seeds below define what data changes are permitted for verification-gate. Node-specific data assertions: 在 tests/test_verification_convergence.py 中证明真实候选通过独立验证后才形成正式证据 | 在 tests/test_verification_negative_paths.py 中阻止假候选、篡改包、越界和非独立结果 | 在 tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 中固定候选输入、验证/证据输出、candidate_id+verification_digest 幂等键、超时/取消/失败分类、拒绝重试与安全恢复，并以独立验收身份覆盖全部负路径 | tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 实现后必须在 protected_tests 登记各自 SHA-256 及正向汇合/全部负路径覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
+Item VER6 constrains any create, update, or delete reachable through the interface declared for VER6; only the acceptance seeds below define what data changes are permitted for verification-gate. Node-specific data assertions: 在 tests/test_verification_convergence.py 中证明真实候选通过独立验证后才形成正式证据 | 在 tests/test_verification_negative_paths.py 中阻止假候选、篡改包、越界和非独立结果 | 在 tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 中固定候选输入、验证/证据输出、candidate_id+verification_digest 幂等键、超时/取消/失败分类、拒绝重试与安全恢复，并以独立验收身份覆盖全部负路径 | tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 实现后必须在 protected_tests 登记各自 SHA-256 及正向汇合/全部负路径覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY Concrete seed references: tests/test_verification_convergence.py, tests/test_verification_negative_paths.py.
 
 ## Permissions
 
-Item VER6 is owned by principal:acceptance-a; access to the interface declared for VER6 and verification-gate follows the acceptance seeds below and no wider grant.
+Item VER6 is owned by principal:acceptance-a; access to the interface declared for VER6 and verification-gate follows the acceptance seeds below and no wider grant. Concrete seed references: tests/test_verification_convergence.py, tests/test_verification_negative_paths.py.
 
 ## Performance and reliability
 
@@ -92,7 +92,7 @@ Item VER6 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item VER6; executable baseline not yet locked |
+| none | none | Behavior specification only for item VER6; executable baseline not yet locked. Concrete seed references: tests/test_verification_convergence.py, tests/test_verification_negative_paths.py |
 
 ## Requirements-test traceability
 

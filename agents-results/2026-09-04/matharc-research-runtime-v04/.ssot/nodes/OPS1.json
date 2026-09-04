@@ -40,19 +40,18 @@
   "execution_contract_ref": "nodes/OPS1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "deploy/matharc-research.service",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "deploy/matharc-research.env.example",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_ops_deployment.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

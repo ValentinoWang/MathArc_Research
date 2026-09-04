@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching real-two-generation-pilot drives item DOG2 (unspecified dimension) through the interface declared for DOG2.
+The user reaching real-two-generation-pilot drives item DOG2 (unspecified dimension) through the interface declared for DOG2. Concrete seed references: acceptance/runtime-pilot/production-checklist.md, experiments/runtime-pilot/two-generation-report.md, tests/test_runtime_pilot_generation_consumption.py.
 
 ## Problem
 
-Item DOG2 exists because the interface declared for DOG2 does not yet satisfy the acceptance seeds registered for it, leaving real-two-generation-pilot incomplete.
+Item DOG2 exists because the interface declared for DOG2 does not yet satisfy the acceptance seeds registered for it, leaving real-two-generation-pilot incomplete. Concrete seed references: acceptance/runtime-pilot/production-checklist.md, experiments/runtime-pilot/two-generation-report.md, tests/test_runtime_pilot_generation_consumption.py.
 
 ## Expected outcome
 
-After item DOG2 lands, the interface declared for DOG2 satisfies every acceptance seed below and real-two-generation-pilot reflects that behavior.
+After item DOG2 lands, the interface declared for DOG2 satisfies every acceptance seed below and real-two-generation-pilot reflects that behavior. Concrete seed references: acceptance/runtime-pilot/production-checklist.md, experiments/runtime-pilot/two-generation-report.md, tests/test_runtime_pilot_generation_consumption.py.
 
 ## Non-goals
 
-Item DOG2 covers only the interface declared for DOG2 and real-two-generation-pilot as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item DOG2 covers only the interface declared for DOG2 and real-two-generation-pilot as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: acceptance/runtime-pilot/production-checklist.md, experiments/runtime-pilot/two-generation-report.md, tests/test_runtime_pilot_generation_consumption.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches real-two-generation-pilot for item DOG2
 When the flow defined by the interface declared for DOG2 executes
-Then every acceptance seed for item DOG2 holds
+Then every acceptance seed for item DOG2 holds  Concrete seed references: acceptance/runtime-pilot/production-checklist.md, experiments/runtime-pilot/two-generation-report.md, tests/test_runtime_pilot_generation_consumption.py.
 ```
 
 ## Exception paths
 
-If the interface declared for DOG2 fails for item DOG2, real-two-generation-pilot must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for DOG2 fails for item DOG2, real-two-generation-pilot must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: acceptance/runtime-pilot/production-checklist.md, experiments/runtime-pilot/two-generation-report.md, tests/test_runtime_pilot_generation_consumption.py.
 
 ## Invariants
 
-For item DOG2, the interface declared for DOG2 must continue to satisfy every acceptance seed below on every call; real-two-generation-pilot must never show a state the seeds forbid.
+For item DOG2, the interface declared for DOG2 must continue to satisfy every acceptance seed below on every call; real-two-generation-pilot must never show a state the seeds forbid. Concrete seed references: acceptance/runtime-pilot/production-checklist.md, experiments/runtime-pilot/two-generation-report.md, tests/test_runtime_pilot_generation_consumption.py.
 
 ## Data impact
 
-Item DOG2 constrains any create, update, or delete reachable through the interface declared for DOG2; only the acceptance seeds below define what data changes are permitted for real-two-generation-pilot. Node-specific data assertions: 在 experiments/runtime-pilot/two-generation-report.md 中记录三至四研究成员和至少两代真实实验 | 在 tests/test_runtime_pilot_generation_consumption.py 中证明第二代消费第一代结果且错误晋升为零 | 在 acceptance/runtime-pilot/production-checklist.md 中记录真实两代研究的持久运行环境与发布前置
+Item DOG2 constrains any create, update, or delete reachable through the interface declared for DOG2; only the acceptance seeds below define what data changes are permitted for real-two-generation-pilot. Node-specific data assertions: 在 experiments/runtime-pilot/two-generation-report.md 中记录三至四研究成员和至少两代真实实验 | 在 tests/test_runtime_pilot_generation_consumption.py 中证明第二代消费第一代结果且错误晋升为零 | 在 acceptance/runtime-pilot/production-checklist.md 中记录真实两代研究的持久运行环境与发布前置 Concrete seed references: acceptance/runtime-pilot/production-checklist.md, experiments/runtime-pilot/two-generation-report.md, tests/test_runtime_pilot_generation_consumption.py.
 
 ## Permissions
 
-Item DOG2 is owned by principal:acceptance-a; access to the interface declared for DOG2 and real-two-generation-pilot follows the acceptance seeds below and no wider grant.
+Item DOG2 is owned by principal:acceptance-a; access to the interface declared for DOG2 and real-two-generation-pilot follows the acceptance seeds below and no wider grant. Concrete seed references: acceptance/runtime-pilot/production-checklist.md, experiments/runtime-pilot/two-generation-report.md, tests/test_runtime_pilot_generation_consumption.py.
 
 ## Performance and reliability
 
@@ -91,7 +91,7 @@ Item DOG2 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item DOG2; executable baseline not yet locked |
+| none | none | Behavior specification only for item DOG2; executable baseline not yet locked. Concrete seed references: acceptance/runtime-pilot/production-checklist.md, experiments/runtime-pilot/two-generation-report.md, tests/test_runtime_pilot_generation_consumption.py |
 
 ## Requirements-test traceability
 

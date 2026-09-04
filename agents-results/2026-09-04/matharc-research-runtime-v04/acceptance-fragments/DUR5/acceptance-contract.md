@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching cold-restart drives item DUR5 (unspecified dimension) through the interface declared for DUR5.
+The user reaching cold-restart drives item DUR5 (unspecified dimension) through the interface declared for DUR5. Concrete seed references: tests/test_runtime_crash_recovery.py, tests/test_runtime_no_duplicate_recovery.py.
 
 ## Problem
 
-Item DUR5 exists because the interface declared for DUR5 does not yet satisfy the acceptance seeds registered for it, leaving cold-restart incomplete.
+Item DUR5 exists because the interface declared for DUR5 does not yet satisfy the acceptance seeds registered for it, leaving cold-restart incomplete. Concrete seed references: tests/test_runtime_crash_recovery.py, tests/test_runtime_no_duplicate_recovery.py.
 
 ## Expected outcome
 
-After item DUR5 lands, the interface declared for DUR5 satisfies every acceptance seed below and cold-restart reflects that behavior.
+After item DUR5 lands, the interface declared for DUR5 satisfies every acceptance seed below and cold-restart reflects that behavior. Concrete seed references: tests/test_runtime_crash_recovery.py, tests/test_runtime_no_duplicate_recovery.py.
 
 ## Non-goals
 
-Item DUR5 covers only the interface declared for DUR5 and cold-restart as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item DUR5 covers only the interface declared for DUR5 and cold-restart as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: tests/test_runtime_crash_recovery.py, tests/test_runtime_no_duplicate_recovery.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches cold-restart for item DUR5
 When the flow defined by the interface declared for DUR5 executes
-Then every acceptance seed for item DUR5 holds
+Then every acceptance seed for item DUR5 holds  Concrete seed references: tests/test_runtime_crash_recovery.py, tests/test_runtime_no_duplicate_recovery.py.
 ```
 
 ## Exception paths
 
-If the interface declared for DUR5 fails for item DUR5, cold-restart must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for DUR5 fails for item DUR5, cold-restart must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: tests/test_runtime_crash_recovery.py, tests/test_runtime_no_duplicate_recovery.py.
 
 ## Invariants
 
-For item DUR5, the interface declared for DUR5 must continue to satisfy every acceptance seed below on every call; cold-restart must never show a state the seeds forbid.
+For item DUR5, the interface declared for DUR5 must continue to satisfy every acceptance seed below on every call; cold-restart must never show a state the seeds forbid. Concrete seed references: tests/test_runtime_crash_recovery.py, tests/test_runtime_no_duplicate_recovery.py.
 
 ## Data impact
 
-Item DUR5 constrains any create, update, or delete reachable through the interface declared for DUR5; only the acceptance seeds below define what data changes are permitted for cold-restart. Node-specific data assertions: 在 tests/test_runtime_crash_recovery.py 中强制终止进程后完成冷启动恢复 | 在 tests/test_runtime_no_duplicate_recovery.py 中证明恢复不会重复任务、费用、候选或跳代
+Item DUR5 constrains any create, update, or delete reachable through the interface declared for DUR5; only the acceptance seeds below define what data changes are permitted for cold-restart. Node-specific data assertions: 在 tests/test_runtime_crash_recovery.py 中强制终止进程后完成冷启动恢复 | 在 tests/test_runtime_no_duplicate_recovery.py 中证明恢复不会重复任务、费用、候选或跳代 Concrete seed references: tests/test_runtime_crash_recovery.py, tests/test_runtime_no_duplicate_recovery.py.
 
 ## Permissions
 
-Item DUR5 is owned by principal:acceptance-a; access to the interface declared for DUR5 and cold-restart follows the acceptance seeds below and no wider grant.
+Item DUR5 is owned by principal:acceptance-a; access to the interface declared for DUR5 and cold-restart follows the acceptance seeds below and no wider grant. Concrete seed references: tests/test_runtime_crash_recovery.py, tests/test_runtime_no_duplicate_recovery.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item DUR5 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item DUR5; executable baseline not yet locked |
+| none | none | Behavior specification only for item DUR5; executable baseline not yet locked. Concrete seed references: tests/test_runtime_crash_recovery.py, tests/test_runtime_no_duplicate_recovery.py |
 
 ## Requirements-test traceability
 

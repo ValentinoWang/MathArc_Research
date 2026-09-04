@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching resource-accounting drives item PAR4 (unspecified dimension) through the interface declared for PAR4.
+The user reaching resource-accounting drives item PAR4 (unspecified dimension) through the interface declared for PAR4. Concrete seed references: matharc/v02/runtime/budget.py, tests/test_runtime_semantic_deduplication.py.
 
 ## Problem
 
-Item PAR4 exists because the interface declared for PAR4 does not yet satisfy the acceptance seeds registered for it, leaving resource-accounting incomplete.
+Item PAR4 exists because the interface declared for PAR4 does not yet satisfy the acceptance seeds registered for it, leaving resource-accounting incomplete. Concrete seed references: matharc/v02/runtime/budget.py, tests/test_runtime_semantic_deduplication.py.
 
 ## Expected outcome
 
-After item PAR4 lands, the interface declared for PAR4 satisfies every acceptance seed below and resource-accounting reflects that behavior.
+After item PAR4 lands, the interface declared for PAR4 satisfies every acceptance seed below and resource-accounting reflects that behavior. Concrete seed references: matharc/v02/runtime/budget.py, tests/test_runtime_semantic_deduplication.py.
 
 ## Non-goals
 
-Item PAR4 covers only the interface declared for PAR4 and resource-accounting as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item PAR4 covers only the interface declared for PAR4 and resource-accounting as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/budget.py, tests/test_runtime_semantic_deduplication.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches resource-accounting for item PAR4
 When the flow defined by the interface declared for PAR4 executes
-Then every acceptance seed for item PAR4 holds
+Then every acceptance seed for item PAR4 holds  Concrete seed references: matharc/v02/runtime/budget.py, tests/test_runtime_semantic_deduplication.py.
 ```
 
 ## Exception paths
 
-If the interface declared for PAR4 fails for item PAR4, resource-accounting must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for PAR4 fails for item PAR4, resource-accounting must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/budget.py, tests/test_runtime_semantic_deduplication.py.
 
 ## Invariants
 
-For item PAR4, the interface declared for PAR4 must continue to satisfy every acceptance seed below on every call; resource-accounting must never show a state the seeds forbid.
+For item PAR4, the interface declared for PAR4 must continue to satisfy every acceptance seed below on every call; resource-accounting must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/budget.py, tests/test_runtime_semantic_deduplication.py.
 
 ## Data impact
 
-Item PAR4 constrains any create, update, or delete reachable through the interface declared for PAR4; only the acceptance seeds below define what data changes are permitted for resource-accounting. Node-specific data assertions: 在 matharc/v02/runtime/budget.py 中按运行回执记录实际费用而不是模型自报费用 | 在 tests/test_runtime_semantic_deduplication.py 中证明同一语义实验不会重复运行
+Item PAR4 constrains any create, update, or delete reachable through the interface declared for PAR4; only the acceptance seeds below define what data changes are permitted for resource-accounting. Node-specific data assertions: 在 matharc/v02/runtime/budget.py 中按运行回执记录实际费用而不是模型自报费用 | 在 tests/test_runtime_semantic_deduplication.py 中证明同一语义实验不会重复运行 Concrete seed references: matharc/v02/runtime/budget.py, tests/test_runtime_semantic_deduplication.py.
 
 ## Permissions
 
-Item PAR4 is owned by principal:acceptance-a; access to the interface declared for PAR4 and resource-accounting follows the acceptance seeds below and no wider grant.
+Item PAR4 is owned by principal:acceptance-a; access to the interface declared for PAR4 and resource-accounting follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/budget.py, tests/test_runtime_semantic_deduplication.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item PAR4 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item PAR4; executable baseline not yet locked |
+| none | none | Behavior specification only for item PAR4; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/budget.py, tests/test_runtime_semantic_deduplication.py |
 
 ## Requirements-test traceability
 

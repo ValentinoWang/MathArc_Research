@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching authority-boundaries drives item FND2 (unspecified dimension) through the interface declared for FND2.
+The user reaching authority-boundaries drives item FND2 (unspecified dimension) through the interface declared for FND2. Concrete seed references: matharc/v02/trace.py, tests/test_runtime_authority_boundaries.py.
 
 ## Problem
 
-Item FND2 exists because the interface declared for FND2 does not yet satisfy the acceptance seeds registered for it, leaving authority-boundaries incomplete.
+Item FND2 exists because the interface declared for FND2 does not yet satisfy the acceptance seeds registered for it, leaving authority-boundaries incomplete. Concrete seed references: matharc/v02/trace.py, tests/test_runtime_authority_boundaries.py.
 
 ## Expected outcome
 
-After item FND2 lands, the interface declared for FND2 satisfies every acceptance seed below and authority-boundaries reflects that behavior.
+After item FND2 lands, the interface declared for FND2 satisfies every acceptance seed below and authority-boundaries reflects that behavior. Concrete seed references: matharc/v02/trace.py, tests/test_runtime_authority_boundaries.py.
 
 ## Non-goals
 
-Item FND2 covers only the interface declared for FND2 and authority-boundaries as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item FND2 covers only the interface declared for FND2 and authority-boundaries as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/trace.py, tests/test_runtime_authority_boundaries.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches authority-boundaries for item FND2
 When the flow defined by the interface declared for FND2 executes
-Then every acceptance seed for item FND2 holds
+Then every acceptance seed for item FND2 holds  Concrete seed references: matharc/v02/trace.py, tests/test_runtime_authority_boundaries.py.
 ```
 
 ## Exception paths
 
-If the interface declared for FND2 fails for item FND2, authority-boundaries must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for FND2 fails for item FND2, authority-boundaries must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/trace.py, tests/test_runtime_authority_boundaries.py.
 
 ## Invariants
 
-For item FND2, the interface declared for FND2 must continue to satisfy every acceptance seed below on every call; authority-boundaries must never show a state the seeds forbid.
+For item FND2, the interface declared for FND2 must continue to satisfy every acceptance seed below on every call; authority-boundaries must never show a state the seeds forbid. Concrete seed references: matharc/v02/trace.py, tests/test_runtime_authority_boundaries.py.
 
 ## Data impact
 
-Item FND2 constrains any create, update, or delete reachable through the interface declared for FND2; only the acceptance seeds below define what data changes are permitted for authority-boundaries. Node-specific data assertions: 在 matharc/v02/trace.py 中保持 ResearchTrace 作为唯一数学结论晋升权威 | 在 tests/test_runtime_authority_boundaries.py 中证明 RuntimeStore 状态不能直接写成 PROVED
+Item FND2 constrains any create, update, or delete reachable through the interface declared for FND2; only the acceptance seeds below define what data changes are permitted for authority-boundaries. Node-specific data assertions: 在 matharc/v02/trace.py 中保持 ResearchTrace 作为唯一数学结论晋升权威 | 在 tests/test_runtime_authority_boundaries.py 中证明 RuntimeStore 状态不能直接写成 PROVED Concrete seed references: matharc/v02/trace.py, tests/test_runtime_authority_boundaries.py.
 
 ## Permissions
 
-Item FND2 is owned by principal:acceptance-a; access to the interface declared for FND2 and authority-boundaries follows the acceptance seeds below and no wider grant.
+Item FND2 is owned by principal:acceptance-a; access to the interface declared for FND2 and authority-boundaries follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/trace.py, tests/test_runtime_authority_boundaries.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item FND2 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item FND2; executable baseline not yet locked |
+| none | none | Behavior specification only for item FND2; executable baseline not yet locked. Concrete seed references: matharc/v02/trace.py, tests/test_runtime_authority_boundaries.py |
 
 ## Requirements-test traceability
 

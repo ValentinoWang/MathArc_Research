@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching run-contracts drives item RUN1 (unspecified dimension) through the interface declared for RUN1.
+The user reaching run-contracts drives item RUN1 (unspecified dimension) through the interface declared for RUN1. Concrete seed references: matharc/v02/runtime/contracts.py, matharc/v02/runtime/generation.py, matharc/v02/runtime/identity.py, tests/test_runtime_contracts.py.
 
 ## Problem
 
-Item RUN1 exists because the interface declared for RUN1 does not yet satisfy the acceptance seeds registered for it, leaving run-contracts incomplete.
+Item RUN1 exists because the interface declared for RUN1 does not yet satisfy the acceptance seeds registered for it, leaving run-contracts incomplete. Concrete seed references: matharc/v02/runtime/contracts.py, matharc/v02/runtime/generation.py, matharc/v02/runtime/identity.py, tests/test_runtime_contracts.py.
 
 ## Expected outcome
 
-After item RUN1 lands, the interface declared for RUN1 satisfies every acceptance seed below and run-contracts reflects that behavior.
+After item RUN1 lands, the interface declared for RUN1 satisfies every acceptance seed below and run-contracts reflects that behavior. Concrete seed references: matharc/v02/runtime/contracts.py, matharc/v02/runtime/generation.py, matharc/v02/runtime/identity.py, tests/test_runtime_contracts.py.
 
 ## Non-goals
 
-Item RUN1 covers only the interface declared for RUN1 and run-contracts as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item RUN1 covers only the interface declared for RUN1 and run-contracts as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/contracts.py, matharc/v02/runtime/generation.py, matharc/v02/runtime/identity.py, tests/test_runtime_contracts.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches run-contracts for item RUN1
 When the flow defined by the interface declared for RUN1 executes
-Then every acceptance seed for item RUN1 holds
+Then every acceptance seed for item RUN1 holds  Concrete seed references: matharc/v02/runtime/contracts.py, matharc/v02/runtime/generation.py, matharc/v02/runtime/identity.py, tests/test_runtime_contracts.py.
 ```
 
 ## Exception paths
 
-If the interface declared for RUN1 fails for item RUN1, run-contracts must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for RUN1 fails for item RUN1, run-contracts must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/contracts.py, matharc/v02/runtime/generation.py, matharc/v02/runtime/identity.py, tests/test_runtime_contracts.py.
 
 ## Invariants
 
-For item RUN1, the interface declared for RUN1 must continue to satisfy every acceptance seed below on every call; run-contracts must never show a state the seeds forbid.
+For item RUN1, the interface declared for RUN1 must continue to satisfy every acceptance seed below on every call; run-contracts must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/contracts.py, matharc/v02/runtime/generation.py, matharc/v02/runtime/identity.py, tests/test_runtime_contracts.py.
 
 ## Data impact
 
-Item RUN1 constrains any create, update, or delete reachable through the interface declared for RUN1; only the acceptance seeds below define what data changes are permitted for run-contracts. Node-specific data assertions: 在 matharc/v02/runtime/contracts.py 中定义 ResearchRunSpec、ResearchWorkerSpec、WorkerExecutionResult、CandidateEnvelope 和 RuntimeActionReceipt 的严格 round-trip | 在 matharc/v02/runtime/identity.py 中定义 workspace_id、trace_id、runtime_run_id、generation_id、worker_id、execution_id、candidate_id、evidence_id 的层级约束 | 在 tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 中拒绝未知字段、未知状态、身份错配和不兼容合同版本 | 在 matharc/v02/runtime/generation.py 中定义 GenerationInputSnapshot、GenerationReducer 和 GenerationClosePolicy 的输入输出边界 | 在 matharc/v02/runtime/contracts.py 中固定输入合同、输出信封、状态转换、幂等键 runtime_run_id+generation_id、超时、取消与失败分类；在 tests/test_runtime_contracts.py 中把合同版本和独立验收身份作为受保护目标 | tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 实现后必须在 protected_tests 登记各自 SHA-256 及覆盖范围；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
+Item RUN1 constrains any create, update, or delete reachable through the interface declared for RUN1; only the acceptance seeds below define what data changes are permitted for run-contracts. Node-specific data assertions: 在 matharc/v02/runtime/contracts.py 中定义 ResearchRunSpec、ResearchWorkerSpec、WorkerExecutionResult、CandidateEnvelope 和 RuntimeActionReceipt 的严格 round-trip | 在 matharc/v02/runtime/identity.py 中定义 workspace_id、trace_id、runtime_run_id、generation_id、worker_id、execution_id、candidate_id、evidence_id 的层级约束 | 在 tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 中拒绝未知字段、未知状态、身份错配和不兼容合同版本 | 在 matharc/v02/runtime/generation.py 中定义 GenerationInputSnapshot、GenerationReducer 和 GenerationClosePolicy 的输入输出边界 | 在 matharc/v02/runtime/contracts.py 中固定输入合同、输出信封、状态转换、幂等键 runtime_run_id+generation_id、超时、取消与失败分类；在 tests/test_runtime_contracts.py 中把合同版本和独立验收身份作为受保护目标 | tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 实现后必须在 protected_tests 登记各自 SHA-256 及覆盖范围；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY Concrete seed references: matharc/v02/runtime/contracts.py, matharc/v02/runtime/generation.py, matharc/v02/runtime/identity.py, tests/test_runtime_contracts.py.
 
 ## Permissions
 
-Item RUN1 is owned by principal:acceptance-a; access to the interface declared for RUN1 and run-contracts follows the acceptance seeds below and no wider grant.
+Item RUN1 is owned by principal:acceptance-a; access to the interface declared for RUN1 and run-contracts follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/contracts.py, matharc/v02/runtime/generation.py, matharc/v02/runtime/identity.py, tests/test_runtime_contracts.py.
 
 ## Performance and reliability
 
@@ -94,7 +94,7 @@ Item RUN1 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item RUN1; executable baseline not yet locked |
+| none | none | Behavior specification only for item RUN1; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/contracts.py, matharc/v02/runtime/generation.py, matharc/v02/runtime/identity.py, tests/test_runtime_contracts.py |
 
 ## Requirements-test traceability
 

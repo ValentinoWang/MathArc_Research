@@ -36,15 +36,14 @@
   "execution_contract_ref": "nodes/DUR4.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "matharc/v02/runtime/recovery.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_recovery_plan.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

@@ -36,19 +36,18 @@
   "execution_contract_ref": "nodes/PAR5.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "tests/test_runtime_parallel_generation.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_partial_failure.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_late_result_policy.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

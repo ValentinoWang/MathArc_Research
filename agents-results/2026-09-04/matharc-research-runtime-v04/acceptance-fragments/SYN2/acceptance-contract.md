@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching counterexample-review drives item SYN2 (unspecified dimension) through the interface declared for SYN2.
+The user reaching counterexample-review drives item SYN2 (unspecified dimension) through the interface declared for SYN2. Concrete seed references: matharc/v02/runtime/synthesis.py, tests/test_runtime_counterexample_review.py.
 
 ## Problem
 
-Item SYN2 exists because the interface declared for SYN2 does not yet satisfy the acceptance seeds registered for it, leaving counterexample-review incomplete.
+Item SYN2 exists because the interface declared for SYN2 does not yet satisfy the acceptance seeds registered for it, leaving counterexample-review incomplete. Concrete seed references: matharc/v02/runtime/synthesis.py, tests/test_runtime_counterexample_review.py.
 
 ## Expected outcome
 
-After item SYN2 lands, the interface declared for SYN2 satisfies every acceptance seed below and counterexample-review reflects that behavior.
+After item SYN2 lands, the interface declared for SYN2 satisfies every acceptance seed below and counterexample-review reflects that behavior. Concrete seed references: matharc/v02/runtime/synthesis.py, tests/test_runtime_counterexample_review.py.
 
 ## Non-goals
 
-Item SYN2 covers only the interface declared for SYN2 and counterexample-review as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item SYN2 covers only the interface declared for SYN2 and counterexample-review as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/synthesis.py, tests/test_runtime_counterexample_review.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches counterexample-review for item SYN2
 When the flow defined by the interface declared for SYN2 executes
-Then every acceptance seed for item SYN2 holds
+Then every acceptance seed for item SYN2 holds  Concrete seed references: matharc/v02/runtime/synthesis.py, tests/test_runtime_counterexample_review.py.
 ```
 
 ## Exception paths
 
-If the interface declared for SYN2 fails for item SYN2, counterexample-review must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for SYN2 fails for item SYN2, counterexample-review must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/synthesis.py, tests/test_runtime_counterexample_review.py.
 
 ## Invariants
 
-For item SYN2, the interface declared for SYN2 must continue to satisfy every acceptance seed below on every call; counterexample-review must never show a state the seeds forbid.
+For item SYN2, the interface declared for SYN2 must continue to satisfy every acceptance seed below on every call; counterexample-review must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/synthesis.py, tests/test_runtime_counterexample_review.py.
 
 ## Data impact
 
-Item SYN2 constrains any create, update, or delete reachable through the interface declared for SYN2; only the acceptance seeds below define what data changes are permitted for counterexample-review. Node-specific data assertions: 在 matharc/v02/runtime/synthesis.py 中把疑似反例放入独立复核队列 | 在 tests/test_runtime_counterexample_review.py 中证明未复核反例不会改变路线或结论
+Item SYN2 constrains any create, update, or delete reachable through the interface declared for SYN2; only the acceptance seeds below define what data changes are permitted for counterexample-review. Node-specific data assertions: 在 matharc/v02/runtime/synthesis.py 中把疑似反例放入独立复核队列 | 在 tests/test_runtime_counterexample_review.py 中证明未复核反例不会改变路线或结论 Concrete seed references: matharc/v02/runtime/synthesis.py, tests/test_runtime_counterexample_review.py.
 
 ## Permissions
 
-Item SYN2 is owned by principal:acceptance-a; access to the interface declared for SYN2 and counterexample-review follows the acceptance seeds below and no wider grant.
+Item SYN2 is owned by principal:acceptance-a; access to the interface declared for SYN2 and counterexample-review follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/synthesis.py, tests/test_runtime_counterexample_review.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item SYN2 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item SYN2; executable baseline not yet locked |
+| none | none | Behavior specification only for item SYN2; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/synthesis.py, tests/test_runtime_counterexample_review.py |
 
 ## Requirements-test traceability
 

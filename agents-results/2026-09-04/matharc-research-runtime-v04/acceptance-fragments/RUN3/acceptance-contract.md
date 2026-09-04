@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching evaluation-contract drives item RUN3 (unspecified dimension) through the interface declared for RUN3.
+The user reaching evaluation-contract drives item RUN3 (unspecified dimension) through the interface declared for RUN3. Concrete seed references: matharc/v02/runtime/evaluator.py, tests/test_runtime_evaluator.py.
 
 ## Problem
 
-Item RUN3 exists because the interface declared for RUN3 does not yet satisfy the acceptance seeds registered for it, leaving evaluation-contract incomplete.
+Item RUN3 exists because the interface declared for RUN3 does not yet satisfy the acceptance seeds registered for it, leaving evaluation-contract incomplete. Concrete seed references: matharc/v02/runtime/evaluator.py, tests/test_runtime_evaluator.py.
 
 ## Expected outcome
 
-After item RUN3 lands, the interface declared for RUN3 satisfies every acceptance seed below and evaluation-contract reflects that behavior.
+After item RUN3 lands, the interface declared for RUN3 satisfies every acceptance seed below and evaluation-contract reflects that behavior. Concrete seed references: matharc/v02/runtime/evaluator.py, tests/test_runtime_evaluator.py.
 
 ## Non-goals
 
-Item RUN3 covers only the interface declared for RUN3 and evaluation-contract as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item RUN3 covers only the interface declared for RUN3 and evaluation-contract as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/evaluator.py, tests/test_runtime_evaluator.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches evaluation-contract for item RUN3
 When the flow defined by the interface declared for RUN3 executes
-Then every acceptance seed for item RUN3 holds
+Then every acceptance seed for item RUN3 holds  Concrete seed references: matharc/v02/runtime/evaluator.py, tests/test_runtime_evaluator.py.
 ```
 
 ## Exception paths
 
-If the interface declared for RUN3 fails for item RUN3, evaluation-contract must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for RUN3 fails for item RUN3, evaluation-contract must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/evaluator.py, tests/test_runtime_evaluator.py.
 
 ## Invariants
 
-For item RUN3, the interface declared for RUN3 must continue to satisfy every acceptance seed below on every call; evaluation-contract must never show a state the seeds forbid.
+For item RUN3, the interface declared for RUN3 must continue to satisfy every acceptance seed below on every call; evaluation-contract must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/evaluator.py, tests/test_runtime_evaluator.py.
 
 ## Data impact
 
-Item RUN3 constrains any create, update, or delete reachable through the interface declared for RUN3; only the acceptance seeds below define what data changes are permitted for evaluation-contract. Node-specific data assertions: 在 matharc/v02/runtime/evaluator.py 中定义评价器输入、输出、预算和随机种子合同 | 在 tests/test_runtime_evaluator.py 中证明最小试跑失败时不会启动完整研究
+Item RUN3 constrains any create, update, or delete reachable through the interface declared for RUN3; only the acceptance seeds below define what data changes are permitted for evaluation-contract. Node-specific data assertions: 在 matharc/v02/runtime/evaluator.py 中定义评价器输入、输出、预算和随机种子合同 | 在 tests/test_runtime_evaluator.py 中证明最小试跑失败时不会启动完整研究 Concrete seed references: matharc/v02/runtime/evaluator.py, tests/test_runtime_evaluator.py.
 
 ## Permissions
 
-Item RUN3 is owned by principal:acceptance-a; access to the interface declared for RUN3 and evaluation-contract follows the acceptance seeds below and no wider grant.
+Item RUN3 is owned by principal:acceptance-a; access to the interface declared for RUN3 and evaluation-contract follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/evaluator.py, tests/test_runtime_evaluator.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item RUN3 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item RUN3; executable baseline not yet locked |
+| none | none | Behavior specification only for item RUN3; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/evaluator.py, tests/test_runtime_evaluator.py |
 
 ## Requirements-test traceability
 

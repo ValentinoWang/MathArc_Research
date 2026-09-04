@@ -42,27 +42,26 @@
   "execution_contract_ref": "nodes/RUN4.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "matharc/v02/runtime/coordinator.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "matharc/v02/runtime/backends/base.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "matharc/v02/runtime/backends/codex.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "matharc/v02/runtime/backends/local_process.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_backend_contract.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

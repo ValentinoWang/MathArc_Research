@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching two-generation-synthesis drives item SYN5 (unspecified dimension) through the interface declared for SYN5.
+The user reaching two-generation-synthesis drives item SYN5 (unspecified dimension) through the interface declared for SYN5. Concrete seed references: tests/test_runtime_generation_delta.py, tests/test_runtime_two_generation_synthesis.py.
 
 ## Problem
 
-Item SYN5 exists because the interface declared for SYN5 does not yet satisfy the acceptance seeds registered for it, leaving two-generation-synthesis incomplete.
+Item SYN5 exists because the interface declared for SYN5 does not yet satisfy the acceptance seeds registered for it, leaving two-generation-synthesis incomplete. Concrete seed references: tests/test_runtime_generation_delta.py, tests/test_runtime_two_generation_synthesis.py.
 
 ## Expected outcome
 
-After item SYN5 lands, the interface declared for SYN5 satisfies every acceptance seed below and two-generation-synthesis reflects that behavior.
+After item SYN5 lands, the interface declared for SYN5 satisfies every acceptance seed below and two-generation-synthesis reflects that behavior. Concrete seed references: tests/test_runtime_generation_delta.py, tests/test_runtime_two_generation_synthesis.py.
 
 ## Non-goals
 
-Item SYN5 covers only the interface declared for SYN5 and two-generation-synthesis as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item SYN5 covers only the interface declared for SYN5 and two-generation-synthesis as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: tests/test_runtime_generation_delta.py, tests/test_runtime_two_generation_synthesis.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches two-generation-synthesis for item SYN5
 When the flow defined by the interface declared for SYN5 executes
-Then every acceptance seed for item SYN5 holds
+Then every acceptance seed for item SYN5 holds  Concrete seed references: tests/test_runtime_generation_delta.py, tests/test_runtime_two_generation_synthesis.py.
 ```
 
 ## Exception paths
 
-If the interface declared for SYN5 fails for item SYN5, two-generation-synthesis must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for SYN5 fails for item SYN5, two-generation-synthesis must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: tests/test_runtime_generation_delta.py, tests/test_runtime_two_generation_synthesis.py.
 
 ## Invariants
 
-For item SYN5, the interface declared for SYN5 must continue to satisfy every acceptance seed below on every call; two-generation-synthesis must never show a state the seeds forbid.
+For item SYN5, the interface declared for SYN5 must continue to satisfy every acceptance seed below on every call; two-generation-synthesis must never show a state the seeds forbid. Concrete seed references: tests/test_runtime_generation_delta.py, tests/test_runtime_two_generation_synthesis.py.
 
 ## Data impact
 
-Item SYN5 constrains any create, update, or delete reachable through the interface declared for SYN5; only the acceptance seeds below define what data changes are permitted for two-generation-synthesis. Node-specific data assertions: 在 tests/test_runtime_two_generation_synthesis.py 中完成连续两代运行并保留两份 GenerationCommit | 在 tests/test_runtime_generation_delta.py 中证明第二代路线或攻击任务因第一代结果发生可解释变化
+Item SYN5 constrains any create, update, or delete reachable through the interface declared for SYN5; only the acceptance seeds below define what data changes are permitted for two-generation-synthesis. Node-specific data assertions: 在 tests/test_runtime_two_generation_synthesis.py 中完成连续两代运行并保留两份 GenerationCommit | 在 tests/test_runtime_generation_delta.py 中证明第二代路线或攻击任务因第一代结果发生可解释变化 Concrete seed references: tests/test_runtime_generation_delta.py, tests/test_runtime_two_generation_synthesis.py.
 
 ## Permissions
 
-Item SYN5 is owned by principal:acceptance-a; access to the interface declared for SYN5 and two-generation-synthesis follows the acceptance seeds below and no wider grant.
+Item SYN5 is owned by principal:acceptance-a; access to the interface declared for SYN5 and two-generation-synthesis follows the acceptance seeds below and no wider grant. Concrete seed references: tests/test_runtime_generation_delta.py, tests/test_runtime_two_generation_synthesis.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item SYN5 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item SYN5; executable baseline not yet locked |
+| none | none | Behavior specification only for item SYN5; executable baseline not yet locked. Concrete seed references: tests/test_runtime_generation_delta.py, tests/test_runtime_two_generation_synthesis.py |
 
 ## Requirements-test traceability
 

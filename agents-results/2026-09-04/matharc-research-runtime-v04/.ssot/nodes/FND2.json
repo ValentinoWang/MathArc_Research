@@ -36,15 +36,14 @@
   "execution_contract_ref": "nodes/FND2.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "matharc/v02/trace.py",
-      "mode": "modify"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_authority_boundaries.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

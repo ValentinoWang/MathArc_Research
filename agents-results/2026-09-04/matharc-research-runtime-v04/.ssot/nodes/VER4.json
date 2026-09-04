@@ -35,15 +35,14 @@
   "execution_contract_ref": "nodes/VER4.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "matharc/v02/runtime/verification.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_candidate_evidence_conversion.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

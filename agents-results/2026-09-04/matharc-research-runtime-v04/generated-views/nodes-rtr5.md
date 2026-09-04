@@ -16,15 +16,15 @@
 
 ### Release RTR5 status ledger
 
-| Task ID | Stage | Versions | State | Attempt | Owner | Guard ID | Blocking reason | Evidence | Unlocks |
-|---|---|---|---|---|---|---|---|---|---|
-| VER1 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER1/acceptance-contract.md | Q5; VER2 |
-| VER2 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER2/acceptance-contract.md | Q5; VER3 |
-| VER3 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER3/acceptance-contract.md | Q5; VER4 |
-| VER4 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER4/acceptance-contract.md | Q5; VER5 |
-| VER5 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER5/acceptance-contract.md | Q5; VER6 |
-| VER6 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/VER6/acceptance-contract.md | DOG2; Q5; UX5 |
-| Q5 | RTR5 | none | PLANNED | none | principal:release-a | none | none | none | none |
+| Task ID | Stage | Versions | Execution state | Attempt | Execution owner | Acceptance mode | Acceptance authorities | Quorum | Minimum trust | Guard ID | Blocking reason | Evidence | Unlocks |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| VER1 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ver1 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/VER1/acceptance-contract.md | Q5; VER2 |
+| VER2 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ver2 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/VER2/acceptance-contract.md | Q5; VER3 |
+| VER3 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ver3 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/VER3/acceptance-contract.md | Q5; VER4 |
+| VER4 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ver4 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/VER4/acceptance-contract.md | Q5; VER5 |
+| VER5 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ver5 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/VER5/acceptance-contract.md | Q5; VER6 |
+| VER6 | RTR5 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-ver6 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/VER6/acceptance-contract.md | DOG2; Q5; UX5 |
+| Q5 | RTR5 | none | PLANNED | none | 发布决策负责人 | dual | release-acceptance-a:principal:release-a; release-acceptance-b:principal:release-b | 2 | repository-bound | none | none | none | none |
 
 ### Release RTR5 deliverables
 

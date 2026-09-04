@@ -16,15 +16,15 @@
 
 ### Release RTRZ status ledger
 
-| Task ID | Stage | Versions | State | Attempt | Owner | Guard ID | Blocking reason | Evidence | Unlocks |
-|---|---|---|---|---|---|---|---|---|---|
-| F | RTRZ | none | ACCEPTED | none | 编排器 | none | none | none | DOG1; DOG2; DOG3; DOG4; DP1; DP2; DP3; DUR1; DUR2; DUR3; DUR4; DUR5; FND1; FND2; OPS1; OPS2; OPS3; PAR1; PAR2; PAR3; PAR4; PAR5; RUN1; RUN2; RUN3; RUN4; RUN5; SYN1; SYN2; SYN3; SYN4; SYN5; UX1; UX2; UX3; UX4; UX5; UX6; VER1; VER2; VER3; VER4; VER5; VER6 |
-| DP1 | RTRZ | none | ACCEPTED | none | 决策负责人 | none | none | none | DOG1; DOG2; DOG3; DOG4; DUR1; DUR2; DUR3; DUR4; DUR5; FND1; FND2; OPS1; OPS2; OPS3; PAR1; PAR2; PAR3; PAR4; PAR5; RUN1; RUN2; RUN3; RUN4; RUN5; SYN1; SYN2; SYN3; SYN4; SYN5; UX1; UX2; UX3; UX4; UX5; UX6; VER1; VER2; VER3; VER4; VER5; VER6 |
-| DP2 | RTRZ | none | ACCEPTED | none | 决策负责人 | none | none | none | RUN4 |
-| DP3 | RTRZ | none | ACCEPTED | none | 决策负责人 | none | none | none | OPS1; OPS2; OPS3 |
-| FND1 | RTRZ | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/FND1/acceptance-contract.md | FND2; QZ |
-| FND2 | RTRZ | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/FND2/acceptance-contract.md | QZ; RUN1; UX2 |
-| QZ | RTRZ | none | PLANNED | none | principal:release-a | none | none | none | none |
+| Task ID | Stage | Versions | Execution state | Attempt | Execution owner | Acceptance mode | Acceptance authorities | Quorum | Minimum trust | Guard ID | Blocking reason | Evidence | Unlocks |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| F | RTRZ | none | ACCEPTED | none | 编排器 | none | 编排器 | none | none | none | none | none | DOG1; DOG2; DOG3; DOG4; DP1; DP2; DP3; DUR1; DUR2; DUR3; DUR4; DUR5; FND1; FND2; OPS1; OPS2; OPS3; PAR1; PAR2; PAR3; PAR4; PAR5; RUN1; RUN2; RUN3; RUN4; RUN5; SYN1; SYN2; SYN3; SYN4; SYN5; UX1; UX2; UX3; UX4; UX5; UX6; VER1; VER2; VER3; VER4; VER5; VER6 |
+| DP1 | RTRZ | none | ACCEPTED | none | 决策负责人 | none | 决策负责人 | none | none | none | none | none | DOG1; DOG2; DOG3; DOG4; DUR1; DUR2; DUR3; DUR4; DUR5; FND1; FND2; OPS1; OPS2; OPS3; PAR1; PAR2; PAR3; PAR4; PAR5; RUN1; RUN2; RUN3; RUN4; RUN5; SYN1; SYN2; SYN3; SYN4; SYN5; UX1; UX2; UX3; UX4; UX5; UX6; VER1; VER2; VER3; VER4; VER5; VER6 |
+| DP2 | RTRZ | none | ACCEPTED | none | 决策负责人 | none | 决策负责人 | none | none | none | none | none | RUN4 |
+| DP3 | RTRZ | none | ACCEPTED | none | 决策负责人 | none | 决策负责人 | none | none | none | none | none | OPS1; OPS2; OPS3 |
+| FND1 | RTRZ | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-fnd1 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/FND1/acceptance-contract.md | FND2; QZ |
+| FND2 | RTRZ | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-fnd2 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/FND2/acceptance-contract.md | QZ; RUN1; UX2 |
+| QZ | RTRZ | none | PLANNED | none | 发布决策负责人 | dual | release-acceptance-a:principal:release-a; release-acceptance-b:principal:release-b | 2 | repository-bound | none | none | none | none |
 
 ### Release RTRZ deliverables
 

@@ -34,23 +34,22 @@
   "execution_contract_ref": "nodes/FND1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "scripts/check_runtime_ownership.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_ownership.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "scripts/check_runtime_dependency_allowlist.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_dependency_allowlist.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

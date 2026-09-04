@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching lifecycle-control drives item DUR3 (unspecified dimension) through the interface declared for DUR3.
+The user reaching lifecycle-control drives item DUR3 (unspecified dimension) through the interface declared for DUR3. Concrete seed references: matharc/v02/runtime/state_machine.py, tests/test_runtime_lifecycle_control.py.
 
 ## Problem
 
-Item DUR3 exists because the interface declared for DUR3 does not yet satisfy the acceptance seeds registered for it, leaving lifecycle-control incomplete.
+Item DUR3 exists because the interface declared for DUR3 does not yet satisfy the acceptance seeds registered for it, leaving lifecycle-control incomplete. Concrete seed references: matharc/v02/runtime/state_machine.py, tests/test_runtime_lifecycle_control.py.
 
 ## Expected outcome
 
-After item DUR3 lands, the interface declared for DUR3 satisfies every acceptance seed below and lifecycle-control reflects that behavior.
+After item DUR3 lands, the interface declared for DUR3 satisfies every acceptance seed below and lifecycle-control reflects that behavior. Concrete seed references: matharc/v02/runtime/state_machine.py, tests/test_runtime_lifecycle_control.py.
 
 ## Non-goals
 
-Item DUR3 covers only the interface declared for DUR3 and lifecycle-control as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item DUR3 covers only the interface declared for DUR3 and lifecycle-control as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/state_machine.py, tests/test_runtime_lifecycle_control.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches lifecycle-control for item DUR3
 When the flow defined by the interface declared for DUR3 executes
-Then every acceptance seed for item DUR3 holds
+Then every acceptance seed for item DUR3 holds  Concrete seed references: matharc/v02/runtime/state_machine.py, tests/test_runtime_lifecycle_control.py.
 ```
 
 ## Exception paths
 
-If the interface declared for DUR3 fails for item DUR3, lifecycle-control must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for DUR3 fails for item DUR3, lifecycle-control must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/state_machine.py, tests/test_runtime_lifecycle_control.py.
 
 ## Invariants
 
-For item DUR3, the interface declared for DUR3 must continue to satisfy every acceptance seed below on every call; lifecycle-control must never show a state the seeds forbid.
+For item DUR3, the interface declared for DUR3 must continue to satisfy every acceptance seed below on every call; lifecycle-control must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/state_machine.py, tests/test_runtime_lifecycle_control.py.
 
 ## Data impact
 
-Item DUR3 constrains any create, update, or delete reachable through the interface declared for DUR3; only the acceptance seeds below define what data changes are permitted for lifecycle-control. Node-specific data assertions: 在 matharc/v02/runtime/state_machine.py 中实现停止、排空、暂停和取消状态协议 | 在 tests/test_runtime_lifecycle_control.py 中证明停止后不再接收新任务且活动任务有明确终止结果
+Item DUR3 constrains any create, update, or delete reachable through the interface declared for DUR3; only the acceptance seeds below define what data changes are permitted for lifecycle-control. Node-specific data assertions: 在 matharc/v02/runtime/state_machine.py 中实现停止、排空、暂停和取消状态协议 | 在 tests/test_runtime_lifecycle_control.py 中证明停止后不再接收新任务且活动任务有明确终止结果 Concrete seed references: matharc/v02/runtime/state_machine.py, tests/test_runtime_lifecycle_control.py.
 
 ## Permissions
 
-Item DUR3 is owned by principal:acceptance-a; access to the interface declared for DUR3 and lifecycle-control follows the acceptance seeds below and no wider grant.
+Item DUR3 is owned by principal:acceptance-a; access to the interface declared for DUR3 and lifecycle-control follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/state_machine.py, tests/test_runtime_lifecycle_control.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item DUR3 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item DUR3; executable baseline not yet locked |
+| none | none | Behavior specification only for item DUR3; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/state_machine.py, tests/test_runtime_lifecycle_control.py |
 
 ## Requirements-test traceability
 

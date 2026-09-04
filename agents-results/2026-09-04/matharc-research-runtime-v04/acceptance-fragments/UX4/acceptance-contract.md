@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching runtime-disclosure drives item UX4 (unspecified dimension) through the interface declared for UX4.
+The user reaching runtime-disclosure drives item UX4 (unspecified dimension) through the interface declared for UX4. Concrete seed references: matharc/v02/runtime/view_model.py, tests/test_runtime_console_redaction.py, tests/test_runtime_console_redaction_visual.py.
 
 ## Problem
 
-Item UX4 exists because the interface declared for UX4 does not yet satisfy the acceptance seeds registered for it, leaving runtime-disclosure incomplete.
+Item UX4 exists because the interface declared for UX4 does not yet satisfy the acceptance seeds registered for it, leaving runtime-disclosure incomplete. Concrete seed references: matharc/v02/runtime/view_model.py, tests/test_runtime_console_redaction.py, tests/test_runtime_console_redaction_visual.py.
 
 ## Expected outcome
 
-After item UX4 lands, the interface declared for UX4 satisfies every acceptance seed below and runtime-disclosure reflects that behavior.
+After item UX4 lands, the interface declared for UX4 satisfies every acceptance seed below and runtime-disclosure reflects that behavior. Concrete seed references: matharc/v02/runtime/view_model.py, tests/test_runtime_console_redaction.py, tests/test_runtime_console_redaction_visual.py.
 
 ## Non-goals
 
-Item UX4 covers only the interface declared for UX4 and runtime-disclosure as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item UX4 covers only the interface declared for UX4 and runtime-disclosure as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/view_model.py, tests/test_runtime_console_redaction.py, tests/test_runtime_console_redaction_visual.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches runtime-disclosure for item UX4
 When the flow defined by the interface declared for UX4 executes
-Then every acceptance seed for item UX4 holds
+Then every acceptance seed for item UX4 holds  Concrete seed references: matharc/v02/runtime/view_model.py, tests/test_runtime_console_redaction.py, tests/test_runtime_console_redaction_visual.py.
 ```
 
 ## Exception paths
 
-If the interface declared for UX4 fails for item UX4, runtime-disclosure must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for UX4 fails for item UX4, runtime-disclosure must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/view_model.py, tests/test_runtime_console_redaction.py, tests/test_runtime_console_redaction_visual.py.
 
 ## Invariants
 
-For item UX4, the interface declared for UX4 must continue to satisfy every acceptance seed below on every call; runtime-disclosure must never show a state the seeds forbid.
+For item UX4, the interface declared for UX4 must continue to satisfy every acceptance seed below on every call; runtime-disclosure must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/view_model.py, tests/test_runtime_console_redaction.py, tests/test_runtime_console_redaction_visual.py.
 
 ## Data impact
 
-Item UX4 constrains any create, update, or delete reachable through the interface declared for UX4; only the acceptance seeds below define what data changes are permitted for runtime-disclosure. Node-specific data assertions: 在 matharc/v02/runtime/view_model.py 中建立统一中文运行视图并递归脱敏 | 在 tests/test_runtime_console_redaction.py 中证明密钥、路径、完整命令、环境变量和异常堆栈泄露为零 | 在 tests/test_runtime_console_redaction_visual.py 中验证脱敏后的运行视图不显示敏感字段
+Item UX4 constrains any create, update, or delete reachable through the interface declared for UX4; only the acceptance seeds below define what data changes are permitted for runtime-disclosure. Node-specific data assertions: 在 matharc/v02/runtime/view_model.py 中建立统一中文运行视图并递归脱敏 | 在 tests/test_runtime_console_redaction.py 中证明密钥、路径、完整命令、环境变量和异常堆栈泄露为零 | 在 tests/test_runtime_console_redaction_visual.py 中验证脱敏后的运行视图不显示敏感字段 Concrete seed references: matharc/v02/runtime/view_model.py, tests/test_runtime_console_redaction.py, tests/test_runtime_console_redaction_visual.py.
 
 ## Permissions
 
-Item UX4 is owned by principal:acceptance-a; access to the interface declared for UX4 and runtime-disclosure follows the acceptance seeds below and no wider grant.
+Item UX4 is owned by principal:acceptance-a; access to the interface declared for UX4 and runtime-disclosure follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/view_model.py, tests/test_runtime_console_redaction.py, tests/test_runtime_console_redaction_visual.py.
 
 ## Performance and reliability
 
@@ -91,7 +91,7 @@ Item UX4 is fully determined by its acceptance seeds; outcomes for the interface
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item UX4; executable baseline not yet locked |
+| none | none | Behavior specification only for item UX4; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/view_model.py, tests/test_runtime_console_redaction.py, tests/test_runtime_console_redaction_visual.py |
 
 ## Requirements-test traceability
 

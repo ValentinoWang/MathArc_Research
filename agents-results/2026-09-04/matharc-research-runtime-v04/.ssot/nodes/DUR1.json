@@ -36,27 +36,26 @@
   "execution_contract_ref": "nodes/DUR1.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "matharc/v02/runtime/generation.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "matharc/v02/runtime/reducer.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_generation_input_snapshot.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_generation_commit.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_late_result_policy.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

@@ -40,23 +40,22 @@
   "execution_contract_ref": "nodes/OPS3.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "tests/test_runtime_ops_release.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_ops_cleanup.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "acceptance/runtime-pilot/ops-checklist.md",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "acceptance/runtime-pilot/ops-release-checklist.md",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

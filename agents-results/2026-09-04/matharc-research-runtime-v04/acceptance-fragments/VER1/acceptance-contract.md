@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching candidate-envelope drives item VER1 (unspecified dimension) through the interface declared for VER1.
+The user reaching candidate-envelope drives item VER1 (unspecified dimension) through the interface declared for VER1. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_identity.py.
 
 ## Problem
 
-Item VER1 exists because the interface declared for VER1 does not yet satisfy the acceptance seeds registered for it, leaving candidate-envelope incomplete.
+Item VER1 exists because the interface declared for VER1 does not yet satisfy the acceptance seeds registered for it, leaving candidate-envelope incomplete. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_identity.py.
 
 ## Expected outcome
 
-After item VER1 lands, the interface declared for VER1 satisfies every acceptance seed below and candidate-envelope reflects that behavior.
+After item VER1 lands, the interface declared for VER1 satisfies every acceptance seed below and candidate-envelope reflects that behavior. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_identity.py.
 
 ## Non-goals
 
-Item VER1 covers only the interface declared for VER1 and candidate-envelope as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item VER1 covers only the interface declared for VER1 and candidate-envelope as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_identity.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches candidate-envelope for item VER1
 When the flow defined by the interface declared for VER1 executes
-Then every acceptance seed for item VER1 holds
+Then every acceptance seed for item VER1 holds  Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_identity.py.
 ```
 
 ## Exception paths
 
-If the interface declared for VER1 fails for item VER1, candidate-envelope must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for VER1 fails for item VER1, candidate-envelope must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_identity.py.
 
 ## Invariants
 
-For item VER1, the interface declared for VER1 must continue to satisfy every acceptance seed below on every call; candidate-envelope must never show a state the seeds forbid.
+For item VER1, the interface declared for VER1 must continue to satisfy every acceptance seed below on every call; candidate-envelope must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_identity.py.
 
 ## Data impact
 
-Item VER1 constrains any create, update, or delete reachable through the interface declared for VER1; only the acceptance seeds below define what data changes are permitted for candidate-envelope. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中定义 CandidateEnvelope 进入验证阶段的身份约束和 VerifierReceipt | 在 tests/test_candidate_identity.py 中证明任务、源码、评价器、种子、预算或产物变化都会改变候选身份 | 在 tests/test_candidate_identity.py 中证明 CandidateEnvelope 首次定义位于 RUN1，VER1 不反向提供 RUN4 的后端合同
+Item VER1 constrains any create, update, or delete reachable through the interface declared for VER1; only the acceptance seeds below define what data changes are permitted for candidate-envelope. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中定义 CandidateEnvelope 进入验证阶段的身份约束和 VerifierReceipt | 在 tests/test_candidate_identity.py 中证明任务、源码、评价器、种子、预算或产物变化都会改变候选身份 | 在 tests/test_candidate_identity.py 中证明 CandidateEnvelope 首次定义位于 RUN1，VER1 不反向提供 RUN4 的后端合同 Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_identity.py.
 
 ## Permissions
 
-Item VER1 is owned by principal:acceptance-a; access to the interface declared for VER1 and candidate-envelope follows the acceptance seeds below and no wider grant.
+Item VER1 is owned by principal:acceptance-a; access to the interface declared for VER1 and candidate-envelope follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_identity.py.
 
 ## Performance and reliability
 
@@ -91,7 +91,7 @@ Item VER1 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item VER1; executable baseline not yet locked |
+| none | none | Behavior specification only for item VER1; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_identity.py |
 
 ## Requirements-test traceability
 

@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-An authorized decision authority reviews the evidence and records the signed decision for item DOG4.
+An authorized decision authority reviews the evidence and records the signed decision for item DOG4. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 
 ## Problem
 
-Item DOG4 remains open because its required governance decision has not yet been recorded in the isolated decision record.
+Item DOG4 remains open because its required governance decision has not yet been recorded in the isolated decision record. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 
 ## Expected outcome
 
-After item DOG4 is accepted, the signed decision record exists, is attributable to the declared authority, and is bound to the seeds below.
+After item DOG4 is accepted, the signed decision record exists, is attributable to the declared authority, and is bound to the seeds below. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 
 ## Non-goals
 
-Item DOG4 covers only the governance decision and its isolated record; implementation changes are owned by the downstream item named in the seeds.
+Item DOG4 covers only the governance decision and its isolated record; implementation changes are owned by the downstream item named in the seeds. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 
 ## Normal path
 
 ```gherkin
 Given the declared decision authority reviews item DOG4 evidence
 When the authority records the decision in the isolated decision record
-Then every acceptance seed for item DOG4 holds
+Then every acceptance seed for item DOG4 holds  Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 ```
 
 ## Exception paths
 
-If item DOG4 lacks an authorized signed decision or its record is invalid, promotion must stop and the failure must be recorded.
+If item DOG4 lacks an authorized signed decision or its record is invalid, promotion must stop and the failure must be recorded. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 
 ## Invariants
 
-Item DOG4 must retain an immutable, attributable decision record; no implementation or runtime state may be inferred from an unsigned recommendation.
+Item DOG4 must retain an immutable, attributable decision record; no implementation or runtime state may be inferred from an unsigned recommendation. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 
 ## Data impact
 
-Item DOG4 writes only its isolated decision record; it must not modify implementation files, generated nodes, or evidence collectors.
+Item DOG4 writes only its isolated decision record; it must not modify implementation files, generated nodes, or evidence collectors. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 
 ## Permissions
 
-Only the declared decision authority may accept item DOG4; the execution owner and downstream implementer cannot substitute for that authority.
+Only the declared decision authority may accept item DOG4; the execution owner and downstream implementer cannot substitute for that authority. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Decision item DOG4 requires an authorized human decision against the acceptance 
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item DOG4; executable baseline not yet locked |
+| none | none | Behavior specification only for item DOG4; executable baseline not yet locked. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json |
 
 ## Requirements-test traceability
 
@@ -101,11 +101,11 @@ Decision item DOG4 requires an authorized human decision against the acceptance 
 
 ## Exploratory testing
 
-Review item DOG4 for missing signatures, stale references, duplicate records, and attempts to promote an unsigned recommendation.
+Review item DOG4 for missing signatures, stale references, duplicate records, and attempts to promote an unsigned recommendation. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 
 ## Production monitoring and rollback
 
-To roll back item DOG4, invalidate its decision record and return the dependent implementation node to its pre-decision state.
+To roll back item DOG4, invalidate its decision record and return the dependent implementation node to its pre-decision state. Concrete seed references: acceptance/human/runtime-pilot/release-checklist.md, acceptance/runtime-pilot/release-evidence.json.
 
 ## Risks and open decisions
 

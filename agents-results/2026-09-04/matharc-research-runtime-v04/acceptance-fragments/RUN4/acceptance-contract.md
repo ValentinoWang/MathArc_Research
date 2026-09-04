@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching backend-coordinator drives item RUN4 (unspecified dimension) through the interface declared for RUN4.
+The user reaching backend-coordinator drives item RUN4 (unspecified dimension) through the interface declared for RUN4. Concrete seed references: matharc/v02/runtime/backends/base.py, matharc/v02/runtime/coordinator.py, tests/test_runtime_backend_contract.py.
 
 ## Problem
 
-Item RUN4 exists because the interface declared for RUN4 does not yet satisfy the acceptance seeds registered for it, leaving backend-coordinator incomplete.
+Item RUN4 exists because the interface declared for RUN4 does not yet satisfy the acceptance seeds registered for it, leaving backend-coordinator incomplete. Concrete seed references: matharc/v02/runtime/backends/base.py, matharc/v02/runtime/coordinator.py, tests/test_runtime_backend_contract.py.
 
 ## Expected outcome
 
-After item RUN4 lands, the interface declared for RUN4 satisfies every acceptance seed below and backend-coordinator reflects that behavior.
+After item RUN4 lands, the interface declared for RUN4 satisfies every acceptance seed below and backend-coordinator reflects that behavior. Concrete seed references: matharc/v02/runtime/backends/base.py, matharc/v02/runtime/coordinator.py, tests/test_runtime_backend_contract.py.
 
 ## Non-goals
 
-Item RUN4 covers only the interface declared for RUN4 and backend-coordinator as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item RUN4 covers only the interface declared for RUN4 and backend-coordinator as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/backends/base.py, matharc/v02/runtime/coordinator.py, tests/test_runtime_backend_contract.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches backend-coordinator for item RUN4
 When the flow defined by the interface declared for RUN4 executes
-Then every acceptance seed for item RUN4 holds
+Then every acceptance seed for item RUN4 holds  Concrete seed references: matharc/v02/runtime/backends/base.py, matharc/v02/runtime/coordinator.py, tests/test_runtime_backend_contract.py.
 ```
 
 ## Exception paths
 
-If the interface declared for RUN4 fails for item RUN4, backend-coordinator must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for RUN4 fails for item RUN4, backend-coordinator must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/backends/base.py, matharc/v02/runtime/coordinator.py, tests/test_runtime_backend_contract.py.
 
 ## Invariants
 
-For item RUN4, the interface declared for RUN4 must continue to satisfy every acceptance seed below on every call; backend-coordinator must never show a state the seeds forbid.
+For item RUN4, the interface declared for RUN4 must continue to satisfy every acceptance seed below on every call; backend-coordinator must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/backends/base.py, matharc/v02/runtime/coordinator.py, tests/test_runtime_backend_contract.py.
 
 ## Data impact
 
-Item RUN4 constrains any create, update, or delete reachable through the interface declared for RUN4; only the acceptance seeds below define what data changes are permitted for backend-coordinator. Node-specific data assertions: 在 matharc/v02/runtime/coordinator.py 中只把 DeterministicTestBackend、CodexBackend 和 LocalExactToolBackend 接入 MathArc 后端请求；Claude Code 与通用模型 API 仅保留后置兼容接口 | 在 tests/test_runtime_backend_contract.py 中证明后端结果只能形成 CandidateEnvelope，不能写入 RuntimeStore 之外的数学状态 | 在 matharc/v02/runtime/backends/base.py 和 matharc/v02/runtime/coordinator.py 中固定首版后端输入、CandidateEnvelope 输出、execution_id 幂等键、超时/取消/重试和失败分类；在 tests/test_runtime_backend_contract.py 中逐一保护 DeterministicTestBackend、CodexBackend、LocalExactToolBackend 的独立验收身份 | tests/test_runtime_backend_contract.py 实现后必须在 protected_tests 登记 SHA-256 及三个首版后端的覆盖范围；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
+Item RUN4 constrains any create, update, or delete reachable through the interface declared for RUN4; only the acceptance seeds below define what data changes are permitted for backend-coordinator. Node-specific data assertions: 在 matharc/v02/runtime/coordinator.py 中只把 DeterministicTestBackend、CodexBackend 和 LocalExactToolBackend 接入 MathArc 后端请求；Claude Code 与通用模型 API 仅保留后置兼容接口 | 在 tests/test_runtime_backend_contract.py 中证明后端结果只能形成 CandidateEnvelope，不能写入 RuntimeStore 之外的数学状态 | 在 matharc/v02/runtime/backends/base.py 和 matharc/v02/runtime/coordinator.py 中固定首版后端输入、CandidateEnvelope 输出、execution_id 幂等键、超时/取消/重试和失败分类；在 tests/test_runtime_backend_contract.py 中逐一保护 DeterministicTestBackend、CodexBackend、LocalExactToolBackend 的独立验收身份 | tests/test_runtime_backend_contract.py 实现后必须在 protected_tests 登记 SHA-256 及三个首版后端的覆盖范围；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY Concrete seed references: matharc/v02/runtime/backends/base.py, matharc/v02/runtime/coordinator.py, tests/test_runtime_backend_contract.py.
 
 ## Permissions
 
-Item RUN4 is owned by principal:acceptance-a; access to the interface declared for RUN4 and backend-coordinator follows the acceptance seeds below and no wider grant.
+Item RUN4 is owned by principal:acceptance-a; access to the interface declared for RUN4 and backend-coordinator follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/backends/base.py, matharc/v02/runtime/coordinator.py, tests/test_runtime_backend_contract.py.
 
 ## Performance and reliability
 
@@ -92,7 +92,7 @@ Item RUN4 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item RUN4; executable baseline not yet locked |
+| none | none | Behavior specification only for item RUN4; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/backends/base.py, matharc/v02/runtime/coordinator.py, tests/test_runtime_backend_contract.py |
 
 ## Requirements-test traceability
 

@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching pilot-operations drives item OPS2 (unspecified dimension) through the interface declared for OPS2.
+The user reaching pilot-operations drives item OPS2 (unspecified dimension) through the interface declared for OPS2. Concrete seed references: tests/test_runtime_ops_backup.py, tests/test_runtime_ops_observability.py.
 
 ## Problem
 
-Item OPS2 exists because the interface declared for OPS2 does not yet satisfy the acceptance seeds registered for it, leaving pilot-operations incomplete.
+Item OPS2 exists because the interface declared for OPS2 does not yet satisfy the acceptance seeds registered for it, leaving pilot-operations incomplete. Concrete seed references: tests/test_runtime_ops_backup.py, tests/test_runtime_ops_observability.py.
 
 ## Expected outcome
 
-After item OPS2 lands, the interface declared for OPS2 satisfies every acceptance seed below and pilot-operations reflects that behavior.
+After item OPS2 lands, the interface declared for OPS2 satisfies every acceptance seed below and pilot-operations reflects that behavior. Concrete seed references: tests/test_runtime_ops_backup.py, tests/test_runtime_ops_observability.py.
 
 ## Non-goals
 
-Item OPS2 covers only the interface declared for OPS2 and pilot-operations as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item OPS2 covers only the interface declared for OPS2 and pilot-operations as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: tests/test_runtime_ops_backup.py, tests/test_runtime_ops_observability.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches pilot-operations for item OPS2
 When the flow defined by the interface declared for OPS2 executes
-Then every acceptance seed for item OPS2 holds
+Then every acceptance seed for item OPS2 holds  Concrete seed references: tests/test_runtime_ops_backup.py, tests/test_runtime_ops_observability.py.
 ```
 
 ## Exception paths
 
-If the interface declared for OPS2 fails for item OPS2, pilot-operations must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for OPS2 fails for item OPS2, pilot-operations must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: tests/test_runtime_ops_backup.py, tests/test_runtime_ops_observability.py.
 
 ## Invariants
 
-For item OPS2, the interface declared for OPS2 must continue to satisfy every acceptance seed below on every call; pilot-operations must never show a state the seeds forbid.
+For item OPS2, the interface declared for OPS2 must continue to satisfy every acceptance seed below on every call; pilot-operations must never show a state the seeds forbid. Concrete seed references: tests/test_runtime_ops_backup.py, tests/test_runtime_ops_observability.py.
 
 ## Data impact
 
-Item OPS2 constrains any create, update, or delete reachable through the interface declared for OPS2; only the acceptance seeds below define what data changes are permitted for pilot-operations. Node-specific data assertions: 在 tests/test_runtime_ops_observability.py 中验证健康检查、结构化日志和单用户/全局配额 | 在 tests/test_runtime_ops_backup.py 中验证备份、恢复演练和恢复后身份连续性
+Item OPS2 constrains any create, update, or delete reachable through the interface declared for OPS2; only the acceptance seeds below define what data changes are permitted for pilot-operations. Node-specific data assertions: 在 tests/test_runtime_ops_observability.py 中验证健康检查、结构化日志和单用户/全局配额 | 在 tests/test_runtime_ops_backup.py 中验证备份、恢复演练和恢复后身份连续性 Concrete seed references: tests/test_runtime_ops_backup.py, tests/test_runtime_ops_observability.py.
 
 ## Permissions
 
-Item OPS2 is owned by principal:acceptance-a; access to the interface declared for OPS2 and pilot-operations follows the acceptance seeds below and no wider grant.
+Item OPS2 is owned by principal:acceptance-a; access to the interface declared for OPS2 and pilot-operations follows the acceptance seeds below and no wider grant. Concrete seed references: tests/test_runtime_ops_backup.py, tests/test_runtime_ops_observability.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item OPS2 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item OPS2; executable baseline not yet locked |
+| none | none | Behavior specification only for item OPS2; executable baseline not yet locked. Concrete seed references: tests/test_runtime_ops_backup.py, tests/test_runtime_ops_observability.py |
 
 ## Requirements-test traceability
 

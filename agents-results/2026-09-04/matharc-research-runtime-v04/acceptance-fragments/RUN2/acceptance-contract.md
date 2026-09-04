@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching run-store drives item RUN2 (unspecified dimension) through the interface declared for RUN2.
+The user reaching run-store drives item RUN2 (unspecified dimension) through the interface declared for RUN2. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_store_replay.py.
 
 ## Problem
 
-Item RUN2 exists because the interface declared for RUN2 does not yet satisfy the acceptance seeds registered for it, leaving run-store incomplete.
+Item RUN2 exists because the interface declared for RUN2 does not yet satisfy the acceptance seeds registered for it, leaving run-store incomplete. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_store_replay.py.
 
 ## Expected outcome
 
-After item RUN2 lands, the interface declared for RUN2 satisfies every acceptance seed below and run-store reflects that behavior.
+After item RUN2 lands, the interface declared for RUN2 satisfies every acceptance seed below and run-store reflects that behavior. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_store_replay.py.
 
 ## Non-goals
 
-Item RUN2 covers only the interface declared for RUN2 and run-store as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item RUN2 covers only the interface declared for RUN2 and run-store as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_store_replay.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches run-store for item RUN2
 When the flow defined by the interface declared for RUN2 executes
-Then every acceptance seed for item RUN2 holds
+Then every acceptance seed for item RUN2 holds  Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_store_replay.py.
 ```
 
 ## Exception paths
 
-If the interface declared for RUN2 fails for item RUN2, run-store must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for RUN2 fails for item RUN2, run-store must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_store_replay.py.
 
 ## Invariants
 
-For item RUN2, the interface declared for RUN2 must continue to satisfy every acceptance seed below on every call; run-store must never show a state the seeds forbid.
+For item RUN2, the interface declared for RUN2 must continue to satisfy every acceptance seed below on every call; run-store must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_store_replay.py.
 
 ## Data impact
 
-Item RUN2 constrains any create, update, or delete reachable through the interface declared for RUN2; only the acceptance seeds below define what data changes are permitted for run-store. Node-specific data assertions: 在 matharc/v02/runtime/run_store.py 中写入哈希链运行事件和原子快照 | 在 tests/test_runtime_store_replay.py 中拒绝截断、损坏和摘要不匹配的运行快照
+Item RUN2 constrains any create, update, or delete reachable through the interface declared for RUN2; only the acceptance seeds below define what data changes are permitted for run-store. Node-specific data assertions: 在 matharc/v02/runtime/run_store.py 中写入哈希链运行事件和原子快照 | 在 tests/test_runtime_store_replay.py 中拒绝截断、损坏和摘要不匹配的运行快照 Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_store_replay.py.
 
 ## Permissions
 
-Item RUN2 is owned by principal:acceptance-a; access to the interface declared for RUN2 and run-store follows the acceptance seeds below and no wider grant.
+Item RUN2 is owned by principal:acceptance-a; access to the interface declared for RUN2 and run-store follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_store_replay.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item RUN2 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item RUN2; executable baseline not yet locked |
+| none | none | Behavior specification only for item RUN2; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/run_store.py, tests/test_runtime_store_replay.py |
 
 ## Requirements-test traceability
 

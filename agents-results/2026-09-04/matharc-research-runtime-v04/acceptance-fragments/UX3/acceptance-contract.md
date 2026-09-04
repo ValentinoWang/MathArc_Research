@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching runtime-actions-api drives item UX3 (unspecified dimension) through POST /api/runtime/runs, POST /api/runtime/actions.
+The user reaching runtime-actions-api drives item UX3 (unspecified dimension) through POST /api/runtime/runs, POST /api/runtime/actions. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_command_surface.py.
 
 ## Problem
 
-Item UX3 exists because POST /api/runtime/runs, POST /api/runtime/actions does not yet satisfy the acceptance seeds registered for it, leaving runtime-actions-api incomplete.
+Item UX3 exists because POST /api/runtime/runs, POST /api/runtime/actions does not yet satisfy the acceptance seeds registered for it, leaving runtime-actions-api incomplete. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_command_surface.py.
 
 ## Expected outcome
 
-After item UX3 lands, POST /api/runtime/runs, POST /api/runtime/actions satisfies every acceptance seed below and runtime-actions-api reflects that behavior.
+After item UX3 lands, POST /api/runtime/runs, POST /api/runtime/actions satisfies every acceptance seed below and runtime-actions-api reflects that behavior. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_command_surface.py.
 
 ## Non-goals
 
-Item UX3 covers only POST /api/runtime/runs, POST /api/runtime/actions and runtime-actions-api as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item UX3 covers only POST /api/runtime/runs, POST /api/runtime/actions and runtime-actions-api as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_command_surface.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches runtime-actions-api for item UX3
 When the flow defined by POST /api/runtime/runs, POST /api/runtime/actions executes
-Then every acceptance seed for item UX3 holds
+Then every acceptance seed for item UX3 holds  Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_command_surface.py.
 ```
 
 ## Exception paths
 
-If POST /api/runtime/runs, POST /api/runtime/actions fails for item UX3, runtime-actions-api must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If POST /api/runtime/runs, POST /api/runtime/actions fails for item UX3, runtime-actions-api must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_command_surface.py.
 
 ## Invariants
 
-For item UX3, POST /api/runtime/runs, POST /api/runtime/actions must continue to satisfy every acceptance seed below on every call; runtime-actions-api must never show a state the seeds forbid.
+For item UX3, POST /api/runtime/runs, POST /api/runtime/actions must continue to satisfy every acceptance seed below on every call; runtime-actions-api must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_command_surface.py.
 
 ## Data impact
 
-Item UX3 constrains any create, update, or delete reachable through POST /api/runtime/runs, POST /api/runtime/actions; only the acceptance seeds below define what data changes are permitted for runtime-actions-api. Node-specific data assertions: 在 matharc/v02/runtime/service.py 中提供启动、暂停、继续、停止和重新验证的幂等动作 | 在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段 | 在 matharc/v02/runtime/service.py 中固定登记动作输入、RuntimeActionReceipt 输出、action_id+runtime_run_id 幂等键、超时/取消/失败分类、有限重试与恢复状态；在 tests/test_runtime_command_surface.py 中保护动作白名单和独立验收身份 | tests/test_runtime_command_surface.py 实现后必须在 protected_tests 登记 SHA-256 及动作白名单/任意命令拒绝覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
+Item UX3 constrains any create, update, or delete reachable through POST /api/runtime/runs, POST /api/runtime/actions; only the acceptance seeds below define what data changes are permitted for runtime-actions-api. Node-specific data assertions: 在 matharc/v02/runtime/service.py 中提供启动、暂停、继续、停止和重新验证的幂等动作 | 在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段 | 在 matharc/v02/runtime/service.py 中固定登记动作输入、RuntimeActionReceipt 输出、action_id+runtime_run_id 幂等键、超时/取消/失败分类、有限重试与恢复状态；在 tests/test_runtime_command_surface.py 中保护动作白名单和独立验收身份 | tests/test_runtime_command_surface.py 实现后必须在 protected_tests 登记 SHA-256 及动作白名单/任意命令拒绝覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_command_surface.py.
 
 ## Permissions
 
-Item UX3 is owned by principal:acceptance-a; access to POST /api/runtime/runs, POST /api/runtime/actions and runtime-actions-api follows the acceptance seeds below and no wider grant.
+Item UX3 is owned by principal:acceptance-a; access to POST /api/runtime/runs, POST /api/runtime/actions and runtime-actions-api follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_command_surface.py.
 
 ## Performance and reliability
 
@@ -92,7 +92,7 @@ Item UX3 is fully determined by its acceptance seeds; outcomes for POST /api/run
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item UX3; executable baseline not yet locked |
+| none | none | Behavior specification only for item UX3; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/service.py, tests/test_runtime_command_surface.py |
 
 ## Requirements-test traceability
 

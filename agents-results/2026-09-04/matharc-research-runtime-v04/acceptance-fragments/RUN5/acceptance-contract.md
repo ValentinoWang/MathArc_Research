@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching single-run-e2e drives item RUN5 (unspecified dimension) through the interface declared for RUN5.
+The user reaching single-run-e2e drives item RUN5 (unspecified dimension) through the interface declared for RUN5. Concrete seed references: tests/test_candidate_promotion_boundary.py, tests/test_runtime_single_run.py.
 
 ## Problem
 
-Item RUN5 exists because the interface declared for RUN5 does not yet satisfy the acceptance seeds registered for it, leaving single-run-e2e incomplete.
+Item RUN5 exists because the interface declared for RUN5 does not yet satisfy the acceptance seeds registered for it, leaving single-run-e2e incomplete. Concrete seed references: tests/test_candidate_promotion_boundary.py, tests/test_runtime_single_run.py.
 
 ## Expected outcome
 
-After item RUN5 lands, the interface declared for RUN5 satisfies every acceptance seed below and single-run-e2e reflects that behavior.
+After item RUN5 lands, the interface declared for RUN5 satisfies every acceptance seed below and single-run-e2e reflects that behavior. Concrete seed references: tests/test_candidate_promotion_boundary.py, tests/test_runtime_single_run.py.
 
 ## Non-goals
 
-Item RUN5 covers only the interface declared for RUN5 and single-run-e2e as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item RUN5 covers only the interface declared for RUN5 and single-run-e2e as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: tests/test_candidate_promotion_boundary.py, tests/test_runtime_single_run.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches single-run-e2e for item RUN5
 When the flow defined by the interface declared for RUN5 executes
-Then every acceptance seed for item RUN5 holds
+Then every acceptance seed for item RUN5 holds  Concrete seed references: tests/test_candidate_promotion_boundary.py, tests/test_runtime_single_run.py.
 ```
 
 ## Exception paths
 
-If the interface declared for RUN5 fails for item RUN5, single-run-e2e must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for RUN5 fails for item RUN5, single-run-e2e must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: tests/test_candidate_promotion_boundary.py, tests/test_runtime_single_run.py.
 
 ## Invariants
 
-For item RUN5, the interface declared for RUN5 must continue to satisfy every acceptance seed below on every call; single-run-e2e must never show a state the seeds forbid.
+For item RUN5, the interface declared for RUN5 must continue to satisfy every acceptance seed below on every call; single-run-e2e must never show a state the seeds forbid. Concrete seed references: tests/test_candidate_promotion_boundary.py, tests/test_runtime_single_run.py.
 
 ## Data impact
 
-Item RUN5 constrains any create, update, or delete reachable through the interface declared for RUN5; only the acceptance seeds below define what data changes are permitted for single-run-e2e. Node-specific data assertions: 在 tests/test_runtime_single_run.py 中完成真实任务到候选返回的端到端路径 | 在 tests/test_candidate_promotion_boundary.py 中拒绝候选直接进入 EvidenceRecord 或 PROVED
+Item RUN5 constrains any create, update, or delete reachable through the interface declared for RUN5; only the acceptance seeds below define what data changes are permitted for single-run-e2e. Node-specific data assertions: 在 tests/test_runtime_single_run.py 中完成真实任务到候选返回的端到端路径 | 在 tests/test_candidate_promotion_boundary.py 中拒绝候选直接进入 EvidenceRecord 或 PROVED Concrete seed references: tests/test_candidate_promotion_boundary.py, tests/test_runtime_single_run.py.
 
 ## Permissions
 
-Item RUN5 is owned by principal:acceptance-a; access to the interface declared for RUN5 and single-run-e2e follows the acceptance seeds below and no wider grant.
+Item RUN5 is owned by principal:acceptance-a; access to the interface declared for RUN5 and single-run-e2e follows the acceptance seeds below and no wider grant. Concrete seed references: tests/test_candidate_promotion_boundary.py, tests/test_runtime_single_run.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item RUN5 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item RUN5; executable baseline not yet locked |
+| none | none | Behavior specification only for item RUN5; executable baseline not yet locked. Concrete seed references: tests/test_candidate_promotion_boundary.py, tests/test_runtime_single_run.py |
 
 ## Requirements-test traceability
 

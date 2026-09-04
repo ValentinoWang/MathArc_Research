@@ -34,15 +34,14 @@
   "execution_contract_ref": "nodes/DOG4.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "acceptance/human/runtime-pilot/release-checklist.md",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "acceptance/runtime-pilot/release-evidence.json",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

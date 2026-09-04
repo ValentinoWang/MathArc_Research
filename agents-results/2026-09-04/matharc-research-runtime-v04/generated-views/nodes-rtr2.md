@@ -15,14 +15,14 @@
 
 ### Release RTR2 status ledger
 
-| Task ID | Stage | Versions | State | Attempt | Owner | Guard ID | Blocking reason | Evidence | Unlocks |
-|---|---|---|---|---|---|---|---|---|---|
-| DUR1 | RTR2 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/DUR1/acceptance-contract.md | DUR2; DUR3; Q2 |
-| DUR2 | RTR2 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/DUR2/acceptance-contract.md | DUR4; Q2; SYN1; UX1; VER1 |
-| DUR3 | RTR2 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/DUR3/acceptance-contract.md | DUR4; Q2 |
-| DUR4 | RTR2 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/DUR4/acceptance-contract.md | DUR5; Q2 |
-| DUR5 | RTR2 | decision.matharc-native-runtime@1 | PLANNED | none | principal:acceptance-a | none | none | acceptance-fragments/DUR5/acceptance-contract.md | DOG3; PAR3; Q2; SYN5; UX3 |
-| Q2 | RTR2 | none | PLANNED | none | principal:release-a | none | none | none | none |
+| Task ID | Stage | Versions | Execution state | Attempt | Execution owner | Acceptance mode | Acceptance authorities | Quorum | Minimum trust | Guard ID | Blocking reason | Evidence | Unlocks |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| DUR1 | RTR2 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-dur1 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/DUR1/acceptance-contract.md | DUR2; DUR3; Q2 |
+| DUR2 | RTR2 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-dur2 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/DUR2/acceptance-contract.md | DUR4; Q2; SYN1; UX1; VER1 |
+| DUR3 | RTR2 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-dur3 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/DUR3/acceptance-contract.md | DUR4; Q2 |
+| DUR4 | RTR2 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-dur4 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/DUR4/acceptance-contract.md | DUR5; Q2 |
+| DUR5 | RTR2 | decision.matharc-native-runtime@1 | PLANNED | none | principal:owner-dur5 | dual | acceptance-a:principal:acceptance-a; acceptance-b:principal:acceptance-b | 2 | repository-bound | none | none | acceptance-fragments/DUR5/acceptance-contract.md | DOG3; PAR3; Q2; SYN5; UX3 |
+| Q2 | RTR2 | none | PLANNED | none | 发布决策负责人 | dual | release-acceptance-a:principal:release-a; release-acceptance-b:principal:release-b | 2 | repository-bound | none | none | none | none |
 
 ### Release RTR2 deliverables
 

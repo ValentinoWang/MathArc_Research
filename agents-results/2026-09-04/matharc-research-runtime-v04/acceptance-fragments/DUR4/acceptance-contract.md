@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching crash-recovery drives item DUR4 (unspecified dimension) through the interface declared for DUR4.
+The user reaching crash-recovery drives item DUR4 (unspecified dimension) through the interface declared for DUR4. Concrete seed references: matharc/v02/runtime/recovery.py, tests/test_runtime_recovery_plan.py.
 
 ## Problem
 
-Item DUR4 exists because the interface declared for DUR4 does not yet satisfy the acceptance seeds registered for it, leaving crash-recovery incomplete.
+Item DUR4 exists because the interface declared for DUR4 does not yet satisfy the acceptance seeds registered for it, leaving crash-recovery incomplete. Concrete seed references: matharc/v02/runtime/recovery.py, tests/test_runtime_recovery_plan.py.
 
 ## Expected outcome
 
-After item DUR4 lands, the interface declared for DUR4 satisfies every acceptance seed below and crash-recovery reflects that behavior.
+After item DUR4 lands, the interface declared for DUR4 satisfies every acceptance seed below and crash-recovery reflects that behavior. Concrete seed references: matharc/v02/runtime/recovery.py, tests/test_runtime_recovery_plan.py.
 
 ## Non-goals
 
-Item DUR4 covers only the interface declared for DUR4 and crash-recovery as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item DUR4 covers only the interface declared for DUR4 and crash-recovery as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/recovery.py, tests/test_runtime_recovery_plan.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches crash-recovery for item DUR4
 When the flow defined by the interface declared for DUR4 executes
-Then every acceptance seed for item DUR4 holds
+Then every acceptance seed for item DUR4 holds  Concrete seed references: matharc/v02/runtime/recovery.py, tests/test_runtime_recovery_plan.py.
 ```
 
 ## Exception paths
 
-If the interface declared for DUR4 fails for item DUR4, crash-recovery must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for DUR4 fails for item DUR4, crash-recovery must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/recovery.py, tests/test_runtime_recovery_plan.py.
 
 ## Invariants
 
-For item DUR4, the interface declared for DUR4 must continue to satisfy every acceptance seed below on every call; crash-recovery must never show a state the seeds forbid.
+For item DUR4, the interface declared for DUR4 must continue to satisfy every acceptance seed below on every call; crash-recovery must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/recovery.py, tests/test_runtime_recovery_plan.py.
 
 ## Data impact
 
-Item DUR4 constrains any create, update, or delete reachable through the interface declared for DUR4; only the acceptance seeds below define what data changes are permitted for crash-recovery. Node-specific data assertions: 在 matharc/v02/runtime/recovery.py 中从确定的 GenerationCommit 边界生成恢复计划和故障矩阵 | 在 tests/test_runtime_recovery_plan.py 中对固定任务、模型或评价器变化拒绝恢复 | 在 matharc/v02/runtime/recovery.py 中固定 GenerationCommit 摘要输入、RecoveryPlan 输出、(runtime_run_id,generation_id) 幂等键、超时/取消/不可恢复失败分类、一次有限重试与恢复后状态；在 tests/test_runtime_recovery_plan.py 中保护恢复计划独立验收身份 | tests/test_runtime_recovery_plan.py 实现后必须在 protected_tests 登记 SHA-256 及恢复规划/拒绝恢复覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
+Item DUR4 constrains any create, update, or delete reachable through the interface declared for DUR4; only the acceptance seeds below define what data changes are permitted for crash-recovery. Node-specific data assertions: 在 matharc/v02/runtime/recovery.py 中从确定的 GenerationCommit 边界生成恢复计划和故障矩阵 | 在 tests/test_runtime_recovery_plan.py 中对固定任务、模型或评价器变化拒绝恢复 | 在 matharc/v02/runtime/recovery.py 中固定 GenerationCommit 摘要输入、RecoveryPlan 输出、(runtime_run_id,generation_id) 幂等键、超时/取消/不可恢复失败分类、一次有限重试与恢复后状态；在 tests/test_runtime_recovery_plan.py 中保护恢复计划独立验收身份 | tests/test_runtime_recovery_plan.py 实现后必须在 protected_tests 登记 SHA-256 及恢复规划/拒绝恢复覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY Concrete seed references: matharc/v02/runtime/recovery.py, tests/test_runtime_recovery_plan.py.
 
 ## Permissions
 
-Item DUR4 is owned by principal:acceptance-a; access to the interface declared for DUR4 and crash-recovery follows the acceptance seeds below and no wider grant.
+Item DUR4 is owned by principal:acceptance-a; access to the interface declared for DUR4 and crash-recovery follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/recovery.py, tests/test_runtime_recovery_plan.py.
 
 ## Performance and reliability
 
@@ -92,7 +92,7 @@ Item DUR4 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item DUR4; executable baseline not yet locked |
+| none | none | Behavior specification only for item DUR4; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/recovery.py, tests/test_runtime_recovery_plan.py |
 
 ## Requirements-test traceability
 

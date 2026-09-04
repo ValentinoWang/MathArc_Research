@@ -36,19 +36,18 @@
   "execution_contract_ref": "nodes/UX4.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
-  "write_regions": [],
   "write_targets": [
     {
       "path": "matharc/v02/runtime/view_model.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_console_redaction.py",
-      "mode": "create"
+      "operation": "modify"
     },
     {
       "path": "tests/test_runtime_console_redaction_visual.py",
-      "mode": "create"
+      "operation": "modify"
     }
   ],
   "required_lanes": [

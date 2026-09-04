@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching independent-replay drives item VER3 (unspecified dimension) through the interface declared for VER3.
+The user reaching independent-replay drives item VER3 (unspecified dimension) through the interface declared for VER3. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_independent_replay.py.
 
 ## Problem
 
-Item VER3 exists because the interface declared for VER3 does not yet satisfy the acceptance seeds registered for it, leaving independent-replay incomplete.
+Item VER3 exists because the interface declared for VER3 does not yet satisfy the acceptance seeds registered for it, leaving independent-replay incomplete. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_independent_replay.py.
 
 ## Expected outcome
 
-After item VER3 lands, the interface declared for VER3 satisfies every acceptance seed below and independent-replay reflects that behavior.
+After item VER3 lands, the interface declared for VER3 satisfies every acceptance seed below and independent-replay reflects that behavior. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_independent_replay.py.
 
 ## Non-goals
 
-Item VER3 covers only the interface declared for VER3 and independent-replay as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item VER3 covers only the interface declared for VER3 and independent-replay as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_independent_replay.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches independent-replay for item VER3
 When the flow defined by the interface declared for VER3 executes
-Then every acceptance seed for item VER3 holds
+Then every acceptance seed for item VER3 holds  Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_independent_replay.py.
 ```
 
 ## Exception paths
 
-If the interface declared for VER3 fails for item VER3, independent-replay must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for VER3 fails for item VER3, independent-replay must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_independent_replay.py.
 
 ## Invariants
 
-For item VER3, the interface declared for VER3 must continue to satisfy every acceptance seed below on every call; independent-replay must never show a state the seeds forbid.
+For item VER3, the interface declared for VER3 must continue to satisfy every acceptance seed below on every call; independent-replay must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_independent_replay.py.
 
 ## Data impact
 
-Item VER3 constrains any create, update, or delete reachable through the interface declared for VER3; only the acceptance seeds below define what data changes are permitted for independent-replay. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中为候选生成干净环境的独立重放计划 | 在 tests/test_candidate_independent_replay.py 中证明相同实现的重复执行不算独立验证 | 在 matharc/v02/runtime/verification.py 中固定 CandidateEnvelope 输入、独立 ReplayPlan 与 VerifierReceipt 输出、candidate_id+replay_digest 幂等键、超时/取消/失败分类、有限重试和恢复边界；在 tests/test_candidate_independent_replay.py 中保护独立验收身份 | tests/test_candidate_independent_replay.py 实现后必须在 protected_tests 登记 SHA-256 及干净环境/非同实现重放覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY
+Item VER3 constrains any create, update, or delete reachable through the interface declared for VER3; only the acceptance seeds below define what data changes are permitted for independent-replay. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中为候选生成干净环境的独立重放计划 | 在 tests/test_candidate_independent_replay.py 中证明相同实现的重复执行不算独立验证 | 在 matharc/v02/runtime/verification.py 中固定 CandidateEnvelope 输入、独立 ReplayPlan 与 VerifierReceipt 输出、candidate_id+replay_digest 幂等键、超时/取消/失败分类、有限重试和恢复边界；在 tests/test_candidate_independent_replay.py 中保护独立验收身份 | tests/test_candidate_independent_replay.py 实现后必须在 protected_tests 登记 SHA-256 及干净环境/非同实现重放覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_independent_replay.py.
 
 ## Permissions
 
-Item VER3 is owned by principal:acceptance-a; access to the interface declared for VER3 and independent-replay follows the acceptance seeds below and no wider grant.
+Item VER3 is owned by principal:acceptance-a; access to the interface declared for VER3 and independent-replay follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_independent_replay.py.
 
 ## Performance and reliability
 
@@ -92,7 +92,7 @@ Item VER3 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item VER3; executable baseline not yet locked |
+| none | none | Behavior specification only for item VER3; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/verification.py, tests/test_candidate_independent_replay.py |
 
 ## Requirements-test traceability
 

@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching next-generation-agenda drives item SYN4 (unspecified dimension) through the interface declared for SYN4.
+The user reaching next-generation-agenda drives item SYN4 (unspecified dimension) through the interface declared for SYN4. Concrete seed references: matharc/v02/runtime/research_director/agenda.py, tests/test_runtime_next_generation_agenda.py.
 
 ## Problem
 
-Item SYN4 exists because the interface declared for SYN4 does not yet satisfy the acceptance seeds registered for it, leaving next-generation-agenda incomplete.
+Item SYN4 exists because the interface declared for SYN4 does not yet satisfy the acceptance seeds registered for it, leaving next-generation-agenda incomplete. Concrete seed references: matharc/v02/runtime/research_director/agenda.py, tests/test_runtime_next_generation_agenda.py.
 
 ## Expected outcome
 
-After item SYN4 lands, the interface declared for SYN4 satisfies every acceptance seed below and next-generation-agenda reflects that behavior.
+After item SYN4 lands, the interface declared for SYN4 satisfies every acceptance seed below and next-generation-agenda reflects that behavior. Concrete seed references: matharc/v02/runtime/research_director/agenda.py, tests/test_runtime_next_generation_agenda.py.
 
 ## Non-goals
 
-Item SYN4 covers only the interface declared for SYN4 and next-generation-agenda as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item SYN4 covers only the interface declared for SYN4 and next-generation-agenda as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: matharc/v02/runtime/research_director/agenda.py, tests/test_runtime_next_generation_agenda.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches next-generation-agenda for item SYN4
 When the flow defined by the interface declared for SYN4 executes
-Then every acceptance seed for item SYN4 holds
+Then every acceptance seed for item SYN4 holds  Concrete seed references: matharc/v02/runtime/research_director/agenda.py, tests/test_runtime_next_generation_agenda.py.
 ```
 
 ## Exception paths
 
-If the interface declared for SYN4 fails for item SYN4, next-generation-agenda must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for SYN4 fails for item SYN4, next-generation-agenda must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: matharc/v02/runtime/research_director/agenda.py, tests/test_runtime_next_generation_agenda.py.
 
 ## Invariants
 
-For item SYN4, the interface declared for SYN4 must continue to satisfy every acceptance seed below on every call; next-generation-agenda must never show a state the seeds forbid.
+For item SYN4, the interface declared for SYN4 must continue to satisfy every acceptance seed below on every call; next-generation-agenda must never show a state the seeds forbid. Concrete seed references: matharc/v02/runtime/research_director/agenda.py, tests/test_runtime_next_generation_agenda.py.
 
 ## Data impact
 
-Item SYN4 constrains any create, update, or delete reachable through the interface declared for SYN4; only the acceptance seeds below define what data changes are permitted for next-generation-agenda. Node-specific data assertions: 在 matharc/v02/runtime/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程 | 在 tests/test_runtime_next_generation_agenda.py 中要求下一代明确引用上一代事实
+Item SYN4 constrains any create, update, or delete reachable through the interface declared for SYN4; only the acceptance seeds below define what data changes are permitted for next-generation-agenda. Node-specific data assertions: 在 matharc/v02/runtime/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程 | 在 tests/test_runtime_next_generation_agenda.py 中要求下一代明确引用上一代事实 Concrete seed references: matharc/v02/runtime/research_director/agenda.py, tests/test_runtime_next_generation_agenda.py.
 
 ## Permissions
 
-Item SYN4 is owned by principal:acceptance-a; access to the interface declared for SYN4 and next-generation-agenda follows the acceptance seeds below and no wider grant.
+Item SYN4 is owned by principal:acceptance-a; access to the interface declared for SYN4 and next-generation-agenda follows the acceptance seeds below and no wider grant. Concrete seed references: matharc/v02/runtime/research_director/agenda.py, tests/test_runtime_next_generation_agenda.py.
 
 ## Performance and reliability
 
@@ -90,7 +90,7 @@ Item SYN4 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item SYN4; executable baseline not yet locked |
+| none | none | Behavior specification only for item SYN4; executable baseline not yet locked. Concrete seed references: matharc/v02/runtime/research_director/agenda.py, tests/test_runtime_next_generation_agenda.py |
 
 ## Requirements-test traceability
 

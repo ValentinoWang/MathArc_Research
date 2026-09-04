@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching pilot-operations drives item OPS3 (unspecified dimension) through the interface declared for OPS3.
+The user reaching pilot-operations drives item OPS3 (unspecified dimension) through the interface declared for OPS3. Concrete seed references: acceptance/runtime-pilot/ops-release-checklist.md, tests/test_runtime_ops_cleanup.py, tests/test_runtime_ops_release.py.
 
 ## Problem
 
-Item OPS3 exists because the interface declared for OPS3 does not yet satisfy the acceptance seeds registered for it, leaving pilot-operations incomplete.
+Item OPS3 exists because the interface declared for OPS3 does not yet satisfy the acceptance seeds registered for it, leaving pilot-operations incomplete. Concrete seed references: acceptance/runtime-pilot/ops-release-checklist.md, tests/test_runtime_ops_cleanup.py, tests/test_runtime_ops_release.py.
 
 ## Expected outcome
 
-After item OPS3 lands, the interface declared for OPS3 satisfies every acceptance seed below and pilot-operations reflects that behavior.
+After item OPS3 lands, the interface declared for OPS3 satisfies every acceptance seed below and pilot-operations reflects that behavior. Concrete seed references: acceptance/runtime-pilot/ops-release-checklist.md, tests/test_runtime_ops_cleanup.py, tests/test_runtime_ops_release.py.
 
 ## Non-goals
 
-Item OPS3 covers only the interface declared for OPS3 and pilot-operations as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item OPS3 covers only the interface declared for OPS3 and pilot-operations as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: acceptance/runtime-pilot/ops-release-checklist.md, tests/test_runtime_ops_cleanup.py, tests/test_runtime_ops_release.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches pilot-operations for item OPS3
 When the flow defined by the interface declared for OPS3 executes
-Then every acceptance seed for item OPS3 holds
+Then every acceptance seed for item OPS3 holds  Concrete seed references: acceptance/runtime-pilot/ops-release-checklist.md, tests/test_runtime_ops_cleanup.py, tests/test_runtime_ops_release.py.
 ```
 
 ## Exception paths
 
-If the interface declared for OPS3 fails for item OPS3, pilot-operations must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for OPS3 fails for item OPS3, pilot-operations must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: acceptance/runtime-pilot/ops-release-checklist.md, tests/test_runtime_ops_cleanup.py, tests/test_runtime_ops_release.py.
 
 ## Invariants
 
-For item OPS3, the interface declared for OPS3 must continue to satisfy every acceptance seed below on every call; pilot-operations must never show a state the seeds forbid.
+For item OPS3, the interface declared for OPS3 must continue to satisfy every acceptance seed below on every call; pilot-operations must never show a state the seeds forbid. Concrete seed references: acceptance/runtime-pilot/ops-release-checklist.md, tests/test_runtime_ops_cleanup.py, tests/test_runtime_ops_release.py.
 
 ## Data impact
 
-Item OPS3 constrains any create, update, or delete reachable through the interface declared for OPS3; only the acceptance seeds below define what data changes are permitted for pilot-operations. Node-specific data assertions: 在 tests/test_runtime_ops_release.py 中完成部署、重启、回滚的不可变发布验收 | 在 tests/test_runtime_ops_cleanup.py 和 acceptance/runtime-pilot/ops-checklist.md 中验证临时工作区与试点用户数据可清理 | 在 acceptance/runtime-pilot/ops-release-checklist.md 中记录试点环境的部署、回滚和清理生产收尾
+Item OPS3 constrains any create, update, or delete reachable through the interface declared for OPS3; only the acceptance seeds below define what data changes are permitted for pilot-operations. Node-specific data assertions: 在 tests/test_runtime_ops_release.py 中完成部署、重启、回滚的不可变发布验收 | 在 tests/test_runtime_ops_cleanup.py 和 acceptance/runtime-pilot/ops-checklist.md 中验证临时工作区与试点用户数据可清理 | 在 acceptance/runtime-pilot/ops-release-checklist.md 中记录试点环境的部署、回滚和清理生产收尾 Concrete seed references: acceptance/runtime-pilot/ops-release-checklist.md, tests/test_runtime_ops_cleanup.py, tests/test_runtime_ops_release.py.
 
 ## Permissions
 
-Item OPS3 is owned by principal:acceptance-a; access to the interface declared for OPS3 and pilot-operations follows the acceptance seeds below and no wider grant.
+Item OPS3 is owned by principal:acceptance-a; access to the interface declared for OPS3 and pilot-operations follows the acceptance seeds below and no wider grant. Concrete seed references: acceptance/runtime-pilot/ops-release-checklist.md, tests/test_runtime_ops_cleanup.py, tests/test_runtime_ops_release.py.
 
 ## Performance and reliability
 
@@ -91,7 +91,7 @@ Item OPS3 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item OPS3; executable baseline not yet locked |
+| none | none | Behavior specification only for item OPS3; executable baseline not yet locked. Concrete seed references: acceptance/runtime-pilot/ops-release-checklist.md, tests/test_runtime_ops_cleanup.py, tests/test_runtime_ops_release.py |
 
 ## Requirements-test traceability
 

@@ -31,43 +31,43 @@
 
 ## User and scenario
 
-The user reaching runtime-governance drives item FND1 (unspecified dimension) through the interface declared for FND1.
+The user reaching runtime-governance drives item FND1 (unspecified dimension) through the interface declared for FND1. Concrete seed references: scripts/check_runtime_dependency_allowlist.py, scripts/check_runtime_ownership.py, tests/test_runtime_ownership.py.
 
 ## Problem
 
-Item FND1 exists because the interface declared for FND1 does not yet satisfy the acceptance seeds registered for it, leaving runtime-governance incomplete.
+Item FND1 exists because the interface declared for FND1 does not yet satisfy the acceptance seeds registered for it, leaving runtime-governance incomplete. Concrete seed references: scripts/check_runtime_dependency_allowlist.py, scripts/check_runtime_ownership.py, tests/test_runtime_ownership.py.
 
 ## Expected outcome
 
-After item FND1 lands, the interface declared for FND1 satisfies every acceptance seed below and runtime-governance reflects that behavior.
+After item FND1 lands, the interface declared for FND1 satisfies every acceptance seed below and runtime-governance reflects that behavior. Concrete seed references: scripts/check_runtime_dependency_allowlist.py, scripts/check_runtime_ownership.py, tests/test_runtime_ownership.py.
 
 ## Non-goals
 
-Item FND1 covers only the interface declared for FND1 and runtime-governance as described by its acceptance seeds; behavior outside those seeds is out of scope.
+Item FND1 covers only the interface declared for FND1 and runtime-governance as described by its acceptance seeds; behavior outside those seeds is out of scope. Concrete seed references: scripts/check_runtime_dependency_allowlist.py, scripts/check_runtime_ownership.py, tests/test_runtime_ownership.py.
 
 ## Normal path
 
 ```gherkin
 Given a user reaches runtime-governance for item FND1
 When the flow defined by the interface declared for FND1 executes
-Then every acceptance seed for item FND1 holds
+Then every acceptance seed for item FND1 holds  Concrete seed references: scripts/check_runtime_dependency_allowlist.py, scripts/check_runtime_ownership.py, tests/test_runtime_ownership.py.
 ```
 
 ## Exception paths
 
-If the interface declared for FND1 fails for item FND1, runtime-governance must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope.
+If the interface declared for FND1 fails for item FND1, runtime-governance must surface the failure exactly as the acceptance seeds below specify; no exception handling beyond those seeds is in scope. Concrete seed references: scripts/check_runtime_dependency_allowlist.py, scripts/check_runtime_ownership.py, tests/test_runtime_ownership.py.
 
 ## Invariants
 
-For item FND1, the interface declared for FND1 must continue to satisfy every acceptance seed below on every call; runtime-governance must never show a state the seeds forbid.
+For item FND1, the interface declared for FND1 must continue to satisfy every acceptance seed below on every call; runtime-governance must never show a state the seeds forbid. Concrete seed references: scripts/check_runtime_dependency_allowlist.py, scripts/check_runtime_ownership.py, tests/test_runtime_ownership.py.
 
 ## Data impact
 
-Item FND1 constrains any create, update, or delete reachable through the interface declared for FND1; only the acceptance seeds below define what data changes are permitted for runtime-governance. Node-specific data assertions: 在 scripts/check_runtime_ownership.py 和 tests/test_runtime_ownership.py 中登记 MathArc 原生运行时与治理工具链的允许边界 | 在 scripts/check_runtime_dependency_allowlist.py 和 tests/test_runtime_dependency_allowlist.py 中对未知运行时依赖 fail-closed | 在 tests/test_runtime_ownership.py 中证明所有实现节点只写入已登记的 MathArc 代码与测试文件
+Item FND1 constrains any create, update, or delete reachable through the interface declared for FND1; only the acceptance seeds below define what data changes are permitted for runtime-governance. Node-specific data assertions: 在 scripts/check_runtime_ownership.py 和 tests/test_runtime_ownership.py 中登记 MathArc 原生运行时与治理工具链的允许边界 | 在 scripts/check_runtime_dependency_allowlist.py 和 tests/test_runtime_dependency_allowlist.py 中对未知运行时依赖 fail-closed | 在 tests/test_runtime_ownership.py 中证明所有实现节点只写入已登记的 MathArc 代码与测试文件 Concrete seed references: scripts/check_runtime_dependency_allowlist.py, scripts/check_runtime_ownership.py, tests/test_runtime_ownership.py.
 
 ## Permissions
 
-Item FND1 is owned by principal:acceptance-a; access to the interface declared for FND1 and runtime-governance follows the acceptance seeds below and no wider grant.
+Item FND1 is owned by principal:acceptance-a; access to the interface declared for FND1 and runtime-governance follows the acceptance seeds below and no wider grant. Concrete seed references: scripts/check_runtime_dependency_allowlist.py, scripts/check_runtime_ownership.py, tests/test_runtime_ownership.py.
 
 ## Performance and reliability
 
@@ -91,7 +91,7 @@ Item FND1 is fully determined by its acceptance seeds; outcomes for the interfac
 | Path | SHA-256 | Covers |
 | --- | --- | --- |
 <!-- shared_acceptance_policy: SAP-MATHARC-RUNTIME@1 -->
-| none | none | Behavior specification only for item FND1; executable baseline not yet locked |
+| none | none | Behavior specification only for item FND1; executable baseline not yet locked. Concrete seed references: scripts/check_runtime_dependency_allowlist.py, scripts/check_runtime_ownership.py, tests/test_runtime_ownership.py |
 
 ## Requirements-test traceability
 
