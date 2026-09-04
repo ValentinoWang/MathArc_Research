@@ -1100,12 +1100,12 @@ async function testMobileViewports(browser, server, accessCookies) {
     const pageErrors = [];
     page.on("pageerror", error => pageErrors.push(error.stack || error.message));
     try {
-      const initialConsoleResponse = page.waitForResponse(response => {
+      const initialSnapshotResponse = page.waitForResponse(response => {
         const url = new URL(response.url());
-        return url.pathname === "/api/console" && response.request().method() === "GET";
+        return url.pathname === "/api/runtime/snapshot" && response.request().method() === "GET";
       });
       await page.goto(`${server.origin}/`, { waitUntil: "domcontentloaded" });
-      assert((await initialConsoleResponse).status() === 200, `${viewport.name} did not authenticate its initial console export`);
+      assert((await initialSnapshotResponse).status() === 200, `${viewport.name} did not authenticate its initial runtime snapshot`);
       assert(await page.evaluate(() => window.MathArcConsole.loadExport("/api/console")), `${viewport.name} could not load its authenticated console export`);
       await page.locator("#console-provenance").waitFor({ state: "attached" });
       const fellBackToDemo = await page.evaluate(() => window.MathArcConsole.loadExport("/missing-console.json"));
@@ -1260,13 +1260,16 @@ async function testM1SseAndReconnect(page, server, eventCursors) {
   const requestsBeforeMutation = eventCursors.length;
   const refreshed = page.waitForResponse(response => {
     const url = new URL(response.url());
-    return url.pathname === "/api/console" && response.request().method() === "GET";
+    return url.pathname === "/api/runtime/snapshot" && response.request().method() === "GET";
   });
   const mutation = server.campaignMutation();
   assert(mutation.tail > initialTail, "M1 workspace mutation did not append a new event");
   const refreshResponse = await refreshed;
   assert(refreshResponse.status() === 200, "M1 event refresh did not receive a console export");
-  const refreshedPayload = await refreshResponse.json();
+  const refreshedSnapshot = await refreshResponse.json();
+  const refreshedPayload = refreshedSnapshot && refreshedSnapshot.payload
+    ? refreshedSnapshot.payload
+    : refreshedSnapshot;
   assert(
     refreshedPayload.workspace.events.events.at(-1).sequence === mutation.tail,
     "M1 event refresh did not load the workspace state containing the emitted event",
@@ -1286,7 +1289,7 @@ async function testM1SseAndReconnect(page, server, eventCursors) {
     () => eventCursors.slice(requestsBeforeMutation).includes(mutation.tail),
     `M1 reconnect did not continue from event cursor ${mutation.tail}`,
   );
-  return `emitted event ${mutation.tail}, refreshed /api/console, and reconnected with after=${mutation.tail}`;
+  return `emitted event ${mutation.tail}, refreshed /api/runtime/snapshot, and reconnected with after=${mutation.tail}`;
 }
 
 async function fillReviewForm(page, server, reviewId, verdict) {
@@ -1406,13 +1409,13 @@ async function main() {
       const url = new URL(response.url());
       return url.pathname === "/api/access/session" && response.request().method() === "GET";
     });
-    const initialConsole = page.waitForResponse(response => {
+    const initialSnapshot = page.waitForResponse(response => {
       const url = new URL(response.url());
-      return url.pathname === "/api/console" && response.request().method() === "GET";
+      return url.pathname === "/api/runtime/snapshot" && response.request().method() === "GET";
     });
     await page.goto(`${server.origin}/`, { waitUntil: "domcontentloaded" });
     assert((await restoredSession).status() === 200, "main browser page did not restore its authenticated session");
-    assert((await initialConsole).status() === 200, "main browser page did not authenticate its initial console export");
+    assert((await initialSnapshot).status() === 200, "main browser page did not authenticate its initial runtime snapshot");
     assert(await page.evaluate(() => window.MathArcConsole.loadExport("/api/console")), "main browser page could not load its authenticated console export");
     await page.locator("#console-provenance").waitFor({ state: "attached" });
     const fellBackToDemo = await page.evaluate(() => window.MathArcConsole.loadExport("/missing-console.json"));
