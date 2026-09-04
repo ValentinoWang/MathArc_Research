@@ -10,112 +10,112 @@
     {
       "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
       "exit_code": 0,
-      "output_tail": "eria\nERROR: item I2 seed 1 has no concrete reference (file, endpoint, schema, or test)\n.ERROR: not a file: /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpc75kw_ia/missing.json\n......................................................................................................................................................................................................................................................................................\n----------------------------------------------------------------------\nRan 769 tests in 35.822s\n\nOK\nexecution ledger check skipped: not opted in\npush gate check skipped: not opted in\npush gate passed: /private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpmynr24ri/bundle/.ssot/manifest.json\nreading map check passed: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/reading-map.json\nreading map check passed: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/reading-map.json\nOK: wrote 6 acceptance contracts under /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpr7e78tc7/bundle\nOK: wrote 1 acceptance contracts under /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp1gcivgs8/bundle\nOK: wrote 3 acceptance contracts under /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp81pq5now/bundle-a\nOK: wrote 3 acceptance contracts under /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp81pq5now/bundle-b\nOK: wrote 2 acceptance contracts under /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmphpa0tbb4/bundle\nOK: 2 acceptance contracts match /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmphpa0tbb4/bundle\nsource requirement conservation passed: 1 requirement(s)\nsource requirement conservation skipped: strict mode not declared\nsource requirement conservation failed:\n- source_requirements must be a non-empty list\nsource requirement conservation failed:\n- source requirement REQ-1 claims PROVEN without a proven node\n",
+      "output_tail": "......................................................................................................................................................................................................................................................................................ERROR: 6 of 6 contracts share an identical \"Non-goals\" section; write per-fragment content (e.g. D1, D2, S1, S2, S4)\n...............................................push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\npush-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n...push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n..push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\npush-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\nERROR: push blocked: validation report is not push-gate eligible (integrity=pass policy=incomplete required checks not run: archive-check)\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\npush-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\nERROR: push blocked: validation report is not push-gate eligible (integrity=fail policy=complete)\n..push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\npush-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.............................................................................reading map check failed:\n- [Errno 2] No such file or directory: '/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpteq533r3/reading-map.json'\n..........................................................ERROR: drift: I1: on-disk contract differs from generated content at /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpho84ojfe/bundle/acceptance-fragments/I1/acceptance-contract.md\n.ERROR: drift: I1: missing generated contract at /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpxp1xmphm/bundle/acceptance-fragments/I1/acceptance-contract.md\n.ERROR: item I2: acceptance_seeds must provide at least two criteria\nERROR: item I2 seed 1 has no concrete reference (file, endpoint, schema, or test)\n.ERROR: not a file: /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp8o4k0wtt/missing.json\n............................................................................................................................................................................................................push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n.push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3\n...........................................................................\n----------------------------------------------------------------------\nRan 771 tests in 56.156s\n\nOK\nexecution ledger check skipped: not opted in\npush gate check skipped: not opted in\npush gate passed: /private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpsp8hn3w1/bundle/.ssot/manifest.json\nreading map check passed: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/reading-map.json\nreading map check passed: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/reading-map.json\nOK: wrote 6 acceptance contracts under /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp3ntjscks/bundle\nOK: wrote 1 acceptance contracts under /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmpho84ojfe/bundle\nOK: wrote 3 acceptance contracts under /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmplmviupis/bundle-a\nOK: wrote 3 acceptance contracts under /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmplmviupis/bundle-b\nOK: wrote 2 acceptance contracts under /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp2gxm4dca/bundle\nOK: 2 acceptance contracts match /var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp2gxm4dca/bundle\nsource requirement conservation passed: 1 requirement(s)\nsource requirement conservation skipped: strict mode not declared\nsource requirement conservation failed:\n- source_requirements must be a non-empty list\nsource requirement conservation failed:\n- source requirement REQ-1 claims PROVEN without a proven node",
       "skipped": false
     },
     {
       "command": "python3 Core/skills/report-to-ssot-development-paths/scripts/check_reading_map.py",
       "exit_code": 0,
-      "output_tail": "reading map check passed: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/reading-map.json\n",
+      "output_tail": "reading map check passed: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/reading-map.json",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Core/skills/ssot-obsidian-snapshot/tests",
       "exit_code": 0,
-      "output_tail": "........................................................................................\n----------------------------------------------------------------------\nRan 88 tests in 4.787s\n\nOK\n",
+      "output_tail": "........................................................................................\n----------------------------------------------------------------------\nRan 88 tests in 15.121s\n\nOK",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Core/skills/codex-explicit-worker-orchestration/tests",
       "exit_code": 0,
-      "output_tail": "........................ss.....s.............................\n----------------------------------------------------------------------\nRan 61 tests in 8.445s\n\nOK (skipped=3)\n",
+      "output_tail": "........................ss.....s.............................\n----------------------------------------------------------------------\nRan 61 tests in 10.922s\n\nOK (skipped=3)",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Core/skills/design-acceptance-contract/tests",
       "exit_code": 0,
-      "output_tail": "..............................................................\n----------------------------------------------------------------------\nRan 62 tests in 1.113s\n\nOK\n",
+      "output_tail": "..............................................................\n----------------------------------------------------------------------\nRan 62 tests in 1.928s\n\nOK",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Core/skills/design-reference-context/tests",
       "exit_code": 0,
-      "output_tail": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.148s\n\nOK\n",
+      "output_tail": "...\n----------------------------------------------------------------------\nRan 3 tests in 0.594s\n\nOK",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Core/skills/implement-acceptance-locked-change/tests",
       "exit_code": 0,
-      "output_tail": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n",
+      "output_tail": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Core/skills/runtime-visual-verification/tests",
       "exit_code": 0,
-      "output_tail": "...................................\n----------------------------------------------------------------------\nRan 35 tests in 0.058s\n\nOK\n",
+      "output_tail": "...................................\n----------------------------------------------------------------------\nRan 35 tests in 0.186s\n\nOK",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Core/skills/screen-contract-ui/tests",
       "exit_code": 0,
-      "output_tail": "....................\n----------------------------------------------------------------------\nRan 20 tests in 0.169s\n\nOK\npipeline blocked: unresolved=0, opaque=0, errors=1\n",
+      "output_tail": "....................\n----------------------------------------------------------------------\nRan 20 tests in 0.278s\n\nOK\npipeline blocked: unresolved=0, opaque=0, errors=1",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Core/skills/verify-acceptance-release/tests",
       "exit_code": 0,
-      "output_tail": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK\n",
+      "output_tail": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.000s\n\nOK",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Core/skills/visual-collaboration-contract/tests",
       "exit_code": 0,
-      "output_tail": "...........\n----------------------------------------------------------------------\nRan 11 tests in 0.967s\n\nOK\n",
+      "output_tail": "...........\n----------------------------------------------------------------------\nRan 11 tests in 3.611s\n\nOK",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Core/skills/visual-direction-exploration/tests",
       "exit_code": 0,
-      "output_tail": "........\n----------------------------------------------------------------------\nRan 8 tests in 0.563s\n\nOK\n",
+      "output_tail": "........\n----------------------------------------------------------------------\nRan 8 tests in 1.959s\n\nOK",
       "skipped": false
     },
     {
       "command": "python3 -m pytest Core/skills/business-plan-release-qa/tests -q",
       "exit_code": 0,
-      "output_tail": ".....                                                                    [100%]\n5 passed in 0.19s\n",
+      "output_tail": ".....                                                                    [100%]\n5 passed in 0.69s",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s Projects/Athlete-OS_repo/skills/athlete-os-screen-contract-ui/tests",
       "exit_code": 0,
-      "output_tail": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nOK\n",
+      "output_tail": "......\n----------------------------------------------------------------------\nRan 6 tests in 0.002s\n\nOK",
       "skipped": false
     },
     {
       "command": "python3 -m unittest discover -s tools/tests",
       "exit_code": 0,
-      "output_tail": "....................\n----------------------------------------------------------------------\nRan 20 tests in 0.239s\n\nOK\n",
+      "output_tail": "....................\n----------------------------------------------------------------------\nRan 20 tests in 0.690s\n\nOK",
       "skipped": false
     },
     {
       "command": "python3 tools/harnessctl.py list-profiles",
       "exit_code": 0,
-      "output_tail": "core\nflutter\nuniapp\npaper\nproject-stylefilter\nproject-hongru-digital-education\nproject-athlete-os\nproject-sub2api\n",
+      "output_tail": "core\nflutter\nuniapp\npaper\nproject-stylefilter\nproject-hongru-digital-education\nproject-athlete-os\nproject-sub2api",
       "skipped": false
     },
     {
       "command": "python3 tools/harnessctl.py doctor --project .",
       "exit_code": 0,
-      "output_tail": "project: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nmode: self-hosted\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 48\ndoctor: ok\n",
+      "output_tail": "project: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nmode: self-hosted\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 48\ndoctor: ok",
       "skipped": false
     }
   ],
   "passed": true,
   "skipped_checks": [],
   "result_summary": "17/17 workflow commands passed; zero workflow steps skipped",
-  "observed_at": "2026-09-03T21:55:29.298723+00:00",
+  "observed_at": "2026-09-04T00:02:58+00:00",
   "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
-  "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
-  "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
+  "source_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
+  "harness_commit": "e4f56a267babafe61480f32250107e3f5a831213",
   "actor": "orchestrator"
 }

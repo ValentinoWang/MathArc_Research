@@ -6,7 +6,7 @@
   "scenario": "Compare READY semantics across Skill, state model, and checker.",
   "expected_observation": "The single readiness definition is enforced by the meta-test.",
   "observed_observation": "All 8 state-model meta-tests passed, including the execution Skill vocabulary check, canonical state transition checks, and the readiness projection equality check against the state model.",
-  "command": "PYTHONDONTWRITEBYTECODE=1 /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python -m unittest -v Core/skills/report-to-ssot-development-paths/tests/test_ssot_state_model.py",
+  "command": "PYTHONDONTWRITEBYTECODE=1 PYTHONPATH=/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python -m unittest -v Core.skills.report-to-ssot-development-paths.tests.test_ssot_state_model",
   "working_directory": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering",
   "coverage": {
     "real_skill": ".agents/skills/ssot-execution-orchestration/SKILL.md (via Harness Core/skills/ssot-execution-orchestration/SKILL.md)",
@@ -16,20 +16,20 @@
   },
   "metadata": {
     "exit_code": 0,
-    "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
-    "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
-    "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
-    "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+    "source_commit": "e4f56a267babafe61480f32250107e3f5a831213",
+    "harness_commit": "e4f56a267babafe61480f32250107e3f5a831213",
+    "project_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
+    "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6; venv_python=3.13.7",
     "actor": "orchestrator",
-    "observed_at": "2026-09-03T22:00:32.736015+00:00"
+    "observed_at": "2026-09-04T00:02:05+00:00"
   },
   "exit_code": 0,
-  "source_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
-  "harness_commit": "cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5",
-  "project_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
-  "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.12.14; venv_python=3.13.7",
+  "source_commit": "e4f56a267babafe61480f32250107e3f5a831213",
+  "harness_commit": "e4f56a267babafe61480f32250107e3f5a831213",
+  "project_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
+  "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6; venv_python=3.13.7",
   "actor": "orchestrator",
-  "observed_at": "2026-09-03T22:00:32.736015+00:00",
+  "observed_at": "2026-09-04T00:02:05+00:00",
   "result_path": "evidence/negative-cases/NC-07.result.json",
   "output_path": "evidence/negative-cases/NC-07.result.command-output.txt"
 }

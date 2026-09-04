@@ -1,6 +1,6 @@
 push-gate warning: schema v2 validation report uses deprecated release_ready; migrate the producer to schema v3
 .
 ----------------------------------------------------------------------
-Ran 1 test in 0.006s
+Ran 1 test in 0.007s
 
 OK

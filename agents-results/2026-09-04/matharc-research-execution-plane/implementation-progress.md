@@ -20,7 +20,10 @@ The six implementation/validation nodes `C1`, `S1`, `P1`, `RI1`, `E1`, and
 `V1` are `ACCEPTED` in the compiled projection. `DP1` is the accepted decision
 input. Both release gates (`QR1` and `QR2`) are `ACCEPTED`; their completion is
 bound to the live mainline, cleanup, and proxy evidence in
-`evidence/release-readback.json`.
+`evidence/release-readback.json`. The machine acceptance evidence has been
+refreshed against Harness `e4f56a267babafe61480f32250107e3f5a831213`; the
+remaining serial action is the current task's evidence commit, mainline
+push/readback, and branch cleanup.
 
 | Gate | Current value | Evidence |
 | --- | --- | --- |
@@ -37,32 +40,36 @@ bound to the live mainline, cleanup, and proxy evidence in
   results with exit code, source identity, result path, and digest.
 - `evidence/harness-ci-result.json`: 17/17 workflow commands passed with zero
   workflow steps skipped; the run is bound to Harness commit
-  `cb1e4fff20a4e6faf6473ff6e6a915749b1d7ac5`.
+  `e4f56a267babafe61480f32250107e3f5a831213`.
 - `evidence/harness-ci-run.log`: complete local Harness CI output.
 - `evidence/negative-cases/`: one structured result and command output per case.
 - `execution-orchestration/takeovers/V1.json`: the required main-thread
   takeover record for the unavailable external execution transport.
-- `evidence/release-readback.json`: MathArc and Harness local/remote `main`
-  identities match exactly; each remote branch list contains only `main`, the
-  used Codex refs return 404, and persistent Git/environment proxy settings are
-  empty.
+- `evidence/release-readback.json`: MathArc and Harness GitHub `main` identities,
+  branch inventory, proxy inventory, and the current evidence-push status. The
+  final readback is written only after the evidence commit is on `main` and the
+  temporary Codex branch is removed.
 - Obsidian snapshot: four managed files verified; collection audit passed.
 
 ## Release and publication sequence
 
 1. Recheck standard Git transport after proxy cleanup and refresh both
    `origin/main` refs.
-2. Reconcile each local/API-published history with a no-content-change merge,
-   then push Harness `main` and MathArc `main` through standard Git HTTPS.
-3. Read back both live `main` refs and trees, then remove the used Codex
-   branches and the two user-authorized extra MathArc remote branches. Preserve
-   unrelated MathArc worktree changes without staging or rewriting them.
+2. Commit only this execution bundle, fast-forward the local MathArc `main`,
+   and push it through standard Git HTTPS. Harness `main` is already at the
+   accepted `e4f56a2` commit and needs no new source change.
+3. Read back both live `main` refs and trees, then remove the used local Codex
+   branch and any remote branches that still exist. Preserve unrelated MathArc
+   worktree changes without staging or rewriting them.
 
 ## Proxy state
 
-The current environment, system/user Git configuration, and both repository
-configurations contain no `http.proxy`, `https.proxy`, `all_proxy`, or
-`insteadOf` proxy override. Standard `git ls-remote`, fetch, and push now pass.
+The current shell, launchd environment, system/user Git configuration, and both
+repository configurations contain no `http.proxy`, `https.proxy`, `all_proxy`,
+or `insteadOf` proxy override. macOS network services have PAC, web, secure-web,
+SOCKS, and proxy auto-discovery disabled with blank server fields. Standard
+`git ls-remote` now passes directly; fetch and push are run in the serial
+closeout below.
 Proxy variables in the OpenClaw service are outside this repository and are
 intentionally not changed.
 
@@ -71,4 +78,6 @@ intentionally not changed.
 The linked `Core/skills/report-to-ssot-development-paths` implementation now
 binds state/rules regression checks to real validators. The project adapter
 declares the required Obsidian archive policy; the source bundle remains the
-authority and the iCloud copy is an audit snapshot only.
+authority and the iCloud copy is an audit snapshot only. The final publication
+and cleanup facts are intentionally left pending until their live readback is
+recorded.

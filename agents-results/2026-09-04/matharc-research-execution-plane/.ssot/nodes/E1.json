@@ -54,21 +54,21 @@
     "evidence-lane-registry-and-facts-registry"
   ],
   "accepted_evidence": {
-    "implementation_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+    "implementation_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
     "test_evidence": {
       "command": "python3 -m unittest discover -s Core/skills/report-to-ssot-development-paths/tests",
       "result_path": "evidence/harness-ci-result.json",
       "exit_code": 0,
-      "observed_at": "2026-09-03T21:55:29.298723+00:00",
+      "observed_at": "2026-09-04T00:04:15+00:00",
       "environment_identity": "host=192.168.1.7; os=Darwin; kernel=25.0.0; arch=arm64; python=3.9.6",
-      "source_commit": "50e8921e8d5fb2dad1023f2486ed66ccf3aec497",
+      "source_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
       "actor": "orchestrator",
-      "result_sha256": "8780f3430dbaa230ddec1b32c34bd904f5adbec79ccf9e00ba1a5054219c6476",
+      "result_sha256": "360b580db6cac875f5cfd6f56f715f200af3f2c6a81ba51fd59c40623f18bdfe",
       "passed": true
     },
     "acceptance_record": "evidence/harness-ci-result.json",
     "accepted_by": "Harness 证据与事实负责人",
-    "accepted_at": "2026-09-03T21:55:29.298723+00:00"
+    "accepted_at": "2026-09-04T00:04:15+00:00"
   },
   "blocking_reasons": [],
   "readiness_gaps": []
