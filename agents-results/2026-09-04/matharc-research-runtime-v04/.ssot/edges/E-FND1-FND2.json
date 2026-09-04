@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-FND1-FND2",
+  "from": "FND1",
+  "to": "FND2",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.fnd1"
+  ],
+  "transferred_input": "Deliver source requirement FND1.",
+  "gate_evidence": "acceptance contract evidence"
+}

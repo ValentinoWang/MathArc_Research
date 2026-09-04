@@ -1,0 +1,66 @@
+{
+  "node_id": "VER5",
+  "semantic_key": "requirement.ver5",
+  "stage": "RTR5",
+  "work_kind": "implementation",
+  "domain_lane": "rtr5",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "VER4"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.ver5"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "QRTR5",
+    "VER6"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/VER5.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/audit.py"
+  ],
+  "required_lanes": [
+    "machine/unit",
+    "machine/integration-contract"
+  ],
+  "goal": "Deliver source requirement VER5.",
+  "owner": "证据失效负责人",
+  "acceptance_contract_ref": "acceptance-fragments/VER5/acceptance-contract.md",
+  "surface_refs": [
+    "evidence-invalidation"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

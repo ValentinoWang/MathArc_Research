@@ -1,0 +1,66 @@
+{
+  "node_id": "DOG4",
+  "semantic_key": "requirement.dog4",
+  "stage": "RTR7",
+  "work_kind": "implementation",
+  "domain_lane": "rtr7",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "DOG3"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.dog4"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "QRTR7"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/DOG4.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "acceptance"
+  ],
+  "required_lanes": [
+    "machine/e2e",
+    "human",
+    "release"
+  ],
+  "goal": "Deliver source requirement DOG4.",
+  "owner": "试点发布负责人",
+  "acceptance_contract_ref": "acceptance-fragments/DOG4/acceptance-contract.md",
+  "surface_refs": [
+    "pilot-release-evidence"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

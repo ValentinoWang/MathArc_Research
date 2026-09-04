@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-RUN4-PAR2",
+  "from": "RUN4",
+  "to": "PAR2",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.run4"
+  ],
+  "transferred_input": "Deliver source requirement RUN4.",
+  "gate_evidence": "acceptance contract evidence"
+}

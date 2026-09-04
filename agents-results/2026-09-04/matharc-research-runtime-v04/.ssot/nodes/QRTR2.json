@@ -1,0 +1,40 @@
+{
+  "node_id": "QRTR2",
+  "semantic_key": "acceptance.release.rtr2",
+  "stage": "RTR2",
+  "work_kind": "release-decision",
+  "domain_lane": "rtr2",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "PAR1",
+    "PAR2",
+    "PAR3",
+    "PAR4",
+    "PAR5"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [],
+  "invalidation_keys": [
+    "release.rtr2"
+  ],
+  "write_authority": "shared-generated",
+  "acceptance_authority": "release decision owner",
+  "unlocks": [],
+  "node_role": "acceptance-gate",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/QRTR2.json",
+  "side_effect_class": "none",
+  "candidate_identity_policy": "must-match",
+  "goal": "Accept the RTR2 candidate against its source completion criteria.",
+  "owner": "release decision owner",
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    }
+  ]
+}

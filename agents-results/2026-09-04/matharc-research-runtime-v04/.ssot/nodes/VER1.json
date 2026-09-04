@@ -1,0 +1,67 @@
+{
+  "node_id": "VER1",
+  "semantic_key": "requirement.ver1",
+  "stage": "RTR5",
+  "work_kind": "implementation",
+  "domain_lane": "rtr5",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "RUN1",
+    "DUR2"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.ver1"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "QRTR5",
+    "VER2"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/VER1.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/schema.py"
+  ],
+  "required_lanes": [
+    "machine/unit",
+    "machine/integration-contract"
+  ],
+  "goal": "Deliver source requirement VER1.",
+  "owner": "候选身份负责人",
+  "acceptance_contract_ref": "acceptance-fragments/VER1/acceptance-contract.md",
+  "surface_refs": [
+    "candidate-envelope"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

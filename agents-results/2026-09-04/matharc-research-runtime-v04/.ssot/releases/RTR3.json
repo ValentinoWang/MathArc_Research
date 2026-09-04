@@ -1,0 +1,15 @@
+{
+  "release_id": "RTR3",
+  "release_gate_node": "QRTR3",
+  "title": "RT-R3 持久化与恢复",
+  "user_value": "中断后可以从明确的代际边界继续运行。",
+  "independent_failure": "不确定状态不得猜测完成、重复计费或跳过代际。",
+  "node_ids": [
+    "DUR1",
+    "DUR2",
+    "DUR3",
+    "DUR4",
+    "DUR5",
+    "QRTR3"
+  ]
+}

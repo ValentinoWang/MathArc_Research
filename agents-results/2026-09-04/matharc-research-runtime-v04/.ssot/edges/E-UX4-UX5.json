@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-UX4-UX5",
+  "from": "UX4",
+  "to": "UX5",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.ux4"
+  ],
+  "transferred_input": "Deliver source requirement UX4.",
+  "gate_evidence": "acceptance contract evidence"
+}

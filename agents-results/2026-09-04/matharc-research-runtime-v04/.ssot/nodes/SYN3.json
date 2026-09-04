@@ -1,0 +1,66 @@
+{
+  "node_id": "SYN3",
+  "semantic_key": "requirement.syn3",
+  "stage": "RTR4",
+  "work_kind": "implementation",
+  "domain_lane": "rtr4",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "SYN1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.syn3"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "QRTR4",
+    "SYN4"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/SYN3.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/episode_memory.py"
+  ],
+  "required_lanes": [
+    "machine/unit",
+    "machine/local-runtime"
+  ],
+  "goal": "Deliver source requirement SYN3.",
+  "owner": "研究记忆负责人",
+  "acceptance_contract_ref": "acceptance-fragments/SYN3/acceptance-contract.md",
+  "surface_refs": [
+    "research-memory"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

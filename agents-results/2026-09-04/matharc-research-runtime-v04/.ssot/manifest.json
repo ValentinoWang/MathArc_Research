@@ -1,0 +1,99 @@
+{
+  "ssot_schema_version": 2,
+  "artifact_class": "ssot-development",
+  "machine_validation_profile": "release",
+  "plan_version": 1,
+  "dag_version": 1,
+  "interface_freeze_version": 1,
+  "node_contract_version": 2,
+  "generated_main": "../ssot-development-paths.md",
+  "generated_views": [
+    {
+      "view_id": "main",
+      "source": "view-sources/00-main.md",
+      "source_sha256": "9beefd2723c87fa98dfe8ee7d011af0e83a8f0627928d103222bda6e0fc3a00f",
+      "output": "../ssot-development-paths.md"
+    },
+    {
+      "view_id": "topology",
+      "generator": "topology",
+      "output": "../generated-views/topology.md"
+    },
+    {
+      "view_id": "nodes-rtrz",
+      "generator": "nodes",
+      "release": "RTRZ",
+      "output": "../generated-views/nodes-rtrz.md"
+    },
+    {
+      "view_id": "nodes-rtr1",
+      "generator": "nodes",
+      "release": "RTR1",
+      "output": "../generated-views/nodes-rtr1.md"
+    },
+    {
+      "view_id": "nodes-rtr2",
+      "generator": "nodes",
+      "release": "RTR2",
+      "output": "../generated-views/nodes-rtr2.md"
+    },
+    {
+      "view_id": "nodes-rtr3",
+      "generator": "nodes",
+      "release": "RTR3",
+      "output": "../generated-views/nodes-rtr3.md"
+    },
+    {
+      "view_id": "nodes-rtr4",
+      "generator": "nodes",
+      "release": "RTR4",
+      "output": "../generated-views/nodes-rtr4.md"
+    },
+    {
+      "view_id": "nodes-rtr5",
+      "generator": "nodes",
+      "release": "RTR5",
+      "output": "../generated-views/nodes-rtr5.md"
+    },
+    {
+      "view_id": "nodes-rtr6",
+      "generator": "nodes",
+      "release": "RTR6",
+      "output": "../generated-views/nodes-rtr6.md"
+    },
+    {
+      "view_id": "nodes-rtr7",
+      "generator": "nodes",
+      "release": "RTR7",
+      "output": "../generated-views/nodes-rtr7.md"
+    }
+  ],
+  "nodes_dir": "nodes",
+  "edges_dir": "edges",
+  "releases_dir": "releases",
+  "assumptions_dir": "assumptions",
+  "conflicts_dir": "conflicts",
+  "world_verification_version": 1,
+  "node_state_model_version": 2,
+  "acceptance_contract_policy_version": 2,
+  "shared_acceptance_policies": [
+    {
+      "id": "SAP-MATHARC-RUNTIME",
+      "version": 1,
+      "path": "agents-results/2026-09-04/matharc-research-runtime-v04/shared-acceptance-policy.md",
+      "allowed_sections": [
+        "Performance and reliability",
+        "Protected acceptance tests",
+        "Risks and open decisions"
+      ],
+      "summary_sha256": "f8e5b8d1fba1b46ddb5d1edf597eaf6e01d8f9344d17a2af8d95e13cb8002ac4"
+    }
+  ],
+  "view_model_version": 2,
+  "validation_report": {
+    "path": "validation-report.json",
+    "sha256": "1ef625ecd43a81c3d3b3c74a43ba488d721468a554b939da142a4ce9e654fb3d",
+    "manifest_identity_sha256": "a27318a670e11621320ca7799af88d30d9c7c58aa9e14d0be2bf2bdef1a66e10",
+    "bundle_content_sha256": "4aed114653de2341456d481f21c2b7a302ecc38953549bba9084c8b5189135d7"
+  }
+}

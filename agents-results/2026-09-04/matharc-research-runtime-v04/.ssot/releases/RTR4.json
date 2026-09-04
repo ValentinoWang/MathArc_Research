@@ -1,0 +1,15 @@
+{
+  "release_id": "RTR4",
+  "release_gate_node": "QRTR4",
+  "title": "RT-R4 代际学习",
+  "user_value": "上一代的失败和研究经历可以改变下一代议程。",
+  "independent_failure": "蒸馏失败或缺少出处时，下一代保持未启动。",
+  "node_ids": [
+    "SYN1",
+    "SYN2",
+    "SYN3",
+    "SYN4",
+    "SYN5",
+    "QRTR4"
+  ]
+}

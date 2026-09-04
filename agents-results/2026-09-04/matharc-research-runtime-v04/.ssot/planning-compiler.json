@@ -1,0 +1,1058 @@
+{
+  "planning_compiler_schema_version": 1,
+  "classification": {
+    "applicability": "ssot",
+    "ssot_depth": "L2",
+    "artifact_policy": "create-ssot",
+    "selection_authority": "user",
+    "rationale": "建立数学研究平台（MathArc）原生、可并行、可恢复、可验证、可进行邀请制测试的自主研究运行时，并保持执行状态、候选结果与数学结论权威相互隔离。"
+  },
+  "source_inputs": [
+    {
+      "external_dependency_id": "EXT-MATHARC-PROJECT",
+      "path": "PROJECT.md",
+      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "blob": "5f6d42fbb54ba18d53fb40a71f30795d5327a1ea",
+      "sha256": "d062b74dd6285110fe3d9fbef393733a06e0412989c6ef9cc3b94327c387f103"
+    },
+    {
+      "external_dependency_id": "EXT-MATHARC-README",
+      "path": "README.md",
+      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "blob": "9e2a1c9256c508bde4773501a076a44c973f3f6d",
+      "sha256": "b95443559b234a759303460dce4282941060f0f598cbd2288afd6b8cd6e9aab3"
+    },
+    {
+      "external_dependency_id": "EXT-RUNTIME-TRACE",
+      "path": "matharc/v02/trace.py",
+      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "blob": "1e971372131a7287571ce460561d4f9302f2a5b8",
+      "sha256": "7aeb1d85f5cb2aefebc194ea25606073b41cb995c97a8fc36b81ddd3f24900f1"
+    },
+    {
+      "external_dependency_id": "EXT-RUNTIME-ARTIFACT",
+      "path": "matharc/v02/artifact_store.py",
+      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "blob": "0d8a380c68d9b949f75738961ac99ecfc0dae04d",
+      "sha256": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3"
+    },
+    {
+      "external_dependency_id": "EXT-RUNTIME-CAMPAIGN",
+      "path": "matharc/v02/campaign.py",
+      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "blob": "a2eebfc24a36e06a2b3e655a5d2cd5a494bb7529",
+      "sha256": "5cf446b3195125875852ea3789b3dc4a16f7cbfa3218fa304bfc259fe0921a4e"
+    },
+    {
+      "external_dependency_id": "EXT-CONSOLE-ACCESS",
+      "path": "matharc/v02/access_server.py",
+      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "blob": "516a07b50175220d8020396611bec7962f5bce05",
+      "sha256": "1a8a0448884d7acc86c3917670702afea940af09390d08c0976cd057b5487792"
+    },
+    {
+      "external_dependency_id": "EXT-CONSOLE-EXPORT",
+      "path": "matharc/v02/console_export.py",
+      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "blob": "dd967fb6f86dd50575b738f47643270aa85a291e",
+      "sha256": "79adf80dd0b1028c1ddd03ff4de06457cf2c2a2c6312996bf4091b10055f391a"
+    },
+    {
+      "external_dependency_id": "EXT-CODEX-RUNTIME",
+      "path": "docs/reports/codex-agent-runtime.md",
+      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "blob": "e0ab89f3e7487d23530bc098911794a451ab0e00",
+      "sha256": "4fbb0f6c3a9a7a8953bb6374d1d6965d59e1c8936391957e78067edd59a933d4"
+    }
+  ],
+  "external_systems": [
+    {
+      "external_system_id": "EXT-HARNESS-GITHUB",
+      "kind": "external-runtime",
+      "runtime_components": [
+        "GitHub repository: https://github.com/ValentinoWang/Harness_Engineering",
+        "main revision: e4f56a267babafe61480f32250107e3f5a831213",
+        "role: SSOT compiler, contract scaffolder, view renderer and validator only; never a MathArc runtime dependency"
+      ]
+    },
+    {
+      "external_system_id": "EXT-MATHARC-MODEL-BACKENDS",
+      "kind": "external-runtime",
+      "runtime_components": [
+        "Codex, Claude Code, model APIs and approved local processes through a MathArc backend interface",
+        "backend output is a candidate input and cannot own RuntimeStore, ResearchTrace or claim promotion"
+      ]
+    },
+    {
+      "external_system_id": "EXT-MATHARC-INVITE-PREVIEW",
+      "kind": "local-runtime",
+      "runtime_components": [
+        "existing MathArc invitation access and Cookie session boundary",
+        "invitation-only pilot surface; browser commands remain server-registered actions"
+      ]
+    }
+  ],
+  "acceptance_layers": [
+    "human",
+    "machine/e2e",
+    "machine/integration-contract",
+    "machine/local-runtime",
+    "machine/non-functional",
+    "machine/static",
+    "machine/unit",
+    "production",
+    "release",
+    "visual-fidelity"
+  ],
+  "release_boundary_compiler": {
+    "boundary_required": true,
+    "decision_authority": "user",
+    "rationale": "Each release slice carries its own user value and failure boundary."
+  },
+  "macro_phases": [
+    {
+      "id": "P1",
+      "title": "Delivery",
+      "release_ids": [
+        "RTRZ",
+        "RTR1",
+        "RTR2",
+        "RTR3",
+        "RTR4",
+        "RTR5",
+        "RTR6",
+        "RTR7"
+      ]
+    }
+  ],
+  "release_slices": [
+    {
+      "id": "RTRZ",
+      "macro_phase_id": "P1",
+      "title": "RT-R0 原生运行时章程",
+      "user_value": "MathArc 自己拥有执行权威、数据合同和运行边界。",
+      "independent_acceptance": "权威边界、后端替换规则和依赖允许清单可被机器检查。",
+      "independent_failure": "不启动真实研究；后续运行时切片保持未接受。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "F",
+        "DP1",
+        "FND1",
+        "FND2",
+        "FND3",
+        "QRTRZ"
+      ],
+      "source_completion_requirement_refs": [],
+      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
+      "release_candidate": "628518f2432cdc33adb1217fe9ea6d50b2995af5e32a94a7237d92d9c8fb7d50"
+    },
+    {
+      "id": "RTR1",
+      "macro_phase_id": "P1",
+      "title": "RT-R1 单任务运行闭环",
+      "user_value": "一个数学任务可以从验证、运行到候选回传形成闭环。",
+      "independent_acceptance": "单任务运行合同、运行存储、评价器和第一方协调器可重放。",
+      "independent_failure": "单任务失败不改变数学工作区，也不产生正式证据。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "RUN1",
+        "RUN2",
+        "RUN3",
+        "RUN4",
+        "RUN5",
+        "QRTR1"
+      ],
+      "source_completion_requirement_refs": [],
+      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
+      "release_candidate": "337afbbd8f5e4de4703b14244a6ca3b72392638c76ac0bf60c94a342e366bb16"
+    },
+    {
+      "id": "RTR2",
+      "macro_phase_id": "P1",
+      "title": "RT-R2 多研究成员并行",
+      "user_value": "不同研究路线可以在隔离工作区中真实并行执行。",
+      "independent_acceptance": "至少三个研究成员存在真实时间重叠，写入区域和预算可审计。",
+      "independent_failure": "单成员失败不破坏整轮，且不得伪造并行证据。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "PAR1",
+        "PAR2",
+        "PAR3",
+        "PAR4",
+        "PAR5",
+        "QRTR2"
+      ],
+      "source_completion_requirement_refs": [],
+      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
+      "release_candidate": "2426ab0e806582c1ebfe4a288d40b5ee5f04e7cb68224c491c583beb25c9ef6b"
+    },
+    {
+      "id": "RTR3",
+      "macro_phase_id": "P1",
+      "title": "RT-R3 持久化与恢复",
+      "user_value": "中断后可以从明确的代际边界继续运行。",
+      "independent_acceptance": "停止、暂停、取消、崩溃恢复和幂等导入都有明确状态。",
+      "independent_failure": "不确定状态不得猜测完成、重复计费或跳过代际。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "DUR1",
+        "DUR2",
+        "DUR3",
+        "DUR4",
+        "DUR5",
+        "QRTR3"
+      ],
+      "source_completion_requirement_refs": [],
+      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
+      "release_candidate": "447c2e2a735508220100af721906e04878f3570fbed577fde049f24a181db05c"
+    },
+    {
+      "id": "RTR4",
+      "macro_phase_id": "P1",
+      "title": "RT-R4 代际学习",
+      "user_value": "上一代的失败和研究经历可以改变下一代议程。",
+      "independent_acceptance": "第二代明确消费第一代事实，但历史经验不直接改变数学结论。",
+      "independent_failure": "蒸馏失败或缺少出处时，下一代保持未启动。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "SYN1",
+        "SYN2",
+        "SYN3",
+        "SYN4",
+        "SYN5",
+        "QRTR4"
+      ],
+      "source_completion_requirement_refs": [],
+      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
+      "release_candidate": "4f5fcc3b9d8ddafbd855fb26d4a4134f6eb0362c49f938b87991904bd1320395"
+    },
+    {
+      "id": "RTR5",
+      "macro_phase_id": "P1",
+      "title": "RT-R5 数学验证汇合",
+      "user_value": "候选结果可以经过独立验证后受控转换为正式证据。",
+      "independent_acceptance": "候选身份、验证回执、证据记录和晋升边界可重放。",
+      "independent_failure": "运行成功、模型自报或篡改候选都不能成为证明。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "VER1",
+        "VER2",
+        "VER3",
+        "VER4",
+        "VER5",
+        "VER6",
+        "QRTR5"
+      ],
+      "source_completion_requirement_refs": [],
+      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
+      "release_candidate": "3effc99d0790118fb3bf0c0c771553eeaad0aad0721c197365953ba53e556258"
+    },
+    {
+      "id": "RTR6",
+      "macro_phase_id": "P1",
+      "title": "RT-R6 邀请制控制台",
+      "user_value": "受邀用户可以查看并受控操作研究运行。",
+      "independent_acceptance": "控制台只投影 RuntimeStore，并对动作、权限和敏感信息做 fail-closed 保护。",
+      "independent_failure": "浏览器不能执行任意命令、目录、环境变量或未登记后端。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "UX1",
+        "UX2",
+        "UX3",
+        "UX4",
+        "UX5",
+        "UX6",
+        "QRTR6"
+      ],
+      "source_completion_requirement_refs": [],
+      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
+      "release_candidate": "3c413cff3c3238edf4335db97bb3a97f4543c0851d8ce6883613aa734cdb3b42"
+    },
+    {
+      "id": "RTR7",
+      "macro_phase_id": "P1",
+      "title": "RT-R7 真实任务与试点",
+      "user_value": "真实两代研究和邀请制试点具备可复核发布证据。",
+      "independent_acceptance": "真实并行、恢复、验证、权限和用户理解检查全部有证据。",
+      "independent_failure": "任一错误晋升、越权动作或不可重放结果阻断试点发布。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "DOG1",
+        "DOG2",
+        "DOG3",
+        "DOG4",
+        "QRTR7"
+      ],
+      "source_completion_requirement_refs": [],
+      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
+      "release_candidate": "e1ec6ddcf1a7f34e536c9e23cdae4f80ca7cf36298cfb90decfcb35df4718b71"
+    }
+  ],
+  "waves": [
+    {
+      "id": "W-RTRZ",
+      "release_id": "RTRZ",
+      "node_ids": [
+        "F",
+        "DP1",
+        "FND1",
+        "FND2",
+        "FND3",
+        "QRTRZ"
+      ]
+    },
+    {
+      "id": "W-RTR1",
+      "release_id": "RTR1",
+      "node_ids": [
+        "RUN1",
+        "RUN2",
+        "RUN3",
+        "RUN4",
+        "RUN5",
+        "QRTR1"
+      ]
+    },
+    {
+      "id": "W-RTR2",
+      "release_id": "RTR2",
+      "node_ids": [
+        "PAR1",
+        "PAR2",
+        "PAR3",
+        "PAR4",
+        "PAR5",
+        "QRTR2"
+      ]
+    },
+    {
+      "id": "W-RTR3",
+      "release_id": "RTR3",
+      "node_ids": [
+        "DUR1",
+        "DUR2",
+        "DUR3",
+        "DUR4",
+        "DUR5",
+        "QRTR3"
+      ]
+    },
+    {
+      "id": "W-RTR4",
+      "release_id": "RTR4",
+      "node_ids": [
+        "SYN1",
+        "SYN2",
+        "SYN3",
+        "SYN4",
+        "SYN5",
+        "QRTR4"
+      ]
+    },
+    {
+      "id": "W-RTR5",
+      "release_id": "RTR5",
+      "node_ids": [
+        "VER1",
+        "VER2",
+        "VER3",
+        "VER4",
+        "VER5",
+        "VER6",
+        "QRTR5"
+      ]
+    },
+    {
+      "id": "W-RTR6",
+      "release_id": "RTR6",
+      "node_ids": [
+        "UX1",
+        "UX2",
+        "UX3",
+        "UX4",
+        "UX5",
+        "UX6",
+        "QRTR6"
+      ]
+    },
+    {
+      "id": "W-RTR7",
+      "release_id": "RTR7",
+      "node_ids": [
+        "DOG1",
+        "DOG2",
+        "DOG3",
+        "DOG4",
+        "QRTR7"
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "id": "DOG1",
+      "kind": "implementation",
+      "goal": "Deliver source requirement DOG1.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "RUN5"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点任务负责人"
+    },
+    {
+      "id": "DOG2",
+      "kind": "implementation",
+      "goal": "Deliver source requirement DOG2.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "PAR5",
+        "SYN5",
+        "VER6",
+        "DOG1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "真实研究试点负责人"
+    },
+    {
+      "id": "DOG3",
+      "kind": "implementation",
+      "goal": "Deliver source requirement DOG3.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "DOG2",
+        "DUR5",
+        "UX6"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点攻击演练负责人"
+    },
+    {
+      "id": "DOG4",
+      "kind": "implementation",
+      "goal": "Deliver source requirement DOG4.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "DOG3"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点发布负责人"
+    },
+    {
+      "id": "DP1",
+      "kind": "decision",
+      "goal": "MathArc 原生运行时拥有执行状态和数学权威；GitHub Harness 只提供治理工具链。",
+      "dependencies": [
+        "F"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "decision owner"
+    },
+    {
+      "id": "DUR1",
+      "kind": "implementation",
+      "goal": "Deliver source requirement DUR1.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "PAR5",
+        "RUN2"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "代际提交负责人"
+    },
+    {
+      "id": "DUR2",
+      "kind": "implementation",
+      "goal": "Deliver source requirement DUR2.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "DUR1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "幂等账本负责人"
+    },
+    {
+      "id": "DUR3",
+      "kind": "implementation",
+      "goal": "Deliver source requirement DUR3.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "DUR1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行控制负责人"
+    },
+    {
+      "id": "DUR4",
+      "kind": "implementation",
+      "goal": "Deliver source requirement DUR4.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "DUR2",
+        "DUR3"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "恢复负责人"
+    },
+    {
+      "id": "DUR5",
+      "kind": "implementation",
+      "goal": "Deliver source requirement DUR5.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "DUR4"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "恢复验收负责人"
+    },
+    {
+      "id": "F",
+      "kind": "deterministic-generation",
+      "goal": "Freeze the readable identity of every normative source artifact.",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "orchestrator"
+    },
+    {
+      "id": "FND1",
+      "kind": "implementation",
+      "goal": "Deliver source requirement FND1.",
+      "dependencies": [
+        "F",
+        "DP1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "MathArc 运行时架构负责人"
+    },
+    {
+      "id": "FND2",
+      "kind": "implementation",
+      "goal": "Deliver source requirement FND2.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "FND1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "MathArc 研究协议负责人"
+    },
+    {
+      "id": "FND3",
+      "kind": "implementation",
+      "goal": "Deliver source requirement FND3.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "FND2"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "MathArc 运行时架构负责人"
+    },
+    {
+      "id": "PAR1",
+      "kind": "implementation",
+      "goal": "Deliver source requirement PAR1.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "RUN1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "研究拓扑负责人"
+    },
+    {
+      "id": "PAR2",
+      "kind": "implementation",
+      "goal": "Deliver source requirement PAR2.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "PAR1",
+        "RUN4"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "任务审批接线负责人"
+    },
+    {
+      "id": "PAR3",
+      "kind": "implementation",
+      "goal": "Deliver source requirement PAR3.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "PAR2"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "并发调度负责人"
+    },
+    {
+      "id": "PAR4",
+      "kind": "implementation",
+      "goal": "Deliver source requirement PAR4.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "PAR3"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "资源记账负责人"
+    },
+    {
+      "id": "PAR5",
+      "kind": "implementation",
+      "goal": "Deliver source requirement PAR5.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "PAR4"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "并行验收负责人"
+    },
+    {
+      "id": "QRTR1",
+      "kind": "convergence",
+      "goal": "Accept the RTR1 candidate against its source completion criteria.",
+      "dependencies": [
+        "RUN1",
+        "RUN2",
+        "RUN3",
+        "RUN4",
+        "RUN5"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "release decision owner"
+    },
+    {
+      "id": "QRTR2",
+      "kind": "convergence",
+      "goal": "Accept the RTR2 candidate against its source completion criteria.",
+      "dependencies": [
+        "PAR1",
+        "PAR2",
+        "PAR3",
+        "PAR4",
+        "PAR5"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "release decision owner"
+    },
+    {
+      "id": "QRTR3",
+      "kind": "convergence",
+      "goal": "Accept the RTR3 candidate against its source completion criteria.",
+      "dependencies": [
+        "DUR1",
+        "DUR2",
+        "DUR3",
+        "DUR4",
+        "DUR5"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "release decision owner"
+    },
+    {
+      "id": "QRTR4",
+      "kind": "convergence",
+      "goal": "Accept the RTR4 candidate against its source completion criteria.",
+      "dependencies": [
+        "SYN1",
+        "SYN2",
+        "SYN3",
+        "SYN4",
+        "SYN5"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "release decision owner"
+    },
+    {
+      "id": "QRTR5",
+      "kind": "convergence",
+      "goal": "Accept the RTR5 candidate against its source completion criteria.",
+      "dependencies": [
+        "VER1",
+        "VER2",
+        "VER3",
+        "VER4",
+        "VER5",
+        "VER6"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "release decision owner"
+    },
+    {
+      "id": "QRTR6",
+      "kind": "convergence",
+      "goal": "Accept the RTR6 candidate against its source completion criteria.",
+      "dependencies": [
+        "UX1",
+        "UX2",
+        "UX3",
+        "UX4",
+        "UX5",
+        "UX6"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "release decision owner"
+    },
+    {
+      "id": "QRTR7",
+      "kind": "convergence",
+      "goal": "Accept the RTR7 candidate against its source completion criteria.",
+      "dependencies": [
+        "DOG1",
+        "DOG2",
+        "DOG3",
+        "DOG4"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "release decision owner"
+    },
+    {
+      "id": "QRTRZ",
+      "kind": "convergence",
+      "goal": "Accept the RTRZ candidate against its source completion criteria.",
+      "dependencies": [
+        "FND1",
+        "FND2",
+        "FND3"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "release decision owner"
+    },
+    {
+      "id": "RUN1",
+      "kind": "implementation",
+      "goal": "Deliver source requirement RUN1.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "FND3"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行合同负责人"
+    },
+    {
+      "id": "RUN2",
+      "kind": "implementation",
+      "goal": "Deliver source requirement RUN2.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "RUN1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行存储负责人"
+    },
+    {
+      "id": "RUN3",
+      "kind": "implementation",
+      "goal": "Deliver source requirement RUN3.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "RUN1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "评价器负责人"
+    },
+    {
+      "id": "RUN4",
+      "kind": "implementation",
+      "goal": "Deliver source requirement RUN4.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "RUN2",
+        "RUN3"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "第一方后端负责人"
+    },
+    {
+      "id": "RUN5",
+      "kind": "implementation",
+      "goal": "Deliver source requirement RUN5.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "RUN4"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "单任务验收负责人"
+    },
+    {
+      "id": "SYN1",
+      "kind": "implementation",
+      "goal": "Deliver source requirement SYN1.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "RUN5",
+        "DUR2"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "探索结果接线负责人"
+    },
+    {
+      "id": "SYN2",
+      "kind": "implementation",
+      "goal": "Deliver source requirement SYN2.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "SYN1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "反例复核负责人"
+    },
+    {
+      "id": "SYN3",
+      "kind": "implementation",
+      "goal": "Deliver source requirement SYN3.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "SYN1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "研究记忆负责人"
+    },
+    {
+      "id": "SYN4",
+      "kind": "implementation",
+      "goal": "Deliver source requirement SYN4.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "SYN2",
+        "SYN3"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "代际议程负责人"
+    },
+    {
+      "id": "SYN5",
+      "kind": "implementation",
+      "goal": "Deliver source requirement SYN5.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "SYN4",
+        "DUR5"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "连续代际验收负责人"
+    },
+    {
+      "id": "UX1",
+      "kind": "implementation",
+      "goal": "Deliver source requirement UX1.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "DUR2"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "控制台投影负责人"
+    },
+    {
+      "id": "UX2",
+      "kind": "implementation",
+      "goal": "Deliver source requirement UX2.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "FND2"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "邀请权限负责人"
+    },
+    {
+      "id": "UX3",
+      "kind": "implementation",
+      "goal": "Deliver source requirement UX3.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "UX2",
+        "DUR5"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行动作 API 负责人"
+    },
+    {
+      "id": "UX4",
+      "kind": "implementation",
+      "goal": "Deliver source requirement UX4.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "UX1",
+        "UX2"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "控制台安全视图负责人"
+    },
+    {
+      "id": "UX5",
+      "kind": "implementation",
+      "goal": "Deliver source requirement UX5.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "UX3",
+        "UX4",
+        "VER6"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "实时控制台负责人"
+    },
+    {
+      "id": "UX6",
+      "kind": "implementation",
+      "goal": "Deliver source requirement UX6.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "UX5"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "浏览器产品验收负责人"
+    },
+    {
+      "id": "VER1",
+      "kind": "implementation",
+      "goal": "Deliver source requirement VER1.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "RUN1",
+        "DUR2"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "候选身份负责人"
+    },
+    {
+      "id": "VER2",
+      "kind": "implementation",
+      "goal": "Deliver source requirement VER2.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "VER1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "命题范围负责人"
+    },
+    {
+      "id": "VER3",
+      "kind": "implementation",
+      "goal": "Deliver source requirement VER3.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "VER2"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "独立重放负责人"
+    },
+    {
+      "id": "VER4",
+      "kind": "implementation",
+      "goal": "Deliver source requirement VER4.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "VER3"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "证据转换负责人"
+    },
+    {
+      "id": "VER5",
+      "kind": "implementation",
+      "goal": "Deliver source requirement VER5.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "VER4"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "证据失效负责人"
+    },
+    {
+      "id": "VER6",
+      "kind": "implementation",
+      "goal": "Deliver source requirement VER6.",
+      "dependencies": [
+        "F",
+        "DP1",
+        "VER5"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "验证汇合负责人"
+    }
+  ],
+  "artifacts": {
+    "ssot_bundle": true,
+    "generated_views": [
+      "main",
+      "topology",
+      "nodes-rtrz",
+      "nodes-rtr1",
+      "nodes-rtr2",
+      "nodes-rtr3",
+      "nodes-rtr4",
+      "nodes-rtr5",
+      "nodes-rtr6",
+      "nodes-rtr7"
+    ],
+    "worker_ledger": false,
+    "evidence_identity_registry": false,
+    "resource_matrix": false,
+    "runner_registry": false
+  },
+  "artifacts_inventory": {
+    "total_nodes": 49,
+    "implementation_nodes": 39,
+    "worker_nodes": 0,
+    "generated_views": 10
+  },
+  "complexity_budget": {
+    "authority": "user",
+    "rationale": "One node per declared item plus decision and release gates.",
+    "limits": {
+      "total_nodes": 49,
+      "implementation_nodes_per_release": 6,
+      "codex_worker_nodes": 0,
+      "generated_views": 10
+    },
+    "exception": null
+  },
+  "goal_size_detector": {
+    "implementation_or_migration_nodes": 39,
+    "external_systems": 3,
+    "release_slices": 8,
+    "production_migrations": 0,
+    "acceptance_layers": 10,
+    "split_required": false,
+    "split_strategy": "release"
+  }
+}

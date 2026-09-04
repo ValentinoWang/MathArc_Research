@@ -1,0 +1,66 @@
+{
+  "node_id": "SYN2",
+  "semantic_key": "requirement.syn2",
+  "stage": "RTR4",
+  "work_kind": "implementation",
+  "domain_lane": "rtr4",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "SYN1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.syn2"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "QRTR4",
+    "SYN4"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/SYN2.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/falsification.py"
+  ],
+  "required_lanes": [
+    "machine/unit",
+    "machine/integration-contract"
+  ],
+  "goal": "Deliver source requirement SYN2.",
+  "owner": "反例复核负责人",
+  "acceptance_contract_ref": "acceptance-fragments/SYN2/acceptance-contract.md",
+  "surface_refs": [
+    "counterexample-review"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

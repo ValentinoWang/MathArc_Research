@@ -1,0 +1,66 @@
+{
+  "node_id": "PAR4",
+  "semantic_key": "requirement.par4",
+  "stage": "RTR2",
+  "work_kind": "implementation",
+  "domain_lane": "rtr2",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "PAR3"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.par4"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "PAR5",
+    "QRTR2"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/PAR4.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/budget.py"
+  ],
+  "required_lanes": [
+    "machine/unit",
+    "machine/non-functional"
+  ],
+  "goal": "Deliver source requirement PAR4.",
+  "owner": "资源记账负责人",
+  "acceptance_contract_ref": "acceptance-fragments/PAR4/acceptance-contract.md",
+  "surface_refs": [
+    "resource-accounting"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "node_id": "UX4",
+  "semantic_key": "requirement.ux4",
+  "stage": "RTR6",
+  "work_kind": "implementation",
+  "domain_lane": "rtr6",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "UX1",
+    "UX2"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.ux4"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "QRTR6",
+    "UX5"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/UX4.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/console_topic.py"
+  ],
+  "required_lanes": [
+    "machine/static",
+    "machine/e2e",
+    "visual-fidelity"
+  ],
+  "goal": "Deliver source requirement UX4.",
+  "owner": "控制台安全视图负责人",
+  "acceptance_contract_ref": "acceptance-fragments/UX4/acceptance-contract.md",
+  "surface_refs": [
+    "runtime-disclosure"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

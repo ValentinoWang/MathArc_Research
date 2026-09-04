@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-DUR3-DUR4",
+  "from": "DUR3",
+  "to": "DUR4",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.dur3"
+  ],
+  "transferred_input": "Deliver source requirement DUR3.",
+  "gate_evidence": "acceptance contract evidence"
+}

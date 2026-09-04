@@ -1,0 +1,62 @@
+{
+  "node_id": "FND1",
+  "semantic_key": "requirement.fnd1",
+  "stage": "RTRZ",
+  "work_kind": "implementation",
+  "domain_lane": "rtrz",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.fnd1"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "FND2",
+    "QRTRZ"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/FND1.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "scripts"
+  ],
+  "required_lanes": [
+    "machine/static",
+    "machine/unit"
+  ],
+  "goal": "Deliver source requirement FND1.",
+  "owner": "MathArc 运行时架构负责人",
+  "acceptance_contract_ref": "acceptance-fragments/FND1/acceptance-contract.md",
+  "surface_refs": [
+    "runtime-governance"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-F-RUN4",
+  "from": "F",
+  "to": "RUN4",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "data-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "source.identity"
+  ],
+  "transferred_input": "Freeze the readable identity of every normative source artifact.",
+  "gate_evidence": "acceptance contract evidence"
+}

@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-SYN1-SYN3",
+  "from": "SYN1",
+  "to": "SYN3",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.syn1"
+  ],
+  "transferred_input": "Deliver source requirement SYN1.",
+  "gate_evidence": "acceptance contract evidence"
+}

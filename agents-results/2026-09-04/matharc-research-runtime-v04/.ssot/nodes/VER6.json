@@ -1,0 +1,67 @@
+{
+  "node_id": "VER6",
+  "semantic_key": "requirement.ver6",
+  "stage": "RTR5",
+  "work_kind": "implementation",
+  "domain_lane": "rtr5",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "VER5"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.ver6"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "DOG2",
+    "QRTR5",
+    "UX5"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/VER6.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "tests"
+  ],
+  "required_lanes": [
+    "machine/e2e",
+    "machine/integration-contract"
+  ],
+  "goal": "Deliver source requirement VER6.",
+  "owner": "验证汇合负责人",
+  "acceptance_contract_ref": "acceptance-fragments/VER6/acceptance-contract.md",
+  "surface_refs": [
+    "verification-gate"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

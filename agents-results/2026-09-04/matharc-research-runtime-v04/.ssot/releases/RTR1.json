@@ -1,0 +1,15 @@
+{
+  "release_id": "RTR1",
+  "release_gate_node": "QRTR1",
+  "title": "RT-R1 单任务运行闭环",
+  "user_value": "一个数学任务可以从验证、运行到候选回传形成闭环。",
+  "independent_failure": "单任务失败不改变数学工作区，也不产生正式证据。",
+  "node_ids": [
+    "RUN1",
+    "RUN2",
+    "RUN3",
+    "RUN4",
+    "RUN5",
+    "QRTR1"
+  ]
+}

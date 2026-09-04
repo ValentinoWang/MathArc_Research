@@ -1,0 +1,66 @@
+{
+  "node_id": "RUN3",
+  "semantic_key": "requirement.run3",
+  "stage": "RTR1",
+  "work_kind": "implementation",
+  "domain_lane": "rtr1",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "RUN1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.run3"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "QRTR1",
+    "RUN4"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/RUN3.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/benchmark_runner.py"
+  ],
+  "required_lanes": [
+    "machine/unit",
+    "machine/local-runtime"
+  ],
+  "goal": "Deliver source requirement RUN3.",
+  "owner": "评价器负责人",
+  "acceptance_contract_ref": "acceptance-fragments/RUN3/acceptance-contract.md",
+  "surface_refs": [
+    "evaluation-contract"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

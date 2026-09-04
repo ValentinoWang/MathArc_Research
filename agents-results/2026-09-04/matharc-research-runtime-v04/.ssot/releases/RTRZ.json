@@ -1,0 +1,15 @@
+{
+  "release_id": "RTRZ",
+  "release_gate_node": "QRTRZ",
+  "title": "RT-R0 原生运行时章程",
+  "user_value": "MathArc 自己拥有执行权威、数据合同和运行边界。",
+  "independent_failure": "不启动真实研究；后续运行时切片保持未接受。",
+  "node_ids": [
+    "F",
+    "DP1",
+    "FND1",
+    "FND2",
+    "FND3",
+    "QRTRZ"
+  ]
+}

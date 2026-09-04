@@ -1,0 +1,67 @@
+{
+  "node_id": "UX6",
+  "semantic_key": "requirement.ux6",
+  "stage": "RTR6",
+  "work_kind": "implementation",
+  "domain_lane": "rtr6",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "UX5"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.ux6"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "DOG3",
+    "QRTR6"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/UX6.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "acceptance"
+  ],
+  "required_lanes": [
+    "machine/e2e",
+    "visual-fidelity",
+    "human"
+  ],
+  "goal": "Deliver source requirement UX6.",
+  "owner": "浏览器产品验收负责人",
+  "acceptance_contract_ref": "acceptance-fragments/UX6/acceptance-contract.md",
+  "surface_refs": [
+    "console-human-acceptance"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

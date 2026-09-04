@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-VER5-VER6",
+  "from": "VER5",
+  "to": "VER6",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.ver5"
+  ],
+  "transferred_input": "Deliver source requirement VER5.",
+  "gate_evidence": "acceptance contract evidence"
+}

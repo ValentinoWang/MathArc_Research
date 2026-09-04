@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-UX6-DOG3",
+  "from": "UX6",
+  "to": "DOG3",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.ux6"
+  ],
+  "transferred_input": "Deliver source requirement UX6.",
+  "gate_evidence": "acceptance contract evidence"
+}

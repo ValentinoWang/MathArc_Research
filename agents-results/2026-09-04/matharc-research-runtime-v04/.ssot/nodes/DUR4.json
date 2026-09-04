@@ -1,0 +1,67 @@
+{
+  "node_id": "DUR4",
+  "semantic_key": "requirement.dur4",
+  "stage": "RTR3",
+  "work_kind": "implementation",
+  "domain_lane": "rtr3",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "DUR2",
+    "DUR3"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.dur4"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "DUR5",
+    "QRTR3"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/DUR4.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/workspace_server"
+  ],
+  "required_lanes": [
+    "machine/local-runtime",
+    "machine/integration-contract"
+  ],
+  "goal": "Deliver source requirement DUR4.",
+  "owner": "恢复负责人",
+  "acceptance_contract_ref": "acceptance-fragments/DUR4/acceptance-contract.md",
+  "surface_refs": [
+    "crash-recovery"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

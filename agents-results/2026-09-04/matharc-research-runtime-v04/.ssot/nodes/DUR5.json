@@ -1,0 +1,68 @@
+{
+  "node_id": "DUR5",
+  "semantic_key": "requirement.dur5",
+  "stage": "RTR3",
+  "work_kind": "implementation",
+  "domain_lane": "rtr3",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "DUR4"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.dur5"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "DOG3",
+    "QRTR3",
+    "SYN5",
+    "UX3"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/DUR5.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "tests"
+  ],
+  "required_lanes": [
+    "machine/e2e",
+    "machine/local-runtime"
+  ],
+  "goal": "Deliver source requirement DUR5.",
+  "owner": "恢复验收负责人",
+  "acceptance_contract_ref": "acceptance-fragments/DUR5/acceptance-contract.md",
+  "surface_refs": [
+    "cold-restart"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

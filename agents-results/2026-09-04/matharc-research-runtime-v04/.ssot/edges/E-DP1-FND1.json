@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-DP1-FND1",
+  "from": "DP1",
+  "to": "FND1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "decision.matharc-native-runtime.v1"
+  ],
+  "transferred_input": "MathArc 原生运行时拥有执行状态和数学权威；GitHub Harness 只提供治理工具链。",
+  "gate_evidence": "acceptance contract evidence"
+}

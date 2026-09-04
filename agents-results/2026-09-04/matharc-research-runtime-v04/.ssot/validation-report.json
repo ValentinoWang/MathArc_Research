@@ -1,0 +1,902 @@
+{
+  "schema_version": 3,
+  "generated_at": "2026-09-04T08:19:08.206516+00:00",
+  "generator": {
+    "repository": "ValentinoWang/Harness_Engineering",
+    "commit": "e4f56a267babafe61480f32250107e3f5a831213",
+    "dirty": false,
+    "dirty_files": [],
+    "dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "skill_path": "Core/skills/report-to-ssot-development-paths",
+    "skill_realpath": "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths",
+    "skill_sha256": "a657fd9a42e3a29f2cc2e23eb1234e5eca88933fe9919de2b67d3026c64ac0ae",
+    "checker_bundle_sha256": "a2ae7ddadba1e9562834fb72a838eaf04dbc294d7ad453dd05ec26d0c086742c"
+  },
+  "runtime": {
+    "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+    "tree_commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+    "project_commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
+    "project_dirty": true,
+    "project_dirty_diff_sha256": "d8ba0ef1aabac75f3d59a4b6d2d5e59c8ba22877353d6824df708d94c8d630b4",
+    "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
+  },
+  "bundle": {
+    "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04",
+    "content_sha256": "4aed114653de2341456d481f21c2b7a302ecc38953549bba9084c8b5189135d7",
+    "manifest_identity_sha256": "a27318a670e11621320ca7799af88d30d9c7c58aa9e14d0be2bf2bdef1a66e10"
+  },
+  "checks": [
+    {
+      "id": "reading-map",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/check_reading_map.py"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "reading map check passed: /private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/reading-map.json\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "runtime-skill-provenance",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/tools/harnessctl.py",
+        "doctor",
+        "--project",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+        "--check-runtime-skills"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 48\nruntime_skill_check: enabled\ndoctor: ok\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "complexity",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/planning-compiler.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT complexity check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/planning-compiler.json (depth=L2, releases=8, nodes=49, workers=0, contracts=39, criteria=78)\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "source-requirements",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_coverage.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "source requirement registry passed: mode=skipped covered=0/0\n",
+      "class": "world-verification"
+    },
+    {
+      "id": "render",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
+        "--check",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT views verified: 1 manifest(s)\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "machine-program",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT program check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json (nodes=49, formal_ready=0, conditional_ready=0)\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "acceptance-contracts",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_acceptance_contracts.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SHADOW: 38 of 39 contracts have a 90%+ similar \"Performance and reliability\" section after normalization (e.g. DOG1, DOG2, DOG3, DOG4, DUR1); not blocking -- collecting false-positive rate before this can become a hard gate\nSHADOW: 39 of 39 contracts have a 90%+ similar \"Protected acceptance tests\" section after normalization (e.g. DOG1, DOG2, DOG3, DOG4, DUR1); not blocking -- collecting false-positive rate before this can become a hard gate\nSSOT acceptance contract check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json (contracts=39, dedup=ok, ac_specificity=ok)\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "parallelism-analysis",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "{\n  \"actor_pools\": {},\n  \"critical_path_edges\": 24,\n  \"current_ready_nodes\": [],\n  \"current_ready_width\": 0,\n  \"frontier_transitions\": [\n    {\n      \"accepted_node\": \"F\",\n      \"unlocks\": [\n        \"DOG1\",\n        \"DOG2\",\n        \"DOG3\",\n        \"DOG4\",\n        \"DP1\",\n        \"DUR1\",\n        \"DUR2\",\n        \"DUR3\",\n        \"DUR4\",\n        \"DUR5\",\n        \"FND1\",\n        \"FND2\",\n        \"FND3\",\n        \"PAR1\",\n        \"PAR2\",\n        \"PAR3\",\n        \"PAR4\",\n        \"PAR5\",\n        \"RUN1\",\n        \"RUN2\",\n        \"RUN3\",\n        \"RUN4\",\n        \"RUN5\",\n        \"SYN1\",\n        \"SYN2\",\n        \"SYN3\",\n        \"SYN4\",\n        \"SYN5\",\n        \"UX1\",\n        \"UX2\",\n        \"UX3\",\n        \"UX4\",\n        \"UX5\",\n        \"UX6\",\n        \"VER1\",\n        \"VER2\",\n        \"VER3\",\n        \"VER4\",\n        \"VER5\",\n        \"VER6\"\n      ],\n      \"waits_for\": []\n    },\n    {\n      \"accepted_node\": \"DP1\",\n      \"unlocks\": [\n        \"DOG1\",\n        \"DOG2\",\n        \"DOG3\",\n        \"DOG4\",\n        \"DUR1\",\n        \"DUR2\",\n        \"DUR3\",\n        \"DUR4\",\n        \"DUR5\",\n        \"FND1\",\n        \"FND2\",\n        \"FND3\",\n        \"PAR1\",\n        \"PAR2\",\n        \"PAR3\",\n        \"PAR4\",\n        \"PAR5\",\n        \"RUN1\",\n        \"RUN2\",\n        \"RUN3\",\n        \"RUN4\",\n        \"RUN5\",\n        \"SYN1\",\n        \"SYN2\",\n        \"SYN3\",\n        \"SYN4\",\n        \"SYN5\",\n        \"UX1\",\n        \"UX2\",\n        \"UX3\",\n        \"UX4\",\n        \"UX5\",\n        \"UX6\",\n        \"VER1\",\n        \"VER2\",\n        \"VER3\",\n        \"VER4\",\n        \"VER5\",\n        \"VER6\"\n      ],\n      \"waits_for\": [\n        \"F\"\n      ]\n    },\n    {\n      \"accepted_node\": \"FND1\",\n      \"unlocks\": [\n        \"FND2\",\n        \"QRTRZ\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\"\n      ]\n    },\n    {\n      \"accepted_node\": \"FND2\",\n      \"unlocks\": [\n        \"FND3\",\n        \"QRTRZ\",\n        \"UX2\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"FND1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"FND3\",\n      \"unlocks\": [\n        \"QRTRZ\",\n        \"RUN1\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"FND2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"RUN1\",\n      \"unlocks\": [\n        \"PAR1\",\n        \"QRTR1\",\n        \"RUN2\",\n        \"RUN3\",\n        \"VER1\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"FND3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"PAR1\",\n      \"unlocks\": [\n        \"PAR2\",\n        \"QRTR2\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"RUN1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"RUN2\",\n      \"unlocks\": [\n        \"DUR1\",\n        \"QRTR1\",\n        \"RUN4\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"RUN1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"RUN3\",\n      \"unlocks\": [\n        \"QRTR1\",\n        \"RUN4\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"RUN1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"RUN4\",\n      \"unlocks\": [\n        \"PAR2\",\n        \"QRTR1\",\n        \"RUN5\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"RUN2\",\n        \"RUN3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"PAR2\",\n      \"unlocks\": [\n        \"PAR3\",\n        \"QRTR2\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"PAR1\",\n        \"RUN4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"PAR3\",\n      \"unlocks\": [\n        \"PAR4\",\n        \"QRTR2\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"PAR2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"PAR4\",\n      \"unlocks\": [\n        \"PAR5\",\n        \"QRTR2\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"PAR3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"PAR5\",\n      \"unlocks\": [\n        \"DOG2\",\n        \"DUR1\",\n        \"QRTR2\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"PAR4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"DUR1\",\n      \"unlocks\": [\n        \"DUR2\",\n        \"DUR3\",\n        \"QRTR3\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"PAR5\",\n        \"RUN2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"DUR2\",\n      \"unlocks\": [\n        \"DUR4\",\n        \"QRTR3\",\n        \"SYN1\",\n        \"UX1\",\n        \"VER1\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"DUR1\",\n        \"F\"\n      ]\n    },\n    {\n      \"accepted_node\": \"DUR3\",\n      \"unlocks\": [\n        \"DUR4\",\n        \"QRTR3\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"DUR1\",\n        \"F\"\n      ]\n    },\n    {\n      \"accepted_node\": \"DUR4\",\n      \"unlocks\": [\n        \"DUR5\",\n        \"QRTR3\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"DUR2\",\n        \"DUR3\",\n        \"F\"\n      ]\n    },\n    {\n      \"accepted_node\": \"DUR5\",\n      \"unlocks\": [\n        \"DOG3\",\n        \"QRTR3\",\n        \"SYN5\",\n        \"UX3\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"DUR4\",\n        \"F\"\n      ]\n    },\n    {\n      \"accepted_node\": \"RUN5\",\n      \"unlocks\": [\n        \"DOG1\",\n        \"QRTR1\",\n        \"SYN1\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"RUN4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"DOG1\",\n      \"unlocks\": [\n        \"DOG2\",\n        \"QRTR7\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"RUN5\"\n      ]\n    },\n    {\n      \"accepted_node\": \"SYN1\",\n      \"unlocks\": [\n        \"QRTR4\",\n        \"SYN2\",\n        \"SYN3\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"DUR2\",\n        \"F\",\n        \"RUN5\"\n      ]\n    },\n    {\n      \"accepted_node\": \"SYN2\",\n      \"unlocks\": [\n        \"QRTR4\",\n        \"SYN4\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"SYN1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"SYN3\",\n      \"unlocks\": [\n        \"QRTR4\",\n        \"SYN4\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"SYN1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"SYN4\",\n      \"unlocks\": [\n        \"QRTR4\",\n        \"SYN5\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"SYN2\",\n        \"SYN3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"SYN5\",\n      \"unlocks\": [\n        \"DOG2\",\n        \"QRTR4\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"DUR5\",\n        \"F\",\n        \"SYN4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"UX1\",\n      \"unlocks\": [\n        \"QRTR6\",\n        \"UX4\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"DUR2\",\n        \"F\"\n      ]\n    },\n    {\n      \"accepted_node\": \"UX2\",\n      \"unlocks\": [\n        \"QRTR6\",\n        \"UX3\",\n        \"UX4\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"FND2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"UX3\",\n      \"unlocks\": [\n        \"QRTR6\",\n        \"UX5\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"DUR5\",\n        \"F\",\n        \"UX2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"UX4\",\n      \"unlocks\": [\n        \"QRTR6\",\n        \"UX5\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"UX1\",\n        \"UX2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"VER1\",\n      \"unlocks\": [\n        \"QRTR5\",\n        \"VER2\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"DUR2\",\n        \"F\",\n        \"RUN1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"VER2\",\n      \"unlocks\": [\n        \"QRTR5\",\n        \"VER3\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"VER1\"\n      ]\n    },\n    {\n      \"accepted_node\": \"VER3\",\n      \"unlocks\": [\n        \"QRTR5\",\n        \"VER4\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"VER2\"\n      ]\n    },\n    {\n      \"accepted_node\": \"VER4\",\n      \"unlocks\": [\n        \"QRTR5\",\n        \"VER5\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"VER3\"\n      ]\n    },\n    {\n      \"accepted_node\": \"VER5\",\n      \"unlocks\": [\n        \"QRTR5\",\n        \"VER6\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"VER4\"\n      ]\n    },\n    {\n      \"accepted_node\": \"VER6\",\n      \"unlocks\": [\n        \"DOG2\",\n        \"QRTR5\",\n        \"UX5\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"VER5\"\n      ]\n    },\n    {\n      \"accepted_node\": \"DOG2\",\n      \"unlocks\": [\n        \"DOG3\",\n        \"QRTR7\"\n      ],\n      \"waits_for\": [\n        \"DOG1\",\n        \"DP1\",\n        \"F\",\n        \"PAR5\",\n        \"SYN5\",\n        \"VER6\"\n      ]\n    },\n    {\n      \"accepted_node\": \"UX5\",\n      \"unlocks\": [\n        \"QRTR6\",\n        \"UX6\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"UX3\",\n        \"UX4\",\n        \"VER6\"\n      ]\n    },\n    {\n      \"accepted_node\": \"UX6\",\n      \"unlocks\": [\n        \"DOG3\",\n        \"QRTR6\"\n      ],\n      \"waits_for\": [\n        \"DP1\",\n        \"F\",\n        \"UX5\"\n      ]\n    },\n    {\n      \"accepted_node\": \"DOG3\",\n      \"unlocks\": [\n        \"DOG4\",\n        \"QRTR7\"\n      ],\n      \"waits_for\": [\n        \"DOG2\",\n        \"DP1\",\n        \"DUR5\",\n        \"F\",\n        \"UX6\"\n      ]\n    },\n    {\n      \"accepted_node\": \"DOG4\",\n      \"unlocks\": [\n        \"QRTR7\"\n      ],\n      \"waits_for\": [\n        \"DOG3\",\n        \"DP1\",\n        \"F\"\n      ]\n    }\n  ],\n  \"manifest\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json\",\n  \"maximum_antichain_width\": 10,\n  \"resource_verified_width\": null,\n  \"scheduling_model\": \"event-driven\",\n  \"static_waves_are_authority\": false\n}\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "structure",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "SSOT structure check passed.\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "facts",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/check_ssot_facts.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "WARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered layout fact is unused: agents-results/<date>/<slug>/\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: acceptance\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: benchmarks\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: docs/prototypes\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: experiments\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/access.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/access_server.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/artifact_store.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/audit.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/benchmark.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/benchmark_runner.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/budget.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/claude_code_runtime.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/console_export.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/console_topic.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/episode_memory.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/event_log.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/exploration_session.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/falsification.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/local_store.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/orchestrator.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/research_director\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/schema.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/trace.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/workspace\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/workspace_bundle.py\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: matharc/v02/workspace_server\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: scripts\nWARNING: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md: registered path fact is unused: tests\nSSOT facts check passed.\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "source-requirement-conservation",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_conservation.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "source requirement conservation skipped: strict mode not declared\n",
+      "class": "world-verification"
+    },
+    {
+      "id": "chinese-readability",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/check_chinese_readability.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/ssot-development-paths.md"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "中文可读性检查通过。\n",
+      "class": "self-consistency"
+    },
+    {
+      "id": "execution-ledger",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "execution ledger check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json\n",
+      "class": "policy"
+    },
+    {
+      "id": "archive-check",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
+        "--source",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+        "--check",
+        "--archive-root",
+        "/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集",
+        "--require-snapshot-root"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "{\n  \"status\": \"verified\",\n  \"source\": \"/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04\",\n  \"destination\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-09-04/matharc-research/matharc-research-runtime-v04\",\n  \"project_name\": \"matharc-research\",\n  \"ssot_name\": \"matharc-research-runtime-v04\",\n  \"snapshot_date\": \"2026-09-04\",\n  \"main_document\": \"ssot-development-paths.md\",\n  \"file_count\": 10,\n  \"contains_openproblem\": false\n}\n",
+      "class": "policy"
+    },
+    {
+      "id": "archive-audit",
+      "command": [
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/.venv/bin/python",
+        "/private/var/folders/w0/td0lhml95j374vr26ypgjzfh0000gn/T/tmp.0oVMuKs4rn/Core/skills/ssot-obsidian-snapshot/scripts/snapshot_ssot.py",
+        "--audit-archive",
+        "--project-root",
+        "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
+        "--archive-root",
+        "/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集",
+        "--require-snapshot-root"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "{\n  \"status\": \"verified\",\n  \"archive_root\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集\",\n  \"bundle_count\": 45,\n  \"problem_document_count\": 24\n}\n",
+      "class": "policy"
+    },
+    {
+      "id": "strict-provenance",
+      "command": [
+        "git",
+        "status",
+        "--short"
+      ],
+      "exit_code": 0,
+      "result": "passed",
+      "output": "protected Harness inputs are clean",
+      "class": "policy"
+    }
+  ],
+  "parallelism": {
+    "actor_pools": {},
+    "critical_path_edges": 24,
+    "current_ready_nodes": [],
+    "current_ready_width": 0,
+    "frontier_transitions": [
+      {
+        "accepted_node": "F",
+        "unlocks": [
+          "DOG1",
+          "DOG2",
+          "DOG3",
+          "DOG4",
+          "DP1",
+          "DUR1",
+          "DUR2",
+          "DUR3",
+          "DUR4",
+          "DUR5",
+          "FND1",
+          "FND2",
+          "FND3",
+          "PAR1",
+          "PAR2",
+          "PAR3",
+          "PAR4",
+          "PAR5",
+          "RUN1",
+          "RUN2",
+          "RUN3",
+          "RUN4",
+          "RUN5",
+          "SYN1",
+          "SYN2",
+          "SYN3",
+          "SYN4",
+          "SYN5",
+          "UX1",
+          "UX2",
+          "UX3",
+          "UX4",
+          "UX5",
+          "UX6",
+          "VER1",
+          "VER2",
+          "VER3",
+          "VER4",
+          "VER5",
+          "VER6"
+        ],
+        "waits_for": []
+      },
+      {
+        "accepted_node": "DP1",
+        "unlocks": [
+          "DOG1",
+          "DOG2",
+          "DOG3",
+          "DOG4",
+          "DUR1",
+          "DUR2",
+          "DUR3",
+          "DUR4",
+          "DUR5",
+          "FND1",
+          "FND2",
+          "FND3",
+          "PAR1",
+          "PAR2",
+          "PAR3",
+          "PAR4",
+          "PAR5",
+          "RUN1",
+          "RUN2",
+          "RUN3",
+          "RUN4",
+          "RUN5",
+          "SYN1",
+          "SYN2",
+          "SYN3",
+          "SYN4",
+          "SYN5",
+          "UX1",
+          "UX2",
+          "UX3",
+          "UX4",
+          "UX5",
+          "UX6",
+          "VER1",
+          "VER2",
+          "VER3",
+          "VER4",
+          "VER5",
+          "VER6"
+        ],
+        "waits_for": [
+          "F"
+        ]
+      },
+      {
+        "accepted_node": "FND1",
+        "unlocks": [
+          "FND2",
+          "QRTRZ"
+        ],
+        "waits_for": [
+          "DP1",
+          "F"
+        ]
+      },
+      {
+        "accepted_node": "FND2",
+        "unlocks": [
+          "FND3",
+          "QRTRZ",
+          "UX2"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "FND1"
+        ]
+      },
+      {
+        "accepted_node": "FND3",
+        "unlocks": [
+          "QRTRZ",
+          "RUN1"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "FND2"
+        ]
+      },
+      {
+        "accepted_node": "RUN1",
+        "unlocks": [
+          "PAR1",
+          "QRTR1",
+          "RUN2",
+          "RUN3",
+          "VER1"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "FND3"
+        ]
+      },
+      {
+        "accepted_node": "PAR1",
+        "unlocks": [
+          "PAR2",
+          "QRTR2"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "RUN1"
+        ]
+      },
+      {
+        "accepted_node": "RUN2",
+        "unlocks": [
+          "DUR1",
+          "QRTR1",
+          "RUN4"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "RUN1"
+        ]
+      },
+      {
+        "accepted_node": "RUN3",
+        "unlocks": [
+          "QRTR1",
+          "RUN4"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "RUN1"
+        ]
+      },
+      {
+        "accepted_node": "RUN4",
+        "unlocks": [
+          "PAR2",
+          "QRTR1",
+          "RUN5"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "RUN2",
+          "RUN3"
+        ]
+      },
+      {
+        "accepted_node": "PAR2",
+        "unlocks": [
+          "PAR3",
+          "QRTR2"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "PAR1",
+          "RUN4"
+        ]
+      },
+      {
+        "accepted_node": "PAR3",
+        "unlocks": [
+          "PAR4",
+          "QRTR2"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "PAR2"
+        ]
+      },
+      {
+        "accepted_node": "PAR4",
+        "unlocks": [
+          "PAR5",
+          "QRTR2"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "PAR3"
+        ]
+      },
+      {
+        "accepted_node": "PAR5",
+        "unlocks": [
+          "DOG2",
+          "DUR1",
+          "QRTR2"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "PAR4"
+        ]
+      },
+      {
+        "accepted_node": "DUR1",
+        "unlocks": [
+          "DUR2",
+          "DUR3",
+          "QRTR3"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "PAR5",
+          "RUN2"
+        ]
+      },
+      {
+        "accepted_node": "DUR2",
+        "unlocks": [
+          "DUR4",
+          "QRTR3",
+          "SYN1",
+          "UX1",
+          "VER1"
+        ],
+        "waits_for": [
+          "DP1",
+          "DUR1",
+          "F"
+        ]
+      },
+      {
+        "accepted_node": "DUR3",
+        "unlocks": [
+          "DUR4",
+          "QRTR3"
+        ],
+        "waits_for": [
+          "DP1",
+          "DUR1",
+          "F"
+        ]
+      },
+      {
+        "accepted_node": "DUR4",
+        "unlocks": [
+          "DUR5",
+          "QRTR3"
+        ],
+        "waits_for": [
+          "DP1",
+          "DUR2",
+          "DUR3",
+          "F"
+        ]
+      },
+      {
+        "accepted_node": "DUR5",
+        "unlocks": [
+          "DOG3",
+          "QRTR3",
+          "SYN5",
+          "UX3"
+        ],
+        "waits_for": [
+          "DP1",
+          "DUR4",
+          "F"
+        ]
+      },
+      {
+        "accepted_node": "RUN5",
+        "unlocks": [
+          "DOG1",
+          "QRTR1",
+          "SYN1"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "RUN4"
+        ]
+      },
+      {
+        "accepted_node": "DOG1",
+        "unlocks": [
+          "DOG2",
+          "QRTR7"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "RUN5"
+        ]
+      },
+      {
+        "accepted_node": "SYN1",
+        "unlocks": [
+          "QRTR4",
+          "SYN2",
+          "SYN3"
+        ],
+        "waits_for": [
+          "DP1",
+          "DUR2",
+          "F",
+          "RUN5"
+        ]
+      },
+      {
+        "accepted_node": "SYN2",
+        "unlocks": [
+          "QRTR4",
+          "SYN4"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "SYN1"
+        ]
+      },
+      {
+        "accepted_node": "SYN3",
+        "unlocks": [
+          "QRTR4",
+          "SYN4"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "SYN1"
+        ]
+      },
+      {
+        "accepted_node": "SYN4",
+        "unlocks": [
+          "QRTR4",
+          "SYN5"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "SYN2",
+          "SYN3"
+        ]
+      },
+      {
+        "accepted_node": "SYN5",
+        "unlocks": [
+          "DOG2",
+          "QRTR4"
+        ],
+        "waits_for": [
+          "DP1",
+          "DUR5",
+          "F",
+          "SYN4"
+        ]
+      },
+      {
+        "accepted_node": "UX1",
+        "unlocks": [
+          "QRTR6",
+          "UX4"
+        ],
+        "waits_for": [
+          "DP1",
+          "DUR2",
+          "F"
+        ]
+      },
+      {
+        "accepted_node": "UX2",
+        "unlocks": [
+          "QRTR6",
+          "UX3",
+          "UX4"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "FND2"
+        ]
+      },
+      {
+        "accepted_node": "UX3",
+        "unlocks": [
+          "QRTR6",
+          "UX5"
+        ],
+        "waits_for": [
+          "DP1",
+          "DUR5",
+          "F",
+          "UX2"
+        ]
+      },
+      {
+        "accepted_node": "UX4",
+        "unlocks": [
+          "QRTR6",
+          "UX5"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "UX1",
+          "UX2"
+        ]
+      },
+      {
+        "accepted_node": "VER1",
+        "unlocks": [
+          "QRTR5",
+          "VER2"
+        ],
+        "waits_for": [
+          "DP1",
+          "DUR2",
+          "F",
+          "RUN1"
+        ]
+      },
+      {
+        "accepted_node": "VER2",
+        "unlocks": [
+          "QRTR5",
+          "VER3"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "VER1"
+        ]
+      },
+      {
+        "accepted_node": "VER3",
+        "unlocks": [
+          "QRTR5",
+          "VER4"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "VER2"
+        ]
+      },
+      {
+        "accepted_node": "VER4",
+        "unlocks": [
+          "QRTR5",
+          "VER5"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "VER3"
+        ]
+      },
+      {
+        "accepted_node": "VER5",
+        "unlocks": [
+          "QRTR5",
+          "VER6"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "VER4"
+        ]
+      },
+      {
+        "accepted_node": "VER6",
+        "unlocks": [
+          "DOG2",
+          "QRTR5",
+          "UX5"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "VER5"
+        ]
+      },
+      {
+        "accepted_node": "DOG2",
+        "unlocks": [
+          "DOG3",
+          "QRTR7"
+        ],
+        "waits_for": [
+          "DOG1",
+          "DP1",
+          "F",
+          "PAR5",
+          "SYN5",
+          "VER6"
+        ]
+      },
+      {
+        "accepted_node": "UX5",
+        "unlocks": [
+          "QRTR6",
+          "UX6"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "UX3",
+          "UX4",
+          "VER6"
+        ]
+      },
+      {
+        "accepted_node": "UX6",
+        "unlocks": [
+          "DOG3",
+          "QRTR6"
+        ],
+        "waits_for": [
+          "DP1",
+          "F",
+          "UX5"
+        ]
+      },
+      {
+        "accepted_node": "DOG3",
+        "unlocks": [
+          "DOG4",
+          "QRTR7"
+        ],
+        "waits_for": [
+          "DOG2",
+          "DP1",
+          "DUR5",
+          "F",
+          "UX6"
+        ]
+      },
+      {
+        "accepted_node": "DOG4",
+        "unlocks": [
+          "QRTR7"
+        ],
+        "waits_for": [
+          "DOG3",
+          "DP1",
+          "F"
+        ]
+      }
+    ],
+    "manifest": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json",
+    "maximum_antichain_width": 10,
+    "resource_verified_width": null,
+    "scheduling_model": "event-driven",
+    "static_waves_are_authority": false
+  },
+  "archive_policy": "required",
+  "integrity_result": "pass",
+  "policy_result": "complete",
+  "required_skipped_checks": [],
+  "optional_skipped_checks": [],
+  "bundle_valid": true,
+  "policy_complete": true,
+  "push_gate_eligible": true,
+  "release_ready": true,
+  "release_complete": false,
+  "release_statuses": {
+    "RTR1": {
+      "gate_node": "QRTR1",
+      "execution_state": "PLANNED",
+      "complete": false
+    },
+    "RTR2": {
+      "gate_node": "QRTR2",
+      "execution_state": "PLANNED",
+      "complete": false
+    },
+    "RTR3": {
+      "gate_node": "QRTR3",
+      "execution_state": "PLANNED",
+      "complete": false
+    },
+    "RTR4": {
+      "gate_node": "QRTR4",
+      "execution_state": "PLANNED",
+      "complete": false
+    },
+    "RTR5": {
+      "gate_node": "QRTR5",
+      "execution_state": "PLANNED",
+      "complete": false
+    },
+    "RTR6": {
+      "gate_node": "QRTR6",
+      "execution_state": "PLANNED",
+      "complete": false
+    },
+    "RTR7": {
+      "gate_node": "QRTR7",
+      "execution_state": "PLANNED",
+      "complete": false
+    },
+    "RTRZ": {
+      "gate_node": "QRTRZ",
+      "execution_state": "PLANNED",
+      "complete": false
+    }
+  },
+  "deprecated_fields": [
+    "release_ready"
+  ]
+}

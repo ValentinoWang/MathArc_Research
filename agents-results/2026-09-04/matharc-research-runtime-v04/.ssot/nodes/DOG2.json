@@ -1,0 +1,70 @@
+{
+  "node_id": "DOG2",
+  "semantic_key": "requirement.dog2",
+  "stage": "RTR7",
+  "work_kind": "implementation",
+  "domain_lane": "rtr7",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "PAR5",
+    "SYN5",
+    "VER6",
+    "DOG1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.dog2"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "DOG3",
+    "QRTR7"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/DOG2.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "experiments"
+  ],
+  "required_lanes": [
+    "machine/e2e",
+    "machine/local-runtime",
+    "production"
+  ],
+  "goal": "Deliver source requirement DOG2.",
+  "owner": "真实研究试点负责人",
+  "acceptance_contract_ref": "acceptance-fragments/DOG2/acceptance-contract.md",
+  "surface_refs": [
+    "real-two-generation-pilot"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

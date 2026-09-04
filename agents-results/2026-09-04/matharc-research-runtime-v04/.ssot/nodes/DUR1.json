@@ -1,0 +1,68 @@
+{
+  "node_id": "DUR1",
+  "semantic_key": "requirement.dur1",
+  "stage": "RTR3",
+  "work_kind": "implementation",
+  "domain_lane": "rtr3",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "PAR5",
+    "RUN2"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.dur1"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "DUR2",
+    "DUR3",
+    "QRTR3"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/DUR1.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/workspace_bundle.py"
+  ],
+  "required_lanes": [
+    "machine/unit",
+    "machine/local-runtime"
+  ],
+  "goal": "Deliver source requirement DUR1.",
+  "owner": "代际提交负责人",
+  "acceptance_contract_ref": "acceptance-fragments/DUR1/acceptance-contract.md",
+  "surface_refs": [
+    "generation-commit"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

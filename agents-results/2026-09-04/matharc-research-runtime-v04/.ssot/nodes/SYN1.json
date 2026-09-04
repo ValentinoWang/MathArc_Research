@@ -1,0 +1,68 @@
+{
+  "node_id": "SYN1",
+  "semantic_key": "requirement.syn1",
+  "stage": "RTR4",
+  "work_kind": "implementation",
+  "domain_lane": "rtr4",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "RUN5",
+    "DUR2"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.syn1"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "QRTR4",
+    "SYN2",
+    "SYN3"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/SYN1.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/exploration_session.py"
+  ],
+  "required_lanes": [
+    "machine/unit",
+    "machine/local-runtime"
+  ],
+  "goal": "Deliver source requirement SYN1.",
+  "owner": "探索结果接线负责人",
+  "acceptance_contract_ref": "acceptance-fragments/SYN1/acceptance-contract.md",
+  "surface_refs": [
+    "candidate-synthesis"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}

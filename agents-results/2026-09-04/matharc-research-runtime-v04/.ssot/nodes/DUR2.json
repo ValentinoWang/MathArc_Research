@@ -1,0 +1,69 @@
+{
+  "node_id": "DUR2",
+  "semantic_key": "requirement.dur2",
+  "stage": "RTR3",
+  "work_kind": "implementation",
+  "domain_lane": "rtr3",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "DUR1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.dur2"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "DUR4",
+    "QRTR3",
+    "SYN1",
+    "UX1",
+    "VER1"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/DUR2.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/artifact_store.py"
+  ],
+  "required_lanes": [
+    "machine/integration-contract",
+    "machine/local-runtime"
+  ],
+  "goal": "Deliver source requirement DUR2.",
+  "owner": "幂等账本负责人",
+  "acceptance_contract_ref": "acceptance-fragments/DUR2/acceptance-contract.md",
+  "surface_refs": [
+    "durable-import-ledger"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    }
+  ]
+}
