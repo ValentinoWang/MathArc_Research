@@ -2902,7 +2902,7 @@
     {
       "id": "DOG4",
       "release": "RTR7",
-      "kind": "release-decision",
+      "kind": "validation",
       "owner": {
         "role_id": "owner-dog4",
         "principal_ref": "principal:owner-dog4"
@@ -2924,6 +2924,12 @@
         "在 acceptance/runtime-pilot/release-evidence.json 中证明用户可理解研究状态且本地正式检查与干净重放通过"
       ],
       "goal": "汇编邀请试点的人类验收与发布证据，作出独立发布决策。",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_runtime_ops_release.py",
+        "assertion_authority": "MathArc 发布与清理测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-DOG4"
