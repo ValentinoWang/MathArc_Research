@@ -30,7 +30,6 @@
     "requirement.ops1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "OPS2",
     "Q6"
@@ -50,7 +49,15 @@
       "operation": "modify"
     },
     {
+      "path": "matharc/v02/runtime/ops.py",
+      "operation": "modify"
+    },
+    {
       "path": "tests/test_runtime_ops_deployment.py",
+      "operation": "modify"
+    },
+    {
+      "path": "tests/test_runtime_ops_bootstrap.py",
       "operation": "modify"
     }
   ],
@@ -75,27 +82,6 @@
     ],
     "quorum": 2,
     "minimum_trust": "repository-bound"
-  },
-  "acceptance_policy": "dual",
-  "acceptance_authorities": [
-    {
-      "role_id": "acceptance-a",
-      "principal_ref": "principal:acceptance-a"
-    },
-    {
-      "role_id": "acceptance-b",
-      "principal_ref": "principal:acceptance-b"
-    }
-  ],
-  "quorum": 2,
-  "minimum_trust": "repository-bound",
-  "owner_principal": {
-    "role_id": "owner-ops1",
-    "principal_ref": "principal:owner-ops1"
-  },
-  "owner_binding": {
-    "role_id": "owner-ops1",
-    "principal_ref": "principal:owner-ops1"
   },
   "source_requirement_refs": [
     "SRC-OPS1"

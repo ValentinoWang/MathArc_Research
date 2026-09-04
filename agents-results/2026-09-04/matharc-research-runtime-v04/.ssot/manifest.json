@@ -81,6 +81,9 @@
   "conflicts_dir": "conflicts",
   "world_verification_version": 1,
   "node_state_model_version": 2,
+  "strict_acceptance_profile_version": 2,
+  "authority_binding_version": 1,
+  "structured_result_version": 1,
   "acceptance_contract_policy_version": 2,
   "shared_acceptance_policies": [
     {
@@ -105,7 +108,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-RUNTIME-CONTRACT-HTML",
       "authority_path": "docs/contracts/matharc-research-runtime-v04.html",
-      "authority_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "authority_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "authority_sha256": "5bf47c89f1004f2701fbcb96a89ae248b1b5bdeb3522d6f02b8cf6d0acd5a76f",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -156,7 +159,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-RUNTIME-BASELINE",
       "authority_path": "docs/contracts/matharc-research-runtime-baseline.html",
-      "authority_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "authority_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "authority_sha256": "a2cf7bec5fa741620ad886639e8a04eb8216b2b8c9a5f16ca773f6bd625e2acc",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -166,7 +169,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-TRACE-PY",
       "authority_path": "matharc/v02/trace.py",
-      "authority_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "authority_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "authority_sha256": "9f45e83d197fe172d173f1b617944fad92a33a621b58d1e79f68cb18af4db372",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -176,7 +179,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-ACCESS-PY",
       "authority_path": "matharc/v02/access.py",
-      "authority_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "authority_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "authority_sha256": "5830ddde64c70436b0a652f9ce642d856fde8c1cdbb268bde6d0349d9ed8d030",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -186,7 +189,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-ACCESS-SERVER-PY",
       "authority_path": "matharc/v02/access_server.py",
-      "authority_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "authority_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "authority_sha256": "1a8a0448884d7acc86c3917670702afea940af09390d08c0976cd057b5487792",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -196,7 +199,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-ARTIFACT-STORE-PY",
       "authority_path": "matharc/v02/artifact_store.py",
-      "authority_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "authority_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "authority_sha256": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -206,7 +209,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-WORKSPACE-IMPL-PY",
       "authority_path": "matharc/v02/_workspace_impl.py",
-      "authority_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "authority_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "authority_sha256": "a78fd477f3377180a4a551dead366c081ea316ce1843bdc36aef215d30128788",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -216,8 +219,8 @@
     {
       "external_dependency_id": "EXT-MATHARC-WORKSPACE-SERVER-IMPL-PY",
       "authority_path": "matharc/v02/_workspace_server_impl.py",
-      "authority_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-      "authority_sha256": "128d386ff68761e45a003ef1f7c86f09049ed961ecc36102783f316395e04d0c",
+      "authority_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
+      "authority_sha256": "e6442acd5c2d5260be1935cf519703e234081018100fa1cfe9985de2ff568192",
       "required_state": "ACCEPTED",
       "consumers": [
         "F"
@@ -226,7 +229,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-CAMPAIGN-PY",
       "authority_path": "matharc/v02/campaign.py",
-      "authority_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "authority_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "authority_sha256": "5cf446b3195125875852ea3789b3dc4a16f7cbfa3218fa304bfc259fe0921a4e",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -236,7 +239,7 @@
     {
       "external_dependency_id": "EXT-MATHARC-CONSOLE-EXPORT-PY",
       "authority_path": "matharc/v02/console_export.py",
-      "authority_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "authority_commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "authority_sha256": "79adf80dd0b1028c1ddd03ff4de06457cf2c2a2c6312996bf4091b10055f391a",
       "required_state": "ACCEPTED",
       "consumers": [
@@ -246,8 +249,8 @@
   ],
   "validation_report": {
     "path": "validation-report.json",
-    "sha256": "93a3ec1f5fb3b0b8e2b69f41e765577455f439b4702c96273db361fa1e8d7a12",
-    "manifest_identity_sha256": "782b47897af9e7c9b7a361c45240f75485e8d0355a8d8c4351dfe717bef156b7",
-    "bundle_content_sha256": "d1c6477cc4cd553c332f5ca77567ac3958f16c10526e04bca446511569b8ec63"
+    "sha256": "79e9b2e6052f8765202784751f4379140acbec5a9a377bde22f419c16bc49351",
+    "manifest_identity_sha256": "abb964a1da791bd2c0aa56982d430001fa416bbb8e3201d05814e04c9469fe53",
+    "bundle_content_sha256": "7db8bad8d2fa2d15c777224b1a21fe9bcc945f43889a2e050d8f29fbc49e9b95"
   }
 }

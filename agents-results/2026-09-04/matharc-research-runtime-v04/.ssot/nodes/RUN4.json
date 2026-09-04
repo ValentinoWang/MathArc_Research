@@ -31,7 +31,6 @@
     "requirement.run4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "PAR2",
     "Q1",
@@ -48,6 +47,10 @@
       "operation": "modify"
     },
     {
+      "path": "matharc/v02/runtime/__init__.py",
+      "operation": "modify"
+    },
+    {
       "path": "matharc/v02/runtime/backends/base.py",
       "operation": "modify"
     },
@@ -61,6 +64,10 @@
     },
     {
       "path": "tests/test_runtime_backend_contract.py",
+      "operation": "modify"
+    },
+    {
+      "path": "tests/test_runtime_integration.py",
       "operation": "modify"
     }
   ],
@@ -85,27 +92,6 @@
     ],
     "quorum": 2,
     "minimum_trust": "repository-bound"
-  },
-  "acceptance_policy": "dual",
-  "acceptance_authorities": [
-    {
-      "role_id": "acceptance-a",
-      "principal_ref": "principal:acceptance-a"
-    },
-    {
-      "role_id": "acceptance-b",
-      "principal_ref": "principal:acceptance-b"
-    }
-  ],
-  "quorum": 2,
-  "minimum_trust": "repository-bound",
-  "owner_principal": {
-    "role_id": "owner-run4",
-    "principal_ref": "principal:owner-run4"
-  },
-  "owner_binding": {
-    "role_id": "owner-run4",
-    "principal_ref": "principal:owner-run4"
   },
   "source_requirement_refs": [
     "SRC-RUN4"

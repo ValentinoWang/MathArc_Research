@@ -18,7 +18,6 @@
     "decision.matharc-backend-scope.v1"
   ],
   "write_authority": "isolated-record",
-  "acceptance_authority": "决策负责人",
   "unlocks": [
     "RUN4"
   ],

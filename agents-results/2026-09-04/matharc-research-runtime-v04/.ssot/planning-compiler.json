@@ -11,70 +11,70 @@
     {
       "external_dependency_id": "EXT-MATHARC-RUNTIME-CONTRACT-HTML",
       "path": "docs/contracts/matharc-research-runtime-v04.html",
-      "commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "blob": "8c5dc5689540e3c48a768755cb2f4d81cb0e2184",
       "sha256": "5bf47c89f1004f2701fbcb96a89ae248b1b5bdeb3522d6f02b8cf6d0acd5a76f"
     },
     {
       "external_dependency_id": "EXT-MATHARC-RUNTIME-BASELINE",
       "path": "docs/contracts/matharc-research-runtime-baseline.html",
-      "commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "blob": "4a16a5587724f467cf16b283988e72232e6b7a5e",
       "sha256": "a2cf7bec5fa741620ad886639e8a04eb8216b2b8c9a5f16ca773f6bd625e2acc"
     },
     {
       "external_dependency_id": "EXT-MATHARC-TRACE-PY",
       "path": "matharc/v02/trace.py",
-      "commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "blob": "7e4b9bd7ee7f61c3eb132f0822d9504d42065ced",
       "sha256": "9f45e83d197fe172d173f1b617944fad92a33a621b58d1e79f68cb18af4db372"
     },
     {
       "external_dependency_id": "EXT-MATHARC-ACCESS-PY",
       "path": "matharc/v02/access.py",
-      "commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "blob": "15916a3c71063ef707a1e50e5fe0a2f3c7d52947",
       "sha256": "5830ddde64c70436b0a652f9ce642d856fde8c1cdbb268bde6d0349d9ed8d030"
     },
     {
       "external_dependency_id": "EXT-MATHARC-ACCESS-SERVER-PY",
       "path": "matharc/v02/access_server.py",
-      "commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "blob": "516a07b50175220d8020396611bec7962f5bce05",
       "sha256": "1a8a0448884d7acc86c3917670702afea940af09390d08c0976cd057b5487792"
     },
     {
       "external_dependency_id": "EXT-MATHARC-ARTIFACT-STORE-PY",
       "path": "matharc/v02/artifact_store.py",
-      "commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "blob": "0d8a380c68d9b949f75738961ac99ecfc0dae04d",
       "sha256": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3"
     },
     {
       "external_dependency_id": "EXT-MATHARC-WORKSPACE-IMPL-PY",
       "path": "matharc/v02/_workspace_impl.py",
-      "commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "blob": "7a59eade41bb26b9cf98818b5588a433ee370803",
       "sha256": "a78fd477f3377180a4a551dead366c081ea316ce1843bdc36aef215d30128788"
     },
     {
       "external_dependency_id": "EXT-MATHARC-WORKSPACE-SERVER-IMPL-PY",
       "path": "matharc/v02/_workspace_server_impl.py",
-      "commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-      "blob": "9787cd8760b4eddca1b8732c69a51cb2e0c4292d",
-      "sha256": "128d386ff68761e45a003ef1f7c86f09049ed961ecc36102783f316395e04d0c"
+      "commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
+      "blob": "05bd7e653c7e765f40064dde05213feddc4d24e8",
+      "sha256": "e6442acd5c2d5260be1935cf519703e234081018100fa1cfe9985de2ff568192"
     },
     {
       "external_dependency_id": "EXT-MATHARC-CAMPAIGN-PY",
       "path": "matharc/v02/campaign.py",
-      "commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "blob": "a2eebfc24a36e06a2b3e655a5d2cd5a494bb7529",
       "sha256": "5cf446b3195125875852ea3789b3dc4a16f7cbfa3218fa304bfc259fe0921a4e"
     },
     {
       "external_dependency_id": "EXT-MATHARC-CONSOLE-EXPORT-PY",
       "path": "matharc/v02/console_export.py",
-      "commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
+      "commit": "3c53c3e00e2799e4313929902aeb998e152c4614",
       "blob": "dd967fb6f86dd50575b738f47643270aa85a291e",
       "sha256": "79adf80dd0b1028c1ddd03ff4de06457cf2c2a2c6312996bf4091b10055f391a"
     }
@@ -170,9 +170,9 @@
         "SRC-FND1",
         "SRC-FND2"
       ],
-      "development_baseline": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-      "promotion_baseline": "7f20de02855f9bbfc1278c7e09e2fa849c4df739",
-      "release_candidate": "d04efc4092202513a7a30c38892a11b0bcb642a32478af58ae84e3d24a390168"
+      "development_baseline": "3c53c3e00e2799e4313929902aeb998e152c4614",
+      "promotion_baseline": "537d1ed234ffe16047d4ffab6c0e9c155b8c37be",
+      "release_candidate": "10afb27963908c9fca48c1da83b06243d1dbdbba16751b68101b500092c780a9"
     },
     {
       "id": "RTR1",
@@ -197,9 +197,9 @@
         "SRC-RUN4",
         "SRC-RUN5"
       ],
-      "development_baseline": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-      "promotion_baseline": "7f20de02855f9bbfc1278c7e09e2fa849c4df739",
-      "release_candidate": "0e4a57efd31b05907156c07d0622ea807a19327fe37a705178ef1c62a574dcb1"
+      "development_baseline": "3c53c3e00e2799e4313929902aeb998e152c4614",
+      "promotion_baseline": "537d1ed234ffe16047d4ffab6c0e9c155b8c37be",
+      "release_candidate": "fe06106903661dc02fb6677bc09d1f673da3e99e46457d640c79848a2f9109c7"
     },
     {
       "id": "RTR2",
@@ -224,9 +224,9 @@
         "SRC-DUR4",
         "SRC-DUR5"
       ],
-      "development_baseline": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-      "promotion_baseline": "7f20de02855f9bbfc1278c7e09e2fa849c4df739",
-      "release_candidate": "d0816368d6418b7d76ee5c4ed2b57c950e0de6f0bd1f4f0016b7d906dc40e4ee"
+      "development_baseline": "3c53c3e00e2799e4313929902aeb998e152c4614",
+      "promotion_baseline": "537d1ed234ffe16047d4ffab6c0e9c155b8c37be",
+      "release_candidate": "05f9d49042514a7783a72b9f84feb45a334c1bfe67e5454d1eebfbe3c9feab9e"
     },
     {
       "id": "RTR3",
@@ -251,9 +251,9 @@
         "SRC-PAR4",
         "SRC-PAR5"
       ],
-      "development_baseline": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-      "promotion_baseline": "7f20de02855f9bbfc1278c7e09e2fa849c4df739",
-      "release_candidate": "993c278547014c6d898b2ecf91485cf7cc1aa2a0628c6720731418b55a65d7f9"
+      "development_baseline": "3c53c3e00e2799e4313929902aeb998e152c4614",
+      "promotion_baseline": "537d1ed234ffe16047d4ffab6c0e9c155b8c37be",
+      "release_candidate": "81e23a9a172abeec22d3fb81df47fc42e5a92bb037fbfaf8037682514a914028"
     },
     {
       "id": "RTR4",
@@ -278,9 +278,9 @@
         "SRC-SYN4",
         "SRC-SYN5"
       ],
-      "development_baseline": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-      "promotion_baseline": "7f20de02855f9bbfc1278c7e09e2fa849c4df739",
-      "release_candidate": "07c376baeeb0ba14d03e2e19058c190f810fdede3ce0bda7fda999d5425e8fac"
+      "development_baseline": "3c53c3e00e2799e4313929902aeb998e152c4614",
+      "promotion_baseline": "537d1ed234ffe16047d4ffab6c0e9c155b8c37be",
+      "release_candidate": "2316bee0cf18c5ec66c83d194b5a77af1ad3ac80c9805874f5d70de8ebef0ce6"
     },
     {
       "id": "RTR5",
@@ -307,9 +307,9 @@
         "SRC-VER5",
         "SRC-VER6"
       ],
-      "development_baseline": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-      "promotion_baseline": "7f20de02855f9bbfc1278c7e09e2fa849c4df739",
-      "release_candidate": "8f668f19ed5c46576c86378574afca8c3bd74eef3d0b920548c79602b1066dbf"
+      "development_baseline": "3c53c3e00e2799e4313929902aeb998e152c4614",
+      "promotion_baseline": "537d1ed234ffe16047d4ffab6c0e9c155b8c37be",
+      "release_candidate": "084e7b46e963aa677a3cefc997873087a69d2f7f7a11189758529126643ef7f3"
     },
     {
       "id": "RTR6",
@@ -342,9 +342,9 @@
         "SRC-OPS2",
         "SRC-OPS3"
       ],
-      "development_baseline": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-      "promotion_baseline": "7f20de02855f9bbfc1278c7e09e2fa849c4df739",
-      "release_candidate": "7e55a6a40bfb02bc015755e84c511e941ae5edd63cee6b11d1410747156a59b6"
+      "development_baseline": "3c53c3e00e2799e4313929902aeb998e152c4614",
+      "promotion_baseline": "537d1ed234ffe16047d4ffab6c0e9c155b8c37be",
+      "release_candidate": "c75b3a482346c1c0ca1bac5115bdd721a02121f5235e1cdd70954a105ec04a6f"
     },
     {
       "id": "RTR7",
@@ -367,9 +367,9 @@
         "SRC-DOG3",
         "SRC-DOG4"
       ],
-      "development_baseline": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-      "promotion_baseline": "7f20de02855f9bbfc1278c7e09e2fa849c4df739",
-      "release_candidate": "e7ad3da259364fd92f3e1ac0758b34002bab9b1bf05d73621e610eff7e9a1333"
+      "development_baseline": "3c53c3e00e2799e4313929902aeb998e152c4614",
+      "promotion_baseline": "537d1ed234ffe16047d4ffab6c0e9c155b8c37be",
+      "release_candidate": "5a84613328892ce47b2b8e2691d50812b91973fff36b4b04830d86331f47f1dc"
     }
   ],
   "waves": [
@@ -546,7 +546,7 @@
     },
     {
       "id": "DOG4",
-      "kind": "convergence",
+      "kind": "deterministic-check",
       "goal": "汇编邀请试点的人类验收与发布证据，作出独立发布决策。",
       "dependencies": [
         "F",
@@ -554,7 +554,20 @@
         "DOG3"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
-      "owner": "principal:owner-dog4"
+      "owner": "principal:owner-dog4",
+      "source_write": {
+        "allowed": false,
+        "bounded": true,
+        "allowed_paths": []
+      },
+      "deterministic_command": "python3 -m unittest Core/skills/report-to-ssot-development-paths/tests/test_acceptance_authority_binding.py",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_runtime_ops_release.py",
+        "assertion_authority": "MathArc 发布与清理测试基线",
+        "spec_sha256": "1fdbe8243d907754345f92b2b8f5ddd20e4574560ce52c9b27765af445464520"
+      }
     },
     {
       "id": "DP1",

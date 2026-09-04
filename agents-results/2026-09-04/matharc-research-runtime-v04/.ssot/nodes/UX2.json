@@ -25,7 +25,6 @@
     "requirement.ux2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "Q6",
     "UX3",
@@ -39,6 +38,18 @@
   "write_targets": [
     {
       "path": "matharc/v02/runtime/service.py",
+      "operation": "modify"
+    },
+    {
+      "path": "matharc/v02/_workspace_server_impl.py",
+      "operation": "modify"
+    },
+    {
+      "path": "matharc/v02/workspace_server/__init__.py",
+      "operation": "modify"
+    },
+    {
+      "path": "scripts/console_browser_gate.mjs",
       "operation": "modify"
     },
     {
@@ -67,27 +78,6 @@
     ],
     "quorum": 2,
     "minimum_trust": "repository-bound"
-  },
-  "acceptance_policy": "dual",
-  "acceptance_authorities": [
-    {
-      "role_id": "acceptance-a",
-      "principal_ref": "principal:acceptance-a"
-    },
-    {
-      "role_id": "acceptance-b",
-      "principal_ref": "principal:acceptance-b"
-    }
-  ],
-  "quorum": 2,
-  "minimum_trust": "repository-bound",
-  "owner_principal": {
-    "role_id": "owner-ux2",
-    "principal_ref": "principal:owner-ux2"
-  },
-  "owner_binding": {
-    "role_id": "owner-ux2",
-    "principal_ref": "principal:owner-ux2"
   },
   "source_requirement_refs": [
     "SRC-UX2"

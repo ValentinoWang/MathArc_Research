@@ -16,7 +16,6 @@
     "source.identity"
   ],
   "write_authority": "evidence-only",
-  "acceptance_authority": "编排器",
   "unlocks": [
     "DOG1",
     "DOG2",

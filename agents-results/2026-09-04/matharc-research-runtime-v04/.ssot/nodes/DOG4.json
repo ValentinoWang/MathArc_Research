@@ -2,7 +2,7 @@
   "node_id": "DOG4",
   "semantic_key": "requirement.dog4",
   "stage": "RTR7",
-  "work_kind": "release-decision",
+  "work_kind": "validation",
   "domain_lane": "rtr7",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
@@ -25,12 +25,11 @@
     "requirement.dog4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "Q7"
   ],
   "node_role": "leaf",
-  "execution_actor": "human",
+  "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/DOG4.json",
   "side_effect_class": "reversible",
   "candidate_identity_policy": "consumes",
@@ -50,6 +49,12 @@
   "goal": "汇编邀请试点的人类验收与发布证据，作出独立发布决策。",
   "owner": "principal:owner-dog4",
   "acceptance_contract_ref": "acceptance-fragments/DOG4/acceptance-contract.md",
+  "test_oracle": {
+    "mode": "frozen",
+    "writable": false,
+    "spec": "tests/test_runtime_ops_release.py",
+    "assertion_authority": "MathArc 发布与清理测试基线"
+  },
   "acceptance": {
     "mode": "dual",
     "authorities": [
@@ -64,27 +69,6 @@
     ],
     "quorum": 2,
     "minimum_trust": "repository-bound"
-  },
-  "acceptance_policy": "dual",
-  "acceptance_authorities": [
-    {
-      "role_id": "acceptance-a",
-      "principal_ref": "principal:acceptance-a"
-    },
-    {
-      "role_id": "acceptance-b",
-      "principal_ref": "principal:acceptance-b"
-    }
-  ],
-  "quorum": 2,
-  "minimum_trust": "repository-bound",
-  "owner_principal": {
-    "role_id": "owner-dog4",
-    "principal_ref": "principal:owner-dog4"
-  },
-  "owner_binding": {
-    "role_id": "owner-dog4",
-    "principal_ref": "principal:owner-dog4"
   },
   "source_requirement_refs": [
     "SRC-DOG4"

@@ -25,7 +25,6 @@
     "requirement.par5"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG2",
     "Q3",
@@ -47,6 +46,10 @@
     },
     {
       "path": "tests/test_runtime_late_result_policy.py",
+      "operation": "modify"
+    },
+    {
+      "path": "tests/test_runtime_hardening.py",
       "operation": "modify"
     }
   ],
@@ -77,27 +80,6 @@
     ],
     "quorum": 2,
     "minimum_trust": "repository-bound"
-  },
-  "acceptance_policy": "dual",
-  "acceptance_authorities": [
-    {
-      "role_id": "acceptance-a",
-      "principal_ref": "principal:acceptance-a"
-    },
-    {
-      "role_id": "acceptance-b",
-      "principal_ref": "principal:acceptance-b"
-    }
-  ],
-  "quorum": 2,
-  "minimum_trust": "repository-bound",
-  "owner_principal": {
-    "role_id": "owner-par5",
-    "principal_ref": "principal:owner-par5"
-  },
-  "owner_binding": {
-    "role_id": "owner-par5",
-    "principal_ref": "principal:owner-par5"
   },
   "source_requirement_refs": [
     "SRC-PAR5"

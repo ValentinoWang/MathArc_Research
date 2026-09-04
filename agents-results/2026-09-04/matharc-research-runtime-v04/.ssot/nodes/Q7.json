@@ -21,7 +21,6 @@
     "release.rtr7"
   ],
   "write_authority": "shared-generated",
-  "acceptance_authority": "principal:release-a",
   "unlocks": [],
   "node_role": "acceptance-gate",
   "execution_actor": "human",
@@ -45,19 +44,6 @@
     "quorum": 2,
     "minimum_trust": "repository-bound"
   },
-  "acceptance_policy": "dual",
-  "acceptance_authorities": [
-    {
-      "role_id": "release-acceptance-a",
-      "principal_ref": "principal:release-a"
-    },
-    {
-      "role_id": "release-acceptance-b",
-      "principal_ref": "principal:release-b"
-    }
-  ],
-  "quorum": 2,
-  "minimum_trust": "repository-bound",
   "source_completion_requirement_refs": [
     "SRC-DOG1",
     "SRC-DOG2",

@@ -9,7 +9,7 @@
 | DOG1 | requirement.dog1 | implementation | implementation | reversible | F; DP1; RUN5 | none | decision.matharc-native-runtime@1 | nodes/DOG1.json | acceptance-fragments/DOG1/acceptance-contract.md |
 | DOG2 | requirement.dog2 | validation | implementation | reversible | F; DP1; PAR5; SYN5; VER6; DOG1; OPS3 | none | decision.matharc-native-runtime@1 | nodes/DOG2.json | acceptance-fragments/DOG2/acceptance-contract.md |
 | DOG3 | requirement.dog3 | validation | implementation | reversible | F; DP1; DOG2; DUR5; UX6 | none | decision.matharc-native-runtime@1 | nodes/DOG3.json | acceptance-fragments/DOG3/acceptance-contract.md |
-| DOG4 | requirement.dog4 | release-decision | implementation | reversible | F; DP1; DOG3 | none | decision.matharc-native-runtime@1 | nodes/DOG4.json | acceptance-fragments/DOG4/acceptance-contract.md |
+| DOG4 | requirement.dog4 | validation | implementation | reversible | F; DP1; DOG3 | none | decision.matharc-native-runtime@1 | nodes/DOG4.json | acceptance-fragments/DOG4/acceptance-contract.md |
 | Q7 | acceptance.release.rtr7 | release-decision | shared-generated | none | DOG1; DOG2; DOG3; DOG4 | none | none | nodes/Q7.json | none |
 
 ### Release RTR7 status ledger

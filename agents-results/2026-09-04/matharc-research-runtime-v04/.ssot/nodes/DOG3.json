@@ -27,7 +27,6 @@
     "requirement.dog3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "principal:acceptance-a",
   "unlocks": [
     "DOG4",
     "Q7"
@@ -79,27 +78,6 @@
     ],
     "quorum": 2,
     "minimum_trust": "repository-bound"
-  },
-  "acceptance_policy": "dual",
-  "acceptance_authorities": [
-    {
-      "role_id": "acceptance-a",
-      "principal_ref": "principal:acceptance-a"
-    },
-    {
-      "role_id": "acceptance-b",
-      "principal_ref": "principal:acceptance-b"
-    }
-  ],
-  "quorum": 2,
-  "minimum_trust": "repository-bound",
-  "owner_principal": {
-    "role_id": "owner-dog3",
-    "principal_ref": "principal:owner-dog3"
-  },
-  "owner_binding": {
-    "role_id": "owner-dog3",
-    "principal_ref": "principal:owner-dog3"
   },
   "source_requirement_refs": [
     "SRC-DOG3"
