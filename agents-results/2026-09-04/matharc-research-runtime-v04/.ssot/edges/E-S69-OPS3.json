@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S69-OPS3",
+  "from": "S69",
+  "to": "OPS3",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s69"
+  ],
+  "transferred_input": "可写入区域: tests/test_runtime_ops_release.py",
+  "gate_evidence": "acceptance contract evidence"
+}

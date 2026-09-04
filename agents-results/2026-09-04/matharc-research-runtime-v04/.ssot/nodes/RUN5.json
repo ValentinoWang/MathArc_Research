@@ -2,7 +2,7 @@
   "node_id": "RUN5",
   "semantic_key": "requirement.run5",
   "stage": "RTR1",
-  "work_kind": "implementation",
+  "work_kind": "validation",
   "domain_lane": "rtr1",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S35",
+    "S78",
     "RUN4"
   ],
   "soft_dependencies": [],
@@ -25,27 +27,32 @@
     "requirement.run5"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "单任务验收负责人",
   "unlocks": [
     "DOG1",
+    "DUR1",
     "QRTR1",
     "SYN1"
   ],
   "node_role": "leaf",
-  "execution_actor": "orchestrator",
+  "execution_actor": "codex",
   "execution_contract_ref": "nodes/RUN5.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "tests"
+    "tests/test_runtime_single_run.py",
+    "tests/test_candidate_promotion_boundary.py"
   ],
   "required_lanes": [
     "machine/e2e",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement RUN5.",
+  "goal": "独立验证单任务从试跑、执行到候选回传的闭环，并阻断候选越级晋升。",
   "owner": "单任务验收负责人",
   "acceptance_contract_ref": "acceptance-fragments/RUN5/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-RUN5"
+  ],
   "surface_refs": [
     "single-run-e2e"
   ],
@@ -55,13 +62,7 @@
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
     },
     {
-      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
-    },
-    {
-      "code": "TEST_BASELINE_NOT_LOCKED"
-    },
-    {
-      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

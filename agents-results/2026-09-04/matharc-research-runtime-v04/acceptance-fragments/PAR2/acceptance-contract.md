@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 任务审批接线负责人
 - Approval evidence: TBD
-- Request source: item PAR2
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[5]
 - SSOT node: PAR2
 - SSOT path: .ssot/nodes/PAR2.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item PAR2: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/integration-contract | 在 matharc/v02/orchestrator.py 中消费现有动态派生任务批准记录并保持一次性启动 | Integration | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_approved_task_ingestion.py 中证明拒绝任务和超预算任务永不启动 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-PAR2 | machine/integration-contract | 在 matharc/v02/orchestrator.py 中消费现有动态派生任务批准记录并保持一次性启动 | Integration | Automatic | Yes |
+| AC-02 | behavior | SRC-PAR2 | machine/local-runtime | 在 tests/test_runtime_approved_task_ingestion.py 中证明拒绝任务和超预算任务永不启动 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

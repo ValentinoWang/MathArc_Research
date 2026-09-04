@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.par4"
   ],
-  "transferred_input": "Deliver source requirement PAR4.",
+  "transferred_input": "按执行回执记录实际资源消耗，并对语义重复实验做确定性去重。",
   "gate_evidence": "acceptance contract evidence"
 }

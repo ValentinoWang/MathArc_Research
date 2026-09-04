@@ -4,12 +4,12 @@
   "to": "QRTR7",
   "dependency_type": "hard",
   "dependency_scope": "specific-output",
-  "reason_code": "acceptance-dependency",
+  "reason_code": "data-dependency",
   "required_state": "ACCEPTED",
   "assumption_ids": [],
   "invalidation_keys": [
     "requirement.dog3"
   ],
-  "transferred_input": "Deliver source requirement DOG3.",
+  "transferred_input": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
   "gate_evidence": "acceptance contract evidence"
 }

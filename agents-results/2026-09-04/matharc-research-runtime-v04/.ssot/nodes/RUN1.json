@@ -11,7 +11,11 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "FND3"
+    "S15",
+    "S19",
+    "S52",
+    "S59",
+    "FND2"
   ],
   "soft_dependencies": [],
   "assumption_ids": [],
@@ -25,7 +29,7 @@
     "requirement.run1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "运行合同负责人",
   "unlocks": [
     "PAR1",
     "QRTR1",
@@ -37,17 +41,23 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/RUN1.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02"
+    "matharc/v02/runtime/contracts.py",
+    "matharc/v02/runtime/identity.py",
+    "tests/test_runtime_contracts.py",
+    "tests/test_runtime_identity.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
-  "goal": "Deliver source requirement RUN1.",
+  "goal": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
   "owner": "运行合同负责人",
   "acceptance_contract_ref": "acceptance-fragments/RUN1/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-RUN1"
+  ],
   "surface_refs": [
     "run-contracts"
   ],
@@ -64,6 +74,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

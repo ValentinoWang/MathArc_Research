@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.fnd1"
   ],
-  "transferred_input": "Deliver source requirement FND1.",
+  "transferred_input": "建立 MathArc 原生运行时所有权与依赖允许清单，阻断治理工具链进入产品运行路径。",
   "gate_evidence": "acceptance contract evidence"
 }

@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.ux2"
   ],
-  "transferred_input": "Deliver source requirement UX2.",
+  "transferred_input": "复用邀请制 Cookie 会话和权限边界，阻断无权用户的运行动作。",
   "gate_evidence": "acceptance contract evidence"
 }

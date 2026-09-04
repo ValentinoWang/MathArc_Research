@@ -6,14 +6,14 @@
 - Test baseline: PLANNED
 - Acceptance owner: 代际提交负责人
 - Approval evidence: TBD
-- Request source: item DUR1
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[8]
 - SSOT node: DUR1
 - SSOT path: .ssot/nodes/DUR1.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.dur1
-- AC budget: 2
+- AC budget: 3
 - Baseline identity: ssot-input.json#items[DUR1]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,7 +57,7 @@ For item DUR1, the interface declared for DUR1 must continue to satisfy every ac
 
 ## Data impact
 
-Item DUR1 constrains any create, update, or delete reachable through the interface declared for DUR1; only the acceptance seeds below define what data changes are permitted for generation-commit. Node-specific data assertions: 在 matharc/v02/generation.py 中定义 GenerationCommit 的输入摘要、候选清单和证据截止边界 | 在 tests/test_generation_commit.py 中拒绝没有连续正式提交边界的代际完成声明
+Item DUR1 constrains any create, update, or delete reachable through the interface declared for DUR1; only the acceptance seeds below define what data changes are permitted for generation-commit. Node-specific data assertions: 在 matharc/v02/runtime/generation.py 和 matharc/v02/runtime/reducer.py 中定义冻结输入摘要、稳定归并、冲突、去重、部分失败、迟到结果和 GenerationCommit 边界 | 在 tests/test_generation_input_snapshot.py 和 tests/test_generation_commit.py 中拒绝共享 ResearchTrace 直接写入和关闭代际后的结果改写 | 在 tests/test_runtime_late_result_policy.py 中证明迟到结果只能进入下一代或待处置队列
 
 ## Permissions
 
@@ -72,8 +72,9 @@ Node-specific increment for item DUR1: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/generation.py 中定义 GenerationCommit 的输入摘要、候选清单和证据截止边界 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_generation_commit.py 中拒绝没有连续正式提交边界的代际完成声明 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-DUR1 | machine/unit | 在 matharc/v02/runtime/generation.py 和 matharc/v02/runtime/reducer.py 中定义冻结输入摘要、稳定归并、冲突、去重、部分失败、迟到结果和 GenerationCommit 边界 | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-DUR1 | machine/local-runtime | 在 tests/test_generation_input_snapshot.py 和 tests/test_generation_commit.py 中拒绝共享 ResearchTrace 直接写入和关闭代际后的结果改写 | Local runtime | Automatic | Yes |
+| AC-03 | behavior | SRC-DUR1 | machine/unit | 在 tests/test_runtime_late_result_policy.py 中证明迟到结果只能进入下一代或待处置队列 | Unit | Automatic | Yes |
 
 ## Human acceptance
 
@@ -90,8 +91,9 @@ Item DUR1 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Unit | matharc/v02/generation.py | Automatic | Yes |
-| AC-02 | Local runtime | tests/test_generation_commit.py | Automatic | Yes |
+| AC-01 | Unit | matharc/v02/runtime/generation.py | Automatic | Yes |
+| AC-02 | Local runtime | tests/test_generation_input_snapshot.py | Automatic | Yes |
+| AC-03 | Unit | tests/test_runtime_late_result_policy.py | Automatic | Yes |
 
 ## Exploratory testing
 

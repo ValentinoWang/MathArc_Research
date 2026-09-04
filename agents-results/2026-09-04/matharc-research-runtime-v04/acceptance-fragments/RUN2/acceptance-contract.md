@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 运行存储负责人
 - Approval evidence: TBD
-- Request source: item RUN2
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[2]
 - SSOT node: RUN2
 - SSOT path: .ssot/nodes/RUN2.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item RUN2: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/run_store.py 中写入哈希链运行事件和原子快照 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_store_replay.py 中拒绝截断、损坏和摘要不匹配的运行快照 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-RUN2 | machine/unit | 在 matharc/v02/run_store.py 中写入哈希链运行事件和原子快照 | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-RUN2 | machine/local-runtime | 在 tests/test_runtime_store_replay.py 中拒绝截断、损坏和摘要不匹配的运行快照 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

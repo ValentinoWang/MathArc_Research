@@ -1,9 +1,9 @@
 {
   "node_id": "DUR5",
   "semantic_key": "requirement.dur5",
-  "stage": "RTR3",
-  "work_kind": "implementation",
-  "domain_lane": "rtr3",
+  "stage": "RTR2",
+  "work_kind": "validation",
+  "domain_lane": "rtr2",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S54",
+    "S64",
     "DUR4"
   ],
   "soft_dependencies": [],
@@ -25,28 +27,33 @@
     "requirement.dur5"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "恢复验收负责人",
   "unlocks": [
     "DOG3",
-    "QRTR3",
+    "PAR3",
+    "QRTR2",
     "SYN5",
     "UX3"
   ],
   "node_role": "leaf",
-  "execution_actor": "orchestrator",
+  "execution_actor": "codex",
   "execution_contract_ref": "nodes/DUR5.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "tests"
+    "tests/test_runtime_crash_recovery.py",
+    "tests/test_runtime_no_duplicate_recovery.py"
   ],
   "required_lanes": [
     "machine/e2e",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement DUR5.",
+  "goal": "独立验收冷启动恢复、幂等恢复和不跳代不重复规则。",
   "owner": "恢复验收负责人",
   "acceptance_contract_ref": "acceptance-fragments/DUR5/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-DUR5"
+  ],
   "surface_refs": [
     "cold-restart"
   ],
@@ -56,13 +63,7 @@
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
     },
     {
-      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
-    },
-    {
-      "code": "TEST_BASELINE_NOT_LOCKED"
-    },
-    {
-      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

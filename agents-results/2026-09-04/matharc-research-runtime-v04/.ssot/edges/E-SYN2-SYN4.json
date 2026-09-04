@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.syn2"
   ],
-  "transferred_input": "Deliver source requirement SYN2.",
+  "transferred_input": "将疑似反例送入独立复核队列，未复核前不改变研究路线或结论。",
   "gate_evidence": "acceptance contract evidence"
 }

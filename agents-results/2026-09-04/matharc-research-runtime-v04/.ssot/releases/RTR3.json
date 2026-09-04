@@ -1,15 +1,15 @@
 {
   "release_id": "RTR3",
   "release_gate_node": "QRTR3",
-  "title": "RT-R3 持久化与恢复",
-  "user_value": "中断后可以从明确的代际边界继续运行。",
-  "independent_failure": "不确定状态不得猜测完成、重复计费或跳过代际。",
+  "title": "RT-R3 多研究成员并行",
+  "user_value": "不同研究路线可以在隔离工作区中真实并行执行。",
+  "independent_failure": "单成员失败不破坏整轮，且不得伪造并行证据。",
   "node_ids": [
-    "DUR1",
-    "DUR2",
-    "DUR3",
-    "DUR4",
-    "DUR5",
+    "PAR1",
+    "PAR2",
+    "PAR3",
+    "PAR4",
+    "PAR5",
     "QRTR3"
   ]
 }

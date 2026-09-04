@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S46-UX3",
+  "from": "S46",
+  "to": "UX3",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s46"
+  ],
+  "transferred_input": "可写入区域: tests/test_runtime_command_surface.py",
+  "gate_evidence": "acceptance contract evidence"
+}

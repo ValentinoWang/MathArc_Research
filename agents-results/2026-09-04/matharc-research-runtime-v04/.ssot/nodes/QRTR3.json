@@ -9,11 +9,11 @@
   "decision_version": null,
   "readiness_mode": "FORMAL",
   "hard_dependencies": [
-    "DUR1",
-    "DUR2",
-    "DUR3",
-    "DUR4",
-    "DUR5"
+    "PAR1",
+    "PAR2",
+    "PAR3",
+    "PAR4",
+    "PAR5"
   ],
   "soft_dependencies": [],
   "assumption_ids": [],
@@ -31,10 +31,24 @@
   "candidate_identity_policy": "must-match",
   "goal": "Accept the RTR3 candidate against its source completion criteria.",
   "owner": "release decision owner",
+  "source_completion_requirement_refs": [
+    "SRC-PAR1",
+    "SRC-PAR2",
+    "SRC-PAR3",
+    "SRC-PAR4",
+    "SRC-PAR5"
+  ],
   "blocking_reasons": [],
   "readiness_gaps": [
     {
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
     }
+  ],
+  "source_requirement_refs": [
+    "SRC-PAR1",
+    "SRC-PAR2",
+    "SRC-PAR3",
+    "SRC-PAR4",
+    "SRC-PAR5"
   ]
 }

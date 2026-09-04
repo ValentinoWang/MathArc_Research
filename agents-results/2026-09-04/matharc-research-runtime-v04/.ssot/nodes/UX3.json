@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S24",
+    "S46",
     "UX2",
     "DUR5"
   ],
@@ -26,7 +28,7 @@
     "requirement.ux3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "运行动作 API 负责人",
   "unlocks": [
     "QRTR6",
     "UX5"
@@ -35,17 +37,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/UX3.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/access_server.py"
+    "matharc/v02/runtime/service.py",
+    "tests/test_runtime_command_surface.py"
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/e2e"
   ],
-  "goal": "Deliver source requirement UX3.",
+  "goal": "提供登记动作的幂等运行控制服务，拒绝任意命令、目录、环境和参数。",
   "owner": "运行动作 API 负责人",
   "acceptance_contract_ref": "acceptance-fragments/UX3/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-UX3"
+  ],
   "surface_refs": [
     "runtime-actions-api"
   ],
@@ -62,6 +68,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

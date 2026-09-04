@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.run2"
   ],
-  "transferred_input": "Deliver source requirement RUN2.",
+  "transferred_input": "建立可重放的运行存储，使事件、快照和候选导入在进程重启后保持一致。",
   "gate_evidence": "acceptance contract evidence"
 }

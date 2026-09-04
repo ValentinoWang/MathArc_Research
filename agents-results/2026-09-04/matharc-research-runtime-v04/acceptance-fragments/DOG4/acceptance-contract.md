@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 试点发布负责人
 - Approval evidence: TBD
-- Request source: item DOG4
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[22]
 - SSOT node: DOG4
 - SSOT path: .ssot/nodes/DOG4.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item DOG4: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/e2e | 在 acceptance/human/runtime-pilot/release-checklist.md 中汇编二至五人邀请试点的人类验收记录 | E2E | Automatic | Yes |
-| AC-02 | behavior | none | human | 在 acceptance/runtime-pilot/release-evidence.json 中证明用户可理解研究状态且本地正式检查与干净重放通过 | Human | Automatic | Yes |
+| AC-01 | behavior | SRC-DOG4 | human | 在 acceptance/human/runtime-pilot/release-checklist.md 中汇编二至五人邀请试点的人类验收记录 | Human | Automatic | Yes |
+| AC-02 | behavior | SRC-DOG4 | release | 在 acceptance/runtime-pilot/release-evidence.json 中证明用户可理解研究状态且本地正式检查与干净重放通过 | Release | Automatic | Yes |
 
 ## Human acceptance
 
@@ -90,8 +90,8 @@ Item DOG4 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | E2E | acceptance/human/runtime-pilot/release-checklist.md | Automatic | Yes |
-| AC-02 | Human | acceptance/runtime-pilot/release-evidence.json | Automatic | Yes |
+| AC-01 | Human | acceptance/human/runtime-pilot/release-checklist.md | Automatic | Yes |
+| AC-02 | Release | acceptance/runtime-pilot/release-evidence.json | Automatic | Yes |
 
 ## Exploratory testing
 

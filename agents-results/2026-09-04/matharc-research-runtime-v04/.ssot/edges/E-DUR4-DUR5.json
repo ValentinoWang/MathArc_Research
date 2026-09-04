@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.dur4"
   ],
-  "transferred_input": "Deliver source requirement DUR4.",
+  "transferred_input": "从最后一个完整 GenerationCommit 生成可重放的崩溃恢复计划。",
   "gate_evidence": "acceptance contract evidence"
 }

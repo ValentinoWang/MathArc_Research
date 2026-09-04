@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S17",
+    "S56",
     "RUN1"
   ],
   "soft_dependencies": [],
@@ -25,7 +27,7 @@
     "requirement.run3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "评价器负责人",
   "unlocks": [
     "QRTR1",
     "RUN4"
@@ -34,17 +36,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/RUN3.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/benchmark_runner.py"
+    "matharc/v02/runtime/evaluator.py",
+    "tests/test_runtime_evaluator.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement RUN3.",
+  "goal": "建立有预算、种子和最小试跑门槛的评价器合同，失败时不启动完整研究。",
   "owner": "评价器负责人",
   "acceptance_contract_ref": "acceptance-fragments/RUN3/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-RUN3"
+  ],
   "surface_refs": [
     "evaluation-contract"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

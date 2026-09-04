@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.ux1"
   ],
-  "transferred_input": "Deliver source requirement UX1.",
+  "transferred_input": "把 RuntimeStore 状态投影到现有控制台数据合同，保持单一真相源。",
   "gate_evidence": "acceptance contract evidence"
 }

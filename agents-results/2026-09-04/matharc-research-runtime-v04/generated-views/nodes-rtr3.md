@@ -1,27 +1,27 @@
 ### Release RTR3 node contract summary
 
-- Title: RT-R3 持久化与恢复
-- User value: 中断后可以从明确的代际边界继续运行。
-- Independent failure: 不确定状态不得猜测完成、重复计费或跳过代际。
+- Title: RT-R3 多研究成员并行
+- User value: 不同研究路线可以在隔离工作区中真实并行执行。
+- Independent failure: 单成员失败不破坏整轮，且不得伪造并行证据。
 
 | Task ID | Semantic key | Work kind | Write authority | Side effect class | Hard dependencies | Soft dependencies | Decision refs | Execution contract ref | Acceptance contract ref |
 |---|---|---|---|---|---|---|---|---|---|
-| DUR1 | requirement.dur1 | implementation | implementation | reversible | F; DP1; PAR5; RUN2 | none | decision.matharc-native-runtime@1 | nodes/DUR1.json | acceptance-fragments/DUR1/acceptance-contract.md |
-| DUR2 | requirement.dur2 | implementation | implementation | reversible | F; DP1; DUR1 | none | decision.matharc-native-runtime@1 | nodes/DUR2.json | acceptance-fragments/DUR2/acceptance-contract.md |
-| DUR3 | requirement.dur3 | implementation | implementation | reversible | F; DP1; DUR1 | none | decision.matharc-native-runtime@1 | nodes/DUR3.json | acceptance-fragments/DUR3/acceptance-contract.md |
-| DUR4 | requirement.dur4 | implementation | implementation | reversible | F; DP1; DUR2; DUR3 | none | decision.matharc-native-runtime@1 | nodes/DUR4.json | acceptance-fragments/DUR4/acceptance-contract.md |
-| DUR5 | requirement.dur5 | implementation | implementation | reversible | F; DP1; DUR4 | none | decision.matharc-native-runtime@1 | nodes/DUR5.json | acceptance-fragments/DUR5/acceptance-contract.md |
-| QRTR3 | acceptance.release.rtr3 | release-decision | shared-generated | none | DUR1; DUR2; DUR3; DUR4; DUR5 | none | none | nodes/QRTR3.json | none |
+| PAR1 | requirement.par1 | implementation | implementation | reversible | F; DP1; S27; S80; RUN1 | none | decision.matharc-native-runtime@1 | nodes/PAR1.json | acceptance-fragments/PAR1/acceptance-contract.md |
+| PAR2 | requirement.par2 | implementation | implementation | reversible | F; DP1; S16; S41; PAR1; RUN4 | none | decision.matharc-native-runtime@1 | nodes/PAR2.json | acceptance-fragments/PAR2/acceptance-contract.md |
+| PAR3 | requirement.par3 | implementation | implementation | reversible | F; DP1; S23; S72; PAR2; DUR5 | none | decision.matharc-native-runtime@1 | nodes/PAR3.json | acceptance-fragments/PAR3/acceptance-contract.md |
+| PAR4 | requirement.par4 | implementation | implementation | reversible | F; DP1; S16; S77; PAR3 | none | decision.matharc-native-runtime@1 | nodes/PAR4.json | acceptance-fragments/PAR4/acceptance-contract.md |
+| PAR5 | requirement.par5 | validation | implementation | reversible | F; DP1; S60; S71; S73; PAR4 | none | decision.matharc-native-runtime@1 | nodes/PAR5.json | acceptance-fragments/PAR5/acceptance-contract.md |
+| QRTR3 | acceptance.release.rtr3 | release-decision | shared-generated | none | PAR1; PAR2; PAR3; PAR4; PAR5 | none | none | nodes/QRTR3.json | none |
 
 ### Release RTR3 status ledger
 
 | Task ID | Stage | Versions | State | Attempt | Owner | Guard ID | Blocking reason | Evidence | Unlocks |
 |---|---|---|---|---|---|---|---|---|---|
-| DUR1 | RTR3 | decision.matharc-native-runtime@1 | PLANNED | none | acceptance owner | none | none | acceptance-fragments/DUR1/acceptance-contract.md | DUR2; DUR3; QRTR3 |
-| DUR2 | RTR3 | decision.matharc-native-runtime@1 | PLANNED | none | acceptance owner | none | none | acceptance-fragments/DUR2/acceptance-contract.md | DUR4; QRTR3; SYN1; UX1; VER1 |
-| DUR3 | RTR3 | decision.matharc-native-runtime@1 | PLANNED | none | acceptance owner | none | none | acceptance-fragments/DUR3/acceptance-contract.md | DUR4; QRTR3 |
-| DUR4 | RTR3 | decision.matharc-native-runtime@1 | PLANNED | none | acceptance owner | none | none | acceptance-fragments/DUR4/acceptance-contract.md | DUR5; QRTR3 |
-| DUR5 | RTR3 | decision.matharc-native-runtime@1 | PLANNED | none | acceptance owner | none | none | acceptance-fragments/DUR5/acceptance-contract.md | DOG3; QRTR3; SYN5; UX3 |
+| PAR1 | RTR3 | decision.matharc-native-runtime@1 | PLANNED | none | 研究拓扑负责人 | none | none | acceptance-fragments/PAR1/acceptance-contract.md | PAR2; QRTR3 |
+| PAR2 | RTR3 | decision.matharc-native-runtime@1 | PLANNED | none | 任务审批接线负责人 | none | none | acceptance-fragments/PAR2/acceptance-contract.md | PAR3; QRTR3 |
+| PAR3 | RTR3 | decision.matharc-native-runtime@1 | PLANNED | none | 并发调度负责人 | none | none | acceptance-fragments/PAR3/acceptance-contract.md | PAR4; QRTR3 |
+| PAR4 | RTR3 | decision.matharc-native-runtime@1 | PLANNED | none | 资源记账负责人 | none | none | acceptance-fragments/PAR4/acceptance-contract.md | PAR5; QRTR3 |
+| PAR5 | RTR3 | decision.matharc-native-runtime@1 | PLANNED | none | 并行验收负责人 | none | none | acceptance-fragments/PAR5/acceptance-contract.md | DOG2; QRTR3; SYN5 |
 | QRTR3 | RTR3 | none | PLANNED | none | release decision owner | none | none | none | none |
 
 ### Release RTR3 deliverables

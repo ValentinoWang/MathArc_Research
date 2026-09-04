@@ -11,6 +11,7 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S43",
     "FND1"
   ],
   "soft_dependencies": [],
@@ -25,27 +26,31 @@
     "requirement.fnd2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "MathArc 研究协议负责人",
   "unlocks": [
-    "FND3",
     "QRTRZ",
+    "RUN1",
     "UX2"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/FND2.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/trace.py"
+    "matharc/v02/trace.py",
+    "tests/test_runtime_authority_boundaries.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
-  "goal": "Deliver source requirement FND2.",
+  "goal": "保留 ResearchTrace 的数学结论晋升权威，并证明运行状态不能直接变成正式证明。",
   "owner": "MathArc 研究协议负责人",
   "acceptance_contract_ref": "acceptance-fragments/FND2/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-FND2"
+  ],
   "surface_refs": [
     "authority-boundaries"
   ],
@@ -62,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

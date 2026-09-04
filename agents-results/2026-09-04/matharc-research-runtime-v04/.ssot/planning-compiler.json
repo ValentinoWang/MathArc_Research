@@ -9,60 +9,18 @@
   },
   "source_inputs": [
     {
-      "external_dependency_id": "EXT-MATHARC-PROJECT",
-      "path": "PROJECT.md",
-      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "blob": "5f6d42fbb54ba18d53fb40a71f30795d5327a1ea",
-      "sha256": "d062b74dd6285110fe3d9fbef393733a06e0412989c6ef9cc3b94327c387f103"
+      "external_dependency_id": "EXT-MATHARC-RUNTIME-CONTRACT-HTML",
+      "path": "docs/contracts/matharc-research-runtime-v04.html",
+      "commit": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "blob": "71ddae5b281fef0b2b7d2a5fd1ae35b91e88f509",
+      "sha256": "1ee8f49071de1adaabfcb542640e2bd7638447001b5287eb188bfb017269404f"
     },
     {
-      "external_dependency_id": "EXT-MATHARC-README",
-      "path": "README.md",
-      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "blob": "9e2a1c9256c508bde4773501a076a44c973f3f6d",
-      "sha256": "b95443559b234a759303460dce4282941060f0f598cbd2288afd6b8cd6e9aab3"
-    },
-    {
-      "external_dependency_id": "EXT-RUNTIME-TRACE",
-      "path": "matharc/v02/trace.py",
-      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "blob": "1e971372131a7287571ce460561d4f9302f2a5b8",
-      "sha256": "7aeb1d85f5cb2aefebc194ea25606073b41cb995c97a8fc36b81ddd3f24900f1"
-    },
-    {
-      "external_dependency_id": "EXT-RUNTIME-ARTIFACT",
-      "path": "matharc/v02/artifact_store.py",
-      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "blob": "0d8a380c68d9b949f75738961ac99ecfc0dae04d",
-      "sha256": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3"
-    },
-    {
-      "external_dependency_id": "EXT-RUNTIME-CAMPAIGN",
-      "path": "matharc/v02/campaign.py",
-      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "blob": "a2eebfc24a36e06a2b3e655a5d2cd5a494bb7529",
-      "sha256": "5cf446b3195125875852ea3789b3dc4a16f7cbfa3218fa304bfc259fe0921a4e"
-    },
-    {
-      "external_dependency_id": "EXT-CONSOLE-ACCESS",
-      "path": "matharc/v02/access_server.py",
-      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "blob": "516a07b50175220d8020396611bec7962f5bce05",
-      "sha256": "1a8a0448884d7acc86c3917670702afea940af09390d08c0976cd057b5487792"
-    },
-    {
-      "external_dependency_id": "EXT-CONSOLE-EXPORT",
-      "path": "matharc/v02/console_export.py",
-      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "blob": "dd967fb6f86dd50575b738f47643270aa85a291e",
-      "sha256": "79adf80dd0b1028c1ddd03ff4de06457cf2c2a2c6312996bf4091b10055f391a"
-    },
-    {
-      "external_dependency_id": "EXT-CODEX-RUNTIME",
-      "path": "docs/reports/codex-agent-runtime.md",
-      "commit": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "blob": "e0ab89f3e7487d23530bc098911794a451ab0e00",
-      "sha256": "4fbb0f6c3a9a7a8953bb6374d1d6965d59e1c8936391957e78067edd59a933d4"
+      "external_dependency_id": "EXT-MATHARC-RUNTIME-BASELINE",
+      "path": "docs/contracts/matharc-research-runtime-baseline.html",
+      "commit": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "blob": "b48fb144f9d6786ddd843b9ecf054e7bbcb96028",
+      "sha256": "345a71a9129f2a5a51cdac21ce01d0f8e3ffd30498bbe6c9bb68261b500f3130"
     }
   ],
   "external_systems": [
@@ -71,8 +29,11 @@
       "kind": "external-runtime",
       "runtime_components": [
         "GitHub repository: https://github.com/ValentinoWang/Harness_Engineering",
-        "main revision: e4f56a267babafe61480f32250107e3f5a831213",
+        "pinned toolchain version: a79b5de1a2695eef89366e2c2efb1323752ccba7",
         "role: SSOT compiler, contract scaffolder, view renderer and validator only; never a MathArc runtime dependency"
+      ],
+      "source_requirement_refs": [
+        "SRC-FND1"
       ]
     },
     {
@@ -81,6 +42,9 @@
       "runtime_components": [
         "Codex, Claude Code, model APIs and approved local processes through a MathArc backend interface",
         "backend output is a candidate input and cannot own RuntimeStore, ResearchTrace or claim promotion"
+      ],
+      "source_requirement_refs": [
+        "SRC-RUN1"
       ]
     },
     {
@@ -89,6 +53,9 @@
       "runtime_components": [
         "existing MathArc invitation access and Cookie session boundary",
         "invitation-only pilot surface; browser commands remain server-registered actions"
+      ],
+      "source_requirement_refs": [
+        "SRC-UX2"
       ]
     }
   ],
@@ -100,13 +67,14 @@
     "machine/non-functional",
     "machine/static",
     "machine/unit",
+    "persistent-runtime",
     "production",
     "release",
     "visual-fidelity"
   ],
   "release_boundary_compiler": {
     "boundary_required": true,
-    "decision_authority": "user",
+    "decision_authority": "source",
     "rationale": "Each release slice carries its own user value and failure boundary."
   },
   "macro_phases": [
@@ -135,17 +103,102 @@
       "independent_failure": "不启动真实研究；后续运行时切片保持未接受。",
       "future_phase_required_for_success": false,
       "node_ids": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S30",
+        "S31",
+        "S32",
+        "S33",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S38",
+        "S39",
+        "S40",
+        "S41",
+        "S42",
+        "S43",
+        "S44",
+        "S45",
+        "S46",
+        "S47",
+        "S48",
+        "S49",
+        "S50",
+        "S51",
+        "S52",
+        "S53",
+        "S54",
+        "S55",
+        "S56",
+        "S57",
+        "S58",
+        "S59",
+        "S60",
+        "S61",
+        "S62",
+        "S63",
+        "S64",
+        "S65",
+        "S66",
+        "S67",
+        "S68",
+        "S69",
+        "S70",
+        "S71",
+        "S72",
+        "S73",
+        "S74",
+        "S75",
+        "S76",
+        "S77",
+        "S78",
+        "S79",
+        "S80",
+        "S81",
+        "S82",
+        "S83",
         "F",
         "DP1",
         "FND1",
         "FND2",
-        "FND3",
         "QRTRZ"
       ],
-      "source_completion_requirement_refs": [],
-      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
-      "release_candidate": "628518f2432cdc33adb1217fe9ea6d50b2995af5e32a94a7237d92d9c8fb7d50"
+      "source_completion_requirement_refs": [
+        "SRC-FND1",
+        "SRC-FND2"
+      ],
+      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "release_candidate": "94600f801e29ca80c7895bc96b60b03eeb6dc39a50977de760f8790053abc399"
     },
     {
       "id": "RTR1",
@@ -163,37 +216,22 @@
         "RUN5",
         "QRTR1"
       ],
-      "source_completion_requirement_refs": [],
-      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
-      "release_candidate": "337afbbd8f5e4de4703b14244a6ca3b72392638c76ac0bf60c94a342e366bb16"
+      "source_completion_requirement_refs": [
+        "SRC-RUN1",
+        "SRC-RUN2",
+        "SRC-RUN3",
+        "SRC-RUN4",
+        "SRC-RUN5"
+      ],
+      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "release_candidate": "4da173ae9cce3bc2b2969cd6b4951e6c436b793ee9355d3e9f5f5594ba30e0f9"
     },
     {
       "id": "RTR2",
       "macro_phase_id": "P1",
-      "title": "RT-R2 多研究成员并行",
-      "user_value": "不同研究路线可以在隔离工作区中真实并行执行。",
-      "independent_acceptance": "至少三个研究成员存在真实时间重叠，写入区域和预算可审计。",
-      "independent_failure": "单成员失败不破坏整轮，且不得伪造并行证据。",
-      "future_phase_required_for_success": false,
-      "node_ids": [
-        "PAR1",
-        "PAR2",
-        "PAR3",
-        "PAR4",
-        "PAR5",
-        "QRTR2"
-      ],
-      "source_completion_requirement_refs": [],
-      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
-      "release_candidate": "2426ab0e806582c1ebfe4a288d40b5ee5f04e7cb68224c491c583beb25c9ef6b"
-    },
-    {
-      "id": "RTR3",
-      "macro_phase_id": "P1",
-      "title": "RT-R3 持久化与恢复",
-      "user_value": "中断后可以从明确的代际边界继续运行。",
+      "title": "RT-R2 持久化、生命周期与恢复",
+      "user_value": "单任务运行可以可靠保存、停止、恢复和幂等导入。",
       "independent_acceptance": "停止、暂停、取消、崩溃恢复和幂等导入都有明确状态。",
       "independent_failure": "不确定状态不得猜测完成、重复计费或跳过代际。",
       "future_phase_required_for_success": false,
@@ -203,12 +241,45 @@
         "DUR3",
         "DUR4",
         "DUR5",
+        "QRTR2"
+      ],
+      "source_completion_requirement_refs": [
+        "SRC-DUR1",
+        "SRC-DUR2",
+        "SRC-DUR3",
+        "SRC-DUR4",
+        "SRC-DUR5"
+      ],
+      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "release_candidate": "7e5b377a6ff67c04ff55d413bfdb88a55a65ad0d50e7d8896115e9f902d1fedd"
+    },
+    {
+      "id": "RTR3",
+      "macro_phase_id": "P1",
+      "title": "RT-R3 多研究成员并行",
+      "user_value": "不同研究路线可以在隔离工作区中真实并行执行。",
+      "independent_acceptance": "至少三个研究成员基于冻结输入存在真实时间重叠，归并和预算可审计。",
+      "independent_failure": "单成员失败不破坏整轮，且不得伪造并行证据。",
+      "future_phase_required_for_success": false,
+      "node_ids": [
+        "PAR1",
+        "PAR2",
+        "PAR3",
+        "PAR4",
+        "PAR5",
         "QRTR3"
       ],
-      "source_completion_requirement_refs": [],
-      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
-      "release_candidate": "447c2e2a735508220100af721906e04878f3570fbed577fde049f24a181db05c"
+      "source_completion_requirement_refs": [
+        "SRC-PAR1",
+        "SRC-PAR2",
+        "SRC-PAR3",
+        "SRC-PAR4",
+        "SRC-PAR5"
+      ],
+      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "release_candidate": "377aaa231b318b572e7dd3bde11f86bdf3a47e886a1ebc71eb4708200e97f756"
     },
     {
       "id": "RTR4",
@@ -226,10 +297,16 @@
         "SYN5",
         "QRTR4"
       ],
-      "source_completion_requirement_refs": [],
-      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
-      "release_candidate": "4f5fcc3b9d8ddafbd855fb26d4a4134f6eb0362c49f938b87991904bd1320395"
+      "source_completion_requirement_refs": [
+        "SRC-SYN1",
+        "SRC-SYN2",
+        "SRC-SYN3",
+        "SRC-SYN4",
+        "SRC-SYN5"
+      ],
+      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "release_candidate": "7be8d22f16c3d4605204c1729aa01007450fc152badaa82478a425d25ee82455"
     },
     {
       "id": "RTR5",
@@ -248,18 +325,25 @@
         "VER6",
         "QRTR5"
       ],
-      "source_completion_requirement_refs": [],
-      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
-      "release_candidate": "3effc99d0790118fb3bf0c0c771553eeaad0aad0721c197365953ba53e556258"
+      "source_completion_requirement_refs": [
+        "SRC-VER1",
+        "SRC-VER2",
+        "SRC-VER3",
+        "SRC-VER4",
+        "SRC-VER5",
+        "SRC-VER6"
+      ],
+      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "release_candidate": "c966343568ae22709507c93a8b2bca257e8bb89dc89de900234a12341f345d19"
     },
     {
       "id": "RTR6",
       "macro_phase_id": "P1",
-      "title": "RT-R6 邀请制控制台",
-      "user_value": "受邀用户可以查看并受控操作研究运行。",
-      "independent_acceptance": "控制台只投影 RuntimeStore，并对动作、权限和敏感信息做 fail-closed 保护。",
-      "independent_failure": "浏览器不能执行任意命令、目录、环境变量或未登记后端。",
+      "title": "RT-R6 邀请制产品与试点运行环境",
+      "user_value": "受邀用户可以在有持久运维保障的环境中查看并受控操作研究运行。",
+      "independent_acceptance": "邀请权限、控制台、健康检查、持久路径、备份、回滚和清理均有证据。",
+      "independent_failure": "浏览器不能执行任意命令、目录、环境变量或未登记后端；运维缺口阻断试点。",
       "future_phase_required_for_success": false,
       "node_ids": [
         "UX1",
@@ -268,20 +352,33 @@
         "UX4",
         "UX5",
         "UX6",
+        "OPS1",
+        "OPS2",
+        "OPS3",
         "QRTR6"
       ],
-      "source_completion_requirement_refs": [],
-      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
-      "release_candidate": "3c413cff3c3238edf4335db97bb3a97f4543c0851d8ce6883613aa734cdb3b42"
+      "source_completion_requirement_refs": [
+        "SRC-UX1",
+        "SRC-UX2",
+        "SRC-UX3",
+        "SRC-UX4",
+        "SRC-UX5",
+        "SRC-UX6",
+        "SRC-OPS1",
+        "SRC-OPS2",
+        "SRC-OPS3"
+      ],
+      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "release_candidate": "5ac893204dfd3da1f62de5405abfa96e4a7eb54125e24f757dfb2b4078070183"
     },
     {
       "id": "RTR7",
       "macro_phase_id": "P1",
-      "title": "RT-R7 真实任务与试点",
+      "title": "RT-R7 真实任务与用户试点",
       "user_value": "真实两代研究和邀请制试点具备可复核发布证据。",
       "independent_acceptance": "真实并行、恢复、验证、权限和用户理解检查全部有证据。",
-      "independent_failure": "任一错误晋升、越权动作或不可重放结果阻断试点发布。",
+      "independent_failure": "任一错误晋升、越权动作或不可重放结果阻断试点发布.",
       "future_phase_required_for_success": false,
       "node_ids": [
         "DOG1",
@@ -290,10 +387,15 @@
         "DOG4",
         "QRTR7"
       ],
-      "source_completion_requirement_refs": [],
-      "development_baseline": "0ab9ab4043dec2a53871bff81d469d51ee402d44",
-      "promotion_baseline": "e1d1bc846875fd4043aee27aa14901060d22ed85",
-      "release_candidate": "e1ec6ddcf1a7f34e536c9e23cdae4f80ca7cf36298cfb90decfcb35df4718b71"
+      "source_completion_requirement_refs": [
+        "SRC-DOG1",
+        "SRC-DOG2",
+        "SRC-DOG3",
+        "SRC-DOG4"
+      ],
+      "development_baseline": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "promotion_baseline": "0133ca5c6dcab9f7fa3dbe3f06fe471cf08e7866",
+      "release_candidate": "7d5abfbe26e84d0dec1cc9c8ef35724567d15eeac295cc985cab6702498330ca"
     }
   ],
   "waves": [
@@ -301,11 +403,93 @@
       "id": "W-RTRZ",
       "release_id": "RTRZ",
       "node_ids": [
+        "S1",
+        "S2",
+        "S3",
+        "S4",
+        "S5",
+        "S6",
+        "S7",
+        "S8",
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S14",
+        "S15",
+        "S16",
+        "S17",
+        "S18",
+        "S19",
+        "S20",
+        "S21",
+        "S22",
+        "S23",
+        "S24",
+        "S25",
+        "S26",
+        "S27",
+        "S28",
+        "S29",
+        "S30",
+        "S31",
+        "S32",
+        "S33",
+        "S34",
+        "S35",
+        "S36",
+        "S37",
+        "S38",
+        "S39",
+        "S40",
+        "S41",
+        "S42",
+        "S43",
+        "S44",
+        "S45",
+        "S46",
+        "S47",
+        "S48",
+        "S49",
+        "S50",
+        "S51",
+        "S52",
+        "S53",
+        "S54",
+        "S55",
+        "S56",
+        "S57",
+        "S58",
+        "S59",
+        "S60",
+        "S61",
+        "S62",
+        "S63",
+        "S64",
+        "S65",
+        "S66",
+        "S67",
+        "S68",
+        "S69",
+        "S70",
+        "S71",
+        "S72",
+        "S73",
+        "S74",
+        "S75",
+        "S76",
+        "S77",
+        "S78",
+        "S79",
+        "S80",
+        "S81",
+        "S82",
+        "S83",
         "F",
         "DP1",
         "FND1",
         "FND2",
-        "FND3",
         "QRTRZ"
       ]
     },
@@ -325,11 +509,11 @@
       "id": "W-RTR2",
       "release_id": "RTR2",
       "node_ids": [
-        "PAR1",
-        "PAR2",
-        "PAR3",
-        "PAR4",
-        "PAR5",
+        "DUR1",
+        "DUR2",
+        "DUR3",
+        "DUR4",
+        "DUR5",
         "QRTR2"
       ]
     },
@@ -337,11 +521,11 @@
       "id": "W-RTR3",
       "release_id": "RTR3",
       "node_ids": [
-        "DUR1",
-        "DUR2",
-        "DUR3",
-        "DUR4",
-        "DUR5",
+        "PAR1",
+        "PAR2",
+        "PAR3",
+        "PAR4",
+        "PAR5",
         "QRTR3"
       ]
     },
@@ -380,6 +564,9 @@
         "UX4",
         "UX5",
         "UX6",
+        "OPS1",
+        "OPS2",
+        "OPS3",
         "QRTR6"
       ]
     },
@@ -399,10 +586,12 @@
     {
       "id": "DOG1",
       "kind": "implementation",
-      "goal": "Deliver source requirement DOG1.",
+      "goal": "固定首个真实任务、评价器、范围、预算和可重放的单成员基线。",
       "dependencies": [
         "F",
         "DP1",
+        "S5",
+        "S74",
         "RUN5"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -411,14 +600,17 @@
     {
       "id": "DOG2",
       "kind": "implementation",
-      "goal": "Deliver source requirement DOG2.",
+      "goal": "在运维闭环完成后执行两代真实并行研究并证明第二代消费第一代事实。",
       "dependencies": [
         "F",
         "DP1",
+        "S8",
+        "S75",
         "PAR5",
         "SYN5",
         "VER6",
-        "DOG1"
+        "DOG1",
+        "OPS3"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "真实研究试点负责人"
@@ -426,10 +618,12 @@
     {
       "id": "DOG3",
       "kind": "implementation",
-      "goal": "Deliver source requirement DOG3.",
+      "goal": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
       "dependencies": [
         "F",
         "DP1",
+        "S40",
+        "S42",
         "DOG2",
         "DUR5",
         "UX6"
@@ -440,10 +634,12 @@
     {
       "id": "DOG4",
       "kind": "implementation",
-      "goal": "Deliver source requirement DOG4.",
+      "goal": "汇编邀请试点的人类验收与发布证据，作出独立发布决策。",
       "dependencies": [
         "F",
         "DP1",
+        "S2",
+        "S4",
         "DOG3"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -462,12 +658,15 @@
     {
       "id": "DUR1",
       "kind": "implementation",
-      "goal": "Deliver source requirement DUR1.",
+      "goal": "定义冻结输入、代际提交、GenerationReducer 和 GenerationClosePolicy 的持久边界。",
       "dependencies": [
         "F",
         "DP1",
-        "PAR5",
-        "RUN2"
+        "S18",
+        "S21",
+        "S38",
+        "S39",
+        "RUN5"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "代际提交负责人"
@@ -475,10 +674,13 @@
     {
       "id": "DUR2",
       "kind": "implementation",
-      "goal": "Deliver source requirement DUR2.",
+      "goal": "以带来源身份的幂等账本保存候选、费用和执行回执，拒绝来源漂移。",
       "dependencies": [
         "F",
         "DP1",
+        "S14",
+        "S22",
+        "S58",
         "DUR1"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -487,10 +689,12 @@
     {
       "id": "DUR3",
       "kind": "implementation",
-      "goal": "Deliver source requirement DUR3.",
+      "goal": "实现停止、排空、暂停、继续和取消的显式运行状态协议。",
       "dependencies": [
         "F",
         "DP1",
+        "S25",
+        "S61",
         "DUR1"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -499,10 +703,12 @@
     {
       "id": "DUR4",
       "kind": "implementation",
-      "goal": "Deliver source requirement DUR4.",
+      "goal": "从最后一个完整 GenerationCommit 生成可重放的崩溃恢复计划。",
       "dependencies": [
         "F",
         "DP1",
+        "S20",
+        "S76",
         "DUR2",
         "DUR3"
       ],
@@ -512,10 +718,12 @@
     {
       "id": "DUR5",
       "kind": "implementation",
-      "goal": "Deliver source requirement DUR5.",
+      "goal": "独立验收冷启动恢复、幂等恢复和不跳代不重复规则。",
       "dependencies": [
         "F",
         "DP1",
+        "S54",
+        "S64",
         "DUR4"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -532,10 +740,14 @@
     {
       "id": "FND1",
       "kind": "implementation",
-      "goal": "Deliver source requirement FND1.",
+      "goal": "建立 MathArc 原生运行时所有权与依赖允许清单，阻断治理工具链进入产品运行路径。",
       "dependencies": [
         "F",
-        "DP1"
+        "DP1",
+        "S30",
+        "S31",
+        "S55",
+        "S70"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "MathArc 运行时架构负责人"
@@ -543,34 +755,69 @@
     {
       "id": "FND2",
       "kind": "implementation",
-      "goal": "Deliver source requirement FND2.",
+      "goal": "保留 ResearchTrace 的数学结论晋升权威，并证明运行状态不能直接变成正式证明。",
       "dependencies": [
         "F",
         "DP1",
+        "S43",
         "FND1"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "MathArc 研究协议负责人"
     },
     {
-      "id": "FND3",
+      "id": "OPS1",
       "kind": "implementation",
-      "goal": "Deliver source requirement FND3.",
+      "goal": "固定试点部署配置、持久目录、密钥来源和进程守护方式。",
       "dependencies": [
         "F",
         "DP1",
-        "FND2"
+        "S6",
+        "S7",
+        "S67",
+        "UX6"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
-      "owner": "MathArc 运行时架构负责人"
+      "owner": "试点部署负责人"
+    },
+    {
+      "id": "OPS2",
+      "kind": "implementation",
+      "goal": "建立健康检查、日志、配额、备份和恢复观测闭环。",
+      "dependencies": [
+        "F",
+        "DP1",
+        "S65",
+        "S68",
+        "OPS1"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点运维观测负责人"
+    },
+    {
+      "id": "OPS3",
+      "kind": "implementation",
+      "goal": "独立验收部署、重启、回滚和试点用户数据清理。",
+      "dependencies": [
+        "F",
+        "DP1",
+        "S3",
+        "S66",
+        "S69",
+        "OPS2"
+      ],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点发布运维负责人"
     },
     {
       "id": "PAR1",
       "kind": "implementation",
-      "goal": "Deliver source requirement PAR1.",
+      "goal": "把研究路线和角色编译为带机制、预算、目标和隔离写入区的运行拓扑。",
       "dependencies": [
         "F",
         "DP1",
+        "S27",
+        "S80",
         "RUN1"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -579,10 +826,12 @@
     {
       "id": "PAR2",
       "kind": "implementation",
-      "goal": "Deliver source requirement PAR2.",
+      "goal": "接入已批准的动态任务并执行一次性、可审计的任务启动。",
       "dependencies": [
         "F",
         "DP1",
+        "S16",
+        "S41",
         "PAR1",
         "RUN4"
       ],
@@ -592,11 +841,14 @@
     {
       "id": "PAR3",
       "kind": "implementation",
-      "goal": "Deliver source requirement PAR3.",
+      "goal": "在持久化和恢复能力之后实现有界并行、冻结输入和隔离工作区调度。",
       "dependencies": [
         "F",
         "DP1",
-        "PAR2"
+        "S23",
+        "S72",
+        "PAR2",
+        "DUR5"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "并发调度负责人"
@@ -604,10 +856,12 @@
     {
       "id": "PAR4",
       "kind": "implementation",
-      "goal": "Deliver source requirement PAR4.",
+      "goal": "按执行回执记录实际资源消耗，并对语义重复实验做确定性去重。",
       "dependencies": [
         "F",
         "DP1",
+        "S16",
+        "S77",
         "PAR3"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -616,10 +870,13 @@
     {
       "id": "PAR5",
       "kind": "implementation",
-      "goal": "Deliver source requirement PAR5.",
+      "goal": "独立验收多成员一代归并、冲突、部分失败和迟到结果规则。",
       "dependencies": [
         "F",
         "DP1",
+        "S60",
+        "S71",
+        "S73",
         "PAR4"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -644,11 +901,11 @@
       "kind": "convergence",
       "goal": "Accept the RTR2 candidate against its source completion criteria.",
       "dependencies": [
-        "PAR1",
-        "PAR2",
-        "PAR3",
-        "PAR4",
-        "PAR5"
+        "DUR1",
+        "DUR2",
+        "DUR3",
+        "DUR4",
+        "DUR5"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "release decision owner"
@@ -658,11 +915,11 @@
       "kind": "convergence",
       "goal": "Accept the RTR3 candidate against its source completion criteria.",
       "dependencies": [
-        "DUR1",
-        "DUR2",
-        "DUR3",
-        "DUR4",
-        "DUR5"
+        "PAR1",
+        "PAR2",
+        "PAR3",
+        "PAR4",
+        "PAR5"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "release decision owner"
@@ -706,7 +963,10 @@
         "UX3",
         "UX4",
         "UX5",
-        "UX6"
+        "UX6",
+        "OPS1",
+        "OPS2",
+        "OPS3"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "release decision owner"
@@ -730,8 +990,7 @@
       "goal": "Accept the RTRZ candidate against its source completion criteria.",
       "dependencies": [
         "FND1",
-        "FND2",
-        "FND3"
+        "FND2"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "release decision owner"
@@ -739,11 +998,15 @@
     {
       "id": "RUN1",
       "kind": "implementation",
-      "goal": "Deliver source requirement RUN1.",
+      "goal": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
       "dependencies": [
         "F",
         "DP1",
-        "FND3"
+        "S15",
+        "S19",
+        "S52",
+        "S59",
+        "FND2"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "运行合同负责人"
@@ -751,10 +1014,12 @@
     {
       "id": "RUN2",
       "kind": "implementation",
-      "goal": "Deliver source requirement RUN2.",
+      "goal": "建立可重放的运行存储，使事件、快照和候选导入在进程重启后保持一致。",
       "dependencies": [
         "F",
         "DP1",
+        "S22",
+        "S79",
         "RUN1"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -763,10 +1028,12 @@
     {
       "id": "RUN3",
       "kind": "implementation",
-      "goal": "Deliver source requirement RUN3.",
+      "goal": "建立有预算、种子和最小试跑门槛的评价器合同，失败时不启动完整研究。",
       "dependencies": [
         "F",
         "DP1",
+        "S17",
+        "S56",
         "RUN1"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -775,10 +1042,17 @@
     {
       "id": "RUN4",
       "kind": "implementation",
-      "goal": "Deliver source requirement RUN4.",
+      "goal": "将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。",
       "dependencies": [
         "F",
         "DP1",
+        "S9",
+        "S10",
+        "S11",
+        "S12",
+        "S13",
+        "S16",
+        "S44",
         "RUN2",
         "RUN3"
       ],
@@ -788,22 +1062,691 @@
     {
       "id": "RUN5",
       "kind": "implementation",
-      "goal": "Deliver source requirement RUN5.",
+      "goal": "独立验证单任务从试跑、执行到候选回传的闭环，并阻断候选越级晋升。",
       "dependencies": [
         "F",
         "DP1",
+        "S35",
+        "S78",
         "RUN4"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "单任务验收负责人"
     },
     {
+      "id": "S1",
+      "kind": "implementation",
+      "goal": "建立写入区域 acceptance/human/runtime-console/desktop-checklist.md",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "浏览器产品验收负责人"
+    },
+    {
+      "id": "S10",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/backends/claude_code.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "第一方后端负责人"
+    },
+    {
+      "id": "S11",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/backends/codex.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "第一方后端负责人"
+    },
+    {
+      "id": "S12",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/backends/local_process.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "第一方后端负责人"
+    },
+    {
+      "id": "S13",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/backends/model_api.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "第一方后端负责人"
+    },
+    {
+      "id": "S14",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/candidate.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "幂等账本负责人"
+    },
+    {
+      "id": "S15",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/contracts.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行合同负责人"
+    },
+    {
+      "id": "S16",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/coordinator.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "第一方后端负责人"
+    },
+    {
+      "id": "S17",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/evaluator.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "评价器负责人"
+    },
+    {
+      "id": "S18",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/generation.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "代际提交负责人"
+    },
+    {
+      "id": "S19",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/identity.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行合同负责人"
+    },
+    {
+      "id": "S2",
+      "kind": "implementation",
+      "goal": "建立写入区域 acceptance/human/runtime-pilot/release-checklist.md",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点发布负责人"
+    },
+    {
+      "id": "S20",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/recovery.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "恢复负责人"
+    },
+    {
+      "id": "S21",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/reducer.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "代际提交负责人"
+    },
+    {
+      "id": "S22",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/run_store.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行存储负责人"
+    },
+    {
+      "id": "S23",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/scheduler.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "并发调度负责人"
+    },
+    {
+      "id": "S24",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/service.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "邀请权限负责人"
+    },
+    {
+      "id": "S25",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/state_machine.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行控制负责人"
+    },
+    {
+      "id": "S26",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/synthesis.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "探索结果接线负责人"
+    },
+    {
+      "id": "S27",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/topology.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "研究拓扑负责人"
+    },
+    {
+      "id": "S28",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/verification.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "候选身份负责人"
+    },
+    {
+      "id": "S29",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/view_model.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "控制台投影负责人"
+    },
+    {
+      "id": "S3",
+      "kind": "implementation",
+      "goal": "建立写入区域 acceptance/runtime-pilot/ops-checklist.md",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点发布运维负责人"
+    },
+    {
+      "id": "S30",
+      "kind": "implementation",
+      "goal": "建立写入区域 scripts/check_runtime_dependency_allowlist.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "MathArc 运行时架构负责人"
+    },
+    {
+      "id": "S31",
+      "kind": "implementation",
+      "goal": "建立写入区域 scripts/check_runtime_ownership.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "MathArc 运行时架构负责人"
+    },
+    {
+      "id": "S32",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_candidate_evidence_conversion.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "证据转换负责人"
+    },
+    {
+      "id": "S33",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_candidate_identity.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "候选身份负责人"
+    },
+    {
+      "id": "S34",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_candidate_independent_replay.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "独立重放负责人"
+    },
+    {
+      "id": "S35",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_candidate_promotion_boundary.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "单任务验收负责人"
+    },
+    {
+      "id": "S36",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_candidate_scope_binding.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "命题范围负责人"
+    },
+    {
+      "id": "S37",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_evidence_invalidation.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "证据失效负责人"
+    },
+    {
+      "id": "S38",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_generation_commit.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "代际提交负责人"
+    },
+    {
+      "id": "S39",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_generation_input_snapshot.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "代际提交负责人"
+    },
+    {
+      "id": "S4",
+      "kind": "implementation",
+      "goal": "建立写入区域 acceptance/runtime-pilot/release-evidence.json",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点发布负责人"
+    },
+    {
+      "id": "S40",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_adversarial_drills.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点攻击演练负责人"
+    },
+    {
+      "id": "S41",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_approved_task_ingestion.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "任务审批接线负责人"
+    },
+    {
+      "id": "S42",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_attack_recovery.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点攻击演练负责人"
+    },
+    {
+      "id": "S43",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_authority_boundaries.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "MathArc 研究协议负责人"
+    },
+    {
+      "id": "S44",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_backend_contract.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "第一方后端负责人"
+    },
+    {
+      "id": "S45",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_candidate_synthesis.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "探索结果接线负责人"
+    },
+    {
+      "id": "S46",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_command_surface.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行动作 API 负责人"
+    },
+    {
+      "id": "S47",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_console_mobile.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "浏览器产品验收负责人"
+    },
+    {
+      "id": "S48",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_console_permissions.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "邀请权限负责人"
+    },
+    {
+      "id": "S49",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_console_projection.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "控制台投影负责人"
+    },
+    {
+      "id": "S5",
+      "kind": "implementation",
+      "goal": "建立写入区域 benchmarks/runtime-pilot-plan.json",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点任务负责人"
+    },
+    {
+      "id": "S50",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_console_reconnect.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "实时控制台负责人"
+    },
+    {
+      "id": "S51",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_console_redaction.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "控制台安全视图负责人"
+    },
+    {
+      "id": "S52",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_contracts.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行合同负责人"
+    },
+    {
+      "id": "S53",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_counterexample_review.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "反例复核负责人"
+    },
+    {
+      "id": "S54",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_crash_recovery.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "恢复验收负责人"
+    },
+    {
+      "id": "S55",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_dependency_allowlist.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "MathArc 运行时架构负责人"
+    },
+    {
+      "id": "S56",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_evaluator.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "评价器负责人"
+    },
+    {
+      "id": "S57",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_generation_delta.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "连续代际验收负责人"
+    },
+    {
+      "id": "S58",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_idempotent_import.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "幂等账本负责人"
+    },
+    {
+      "id": "S59",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_identity.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行合同负责人"
+    },
+    {
+      "id": "S6",
+      "kind": "implementation",
+      "goal": "建立写入区域 deploy/matharc-research.env.example",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点部署负责人"
+    },
+    {
+      "id": "S60",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_late_result_policy.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "并行验收负责人"
+    },
+    {
+      "id": "S61",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_lifecycle_control.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行控制负责人"
+    },
+    {
+      "id": "S62",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_memory_provenance.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "研究记忆负责人"
+    },
+    {
+      "id": "S63",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_next_generation_agenda.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "代际议程负责人"
+    },
+    {
+      "id": "S64",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_no_duplicate_recovery.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "恢复验收负责人"
+    },
+    {
+      "id": "S65",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_ops_backup.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点运维观测负责人"
+    },
+    {
+      "id": "S66",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_ops_cleanup.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点发布运维负责人"
+    },
+    {
+      "id": "S67",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_ops_deployment.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点部署负责人"
+    },
+    {
+      "id": "S68",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_ops_observability.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点运维观测负责人"
+    },
+    {
+      "id": "S69",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_ops_release.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点发布运维负责人"
+    },
+    {
+      "id": "S7",
+      "kind": "implementation",
+      "goal": "建立写入区域 deploy/matharc-research.service",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点部署负责人"
+    },
+    {
+      "id": "S70",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_ownership.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "MathArc 运行时架构负责人"
+    },
+    {
+      "id": "S71",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_parallel_generation.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "并行验收负责人"
+    },
+    {
+      "id": "S72",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_parallelism.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "并发调度负责人"
+    },
+    {
+      "id": "S73",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_partial_failure.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "并行验收负责人"
+    },
+    {
+      "id": "S74",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_pilot_baseline.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "试点任务负责人"
+    },
+    {
+      "id": "S75",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_pilot_generation_consumption.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "真实研究试点负责人"
+    },
+    {
+      "id": "S76",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_recovery_plan.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "恢复负责人"
+    },
+    {
+      "id": "S77",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_semantic_deduplication.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "资源记账负责人"
+    },
+    {
+      "id": "S78",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_single_run.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "单任务验收负责人"
+    },
+    {
+      "id": "S79",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_store_replay.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "运行存储负责人"
+    },
+    {
+      "id": "S8",
+      "kind": "implementation",
+      "goal": "建立写入区域 experiments/runtime-pilot/two-generation-report.md",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "真实研究试点负责人"
+    },
+    {
+      "id": "S80",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_topology.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "研究拓扑负责人"
+    },
+    {
+      "id": "S81",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_runtime_two_generation_synthesis.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "连续代际验收负责人"
+    },
+    {
+      "id": "S82",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_verification_convergence.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "验证汇合负责人"
+    },
+    {
+      "id": "S83",
+      "kind": "implementation",
+      "goal": "建立写入区域 tests/test_verification_negative_paths.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "验证汇合负责人"
+    },
+    {
+      "id": "S9",
+      "kind": "implementation",
+      "goal": "建立写入区域 matharc/v02/runtime/backends/base.py",
+      "dependencies": [],
+      "acceptance": "Contract and required lane evidence accepted.",
+      "owner": "第一方后端负责人"
+    },
+    {
       "id": "SYN1",
       "kind": "implementation",
-      "goal": "Deliver source requirement SYN1.",
+      "goal": "把普通执行输出标准化为带完整出处的探索候选，隔离于正式证据。",
       "dependencies": [
         "F",
         "DP1",
+        "S14",
+        "S26",
+        "S45",
         "RUN5",
         "DUR2"
       ],
@@ -813,10 +1756,12 @@
     {
       "id": "SYN2",
       "kind": "implementation",
-      "goal": "Deliver source requirement SYN2.",
+      "goal": "将疑似反例送入独立复核队列，未复核前不改变研究路线或结论。",
       "dependencies": [
         "F",
         "DP1",
+        "S26",
+        "S53",
         "SYN1"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -825,10 +1770,12 @@
     {
       "id": "SYN3",
       "kind": "implementation",
-      "goal": "Deliver source requirement SYN3.",
+      "goal": "从真实运行蒸馏带身份和候选出处的研究记忆。",
       "dependencies": [
         "F",
         "DP1",
+        "S21",
+        "S62",
         "SYN1"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -837,10 +1784,12 @@
     {
       "id": "SYN4",
       "kind": "implementation",
-      "goal": "Deliver source requirement SYN4.",
+      "goal": "把失败、经历和评审缺口编译为明确消费上一代事实的下一代议程。",
       "dependencies": [
         "F",
         "DP1",
+        "S18",
+        "S63",
         "SYN2",
         "SYN3"
       ],
@@ -850,12 +1799,15 @@
     {
       "id": "SYN5",
       "kind": "implementation",
-      "goal": "Deliver source requirement SYN5.",
+      "goal": "独立验收连续两代提交、路线变化和上一代事实消费。",
       "dependencies": [
         "F",
         "DP1",
+        "S57",
+        "S81",
         "SYN4",
-        "DUR5"
+        "DUR5",
+        "PAR5"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
       "owner": "连续代际验收负责人"
@@ -863,10 +1815,12 @@
     {
       "id": "UX1",
       "kind": "implementation",
-      "goal": "Deliver source requirement UX1.",
+      "goal": "把 RuntimeStore 状态投影到现有控制台数据合同，保持单一真相源。",
       "dependencies": [
         "F",
         "DP1",
+        "S29",
+        "S49",
         "DUR2"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -875,10 +1829,12 @@
     {
       "id": "UX2",
       "kind": "implementation",
-      "goal": "Deliver source requirement UX2.",
+      "goal": "复用邀请制 Cookie 会话和权限边界，阻断无权用户的运行动作。",
       "dependencies": [
         "F",
         "DP1",
+        "S24",
+        "S48",
         "FND2"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -887,10 +1843,12 @@
     {
       "id": "UX3",
       "kind": "implementation",
-      "goal": "Deliver source requirement UX3.",
+      "goal": "提供登记动作的幂等运行控制服务，拒绝任意命令、目录、环境和参数。",
       "dependencies": [
         "F",
         "DP1",
+        "S24",
+        "S46",
         "UX2",
         "DUR5"
       ],
@@ -900,10 +1858,12 @@
     {
       "id": "UX4",
       "kind": "implementation",
-      "goal": "Deliver source requirement UX4.",
+      "goal": "建立统一中文运行视图并递归脱敏密钥、路径、命令、环境变量和堆栈。",
       "dependencies": [
         "F",
         "DP1",
+        "S29",
+        "S51",
         "UX1",
         "UX2"
       ],
@@ -913,10 +1873,13 @@
     {
       "id": "UX5",
       "kind": "implementation",
-      "goal": "Deliver source requirement UX5.",
+      "goal": "实现断线重连后从服务端快照恢复的实时研究控制台。",
       "dependencies": [
         "F",
         "DP1",
+        "S24",
+        "S29",
+        "S50",
         "UX3",
         "UX4",
         "VER6"
@@ -927,10 +1890,12 @@
     {
       "id": "UX6",
       "kind": "implementation",
-      "goal": "Deliver source requirement UX6.",
+      "goal": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
       "dependencies": [
         "F",
         "DP1",
+        "S1",
+        "S47",
         "UX5"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -939,10 +1904,13 @@
     {
       "id": "VER1",
       "kind": "implementation",
-      "goal": "Deliver source requirement VER1.",
+      "goal": "定义候选进入验证阶段所需的身份约束和 VerifierReceipt，而非重新定义候选包。",
       "dependencies": [
         "F",
         "DP1",
+        "S14",
+        "S28",
+        "S33",
         "RUN1",
         "DUR2"
       ],
@@ -952,10 +1920,12 @@
     {
       "id": "VER2",
       "kind": "implementation",
-      "goal": "Deliver source requirement VER2.",
+      "goal": "把候选绑定到具体命题、量词、对象和范围，拒绝范围扩大与对象错配。",
       "dependencies": [
         "F",
         "DP1",
+        "S28",
+        "S36",
         "VER1"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -964,10 +1934,12 @@
     {
       "id": "VER3",
       "kind": "implementation",
-      "goal": "Deliver source requirement VER3.",
+      "goal": "为候选生成干净环境的独立重放计划，排除同实现自证。",
       "dependencies": [
         "F",
         "DP1",
+        "S28",
+        "S34",
         "VER2"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -976,10 +1948,12 @@
     {
       "id": "VER4",
       "kind": "implementation",
-      "goal": "Deliver source requirement VER4.",
+      "goal": "仅将通过 VerifierReceipt 的候选转换为带出处的 EvidenceRecord。",
       "dependencies": [
         "F",
         "DP1",
+        "S28",
+        "S32",
         "VER3"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -988,10 +1962,12 @@
     {
       "id": "VER5",
       "kind": "implementation",
-      "goal": "Deliver source requirement VER5.",
+      "goal": "记录命题、源码、评价器或候选身份变化导致的证据失效。",
       "dependencies": [
         "F",
         "DP1",
+        "S28",
+        "S37",
         "VER4"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -1000,10 +1976,12 @@
     {
       "id": "VER6",
       "kind": "implementation",
-      "goal": "Deliver source requirement VER6.",
+      "goal": "独立验收验证汇合、篡改检测、越界阻断和非独立结果拒绝。",
       "dependencies": [
         "F",
         "DP1",
+        "S82",
+        "S83",
         "VER5"
       ],
       "acceptance": "Contract and required lane evidence accepted.",
@@ -1022,7 +2000,8 @@
       "nodes-rtr4",
       "nodes-rtr5",
       "nodes-rtr6",
-      "nodes-rtr7"
+      "nodes-rtr7",
+      "source-requirements"
     ],
     "worker_ledger": false,
     "evidence_identity_registry": false,
@@ -1030,28 +2009,28 @@
     "runner_registry": false
   },
   "artifacts_inventory": {
-    "total_nodes": 49,
-    "implementation_nodes": 39,
+    "total_nodes": 134,
+    "implementation_nodes": 114,
     "worker_nodes": 0,
-    "generated_views": 10
+    "generated_views": 11
   },
   "complexity_budget": {
     "authority": "user",
     "rationale": "One node per declared item plus decision and release gates.",
     "limits": {
-      "total_nodes": 49,
-      "implementation_nodes_per_release": 6,
+      "total_nodes": 134,
+      "implementation_nodes_per_release": 85,
       "codex_worker_nodes": 0,
-      "generated_views": 10
+      "generated_views": 11
     },
     "exception": null
   },
   "goal_size_detector": {
-    "implementation_or_migration_nodes": 39,
+    "implementation_or_migration_nodes": 114,
     "external_systems": 3,
     "release_slices": 8,
     "production_migrations": 0,
-    "acceptance_layers": 10,
+    "acceptance_layers": 11,
     "split_required": false,
     "split_strategy": "release"
   }

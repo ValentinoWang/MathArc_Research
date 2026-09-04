@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 研究记忆负责人
 - Approval evidence: TBD
-- Request source: item SYN3
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[13]
 - SSOT node: SYN3
 - SSOT path: .ssot/nodes/SYN3.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item SYN3: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/episode_memory.py 中从真实运行蒸馏 FailureMemory 与 EpisodeMemory 记录 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_memory_provenance.py 中要求每条记忆携带 run_id、generation_id 和候选出处 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-SYN3 | machine/unit | 在 matharc/v02/episode_memory.py 中从真实运行蒸馏 FailureMemory 与 EpisodeMemory 记录 | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-SYN3 | machine/local-runtime | 在 tests/test_runtime_memory_provenance.py 中要求每条记忆携带 run_id、generation_id 和候选出处 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

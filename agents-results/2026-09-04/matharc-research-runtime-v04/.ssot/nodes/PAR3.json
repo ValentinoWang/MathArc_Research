@@ -1,9 +1,9 @@
 {
   "node_id": "PAR3",
   "semantic_key": "requirement.par3",
-  "stage": "RTR2",
+  "stage": "RTR3",
   "work_kind": "implementation",
-  "domain_lane": "rtr2",
+  "domain_lane": "rtr3",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
@@ -11,7 +11,10 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "PAR2"
+    "S23",
+    "S72",
+    "PAR2",
+    "DUR5"
   ],
   "soft_dependencies": [],
   "assumption_ids": [],
@@ -25,27 +28,31 @@
     "requirement.par3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "并发调度负责人",
   "unlocks": [
     "PAR4",
-    "QRTR2"
+    "QRTR3"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/PAR3.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/workspace"
+    "matharc/v02/runtime/scheduler.py",
+    "tests/test_runtime_parallelism.py"
   ],
   "required_lanes": [
     "machine/non-functional",
     "machine/local-runtime",
     "machine/integration-contract"
   ],
-  "goal": "Deliver source requirement PAR3.",
+  "goal": "在持久化和恢复能力之后实现有界并行、冻结输入和隔离工作区调度。",
   "owner": "并发调度负责人",
   "acceptance_contract_ref": "acceptance-fragments/PAR3/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-PAR3"
+  ],
   "surface_refs": [
     "bounded-parallelism"
   ],
@@ -62,6 +69,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

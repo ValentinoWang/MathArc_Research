@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S21",
+    "S62",
     "SYN1"
   ],
   "soft_dependencies": [],
@@ -25,7 +27,7 @@
     "requirement.syn3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "研究记忆负责人",
   "unlocks": [
     "QRTR4",
     "SYN4"
@@ -34,17 +36,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/SYN3.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/episode_memory.py"
+    "matharc/v02/runtime/reducer.py",
+    "tests/test_runtime_memory_provenance.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement SYN3.",
+  "goal": "从真实运行蒸馏带身份和候选出处的研究记忆。",
   "owner": "研究记忆负责人",
   "acceptance_contract_ref": "acceptance-fragments/SYN3/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-SYN3"
+  ],
   "surface_refs": [
     "research-memory"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

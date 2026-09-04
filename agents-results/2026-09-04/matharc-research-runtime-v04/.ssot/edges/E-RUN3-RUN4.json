@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.run3"
   ],
-  "transferred_input": "Deliver source requirement RUN3.",
+  "transferred_input": "建立有预算、种子和最小试跑门槛的评价器合同，失败时不启动完整研究。",
   "gate_evidence": "acceptance contract evidence"
 }

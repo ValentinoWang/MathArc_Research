@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S68-OPS2",
+  "from": "S68",
+  "to": "OPS2",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s68"
+  ],
+  "transferred_input": "可写入区域: tests/test_runtime_ops_observability.py",
+  "gate_evidence": "acceptance contract evidence"
+}

@@ -4,12 +4,12 @@
   "to": "UX3",
   "dependency_type": "hard",
   "dependency_scope": "specific-output",
-  "reason_code": "acceptance-dependency",
+  "reason_code": "data-dependency",
   "required_state": "ACCEPTED",
   "assumption_ids": [],
   "invalidation_keys": [
     "requirement.dur5"
   ],
-  "transferred_input": "Deliver source requirement DUR5.",
+  "transferred_input": "独立验收冷启动恢复、幂等恢复和不跳代不重复规则。",
   "gate_evidence": "acceptance contract evidence"
 }

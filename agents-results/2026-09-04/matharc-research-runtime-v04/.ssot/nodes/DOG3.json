@@ -2,7 +2,7 @@
   "node_id": "DOG3",
   "semantic_key": "requirement.dog3",
   "stage": "RTR7",
-  "work_kind": "implementation",
+  "work_kind": "validation",
   "domain_lane": "rtr7",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S40",
+    "S42",
     "DOG2",
     "DUR5",
     "UX6"
@@ -27,27 +29,31 @@
     "requirement.dog3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "试点攻击演练负责人",
   "unlocks": [
     "DOG4",
     "QRTR7"
   ],
   "node_role": "leaf",
-  "execution_actor": "orchestrator",
+  "execution_actor": "codex",
   "execution_contract_ref": "nodes/DOG3.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "tests"
+    "tests/test_runtime_adversarial_drills.py",
+    "tests/test_runtime_attack_recovery.py"
   ],
   "required_lanes": [
     "machine/e2e",
-    "machine/non-functional",
-    "machine/local-runtime"
+    "persistent-runtime",
+    "production"
   ],
-  "goal": "Deliver source requirement DOG3.",
+  "goal": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
   "owner": "试点攻击演练负责人",
   "acceptance_contract_ref": "acceptance-fragments/DOG3/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-DOG3"
+  ],
   "surface_refs": [
     "pilot-adversarial-drills"
   ],
@@ -57,13 +63,7 @@
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
     },
     {
-      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
-    },
-    {
-      "code": "TEST_BASELINE_NOT_LOCKED"
-    },
-    {
-      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

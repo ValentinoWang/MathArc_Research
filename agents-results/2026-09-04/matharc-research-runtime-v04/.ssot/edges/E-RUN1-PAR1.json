@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.run1"
   ],
-  "transferred_input": "Deliver source requirement RUN1.",
+  "transferred_input": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
   "gate_evidence": "acceptance contract evidence"
 }

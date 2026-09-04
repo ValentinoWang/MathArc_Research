@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S74-DOG1",
+  "from": "S74",
+  "to": "DOG1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s74"
+  ],
+  "transferred_input": "可写入区域: tests/test_runtime_pilot_baseline.py",
+  "gate_evidence": "acceptance contract evidence"
+}

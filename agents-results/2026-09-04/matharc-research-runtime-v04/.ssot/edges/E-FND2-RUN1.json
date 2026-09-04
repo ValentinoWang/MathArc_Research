@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-FND2-RUN1",
+  "from": "FND2",
+  "to": "RUN1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "acceptance-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.fnd2"
+  ],
+  "transferred_input": "保留 ResearchTrace 的数学结论晋升权威，并证明运行状态不能直接变成正式证明。",
+  "gate_evidence": "acceptance contract evidence"
+}

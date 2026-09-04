@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 独立重放负责人
 - Approval evidence: TBD
-- Request source: item VER3
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:normative-sentence[3]
 - SSOT node: VER3
 - SSOT path: .ssot/nodes/VER3.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item VER3: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/e2e | 在 matharc/v02/verification_bridge.py 中为候选生成干净环境的独立重放计划 | E2E | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_candidate_independent_replay.py 中证明相同实现的重复执行不算独立验证 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-VER3 | machine/e2e | 在 matharc/v02/verification_bridge.py 中为候选生成干净环境的独立重放计划 | E2E | Automatic | Yes |
+| AC-02 | behavior | SRC-VER3 | machine/local-runtime | 在 tests/test_candidate_independent_replay.py 中证明相同实现的重复执行不算独立验证 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

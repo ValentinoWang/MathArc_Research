@@ -1,9 +1,9 @@
 {
   "node_id": "DUR2",
   "semantic_key": "requirement.dur2",
-  "stage": "RTR3",
+  "stage": "RTR2",
   "work_kind": "implementation",
-  "domain_lane": "rtr3",
+  "domain_lane": "rtr2",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
@@ -11,6 +11,9 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S14",
+    "S22",
+    "S58",
     "DUR1"
   ],
   "soft_dependencies": [],
@@ -25,10 +28,10 @@
     "requirement.dur2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "幂等账本负责人",
   "unlocks": [
     "DUR4",
-    "QRTR3",
+    "QRTR2",
     "SYN1",
     "UX1",
     "VER1"
@@ -37,17 +40,22 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/DUR2.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/artifact_store.py"
+    "matharc/v02/runtime/run_store.py",
+    "matharc/v02/runtime/candidate.py",
+    "tests/test_runtime_idempotent_import.py"
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement DUR2.",
+  "goal": "以带来源身份的幂等账本保存候选、费用和执行回执，拒绝来源漂移。",
   "owner": "幂等账本负责人",
   "acceptance_contract_ref": "acceptance-fragments/DUR2/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-DUR2"
+  ],
   "surface_refs": [
     "durable-import-ledger"
   ],
@@ -64,6 +72,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

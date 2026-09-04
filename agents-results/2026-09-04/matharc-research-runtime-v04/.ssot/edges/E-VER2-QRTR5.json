@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.ver2"
   ],
-  "transferred_input": "Deliver source requirement VER2.",
+  "transferred_input": "把候选绑定到具体命题、量词、对象和范围，拒绝范围扩大与对象错配。",
   "gate_evidence": "acceptance contract evidence"
 }

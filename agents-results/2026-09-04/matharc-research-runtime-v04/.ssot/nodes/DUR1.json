@@ -1,9 +1,9 @@
 {
   "node_id": "DUR1",
   "semantic_key": "requirement.dur1",
-  "stage": "RTR3",
+  "stage": "RTR2",
   "work_kind": "implementation",
-  "domain_lane": "rtr3",
+  "domain_lane": "rtr2",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
@@ -11,8 +11,11 @@
   "hard_dependencies": [
     "F",
     "DP1",
-    "PAR5",
-    "RUN2"
+    "S18",
+    "S21",
+    "S38",
+    "S39",
+    "RUN5"
   ],
   "soft_dependencies": [],
   "assumption_ids": [],
@@ -26,27 +29,33 @@
     "requirement.dur1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "代际提交负责人",
   "unlocks": [
     "DUR2",
     "DUR3",
-    "QRTR3"
+    "QRTR2"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/DUR1.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/workspace_bundle.py"
+    "matharc/v02/runtime/generation.py",
+    "matharc/v02/runtime/reducer.py",
+    "tests/test_generation_input_snapshot.py",
+    "tests/test_generation_commit.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement DUR1.",
+  "goal": "定义冻结输入、代际提交、GenerationReducer 和 GenerationClosePolicy 的持久边界。",
   "owner": "代际提交负责人",
   "acceptance_contract_ref": "acceptance-fragments/DUR1/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-DUR1"
+  ],
   "surface_refs": [
     "generation-commit"
   ],
@@ -63,6 +72,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

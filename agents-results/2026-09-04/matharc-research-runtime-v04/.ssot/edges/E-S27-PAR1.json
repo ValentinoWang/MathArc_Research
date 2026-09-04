@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S27-PAR1",
+  "from": "S27",
+  "to": "PAR1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s27"
+  ],
+  "transferred_input": "可写入区域: matharc/v02/runtime/topology.py",
+  "gate_evidence": "acceptance contract evidence"
+}

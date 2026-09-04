@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.dur2"
   ],
-  "transferred_input": "Deliver source requirement DUR2.",
+  "transferred_input": "以带来源身份的幂等账本保存候选、费用和执行回执，拒绝来源漂移。",
   "gate_evidence": "acceptance contract evidence"
 }

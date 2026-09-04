@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S29",
+    "S49",
     "DUR2"
   ],
   "soft_dependencies": [],
@@ -25,7 +27,7 @@
     "requirement.ux1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "控制台投影负责人",
   "unlocks": [
     "QRTR6",
     "UX4"
@@ -34,17 +36,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/UX1.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/console_export.py"
+    "matharc/v02/runtime/view_model.py",
+    "tests/test_runtime_console_projection.py"
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/e2e"
   ],
-  "goal": "Deliver source requirement UX1.",
+  "goal": "把 RuntimeStore 状态投影到现有控制台数据合同，保持单一真相源。",
   "owner": "控制台投影负责人",
   "acceptance_contract_ref": "acceptance-fragments/UX1/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-UX1"
+  ],
   "surface_refs": [
     "runtime-console-projection"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

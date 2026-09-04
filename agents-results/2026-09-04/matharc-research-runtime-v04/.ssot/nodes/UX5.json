@@ -11,6 +11,9 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S24",
+    "S29",
+    "S50",
     "UX3",
     "UX4",
     "VER6"
@@ -27,7 +30,7 @@
     "requirement.ux5"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "实时控制台负责人",
   "unlocks": [
     "QRTR6",
     "UX6"
@@ -36,18 +39,23 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/UX5.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "docs/prototypes"
+    "matharc/v02/runtime/service.py",
+    "matharc/v02/runtime/view_model.py",
+    "tests/test_runtime_console_reconnect.py"
   ],
   "required_lanes": [
     "machine/e2e",
     "visual-fidelity",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement UX5.",
+  "goal": "实现断线重连后从服务端快照恢复的实时研究控制台。",
   "owner": "实时控制台负责人",
   "acceptance_contract_ref": "acceptance-fragments/UX5/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-UX5"
+  ],
   "surface_refs": [
     "live-runtime-console"
   ],
@@ -64,6 +72,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

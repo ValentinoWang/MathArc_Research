@@ -4,12 +4,12 @@
   "to": "DOG3",
   "dependency_type": "hard",
   "dependency_scope": "specific-output",
-  "reason_code": "acceptance-dependency",
+  "reason_code": "data-dependency",
   "required_state": "ACCEPTED",
   "assumption_ids": [],
   "invalidation_keys": [
     "requirement.ux6"
   ],
-  "transferred_input": "Deliver source requirement UX6.",
+  "transferred_input": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
   "gate_evidence": "acceptance contract evidence"
 }

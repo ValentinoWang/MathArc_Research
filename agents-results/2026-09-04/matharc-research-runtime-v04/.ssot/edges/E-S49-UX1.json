@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S49-UX1",
+  "from": "S49",
+  "to": "UX1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s49"
+  ],
+  "transferred_input": "可写入区域: tests/test_runtime_console_projection.py",
+  "gate_evidence": "acceptance contract evidence"
+}

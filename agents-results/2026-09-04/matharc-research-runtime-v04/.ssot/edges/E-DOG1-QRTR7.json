@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.dog1"
   ],
-  "transferred_input": "Deliver source requirement DOG1.",
+  "transferred_input": "固定首个真实任务、评价器、范围、预算和可重放的单成员基线。",
   "gate_evidence": "acceptance contract evidence"
 }

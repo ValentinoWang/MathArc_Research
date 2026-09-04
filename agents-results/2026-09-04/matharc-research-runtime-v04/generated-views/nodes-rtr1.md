@@ -6,22 +6,22 @@
 
 | Task ID | Semantic key | Work kind | Write authority | Side effect class | Hard dependencies | Soft dependencies | Decision refs | Execution contract ref | Acceptance contract ref |
 |---|---|---|---|---|---|---|---|---|---|
-| RUN1 | requirement.run1 | implementation | implementation | reversible | F; DP1; FND3 | none | decision.matharc-native-runtime@1 | nodes/RUN1.json | acceptance-fragments/RUN1/acceptance-contract.md |
-| RUN2 | requirement.run2 | implementation | implementation | reversible | F; DP1; RUN1 | none | decision.matharc-native-runtime@1 | nodes/RUN2.json | acceptance-fragments/RUN2/acceptance-contract.md |
-| RUN3 | requirement.run3 | implementation | implementation | reversible | F; DP1; RUN1 | none | decision.matharc-native-runtime@1 | nodes/RUN3.json | acceptance-fragments/RUN3/acceptance-contract.md |
-| RUN4 | requirement.run4 | implementation | implementation | reversible | F; DP1; RUN2; RUN3 | none | decision.matharc-native-runtime@1 | nodes/RUN4.json | acceptance-fragments/RUN4/acceptance-contract.md |
-| RUN5 | requirement.run5 | implementation | implementation | reversible | F; DP1; RUN4 | none | decision.matharc-native-runtime@1 | nodes/RUN5.json | acceptance-fragments/RUN5/acceptance-contract.md |
+| RUN1 | requirement.run1 | implementation | implementation | reversible | F; DP1; S15; S19; S52; S59; FND2 | none | decision.matharc-native-runtime@1 | nodes/RUN1.json | acceptance-fragments/RUN1/acceptance-contract.md |
+| RUN2 | requirement.run2 | implementation | implementation | reversible | F; DP1; S22; S79; RUN1 | none | decision.matharc-native-runtime@1 | nodes/RUN2.json | acceptance-fragments/RUN2/acceptance-contract.md |
+| RUN3 | requirement.run3 | implementation | implementation | reversible | F; DP1; S17; S56; RUN1 | none | decision.matharc-native-runtime@1 | nodes/RUN3.json | acceptance-fragments/RUN3/acceptance-contract.md |
+| RUN4 | requirement.run4 | implementation | implementation | reversible | F; DP1; S9; S10; S11; S12; S13; S16; S44; RUN2; RUN3 | none | decision.matharc-native-runtime@1 | nodes/RUN4.json | acceptance-fragments/RUN4/acceptance-contract.md |
+| RUN5 | requirement.run5 | validation | implementation | reversible | F; DP1; S35; S78; RUN4 | none | decision.matharc-native-runtime@1 | nodes/RUN5.json | acceptance-fragments/RUN5/acceptance-contract.md |
 | QRTR1 | acceptance.release.rtr1 | release-decision | shared-generated | none | RUN1; RUN2; RUN3; RUN4; RUN5 | none | none | nodes/QRTR1.json | none |
 
 ### Release RTR1 status ledger
 
 | Task ID | Stage | Versions | State | Attempt | Owner | Guard ID | Blocking reason | Evidence | Unlocks |
 |---|---|---|---|---|---|---|---|---|---|
-| RUN1 | RTR1 | decision.matharc-native-runtime@1 | PLANNED | none | acceptance owner | none | none | acceptance-fragments/RUN1/acceptance-contract.md | PAR1; QRTR1; RUN2; RUN3; VER1 |
-| RUN2 | RTR1 | decision.matharc-native-runtime@1 | PLANNED | none | acceptance owner | none | none | acceptance-fragments/RUN2/acceptance-contract.md | DUR1; QRTR1; RUN4 |
-| RUN3 | RTR1 | decision.matharc-native-runtime@1 | PLANNED | none | acceptance owner | none | none | acceptance-fragments/RUN3/acceptance-contract.md | QRTR1; RUN4 |
-| RUN4 | RTR1 | decision.matharc-native-runtime@1 | PLANNED | none | acceptance owner | none | none | acceptance-fragments/RUN4/acceptance-contract.md | PAR2; QRTR1; RUN5 |
-| RUN5 | RTR1 | decision.matharc-native-runtime@1 | PLANNED | none | acceptance owner | none | none | acceptance-fragments/RUN5/acceptance-contract.md | DOG1; QRTR1; SYN1 |
+| RUN1 | RTR1 | decision.matharc-native-runtime@1 | PLANNED | none | 运行合同负责人 | none | none | acceptance-fragments/RUN1/acceptance-contract.md | PAR1; QRTR1; RUN2; RUN3; VER1 |
+| RUN2 | RTR1 | decision.matharc-native-runtime@1 | PLANNED | none | 运行存储负责人 | none | none | acceptance-fragments/RUN2/acceptance-contract.md | QRTR1; RUN4 |
+| RUN3 | RTR1 | decision.matharc-native-runtime@1 | PLANNED | none | 评价器负责人 | none | none | acceptance-fragments/RUN3/acceptance-contract.md | QRTR1; RUN4 |
+| RUN4 | RTR1 | decision.matharc-native-runtime@1 | PLANNED | none | 第一方后端负责人 | none | none | acceptance-fragments/RUN4/acceptance-contract.md | PAR2; QRTR1; RUN5 |
+| RUN5 | RTR1 | decision.matharc-native-runtime@1 | PLANNED | none | 单任务验收负责人 | none | none | acceptance-fragments/RUN5/acceptance-contract.md | DOG1; DUR1; QRTR1; SYN1 |
 | QRTR1 | RTR1 | none | PLANNED | none | release decision owner | none | none | none | none |
 
 ### Release RTR1 deliverables

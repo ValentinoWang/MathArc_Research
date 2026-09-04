@@ -39,5 +39,11 @@ qa:
   # MATHARC_GATE_EVIDENCE_DIR points a new task at its own evidence directory; MATHARC_GATE_FONT_MODE=fallback-local
   # declares a machine without the font CDN (view contract §9.13.4) instead of letting network state decide.
   evidence_root: agents-results
+
+acceptance:
+  evidence_lanes:
+    persistent-runtime:
+      # Stable project-owned collector identity for deployment/restart/recovery evidence.
+      collector_key: matharc-persistent-runtime-v1
 skills:
   enabled: []

@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 资源记账负责人
 - Approval evidence: TBD
-- Request source: item PAR4
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h2[4]
 - SSOT node: PAR4
 - SSOT path: .ssot/nodes/PAR4.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item PAR4: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/budget.py 中按运行回执记录实际费用而不是模型自报费用 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/non-functional | 在 tests/test_runtime_semantic_deduplication.py 中证明同一语义实验不会重复运行 | Non-functional | Automatic | Yes |
+| AC-01 | behavior | SRC-PAR4 | machine/unit | 在 matharc/v02/budget.py 中按运行回执记录实际费用而不是模型自报费用 | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-PAR4 | machine/non-functional | 在 tests/test_runtime_semantic_deduplication.py 中证明同一语义实验不会重复运行 | Non-functional | Automatic | Yes |
 
 ## Human acceptance
 

@@ -1,9 +1,9 @@
 {
   "node_id": "PAR4",
   "semantic_key": "requirement.par4",
-  "stage": "RTR2",
+  "stage": "RTR3",
   "work_kind": "implementation",
-  "domain_lane": "rtr2",
+  "domain_lane": "rtr3",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S16",
+    "S77",
     "PAR3"
   ],
   "soft_dependencies": [],
@@ -25,26 +27,30 @@
     "requirement.par4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "资源记账负责人",
   "unlocks": [
     "PAR5",
-    "QRTR2"
+    "QRTR3"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/PAR4.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/budget.py"
+    "matharc/v02/runtime/coordinator.py",
+    "tests/test_runtime_semantic_deduplication.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/non-functional"
   ],
-  "goal": "Deliver source requirement PAR4.",
+  "goal": "按执行回执记录实际资源消耗，并对语义重复实验做确定性去重。",
   "owner": "资源记账负责人",
   "acceptance_contract_ref": "acceptance-fragments/PAR4/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-PAR4"
+  ],
   "surface_refs": [
     "resource-accounting"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

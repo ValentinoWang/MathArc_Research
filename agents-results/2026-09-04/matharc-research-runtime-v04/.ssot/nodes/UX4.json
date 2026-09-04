@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S29",
+    "S51",
     "UX1",
     "UX2"
   ],
@@ -26,7 +28,7 @@
     "requirement.ux4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "控制台安全视图负责人",
   "unlocks": [
     "QRTR6",
     "UX5"
@@ -35,18 +37,22 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/UX4.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/console_topic.py"
+    "matharc/v02/runtime/view_model.py",
+    "tests/test_runtime_console_redaction.py"
   ],
   "required_lanes": [
     "machine/static",
     "machine/e2e",
     "visual-fidelity"
   ],
-  "goal": "Deliver source requirement UX4.",
+  "goal": "建立统一中文运行视图并递归脱敏密钥、路径、命令、环境变量和堆栈。",
   "owner": "控制台安全视图负责人",
   "acceptance_contract_ref": "acceptance-fragments/UX4/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-UX4"
+  ],
   "surface_refs": [
     "runtime-disclosure"
   ],
@@ -63,6 +69,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

@@ -6,14 +6,14 @@
 - Test baseline: PLANNED
 - Acceptance owner: 真实研究试点负责人
 - Approval evidence: TBD
-- Request source: item DOG2
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[20]
 - SSOT node: DOG2
 - SSOT path: .ssot/nodes/DOG2.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.dog2
-- AC budget: 2
+- AC budget: 3
 - Baseline identity: ssot-input.json#items[DOG2]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,7 +57,7 @@ For item DOG2, the interface declared for DOG2 must continue to satisfy every ac
 
 ## Data impact
 
-Item DOG2 constrains any create, update, or delete reachable through the interface declared for DOG2; only the acceptance seeds below define what data changes are permitted for real-two-generation-pilot. Node-specific data assertions: 在 experiments/runtime-pilot/two-generation-report.md 中记录三至四研究成员和至少两代真实实验 | 在 tests/test_runtime_pilot_generation_consumption.py 中证明第二代消费第一代结果且错误晋升为零
+Item DOG2 constrains any create, update, or delete reachable through the interface declared for DOG2; only the acceptance seeds below define what data changes are permitted for real-two-generation-pilot. Node-specific data assertions: 在 experiments/runtime-pilot/two-generation-report.md 中记录三至四研究成员和至少两代真实实验 | 在 tests/test_runtime_pilot_generation_consumption.py 中证明第二代消费第一代结果且错误晋升为零 | 在 acceptance/runtime-pilot/production-checklist.md 中记录真实两代研究的持久运行环境与发布前置
 
 ## Permissions
 
@@ -72,8 +72,9 @@ Node-specific increment for item DOG2: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/e2e | 在 experiments/runtime-pilot/two-generation-report.md 中记录三至四研究成员和至少两代真实实验 | E2E | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_pilot_generation_consumption.py 中证明第二代消费第一代结果且错误晋升为零 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-DOG2 | machine/e2e | 在 experiments/runtime-pilot/two-generation-report.md 中记录三至四研究成员和至少两代真实实验 | E2E | Automatic | Yes |
+| AC-02 | behavior | SRC-DOG2 | persistent-runtime | 在 tests/test_runtime_pilot_generation_consumption.py 中证明第二代消费第一代结果且错误晋升为零 | Persistent runtime | Automatic | Yes |
+| AC-03 | behavior | SRC-DOG2 | production | 在 acceptance/runtime-pilot/production-checklist.md 中记录真实两代研究的持久运行环境与发布前置 | Production | Automatic | Yes |
 
 ## Human acceptance
 
@@ -91,7 +92,8 @@ Item DOG2 is fully determined by its acceptance seeds; outcomes for the interfac
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
 | AC-01 | E2E | experiments/runtime-pilot/two-generation-report.md | Automatic | Yes |
-| AC-02 | Local runtime | tests/test_runtime_pilot_generation_consumption.py | Automatic | Yes |
+| AC-02 | Persistent runtime | tests/test_runtime_pilot_generation_consumption.py | Automatic | Yes |
+| AC-03 | Production | acceptance/runtime-pilot/production-checklist.md | Automatic | Yes |
 
 ## Exploratory testing
 

@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.ver5"
   ],
-  "transferred_input": "Deliver source requirement VER5.",
+  "transferred_input": "记录命题、源码、评价器或候选身份变化导致的证据失效。",
   "gate_evidence": "acceptance contract evidence"
 }

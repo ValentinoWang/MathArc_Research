@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.ux5"
   ],
-  "transferred_input": "Deliver source requirement UX5.",
+  "transferred_input": "实现断线重连后从服务端快照恢复的实时研究控制台。",
   "gate_evidence": "acceptance contract evidence"
 }

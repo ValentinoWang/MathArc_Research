@@ -11,6 +11,9 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S14",
+    "S26",
+    "S45",
     "RUN5",
     "DUR2"
   ],
@@ -26,7 +29,7 @@
     "requirement.syn1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "探索结果接线负责人",
   "unlocks": [
     "QRTR4",
     "SYN2",
@@ -36,17 +39,22 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/SYN1.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/exploration_session.py"
+    "matharc/v02/runtime/synthesis.py",
+    "matharc/v02/runtime/candidate.py",
+    "tests/test_runtime_candidate_synthesis.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement SYN1.",
+  "goal": "把普通执行输出标准化为带完整出处的探索候选，隔离于正式证据。",
   "owner": "探索结果接线负责人",
   "acceptance_contract_ref": "acceptance-fragments/SYN1/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-SYN1"
+  ],
   "surface_refs": [
     "candidate-synthesis"
   ],
@@ -63,6 +71,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

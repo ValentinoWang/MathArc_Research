@@ -1,9 +1,9 @@
 {
   "node_id": "PAR2",
   "semantic_key": "requirement.par2",
-  "stage": "RTR2",
+  "stage": "RTR3",
   "work_kind": "implementation",
-  "domain_lane": "rtr2",
+  "domain_lane": "rtr3",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S16",
+    "S41",
     "PAR1",
     "RUN4"
   ],
@@ -26,26 +28,30 @@
     "requirement.par2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "任务审批接线负责人",
   "unlocks": [
     "PAR3",
-    "QRTR2"
+    "QRTR3"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/PAR2.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/research_director"
+    "matharc/v02/runtime/coordinator.py",
+    "tests/test_runtime_approved_task_ingestion.py"
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement PAR2.",
+  "goal": "接入已批准的动态任务并执行一次性、可审计的任务启动。",
   "owner": "任务审批接线负责人",
   "acceptance_contract_ref": "acceptance-fragments/PAR2/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-PAR2"
+  ],
   "surface_refs": [
     "approved-task-ingestion"
   ],
@@ -62,6 +68,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.par2"
   ],
-  "transferred_input": "Deliver source requirement PAR2.",
+  "transferred_input": "接入已批准的动态任务并执行一次性、可审计的任务启动。",
   "gate_evidence": "acceptance contract evidence"
 }

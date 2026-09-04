@@ -11,7 +11,7 @@
     {
       "view_id": "main",
       "source": "view-sources/00-main.md",
-      "source_sha256": "9beefd2723c87fa98dfe8ee7d011af0e83a8f0627928d103222bda6e0fc3a00f",
+      "source_sha256": "7c46a87384cda044f5317e17006ca46616fbefac8600b107fb42f84ba880025c",
       "output": "../ssot-development-paths.md"
     },
     {
@@ -66,6 +66,11 @@
       "generator": "nodes",
       "release": "RTR7",
       "output": "../generated-views/nodes-rtr7.md"
+    },
+    {
+      "view_id": "source-requirements",
+      "generator": "source-requirements",
+      "output": "../generated-views/source-requirements.md"
     }
   ],
   "nodes_dir": "nodes",
@@ -86,14 +91,82 @@
         "Protected acceptance tests",
         "Risks and open decisions"
       ],
-      "summary_sha256": "f8e5b8d1fba1b46ddb5d1edf597eaf6e01d8f9344d17a2af8d95e13cb8002ac4"
+      "summary_sha256": "76d64f664a69607cc32111de1dd75324be8db7709486fd78dc9ac17b62650e6b"
     }
   ],
   "view_model_version": 2,
+  "normative_executable_artifact_contract": {
+    "mode": "strict",
+    "source_milestone_authority": "source",
+    "source_requirements": "source-requirements.json"
+  },
+  "external_dependencies": [
+    {
+      "external_dependency_id": "EXT-MATHARC-RUNTIME-CONTRACT-HTML",
+      "authority_path": "docs/contracts/matharc-research-runtime-v04.html",
+      "authority_commit": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "authority_sha256": "1ee8f49071de1adaabfcb542640e2bd7638447001b5287eb188bfb017269404f",
+      "required_state": "ACCEPTED",
+      "consumers": [
+        "DOG1",
+        "DOG2",
+        "DOG3",
+        "DOG4",
+        "DUR1",
+        "DUR2",
+        "DUR3",
+        "DUR4",
+        "DUR5",
+        "F",
+        "FND1",
+        "FND2",
+        "OPS1",
+        "OPS2",
+        "OPS3",
+        "PAR1",
+        "PAR2",
+        "PAR3",
+        "PAR4",
+        "PAR5",
+        "RUN1",
+        "RUN2",
+        "RUN3",
+        "RUN4",
+        "RUN5",
+        "SYN1",
+        "SYN2",
+        "SYN3",
+        "SYN4",
+        "SYN5",
+        "UX1",
+        "UX2",
+        "UX3",
+        "UX4",
+        "UX5",
+        "UX6",
+        "VER1",
+        "VER2",
+        "VER3",
+        "VER4",
+        "VER5",
+        "VER6"
+      ]
+    },
+    {
+      "external_dependency_id": "EXT-MATHARC-RUNTIME-BASELINE",
+      "authority_path": "docs/contracts/matharc-research-runtime-baseline.html",
+      "authority_commit": "42eb777c6a9307eba00c86f12a271e146c7a90ae",
+      "authority_sha256": "345a71a9129f2a5a51cdac21ce01d0f8e3ffd30498bbe6c9bb68261b500f3130",
+      "required_state": "ACCEPTED",
+      "consumers": [
+        "F"
+      ]
+    }
+  ],
   "validation_report": {
     "path": "validation-report.json",
-    "sha256": "1ef625ecd43a81c3d3b3c74a43ba488d721468a554b939da142a4ce9e654fb3d",
-    "manifest_identity_sha256": "a27318a670e11621320ca7799af88d30d9c7c58aa9e14d0be2bf2bdef1a66e10",
-    "bundle_content_sha256": "4aed114653de2341456d481f21c2b7a302ecc38953549bba9084c8b5189135d7"
+    "sha256": "47ce49bc5f6144823f3a0ce1c1f3952e4d3bf6252e61ee0185e62db3a7e03454",
+    "manifest_identity_sha256": "42c33f0261e054a8bdb59a5923755f4378c9235adab304a896652450983a30b5",
+    "bundle_content_sha256": "275746ff12499e1a3449554b52c1b372bee654e243796ff4ac783fad27af4dc3"
   }
 }

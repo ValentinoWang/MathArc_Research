@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 恢复验收负责人
 - Approval evidence: TBD
-- Request source: item DUR5
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h2[6]
 - SSOT node: DUR5
 - SSOT path: .ssot/nodes/DUR5.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item DUR5: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/e2e | 在 tests/test_runtime_crash_recovery.py 中强制终止进程后完成冷启动恢复 | E2E | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_no_duplicate_recovery.py 中证明恢复不会重复任务、费用、候选或跳代 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-DUR5 | machine/e2e | 在 tests/test_runtime_crash_recovery.py 中强制终止进程后完成冷启动恢复 | E2E | Automatic | Yes |
+| AC-02 | behavior | SRC-DUR5 | machine/local-runtime | 在 tests/test_runtime_no_duplicate_recovery.py 中证明恢复不会重复任务、费用、候选或跳代 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

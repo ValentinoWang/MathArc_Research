@@ -2,7 +2,7 @@
   "node_id": "SYN5",
   "semantic_key": "requirement.syn5",
   "stage": "RTR4",
-  "work_kind": "implementation",
+  "work_kind": "validation",
   "domain_lane": "rtr4",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
@@ -11,8 +11,11 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S57",
+    "S81",
     "SYN4",
-    "DUR5"
+    "DUR5",
+    "PAR5"
   ],
   "soft_dependencies": [],
   "assumption_ids": [],
@@ -26,26 +29,30 @@
     "requirement.syn5"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "连续代际验收负责人",
   "unlocks": [
     "DOG2",
     "QRTR4"
   ],
   "node_role": "leaf",
-  "execution_actor": "orchestrator",
+  "execution_actor": "codex",
   "execution_contract_ref": "nodes/SYN5.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "tests"
+    "tests/test_runtime_two_generation_synthesis.py",
+    "tests/test_runtime_generation_delta.py"
   ],
   "required_lanes": [
     "machine/e2e",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement SYN5.",
+  "goal": "独立验收连续两代提交、路线变化和上一代事实消费。",
   "owner": "连续代际验收负责人",
   "acceptance_contract_ref": "acceptance-fragments/SYN5/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-SYN5"
+  ],
   "surface_refs": [
     "two-generation-synthesis"
   ],
@@ -55,13 +62,7 @@
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
     },
     {
-      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
-    },
-    {
-      "code": "TEST_BASELINE_NOT_LOCKED"
-    },
-    {
-      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

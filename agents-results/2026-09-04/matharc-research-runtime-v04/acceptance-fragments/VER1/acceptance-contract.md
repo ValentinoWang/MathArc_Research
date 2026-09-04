@@ -6,14 +6,14 @@
 - Test baseline: PLANNED
 - Acceptance owner: 候选身份负责人
 - Approval evidence: TBD
-- Request source: item VER1
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:normative-sentence[1]
 - SSOT node: VER1
 - SSOT path: .ssot/nodes/VER1.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.ver1
-- AC budget: 2
+- AC budget: 3
 - Baseline identity: ssot-input.json#items[VER1]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,7 +57,7 @@ For item VER1, the interface declared for VER1 must continue to satisfy every ac
 
 ## Data impact
 
-Item VER1 constrains any create, update, or delete reachable through the interface declared for VER1; only the acceptance seeds below define what data changes are permitted for candidate-envelope. Node-specific data assertions: 在 matharc/v02/candidate_envelope.py 中定义不可变 CandidateEnvelope 身份摘要 | 在 tests/test_candidate_identity.py 中证明任务、源码、评价器、种子、预算或产物变化都会改变候选身份
+Item VER1 constrains any create, update, or delete reachable through the interface declared for VER1; only the acceptance seeds below define what data changes are permitted for candidate-envelope. Node-specific data assertions: 在 matharc/v02/runtime/verification.py 中定义 CandidateEnvelope 进入验证阶段的身份约束和 VerifierReceipt | 在 tests/test_candidate_identity.py 中证明任务、源码、评价器、种子、预算或产物变化都会改变候选身份 | 在 matharc/v02/runtime/contracts.py 和 tests/test_candidate_identity.py 中证明 CandidateEnvelope 首次定义位于 RUN1，VER1 不反向提供 RUN4 的后端合同
 
 ## Permissions
 
@@ -72,8 +72,9 @@ Node-specific increment for item VER1: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/candidate_envelope.py 中定义不可变 CandidateEnvelope 身份摘要 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/integration-contract | 在 tests/test_candidate_identity.py 中证明任务、源码、评价器、种子、预算或产物变化都会改变候选身份 | Integration | Automatic | Yes |
+| AC-01 | behavior | SRC-VER1 | machine/unit | 在 matharc/v02/runtime/verification.py 中定义 CandidateEnvelope 进入验证阶段的身份约束和 VerifierReceipt | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-VER1 | machine/integration-contract | 在 tests/test_candidate_identity.py 中证明任务、源码、评价器、种子、预算或产物变化都会改变候选身份 | Integration | Automatic | Yes |
+| AC-03 | behavior | SRC-VER1 | machine/unit | 在 matharc/v02/runtime/contracts.py 和 tests/test_candidate_identity.py 中证明 CandidateEnvelope 首次定义位于 RUN1，VER1 不反向提供 RUN4 的后端合同 | Unit | Automatic | Yes |
 
 ## Human acceptance
 
@@ -90,8 +91,9 @@ Item VER1 is fully determined by its acceptance seeds; outcomes for the interfac
 
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
-| AC-01 | Unit | matharc/v02/candidate_envelope.py | Automatic | Yes |
+| AC-01 | Unit | matharc/v02/runtime/verification.py | Automatic | Yes |
 | AC-02 | Integration | tests/test_candidate_identity.py | Automatic | Yes |
+| AC-03 | Unit | matharc/v02/runtime/contracts.py | Automatic | Yes |
 
 ## Exploratory testing
 

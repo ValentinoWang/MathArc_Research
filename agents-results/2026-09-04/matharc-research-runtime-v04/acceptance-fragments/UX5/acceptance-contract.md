@@ -6,14 +6,14 @@
 - Test baseline: PLANNED
 - Acceptance owner: 实时控制台负责人
 - Approval evidence: TBD
-- Request source: item UX5
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[17]
 - SSOT node: UX5
 - SSOT path: .ssot/nodes/UX5.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.ux5
-- AC budget: 2
+- AC budget: 3
 - Baseline identity: ssot-input.json#items[UX5]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,7 +57,7 @@ For item UX5, the interface declared for UX5 must continue to satisfy every acce
 
 ## Data impact
 
-Item UX5 constrains any create, update, or delete reachable through the interface declared for UX5; only the acceptance seeds below define what data changes are permitted for live-runtime-console. Node-specific data assertions: 在 docs/prototypes/problem-intel-console.html 中展示研究成员、代际、预算、候选和验证状态 | 在 tests/test_runtime_console_reconnect.py 中证明断线后控制台从服务端快照恢复而不是从浏览器缓存猜测
+Item UX5 constrains any create, update, or delete reachable through the interface declared for UX5; only the acceptance seeds below define what data changes are permitted for live-runtime-console. Node-specific data assertions: 在 docs/prototypes/problem-intel-console.html 中展示研究成员、代际、预算、候选和验证状态 | 在 tests/test_runtime_console_reconnect.py 中证明断线后控制台从服务端快照恢复而不是从浏览器缓存猜测 | 在 matharc/v02/runtime/reconnect.py 中从服务端快照恢复断线会话并保留运行身份
 
 ## Permissions
 
@@ -72,8 +72,9 @@ Node-specific increment for item UX5: the thresholds and failure evidence for th
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/e2e | 在 docs/prototypes/problem-intel-console.html 中展示研究成员、代际、预算、候选和验证状态 | E2E | Automatic | Yes |
-| AC-02 | behavior | none | visual-fidelity | 在 tests/test_runtime_console_reconnect.py 中证明断线后控制台从服务端快照恢复而不是从浏览器缓存猜测 | Visual fidelity | Automatic | Yes |
+| AC-01 | behavior | SRC-UX5 | machine/e2e | 在 docs/prototypes/problem-intel-console.html 中展示研究成员、代际、预算、候选和验证状态 | E2E | Automatic | Yes |
+| AC-02 | behavior | SRC-UX5 | visual-fidelity | 在 tests/test_runtime_console_reconnect.py 中证明断线后控制台从服务端快照恢复而不是从浏览器缓存猜测 | Visual fidelity | Automatic | Yes |
+| AC-03 | behavior | SRC-UX5 | machine/local-runtime | 在 matharc/v02/runtime/reconnect.py 中从服务端快照恢复断线会话并保留运行身份 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 
@@ -92,6 +93,7 @@ Item UX5 is fully determined by its acceptance seeds; outcomes for the interface
 | --- | --- | --- | --- | --- |
 | AC-01 | E2E | docs/prototypes/problem-intel-console.html | Automatic | Yes |
 | AC-02 | Visual fidelity | tests/test_runtime_console_reconnect.py | Automatic | Yes |
+| AC-03 | Local runtime | matharc/v02/runtime/reconnect.py | Automatic | Yes |
 
 ## Exploratory testing
 

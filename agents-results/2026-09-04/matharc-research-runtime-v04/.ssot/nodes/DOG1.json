@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S5",
+    "S74",
     "RUN5"
   ],
   "soft_dependencies": [],
@@ -25,7 +27,7 @@
     "requirement.dog1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "试点任务负责人",
   "unlocks": [
     "DOG2",
     "QRTR7"
@@ -34,17 +36,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/DOG1.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "benchmarks"
+    "benchmarks/runtime-pilot-plan.json",
+    "tests/test_runtime_pilot_baseline.py"
   ],
   "required_lanes": [
     "machine/e2e",
-    "machine/local-runtime"
+    "persistent-runtime"
   ],
-  "goal": "Deliver source requirement DOG1.",
+  "goal": "固定首个真实任务、评价器、范围、预算和可重放的单成员基线。",
   "owner": "试点任务负责人",
   "acceptance_contract_ref": "acceptance-fragments/DOG1/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-DOG1"
+  ],
   "surface_refs": [
     "pilot-baseline"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

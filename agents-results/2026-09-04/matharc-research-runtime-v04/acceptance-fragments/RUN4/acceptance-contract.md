@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 第一方后端负责人
 - Approval evidence: TBD
-- Request source: item RUN4
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h2[2]
 - SSOT node: RUN4
 - SSOT path: .ssot/nodes/RUN4.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item RUN4: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/integration-contract | 在 matharc/v02/runtime/coordinator.py 中把 Codex、Claude Code、API 和本地进程统一为 MathArc 后端请求 | Integration | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_backend_contract.py 中证明后端结果只能形成 CandidateEnvelope，不能写入 RuntimeStore 之外的数学状态 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-RUN4 | machine/integration-contract | 在 matharc/v02/runtime/coordinator.py 中把 Codex、Claude Code、API 和本地进程统一为 MathArc 后端请求 | Integration | Automatic | Yes |
+| AC-02 | behavior | SRC-RUN4 | machine/local-runtime | 在 tests/test_runtime_backend_contract.py 中证明后端结果只能形成 CandidateEnvelope，不能写入 RuntimeStore 之外的数学状态 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

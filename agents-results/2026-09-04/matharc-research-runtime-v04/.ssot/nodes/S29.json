@@ -1,0 +1,48 @@
+{
+  "node_id": "S29",
+  "semantic_key": "write-region.s29",
+  "stage": "RTRZ",
+  "work_kind": "implementation",
+  "domain_lane": "rtrz",
+  "execution_state": "READY",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "write-region.s29"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "UX1",
+    "UX4",
+    "UX5"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/S29.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "matharc/v02/runtime/view_model.py"
+  ],
+  "readiness_contract_exempt": "write-region-bootstrap",
+  "blocking_reasons": [],
+  "readiness_gaps": [],
+  "goal": "建立写入区域 matharc/v02/runtime/view_model.py",
+  "owner": "控制台投影负责人",
+  "source_requirement_refs": [
+    "SRC-UX1",
+    "SRC-UX4",
+    "SRC-UX5"
+  ]
+}

@@ -4,12 +4,12 @@
   "to": "QRTR7",
   "dependency_type": "hard",
   "dependency_scope": "specific-output",
-  "reason_code": "acceptance-dependency",
+  "reason_code": "data-dependency",
   "required_state": "ACCEPTED",
   "assumption_ids": [],
   "invalidation_keys": [
     "requirement.dog2"
   ],
-  "transferred_input": "Deliver source requirement DOG2.",
+  "transferred_input": "在运维闭环完成后执行两代真实并行研究并证明第二代消费第一代事实。",
   "gate_evidence": "acceptance contract evidence"
 }

@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S30-FND1",
+  "from": "S30",
+  "to": "FND1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s30"
+  ],
+  "transferred_input": "可写入区域: scripts/check_runtime_dependency_allowlist.py",
+  "gate_evidence": "acceptance contract evidence"
+}

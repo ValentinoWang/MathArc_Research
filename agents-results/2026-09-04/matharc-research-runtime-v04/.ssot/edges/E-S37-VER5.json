@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S37-VER5",
+  "from": "S37",
+  "to": "VER5",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s37"
+  ],
+  "transferred_input": "可写入区域: tests/test_evidence_invalidation.py",
+  "gate_evidence": "acceptance contract evidence"
+}

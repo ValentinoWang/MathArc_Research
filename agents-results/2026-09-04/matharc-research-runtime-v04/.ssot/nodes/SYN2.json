@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S26",
+    "S53",
     "SYN1"
   ],
   "soft_dependencies": [],
@@ -25,7 +27,7 @@
     "requirement.syn2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "反例复核负责人",
   "unlocks": [
     "QRTR4",
     "SYN4"
@@ -34,17 +36,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/SYN2.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/falsification.py"
+    "matharc/v02/runtime/synthesis.py",
+    "tests/test_runtime_counterexample_review.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
-  "goal": "Deliver source requirement SYN2.",
+  "goal": "将疑似反例送入独立复核队列，未复核前不改变研究路线或结论。",
   "owner": "反例复核负责人",
   "acceptance_contract_ref": "acceptance-fragments/SYN2/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-SYN2"
+  ],
   "surface_refs": [
     "counterexample-review"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

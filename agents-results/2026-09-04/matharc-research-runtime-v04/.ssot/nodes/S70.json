@@ -1,0 +1,44 @@
+{
+  "node_id": "S70",
+  "semantic_key": "write-region.s70",
+  "stage": "RTRZ",
+  "work_kind": "implementation",
+  "domain_lane": "rtrz",
+  "execution_state": "READY",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "write-region.s70"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "acceptance owner",
+  "unlocks": [
+    "FND1"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/S70.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "none",
+  "write_regions": [
+    "tests/test_runtime_ownership.py"
+  ],
+  "readiness_contract_exempt": "write-region-bootstrap",
+  "blocking_reasons": [],
+  "readiness_gaps": [],
+  "goal": "建立写入区域 tests/test_runtime_ownership.py",
+  "owner": "MathArc 运行时架构负责人",
+  "source_requirement_refs": [
+    "SRC-FND1"
+  ]
+}

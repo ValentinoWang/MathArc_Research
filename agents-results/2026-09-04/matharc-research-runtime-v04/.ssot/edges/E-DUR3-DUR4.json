@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.dur3"
   ],
-  "transferred_input": "Deliver source requirement DUR3.",
+  "transferred_input": "实现停止、排空、暂停、继续和取消的显式运行状态协议。",
   "gate_evidence": "acceptance contract evidence"
 }

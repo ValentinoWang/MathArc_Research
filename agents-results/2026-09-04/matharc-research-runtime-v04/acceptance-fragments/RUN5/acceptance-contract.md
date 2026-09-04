@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 单任务验收负责人
 - Approval evidence: TBD
-- Request source: item RUN5
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h2[3]
 - SSOT node: RUN5
 - SSOT path: .ssot/nodes/RUN5.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item RUN5: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/e2e | 在 tests/test_runtime_single_run.py 中完成真实任务到候选返回的端到端路径 | E2E | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_candidate_promotion_boundary.py 中拒绝候选直接进入 EvidenceRecord 或 PROVED | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-RUN5 | machine/e2e | 在 tests/test_runtime_single_run.py 中完成真实任务到候选返回的端到端路径 | E2E | Automatic | Yes |
+| AC-02 | behavior | SRC-RUN5 | machine/local-runtime | 在 tests/test_candidate_promotion_boundary.py 中拒绝候选直接进入 EvidenceRecord 或 PROVED | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

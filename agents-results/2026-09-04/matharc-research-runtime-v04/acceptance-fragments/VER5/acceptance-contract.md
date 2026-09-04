@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 证据失效负责人
 - Approval evidence: TBD
-- Request source: item VER5
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:normative-sentence[5]
 - SSOT node: VER5
 - SSOT path: .ssot/nodes/VER5.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item VER5: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/audit.py 中记录命题、源码、评价器或候选身份变化导致的证据失效 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/integration-contract | 在 tests/test_evidence_invalidation.py 中证明失效证据不能继续支撑已晋升结论 | Integration | Automatic | Yes |
+| AC-01 | behavior | SRC-VER5 | machine/unit | 在 matharc/v02/audit.py 中记录命题、源码、评价器或候选身份变化导致的证据失效 | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-VER5 | machine/integration-contract | 在 tests/test_evidence_invalidation.py 中证明失效证据不能继续支撑已晋升结论 | Integration | Automatic | Yes |
 
 ## Human acceptance
 

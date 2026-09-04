@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.ver3"
   ],
-  "transferred_input": "Deliver source requirement VER3.",
+  "transferred_input": "为候选生成干净环境的独立重放计划，排除同实现自证。",
   "gate_evidence": "acceptance contract evidence"
 }

@@ -4,12 +4,12 @@
   "to": "DOG2",
   "dependency_type": "hard",
   "dependency_scope": "specific-output",
-  "reason_code": "acceptance-dependency",
+  "reason_code": "data-dependency",
   "required_state": "ACCEPTED",
   "assumption_ids": [],
   "invalidation_keys": [
     "requirement.syn5"
   ],
-  "transferred_input": "Deliver source requirement SYN5.",
+  "transferred_input": "独立验收连续两代提交、路线变化和上一代事实消费。",
   "gate_evidence": "acceptance contract evidence"
 }

@@ -1,0 +1,69 @@
+{
+  "node_id": "OPS3",
+  "semantic_key": "requirement.ops3",
+  "stage": "RTR6",
+  "work_kind": "validation",
+  "domain_lane": "rtr6",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "S3",
+    "S66",
+    "S69",
+    "OPS2"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.ops3"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "试点发布运维负责人",
+  "unlocks": [
+    "DOG2",
+    "QRTR6"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "codex",
+  "execution_contract_ref": "nodes/OPS3.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "consumes",
+  "write_regions": [
+    "tests/test_runtime_ops_release.py",
+    "tests/test_runtime_ops_cleanup.py",
+    "acceptance/runtime-pilot/ops-checklist.md"
+  ],
+  "required_lanes": [
+    "machine/e2e",
+    "persistent-runtime",
+    "production"
+  ],
+  "goal": "独立验收部署、重启、回滚和试点用户数据清理。",
+  "owner": "试点发布运维负责人",
+  "acceptance_contract_ref": "acceptance-fragments/OPS3/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-OPS3"
+  ],
+  "surface_refs": [
+    "pilot-operations"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
+    }
+  ]
+}

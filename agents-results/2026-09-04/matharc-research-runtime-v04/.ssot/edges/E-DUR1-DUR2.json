@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.dur1"
   ],
-  "transferred_input": "Deliver source requirement DUR1.",
+  "transferred_input": "定义冻结输入、代际提交、GenerationReducer 和 GenerationClosePolicy 的持久边界。",
   "gate_evidence": "acceptance contract evidence"
 }

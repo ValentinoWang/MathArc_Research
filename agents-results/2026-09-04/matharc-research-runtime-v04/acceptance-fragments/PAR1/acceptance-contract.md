@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 研究拓扑负责人
 - Approval evidence: TBD
-- Request source: item PAR1
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[4]
 - SSOT node: PAR1
 - SSOT path: .ssot/nodes/PAR1.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item PAR1: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/integration-contract | 在 tests/test_runtime_topology.py 中拒绝缺少角色、预算或写入区域的研究成员 | Integration | Automatic | Yes |
+| AC-01 | behavior | SRC-PAR1 | machine/unit | 在 matharc/v02/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑 | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-PAR1 | machine/integration-contract | 在 tests/test_runtime_topology.py 中拒绝缺少角色、预算或写入区域的研究成员 | Integration | Automatic | Yes |
 
 ## Human acceptance
 

@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: MathArc 研究协议负责人
 - Approval evidence: TBD
-- Request source: item FND2
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[1]
 - SSOT node: FND2
 - SSOT path: .ssot/nodes/FND2.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item FND2: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/trace.py 中保持 ResearchTrace 作为唯一数学结论晋升权威 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/integration-contract | 在 tests/test_runtime_authority_boundaries.py 中证明 RuntimeStore 状态不能直接写成 PROVED | Integration | Automatic | Yes |
+| AC-01 | behavior | SRC-FND2 | machine/unit | 在 matharc/v02/trace.py 中保持 ResearchTrace 作为唯一数学结论晋升权威 | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-FND2 | machine/integration-contract | 在 tests/test_runtime_authority_boundaries.py 中证明 RuntimeStore 状态不能直接写成 PROVED | Integration | Automatic | Yes |
 
 ## Human acceptance
 

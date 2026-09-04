@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 代际议程负责人
 - Approval evidence: TBD
-- Request source: item SYN4
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h2[7]
 - SSOT node: SYN4
 - SSOT path: .ssot/nodes/SYN4.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item SYN4: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/integration-contract | 在 matharc/v02/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程 | Integration | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_next_generation_agenda.py 中要求下一代明确引用上一代事实 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-SYN4 | machine/integration-contract | 在 matharc/v02/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程 | Integration | Automatic | Yes |
+| AC-02 | behavior | SRC-SYN4 | machine/local-runtime | 在 tests/test_runtime_next_generation_agenda.py 中要求下一代明确引用上一代事实 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

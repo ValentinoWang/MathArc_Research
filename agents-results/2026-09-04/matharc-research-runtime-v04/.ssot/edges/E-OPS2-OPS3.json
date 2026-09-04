@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-OPS2-OPS3",
+  "from": "OPS2",
+  "to": "OPS3",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "data-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "requirement.ops2"
+  ],
+  "transferred_input": "建立健康检查、日志、配额、备份和恢复观测闭环。",
+  "gate_evidence": "acceptance contract evidence"
+}

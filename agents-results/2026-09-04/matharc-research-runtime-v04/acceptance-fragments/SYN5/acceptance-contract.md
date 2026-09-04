@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 连续代际验收负责人
 - Approval evidence: TBD
-- Request source: item SYN5
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[26]
 - SSOT node: SYN5
 - SSOT path: .ssot/nodes/SYN5.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item SYN5: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/e2e | 在 tests/test_runtime_two_generation_synthesis.py 中完成连续两代运行并保留两份 GenerationCommit | E2E | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_generation_delta.py 中证明第二代路线或攻击任务因第一代结果发生可解释变化 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-SYN5 | machine/e2e | 在 tests/test_runtime_two_generation_synthesis.py 中完成连续两代运行并保留两份 GenerationCommit | E2E | Automatic | Yes |
+| AC-02 | behavior | SRC-SYN5 | machine/local-runtime | 在 tests/test_runtime_generation_delta.py 中证明第二代路线或攻击任务因第一代结果发生可解释变化 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

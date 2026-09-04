@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 试点任务负责人
 - Approval evidence: TBD
-- Request source: item DOG1
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[19]
 - SSOT node: DOG1
 - SSOT path: .ssot/nodes/DOG1.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item DOG1: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/e2e | 在 benchmarks/runtime-pilot-plan.json 中固定首个真实任务、评价器、范围、预算和单成员基线 | E2E | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_pilot_baseline.py 中证明基线可重放且成功与失败条件可机器判断 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-DOG1 | machine/e2e | 在 benchmarks/runtime-pilot-plan.json 中固定首个真实任务、评价器、范围、预算和单成员基线 | E2E | Automatic | Yes |
+| AC-02 | behavior | SRC-DOG1 | persistent-runtime | 在 tests/test_runtime_pilot_baseline.py 中证明基线可重放且成功与失败条件可机器判断 | Persistent runtime | Automatic | Yes |
 
 ## Human acceptance
 
@@ -91,7 +91,7 @@ Item DOG1 is fully determined by its acceptance seeds; outcomes for the interfac
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
 | AC-01 | E2E | benchmarks/runtime-pilot-plan.json | Automatic | Yes |
-| AC-02 | Local runtime | tests/test_runtime_pilot_baseline.py | Automatic | Yes |
+| AC-02 | Persistent runtime | tests/test_runtime_pilot_baseline.py | Automatic | Yes |
 
 ## Exploratory testing
 

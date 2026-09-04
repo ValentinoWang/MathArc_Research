@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S29-UX4",
+  "from": "S29",
+  "to": "UX4",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s29"
+  ],
+  "transferred_input": "可写入区域: matharc/v02/runtime/view_model.py",
+  "gate_evidence": "acceptance contract evidence"
+}

@@ -6,14 +6,14 @@
 - Test baseline: PLANNED
 - Acceptance owner: MathArc 运行时架构负责人
 - Approval evidence: TBD
-- Request source: item FND1
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:h2[1]
 - SSOT node: FND1
 - SSOT path: .ssot/nodes/FND1.json
 - Readiness mode: FORMAL
 - Decision refs: decision.matharc-native-runtime@1
 - Assumption IDs: none
 - Invalidation keys: task.fnd1
-- AC budget: 2
+- AC budget: 3
 - Baseline identity: ssot-input.json#items[FND1]
 - Product Context refs: none
 - Role Context refs: none
@@ -57,7 +57,7 @@ For item FND1, the interface declared for FND1 must continue to satisfy every ac
 
 ## Data impact
 
-Item FND1 constrains any create, update, or delete reachable through the interface declared for FND1; only the acceptance seeds below define what data changes are permitted for runtime-governance. Node-specific data assertions: 在 scripts/check_runtime_ownership.py 中登记 MathArc 原生运行时与治理工具链的允许边界 | 在 tests/test_runtime_ownership.py 中拒绝未登记控制平面依赖进入生产运行路径
+Item FND1 constrains any create, update, or delete reachable through the interface declared for FND1; only the acceptance seeds below define what data changes are permitted for runtime-governance. Node-specific data assertions: 在 scripts/check_runtime_ownership.py 和 tests/test_runtime_ownership.py 中登记 MathArc 原生运行时与治理工具链的允许边界 | 在 scripts/check_runtime_dependency_allowlist.py 和 tests/test_runtime_dependency_allowlist.py 中对未知运行时依赖 fail-closed | 在 tests/test_runtime_ownership.py 中证明所有实现节点只写入已登记的 MathArc 代码与测试文件
 
 ## Permissions
 
@@ -72,8 +72,9 @@ Node-specific increment for item FND1: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/static | 在 scripts/check_runtime_ownership.py 中登记 MathArc 原生运行时与治理工具链的允许边界 | Static analysis | Automatic | Yes |
-| AC-02 | behavior | none | machine/unit | 在 tests/test_runtime_ownership.py 中拒绝未登记控制平面依赖进入生产运行路径 | Unit | Automatic | Yes |
+| AC-01 | behavior | SRC-FND1 | machine/static | 在 scripts/check_runtime_ownership.py 和 tests/test_runtime_ownership.py 中登记 MathArc 原生运行时与治理工具链的允许边界 | Static analysis | Automatic | Yes |
+| AC-02 | behavior | SRC-FND1 | machine/unit | 在 scripts/check_runtime_dependency_allowlist.py 和 tests/test_runtime_dependency_allowlist.py 中对未知运行时依赖 fail-closed | Unit | Automatic | Yes |
+| AC-03 | behavior | SRC-FND1 | machine/static | 在 tests/test_runtime_ownership.py 中证明所有实现节点只写入已登记的 MathArc 代码与测试文件 | Static analysis | Automatic | Yes |
 
 ## Human acceptance
 
@@ -91,7 +92,8 @@ Item FND1 is fully determined by its acceptance seeds; outcomes for the interfac
 | Requirement | Verification | Evidence target | Mode | Blocking |
 | --- | --- | --- | --- | --- |
 | AC-01 | Static analysis | scripts/check_runtime_ownership.py | Automatic | Yes |
-| AC-02 | Unit | tests/test_runtime_ownership.py | Automatic | Yes |
+| AC-02 | Unit | scripts/check_runtime_dependency_allowlist.py | Automatic | Yes |
+| AC-03 | Static analysis | tests/test_runtime_ownership.py | Automatic | Yes |
 
 ## Exploratory testing
 

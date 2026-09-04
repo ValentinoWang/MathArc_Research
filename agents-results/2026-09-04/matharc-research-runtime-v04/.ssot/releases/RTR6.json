@@ -1,9 +1,9 @@
 {
   "release_id": "RTR6",
   "release_gate_node": "QRTR6",
-  "title": "RT-R6 邀请制控制台",
-  "user_value": "受邀用户可以查看并受控操作研究运行。",
-  "independent_failure": "浏览器不能执行任意命令、目录、环境变量或未登记后端。",
+  "title": "RT-R6 邀请制产品与试点运行环境",
+  "user_value": "受邀用户可以在有持久运维保障的环境中查看并受控操作研究运行。",
+  "independent_failure": "浏览器不能执行任意命令、目录、环境变量或未登记后端；运维缺口阻断试点。",
   "node_ids": [
     "UX1",
     "UX2",
@@ -11,6 +11,9 @@
     "UX4",
     "UX5",
     "UX6",
+    "OPS1",
+    "OPS2",
+    "OPS3",
     "QRTR6"
   ]
 }

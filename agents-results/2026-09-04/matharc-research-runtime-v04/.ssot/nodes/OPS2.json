@@ -1,0 +1,66 @@
+{
+  "node_id": "OPS2",
+  "semantic_key": "requirement.ops2",
+  "stage": "RTR6",
+  "work_kind": "validation",
+  "domain_lane": "rtr6",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "S65",
+    "S68",
+    "OPS1"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.ops2"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "试点运维观测负责人",
+  "unlocks": [
+    "OPS3",
+    "QRTR6"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "codex",
+  "execution_contract_ref": "nodes/OPS2.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "consumes",
+  "write_regions": [
+    "tests/test_runtime_ops_observability.py",
+    "tests/test_runtime_ops_backup.py"
+  ],
+  "required_lanes": [
+    "machine/integration-contract",
+    "persistent-runtime"
+  ],
+  "goal": "建立健康检查、日志、配额、备份和恢复观测闭环。",
+  "owner": "试点运维观测负责人",
+  "acceptance_contract_ref": "acceptance-fragments/OPS2/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-OPS2"
+  ],
+  "surface_refs": [
+    "pilot-operations"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
+    }
+  ]
+}

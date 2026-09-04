@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.ver4"
   ],
-  "transferred_input": "Deliver source requirement VER4.",
+  "transferred_input": "仅将通过 VerifierReceipt 的候选转换为带出处的 EvidenceRecord。",
   "gate_evidence": "acceptance contract evidence"
 }

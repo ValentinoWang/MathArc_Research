@@ -11,6 +11,9 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S14",
+    "S28",
+    "S33",
     "RUN1",
     "DUR2"
   ],
@@ -26,7 +29,7 @@
     "requirement.ver1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "候选身份负责人",
   "unlocks": [
     "QRTR5",
     "VER2"
@@ -35,17 +38,22 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/VER1.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/schema.py"
+    "matharc/v02/runtime/candidate.py",
+    "matharc/v02/runtime/verification.py",
+    "tests/test_candidate_identity.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
-  "goal": "Deliver source requirement VER1.",
+  "goal": "定义候选进入验证阶段所需的身份约束和 VerifierReceipt，而非重新定义候选包。",
   "owner": "候选身份负责人",
   "acceptance_contract_ref": "acceptance-fragments/VER1/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-VER1"
+  ],
   "surface_refs": [
     "candidate-envelope"
   ],
@@ -62,6 +70,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

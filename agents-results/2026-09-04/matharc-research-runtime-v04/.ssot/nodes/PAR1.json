@@ -1,9 +1,9 @@
 {
   "node_id": "PAR1",
   "semantic_key": "requirement.par1",
-  "stage": "RTR2",
+  "stage": "RTR3",
   "work_kind": "implementation",
-  "domain_lane": "rtr2",
+  "domain_lane": "rtr3",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S27",
+    "S80",
     "RUN1"
   ],
   "soft_dependencies": [],
@@ -25,26 +27,30 @@
     "requirement.par1"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "研究拓扑负责人",
   "unlocks": [
     "PAR2",
-    "QRTR2"
+    "QRTR3"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/PAR1.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/orchestrator.py"
+    "matharc/v02/runtime/topology.py",
+    "tests/test_runtime_topology.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
-  "goal": "Deliver source requirement PAR1.",
+  "goal": "把研究路线和角色编译为带机制、预算、目标和隔离写入区的运行拓扑。",
   "owner": "研究拓扑负责人",
   "acceptance_contract_ref": "acceptance-fragments/PAR1/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-PAR1"
+  ],
   "surface_refs": [
     "research-topology"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

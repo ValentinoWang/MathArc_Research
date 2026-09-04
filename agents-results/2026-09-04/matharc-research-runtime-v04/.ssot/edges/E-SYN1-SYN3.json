@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.syn1"
   ],
-  "transferred_input": "Deliver source requirement SYN1.",
+  "transferred_input": "把普通执行输出标准化为带完整出处的探索候选，隔离于正式证据。",
   "gate_evidence": "acceptance contract evidence"
 }

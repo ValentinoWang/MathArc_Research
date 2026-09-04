@@ -2,7 +2,7 @@
   "node_id": "DOG2",
   "semantic_key": "requirement.dog2",
   "stage": "RTR7",
-  "work_kind": "implementation",
+  "work_kind": "validation",
   "domain_lane": "rtr7",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
@@ -11,10 +11,13 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S8",
+    "S75",
     "PAR5",
     "SYN5",
     "VER6",
-    "DOG1"
+    "DOG1",
+    "OPS3"
   ],
   "soft_dependencies": [],
   "assumption_ids": [],
@@ -28,27 +31,31 @@
     "requirement.dog2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "真实研究试点负责人",
   "unlocks": [
     "DOG3",
     "QRTR7"
   ],
   "node_role": "leaf",
-  "execution_actor": "orchestrator",
+  "execution_actor": "codex",
   "execution_contract_ref": "nodes/DOG2.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "experiments"
+    "experiments/runtime-pilot/two-generation-report.md",
+    "tests/test_runtime_pilot_generation_consumption.py"
   ],
   "required_lanes": [
     "machine/e2e",
-    "machine/local-runtime",
+    "persistent-runtime",
     "production"
   ],
-  "goal": "Deliver source requirement DOG2.",
+  "goal": "在运维闭环完成后执行两代真实并行研究并证明第二代消费第一代事实。",
   "owner": "真实研究试点负责人",
   "acceptance_contract_ref": "acceptance-fragments/DOG2/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-DOG2"
+  ],
   "surface_refs": [
     "real-two-generation-pilot"
   ],
@@ -58,13 +65,7 @@
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
     },
     {
-      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
-    },
-    {
-      "code": "TEST_BASELINE_NOT_LOCKED"
-    },
-    {
-      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.par1"
   ],
-  "transferred_input": "Deliver source requirement PAR1.",
+  "transferred_input": "把研究路线和角色编译为带机制、预算、目标和隔离写入区的运行拓扑。",
   "gate_evidence": "acceptance contract evidence"
 }

@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 运行动作 API 负责人
 - Approval evidence: TBD
-- Request source: item UX3
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[15]
 - SSOT node: UX3
 - SSOT path: .ssot/nodes/UX3.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item UX3: the thresholds and failure evidence for PO
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/integration-contract | 在 matharc/v02/runtime/service.py 中提供启动、暂停、继续、停止和重新验证的幂等动作 | Integration | Automatic | Yes |
-| AC-02 | behavior | none | machine/e2e | 在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段 | E2E | Automatic | Yes |
+| AC-01 | behavior | SRC-UX3 | machine/integration-contract | 在 matharc/v02/runtime/service.py 中提供启动、暂停、继续、停止和重新验证的幂等动作 | Integration | Automatic | Yes |
+| AC-02 | behavior | SRC-UX3 | machine/e2e | 在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段 | E2E | Automatic | Yes |
 
 ## Human acceptance
 

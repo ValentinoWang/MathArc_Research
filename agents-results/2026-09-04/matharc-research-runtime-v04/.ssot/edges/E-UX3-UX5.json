@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.ux3"
   ],
-  "transferred_input": "Deliver source requirement UX3.",
+  "transferred_input": "提供登记动作的幂等运行控制服务，拒绝任意命令、目录、环境和参数。",
   "gate_evidence": "acceptance contract evidence"
 }

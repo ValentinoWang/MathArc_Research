@@ -11,6 +11,13 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S9",
+    "S10",
+    "S11",
+    "S12",
+    "S13",
+    "S16",
+    "S44",
     "RUN2",
     "RUN3"
   ],
@@ -26,7 +33,7 @@
     "requirement.run4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "第一方后端负责人",
   "unlocks": [
     "PAR2",
     "QRTR1",
@@ -36,17 +43,26 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/RUN4.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/claude_code_runtime.py"
+    "matharc/v02/runtime/coordinator.py",
+    "matharc/v02/runtime/backends/base.py",
+    "matharc/v02/runtime/backends/codex.py",
+    "matharc/v02/runtime/backends/claude_code.py",
+    "matharc/v02/runtime/backends/model_api.py",
+    "matharc/v02/runtime/backends/local_process.py",
+    "tests/test_runtime_backend_contract.py"
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement RUN4.",
+  "goal": "将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。",
   "owner": "第一方后端负责人",
   "acceptance_contract_ref": "acceptance-fragments/RUN4/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-RUN4"
+  ],
   "surface_refs": [
     "backend-coordinator"
   ],
@@ -63,6 +79,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

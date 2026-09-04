@@ -1,0 +1,77 @@
+{
+  "node_id": "OPS1",
+  "semantic_key": "requirement.ops1",
+  "stage": "RTR6",
+  "work_kind": "implementation",
+  "domain_lane": "rtr6",
+  "execution_state": "PLANNED",
+  "decision_state": "NOT_APPLICABLE",
+  "decision_version": null,
+  "readiness_mode": "FORMAL",
+  "hard_dependencies": [
+    "F",
+    "DP1",
+    "S6",
+    "S7",
+    "S67",
+    "UX6"
+  ],
+  "soft_dependencies": [],
+  "assumption_ids": [],
+  "decision_refs": [
+    {
+      "semantic_key": "decision.matharc-native-runtime",
+      "version": 1
+    }
+  ],
+  "invalidation_keys": [
+    "requirement.ops1"
+  ],
+  "write_authority": "implementation",
+  "acceptance_authority": "试点部署负责人",
+  "unlocks": [
+    "OPS2",
+    "QRTR6"
+  ],
+  "node_role": "leaf",
+  "execution_actor": "orchestrator",
+  "execution_contract_ref": "nodes/OPS1.json",
+  "side_effect_class": "reversible",
+  "candidate_identity_policy": "consumes",
+  "write_regions": [
+    "deploy/matharc-research.service",
+    "deploy/matharc-research.env.example",
+    "tests/test_runtime_ops_deployment.py"
+  ],
+  "required_lanes": [
+    "machine/static",
+    "persistent-runtime"
+  ],
+  "goal": "固定试点部署配置、持久目录、密钥来源和进程守护方式。",
+  "owner": "试点部署负责人",
+  "acceptance_contract_ref": "acceptance-fragments/OPS1/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-OPS1"
+  ],
+  "surface_refs": [
+    "pilot-operations"
+  ],
+  "blocking_reasons": [],
+  "readiness_gaps": [
+    {
+      "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
+    },
+    {
+      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
+    },
+    {
+      "code": "TEST_BASELINE_NOT_LOCKED"
+    },
+    {
+      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
+    }
+  ]
+}

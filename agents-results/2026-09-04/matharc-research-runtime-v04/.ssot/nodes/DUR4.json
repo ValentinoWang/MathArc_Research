@@ -1,9 +1,9 @@
 {
   "node_id": "DUR4",
   "semantic_key": "requirement.dur4",
-  "stage": "RTR3",
+  "stage": "RTR2",
   "work_kind": "implementation",
-  "domain_lane": "rtr3",
+  "domain_lane": "rtr2",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S20",
+    "S76",
     "DUR2",
     "DUR3"
   ],
@@ -26,26 +28,30 @@
     "requirement.dur4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "恢复负责人",
   "unlocks": [
     "DUR5",
-    "QRTR3"
+    "QRTR2"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/DUR4.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/workspace_server"
+    "matharc/v02/runtime/recovery.py",
+    "tests/test_runtime_recovery_plan.py"
   ],
   "required_lanes": [
     "machine/local-runtime",
     "machine/integration-contract"
   ],
-  "goal": "Deliver source requirement DUR4.",
+  "goal": "从最后一个完整 GenerationCommit 生成可重放的崩溃恢复计划。",
   "owner": "恢复负责人",
   "acceptance_contract_ref": "acceptance-fragments/DUR4/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-DUR4"
+  ],
   "surface_refs": [
     "crash-recovery"
   ],
@@ -62,6 +68,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

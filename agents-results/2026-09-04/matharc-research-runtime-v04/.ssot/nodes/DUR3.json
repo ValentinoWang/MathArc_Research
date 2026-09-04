@@ -1,9 +1,9 @@
 {
   "node_id": "DUR3",
   "semantic_key": "requirement.dur3",
-  "stage": "RTR3",
+  "stage": "RTR2",
   "work_kind": "implementation",
-  "domain_lane": "rtr3",
+  "domain_lane": "rtr2",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
   "decision_version": null,
@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S25",
+    "S61",
     "DUR1"
   ],
   "soft_dependencies": [],
@@ -25,26 +27,30 @@
     "requirement.dur3"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "运行控制负责人",
   "unlocks": [
     "DUR4",
-    "QRTR3"
+    "QRTR2"
   ],
   "node_role": "leaf",
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/DUR3.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/event_log.py"
+    "matharc/v02/runtime/state_machine.py",
+    "tests/test_runtime_lifecycle_control.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
-  "goal": "Deliver source requirement DUR3.",
+  "goal": "实现停止、排空、暂停、继续和取消的显式运行状态协议。",
   "owner": "运行控制负责人",
   "acceptance_contract_ref": "acceptance-fragments/DUR3/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-DUR3"
+  ],
   "surface_refs": [
     "lifecycle-control"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

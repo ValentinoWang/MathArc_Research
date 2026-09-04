@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S28-VER1",
+  "from": "S28",
+  "to": "VER1",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s28"
+  ],
+  "transferred_input": "可写入区域: matharc/v02/runtime/verification.py",
+  "gate_evidence": "acceptance contract evidence"
+}

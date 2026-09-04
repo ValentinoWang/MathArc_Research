@@ -945,7 +945,7 @@
       "kind": "validation",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:li[14]"
+        "locator": "html:li[26]"
       }
     },
     {

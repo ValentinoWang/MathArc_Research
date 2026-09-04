@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 探索结果接线负责人
 - Approval evidence: TBD
-- Request source: item SYN1
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[11]
 - SSOT node: SYN1
 - SSOT path: .ssot/nodes/SYN1.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item SYN1: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/synthesis.py 中把普通执行输出标准化为带完整出处的探索候选 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_candidate_synthesis.py 中证明标准化候选不会进入正式证据 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-SYN1 | machine/unit | 在 matharc/v02/synthesis.py 中把普通执行输出标准化为带完整出处的探索候选 | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-SYN1 | machine/local-runtime | 在 tests/test_runtime_candidate_synthesis.py 中证明标准化候选不会进入正式证据 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

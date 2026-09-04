@@ -1,0 +1,15 @@
+{
+  "edge_id": "E-S1-UX6",
+  "from": "S1",
+  "to": "UX6",
+  "dependency_type": "hard",
+  "dependency_scope": "specific-output",
+  "reason_code": "contract-dependency",
+  "required_state": "ACCEPTED",
+  "assumption_ids": [],
+  "invalidation_keys": [
+    "write-region.s1"
+  ],
+  "transferred_input": "可写入区域: acceptance/human/runtime-console/desktop-checklist.md",
+  "gate_evidence": "acceptance contract evidence"
+}

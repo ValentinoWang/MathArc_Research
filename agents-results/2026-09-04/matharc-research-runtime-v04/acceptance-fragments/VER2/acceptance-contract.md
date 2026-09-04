@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 命题范围负责人
 - Approval evidence: TBD
-- Request source: item VER2
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:normative-sentence[2]
 - SSOT node: VER2
 - SSOT path: .ssot/nodes/VER2.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item VER2: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/verification_bridge.py 中将候选绑定到具体命题、量词、对象和范围 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/integration-contract | 在 tests/test_candidate_scope_binding.py 中拒绝范围扩大、量词变化和对象错配 | Integration | Automatic | Yes |
+| AC-01 | behavior | SRC-VER2 | machine/unit | 在 matharc/v02/verification_bridge.py 中将候选绑定到具体命题、量词、对象和范围 | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-VER2 | machine/integration-contract | 在 tests/test_candidate_scope_binding.py 中拒绝范围扩大、量词变化和对象错配 | Integration | Automatic | Yes |
 
 ## Human acceptance
 

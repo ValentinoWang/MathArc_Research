@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 评价器负责人
 - Approval evidence: TBD
-- Request source: item RUN3
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[3]
 - SSOT node: RUN3
 - SSOT path: .ssot/nodes/RUN3.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item RUN3: the thresholds and failure evidence for t
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/unit | 在 matharc/v02/evaluator.py 中定义评价器输入、输出、预算和随机种子合同 | Unit | Automatic | Yes |
-| AC-02 | behavior | none | machine/local-runtime | 在 tests/test_runtime_evaluator.py 中证明最小试跑失败时不会启动完整研究 | Local runtime | Automatic | Yes |
+| AC-01 | behavior | SRC-RUN3 | machine/unit | 在 matharc/v02/evaluator.py 中定义评价器输入、输出、预算和随机种子合同 | Unit | Automatic | Yes |
+| AC-02 | behavior | SRC-RUN3 | machine/local-runtime | 在 tests/test_runtime_evaluator.py 中证明最小试跑失败时不会启动完整研究 | Local runtime | Automatic | Yes |
 
 ## Human acceptance
 

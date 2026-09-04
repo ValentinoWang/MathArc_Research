@@ -10,6 +10,6 @@
   "invalidation_keys": [
     "requirement.run4"
   ],
-  "transferred_input": "Deliver source requirement RUN4.",
+  "transferred_input": "将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。",
   "gate_evidence": "acceptance contract evidence"
 }

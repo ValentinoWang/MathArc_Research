@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 控制台投影负责人
 - Approval evidence: TBD
-- Request source: item UX1
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:normative-sentence[7]
 - SSOT node: UX1
 - SSOT path: .ssot/nodes/UX1.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item UX1: the thresholds and failure evidence for th
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/integration-contract | 在 matharc/v02/console_export.py 中将 RuntimeStore 状态投影到现有控制台数据合同 | Integration | Automatic | Yes |
-| AC-02 | behavior | none | machine/e2e | 在 tests/test_runtime_console_projection.py 中证明投影不是第二真相源且不暴露主机绝对路径 | E2E | Automatic | Yes |
+| AC-01 | behavior | SRC-UX1 | machine/integration-contract | 在 matharc/v02/console_export.py 中将 RuntimeStore 状态投影到现有控制台数据合同 | Integration | Automatic | Yes |
+| AC-02 | behavior | SRC-UX1 | machine/e2e | 在 tests/test_runtime_console_projection.py 中证明投影不是第二真相源且不暴露主机绝对路径 | E2E | Automatic | Yes |
 
 ## Human acceptance
 

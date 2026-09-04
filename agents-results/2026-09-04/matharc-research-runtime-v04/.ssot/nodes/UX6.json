@@ -2,7 +2,7 @@
   "node_id": "UX6",
   "semantic_key": "requirement.ux6",
   "stage": "RTR6",
-  "work_kind": "implementation",
+  "work_kind": "validation",
   "domain_lane": "rtr6",
   "execution_state": "PLANNED",
   "decision_state": "NOT_APPLICABLE",
@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S1",
+    "S47",
     "UX5"
   ],
   "soft_dependencies": [],
@@ -25,27 +27,32 @@
     "requirement.ux6"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "浏览器产品验收负责人",
   "unlocks": [
     "DOG3",
+    "OPS1",
     "QRTR6"
   ],
   "node_role": "leaf",
-  "execution_actor": "orchestrator",
+  "execution_actor": "codex",
   "execution_contract_ref": "nodes/UX6.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "acceptance"
+    "tests/test_runtime_console_mobile.py",
+    "acceptance/human/runtime-console/desktop-checklist.md"
   ],
   "required_lanes": [
     "machine/e2e",
     "visual-fidelity",
     "human"
   ],
-  "goal": "Deliver source requirement UX6.",
+  "goal": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
   "owner": "浏览器产品验收负责人",
   "acceptance_contract_ref": "acceptance-fragments/UX6/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-UX6"
+  ],
   "surface_refs": [
     "console-human-acceptance"
   ],
@@ -55,13 +62,7 @@
       "code": "HARD_DEPENDENCY_NOT_ACCEPTED"
     },
     {
-      "code": "ACCEPTANCE_CONTRACT_NOT_APPROVED"
-    },
-    {
-      "code": "TEST_BASELINE_NOT_LOCKED"
-    },
-    {
-      "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

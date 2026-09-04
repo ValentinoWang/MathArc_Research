@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S18",
+    "S63",
     "SYN2",
     "SYN3"
   ],
@@ -26,7 +28,7 @@
     "requirement.syn4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "代际议程负责人",
   "unlocks": [
     "QRTR4",
     "SYN5"
@@ -35,17 +37,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/SYN4.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/research_director"
+    "matharc/v02/runtime/generation.py",
+    "tests/test_runtime_next_generation_agenda.py"
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement SYN4.",
+  "goal": "把失败、经历和评审缺口编译为明确消费上一代事实的下一代议程。",
   "owner": "代际议程负责人",
   "acceptance_contract_ref": "acceptance-fragments/SYN4/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-SYN4"
+  ],
   "surface_refs": [
     "next-generation-agenda"
   ],
@@ -62,6 +68,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

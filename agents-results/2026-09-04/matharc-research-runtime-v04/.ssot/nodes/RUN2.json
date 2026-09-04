@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S22",
+    "S79",
     "RUN1"
   ],
   "soft_dependencies": [],
@@ -25,9 +27,8 @@
     "requirement.run2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "运行存储负责人",
   "unlocks": [
-    "DUR1",
     "QRTR1",
     "RUN4"
   ],
@@ -35,17 +36,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/RUN2.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/local_store.py"
+    "matharc/v02/runtime/run_store.py",
+    "tests/test_runtime_store_replay.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/local-runtime"
   ],
-  "goal": "Deliver source requirement RUN2.",
+  "goal": "建立可重放的运行存储，使事件、快照和候选导入在进程重启后保持一致。",
   "owner": "运行存储负责人",
   "acceptance_contract_ref": "acceptance-fragments/RUN2/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-RUN2"
+  ],
   "surface_refs": [
     "run-store"
   ],
@@ -62,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

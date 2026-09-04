@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S28",
+    "S36",
     "VER1"
   ],
   "soft_dependencies": [],
@@ -25,7 +27,7 @@
     "requirement.ver2"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "命题范围负责人",
   "unlocks": [
     "QRTR5",
     "VER3"
@@ -34,17 +36,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/VER2.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/trace.py"
+    "matharc/v02/runtime/verification.py",
+    "tests/test_candidate_scope_binding.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
-  "goal": "Deliver source requirement VER2.",
+  "goal": "把候选绑定到具体命题、量词、对象和范围，拒绝范围扩大与对象错配。",
   "owner": "命题范围负责人",
   "acceptance_contract_ref": "acceptance-fragments/VER2/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-VER2"
+  ],
   "surface_refs": [
     "claim-binding"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

@@ -6,7 +6,7 @@
 - Test baseline: PLANNED
 - Acceptance owner: 邀请权限负责人
 - Approval evidence: TBD
-- Request source: item UX2
+- Request source: SRC-MATHARC-RUNTIME-CONTRACT-HTML#html:li[14]
 - SSOT node: UX2
 - SSOT path: .ssot/nodes/UX2.json
 - Readiness mode: FORMAL
@@ -72,8 +72,8 @@ Node-specific increment for item UX2: the thresholds and failure evidence for th
 
 | ID | Class | Source requirement refs | Lane | Requirement | Verification layer | Mode | Blocking |
 | --- | --- | --- | --- | --- | --- | --- | --- |
-| AC-01 | behavior | none | machine/integration-contract | 在 matharc/v02/access.py 中复用现有邀请制访问和 Cookie 会话边界 | Integration | Automatic | Yes |
-| AC-02 | behavior | none | machine/e2e | 在 tests/test_runtime_console_permissions.py 中证明没有操作权限的用户不能启动或停止任务 | E2E | Automatic | Yes |
+| AC-01 | behavior | SRC-UX2 | machine/integration-contract | 在 matharc/v02/access.py 中复用现有邀请制访问和 Cookie 会话边界 | Integration | Automatic | Yes |
+| AC-02 | behavior | SRC-UX2 | machine/e2e | 在 tests/test_runtime_console_permissions.py 中证明没有操作权限的用户不能启动或停止任务 | E2E | Automatic | Yes |
 
 ## Human acceptance
 

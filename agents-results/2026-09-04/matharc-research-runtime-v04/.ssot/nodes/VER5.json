@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S28",
+    "S37",
     "VER4"
   ],
   "soft_dependencies": [],
@@ -25,7 +27,7 @@
     "requirement.ver5"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "证据失效负责人",
   "unlocks": [
     "QRTR5",
     "VER6"
@@ -34,17 +36,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/VER5.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/audit.py"
+    "matharc/v02/runtime/verification.py",
+    "tests/test_evidence_invalidation.py"
   ],
   "required_lanes": [
     "machine/unit",
     "machine/integration-contract"
   ],
-  "goal": "Deliver source requirement VER5.",
+  "goal": "记录命题、源码、评价器或候选身份变化导致的证据失效。",
   "owner": "证据失效负责人",
   "acceptance_contract_ref": "acceptance-fragments/VER5/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-VER5"
+  ],
   "surface_refs": [
     "evidence-invalidation"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }

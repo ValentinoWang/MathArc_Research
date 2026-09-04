@@ -11,6 +11,8 @@
   "hard_dependencies": [
     "F",
     "DP1",
+    "S28",
+    "S32",
     "VER3"
   ],
   "soft_dependencies": [],
@@ -25,7 +27,7 @@
     "requirement.ver4"
   ],
   "write_authority": "implementation",
-  "acceptance_authority": "acceptance owner",
+  "acceptance_authority": "证据转换负责人",
   "unlocks": [
     "QRTR5",
     "VER5"
@@ -34,17 +36,21 @@
   "execution_actor": "orchestrator",
   "execution_contract_ref": "nodes/VER4.json",
   "side_effect_class": "reversible",
-  "candidate_identity_policy": "none",
+  "candidate_identity_policy": "consumes",
   "write_regions": [
-    "matharc/v02/trace.py"
+    "matharc/v02/runtime/verification.py",
+    "tests/test_candidate_evidence_conversion.py"
   ],
   "required_lanes": [
     "machine/integration-contract",
     "machine/unit"
   ],
-  "goal": "Deliver source requirement VER4.",
+  "goal": "仅将通过 VerifierReceipt 的候选转换为带出处的 EvidenceRecord。",
   "owner": "证据转换负责人",
   "acceptance_contract_ref": "acceptance-fragments/VER4/acceptance-contract.md",
+  "source_requirement_refs": [
+    "SRC-VER4"
+  ],
   "surface_refs": [
     "evidence-record"
   ],
@@ -61,6 +67,9 @@
     },
     {
       "code": "PROTECTED_ACCEPTANCE_TEST_NOT_REGISTERED"
+    },
+    {
+      "code": "WRITE_REGION_MISSING"
     }
   ]
 }
