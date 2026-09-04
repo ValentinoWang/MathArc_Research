@@ -6,6 +6,7 @@ import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch
+from types import SimpleNamespace
 
 from matharc.v02.runtime.ops import (
     RuntimeBootstrapError,
@@ -58,6 +59,45 @@ class RuntimeOpsBootstrapTests(unittest.TestCase):
             with patch.dict(os.environ, env, clear=False), self.assertRaises(RuntimeBootstrapError):
                 bootstrap_from_env()
 
+    def test_serve_uses_v02_workspace_server_and_persistent_store(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            credential = root / "credentials" / "api-token"
+            credential.parent.mkdir()
+            credential.write_text("opaque-token\n", encoding="utf-8")
+            env = self._environment(root, credential) | {
+                "MATHARC_DASHBOARD_PATH": str(root / "workspace" / "dashboard.html"),
+                "MATHARC_ACCESS_STORE_PATH": str(root / "access"),
+                "MATHARC_ACCESS_COOKIE_SECURE": "true",
+            }
+            runtime = SimpleNamespace(
+                workspace=root / "workspace",
+                store_path=root / "store",
+                readyz=lambda: {"ok": True},
+            )
+            server = SimpleNamespace(
+                serve_forever=lambda **_: None,
+                server_close=lambda: None,
+            )
+            captured: dict[str, object] = {}
+
+            def fake_make_server(workspace, **kwargs):
+                captured["workspace"] = workspace
+                captured.update(kwargs)
+                return server
+
+            # Keep this test at the bootstrap boundary: no network socket is
+            # opened, while the constructor contract is fully asserted.
+            with patch.dict(os.environ, env, clear=False), \
+                    patch("matharc.v02.runtime.ops.bootstrap_from_env", return_value=runtime), \
+                    patch("matharc.v02.workspace_server.make_server", side_effect=fake_make_server):
+                from matharc.v02.runtime.ops import _serve
+                self.assertEqual(0, _serve(SimpleNamespace(host="127.0.0.1", port=0, run="", workspace="")))
+            self.assertEqual(root / "workspace", captured["workspace"])
+            self.assertEqual(root / "store", captured["runtime_store_path"])
+            self.assertEqual(root / "access", captured["access_store_root"])
+            self.assertTrue(captured["access_cookie_secure"])
+
     def test_cleanup_backs_up_before_allowlisted_removal(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory) / "runtime"
@@ -85,6 +125,15 @@ class RuntimeOpsBootstrapTests(unittest.TestCase):
                 cleanup_regenerable(root, ["disposable.cache"], backup_path=Path(directory) / "backup-allowlist", allowlist=[])
             with self.assertRaises(RuntimeBootstrapError):
                 cleanup_regenerable(root, ["../outside"], backup_path=Path(directory) / "backup-2")
+
+    def test_backup_rejects_destination_inside_store(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "runtime"
+            root.mkdir()
+            (root / "events.jsonl").write_text("{}\n", encoding="utf-8")
+            from matharc.v02.runtime.ops import backup_runtime_store
+            with self.assertRaises(RuntimeBootstrapError):
+                backup_runtime_store(root, root / "backup")
 
 
 if __name__ == "__main__":

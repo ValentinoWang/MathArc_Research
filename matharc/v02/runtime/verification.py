@@ -148,16 +148,18 @@ def bind_candidate_scope(candidate: ExplorationCandidate, *, claim_id: str,
                          proposition: str, quantifier: str, objects: tuple[str, ...] = (),
                          scope: str) -> ClaimBinding:
     """Bind a candidate to the exact proposition/quantifier/object/scope it claims."""
-    payload = candidate.payload if isinstance(candidate.payload, Mapping) else {}
+    if not str(claim_id).strip() or not candidate.claim_ids or claim_id not in candidate.claim_ids:
+        raise ScopeBindingError("candidate is not associated with claim")
+    if not isinstance(candidate.payload, Mapping):
+        raise ScopeBindingError("candidate payload must declare claim scope")
+    payload = candidate.payload
     for key, expected in (("proposition", proposition), ("quantifier", quantifier), ("scope", scope)):
         actual = payload.get(key)
-        if actual is not None and str(actual) != str(expected):
+        if actual is None or str(actual) != str(expected):
             raise ScopeBindingError(f"candidate {key} does not match bound claim")
     actual_objects = tuple(str(item) for item in payload.get("objects", objects))
     if tuple(str(item) for item in objects) != actual_objects:
         raise ScopeBindingError("candidate objects do not match bound claim")
-    if candidate.claim_ids and claim_id not in candidate.claim_ids:
-        raise ScopeBindingError("candidate is not associated with claim")
     return ClaimBinding(str(claim_id), str(proposition), str(quantifier), actual_objects, str(scope))
 
 
@@ -227,6 +229,8 @@ def convert_receipt_to_evidence(candidate: ExplorationCandidate, receipt: Verifi
         raise VerificationError("only an independent PASS receipt can become evidence")
     if receipt.candidate_identity_digest != candidate.envelope.identity_digest:
         raise VerificationError("receipt candidate digest does not match candidate envelope")
+    if not _is_sha256(candidate.envelope.payload_digest) or digest_json(candidate.payload) != candidate.envelope.payload_digest:
+        raise VerificationError("candidate payload digest does not match candidate envelope")
     if not _is_sha256(receipt.replay_digest) or not _is_sha256(receipt.result_digest):
         raise VerificationError("receipt replay and result digests must be SHA-256 values")
     expected_binding = _receipt_binding_digest(

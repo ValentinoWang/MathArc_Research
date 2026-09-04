@@ -7,4 +7,13 @@ class CounterexampleReviewTests(unittest.TestCase):
         q = CounterexampleReviewQueue(); item = q.submit(c)
         self.assertEqual(item.status, "PENDING"); self.assertEqual(len(q.pending()), 1)
 
+    def test_review_requires_rationale_and_cannot_be_resolved_twice(self):
+        c = synthesize_candidate({"workspace_id":"w","trace_id":"t","runtime_run_id":"r","generation_id":"g","payload":{}}, candidate_kind="counterexample")
+        q = CounterexampleReviewQueue(); item = q.submit(c)
+        with self.assertRaises(SynthesisError):
+            q.resolve(item.review_id, accepted=True, reviewer="", rationale="")
+        q.resolve(item.review_id, accepted=True, reviewer="researcher", rationale="replayed independently")
+        with self.assertRaises(SynthesisError):
+            q.resolve(item.review_id, accepted=False, reviewer="researcher", rationale="conflicting")
+
 if __name__ == "__main__": unittest.main()

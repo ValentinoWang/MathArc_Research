@@ -65,10 +65,16 @@ def synthesize_candidate(output: Any, *, workspace_id: str | None = None,
                          candidate_kind: str = "exploration",
     claim_ids: tuple[str, ...] = ()) -> ExplorationCandidate:
     """Normalize ordinary worker output without granting proof authority."""
+    normalized_kind = str(candidate_kind).strip().lower()
+    if normalized_kind not in {"exploration", "counterexample", "suspected_counterexample"}:
+        raise SynthesisError("candidate_kind must be exploration or counterexample")
     if isinstance(output, CandidateEnvelope):
+        effective_payload = output.to_dict() if payload is None else payload
+        if not output.payload_digest or digest_json(effective_payload) != output.payload_digest:
+            raise SynthesisError("candidate envelope payload digest does not match payload")
         provenance = output.to_dict() | {"source": "runtime-execution", "candidate_id": output.candidate_id}
-        return ExplorationCandidate(output, output.to_dict() if payload is None else payload,
-                                    provenance, candidate_kind, tuple(claim_ids))
+        return ExplorationCandidate(output, effective_payload,
+                                    provenance, normalized_kind, tuple(claim_ids))
     workspace_id = str(workspace_id or _value(output, "workspace_id"))
     trace_id = str(trace_id or _value(output, "trace_id"))
     runtime_run_id = str(runtime_run_id or _value(output, "runtime_run_id"))
@@ -126,7 +132,7 @@ def synthesize_candidate(output: Any, *, workspace_id: str | None = None,
         execution_id=execution_id,
     )
     provenance = {**identity, "candidate_id": candidate_id, "source": "runtime-execution"}
-    return ExplorationCandidate(envelope, payload, provenance, candidate_kind,
+    return ExplorationCandidate(envelope, payload, provenance, normalized_kind,
                                 tuple(str(x) for x in claim_ids or _value(output, "claim_ids", ())))
 
 
@@ -168,6 +174,10 @@ class CounterexampleReviewQueue:
     def resolve(self, review_id: str, *, accepted: bool, reviewer: str,
                 rationale: str = "") -> CounterexampleReview:
         item = self._items[review_id]
+        if item.status != "PENDING":
+            raise SynthesisError("review has already been resolved")
+        if not str(reviewer).strip() or not str(rationale).strip():
+            raise SynthesisError("reviewer and rationale are required")
         updated = CounterexampleReview(item.review_id, item.candidate,
             "ACCEPTED" if accepted else "REJECTED", reviewer, rationale, utc_now())
         self._items[review_id] = updated

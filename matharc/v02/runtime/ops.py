@@ -101,6 +101,27 @@ def _credential_path() -> Path:
     raise RuntimeBootstrapError("external api credential is not configured")
 
 
+def _optional_path_env(name: str) -> Path | None:
+    value = os.environ.get(name, "").strip()
+    if not value:
+        return None
+    path = Path(value)
+    if not path.is_absolute():
+        raise RuntimeBootstrapError(f"{name} must be an absolute path")
+    return path
+
+
+def _bool_env(name: str, *, default: bool = False) -> bool:
+    value = os.environ.get(name, "").strip().lower()
+    if not value:
+        return default
+    if value in {"1", "true", "yes", "on"}:
+        return True
+    if value in {"0", "false", "no", "off"}:
+        return False
+    raise RuntimeBootstrapError(f"{name} must be a boolean")
+
+
 def bootstrap_from_env() -> RuntimeBootstrap:
     """Consume deployment env and create/reopen the durable runtime identity."""
     runtime_run_id = _required_env("MATHARC_RUNTIME_RUN_ID")
@@ -158,6 +179,8 @@ def backup_runtime_store(store_path: str | Path, destination: str | Path) -> Pat
     target = Path(destination).resolve()
     if not source.is_dir():
         raise RuntimeBootstrapError(f"runtime store does not exist: {source}")
+    if target == source or source in target.parents:
+        raise RuntimeBootstrapError("backup destination must be outside runtime store")
     if any(path.is_symlink() for path in source.rglob("*")):
         raise RuntimeBootstrapError("runtime store contains a symlink")
     target.parent.mkdir(parents=True, exist_ok=True)
@@ -213,9 +236,26 @@ def _serve(args: argparse.Namespace) -> int:
     runtime = bootstrap_from_env()
     if not runtime.readyz()["ok"]:
         raise RuntimeBootstrapError(json.dumps(runtime.readyz(), sort_keys=True))
-    from ...api import serve
+    # The deployment entrypoint must expose the v0.2 workspace observatory.
+    # Keep all optional edge/access configuration in the environment so the
+    # systemd unit and local bootstrap use the same server constructor.
+    from ..workspace_server import make_server
 
-    serve(args.run, args.host, args.port, workspace=args.workspace)
+    dashboard_path = _optional_path_env("MATHARC_DASHBOARD_PATH")
+    access_store_path = _optional_path_env("MATHARC_ACCESS_STORE_PATH")
+    server = make_server(
+        runtime.workspace,
+        host=args.host,
+        port=args.port,
+        dashboard_path=dashboard_path,
+        access_store_root=access_store_path,
+        access_cookie_secure=_bool_env("MATHARC_ACCESS_COOKIE_SECURE"),
+        runtime_store_path=runtime.store_path,
+    )
+    try:
+        server.serve_forever(poll_interval=0.25)
+    finally:
+        server.server_close()
     return 0
 
 

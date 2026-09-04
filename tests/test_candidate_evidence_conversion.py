@@ -10,4 +10,10 @@ class CandidateEvidenceConversionTests(unittest.TestCase):
         bad = VerifierReceipt(c.candidate_id, receipt.replay_digest, VerificationStatus.FAIL, "v", True)
         with self.assertRaises(VerificationError): convert_receipt_to_evidence(c, bad)
 
+    def test_payload_tampering_after_replay_is_rejected(self):
+        c = synthesize_candidate({"workspace_id":"w","trace_id":"t","runtime_run_id":"r","generation_id":"g","payload":{"x": 1}}, claim_ids=("C",))
+        _, receipt = independent_replay(c, verifier_id="v", implementation_id="impl", replay=lambda _: True)
+        c.payload["x"] = 2
+        with self.assertRaises(VerificationError): convert_receipt_to_evidence(c, receipt)
+
 if __name__ == "__main__": unittest.main()

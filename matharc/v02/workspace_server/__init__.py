@@ -62,7 +62,12 @@ class WorkspaceHTTPServer(_WorkspaceHTTPServerImpl):
         self.access_api = access_api
         self.runtime_store = runtime_store
         from ..runtime.service import ConsoleRuntimeService
-        self.runtime_service = ConsoleRuntimeService(repository.root, access_api=access_api, runtime_store=runtime_store) if runtime_store is not None else None
+        self.runtime_service = ConsoleRuntimeService(
+            repository.root,
+            access_api=access_api,
+            runtime_store=runtime_store,
+            local_projection_config=local_projection_config,
+        ) if runtime_store is not None else None
         ThreadingHTTPServer.__init__(
             self,
             server_address,
