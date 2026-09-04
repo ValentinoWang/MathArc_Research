@@ -34,6 +34,132 @@ class PromotionError(TraceValidationError):
     """Raised when a claim is promoted beyond its evidence boundary."""
 
 
+@dataclass(frozen=True, slots=True)
+class RuntimeHealth:
+    """Small, serializable health snapshot for a persistent runtime process."""
+
+    runtime_run_id: str
+    trace_digest: str
+    status: str = "healthy"
+    active_runs: int = 0
+    quota_remaining: float | None = None
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.runtime_run_id, str) or not self.runtime_run_id.strip():
+            raise ValueError("runtime_run_id is required")
+        if self.active_runs < 0:
+            raise ValueError("active_runs must be non-negative")
+
+    def to_dict(self) -> dict[str, Any]:
+        return {
+            "ok": self.status == "healthy",
+            "status": self.status,
+            "runtime_run_id": self.runtime_run_id,
+            "trace_digest": self.trace_digest,
+            "active_runs": self.active_runs,
+            "quota_remaining": self.quota_remaining,
+        }
+
+
+class RuntimeQuota:
+    """Deterministic per-user and global quota ledger used by OPS2 probes."""
+
+    def __init__(self, *, per_user: float, global_limit: float) -> None:
+        if per_user <= 0 or global_limit <= 0:
+            raise ValueError("quota limits must be positive")
+        self.per_user_limit = float(per_user)
+        self.global_limit = float(global_limit)
+        self._users: dict[str, float] = {}
+        self._total = 0.0
+
+    def consume(self, user_id: str, amount: float = 1.0) -> bool:
+        if not isinstance(user_id, str) or not user_id.strip() or amount <= 0:
+            raise ValueError("user_id and positive amount are required")
+        used = self._users.get(user_id, 0.0)
+        if used + amount > self.per_user_limit or self._total + amount > self.global_limit:
+            return False
+        self._users[user_id] = used + amount
+        self._total += amount
+        return True
+
+    def snapshot(self) -> dict[str, Any]:
+        return {
+            "per_user_limit": self.per_user_limit,
+            "global_limit": self.global_limit,
+            "global_used": self._total,
+            "users": dict(self._users),
+        }
+
+
+class StructuredRuntimeLogger:
+    """JSON-lines logger with a stable event envelope and no private payloads."""
+
+    def __init__(self, path: str | Path) -> None:
+        self.path = Path(path)
+        self.path.parent.mkdir(parents=True, exist_ok=True)
+
+    def emit(self, event: str, **fields: Any) -> dict[str, Any]:
+        if not event.strip():
+            raise ValueError("event is required")
+        record = {"event": event, "level": fields.pop("level", "INFO"), **_redact_runtime_fields(fields)}
+        line = json.dumps(record, ensure_ascii=False, sort_keys=True)
+        with self.path.open("a", encoding="utf-8") as stream:
+            stream.write(line + "\n")
+        return record
+
+
+_SENSITIVE_FIELD_TOKENS = ("secret", "token", "password", "credential", "api_key", "private_key")
+
+
+def _redact_runtime_fields(value: Any) -> Any:
+    if isinstance(value, Mapping):
+        return {
+            key: ("[REDACTED]" if any(token in str(key).casefold() for token in _SENSITIVE_FIELD_TOKENS) else _redact_runtime_fields(item))
+            for key, item in value.items()
+        }
+    if isinstance(value, (list, tuple)):
+        return [_redact_runtime_fields(item) for item in value]
+    return value
+
+
+def runtime_health(trace: ResearchTrace, *, runtime_run_id: str, status: str = "healthy", active_runs: int = 0, quota_remaining: float | None = None) -> dict[str, Any]:
+    """Return an OPS2 health payload tied to the current trace digest."""
+    return RuntimeHealth(runtime_run_id, trace.content_digest(), status, active_runs, quota_remaining).to_dict()
+
+
+def backup_trace(trace: ResearchTrace, destination: str | Path) -> Path:
+    """Create an atomic trace backup; content digest is preserved on restore."""
+    target = Path(destination)
+    target.parent.mkdir(parents=True, exist_ok=True)
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", dir=target.parent, prefix=f".{target.name}.", suffix=".tmp", delete=False) as stream:
+        temporary = Path(stream.name)
+        payload = {"trace": trace.to_dict(), "trace_digest_sha256": trace.content_digest()}
+        stream.write(json.dumps(payload, ensure_ascii=False, indent=2, sort_keys=True) + "\n")
+        stream.flush()
+        os.fsync(stream.fileno())
+    os.replace(temporary, target)
+    return target
+
+
+def restore_trace_backup(source: str | Path) -> ResearchTrace:
+    payload = json.loads(Path(source).read_text(encoding="utf-8"))
+    if not isinstance(payload, dict) or not isinstance(payload.get("trace"), dict):
+        raise TraceValidationError("backup must contain a trace object")
+    trace = ResearchTrace.from_dict(payload["trace"])
+    expected = payload.get("trace_digest_sha256")
+    if expected != trace.content_digest():
+        raise TraceValidationError("backup trace digest mismatch")
+    return trace
+
+
+# Descriptive aliases keep the helpers discoverable without introducing a new
+# runtime module (and preserve the existing trace import surface).
+health_check = runtime_health
+RuntimeLogger = StructuredRuntimeLogger
+QuotaManager = RuntimeQuota
+restore_backup = restore_trace_backup
+
+
 @dataclass(slots=True)
 class ResearchTrace:
     run_id: str
@@ -52,6 +178,22 @@ class ResearchTrace:
 
     def _touch(self) -> None:
         self.updated_at = utc_now()
+
+    def record_runtime_status(self, status: str, **details: Any) -> None:
+        """Record execution status without crossing the mathematical boundary.
+
+        ``PROVED`` is intentionally rejected: only ``promote_claim`` can set a
+        claim's mathematical status, after all verification gates pass.
+        """
+        normalized = str(status).strip().upper()
+        if normalized == ClaimStatus.PROVED.value:
+            raise TraceValidationError("runtime status cannot set a claim to PROVED")
+        if not normalized:
+            raise TraceValidationError("runtime status is required")
+        self.metadata.setdefault("runtime_status_history", []).append(
+            {"status": normalized, **details, "timestamp": utc_now()}
+        )
+        self._touch()
 
     def add_claim(self, claim: ClaimRecord) -> None:
         if claim.claim_id in self.claims:

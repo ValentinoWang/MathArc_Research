@@ -1,0 +1,39 @@
+[Unit]
+Description=MathArc Research native runtime
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=matharc
+Group=matharc
+WorkingDirectory=/opt/matharc-research/current
+EnvironmentFile=/etc/matharc-research/matharc-research.env
+LoadCredential=api-token:/etc/matharc-research/api-token
+ExecStart=/usr/bin/python3 -m matharc.api --run ${MATHARC_RUN_PATH} --host ${MATHARC_BIND_HOST} --port ${MATHARC_PORT} --workspace ${MATHARC_WORKSPACE}
+Restart=on-failure
+RestartSec=5s
+TimeoutStartSec=30s
+TimeoutStopSec=30s
+KillSignal=SIGTERM
+SuccessExitStatus=0 143
+UMask=0077
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ProtectKernelTunables=true
+ProtectControlGroups=true
+RestrictSUIDSGID=true
+RestrictAddressFamilies=AF_UNIX AF_INET AF_INET6
+ReadWritePaths=/var/lib/matharc-research /var/log/matharc-research
+StateDirectory=matharc-research
+LogsDirectory=matharc-research
+RuntimeDirectory=matharc-research
+LimitNOFILE=4096
+
+# The application exposes /api/health; reverse proxy/TLS belongs at the edge.
+ExecStartPost=/usr/bin/curl --fail --silent --show-error --max-time 5 http://${MATHARC_BIND_HOST}:${MATHARC_PORT}/api/health
+
+[Install]
+WantedBy=multi-user.target

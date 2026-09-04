@@ -740,6 +740,7 @@ mark{background:var(--err-soft);color:var(--err);border-radius:3px;padding:0 3px
   <div class="planes" id="planes"></div>
   <div class="nowtask" id="nowtask"></div>
   <span class="miniprog" id="view-data-boundary" role="status" aria-live="polite">演示数据</span>
+  <span class="miniprog" id="runtime-meta" role="status" aria-live="polite">研究成员 · 代际 · 预算 · 候选 · 验证状态</span>
   <span class="miniprog" id="budget"></span>
   <button class="btn" id="themebtn">深色</button>
   <div class="who"><button class="avatar" id="avatar" data-act="go" data-v="acct_overview" style="border:0" title="我的">研</button>
@@ -4251,6 +4252,16 @@ function render(){
     dataBoundary.textContent = connected ? "真实数据" : unavailable ? "实时投影不可用" : "演示数据";
     dataBoundary.dataset.source = connected ? "live" : unavailable ? "unavailable" : "demo";
   }
+  const runtimeMeta = $("#runtime-meta");
+  if(runtimeMeta){
+    const runtime = S.consolePayload && S.consolePayload.runtime;
+    const state = runtime && runtime.state;
+    const runs = state && state.runs && Object.values(state.runs);
+    const run = runs && runs[0];
+    runtimeMeta.textContent = run
+      ? `研究成员 ${run.actor || "未登记"} · 代际 ${run.generation_id || "未登记"} · 预算 ${run.budget || "未登记"} · 候选 ${(state.candidates && Object.keys(state.candidates).length) || 0} · 验证状态 ${run.status || "未知"}`
+      : "研究成员 · 代际 · 预算 · 候选 · 验证状态（未接入）";
+  }
   $("#budget").textContent = S.guest ? "访客只读模式" : "预算 41% · 剩余 1 060 秒";
   $("#avatar").textContent = S.guest ? "客" : (S.role==="admin" ? "管" : "研");
   const logoutButton = $("#access-logout");
@@ -4493,6 +4504,14 @@ document.addEventListener("click", e => {
   const el = e.target.closest("[data-act]");
   if(!el) return;
   const a = el.dataset.act, wasView = S.view;
+  // Runtime data is authoritative: simulated writes are unavailable while a
+  // live console payload is loaded. They must never imply persistence.
+  const LIVE_SIMULATED_WRITES = new Set(["cfg","compile","export","ntadd","plan","promote","sign","signin","startwatch","stopwatch","topup"]);
+  if(LIVE_SIMULATED_WRITES.has(a) && consolePayloadWasLoaded && consolePayloadWasLoaded()){
+    el.disabled = true;
+    el.setAttribute("aria-disabled", "true");
+    return;
+  }
   if(a==="review-refresh"){ ReviewConsole.loadQueue(true); return; }
   if(a==="review-bundle"){ ReviewConsole.loadBundle(el.dataset.claim); return; }
   if(a==="review-submit"){ ReviewConsole.submit(); return; }

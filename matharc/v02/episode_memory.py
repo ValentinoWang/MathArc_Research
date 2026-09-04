@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import hashlib
 import math
 import re
 from dataclasses import dataclass
@@ -8,6 +9,10 @@ from pathlib import Path
 from typing import Any, Iterable, Mapping
 
 _TOKEN = re.compile(r"[A-Za-z0-9_]+|[\u3400-\u9fff]+")
+
+
+def digest_text(value: Mapping[str, Any]) -> str:
+    return hashlib.sha256(json.dumps(value, sort_keys=True, separators=(",", ":")).encode()).hexdigest()
 
 
 def _tokens(value: str) -> set[str]:
@@ -32,8 +37,14 @@ class ResearchEpisode:
     outcome: str
     reusable_policy: str
     status: str
+    # Runtime provenance is mandatory for distilled episodes, while remaining
+    # optional for the frozen v0.2 seed corpus.
+    run_id: str = ""
+    generation_id: str = ""
+    candidate_id: str = ""
+    candidate_origin: str = ""
 
-    def to_dict(self) -> dict[str, str]:
+    def to_dict(self) -> dict[str, Any]:
         return {
             "episode_id": self.episode_id,
             "domain": self.domain,
@@ -46,6 +57,10 @@ class ResearchEpisode:
             "outcome": self.outcome,
             "reusable_policy": self.reusable_policy,
             "status": self.status,
+            "run_id": self.run_id,
+            "generation_id": self.generation_id,
+            "candidate_id": self.candidate_id,
+            "candidate_origin": self.candidate_origin,
         }
 
     @classmethod
@@ -62,14 +77,23 @@ class ResearchEpisode:
             "outcome",
             "reusable_policy",
             "status",
+            "run_id",
+            "generation_id",
+            "candidate_id",
+            "candidate_origin",
         }
         unknown = set(payload) - allowed
         if unknown:
             raise ValueError(f"unknown research-episode fields: {sorted(unknown)}")
-        missing = [field for field in allowed if not str(payload.get(field, "")).strip()]
+        required = allowed - {"run_id", "generation_id", "candidate_id", "candidate_origin"}
+        missing = [field for field in required if not str(payload.get(field, "")).strip()]
         if missing:
             raise ValueError(f"research episode misses fields: {sorted(missing)}")
-        return cls(**{field: str(payload[field]) for field in allowed})
+        return cls(**{field: str(payload.get(field, "")) for field in allowed})
+
+    @property
+    def has_runtime_provenance(self) -> bool:
+        return all((self.run_id, self.generation_id, self.candidate_id, self.candidate_origin))
 
     @property
     def search_text(self) -> str:
@@ -128,6 +152,73 @@ class EpisodeMemory:
             raise ValueError(f"duplicate research episode: {episode.episode_id}")
         self._episodes[episode.episode_id] = episode
         self._reuse.setdefault(episode.episode_id, 0)
+
+    def distill_episode(self, *, run_id: str, generation_id: str, candidate_id: str,
+                        candidate_origin: str, domain: str, target: str,
+                        public_move: str, observable_failure: str,
+                        failure_class: str, minimal_check: str, repair: str,
+                        outcome: str, reusable_policy: str,
+                        status: str = "RUNTIME_DISTILLED") -> ResearchEpisode:
+        """Create an auditable episode from one runtime execution."""
+        values = (run_id, generation_id, candidate_id, candidate_origin)
+        if any(not str(value).strip() for value in values):
+            raise ValueError("runtime episode requires run_id, generation_id, candidate_id and candidate_origin")
+        episode_id = "EP-RUNTIME-" + digest_text({"run_id": run_id, "generation_id": generation_id,
+                                                    "candidate_id": candidate_id, "origin": candidate_origin})
+        episode = ResearchEpisode(episode_id, domain, target, public_move, observable_failure,
+            failure_class, minimal_check, repair, outcome, reusable_policy, status,
+            str(run_id), str(generation_id), str(candidate_id), str(candidate_origin))
+        existing = self._episodes.get(episode_id)
+        if existing is not None:
+            if existing != episode:
+                raise ValueError(f"conflicting runtime episode: {episode_id}")
+            return existing
+        self.add(episode)
+        return episode
+
+    def ingest_candidate(self, candidate: Any, *, domain: str = "runtime",
+                         outcome: str = "observed", failure_class: str = "UNKNOWN",
+                         repair: str = "review independently") -> ResearchEpisode:
+        provenance = dict(getattr(candidate, "provenance", {}) or {})
+        payload = getattr(candidate, "payload", candidate)
+        return self.distill_episode(
+            run_id=str(provenance.get("runtime_run_id", "")),
+            generation_id=str(provenance.get("generation_id", "")),
+            candidate_id=str(getattr(candidate, "candidate_id", provenance.get("candidate_id", ""))),
+            candidate_origin=str(provenance.get("source", "runtime-execution")),
+            domain=domain, target=str(provenance.get("task_digest", "candidate")),
+            public_move="runtime execution produced a candidate",
+            observable_failure=str(payload)[:500], failure_class=failure_class,
+            minimal_check="independent replay", repair=repair, outcome=outcome,
+            reusable_policy="Use as planning context only; never as proof evidence.",
+        )
+
+    def distill_failure(self, candidate: Any, *, failure_class: Any,
+                        trigger: str, diagnosis: str, repair: str,
+                        reusable_lesson: str = "Reproduce with an independent check.",
+                        failure_memory: Any | None = None) -> Any:
+        """Distill a runtime candidate into the existing FailureMemory contract."""
+        from .failure_memory import FailureLesson
+        from .schema import FailureClass
+        provenance = dict(getattr(candidate, "provenance", {}) or {})
+        run_id = str(provenance.get("runtime_run_id", ""))
+        generation_id = str(provenance.get("generation_id", ""))
+        candidate_id = str(getattr(candidate, "candidate_id", provenance.get("candidate_id", "")))
+        if not (run_id and generation_id and candidate_id):
+            raise ValueError("runtime failure requires run, generation and candidate provenance")
+        if not isinstance(failure_class, FailureClass):
+            failure_class = FailureClass(str(failure_class))
+        lesson = FailureLesson(
+            lesson_id=f"{run_id}:{generation_id}:{candidate_id}", source_run_id=run_id,
+            failure_id=candidate_id, failure_class=failure_class,
+            claim_statement=str(getattr(candidate, "payload", "candidate")),
+            mechanism_signature=("runtime-execution",), trigger=trigger,
+            diagnosis=diagnosis, minimal_witness=str(getattr(candidate, "payload", ""))[:500],
+            repair=repair, reusable_lesson=reusable_lesson, exact=False,
+        )
+        if failure_memory is not None:
+            failure_memory.add(lesson)
+        return lesson
 
     def query(
         self,

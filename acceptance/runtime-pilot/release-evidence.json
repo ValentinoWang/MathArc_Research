@@ -1,0 +1,97 @@
+{
+  "schema_version": 1,
+  "task_id": "DOG4",
+  "contract_version": 1,
+  "contract_status": "DRAFT",
+  "evidence_status": "NO_REAL_RELEASE_EVIDENCE",
+  "status": "PENDING",
+  "real_release_evidence": false,
+  "evidence": [],
+  "release_complete": false,
+  "release_decision": {
+    "status": "PENDING_UNSIGNED",
+    "signed": false,
+    "decision": null,
+    "decision_record_path": null,
+    "decision_record_sha256": null,
+    "signed_at": null
+  },
+  "human_acceptance": {
+    "checklist_path": "acceptance/human/runtime-pilot/release-checklist.md",
+    "status": "PENDING",
+    "required_quorum": 2,
+    "allowed_invited_participants": {
+      "minimum": 2,
+      "maximum": 5
+    },
+    "participant_records": [],
+    "approvers": [
+      {
+        "role": "acceptance-a",
+        "principal_ref": "principal:acceptance-a",
+        "independence": "PENDING",
+        "decision": null,
+        "signature": null,
+        "signed_at": null,
+        "status": "PENDING"
+      },
+      {
+        "role": "acceptance-b",
+        "principal_ref": "principal:acceptance-b",
+        "independence": "PENDING",
+        "decision": null,
+        "signature": null,
+        "signed_at": null,
+        "status": "PENDING"
+      }
+    ]
+  },
+  "required_evidence": {
+    "user_research_state_understanding": {
+      "status": "NOT_PROVIDED",
+      "passed": false,
+      "evidence_paths": [],
+      "sha256": null
+    },
+    "local_formal_checks": {
+      "status": "NOT_RUN",
+      "passed": false,
+      "commands": [],
+      "evidence_paths": [],
+      "sha256": null
+    },
+    "clean_replay": {
+      "status": "NOT_RUN",
+      "passed": false,
+      "evidence_paths": [],
+      "sha256": null
+    },
+    "deployment_identity": {
+      "status": "NOT_PROVIDED",
+      "verified": false,
+      "release_id": null,
+      "source_commit": null,
+      "runtime_run_id": null,
+      "evidence_paths": [],
+      "sha256": null
+    },
+    "remote_readback": {
+      "status": "NOT_PROVIDED",
+      "verified": false,
+      "host": null,
+      "evidence_paths": [],
+      "sha256": null
+    }
+  },
+  "claims": [],
+  "blocking_reasons": [
+    "No real release evidence has been supplied.",
+    "The required two-person independent human decision is unsigned.",
+    "DOG4 contract status is DRAFT."
+  ],
+  "provenance": {
+    "source_identity": null,
+    "runtime_identity": null,
+    "generated_at": null
+  }
+}

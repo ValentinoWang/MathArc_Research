@@ -1,0 +1,43 @@
+{
+  "schema_version": "runtime-pilot-plan.v1",
+  "status": "PLANNED",
+  "scope": "deterministic local pilot only",
+  "production_claim": false,
+  "human_acceptance_claim": false,
+  "generations": [
+    {
+      "generation_id": "g1",
+      "purpose": "baseline smoke-gated execution",
+      "required_tests": ["tests/test_runtime_pilot_baseline.py"]
+    },
+    {
+      "generation_id": "g2",
+      "purpose": "consume the frozen g1 commit and classify late or failed work",
+      "required_tests": ["tests/test_runtime_pilot_generation_consumption.py"]
+    }
+  ],
+  "attack_drills": [
+    "identity_mismatch",
+    "duplicate_conflicting_result",
+    "tampered_event_log",
+    "snapshot_digest_drift",
+    "late_result_quarantine",
+    "forbidden_process_input"
+  ],
+  "operations": {
+    "release_identity_required": true,
+    "backup_before_cleanup": true,
+    "cleanup_scope": "explicit regenerable candidates under a temporary or declared runtime root",
+    "rollback": "restore the last complete generation commit and re-run the recovery plan"
+  },
+  "machine_commands": [
+    "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_runtime_pilot_baseline tests.test_runtime_pilot_generation_consumption",
+    "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_runtime_adversarial_drills tests.test_runtime_attack_recovery",
+    "PYTHONDONTWRITEBYTECODE=1 .venv/bin/python -m unittest -v tests.test_runtime_ops_release tests.test_runtime_ops_cleanup"
+  ],
+  "evidence": {
+    "machine_evidence_root": "agents-results/YYYY-MM-DD/runtime-pilot/",
+    "production_evidence": "NOT RUN",
+    "human_signoff": "NOT PROVIDED"
+  }
+}

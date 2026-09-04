@@ -1,0 +1,36 @@
+from __future__ import annotations
+
+import tempfile
+import unittest
+from pathlib import Path
+
+from matharc.v02.schema import TheoremContract
+from matharc.v02.trace import (
+    ResearchTrace,
+    TraceValidationError,
+    backup_trace,
+    restore_trace_backup,
+)
+
+
+class RuntimeOpsBackupTests(unittest.TestCase):
+    def test_backup_restore_preserves_identity_and_digest(self) -> None:
+        trace = ResearchTrace("trace-1", TheoremContract("K", "p", (), "s"))
+        with tempfile.TemporaryDirectory() as directory:
+            path = backup_trace(trace, Path(directory) / "backup.json")
+            restored = restore_trace_backup(path)
+        self.assertEqual(restored.run_id, trace.run_id)
+        self.assertEqual(restored.content_digest(), trace.content_digest())
+
+    def test_tampered_backup_is_rejected(self) -> None:
+        trace = ResearchTrace("trace-1", TheoremContract("K", "p", (), "s"))
+        with tempfile.TemporaryDirectory() as directory:
+            path = backup_trace(trace, Path(directory) / "backup.json")
+            text = path.read_text(encoding="utf-8").replace("trace-1", "trace-2")
+            path.write_text(text, encoding="utf-8")
+            with self.assertRaises(TraceValidationError):
+                restore_trace_backup(path)
+
+
+if __name__ == "__main__":
+    unittest.main()

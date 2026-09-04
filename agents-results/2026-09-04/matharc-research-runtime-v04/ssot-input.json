@@ -503,19 +503,19 @@
       "write_targets": [
         {
           "path": "scripts/check_runtime_ownership.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_ownership.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "scripts/check_runtime_dependency_allowlist.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_dependency_allowlist.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -573,11 +573,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/trace.py",
-          "mode": "modify"
+          "operation": "modify"
         },
         {
           "path": "tests/test_runtime_authority_boundaries.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -636,23 +636,23 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/contracts.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/identity.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/generation.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_contracts.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_identity.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -725,11 +725,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/run_store.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_store_replay.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -796,11 +796,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/evaluator.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_evaluator.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -856,23 +856,23 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/coordinator.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/backends/base.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/backends/codex.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/backends/local_process.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_backend_contract.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -931,11 +931,11 @@
       "write_targets": [
         {
           "path": "tests/test_runtime_single_run.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_candidate_promotion_boundary.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
@@ -986,11 +986,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/topology.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_topology.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1043,11 +1043,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/coordinator.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_approved_task_ingestion.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1126,15 +1126,15 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/scheduler.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_parallelism.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_parallelism_contract.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1186,11 +1186,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/budget.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_semantic_deduplication.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1252,15 +1252,15 @@
       "write_targets": [
         {
           "path": "tests/test_runtime_parallel_generation.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_partial_failure.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_late_result_policy.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
@@ -1314,23 +1314,23 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/generation.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/reducer.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_generation_input_snapshot.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_generation_commit.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_late_result_policy.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1382,15 +1382,15 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/run_store.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/candidate.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_idempotent_import.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1442,11 +1442,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/state_machine.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_lifecycle_control.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1516,11 +1516,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/recovery.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_recovery_plan.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1579,11 +1579,11 @@
       "write_targets": [
         {
           "path": "tests/test_runtime_crash_recovery.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_no_duplicate_recovery.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
@@ -1635,15 +1635,15 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/synthesis.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/candidate.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_candidate_synthesis.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1695,11 +1695,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/synthesis.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_counterexample_review.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1751,11 +1751,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/episode_memory.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_memory_provenance.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1808,15 +1808,15 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/generation.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/research_director/agenda.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_next_generation_agenda.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1877,11 +1877,11 @@
       "write_targets": [
         {
           "path": "tests/test_runtime_two_generation_synthesis.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_generation_delta.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
@@ -1934,15 +1934,15 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/candidate.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/verification.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_candidate_identity.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -1994,11 +1994,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/verification.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_candidate_scope_binding.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -2052,11 +2052,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/verification.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_candidate_independent_replay.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -2110,11 +2110,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/verification.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_candidate_evidence_conversion.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -2166,11 +2166,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/verification.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_evidence_invalidation.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -2231,11 +2231,11 @@
       "write_targets": [
         {
           "path": "tests/test_verification_convergence.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_verification_negative_paths.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
@@ -2292,11 +2292,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/view_model.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_console_projection.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -2361,11 +2361,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/service.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_console_permissions.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -2432,11 +2432,11 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/service.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_command_surface.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -2507,15 +2507,15 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/view_model.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_console_redaction.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_console_redaction_visual.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -2571,23 +2571,23 @@
       "write_targets": [
         {
           "path": "matharc/v02/runtime/service.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/view_model.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "matharc/v02/runtime/reconnect.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "docs/prototypes/problem-intel-console.html",
-          "mode": "modify"
+          "operation": "modify"
         },
         {
           "path": "tests/test_runtime_console_reconnect.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -2648,11 +2648,11 @@
       "write_targets": [
         {
           "path": "tests/test_runtime_console_mobile.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "acceptance/human/runtime-console/desktop-checklist.md",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
@@ -2703,11 +2703,11 @@
       "write_targets": [
         {
           "path": "benchmarks/runtime-pilot-plan.json",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_pilot_baseline.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -2772,15 +2772,15 @@
       "write_targets": [
         {
           "path": "experiments/runtime-pilot/two-generation-report.md",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_pilot_generation_consumption.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "acceptance/runtime-pilot/production-checklist.md",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
@@ -2844,15 +2844,15 @@
       "write_targets": [
         {
           "path": "tests/test_runtime_adversarial_drills.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_attack_recovery.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "acceptance/runtime-pilot/production-attack-drills.md",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
@@ -2903,11 +2903,11 @@
       "write_targets": [
         {
           "path": "acceptance/human/runtime-pilot/release-checklist.md",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "acceptance/runtime-pilot/release-evidence.json",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
@@ -2977,15 +2977,15 @@
       "write_targets": [
         {
           "path": "deploy/matharc-research.service",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "deploy/matharc-research.env.example",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_ops_deployment.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "kind": "implementation",
@@ -3045,11 +3045,11 @@
       "write_targets": [
         {
           "path": "tests/test_runtime_ops_observability.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_ops_backup.py",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
@@ -3110,19 +3110,19 @@
       "write_targets": [
         {
           "path": "tests/test_runtime_ops_release.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "tests/test_runtime_ops_cleanup.py",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "acceptance/runtime-pilot/ops-checklist.md",
-          "mode": "create"
+          "operation": "create"
         },
         {
           "path": "acceptance/runtime-pilot/ops-release-checklist.md",
-          "mode": "create"
+          "operation": "create"
         }
       ],
       "acceptance": {
