@@ -338,7 +338,7 @@
       "goal": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
-        "locator": "html:heading:MathArc 原生研究运行时 v0.4 产品合同"
+        "locator": "html:h1[1]"
       }
     },
     {
