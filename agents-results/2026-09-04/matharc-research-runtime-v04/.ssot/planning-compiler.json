@@ -11,70 +11,70 @@
     {
       "external_dependency_id": "EXT-MATHARC-RUNTIME-CONTRACT-HTML",
       "path": "docs/contracts/matharc-research-runtime-v04.html",
-      "commit": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
+      "commit": "8c5745dee5406bc546079cd30c437a980fc5f635",
       "blob": "8c5dc5689540e3c48a768755cb2f4d81cb0e2184",
       "sha256": "5bf47c89f1004f2701fbcb96a89ae248b1b5bdeb3522d6f02b8cf6d0acd5a76f"
     },
     {
       "external_dependency_id": "EXT-MATHARC-RUNTIME-BASELINE",
       "path": "docs/contracts/matharc-research-runtime-baseline.html",
-      "commit": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
+      "commit": "8c5745dee5406bc546079cd30c437a980fc5f635",
       "blob": "4a16a5587724f467cf16b283988e72232e6b7a5e",
       "sha256": "a2cf7bec5fa741620ad886639e8a04eb8216b2b8c9a5f16ca773f6bd625e2acc"
     },
     {
       "external_dependency_id": "EXT-MATHARC-TRACE-PY",
       "path": "matharc/v02/trace.py",
-      "commit": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
+      "commit": "8c5745dee5406bc546079cd30c437a980fc5f635",
       "blob": "1e971372131a7287571ce460561d4f9302f2a5b8",
       "sha256": "7aeb1d85f5cb2aefebc194ea25606073b41cb995c97a8fc36b81ddd3f24900f1"
     },
     {
       "external_dependency_id": "EXT-MATHARC-ACCESS-PY",
       "path": "matharc/v02/access.py",
-      "commit": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
+      "commit": "8c5745dee5406bc546079cd30c437a980fc5f635",
       "blob": "15916a3c71063ef707a1e50e5fe0a2f3c7d52947",
       "sha256": "5830ddde64c70436b0a652f9ce642d856fde8c1cdbb268bde6d0349d9ed8d030"
     },
     {
       "external_dependency_id": "EXT-MATHARC-ACCESS-SERVER-PY",
       "path": "matharc/v02/access_server.py",
-      "commit": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
+      "commit": "8c5745dee5406bc546079cd30c437a980fc5f635",
       "blob": "516a07b50175220d8020396611bec7962f5bce05",
       "sha256": "1a8a0448884d7acc86c3917670702afea940af09390d08c0976cd057b5487792"
     },
     {
       "external_dependency_id": "EXT-MATHARC-ARTIFACT-STORE-PY",
       "path": "matharc/v02/artifact_store.py",
-      "commit": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
+      "commit": "8c5745dee5406bc546079cd30c437a980fc5f635",
       "blob": "0d8a380c68d9b949f75738961ac99ecfc0dae04d",
       "sha256": "b76cd7b1341ebca84fd0c17335afd918452de1b26f73e45bfdbe0db3c39900a3"
     },
     {
       "external_dependency_id": "EXT-MATHARC-WORKSPACE-IMPL-PY",
       "path": "matharc/v02/_workspace_impl.py",
-      "commit": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
+      "commit": "8c5745dee5406bc546079cd30c437a980fc5f635",
       "blob": "7a59eade41bb26b9cf98818b5588a433ee370803",
       "sha256": "a78fd477f3377180a4a551dead366c081ea316ce1843bdc36aef215d30128788"
     },
     {
       "external_dependency_id": "EXT-MATHARC-WORKSPACE-SERVER-IMPL-PY",
       "path": "matharc/v02/_workspace_server_impl.py",
-      "commit": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
+      "commit": "8c5745dee5406bc546079cd30c437a980fc5f635",
       "blob": "9787cd8760b4eddca1b8732c69a51cb2e0c4292d",
       "sha256": "128d386ff68761e45a003ef1f7c86f09049ed961ecc36102783f316395e04d0c"
     },
     {
       "external_dependency_id": "EXT-MATHARC-CAMPAIGN-PY",
       "path": "matharc/v02/campaign.py",
-      "commit": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
+      "commit": "8c5745dee5406bc546079cd30c437a980fc5f635",
       "blob": "a2eebfc24a36e06a2b3e655a5d2cd5a494bb7529",
       "sha256": "5cf446b3195125875852ea3789b3dc4a16f7cbfa3218fa304bfc259fe0921a4e"
     },
     {
       "external_dependency_id": "EXT-MATHARC-CONSOLE-EXPORT-PY",
       "path": "matharc/v02/console_export.py",
-      "commit": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
+      "commit": "8c5745dee5406bc546079cd30c437a980fc5f635",
       "blob": "dd967fb6f86dd50575b738f47643270aa85a291e",
       "sha256": "79adf80dd0b1028c1ddd03ff4de06457cf2c2a2c6312996bf4091b10055f391a"
     }
@@ -85,7 +85,7 @@
       "kind": "external-runtime",
       "runtime_components": [
         "GitHub repository: https://github.com/ValentinoWang/Harness_Engineering",
-        "pinned toolchain version: 8c9ac7358b8ac27da26d77b70c115be9be1b6d58",
+        "pinned toolchain version: bffda390cdef9497fc749518a159ba4fb829665d",
         "role: SSOT compiler, contract scaffolder, view renderer and validator only; never a MathArc runtime dependency"
       ],
       "source_requirement_refs": [
@@ -170,8 +170,8 @@
         "SRC-FND1",
         "SRC-FND2"
       ],
-      "development_baseline": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
-      "promotion_baseline": "bdda911780d2013f8b13a3659a6cb31bd6e099c8",
+      "development_baseline": "8c5745dee5406bc546079cd30c437a980fc5f635",
+      "promotion_baseline": "6742448409395bc17d1fa5d5eab2175ea6c541be",
       "release_candidate": "33ee0616fe8a31b86a8103e7e1d26b24bbf603051fb770b95464db19d97fc951"
     },
     {
@@ -197,8 +197,8 @@
         "SRC-RUN4",
         "SRC-RUN5"
       ],
-      "development_baseline": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
-      "promotion_baseline": "bdda911780d2013f8b13a3659a6cb31bd6e099c8",
+      "development_baseline": "8c5745dee5406bc546079cd30c437a980fc5f635",
+      "promotion_baseline": "6742448409395bc17d1fa5d5eab2175ea6c541be",
       "release_candidate": "3db56a0e8f97c0c6c6b1dc2d96fdb3c096e117a20bb6262996ce24d76b815378"
     },
     {
@@ -224,8 +224,8 @@
         "SRC-DUR4",
         "SRC-DUR5"
       ],
-      "development_baseline": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
-      "promotion_baseline": "bdda911780d2013f8b13a3659a6cb31bd6e099c8",
+      "development_baseline": "8c5745dee5406bc546079cd30c437a980fc5f635",
+      "promotion_baseline": "6742448409395bc17d1fa5d5eab2175ea6c541be",
       "release_candidate": "a84c2bd1387ccedbe0d7643e878329cf5e186cd5c97544b462e053fe57239a0c"
     },
     {
@@ -251,8 +251,8 @@
         "SRC-PAR4",
         "SRC-PAR5"
       ],
-      "development_baseline": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
-      "promotion_baseline": "bdda911780d2013f8b13a3659a6cb31bd6e099c8",
+      "development_baseline": "8c5745dee5406bc546079cd30c437a980fc5f635",
+      "promotion_baseline": "6742448409395bc17d1fa5d5eab2175ea6c541be",
       "release_candidate": "2d233ab675026fe24dcade3719d1d1a3ac84506fc328ed978fcf7897c2cf601f"
     },
     {
@@ -278,8 +278,8 @@
         "SRC-SYN4",
         "SRC-SYN5"
       ],
-      "development_baseline": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
-      "promotion_baseline": "bdda911780d2013f8b13a3659a6cb31bd6e099c8",
+      "development_baseline": "8c5745dee5406bc546079cd30c437a980fc5f635",
+      "promotion_baseline": "6742448409395bc17d1fa5d5eab2175ea6c541be",
       "release_candidate": "e1a24b4e50af09e18cd3aec7751597264e83f42dd10da72c666f7b60bb0ed243"
     },
     {
@@ -307,8 +307,8 @@
         "SRC-VER5",
         "SRC-VER6"
       ],
-      "development_baseline": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
-      "promotion_baseline": "bdda911780d2013f8b13a3659a6cb31bd6e099c8",
+      "development_baseline": "8c5745dee5406bc546079cd30c437a980fc5f635",
+      "promotion_baseline": "6742448409395bc17d1fa5d5eab2175ea6c541be",
       "release_candidate": "40c5a7e8246b12232968587a9a1978df4b0e7de3b6712270a09b89743ec92efb"
     },
     {
@@ -342,8 +342,8 @@
         "SRC-OPS2",
         "SRC-OPS3"
       ],
-      "development_baseline": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
-      "promotion_baseline": "bdda911780d2013f8b13a3659a6cb31bd6e099c8",
+      "development_baseline": "8c5745dee5406bc546079cd30c437a980fc5f635",
+      "promotion_baseline": "6742448409395bc17d1fa5d5eab2175ea6c541be",
       "release_candidate": "9080991903468a67b9ee88b6be140ca95ce3fafe8eff855e8089397c211ff774"
     },
     {
@@ -367,8 +367,8 @@
         "SRC-DOG3",
         "SRC-DOG4"
       ],
-      "development_baseline": "ce3ad59f777f30705229fbb9dfb2885667bf12c7",
-      "promotion_baseline": "bdda911780d2013f8b13a3659a6cb31bd6e099c8",
+      "development_baseline": "8c5745dee5406bc546079cd30c437a980fc5f635",
+      "promotion_baseline": "6742448409395bc17d1fa5d5eab2175ea6c541be",
       "release_candidate": "b11b9752008651686e16429adab8313a732c3e6c5bac6c602f443c2756b5ba21"
     }
   ],

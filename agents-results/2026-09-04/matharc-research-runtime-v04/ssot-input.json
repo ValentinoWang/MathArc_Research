@@ -195,7 +195,7 @@
       "kind": "external-runtime",
       "runtime_components": [
         "GitHub repository: https://github.com/ValentinoWang/Harness_Engineering",
-        "pinned toolchain version: 8c9ac7358b8ac27da26d77b70c115be9be1b6d58",
+        "pinned toolchain version: bffda390cdef9497fc749518a159ba4fb829665d",
         "role: SSOT compiler, contract scaffolder, view renderer and validator only; never a MathArc runtime dependency"
       ],
       "source_requirement_refs": [
