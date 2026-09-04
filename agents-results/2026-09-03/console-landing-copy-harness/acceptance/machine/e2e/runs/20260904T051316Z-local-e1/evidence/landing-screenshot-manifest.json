@@ -1,7 +1,7 @@
 {
   "schema_version": "1.0",
   "artifact_kind": "matharc-browser-landing-evidence",
-  "generated_at": "2026-09-03T18:06:47.380Z",
+  "generated_at": "2026-09-04T05:12:06.339Z",
   "page_identity": "MathArc landing page scroll experience",
   "browser": "chromium",
   "font_mode": "fallback-local",
@@ -10,7 +10,7 @@
   "captures": [
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-hero-1440.png",
-      "sha256": "6eed550c0fe04aabd42df03e11de8300b0e40b3b8c2488c97546642138f98496",
+      "sha256": "9f1d0a37b2d09d073a19698d3aed70e34b036bcfae6ee1bab88dcd1f6c42da26",
       "scenario": "landing hero after reveal",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -24,12 +24,12 @@
       },
       "font_mode": "fallback-local",
       "color_scheme": "light",
-      "captured_at": "2026-09-03T18:06:40.248Z",
+      "captured_at": "2026-09-04T05:11:58.767Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-how-1440.png",
-      "sha256": "55fa75027c963244dd3fefece1c17d94c3c02cbd1050465606966fc6a8b5e425",
+      "sha256": "44dec175b2d51d2a1d5368c00f8faf68c83c7fa6a2039c75c0f3e1d89b201bf3",
       "scenario": "landing section after anchor scroll",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -43,12 +43,12 @@
       },
       "font_mode": "fallback-local",
       "color_scheme": "light",
-      "captured_at": "2026-09-03T18:06:42.798Z",
+      "captured_at": "2026-09-04T05:12:01.317Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-nots-1440.png",
-      "sha256": "d2b94fd3c03b72a33c19aa903026d7616fa2b2f3c399d9314a09864a0f080295",
+      "sha256": "8af8534199e38cc1a91db27a1300a5fa85b9f49de58e6bf6da1713988fb86ee3",
       "scenario": "landing closing band",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -62,12 +62,12 @@
       },
       "font_mode": "fallback-local",
       "color_scheme": "light",
-      "captured_at": "2026-09-03T18:06:45.314Z",
+      "captured_at": "2026-09-04T05:12:04.284Z",
       "review_result": "PASS"
     },
     {
       "file": "agents-results/2026-09-03/console-landing-copy-harness/evidence/landing-hero-1440-dark.png",
-      "sha256": "22597f83c359fb3101d7021a190d28a55133a06d0ec83e4d02b972c34a500821",
+      "sha256": "a55e0c45502f383269319d2c3e6ee0319037b8a18028bb725f38fdd1edb34b70",
       "scenario": "landing hero in dark theme",
       "page_identity": {
         "title": "MathArc 数学研究工作台",
@@ -81,7 +81,7 @@
       },
       "font_mode": "fallback-local",
       "color_scheme": "dark",
-      "captured_at": "2026-09-03T18:06:45.557Z",
+      "captured_at": "2026-09-04T05:12:04.537Z",
       "review_result": "PASS"
     },
     {
@@ -100,7 +100,7 @@
       },
       "font_mode": "fallback-local",
       "color_scheme": "light",
-      "captured_at": "2026-09-03T18:06:46.842Z",
+      "captured_at": "2026-09-04T05:12:05.803Z",
       "review_result": "PASS"
     }
   ]

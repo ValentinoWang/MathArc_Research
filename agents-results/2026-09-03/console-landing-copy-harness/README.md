@@ -80,6 +80,32 @@ wrong-fill-rule discriminant was recomputed, and the red fixture in
 `review-console.html` and `review_bundle.py` keep the old palette; that divergence is recorded
 in `docs/prototypes/README.md` and needs a separate decision.
 
+### Team-research section (third round, same day)
+
+The owner asked whether four arXiv preprints by a team member could appear on the landing page,
+and confirmed the author is on their team. They now appear as section 04, "我们自己在做的数学",
+a two-by-two card grid of the four papers with an honest-disclosure band under it.
+
+What the section claims and does not claim matters more than its layout. The repository's own
+record in `docs/IMPROVEMENT_PLAN_V03.md` states that arXiv:2607.28557 was a human-plus-conversation
+process that never entered the engine, and that the engine's only end-to-end run is a toy
+odd-sum identity; the diagnosis recorded there is "引擎与真实数学分离". The other three papers have
+no production record in the repository at all. The section is therefore written as team research
+and motivation, never as system output, and the band states in bold that MathArc does not claim to
+have produced any of them and that none has been peer reviewed. The acceptance contract carries
+this as an explicit claim boundary, and the human checklist gained an item that asks a reviewer to
+confirm the section cannot be misread as a capability claim.
+
+Two governance notes from this round: the contract's non-goal still said the U1 visual contract
+was untouched, which the palette revision had made false, so it was corrected to name exactly what
+stayed fixed (token names, class list, breakpoints) versus what changed (token values, re-pinned).
+The browser gate's landing summary line hardcoded "4 anchors"; the section list is now a single
+constant the loop and the summary both read, so the count cannot drift again.
+
+The section adds no new component class names and no new `@media` rules, so the pinned class digest
+and breakpoint map are unchanged; only page markup, the nav list, the motion controller's section
+array and the gate's section constant moved.
+
 ## Root causes, and where each one now lives in the Harness
 
 | Symptom | Why it happened | Harness change |

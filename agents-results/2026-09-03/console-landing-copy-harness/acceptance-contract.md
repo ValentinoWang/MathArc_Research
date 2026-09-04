@@ -13,7 +13,7 @@
 - Decision refs: none
 - Assumption IDs: none
 - Invalidation keys: console.landing.visual; console.copy.lexicon; console.visual.token-table
-- AC budget: 5
+- AC budget: 6
 - Baseline identity: main@530de20757520cd340c18f5da8f728122537cf05 plus the uncommitted landing/copy candidate reviewed on 2026-09-03
 - Product Context refs: agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md#九控制台视图合同plan-v3
 - Role Context refs: agents-results/2026-08-31/problem-intelligence-plane/ssot-development-paths.md#911证据分层与视觉工作台边界
@@ -35,9 +35,13 @@
 
 首页有唯一主焦点与证据对象，四节共用同一节奏，导航粘性并标记当前节，锚点落在导航之下，内容进入视口渐显，减少动效偏好下全部可见；全站文案通过词法门禁与意义审阅，演示与后端同名同义；这些要求以规则、检查项与守卫卡沉淀到 Harness。
 
+## Claim boundary for the team-research section
+
+首页新增的「团队研究」一节列出四篇团队成员的 arXiv 预印本。该节**不主张任何一篇由本系统产出**，也不主张它们已通过同行评审。这与 `docs/IMPROVEMENT_PLAN_V03.md` 的记录一致：arXiv:2607.28557 是人加对话流程、未入引擎，引擎至今没有端到端产出过真实数学结果；另外三篇在仓库中没有任何产出记录。该节的作用是说明团队研究方向与建设动机，不是能力证据。任何把它读成系统成果的措辞都属于合同违约。
+
 ## Non-goals
 
-不修改 U1 静态视觉合同（令牌、类名、断点）、不重开 §9.14 动作清单修订、不改变任何视图的接线状态、不做生产部署或人工签署。
+不改变 U1 静态视觉合同的**令牌名称集合、组件类清单与断点**（令牌取值按修订 6 改版并已重钉摘要）、不重开 §9.14 动作清单修订、不改变任何视图的接线状态、不把团队论文回灌为可审计 trace（R7 dogfood 仍未开始）、不核验论文的数学内容、不做生产部署或人工签署。
 
 ## Normal path
 
@@ -86,6 +90,7 @@ And 进入视口的内容全部完成渐显
 | AC-03 | behavior | none | machine/e2e | 全部视图 × 进程 × 视口的渲染文本不含机器标识或占位符；准入流程文案更新后流程与截图仍通过 | Browser E2E | Automatic | Yes |
 | AC-04 | behavior | none | human | 目标研究者能说出首页在讲什么、给谁用、下一步做什么，并且控制台任一句话都不需要实现知识即可理解 | Human product review | Human | Yes |
 | AC-05 | behavior | none | machine/static | 调色板改版后令牌名称集合、三态结构、235 个组件类与 14 条 `@media` 全部未变；`token_table_sha256` 已重钉并与合同 §9.13.1 一致，红夹具仍能判红 | Static baseline guard and its red/green fixtures | Automatic | Yes |
+| AC-06 | behavior | none | human | 团队研究一节的四条转述与 arXiv 原文相符，且「不声称产出」的边界声明足够显眼，不会被读成系统成果 | Human product review | Human | Yes |
 
 ## Human acceptance
 
@@ -108,6 +113,7 @@ And 进入视口的内容全部完成渐显
 | AC-03 | scripts/console_browser_gate.mjs scanCopyQuality + access workflow | agents-results/2026-09-03/console-landing-copy-harness/evidence/screenshot-manifest.json | Automatic | Yes |
 | AC-04 | Human product review | acceptance/human/2026-W36/2026-09-03-FEAT-20260903-02/checklist.md#h-01 | Human | Yes |
 | AC-05 | scripts/check_console_visual_baseline.py; tests.test_console_visual_baseline | agents-results/2026-09-03/console-landing-copy-harness/acceptance/machine/static/ | Automatic | Yes |
+| AC-06 | Human product review | acceptance/human/2026-W36/2026-09-03-FEAT-20260903-02/checklist.md#h-01 | Human | Yes |
 
 ## Exploratory testing
 

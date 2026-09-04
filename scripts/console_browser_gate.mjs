@@ -43,6 +43,9 @@ const COPY_CONTAINER_SELECTOR = [".mono", ".hash", ".ev", ".seq", "code", "kbd",
   ...(COPY_LEXICON.identifier_container_classes || []).map(name => `.${name}`)].join(", ");
 assert(FONT_MODE === "webfont-loaded" || FONT_MODE === "fallback-local", `unknown MATHARC_GATE_FONT_MODE ${FONT_MODE}`);
 const FONT_HOSTS = /^https:\/\/fonts\.(?:googleapis|gstatic)\.com\//;
+// Landing sections the scroll walk visits, in page order. Kept in one place so the summary line
+// cannot drift from what was actually asserted.
+const LANDING_SECTIONS = ["planes", "how", "case", "team", "nots"];
 async function newGateContext(browser, options) {
   const context = await browser.newContext(options);
   if (FONT_MODE === "fallback-local") await context.route(FONT_HOSTS, route => route.abort());
@@ -917,7 +920,7 @@ async function testLandingScrollExperience(browser, server, manifestEntries) {
     assert(await page.locator(".hero > .card").isVisible(), "hero evidence card is missing");
     await captureLandingScene(page, "landing hero after reveal", "landing-hero-1440", manifestEntries);
 
-    for (const section of ["planes", "how", "case", "nots"]) {
+    for (const section of LANDING_SECTIONS) {
       await page.locator(`.lpnav .links button[data-v="${section}"]`).click();
       await waitFor(
         async () => await page.evaluate(id => {
@@ -1423,7 +1426,7 @@ async function main() {
     await testMobileViewports(browser, server, accessCookies);
     assert(pageErrors.length === 0, `page errors: ${pageErrors.join("\n")}`);
     console.log(`access workflow passed: protected boundary, pending application, invalid/valid invite, Cookie restoration, replay rejection, logout, guest demo; ${accessCaptureCount} hash-bound screenshots`);
-    console.log(`landing scroll experience passed: sticky nav state, 4 anchors, reveal completion, single-line controls, reduced-motion visibility; ${landingCaptures.length} hash-bound screenshots (font mode ${FONT_MODE})`);
+    console.log(`landing scroll experience passed: sticky nav state, ${LANDING_SECTIONS.length} anchors (${LANDING_SECTIONS.join(", ")}), reveal completion, single-line controls, reduced-motion visibility; ${landingCaptures.length} hash-bound screenshots (font mode ${FONT_MODE})`);
     console.log(`console browser gate passed: ${VIEW_CASES.length} cases x ${CAMPAIGNS.length} campaigns x ${WIDTHS.length} widths`);
     console.log(`mobile viewport checks passed: ${MOBILE_VIEWPORTS.map(viewport => `${viewport.name}=${viewport.width}x${viewport.height}`).join(", ")}`);
     console.log("keyboard checks passed: tabindex disclosures activated with Enter and Space");

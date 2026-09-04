@@ -1,11 +1,11 @@
 # Machine acceptance result: e2e
 
-- Run ID: 20260903T180950Z-local-e1
+- Run ID: 20260904T051316Z-local-e1
 - Task ID: FEAT-20260903-02
 - Lane: machine/e2e
 - Status: PASS
 - Contract version: 1
-- Source identity: landing-copy-candidate@1dbac14796b1fbbe98a04e5e8ef36c787d1e4fb13c1fbd9b7b62ea297dcbd444
+- Source identity: landing-copy-candidate@a3fba84505dea0d310710707d48f35b5cb0b45768c9b5117051818363e1b3747
 - Runtime identity: local-playwright-fixture (chromium, font_mode=fallback-local)
 - Covers: AC-02, AC-03
 
@@ -20,7 +20,7 @@ MATHARC_GATE_FONT_MODE=fallback-local node scripts/console_browser_gate.mjs
 
 ```
 access workflow passed: protected boundary, pending application, invalid/valid invite, Cookie restoration, replay rejection, logout, guest demo; 10 hash-bound screenshots
-landing scroll experience passed: sticky nav state, 4 anchors, reveal completion, single-line controls, reduced-motion visibility; 5 hash-bound screenshots (font mode fallback-local)
+landing scroll experience passed: sticky nav state, 5 anchors (planes, how, case, team, nots), reveal completion, single-line controls, reduced-motion visibility; 5 hash-bound screenshots (font mode fallback-local)
 console browser gate passed: 52 cases x 2 campaigns x 6 widths
 mobile viewport checks passed: mobile-390=390x844, mobile-820=820x1180
 keyboard checks passed: tabindex disclosures activated with Enter and Space

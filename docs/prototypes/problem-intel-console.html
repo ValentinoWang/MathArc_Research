@@ -655,6 +655,10 @@ mark{background:var(--err-soft);color:var(--err);border-radius:3px;padding:0 3px
 .sec > h2{font-family:var(--serif);font-size:clamp(24px,2.6vw,32px);font-weight:600;line-height:1.3;
   margin-bottom:10px;max-width:24em;text-wrap:balance;}
 .sec > .lead{font-size:15px;color:var(--muted);line-height:1.85;max-width:42em;margin-bottom:30px;}
+#sec-team .grid2{gap:14px;}
+#sec-team .card .body > .col > b{font-family:var(--serif);font-size:16.5px;line-height:1.45;}
+#sec-team .card .body > .col{gap:7px;}
+#sec-team .honest{margin-top:22px;}
 .planerow{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;}
 .planecard{background:var(--surface);border:1px solid var(--line);border-radius:7px;padding:22px;
   display:flex;flex-direction:column;gap:11px;text-align:left;
@@ -2712,6 +2716,7 @@ V.landing = () => ({ page: `
       <button data-act="scroll" data-v="planes">三个步骤</button>
       <button data-act="scroll" data-v="how">怎么工作</button>
       <button data-act="scroll" data-v="case">一个真实案例</button>
+      <button data-act="scroll" data-v="team">团队研究</button>
       <button data-act="scroll" data-v="nots">不做什么</button>
     </nav>
     <button class="btn" id="themebtn2">深色</button>
@@ -2808,8 +2813,40 @@ V.landing = () => ({ page: `
     <p class="lead" style="margin-top:18px;margin-bottom:0">一个只显示「通过／失败」两态的界面，会把这个结果画成绿色成功。这就是为什么前沿图必须显式表达「被吸收于」这种关系。${chip("done")}</p>
   </div>
 
+  <div class="sec" id="sec-team">
+    <span class="lbl">04 · 团队研究</span>
+    <h2>我们自己在做的数学</h2>
+    <p class="lead">建这套系统的人，本身就在做这类问题。下面四篇是团队成员的公开预印本，前三篇都是对长期开放问题给出否定回答，第四篇是生成模型递归训练的坍缩控制。</p>
+    <div class="grid2">
+      <div class="card"><div class="body"><div class="col">
+        <span class="lbl">arXiv:2608.22203 · math.QA</span>
+        <b>紧量子群的普遍特征标稠密性反例</b>
+        <p class="note">Woronowicz 在 1987 年问：不可约特征标的线性张成，是否在环绕 C*-代数的余交换部分中范数稠密。这篇对该问题的普遍形式给出否定回答，对 Kac 型紧矩阵量子群同样成立。</p>
+      </div></div></div>
+      <div class="card"><div class="body"><div class="col">
+        <span class="lbl">arXiv:2608.23657 · math.FA</span>
+        <b>连续逆代数的完备化未必仍是连续逆代数</b>
+        <p class="note">Neeb 在 2006 年问：连续逆代数的豪斯多夫完备化是否必然仍是连续逆代数。交换情形早已知为真，非交换情形一直开放。这篇构造出反例。</p>
+      </div></div></div>
+      <div class="card"><div class="body"><div class="col">
+        <span class="lbl">arXiv:2607.28557 · math.DG</span>
+        <b>模型空间完备并不蕴含无限维李群的正则性</b>
+        <p class="note">对局部凸李群的两个基本完备性问题给出否定解：模型空间 Mackey 完备的李群未必正则，甚至未必具有光滑指数映射。两个反例的模型空间都是完备的。</p>
+      </div></div></div>
+      <div class="card"><div class="body"><div class="col">
+        <span class="lbl">arXiv:2512.00757 · cs.LG</span>
+        <b>用压缩条件神经滤波抑制模型坍缩</b>
+        <p class="note">针对生成模型递归训练中的坍缩，给出基于压缩算子的神经滤波方法。在无偏估计框架内，它去掉了对样本量持续增长的依赖。</p>
+      </div></div></div>
+    </div>
+    <div class="honest">
+      <span class="claimchip c-plan" style="margin:2px 0 0">怎么读这一节</span>
+      <div>四篇均为预印本，尚未经过同行评审。<b style="color:var(--ink)">MathArc 不声称产出其中任何一篇</b>——它们由团队成员以人加人工智能协作的方式完成，没有经过本页描述的这套证据治理。放在这里是为了说明两件事：我们做的是哪一类问题，以及我们为什么知道现有流程的证据缺口在哪。补上那个缺口，正是这套系统存在的理由。</div>
+    </div>
+  </div>
+
   <div class="sec" id="sec-nots">
-    <span class="lbl">04 · 不做什么</span>
+    <span class="lbl">05 · 不做什么</span>
     <h2>明确不做的事</h2>
     <p class="lead">这一节不是免责声明，是产品定义。一个系统承诺不做什么，往往比它承诺做什么更能说明它值不值得信。</p>
     <div class="nots">
@@ -4072,7 +4109,7 @@ V.proofchain = () => {
    渐显通过 data-reveal 属性挂载，只在用户未要求减少动效、且浏览器支持 IntersectionObserver 时启用；
    否则不挂属性，内容原样可见。滚过头的元素（已在视口上方）也一律直接显示，锚点跳转不会留下空白。 */
 const LandingMotion = (() => {
-  const SECTIONS = ["planes","how","case","nots"];
+  const SECTIONS = ["planes","how","case","team","nots"];
   const REVEAL_TARGETS = ".hero > .col > *, .hero > .card, .hero > .honest, .sec > .lbl, .sec > h2, .sec > .lead, .planecard, .step, .case, .nots > div, #sec-cta .honest, .lpfoot";
   let observer = null, bound = false, jump = null;
   const root = () => document.querySelector("#page .lp");
