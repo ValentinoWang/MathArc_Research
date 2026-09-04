@@ -3,6 +3,6 @@
 - 日期：2026-09-04
 - 确认人：用户（本次请求）
 - 决定：MathArc 的研究运行、任务调度、代际提交、恢复、候选导入和运行状态全部由 MathArc 原生实现。模型、命令行代理和 API 仅作为可替换执行后端，不拥有研究运行状态、数学证据或结论晋升权。首轮仅用于邀请制小范围测试。
-- 治理工具链来源：GitHub `https://github.com/ValentinoWang/Harness_Engineering` 的 `main` 提交 `e4f56a267babafe61480f32250107e3f5a831213`。
+- 治理工具链来源：GitHub `https://github.com/ValentinoWang/Harness_Engineering` 的钉定工具链版本 `a79b5de1a2695eef89366e2c2efb1323752ccba7`。
 - 工具链边界：上述 GitHub Harness 版本只用于本次 SSOT 的编译、验收合同脚手架、视图渲染和校验；它不是 MathArc 的生产依赖，不进入 `matharc/v02` 运行协议、运行日志、页面文案、研究结果或数学结论权威。
 - 现状基线：MathArc 当前源码和已接受的执行治理文档只作为可追溯的开发基线；本 SSOT 不把外部研究框架的数据结构、命令或状态词汇写入产品合同。

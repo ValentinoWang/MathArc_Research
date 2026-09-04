@@ -10,9 +10,22 @@
   "view_model": 2,
   "sources": [
     {
+      "id": "SRC-MATHARC-RUNTIME-CONTRACT",
+      "path": "docs/contracts/matharc-research-runtime-v04.md",
+      "role": "primary",
+      "authority_by_dimension": {
+        "information_architecture": "normative",
+        "visual_tokens": "informative",
+        "layout": "informative",
+        "interaction_behavior": "normative",
+        "seed_data": "not-applicable",
+        "runtime_side_effects": "normative"
+      }
+    },
+    {
       "id": "SRC-MATHARC-PROJECT",
       "path": "PROJECT.md",
-      "role": "primary",
+      "role": "current-implementation",
       "authority_by_dimension": {
         "information_architecture": "informative",
         "visual_tokens": "informative",
@@ -25,7 +38,7 @@
     {
       "id": "SRC-MATHARC-README",
       "path": "README.md",
-      "role": "primary",
+      "role": "current-implementation",
       "authority_by_dimension": {
         "information_architecture": "informative",
         "visual_tokens": "informative",
@@ -103,7 +116,7 @@
     {
       "id": "SRC-CODEX-RUNTIME",
       "path": "docs/reports/codex-agent-runtime.md",
-      "role": "primary",
+      "role": "current-implementation",
       "authority_by_dimension": {
         "information_architecture": "informative",
         "visual_tokens": "informative",
@@ -141,7 +154,7 @@
       "kind": "external-runtime",
       "runtime_components": [
         "GitHub repository: https://github.com/ValentinoWang/Harness_Engineering",
-        "main revision: e4f56a267babafe61480f32250107e3f5a831213",
+        "pinned toolchain version: a79b5de1a2695eef89366e2c2efb1323752ccba7",
         "role: SSOT compiler, contract scaffolder, view renderer and validator only; never a MathArc runtime dependency"
       ]
     },
@@ -164,7 +177,7 @@
   ],
   "releases": [
     {
-      "id": "RTRZ",
+      "id": "RTR0",
       "title": "RT-R0 原生运行时章程",
       "user_value": "MathArc 自己拥有执行权威、数据合同和运行边界。",
       "independent_acceptance": "权威边界、后端替换规则和依赖允许清单可被机器检查。",
@@ -179,17 +192,17 @@
     },
     {
       "id": "RTR2",
-      "title": "RT-R2 多研究成员并行",
-      "user_value": "不同研究路线可以在隔离工作区中真实并行执行。",
-      "independent_acceptance": "至少三个研究成员存在真实时间重叠，写入区域和预算可审计。",
-      "independent_failure": "单成员失败不破坏整轮，且不得伪造并行证据。"
+      "title": "RT-R2 持久化、生命周期与恢复",
+      "user_value": "单任务运行可以可靠保存、停止、恢复和幂等导入。",
+      "independent_acceptance": "停止、暂停、取消、崩溃恢复和幂等导入都有明确状态。",
+      "independent_failure": "不确定状态不得猜测完成、重复计费或跳过代际。"
     },
     {
       "id": "RTR3",
-      "title": "RT-R3 持久化与恢复",
-      "user_value": "中断后可以从明确的代际边界继续运行。",
-      "independent_acceptance": "停止、暂停、取消、崩溃恢复和幂等导入都有明确状态。",
-      "independent_failure": "不确定状态不得猜测完成、重复计费或跳过代际。"
+      "title": "RT-R3 多研究成员并行",
+      "user_value": "不同研究路线可以在隔离工作区中真实并行执行。",
+      "independent_acceptance": "至少三个研究成员基于冻结输入存在真实时间重叠，归并和预算可审计。",
+      "independent_failure": "单成员失败不破坏整轮，且不得伪造并行证据。"
     },
     {
       "id": "RTR4",
@@ -207,573 +220,1214 @@
     },
     {
       "id": "RTR6",
-      "title": "RT-R6 邀请制控制台",
-      "user_value": "受邀用户可以查看并受控操作研究运行。",
-      "independent_acceptance": "控制台只投影 RuntimeStore，并对动作、权限和敏感信息做 fail-closed 保护。",
-      "independent_failure": "浏览器不能执行任意命令、目录、环境变量或未登记后端。"
+      "title": "RT-R6 邀请制产品与试点运行环境",
+      "user_value": "受邀用户可以在有持久运维保障的环境中查看并受控操作研究运行。",
+      "independent_acceptance": "邀请权限、控制台、健康检查、持久路径、备份、回滚和清理均有证据。",
+      "independent_failure": "浏览器不能执行任意命令、目录、环境变量或未登记后端；运维缺口阻断试点。"
     },
     {
       "id": "RTR7",
-      "title": "RT-R7 真实任务与试点",
+      "title": "RT-R7 真实任务与用户试点",
       "user_value": "真实两代研究和邀请制试点具备可复核发布证据。",
       "independent_acceptance": "真实并行、恢复、验证、权限和用户理解检查全部有证据。",
-      "independent_failure": "任一错误晋升、越权动作或不可重放结果阻断试点发布。"
+      "independent_failure": "任一错误晋升、越权动作或不可重放结果阻断试点发布."
     }
   ],
   "items": [
     {
       "id": "FND1",
-      "release": "RTRZ",
+      "release": "RTR0",
       "owner": "MathArc 运行时架构负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["runtime-governance"],
-      "lanes": ["machine/static", "machine/unit"],
-      "write_regions": ["scripts"],
-      "acceptance_seeds": [
-        "在 scripts/check_runtime_ownership.py 中登记 MathArc 原生运行时与治理工具链的允许边界",
-        "在 tests/test_runtime_ownership.py 中拒绝未登记控制平面依赖进入生产运行路径"
+      "decision_refs": [
+        "DP1"
       ],
-      "external_systems": ["EXT-HARNESS-GITHUB"]
+      "surfaces": [
+        "runtime-governance"
+      ],
+      "lanes": [
+        "machine/static",
+        "machine/unit"
+      ],
+      "write_regions": [
+        "scripts/check_runtime_ownership.py",
+        "tests/test_runtime_ownership.py",
+        "scripts/check_runtime_dependency_allowlist.py",
+        "tests/test_runtime_dependency_allowlist.py"
+      ],
+      "acceptance_seeds": [
+        "在 scripts/check_runtime_ownership.py 和 tests/test_runtime_ownership.py 中登记 MathArc 原生运行时与治理工具链的允许边界",
+        "在 scripts/check_runtime_dependency_allowlist.py 和 tests/test_runtime_dependency_allowlist.py 中对未知运行时依赖 fail-closed",
+        "证明所有实现节点只写入已登记的 MathArc 代码与测试文件"
+      ],
+      "external_systems": [
+        "EXT-HARNESS-GITHUB"
+      ],
+      "depends_on": [],
+      "goal": "建立 MathArc 原生运行时所有权与依赖允许清单，阻断治理工具链进入产品运行路径。"
     },
     {
       "id": "FND2",
-      "release": "RTRZ",
+      "release": "RTR0",
       "owner": "MathArc 研究协议负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["authority-boundaries"],
-      "lanes": ["machine/unit", "machine/integration-contract"],
-      "write_regions": ["matharc/v02/trace.py"],
-      "depends_on": ["FND1"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "authority-boundaries"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "matharc/v02/trace.py",
+        "tests/test_runtime_authority_boundaries.py"
+      ],
+      "depends_on": [
+        "FND1"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/trace.py 中保持 ResearchTrace 作为唯一数学结论晋升权威",
         "在 tests/test_runtime_authority_boundaries.py 中证明 RuntimeStore 状态不能直接写成 PROVED"
-      ]
-    },
-    {
-      "id": "FND3",
-      "release": "RTRZ",
-      "owner": "MathArc 运行时架构负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["runtime-governance"],
-      "lanes": ["machine/static", "machine/unit"],
-      "write_regions": ["scripts"],
-      "depends_on": ["FND2"],
-      "acceptance_seeds": [
-        "scripts/check_runtime_ownership.py 只允许 standard-library、matharc-owned、approved-model-sdk 和 approved-local-executable",
-        "在 tests/test_runtime_dependency_allowlist.py 中对未知运行时依赖 fail-closed"
-      ]
+      ],
+      "goal": "保留 ResearchTrace 的数学结论晋升权威，并证明运行状态不能直接变成正式证明。"
     },
     {
       "id": "RUN1",
       "release": "RTR1",
       "owner": "运行合同负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["run-contracts"],
-      "lanes": ["machine/unit", "machine/integration-contract"],
-      "write_regions": ["matharc/v02"],
-      "depends_on": ["FND3"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "run-contracts"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/contracts.py",
+        "matharc/v02/runtime/identity.py",
+        "tests/test_runtime_contracts.py",
+        "tests/test_runtime_identity.py"
+      ],
+      "depends_on": [
+        "FND2"
+      ],
       "acceptance_seeds": [
-        "在 matharc/v02/runtime_contracts.py 中定义 ResearchRunSpec、ResearchWorkerSpec 和 RuntimeActionReceipt 的严格 round-trip",
-        "在 tests/test_runtime_contracts.py 中拒绝未知字段、未知运行状态和不兼容合同版本"
-      ]
+        "在 matharc/v02/runtime/contracts.py 中定义 ResearchRunSpec、ResearchWorkerSpec、WorkerExecutionResult、CandidateEnvelope 和 RuntimeActionReceipt 的严格 round-trip",
+        "在 matharc/v02/runtime/identity.py 中定义 workspace_id、trace_id、runtime_run_id、generation_id、worker_id、execution_id、candidate_id、evidence_id 的层级约束",
+        "在 tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 中拒绝未知字段、未知状态、身份错配和不兼容合同版本",
+        "在 matharc/v02/runtime/generation.py 中定义 GenerationInputSnapshot、GenerationReducer 和 GenerationClosePolicy 的输入输出边界"
+      ],
+      "goal": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
+      "source": {
+        "artifact": "SRC-MATHARC-RUNTIME-CONTRACT",
+        "locator": "section:权威边界"
+      }
     },
     {
       "id": "RUN2",
       "release": "RTR1",
       "owner": "运行存储负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["run-store"],
-      "lanes": ["machine/unit", "machine/local-runtime"],
-      "write_regions": ["matharc/v02/local_store.py"],
-      "depends_on": ["RUN1"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "run-store"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/run_store.py",
+        "tests/test_runtime_store_replay.py"
+      ],
+      "depends_on": [
+        "RUN1"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/run_store.py 中写入哈希链运行事件和原子快照",
         "在 tests/test_runtime_store_replay.py 中拒绝截断、损坏和摘要不匹配的运行快照"
-      ]
+      ],
+      "goal": "建立可重放的运行存储，使事件、快照和候选导入在进程重启后保持一致。"
     },
     {
       "id": "RUN3",
       "release": "RTR1",
       "owner": "评价器负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["evaluation-contract"],
-      "lanes": ["machine/unit", "machine/local-runtime"],
-      "write_regions": ["matharc/v02/benchmark_runner.py"],
-      "depends_on": ["RUN1"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "evaluation-contract"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/evaluator.py",
+        "tests/test_runtime_evaluator.py"
+      ],
+      "depends_on": [
+        "RUN1"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/evaluator.py 中定义评价器输入、输出、预算和随机种子合同",
         "在 tests/test_runtime_evaluator.py 中证明最小试跑失败时不会启动完整研究"
-      ]
+      ],
+      "goal": "建立有预算、种子和最小试跑门槛的评价器合同，失败时不启动完整研究。"
     },
     {
       "id": "RUN4",
       "release": "RTR1",
       "owner": "第一方后端负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["backend-coordinator"],
-      "lanes": ["machine/integration-contract", "machine/local-runtime"],
-      "write_regions": ["matharc/v02/claude_code_runtime.py"],
-      "depends_on": ["RUN2", "RUN3"],
-      "external_systems": ["EXT-MATHARC-MODEL-BACKENDS"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "backend-coordinator"
+      ],
+      "lanes": [
+        "machine/integration-contract",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/coordinator.py",
+        "matharc/v02/runtime/backends/base.py",
+        "matharc/v02/runtime/backends/codex.py",
+        "matharc/v02/runtime/backends/claude_code.py",
+        "matharc/v02/runtime/backends/model_api.py",
+        "matharc/v02/runtime/backends/local_process.py",
+        "tests/test_runtime_backend_contract.py"
+      ],
+      "depends_on": [
+        "RUN2",
+        "RUN3"
+      ],
+      "external_systems": [
+        "EXT-MATHARC-MODEL-BACKENDS"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/runtime/coordinator.py 中把 Codex、Claude Code、API 和本地进程统一为 MathArc 后端请求",
         "在 tests/test_runtime_backend_contract.py 中证明后端结果只能形成 CandidateEnvelope，不能写入 RuntimeStore 之外的数学状态"
-      ]
+      ],
+      "goal": "将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。"
     },
     {
       "id": "RUN5",
       "release": "RTR1",
       "owner": "单任务验收负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["single-run-e2e"],
-      "lanes": ["machine/e2e", "machine/local-runtime"],
-      "write_regions": ["tests"],
-      "depends_on": ["RUN4"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "single-run-e2e"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "tests/test_runtime_single_run.py",
+        "tests/test_candidate_promotion_boundary.py"
+      ],
+      "depends_on": [
+        "RUN4"
+      ],
       "acceptance_seeds": [
         "在 tests/test_runtime_single_run.py 中完成真实任务到候选返回的端到端路径",
         "在 tests/test_candidate_promotion_boundary.py 中拒绝候选直接进入 EvidenceRecord 或 PROVED"
-      ]
+      ],
+      "goal": "独立验证单任务从试跑、执行到候选回传的闭环，并阻断候选越级晋升。",
+      "kind": "validation"
     },
     {
       "id": "PAR1",
-      "release": "RTR2",
+      "release": "RTR3",
       "owner": "研究拓扑负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["research-topology"],
-      "lanes": ["machine/unit", "machine/integration-contract"],
-      "write_regions": ["matharc/v02/orchestrator.py"],
-      "depends_on": ["RUN1"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "research-topology"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/topology.py",
+        "tests/test_runtime_topology.py"
+      ],
+      "depends_on": [
+        "RUN1"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/topology.py 中把研究路线和角色编译为带机制、预算、目标和写入区域的运行拓扑",
         "在 tests/test_runtime_topology.py 中拒绝缺少角色、预算或写入区域的研究成员"
-      ]
+      ],
+      "goal": "把研究路线和角色编译为带机制、预算、目标和隔离写入区的运行拓扑。"
     },
     {
       "id": "PAR2",
-      "release": "RTR2",
+      "release": "RTR3",
       "owner": "任务审批接线负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["approved-task-ingestion"],
-      "lanes": ["machine/integration-contract", "machine/local-runtime"],
-      "write_regions": ["matharc/v02/research_director"],
-      "depends_on": ["PAR1", "RUN4"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "approved-task-ingestion"
+      ],
+      "lanes": [
+        "machine/integration-contract",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/coordinator.py",
+        "tests/test_runtime_approved_task_ingestion.py"
+      ],
+      "depends_on": [
+        "PAR1",
+        "RUN4"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/orchestrator.py 中消费现有动态派生任务批准记录并保持一次性启动",
         "在 tests/test_runtime_approved_task_ingestion.py 中证明拒绝任务和超预算任务永不启动"
-      ]
+      ],
+      "goal": "接入已批准的动态任务并执行一次性、可审计的任务启动。"
     },
     {
       "id": "PAR3",
-      "release": "RTR2",
+      "release": "RTR3",
       "owner": "并发调度负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["bounded-parallelism"],
-      "lanes": ["machine/non-functional", "machine/local-runtime", "machine/integration-contract"],
-      "write_regions": ["matharc/v02/workspace"],
-      "depends_on": ["PAR2"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "bounded-parallelism"
+      ],
+      "lanes": [
+        "machine/non-functional",
+        "machine/local-runtime",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/scheduler.py",
+        "tests/test_runtime_parallelism.py"
+      ],
+      "depends_on": [
+        "PAR2",
+        "DUR5"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/scheduler.py 中实现有界并发、独立 execution_id 和隔离工作区",
         "在 tests/test_runtime_parallelism.py 中证明至少三个不同进程存在真实时间重叠且写入区域无交集"
-      ]
+      ],
+      "goal": "在持久化和恢复能力之后实现有界并行、冻结输入和隔离工作区调度。"
     },
     {
       "id": "PAR4",
-      "release": "RTR2",
+      "release": "RTR3",
       "owner": "资源记账负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["resource-accounting"],
-      "lanes": ["machine/unit", "machine/non-functional"],
-      "write_regions": ["matharc/v02/budget.py"],
-      "depends_on": ["PAR3"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "resource-accounting"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/non-functional"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/coordinator.py",
+        "tests/test_runtime_semantic_deduplication.py"
+      ],
+      "depends_on": [
+        "PAR3"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/budget.py 中按运行回执记录实际费用而不是模型自报费用",
         "在 tests/test_runtime_semantic_deduplication.py 中证明同一语义实验不会重复运行"
-      ]
+      ],
+      "goal": "按执行回执记录实际资源消耗，并对语义重复实验做确定性去重。"
     },
     {
       "id": "PAR5",
-      "release": "RTR2",
+      "release": "RTR3",
       "owner": "并行验收负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["parallel-generation"],
-      "lanes": ["machine/e2e", "machine/local-runtime"],
-      "write_regions": ["tests"],
-      "depends_on": ["PAR4"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "parallel-generation"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "tests/test_runtime_parallel_generation.py",
+        "tests/test_runtime_partial_failure.py",
+        "tests/test_runtime_late_result_policy.py"
+      ],
+      "depends_on": [
+        "PAR4"
+      ],
       "acceptance_seeds": [
-        "在 tests/test_runtime_parallel_generation.py 中完成多研究成员一代结果汇总",
-        "在 tests/test_runtime_partial_failure.py 中证明部分成员失败仍生成合法、可审计的一代结果"
-      ]
+        "在 tests/test_runtime_parallel_generation.py 中证明每名成员只读取同一 GenerationInputSnapshot 且由单一 GenerationReducer 稳定归并",
+        "在 tests/test_runtime_partial_failure.py 中证明部分成员失败、必需角色缺失和超时不会伪造完整代际",
+        "在 tests/test_runtime_late_result_policy.py 中证明关闭代际不接受迟到结果改写"
+      ],
+      "goal": "独立验收多成员一代归并、冲突、部分失败和迟到结果规则。",
+      "kind": "validation"
     },
     {
       "id": "DUR1",
-      "release": "RTR3",
+      "release": "RTR2",
       "owner": "代际提交负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["generation-commit"],
-      "lanes": ["machine/unit", "machine/local-runtime"],
-      "write_regions": ["matharc/v02/workspace_bundle.py"],
-      "depends_on": ["PAR5", "RUN2"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "generation-commit"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/generation.py",
+        "matharc/v02/runtime/reducer.py",
+        "tests/test_generation_input_snapshot.py",
+        "tests/test_generation_commit.py"
+      ],
+      "depends_on": [
+        "RUN5"
+      ],
       "acceptance_seeds": [
-        "在 matharc/v02/generation.py 中定义 GenerationCommit 的输入摘要、候选清单和证据截止边界",
-        "在 tests/test_generation_commit.py 中拒绝没有连续正式提交边界的代际完成声明"
-      ]
+        "在 matharc/v02/runtime/generation.py 和 matharc/v02/runtime/reducer.py 中定义冻结输入摘要、稳定归并、冲突、去重、部分失败、迟到结果和 GenerationCommit 边界",
+        "在 tests/test_generation_input_snapshot.py 和 tests/test_generation_commit.py 中拒绝共享 ResearchTrace 直接写入和关闭代际后的结果改写",
+        "在 tests/test_runtime_late_result_policy.py 中证明迟到结果只能进入下一代或待处置队列"
+      ],
+      "goal": "定义冻结输入、代际提交、GenerationReducer 和 GenerationClosePolicy 的持久边界。"
     },
     {
       "id": "DUR2",
-      "release": "RTR3",
+      "release": "RTR2",
       "owner": "幂等账本负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["durable-import-ledger"],
-      "lanes": ["machine/integration-contract", "machine/local-runtime"],
-      "write_regions": ["matharc/v02/artifact_store.py"],
-      "depends_on": ["DUR1"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "durable-import-ledger"
+      ],
+      "lanes": [
+        "machine/integration-contract",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/run_store.py",
+        "matharc/v02/runtime/candidate.py",
+        "tests/test_runtime_idempotent_import.py"
+      ],
+      "depends_on": [
+        "DUR1"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/run_store.py 中幂等导入候选、费用和执行回执并保留来源身份",
         "在 tests/test_runtime_idempotent_import.py 中证明重复导入结果不变且来源身份变化时拒绝"
-      ]
+      ],
+      "goal": "以带来源身份的幂等账本保存候选、费用和执行回执，拒绝来源漂移。"
     },
     {
       "id": "DUR3",
-      "release": "RTR3",
+      "release": "RTR2",
       "owner": "运行控制负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["lifecycle-control"],
-      "lanes": ["machine/unit", "machine/integration-contract"],
-      "write_regions": ["matharc/v02/event_log.py"],
-      "depends_on": ["DUR1"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "lifecycle-control"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/state_machine.py",
+        "tests/test_runtime_lifecycle_control.py"
+      ],
+      "depends_on": [
+        "DUR1"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/state_machine.py 中实现停止、排空、暂停和取消状态协议",
         "在 tests/test_runtime_lifecycle_control.py 中证明停止后不再接收新任务且活动任务有明确终止结果"
-      ]
+      ],
+      "goal": "实现停止、排空、暂停、继续和取消的显式运行状态协议。"
     },
     {
       "id": "DUR4",
-      "release": "RTR3",
+      "release": "RTR2",
       "owner": "恢复负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["crash-recovery"],
-      "lanes": ["machine/local-runtime", "machine/integration-contract"],
-      "write_regions": ["matharc/v02/workspace_server"],
-      "depends_on": ["DUR2", "DUR3"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "crash-recovery"
+      ],
+      "lanes": [
+        "machine/local-runtime",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/recovery.py",
+        "tests/test_runtime_recovery_plan.py"
+      ],
+      "depends_on": [
+        "DUR2",
+        "DUR3"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/recovery.py 中从确定的 GenerationCommit 边界生成恢复计划和故障矩阵",
         "在 tests/test_runtime_recovery_plan.py 中对固定任务、模型或评价器变化拒绝恢复"
-      ]
+      ],
+      "goal": "从最后一个完整 GenerationCommit 生成可重放的崩溃恢复计划。"
     },
     {
       "id": "DUR5",
-      "release": "RTR3",
+      "release": "RTR2",
       "owner": "恢复验收负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["cold-restart"],
-      "lanes": ["machine/e2e", "machine/local-runtime"],
-      "write_regions": ["tests"],
-      "depends_on": ["DUR4"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "cold-restart"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "tests/test_runtime_crash_recovery.py",
+        "tests/test_runtime_no_duplicate_recovery.py"
+      ],
+      "depends_on": [
+        "DUR4"
+      ],
       "acceptance_seeds": [
         "在 tests/test_runtime_crash_recovery.py 中强制终止进程后完成冷启动恢复",
         "在 tests/test_runtime_no_duplicate_recovery.py 中证明恢复不会重复任务、费用、候选或跳代"
-      ]
+      ],
+      "goal": "独立验收冷启动恢复、幂等恢复和不跳代不重复规则。",
+      "kind": "validation"
     },
     {
       "id": "SYN1",
       "release": "RTR4",
       "owner": "探索结果接线负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["candidate-synthesis"],
-      "lanes": ["machine/unit", "machine/local-runtime"],
-      "write_regions": ["matharc/v02/exploration_session.py"],
-      "depends_on": ["RUN5", "DUR2"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "candidate-synthesis"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/synthesis.py",
+        "matharc/v02/runtime/candidate.py",
+        "tests/test_runtime_candidate_synthesis.py"
+      ],
+      "depends_on": [
+        "RUN5",
+        "DUR2"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/synthesis.py 中把普通执行输出标准化为带完整出处的探索候选",
         "在 tests/test_runtime_candidate_synthesis.py 中证明标准化候选不会进入正式证据"
-      ]
+      ],
+      "goal": "把普通执行输出标准化为带完整出处的探索候选，隔离于正式证据。"
     },
     {
       "id": "SYN2",
       "release": "RTR4",
       "owner": "反例复核负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["counterexample-review"],
-      "lanes": ["machine/unit", "machine/integration-contract"],
-      "write_regions": ["matharc/v02/falsification.py"],
-      "depends_on": ["SYN1"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "counterexample-review"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/synthesis.py",
+        "tests/test_runtime_counterexample_review.py"
+      ],
+      "depends_on": [
+        "SYN1"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/synthesis.py 中把疑似反例放入独立复核队列",
         "在 tests/test_runtime_counterexample_review.py 中证明未复核反例不会改变路线或结论"
-      ]
+      ],
+      "goal": "将疑似反例送入独立复核队列，未复核前不改变研究路线或结论。"
     },
     {
       "id": "SYN3",
       "release": "RTR4",
       "owner": "研究记忆负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["research-memory"],
-      "lanes": ["machine/unit", "machine/local-runtime"],
-      "write_regions": ["matharc/v02/episode_memory.py"],
-      "depends_on": ["SYN1"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "research-memory"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/reducer.py",
+        "tests/test_runtime_memory_provenance.py"
+      ],
+      "depends_on": [
+        "SYN1"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/episode_memory.py 中从真实运行蒸馏 FailureMemory 与 EpisodeMemory 记录",
         "在 tests/test_runtime_memory_provenance.py 中要求每条记忆携带 run_id、generation_id 和候选出处"
-      ]
+      ],
+      "goal": "从真实运行蒸馏带身份和候选出处的研究记忆。"
     },
     {
       "id": "SYN4",
       "release": "RTR4",
       "owner": "代际议程负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["next-generation-agenda"],
-      "lanes": ["machine/integration-contract", "machine/local-runtime"],
-      "write_regions": ["matharc/v02/research_director"],
-      "depends_on": ["SYN2", "SYN3"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "next-generation-agenda"
+      ],
+      "lanes": [
+        "machine/integration-contract",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/generation.py",
+        "tests/test_runtime_next_generation_agenda.py"
+      ],
+      "depends_on": [
+        "SYN2",
+        "SYN3"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/research_director/agenda.py 中把失败、经历、评审缺口和路线变换编译为下一代议程",
         "在 tests/test_runtime_next_generation_agenda.py 中要求下一代明确引用上一代事实"
-      ]
+      ],
+      "goal": "把失败、经历和评审缺口编译为明确消费上一代事实的下一代议程。"
     },
     {
       "id": "SYN5",
       "release": "RTR4",
       "owner": "连续代际验收负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["two-generation-synthesis"],
-      "lanes": ["machine/e2e", "machine/local-runtime"],
-      "write_regions": ["tests"],
-      "depends_on": ["SYN4", "DUR5"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "two-generation-synthesis"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "tests/test_runtime_two_generation_synthesis.py",
+        "tests/test_runtime_generation_delta.py"
+      ],
+      "depends_on": [
+        "SYN4",
+        "DUR5",
+        "PAR5"
+      ],
       "acceptance_seeds": [
         "在 tests/test_runtime_two_generation_synthesis.py 中完成连续两代运行并保留两份 GenerationCommit",
         "在 tests/test_runtime_generation_delta.py 中证明第二代路线或攻击任务因第一代结果发生可解释变化"
-      ]
+      ],
+      "goal": "独立验收连续两代提交、路线变化和上一代事实消费。",
+      "kind": "validation"
     },
     {
       "id": "VER1",
       "release": "RTR5",
       "owner": "候选身份负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["candidate-envelope"],
-      "lanes": ["machine/unit", "machine/integration-contract"],
-      "write_regions": ["matharc/v02/schema.py"],
-      "depends_on": ["RUN1", "DUR2"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "candidate-envelope"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/candidate.py",
+        "matharc/v02/runtime/verification.py",
+        "tests/test_candidate_identity.py"
+      ],
+      "depends_on": [
+        "RUN1",
+        "DUR2"
+      ],
       "acceptance_seeds": [
-        "在 matharc/v02/candidate_envelope.py 中定义不可变 CandidateEnvelope 身份摘要",
-        "在 tests/test_candidate_identity.py 中证明任务、源码、评价器、种子、预算或产物变化都会改变候选身份"
-      ]
+        "在 matharc/v02/runtime/verification.py 中定义 CandidateEnvelope 进入验证阶段的身份约束和 VerifierReceipt",
+        "在 tests/test_candidate_identity.py 中证明任务、源码、评价器、种子、预算或产物变化都会改变候选身份",
+        "证明 CandidateEnvelope 首次定义位于 RUN1，VER1 不反向提供 RUN4 的后端合同"
+      ],
+      "goal": "定义候选进入验证阶段所需的身份约束和 VerifierReceipt，而非重新定义候选包。"
     },
     {
       "id": "VER2",
       "release": "RTR5",
       "owner": "命题范围负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["claim-binding"],
-      "lanes": ["machine/unit", "machine/integration-contract"],
-      "write_regions": ["matharc/v02/trace.py"],
-      "depends_on": ["VER1"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "claim-binding"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/verification.py",
+        "tests/test_candidate_scope_binding.py"
+      ],
+      "depends_on": [
+        "VER1"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/verification_bridge.py 中将候选绑定到具体命题、量词、对象和范围",
         "在 tests/test_candidate_scope_binding.py 中拒绝范围扩大、量词变化和对象错配"
-      ]
+      ],
+      "goal": "把候选绑定到具体命题、量词、对象和范围，拒绝范围扩大与对象错配。"
     },
     {
       "id": "VER3",
       "release": "RTR5",
       "owner": "独立重放负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["independent-replay"],
-      "lanes": ["machine/e2e", "machine/local-runtime"],
-      "write_regions": ["matharc/v02/benchmark.py"],
-      "depends_on": ["VER2"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "independent-replay"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/verification.py",
+        "tests/test_candidate_independent_replay.py"
+      ],
+      "depends_on": [
+        "VER2"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/verification_bridge.py 中为候选生成干净环境的独立重放计划",
         "在 tests/test_candidate_independent_replay.py 中证明相同实现的重复执行不算独立验证"
-      ]
+      ],
+      "goal": "为候选生成干净环境的独立重放计划，排除同实现自证。"
     },
     {
       "id": "VER4",
       "release": "RTR5",
       "owner": "证据转换负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["evidence-record"],
-      "lanes": ["machine/integration-contract", "machine/unit"],
-      "write_regions": ["matharc/v02/trace.py"],
-      "depends_on": ["VER3"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "evidence-record"
+      ],
+      "lanes": [
+        "machine/integration-contract",
+        "machine/unit"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/verification.py",
+        "tests/test_candidate_evidence_conversion.py"
+      ],
+      "depends_on": [
+        "VER3"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/verification_bridge.py 中只将通过 VerifierReceipt 的候选转换为 EvidenceRecord",
         "在 tests/test_candidate_evidence_conversion.py 中证明候选转换不会自动调用 ResearchTrace.promote_claim()"
-      ]
+      ],
+      "goal": "仅将通过 VerifierReceipt 的候选转换为带出处的 EvidenceRecord。"
     },
     {
       "id": "VER5",
       "release": "RTR5",
       "owner": "证据失效负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["evidence-invalidation"],
-      "lanes": ["machine/unit", "machine/integration-contract"],
-      "write_regions": ["matharc/v02/audit.py"],
-      "depends_on": ["VER4"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "evidence-invalidation"
+      ],
+      "lanes": [
+        "machine/unit",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/verification.py",
+        "tests/test_evidence_invalidation.py"
+      ],
+      "depends_on": [
+        "VER4"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/audit.py 中记录命题、源码、评价器或候选身份变化导致的证据失效",
         "在 tests/test_evidence_invalidation.py 中证明失效证据不能继续支撑已晋升结论"
-      ]
+      ],
+      "goal": "记录命题、源码、评价器或候选身份变化导致的证据失效。"
     },
     {
       "id": "VER6",
       "release": "RTR5",
       "owner": "验证汇合负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["verification-gate"],
-      "lanes": ["machine/e2e", "machine/integration-contract"],
-      "write_regions": ["tests"],
-      "depends_on": ["VER5"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "verification-gate"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "machine/integration-contract"
+      ],
+      "write_regions": [
+        "tests/test_verification_convergence.py",
+        "tests/test_verification_negative_paths.py"
+      ],
+      "depends_on": [
+        "VER5"
+      ],
       "acceptance_seeds": [
         "在 tests/test_verification_convergence.py 中证明真实候选通过独立验证后才形成正式证据",
         "在 tests/test_verification_negative_paths.py 中阻止假候选、篡改包、越界和非独立结果"
-      ]
+      ],
+      "goal": "独立验收验证汇合、篡改检测、越界阻断和非独立结果拒绝。",
+      "kind": "validation"
     },
     {
       "id": "UX1",
       "release": "RTR6",
       "owner": "控制台投影负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["runtime-console-projection"],
-      "lanes": ["machine/integration-contract", "machine/e2e"],
-      "write_regions": ["matharc/v02/console_export.py"],
-      "depends_on": ["DUR2"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "runtime-console-projection"
+      ],
+      "lanes": [
+        "machine/integration-contract",
+        "machine/e2e"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/view_model.py",
+        "tests/test_runtime_console_projection.py"
+      ],
+      "depends_on": [
+        "DUR2"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/console_export.py 中将 RuntimeStore 状态投影到现有控制台数据合同",
         "在 tests/test_runtime_console_projection.py 中证明投影不是第二真相源且不暴露主机绝对路径"
       ],
-      "external_systems": ["EXT-MATHARC-INVITE-PREVIEW"]
+      "external_systems": [
+        "EXT-MATHARC-INVITE-PREVIEW"
+      ],
+      "goal": "把 RuntimeStore 状态投影到现有控制台数据合同，保持单一真相源。"
     },
     {
       "id": "UX2",
       "release": "RTR6",
       "owner": "邀请权限负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["invited-access"],
-      "lanes": ["machine/integration-contract", "machine/e2e"],
-      "write_regions": ["matharc/v02/access.py"],
-      "depends_on": ["FND2"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "invited-access"
+      ],
+      "lanes": [
+        "machine/integration-contract",
+        "machine/e2e"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/service.py",
+        "tests/test_runtime_console_permissions.py"
+      ],
+      "depends_on": [
+        "FND2"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/access.py 中复用现有邀请制访问和 Cookie 会话边界",
         "在 tests/test_runtime_console_permissions.py 中证明没有操作权限的用户不能启动或停止任务"
       ],
-      "external_systems": ["EXT-MATHARC-INVITE-PREVIEW"]
+      "external_systems": [
+        "EXT-MATHARC-INVITE-PREVIEW"
+      ],
+      "goal": "复用邀请制 Cookie 会话和权限边界，阻断无权用户的运行动作。"
     },
     {
       "id": "UX3",
       "release": "RTR6",
       "owner": "运行动作 API 负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["runtime-actions-api"],
-      "lanes": ["machine/integration-contract", "machine/e2e"],
-      "write_regions": ["matharc/v02/access_server.py"],
-      "depends_on": ["UX2", "DUR5"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "runtime-actions-api"
+      ],
+      "lanes": [
+        "machine/integration-contract",
+        "machine/e2e"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/service.py",
+        "tests/test_runtime_command_surface.py"
+      ],
+      "depends_on": [
+        "UX2",
+        "DUR5"
+      ],
       "api": [
-        {"method": "POST", "path": "/api/runtime/runs", "status": "new"},
-        {"method": "POST", "path": "/api/runtime/actions", "status": "new"}
+        {
+          "method": "POST",
+          "path": "/api/runtime/runs",
+          "status": "new"
+        },
+        {
+          "method": "POST",
+          "path": "/api/runtime/actions",
+          "status": "new"
+        }
       ],
       "acceptance_seeds": [
         "在 matharc/v02/runtime/service.py 中提供启动、暂停、继续、停止和重新验证的幂等动作",
         "在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段"
       ],
-      "external_systems": ["EXT-MATHARC-INVITE-PREVIEW"]
+      "external_systems": [
+        "EXT-MATHARC-INVITE-PREVIEW"
+      ],
+      "goal": "提供登记动作的幂等运行控制服务，拒绝任意命令、目录、环境和参数。"
     },
     {
       "id": "UX4",
       "release": "RTR6",
       "owner": "控制台安全视图负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["runtime-disclosure"],
-      "lanes": ["machine/static", "machine/e2e", "visual-fidelity"],
-      "write_regions": ["matharc/v02/console_topic.py"],
-      "depends_on": ["UX1", "UX2"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "runtime-disclosure"
+      ],
+      "lanes": [
+        "machine/static",
+        "machine/e2e",
+        "visual-fidelity"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/view_model.py",
+        "tests/test_runtime_console_redaction.py"
+      ],
+      "depends_on": [
+        "UX1",
+        "UX2"
+      ],
       "acceptance_seeds": [
         "在 matharc/v02/view_model.py 中建立统一中文运行视图并递归脱敏",
         "在 tests/test_runtime_console_redaction.py 中证明密钥、路径、完整命令、环境变量和异常堆栈泄露为零"
-      ]
+      ],
+      "goal": "建立统一中文运行视图并递归脱敏密钥、路径、命令、环境变量和堆栈。"
     },
     {
       "id": "UX5",
       "release": "RTR6",
       "owner": "实时控制台负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["live-runtime-console"],
-      "lanes": ["machine/e2e", "visual-fidelity", "machine/local-runtime"],
-      "write_regions": ["docs/prototypes"],
-      "depends_on": ["UX3", "UX4", "VER6"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "live-runtime-console"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "visual-fidelity",
+        "machine/local-runtime"
+      ],
+      "write_regions": [
+        "matharc/v02/runtime/service.py",
+        "matharc/v02/runtime/view_model.py",
+        "tests/test_runtime_console_reconnect.py"
+      ],
+      "depends_on": [
+        "UX3",
+        "UX4",
+        "VER6"
+      ],
       "acceptance_seeds": [
         "在 docs/prototypes/problem-intel-console.html 中展示研究成员、代际、预算、候选和验证状态",
         "在 tests/test_runtime_console_reconnect.py 中证明断线后控制台从服务端快照恢复而不是从浏览器缓存猜测"
       ],
-      "external_systems": ["EXT-MATHARC-INVITE-PREVIEW"]
+      "external_systems": [
+        "EXT-MATHARC-INVITE-PREVIEW"
+      ],
+      "goal": "实现断线重连后从服务端快照恢复的实时研究控制台。"
     },
     {
       "id": "UX6",
       "release": "RTR6",
       "owner": "浏览器产品验收负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["console-human-acceptance"],
-      "lanes": ["machine/e2e", "visual-fidelity", "human"],
-      "write_regions": ["acceptance"],
-      "depends_on": ["UX5"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "console-human-acceptance"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "visual-fidelity",
+        "human"
+      ],
+      "write_regions": [
+        "tests/test_runtime_console_mobile.py",
+        "acceptance/human/runtime-console/desktop-checklist.md"
+      ],
+      "depends_on": [
+        "UX5"
+      ],
       "acceptance_seeds": [
         "在 acceptance/human/runtime-console/desktop-checklist.md 中覆盖桌面邀请制查看和操作流程",
         "在 tests/test_runtime_console_mobile.py 中覆盖移动端、权限负路径和完整操作流"
-      ]
+      ],
+      "goal": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
+      "kind": "validation"
     },
     {
       "id": "DOG1",
       "release": "RTR7",
       "owner": "试点任务负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["pilot-baseline"],
-      "lanes": ["machine/e2e", "machine/local-runtime"],
-      "write_regions": ["benchmarks"],
-      "depends_on": ["RUN5"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "pilot-baseline"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "persistent-runtime"
+      ],
+      "write_regions": [
+        "benchmarks/runtime-pilot-plan.json",
+        "tests/test_runtime_pilot_baseline.py"
+      ],
+      "depends_on": [
+        "RUN5"
+      ],
       "acceptance_seeds": [
         "在 benchmarks/runtime-pilot-plan.json 中固定首个真实任务、评价器、范围、预算和单成员基线",
         "在 tests/test_runtime_pilot_baseline.py 中证明基线可重放且成功与失败条件可机器判断"
-      ]
+      ],
+      "goal": "固定首个真实任务、评价器、范围、预算和可重放的单成员基线。"
     },
     {
       "id": "DOG2",
       "release": "RTR7",
       "owner": "真实研究试点负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["real-two-generation-pilot"],
-      "lanes": ["machine/e2e", "machine/local-runtime", "production"],
-      "write_regions": ["experiments"],
-      "depends_on": ["PAR5", "SYN5", "VER6", "DOG1"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "real-two-generation-pilot"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "persistent-runtime",
+        "production"
+      ],
+      "write_regions": [
+        "experiments/runtime-pilot/two-generation-report.md",
+        "tests/test_runtime_pilot_generation_consumption.py"
+      ],
+      "depends_on": [
+        "PAR5",
+        "SYN5",
+        "VER6",
+        "DOG1",
+        "OPS3"
+      ],
       "acceptance_seeds": [
         "在 experiments/runtime-pilot/two-generation-report.md 中记录三至四研究成员和至少两代真实实验",
         "在 tests/test_runtime_pilot_generation_consumption.py 中证明第二代消费第一代结果且错误晋升为零"
-      ]
+      ],
+      "goal": "在运维闭环完成后执行两代真实并行研究并证明第二代消费第一代事实。",
+      "kind": "validation"
     },
     {
       "id": "DOG3",
       "release": "RTR7",
       "owner": "试点攻击演练负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["pilot-adversarial-drills"],
-      "lanes": ["machine/e2e", "machine/non-functional", "machine/local-runtime"],
-      "write_regions": ["tests"],
-      "depends_on": ["DOG2", "DUR5", "UX6"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "pilot-adversarial-drills"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "persistent-runtime",
+        "production"
+      ],
+      "write_regions": [
+        "tests/test_runtime_adversarial_drills.py",
+        "tests/test_runtime_attack_recovery.py"
+      ],
+      "depends_on": [
+        "DOG2",
+        "DUR5",
+        "UX6"
+      ],
       "acceptance_seeds": [
         "在 tests/test_runtime_adversarial_drills.py 中执行崩溃、篡改、虚假反例、重复导入和权限演练",
         "在 tests/test_runtime_attack_recovery.py 中证明每条攻击路径都被拒绝或安全恢复"
-      ]
+      ],
+      "goal": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
+      "kind": "validation"
     },
     {
       "id": "DOG4",
       "release": "RTR7",
       "owner": "试点发布负责人",
-      "decision_refs": ["DP1"],
-      "surfaces": ["pilot-release-evidence"],
-      "lanes": ["machine/e2e", "human", "release"],
-      "write_regions": ["acceptance"],
-      "depends_on": ["DOG3"],
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "pilot-release-evidence"
+      ],
+      "lanes": [
+        "human",
+        "release"
+      ],
+      "write_regions": [
+        "acceptance/human/runtime-pilot/release-checklist.md",
+        "acceptance/runtime-pilot/release-evidence.json"
+      ],
+      "depends_on": [
+        "DOG3"
+      ],
       "acceptance_seeds": [
         "在 acceptance/human/runtime-pilot/release-checklist.md 中汇编二至五人邀请试点的人类验收记录",
         "在 acceptance/runtime-pilot/release-evidence.json 中证明用户可理解研究状态且本地正式检查与干净重放通过"
+      ],
+      "goal": "汇编邀请试点的人类验收与发布证据，作出独立发布决策。"
+    },
+    {
+      "id": "OPS1",
+      "release": "RTR6",
+      "owner": "试点部署负责人",
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "pilot-operations"
+      ],
+      "lanes": [
+        "machine/static",
+        "persistent-runtime"
+      ],
+      "write_regions": [
+        "deploy/matharc-research.service",
+        "deploy/matharc-research.env.example",
+        "tests/test_runtime_ops_deployment.py"
+      ],
+      "depends_on": [
+        "UX6"
+      ],
+      "acceptance_seeds": [
+        "在 deploy/matharc-research.service 和 deploy/matharc-research.env.example 中固定持久目录、密钥来源和进程守护配置",
+        "在 tests/test_runtime_ops_deployment.py 中拒绝临时路径、明文密钥和无守护部署"
+      ]
+    },
+    {
+      "id": "OPS2",
+      "release": "RTR6",
+      "owner": "试点运维观测负责人",
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "pilot-operations"
+      ],
+      "lanes": [
+        "machine/integration-contract",
+        "persistent-runtime"
+      ],
+      "write_regions": [
+        "tests/test_runtime_ops_observability.py",
+        "tests/test_runtime_ops_backup.py"
+      ],
+      "depends_on": [
+        "OPS1"
+      ],
+      "kind": "validation",
+      "acceptance_seeds": [
+        "在 tests/test_runtime_ops_observability.py 中验证健康检查、结构化日志和单用户/全局配额",
+        "在 tests/test_runtime_ops_backup.py 中验证备份、恢复演练和恢复后身份连续性"
+      ]
+    },
+    {
+      "id": "OPS3",
+      "release": "RTR6",
+      "owner": "试点发布运维负责人",
+      "decision_refs": [
+        "DP1"
+      ],
+      "surfaces": [
+        "pilot-operations"
+      ],
+      "lanes": [
+        "machine/e2e",
+        "persistent-runtime",
+        "production"
+      ],
+      "write_regions": [
+        "tests/test_runtime_ops_release.py",
+        "tests/test_runtime_ops_cleanup.py",
+        "acceptance/runtime-pilot/ops-checklist.md"
+      ],
+      "depends_on": [
+        "OPS2"
+      ],
+      "kind": "validation",
+      "acceptance_seeds": [
+        "在 tests/test_runtime_ops_release.py 中完成部署、重启、回滚的不可变发布验收",
+        "在 tests/test_runtime_ops_cleanup.py 和 acceptance/runtime-pilot/ops-checklist.md 中验证临时工作区与试点用户数据可清理"
       ]
     }
   ]
