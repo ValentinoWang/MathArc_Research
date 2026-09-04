@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-09-04T00:19:58.095552+00:00",
+  "generated_at": "2026-09-04T00:23:54.967733+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "e4f56a267babafe61480f32250107e3f5a831213",
@@ -14,15 +14,15 @@
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "tree_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
-    "project_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
+    "tree_commit": "c323ac215e2f3e10127bcf81cd2bf4bab562bc00",
+    "project_commit": "c323ac215e2f3e10127bcf81cd2bf4bab562bc00",
     "project_dirty": true,
-    "project_dirty_diff_sha256": "53334d613a2c6b8e6755fe2f9d34599618fb9909af65d030d80d2467fdf46299",
+    "project_dirty_diff_sha256": "86229fc435efd456d26adf409a684c141490e7abc87d6ea26b142c473f223caa",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-execution-plane",
-    "content_sha256": "ae787eca94d7faef3ea252fb31fc2a4f6896e61a8eae8bf5f65d16e8c6c8d34e",
+    "content_sha256": "b4ef7106e91bf7fcb9b2a871792ca48a0ec314564a875baabeb090f35ca6523f",
     "manifest_identity_sha256": "12ab8d3bd07472988a5933394aa8e692de21d9787c647f93374cf6e0efd4320d"
   },
   "checks": [

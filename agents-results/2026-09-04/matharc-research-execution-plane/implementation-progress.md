@@ -20,10 +20,9 @@ The six implementation/validation nodes `C1`, `S1`, `P1`, `RI1`, `E1`, and
 `V1` are `ACCEPTED` in the compiled projection. `DP1` is the accepted decision
 input. Both release gates (`QR1` and `QR2`) are `ACCEPTED`; their completion is
 bound to the live mainline, cleanup, and proxy evidence in
-`evidence/release-readback.json`. The machine acceptance evidence has been
-refreshed against Harness `e4f56a267babafe61480f32250107e3f5a831213`; the
-remaining serial action is the current task's evidence commit, mainline
-push/readback, and branch cleanup.
+`evidence/release-readback.json`. The machine acceptance evidence is refreshed
+against Harness `e4f56a267babafe61480f32250107e3f5a831213`, and the execution
+bundle was pushed to MathArc `main` at `c323ac215e2f3e10127bcf81cd2bf4bab562bc00`.
 
 | Gate | Current value | Evidence |
 | --- | --- | --- |
@@ -46,9 +45,9 @@ push/readback, and branch cleanup.
 - `execution-orchestration/takeovers/V1.json`: the required main-thread
   takeover record for the unavailable external execution transport.
 - `evidence/release-readback.json`: MathArc and Harness GitHub `main` identities,
-  branch inventory, proxy inventory, and the current evidence-push status. The
-  final readback is written only after the evidence commit is on `main` and the
-  temporary Codex branch is removed.
+  branch inventory, proxy inventory, and the post-push cleanup readback. The
+  recorded MathArc tip is the accepted execution-bundle commit; the final
+  closeout commit carries only this refreshed evidence record.
 - Obsidian snapshot: four managed files verified; collection audit passed.
 
 ## Release and publication sequence
@@ -60,7 +59,8 @@ push/readback, and branch cleanup.
    accepted `e4f56a2` commit and needs no new source change.
 3. Read back both live `main` refs and trees, then remove the used local Codex
    branch and any remote branches that still exist. Preserve unrelated MathArc
-   worktree changes without staging or rewriting them.
+  worktree changes without staging or rewriting them. This sequence is now
+  complete and is recorded in the post-push readback below.
 
 ## Proxy state
 
@@ -68,8 +68,7 @@ The current shell, launchd environment, system/user Git configuration, and both
 repository configurations contain no `http.proxy`, `https.proxy`, `all_proxy`,
 or `insteadOf` proxy override. macOS network services have PAC, web, secure-web,
 SOCKS, and proxy auto-discovery disabled with blank server fields. Standard
-`git ls-remote` now passes directly; fetch and push are run in the serial
-closeout below.
+`git ls-remote`, fetch, and push now pass directly over Git HTTPS.
 Proxy variables in the OpenClaw service are outside this repository and are
 intentionally not changed.
 
@@ -79,5 +78,4 @@ The linked `Core/skills/report-to-ssot-development-paths` implementation now
 binds state/rules regression checks to real validators. The project adapter
 declares the required Obsidian archive policy; the source bundle remains the
 authority and the iCloud copy is an audit snapshot only. The final publication
-and cleanup facts are intentionally left pending until their live readback is
-recorded.
+and cleanup facts are recorded in `evidence/release-readback.json`.
