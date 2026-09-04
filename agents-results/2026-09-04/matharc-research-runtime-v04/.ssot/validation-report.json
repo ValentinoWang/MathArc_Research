@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-09-04T17:30:56.758212+00:00",
+  "generated_at": "2026-09-04T17:42:17.187325+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "221b256d5570b51fef97ec89052f632677b3406a",
@@ -31,6 +31,7 @@
       "Core/skills/report-to-ssot-development-paths/tests/test_doc_schema_code_parity.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_execution_contract_parity.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_execution_gates.py",
+      "Core/skills/report-to-ssot-development-paths/tests/test_program_world_gates.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_reading_map.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_router_v3_capability_contract.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_rules_index.py",
@@ -108,18 +109,18 @@
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/ssot-development-paths.md",
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/ssot-input.json"
     ],
-    "dirty_diff_sha256": "ffa2240a47aee439cd6583dd9ae1848bb62f93bec21dcb08b15f56c700c9aa44",
+    "dirty_diff_sha256": "6def4f3e4e38ad8e74588ebddd42bb408319c1a78f4671ab1f0992b189990654",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
     "skill_sha256": "82337949a41fbdea7c950754fa9c8bb773326ca1960fd4dd5d860405491d0587",
-    "checker_bundle_sha256": "50b9c03e8b6fddb1db3891620b2d52b0f28cabe129e621c30cca93db30fdd340"
+    "checker_bundle_sha256": "dd78a66d8a835d1c0c92301c41f5f38f1e3fe6a3b99aba3f14b1449c15a9d036"
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "tree_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-    "project_commit": "1443ce44fc40ba10d832da8d1d21219e996ebbcb",
-    "project_dirty": true,
-    "project_dirty_diff_sha256": "56d7178cceaa49c8aab4034630a34a869c92c3e302865506394d7b679d7cc914",
+    "tree_commit": "8b3e4babdfdac94e590ec86b2bc40263b68ed4c4",
+    "project_commit": "8b3e4babdfdac94e590ec86b2bc40263b68ed4c4",
+    "project_dirty": false,
+    "project_dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
@@ -151,7 +152,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 48\nruntime_skill_check: enabled\nWARN Harness source dirty files: 101\ndoctor: ok\n",
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 48\nruntime_skill_check: enabled\nWARN Harness source dirty files: 102\ndoctor: ok\n",
       "class": "self-consistency"
     },
     {
