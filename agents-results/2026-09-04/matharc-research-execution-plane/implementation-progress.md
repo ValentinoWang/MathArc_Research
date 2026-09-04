@@ -23,6 +23,8 @@ bound to the live mainline, cleanup, and proxy evidence in
 `evidence/release-readback.json`. The machine acceptance evidence is refreshed
 against Harness `e4f56a267babafe61480f32250107e3f5a831213`, and the execution
 bundle was pushed to MathArc `main` at `c323ac215e2f3e10127bcf81cd2bf4bab562bc00`.
+The latest verified MathArc `main` closeout before this evidence refresh is
+`5f8069f97487df5448ec89de157697eb8b78723e`.
 
 | Gate | Current value | Evidence |
 | --- | --- | --- |
@@ -66,9 +68,10 @@ bundle was pushed to MathArc `main` at `c323ac215e2f3e10127bcf81cd2bf4bab562bc00
 
 The current shell, launchd environment, system/user Git configuration, and both
 repository configurations contain no `http.proxy`, `https.proxy`, `all_proxy`,
-or `insteadOf` proxy override. macOS network services have PAC, web, secure-web,
-SOCKS, and proxy auto-discovery disabled with blank server fields. Standard
-`git ls-remote`, fetch, and push now pass directly over Git HTTPS.
+or `insteadOf` proxy override. The user has intentionally enabled the macOS
+Wi-Fi PAC at `http://127.0.0.1:33331/commands/pac`; HTTP, HTTPS, SOCKS, and
+proxy auto-discovery overrides remain disabled. Standard `git ls-remote`,
+fetch, and push pass over Git HTTPS without a persistent Git proxy override.
 Proxy variables in the OpenClaw service are outside this repository and are
 intentionally not changed.
 

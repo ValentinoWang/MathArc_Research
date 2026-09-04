@@ -7,21 +7,21 @@
     "source_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
     "environment_identity": "host=192.168.1.7; os=macOS 26.0.1; arch=arm64",
     "actor": "main-orchestrator",
-    "observed_at": "2026-09-04T00:22:32+00:00"
+    "observed_at": "2026-09-04T04:23:06+00:00"
   },
   "targets": {
     "matharc": {
       "repository": "ValentinoWang/MathArc_Research",
       "remote": "https://github.com/ValentinoWang/MathArc_Research.git",
       "ref": "refs/heads/main",
-      "local_sha": "c323ac215e2f3e10127bcf81cd2bf4bab562bc00",
-      "remote_sha": "c323ac215e2f3e10127bcf81cd2bf4bab562bc00",
-      "local_tree_sha": "c0ba7da32ecc7337c1fe46b695084261d7329d01",
-      "remote_tree_sha": "c0ba7da32ecc7337c1fe46b695084261d7329d01",
+      "local_sha": "5f8069f97487df5448ec89de157697eb8b78723e",
+      "remote_sha": "5f8069f97487df5448ec89de157697eb8b78723e",
+      "local_tree_sha": "6904e4e4a7508c93824f99f231123ff1c214ee62",
+      "remote_tree_sha": "6904e4e4a7508c93824f99f231123ff1c214ee62",
       "exact_sha_match": true,
       "tree_match": true,
       "ancestry_verified": true,
-      "remote_readback": "GitHub REST API and direct git ls-remote"
+      "remote_readback": "GitHub REST API and direct git ls-remote; system PAC active by user"
     },
     "harness": {
       "repository": "ValentinoWang/Harness_Engineering",
@@ -139,8 +139,8 @@
       "harness_git_local_proxy_or_instead_of": []
     },
     "standard_git_transport": {
-      "ls_remote": "PASS (direct Git HTTPS after proxy cleanup)",
-      "push": "PASS (c323ac215e2f3e10127bcf81cd2bf4bab562bc00 -> main; direct Git HTTPS)"
+      "ls_remote": "PASS (direct Git HTTPS with no persistent Git proxy override)",
+      "push": "PASS (5f8069f97487df5448ec89de157697eb8b78723e -> main; direct Git HTTPS)"
     }
   },
   "system_network_proxy": {
@@ -149,12 +149,12 @@
     "http_enabled": false,
     "https_enabled": false,
     "socks_enabled": false,
-    "proxy_auto_config_enabled": false,
+    "proxy_auto_config_enabled": true,
     "proxy_auto_discovery_enabled": false,
     "stored_pac_url": "http://127.0.0.1:33331/commands/pac",
-    "stored_pac_url_effect": "disabled; no system proxy route is active"
+    "stored_pac_url_effect": "enabled on Wi-Fi by the user; system PAC route is active"
   },
-  "observed_at": "2026-09-04T00:22:32+00:00",
+  "observed_at": "2026-09-04T04:23:06+00:00",
   "environment_identity": "host=192.168.1.7; os=macOS 26.0.1; arch=arm64",
   "source_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
   "actor": "main-orchestrator"

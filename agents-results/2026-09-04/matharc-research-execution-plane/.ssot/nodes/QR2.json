@@ -39,7 +39,7 @@
       "environment_identity": "host=192.168.1.7; os=macOS 26.0.1; arch=arm64",
       "source_commit": "b8c460cab1eba028718237a89201efe79cdc5d4e",
       "actor": "main-orchestrator",
-      "result_sha256": "7fcee63b2220cd46138a87a6c002f523d8da3e5a3ce36831fc1e15538a0b02a4",
+      "result_sha256": "43e5b10de0a585559e15d6fe9c9ea56922d0e50920a2680d2fc5a4756ba85af2",
       "passed": true
     },
     "acceptance_record": "evidence/release-readback.json",
