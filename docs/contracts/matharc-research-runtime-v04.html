@@ -2,52 +2,52 @@
 <html lang="zh-CN">
 <head><meta charset="utf-8"><title>MathArc 原生研究运行时 v0.4 产品合同</title></head>
 <body data-surface="matharc-runtime-contract">
-<h1>MathArc 原生研究运行时 v0.4 产品合同</h1>
-<h2>权威边界</h2>
+<h1 id="contract-title">MathArc 原生研究运行时 v0.4 产品合同</h1>
+<h2 id="authority-boundary">权威边界</h2>
 <ul>
-<li>MathArc 原生运行时拥有研究运行的执行状态、任务调度、代际提交、恢复计划、候选导入和运行控制权威。</li>
-<li>数学结论仍只由 ResearchTrace 的验证门和晋升方法改变；RuntimeStore 不得把运行成功直接写成 PROVED。</li>
-<li>模型 API、Codex、Claude Code 和本地进程都是可替换后端；后端只返回不可变的 WorkerExecutionResult。</li>
+<li id="runtime-authority">MathArc 原生运行时拥有研究运行的执行状态、任务调度、代际提交、恢复计划、候选导入和运行控制权威。</li>
+<li id="trace-promotion-authority">数学结论仍只由 ResearchTrace 的验证门和晋升方法改变；RuntimeStore 不得把运行成功直接写成 PROVED。</li>
+<li id="replaceable-backends">模型 API、Codex、Claude Code 和本地进程都是可替换后端；后端只返回不可变的 WorkerExecutionResult。</li>
 </ul>
-<h2>运行身份层级</h2>
+<h2 id="runtime-identity-hierarchy">运行身份层级</h2>
 <p>运行身份必须按以下层级区分：workspace_id → trace_id → runtime_run_id → generation_id → worker_id → execution_id → candidate_id → evidence_id。</p>
 <p>runtime_run_id 是运行时实例身份，不复用既有 ResearchTrace.run_id 的语义。身份缺失、跨工作区引用或来源摘要不匹配时，导入和恢复均失败关闭。</p>
-<h2>单任务与候选合同</h2>
+<h2 id="single-run-candidate-contract">单任务与候选合同</h2>
 <ul>
-<li>RUN1 定义 ResearchRunSpec、ResearchWorkerSpec、WorkerExecutionResult、CandidateEnvelope 和 RuntimeActionReceipt。</li>
-<li>协调器结合评价器摘要、运行身份、源码身份、工具注册表摘要、预算和产物摘要组装 CandidateEnvelope。</li>
-<li>验证阶段只校验 CandidateEnvelope 的身份约束，不负责第一次定义候选包。</li>
+<li id="run-contract-types">RUN1 定义 ResearchRunSpec、ResearchWorkerSpec、WorkerExecutionResult、CandidateEnvelope 和 RuntimeActionReceipt。</li>
+<li id="candidate-assembly">协调器结合评价器摘要、运行身份、源码身份、工具注册表摘要、预算和产物摘要组装 CandidateEnvelope。</li>
+<li id="verification-boundary">验证阶段只校验 CandidateEnvelope 的身份约束，不负责第一次定义候选包。</li>
 </ul>
-<h2>冻结输入、并行与归并</h2>
+<h2 id="frozen-input-parallel-reduction">冻结输入、并行与归并</h2>
 <ul>
-<li>每一代开始时生成不可变 GenerationInputSnapshot，包含 trace_digest、contract_digest、agenda_digest、worker_spec_digest 和 tool_registry_digest。</li>
-<li>成员只能读取冻结快照和隔离工作区，不能直接修改共享 ResearchTrace。</li>
-<li>唯一的 GenerationReducer 负责稳定排序、冲突检查、重复去重、部分失败、最低完成成员数、超时和迟到结果归属，并生成 GenerationCommit。</li>
-<li>GenerationClosePolicy 决定代际关闭；关闭后迟到结果不得改写已关闭代际。</li>
+<li id="generation-input-snapshot">每一代开始时生成不可变 GenerationInputSnapshot，包含 trace_digest、contract_digest、agenda_digest、worker_spec_digest 和 tool_registry_digest。</li>
+<li id="isolated-worker-writes">成员只能读取冻结快照和隔离工作区，不能直接修改共享 ResearchTrace。</li>
+<li id="single-generation-reducer">唯一的 GenerationReducer 负责稳定排序、冲突检查、重复去重、部分失败、最低完成成员数、超时和迟到结果归属，并生成 GenerationCommit。</li>
+<li id="generation-close-policy">GenerationClosePolicy 决定代际关闭；关闭后迟到结果不得改写已关闭代际。</li>
 </ul>
-<h2>持久化、恢复与数学验证</h2>
+<h2 id="persistence-recovery-verification">持久化、恢复与数学验证</h2>
 <p>运行事件采用哈希链和原子快照，候选、费用和执行回执使用带来源身份的幂等账本。恢复只能从最后一个完整 GenerationCommit 边界生成。验证器产生 VerifierReceipt，只有独立重放和范围检查通过的候选才可转换为 EvidenceRecord。</p>
-<h2>邀请制控制台与试点运行环境</h2>
+<h2 id="invite-console-pilot-runtime">邀请制控制台与试点运行环境</h2>
 <ul>
-<li>邀请制控制台只投影 RuntimeStore，通过 Cookie 会话和权限边界提供登记动作。</li>
-<li>服务端不得接受任意命令、工作目录、环境变量、可执行文件或参数；敏感字段和主机路径必须递归脱敏。</li>
-<li>OPS1、OPS2、OPS3 必须先完成部署守护、健康日志、配额、备份恢复、回滚和数据清理，DOG2 才能进入真实研究。</li>
-<li>VER6 只能在独立验证、范围检查和来源身份均通过后开放数学证据晋升。</li>
-<li>UX2 只允许已邀请主体读取受控运行投影，并拒绝未授权的运行操作。</li>
-<li>UX3 只接受登记过的运行动作和目标身份，不接受任意命令或参数。</li>
-<li>UX4 必须在投影层递归脱敏敏感字段、主机路径、命令和异常堆栈。</li>
-<li>UX5 必须从 RuntimeStore 读取运行状态，并展示停止、暂停、继续和重新验证的可审计回执。</li>
-<li>UX6 的人类验收必须同时记录邀请权限、动作边界和用户对运行状态的理解。</li>
-<li>DOG2 必须使用两代真实研究和持久运行时证据，且不得绕过验证晋升。</li>
-<li>DOG3 必须通过越权命令、跨工作区写入、重复费用和迟到结果攻击演练。</li>
-<li>DOG4 必须绑定发布决策、验证报告、部署身份和远端回读证据。</li>
-<li>OPS1 必须固定部署配置、持久目录、密钥来源和进程守护，并保留可重放日志。</li>
-<li>OPS2 必须提供健康检查、日志、并发与费用配额以及备份恢复的机器证据。</li>
-<li>OPS3 必须提供部署、重启、回滚和用户数据清理的可验证收尾证据。</li>
+<li id="invite-console-projection">邀请制控制台只投影 RuntimeStore，通过 Cookie 会话和权限边界提供登记动作。</li>
+<li id="registered-action-boundary">服务端不得接受任意命令、工作目录、环境变量、可执行文件或参数；敏感字段和主机路径必须递归脱敏。</li>
+<li id="ops-before-real-research">OPS1、OPS2、OPS3 必须先完成部署守护、健康日志、配额、备份恢复、回滚和数据清理，DOG2 才能进入真实研究。</li>
+<li id="verification-promotion-gate">VER6 只能在独立验证、范围检查和来源身份均通过后开放数学证据晋升。</li>
+<li id="invite-principal-boundary">UX2 只允许已邀请主体读取受控运行投影，并拒绝未授权的运行操作。</li>
+<li id="runtime-action-allowlist">UX3 只接受登记过的运行动作和目标身份，不接受任意命令或参数。</li>
+<li id="recursive-redaction">UX4 必须在投影层递归脱敏敏感字段、主机路径、命令和异常堆栈。</li>
+<li id="runtime-console-receipts">UX5 必须从 RuntimeStore 读取运行状态，并展示停止、暂停、继续和重新验证的可审计回执。</li>
+<li id="console-human-acceptance">UX6 的人类验收必须同时记录邀请权限、动作边界和用户对运行状态的理解。</li>
+<li id="two-generation-pilot">DOG2 必须使用两代真实研究和持久运行时证据，且不得绕过验证晋升。</li>
+<li id="adversarial-pilot">DOG3 必须通过越权命令、跨工作区写入、重复费用和迟到结果攻击演练。</li>
+<li id="pilot-release-decision">DOG4 必须绑定发布决策、验证报告、部署身份和远端回读证据。</li>
+<li id="deployment-configuration">OPS1 必须固定部署配置、持久目录、密钥来源和进程守护，并保留可重放日志。</li>
+<li id="runtime-observability">OPS2 必须提供健康检查、日志、并发与费用配额以及备份恢复的机器证据。</li>
+<li id="deployment-closeout">OPS3 必须提供部署、重启、回滚和用户数据清理的可验证收尾证据。</li>
 </ul>
-<h2>零容忍不变量</h2>
+<h2 id="zero-tolerance-invariants">零容忍不变量</h2>
 <ul>
-<li>错误数学晋升、重复执行、重复费用、重复候选导入、跨工作区写入、关闭代际被迟到结果改写、公共接口敏感信息泄露、无权限运行动作均必须为 0。</li>
+<li id="zero-tolerance-set">错误数学晋升、重复执行、重复费用、重复候选导入、跨工作区写入、关闭代际被迟到结果改写、公共接口敏感信息泄露、无权限运行动作均必须为 0。</li>
 </ul>
 <ul id="source-requirement-anchors" hidden aria-hidden="true">
 <li id="requirement-SRC-FND1" data-requirement-id="SRC-FND1">建立 MathArc 原生运行时所有权与依赖允许清单，阻断治理工具链进入产品运行路径。</li>

@@ -235,7 +235,23 @@
       "source_completion_refs": [
         "SRC-FND1",
         "SRC-FND2"
-      ]
+      ],
+      "gate_node": "QZ",
+      "release_authority": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "release-acceptance-a",
+            "principal_ref": "principal:release-a"
+          },
+          {
+            "role_id": "release-acceptance-b",
+            "principal_ref": "principal:release-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RTR1",
@@ -249,7 +265,23 @@
         "SRC-RUN3",
         "SRC-RUN4",
         "SRC-RUN5"
-      ]
+      ],
+      "gate_node": "Q1",
+      "release_authority": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "release-acceptance-a",
+            "principal_ref": "principal:release-a"
+          },
+          {
+            "role_id": "release-acceptance-b",
+            "principal_ref": "principal:release-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RTR2",
@@ -263,7 +295,23 @@
         "SRC-DUR3",
         "SRC-DUR4",
         "SRC-DUR5"
-      ]
+      ],
+      "gate_node": "Q2",
+      "release_authority": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "release-acceptance-a",
+            "principal_ref": "principal:release-a"
+          },
+          {
+            "role_id": "release-acceptance-b",
+            "principal_ref": "principal:release-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RTR3",
@@ -277,7 +325,23 @@
         "SRC-PAR3",
         "SRC-PAR4",
         "SRC-PAR5"
-      ]
+      ],
+      "gate_node": "Q3",
+      "release_authority": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "release-acceptance-a",
+            "principal_ref": "principal:release-a"
+          },
+          {
+            "role_id": "release-acceptance-b",
+            "principal_ref": "principal:release-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RTR4",
@@ -291,7 +355,23 @@
         "SRC-SYN3",
         "SRC-SYN4",
         "SRC-SYN5"
-      ]
+      ],
+      "gate_node": "Q4",
+      "release_authority": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "release-acceptance-a",
+            "principal_ref": "principal:release-a"
+          },
+          {
+            "role_id": "release-acceptance-b",
+            "principal_ref": "principal:release-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RTR5",
@@ -306,7 +386,23 @@
         "SRC-VER4",
         "SRC-VER5",
         "SRC-VER6"
-      ]
+      ],
+      "gate_node": "Q5",
+      "release_authority": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "release-acceptance-a",
+            "principal_ref": "principal:release-a"
+          },
+          {
+            "role_id": "release-acceptance-b",
+            "principal_ref": "principal:release-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RTR6",
@@ -324,7 +420,23 @@
         "SRC-OPS1",
         "SRC-OPS2",
         "SRC-OPS3"
-      ]
+      ],
+      "gate_node": "Q6",
+      "release_authority": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "release-acceptance-a",
+            "principal_ref": "principal:release-a"
+          },
+          {
+            "role_id": "release-acceptance-b",
+            "principal_ref": "principal:release-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RTR7",
@@ -337,14 +449,33 @@
         "SRC-DOG2",
         "SRC-DOG3",
         "SRC-DOG4"
-      ]
+      ],
+      "gate_node": "Q7",
+      "release_authority": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "release-acceptance-a",
+            "principal_ref": "principal:release-a"
+          },
+          {
+            "role_id": "release-acceptance-b",
+            "principal_ref": "principal:release-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     }
   ],
   "items": [
     {
       "id": "FND1",
       "release": "RTRZ",
-      "owner": "MathArc 运行时架构负责人",
+      "owner": {
+        "role_id": "owner-fnd1",
+        "principal_ref": "principal:owner-fnd1"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -387,12 +518,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "FND2",
       "release": "RTRZ",
-      "owner": "MathArc 研究协议负责人",
+      "owner": {
+        "role_id": "owner-fnd2",
+        "principal_ref": "principal:owner-fnd2"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -431,12 +580,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RUN1",
       "release": "RTR1",
-      "owner": "运行合同负责人",
+      "owner": {
+        "role_id": "owner-run1",
+        "principal_ref": "principal:owner-run1"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -455,7 +622,8 @@
         "在 matharc/v02/runtime/identity.py 中定义 workspace_id、trace_id、runtime_run_id、generation_id、worker_id、execution_id、candidate_id、evidence_id 的层级约束",
         "在 tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 中拒绝未知字段、未知状态、身份错配和不兼容合同版本",
         "在 matharc/v02/runtime/generation.py 中定义 GenerationInputSnapshot、GenerationReducer 和 GenerationClosePolicy 的输入输出边界",
-        "在 matharc/v02/runtime/contracts.py 中固定输入合同、输出信封、状态转换、幂等键 runtime_run_id+generation_id、超时、取消与失败分类；在 tests/test_runtime_contracts.py 中把合同版本和独立验收身份作为受保护目标"
+        "在 matharc/v02/runtime/contracts.py 中固定输入合同、输出信封、状态转换、幂等键 runtime_run_id+generation_id、超时、取消与失败分类；在 tests/test_runtime_contracts.py 中把合同版本和独立验收身份作为受保护目标",
+        "tests/test_runtime_contracts.py 和 tests/test_runtime_identity.py 实现后必须在 protected_tests 登记各自 SHA-256 及覆盖范围；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "定义可版本化的研究运行合同、身份层级、候选包和运行动作回执。",
       "source": {
@@ -487,12 +655,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RUN2",
       "release": "RTR1",
-      "owner": "运行存储负责人",
+      "owner": {
+        "role_id": "owner-run2",
+        "principal_ref": "principal:owner-run2"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -546,12 +732,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RUN3",
       "release": "RTR1",
-      "owner": "评价器负责人",
+      "owner": {
+        "role_id": "owner-run3",
+        "principal_ref": "principal:owner-run3"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -599,12 +803,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RUN4",
       "release": "RTR1",
-      "owner": "第一方后端负责人",
+      "owner": {
+        "role_id": "owner-run4",
+        "principal_ref": "principal:owner-run4"
+      },
       "decision_refs": [
         "DP1",
         "DP2"
@@ -623,7 +845,8 @@
       "acceptance_seeds": [
         "在 matharc/v02/runtime/coordinator.py 中只把 DeterministicTestBackend、CodexBackend 和 LocalExactToolBackend 接入 MathArc 后端请求；Claude Code 与通用模型 API 仅保留后置兼容接口",
         "在 tests/test_runtime_backend_contract.py 中证明后端结果只能形成 CandidateEnvelope，不能写入 RuntimeStore 之外的数学状态",
-        "在 matharc/v02/runtime/backends/base.py 和 matharc/v02/runtime/coordinator.py 中固定首版后端输入、CandidateEnvelope 输出、execution_id 幂等键、超时/取消/重试和失败分类；在 tests/test_runtime_backend_contract.py 中逐一保护 DeterministicTestBackend、CodexBackend、LocalExactToolBackend 的独立验收身份"
+        "在 matharc/v02/runtime/backends/base.py 和 matharc/v02/runtime/coordinator.py 中固定首版后端输入、CandidateEnvelope 输出、execution_id 幂等键、超时/取消/重试和失败分类；在 tests/test_runtime_backend_contract.py 中逐一保护 DeterministicTestBackend、CodexBackend、LocalExactToolBackend 的独立验收身份",
+        "tests/test_runtime_backend_contract.py 实现后必须在 protected_tests 登记 SHA-256 及三个首版后端的覆盖范围；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "将各类执行后端统一为 MathArc 请求，只返回不可变 WorkerExecutionResult 并由协调器组装候选包。",
       "source": {
@@ -652,12 +875,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "RUN5",
       "release": "RTR1",
-      "owner": "单任务验收负责人",
+      "owner": {
+        "role_id": "owner-run5",
+        "principal_ref": "principal:owner-run5"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -677,6 +918,12 @@
       ],
       "goal": "独立验证单任务从试跑、执行到候选回传的闭环，并阻断候选越级晋升。",
       "kind": "validation",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_v02_release_decision.py",
+        "assertion_authority": "MathArc 单任务候选边界测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-RUN5"
@@ -690,12 +937,30 @@
           "path": "tests/test_candidate_promotion_boundary.py",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "PAR1",
       "release": "RTR3",
-      "owner": "研究拓扑负责人",
+      "owner": {
+        "role_id": "owner-par1",
+        "principal_ref": "principal:owner-par1"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -728,12 +993,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "PAR2",
       "release": "RTR3",
-      "owner": "任务审批接线负责人",
+      "owner": {
+        "role_id": "owner-par2",
+        "principal_ref": "principal:owner-par2"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -767,12 +1050,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "PAR3",
       "release": "RTR3",
-      "owner": "并发调度负责人",
+      "owner": {
+        "role_id": "owner-par3",
+        "principal_ref": "principal:owner-par3"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -792,7 +1093,8 @@
         "在 matharc/v02/runtime/scheduler.py 中实现有界并发、独立 execution_id 和隔离工作区",
         "在 tests/test_runtime_parallelism.py 中证明至少三个不同进程存在真实时间重叠且写入区域无交集",
         "在 tests/test_runtime_parallelism_contract.py 中验证冻结输入、并发上限和隔离工作区遵守运行时数据合同",
-        "在 matharc/v02/runtime/scheduler.py 中固定 GenerationInputSnapshot 输入、execution_id 与隔离工作区输出、并发上限、成员幂等键、超时/取消/失败分类、有限重试和恢复回执；在 tests/test_runtime_parallelism.py 与 tests/test_runtime_parallelism_contract.py 中保护真实重叠与独立验收身份"
+        "在 matharc/v02/runtime/scheduler.py 中固定 GenerationInputSnapshot 输入、execution_id 与隔离工作区输出、并发上限、成员幂等键、超时/取消/失败分类、有限重试和恢复回执；在 tests/test_runtime_parallelism.py 与 tests/test_runtime_parallelism_contract.py 中保护真实重叠与独立验收身份",
+        "tests/test_runtime_parallelism.py 和 tests/test_runtime_parallelism_contract.py 实现后必须在 protected_tests 登记各自 SHA-256 及真实重叠/隔离合同覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "在持久化和恢复能力之后实现有界并行、冻结输入和隔离工作区调度。",
       "execution": {
@@ -817,7 +1119,7 @@
       },
       "keep_refs": [
         {
-          "artifact": "SRC-MATHARC-TRACE-PY",
+          "artifact": "SRC-MATHARC-WORKSPACE-IMPL-PY",
           "locator": "file:content"
         }
       ],
@@ -835,12 +1137,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "PAR4",
       "release": "RTR3",
-      "owner": "资源记账负责人",
+      "owner": {
+        "role_id": "owner-par4",
+        "principal_ref": "principal:owner-par4"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -873,12 +1193,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "PAR5",
       "release": "RTR3",
-      "owner": "并行验收负责人",
+      "owner": {
+        "role_id": "owner-par5",
+        "principal_ref": "principal:owner-par5"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -896,10 +1234,17 @@
         "在 tests/test_runtime_parallel_generation.py 中证明每名成员只读取同一 GenerationInputSnapshot 且由单一 GenerationReducer 稳定归并",
         "在 tests/test_runtime_partial_failure.py 中证明部分成员失败、必需角色缺失和超时不会伪造完整代际",
         "在 tests/test_runtime_late_result_policy.py 中证明关闭代际不接受迟到结果改写",
-        "在 tests/test_runtime_parallel_generation.py 和 tests/test_runtime_partial_failure.py 中固定并行输入/归并输出、generation_id 幂等键、超时/取消/失败分类、有限重试与恢复判定，并以独立测试身份拒绝伪造完整代际"
+        "在 tests/test_runtime_parallel_generation.py 和 tests/test_runtime_partial_failure.py 中固定并行输入/归并输出、generation_id 幂等键、超时/取消/失败分类、有限重试与恢复判定，并以独立测试身份拒绝伪造完整代际",
+        "tests/test_runtime_parallel_generation.py、tests/test_runtime_partial_failure.py 和 tests/test_runtime_late_result_policy.py 实现后必须在 protected_tests 登记 SHA-256 及归并/部分失败/迟到结果覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "独立验收多成员一代归并、冲突、部分失败和迟到结果规则。",
       "kind": "validation",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_v02_governed_fanout.py",
+        "assertion_authority": "MathArc 并行研究归并测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-PAR5"
@@ -917,12 +1262,30 @@
           "path": "tests/test_runtime_late_result_policy.py",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "DUR1",
       "release": "RTR2",
-      "owner": "代际提交负责人",
+      "owner": {
+        "role_id": "owner-dur1",
+        "principal_ref": "principal:owner-dur1"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -940,7 +1303,8 @@
         "在 matharc/v02/runtime/generation.py 和 matharc/v02/runtime/reducer.py 中定义冻结输入摘要、稳定归并、冲突、去重、部分失败、迟到结果和 GenerationCommit 边界",
         "在 tests/test_generation_input_snapshot.py 和 tests/test_generation_commit.py 中拒绝共享 ResearchTrace 直接写入和关闭代际后的结果改写",
         "在 tests/test_runtime_late_result_policy.py 中证明迟到结果只能进入下一代或待处置队列",
-        "在 matharc/v02/runtime/generation.py 中固定 GenerationInputSnapshot 输入、GenerationCommit 输出、generation_id 幂等键、成员超时/取消/失败分类、有限重试与恢复边界；在 tests/test_generation_commit.py 和 tests/test_runtime_late_result_policy.py 中锁定关闭后不可改写的独立验收身份"
+        "在 matharc/v02/runtime/generation.py 中固定 GenerationInputSnapshot 输入、GenerationCommit 输出、generation_id 幂等键、成员超时/取消/失败分类、有限重试与恢复边界；在 tests/test_generation_commit.py 和 tests/test_runtime_late_result_policy.py 中锁定关闭后不可改写的独立验收身份",
+        "tests/test_generation_input_snapshot.py、tests/test_generation_commit.py 和 tests/test_runtime_late_result_policy.py 实现后必须在 protected_tests 登记 SHA-256 及冻结/提交/迟到边界覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "定义冻结输入、代际提交、GenerationReducer 和 GenerationClosePolicy 的持久边界。",
       "source": {
@@ -969,12 +1333,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "DUR2",
       "release": "RTR2",
-      "owner": "幂等账本负责人",
+      "owner": {
+        "role_id": "owner-dur2",
+        "principal_ref": "principal:owner-dur2"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1011,12 +1393,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "DUR3",
       "release": "RTR2",
-      "owner": "运行控制负责人",
+      "owner": {
+        "role_id": "owner-dur3",
+        "principal_ref": "principal:owner-dur3"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1049,12 +1449,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "DUR4",
       "release": "RTR2",
-      "owner": "恢复负责人",
+      "owner": {
+        "role_id": "owner-dur4",
+        "principal_ref": "principal:owner-dur4"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1072,7 +1490,8 @@
       "acceptance_seeds": [
         "在 matharc/v02/runtime/recovery.py 中从确定的 GenerationCommit 边界生成恢复计划和故障矩阵",
         "在 tests/test_runtime_recovery_plan.py 中对固定任务、模型或评价器变化拒绝恢复",
-        "在 matharc/v02/runtime/recovery.py 中固定 GenerationCommit 摘要输入、RecoveryPlan 输出、(runtime_run_id,generation_id) 幂等键、超时/取消/不可恢复失败分类、一次有限重试与恢复后状态；在 tests/test_runtime_recovery_plan.py 中保护恢复计划独立验收身份"
+        "在 matharc/v02/runtime/recovery.py 中固定 GenerationCommit 摘要输入、RecoveryPlan 输出、(runtime_run_id,generation_id) 幂等键、超时/取消/不可恢复失败分类、一次有限重试与恢复后状态；在 tests/test_runtime_recovery_plan.py 中保护恢复计划独立验收身份",
+        "tests/test_runtime_recovery_plan.py 实现后必须在 protected_tests 登记 SHA-256 及恢复规划/拒绝恢复覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "从最后一个完整 GenerationCommit 生成可重放的崩溃恢复计划。",
       "execution": {
@@ -1104,12 +1523,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "DUR5",
       "release": "RTR2",
-      "owner": "恢复验收负责人",
+      "owner": {
+        "role_id": "owner-dur5",
+        "principal_ref": "principal:owner-dur5"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1129,6 +1566,12 @@
       ],
       "goal": "独立验收冷启动恢复、幂等恢复和不跳代不重复规则。",
       "kind": "validation",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_v02_artifact_store_durability.py",
+        "assertion_authority": "MathArc 持久化与恢复测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-DUR5"
@@ -1142,12 +1585,30 @@
           "path": "tests/test_runtime_no_duplicate_recovery.py",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "SYN1",
       "release": "RTR4",
-      "owner": "探索结果接线负责人",
+      "owner": {
+        "role_id": "owner-syn1",
+        "principal_ref": "principal:owner-syn1"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1185,12 +1646,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "SYN2",
       "release": "RTR4",
-      "owner": "反例复核负责人",
+      "owner": {
+        "role_id": "owner-syn2",
+        "principal_ref": "principal:owner-syn2"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1223,12 +1702,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "SYN3",
       "release": "RTR4",
-      "owner": "研究记忆负责人",
+      "owner": {
+        "role_id": "owner-syn3",
+        "principal_ref": "principal:owner-syn3"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1261,12 +1758,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "SYN4",
       "release": "RTR4",
-      "owner": "代际议程负责人",
+      "owner": {
+        "role_id": "owner-syn4",
+        "principal_ref": "principal:owner-syn4"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1304,12 +1819,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "SYN5",
       "release": "RTR4",
-      "owner": "连续代际验收负责人",
+      "owner": {
+        "role_id": "owner-syn5",
+        "principal_ref": "principal:owner-syn5"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1331,6 +1864,12 @@
       ],
       "goal": "独立验收连续两代提交、路线变化和上一代事实消费。",
       "kind": "validation",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_v02_episode_memory.py",
+        "assertion_authority": "MathArc 研究记忆与代际消费测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-SYN5"
@@ -1344,12 +1883,30 @@
           "path": "tests/test_runtime_generation_delta.py",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "VER1",
       "release": "RTR5",
-      "owner": "候选身份负责人",
+      "owner": {
+        "role_id": "owner-ver1",
+        "principal_ref": "principal:owner-ver1"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1388,12 +1945,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "VER2",
       "release": "RTR5",
-      "owner": "命题范围负责人",
+      "owner": {
+        "role_id": "owner-ver2",
+        "principal_ref": "principal:owner-ver2"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1426,12 +2001,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "VER3",
       "release": "RTR5",
-      "owner": "独立重放负责人",
+      "owner": {
+        "role_id": "owner-ver3",
+        "principal_ref": "principal:owner-ver3"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1448,7 +2041,8 @@
       "acceptance_seeds": [
         "在 matharc/v02/runtime/verification.py 中为候选生成干净环境的独立重放计划",
         "在 tests/test_candidate_independent_replay.py 中证明相同实现的重复执行不算独立验证",
-        "在 matharc/v02/runtime/verification.py 中固定 CandidateEnvelope 输入、独立 ReplayPlan 与 VerifierReceipt 输出、candidate_id+replay_digest 幂等键、超时/取消/失败分类、有限重试和恢复边界；在 tests/test_candidate_independent_replay.py 中保护独立验收身份"
+        "在 matharc/v02/runtime/verification.py 中固定 CandidateEnvelope 输入、独立 ReplayPlan 与 VerifierReceipt 输出、candidate_id+replay_digest 幂等键、超时/取消/失败分类、有限重试和恢复边界；在 tests/test_candidate_independent_replay.py 中保护独立验收身份",
+        "tests/test_candidate_independent_replay.py 实现后必须在 protected_tests 登记 SHA-256 及干净环境/非同实现重放覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "为候选生成干净环境的独立重放计划，排除同实现自证。",
       "source": {
@@ -1465,12 +2059,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "VER4",
       "release": "RTR5",
-      "owner": "证据转换负责人",
+      "owner": {
+        "role_id": "owner-ver4",
+        "principal_ref": "principal:owner-ver4"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1487,7 +2099,8 @@
       "acceptance_seeds": [
         "在 matharc/v02/runtime/verification.py 中只将通过 VerifierReceipt 的候选转换为 EvidenceRecord",
         "在 tests/test_candidate_evidence_conversion.py 中证明候选转换不会自动调用 ResearchTrace.promote_claim()",
-        "在 matharc/v02/runtime/verification.py 中固定 VerifierReceipt 输入、EvidenceRecord 输出、candidate_id+receipt_digest 幂等键、超时/取消/失败分类、有限重试与失效恢复；在 tests/test_candidate_evidence_conversion.py 中保护候选到证据的独立验收身份"
+        "在 matharc/v02/runtime/verification.py 中固定 VerifierReceipt 输入、EvidenceRecord 输出、candidate_id+receipt_digest 幂等键、超时/取消/失败分类、有限重试与失效恢复；在 tests/test_candidate_evidence_conversion.py 中保护候选到证据的独立验收身份",
+        "tests/test_candidate_evidence_conversion.py 实现后必须在 protected_tests 登记 SHA-256 及候选转证据/禁止直接晋升覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "仅将通过 VerifierReceipt 的候选转换为带出处的 EvidenceRecord。",
       "source": {
@@ -1504,12 +2117,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "VER5",
       "release": "RTR5",
-      "owner": "证据失效负责人",
+      "owner": {
+        "role_id": "owner-ver5",
+        "principal_ref": "principal:owner-ver5"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1542,12 +2173,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "VER6",
       "release": "RTR5",
-      "owner": "验证汇合负责人",
+      "owner": {
+        "role_id": "owner-ver6",
+        "principal_ref": "principal:owner-ver6"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1564,10 +2213,17 @@
       "acceptance_seeds": [
         "在 tests/test_verification_convergence.py 中证明真实候选通过独立验证后才形成正式证据",
         "在 tests/test_verification_negative_paths.py 中阻止假候选、篡改包、越界和非独立结果",
-        "在 tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 中固定候选输入、验证/证据输出、candidate_id+verification_digest 幂等键、超时/取消/失败分类、拒绝重试与安全恢复，并以独立验收身份覆盖全部负路径"
+        "在 tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 中固定候选输入、验证/证据输出、candidate_id+verification_digest 幂等键、超时/取消/失败分类、拒绝重试与安全恢复，并以独立验收身份覆盖全部负路径",
+        "tests/test_verification_convergence.py 和 tests/test_verification_negative_paths.py 实现后必须在 protected_tests 登记各自 SHA-256 及正向汇合/全部负路径覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "独立验收验证汇合、篡改检测、越界阻断和非独立结果拒绝。",
       "kind": "validation",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_v02_release_decision.py",
+        "assertion_authority": "MathArc 验证汇合与发布决策测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-VER6"
@@ -1581,12 +2237,30 @@
           "path": "tests/test_verification_negative_paths.py",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "UX1",
       "release": "RTR6",
-      "owner": "控制台投影负责人",
+      "owner": {
+        "role_id": "owner-ux1",
+        "principal_ref": "principal:owner-ux1"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1625,12 +2299,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "UX2",
       "release": "RTR6",
-      "owner": "邀请权限负责人",
+      "owner": {
+        "role_id": "owner-ux2",
+        "principal_ref": "principal:owner-ux2"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1656,6 +2348,16 @@
       "external_systems": [
         "EXT-MATHARC-INVITE-PREVIEW"
       ],
+      "keep_refs": [
+        {
+          "artifact": "SRC-MATHARC-ACCESS-PY",
+          "locator": "file:content"
+        },
+        {
+          "artifact": "SRC-MATHARC-ACCESS-SERVER-PY",
+          "locator": "file:content"
+        }
+      ],
       "write_targets": [
         {
           "path": "matharc/v02/runtime/service.py",
@@ -1666,12 +2368,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "UX3",
       "release": "RTR6",
-      "owner": "运行动作 API 负责人",
+      "owner": {
+        "role_id": "owner-ux3",
+        "principal_ref": "principal:owner-ux3"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1701,7 +2421,8 @@
       "acceptance_seeds": [
         "在 matharc/v02/runtime/service.py 中提供启动、暂停、继续、停止和重新验证的幂等动作",
         "在 tests/test_runtime_command_surface.py 中拒绝 command、cwd、environment、executable 和任意 arguments 字段",
-        "在 matharc/v02/runtime/service.py 中固定登记动作输入、RuntimeActionReceipt 输出、action_id+runtime_run_id 幂等键、超时/取消/失败分类、有限重试与恢复状态；在 tests/test_runtime_command_surface.py 中保护动作白名单和独立验收身份"
+        "在 matharc/v02/runtime/service.py 中固定登记动作输入、RuntimeActionReceipt 输出、action_id+runtime_run_id 幂等键、超时/取消/失败分类、有限重试与恢复状态；在 tests/test_runtime_command_surface.py 中保护动作白名单和独立验收身份",
+        "tests/test_runtime_command_surface.py 实现后必须在 protected_tests 登记 SHA-256 及动作白名单/任意命令拒绝覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "提供登记动作的幂等运行控制服务，拒绝任意命令、目录、环境和参数。",
       "source": {
@@ -1718,12 +2439,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "UX4",
       "release": "RTR6",
-      "owner": "控制台安全视图负责人",
+      "owner": {
+        "role_id": "owner-ux4",
+        "principal_ref": "principal:owner-ux4"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1779,12 +2518,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "UX5",
       "release": "RTR6",
-      "owner": "实时控制台负责人",
+      "owner": {
+        "role_id": "owner-ux5",
+        "principal_ref": "principal:owner-ux5"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1833,12 +2590,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "UX6",
       "release": "RTR6",
-      "owner": "浏览器产品验收负责人",
+      "owner": {
+        "role_id": "owner-ux6",
+        "principal_ref": "principal:owner-ux6"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1860,6 +2635,12 @@
       ],
       "goal": "独立完成人类浏览器验收，覆盖桌面、移动端、权限负路径和完整操作流。",
       "kind": "validation",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_console_prototype.py",
+        "assertion_authority": "MathArc 控制台浏览器验收测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-UX6"
@@ -1873,12 +2654,30 @@
           "path": "acceptance/human/runtime-console/desktop-checklist.md",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "DOG1",
       "release": "RTR7",
-      "owner": "试点任务负责人",
+      "owner": {
+        "role_id": "owner-dog1",
+        "principal_ref": "principal:owner-dog1"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1911,12 +2710,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "DOG2",
       "release": "RTR7",
-      "owner": "真实研究试点负责人",
+      "owner": {
+        "role_id": "owner-dog2",
+        "principal_ref": "principal:owner-dog2"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1942,6 +2759,12 @@
       ],
       "goal": "在运维闭环完成后执行两代真实并行研究并证明第二代消费第一代事实。",
       "kind": "validation",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_v02_dogfood_archives.py",
+        "assertion_authority": "MathArc 真实试点归档测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-DOG2"
@@ -1959,12 +2782,30 @@
           "path": "acceptance/runtime-pilot/production-checklist.md",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "DOG3",
       "release": "RTR7",
-      "owner": "试点攻击演练负责人",
+      "owner": {
+        "role_id": "owner-dog3",
+        "principal_ref": "principal:owner-dog3"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -1985,10 +2826,17 @@
         "在 tests/test_runtime_adversarial_drills.py 中执行崩溃、篡改、虚假反例、重复导入和权限演练",
         "在 tests/test_runtime_attack_recovery.py 中证明每条攻击路径都被拒绝或安全恢复",
         "在 acceptance/runtime-pilot/production-attack-drills.md 中记录生产试点攻击演练的零容忍结果",
-        "在 tests/test_runtime_adversarial_drills.py 和 tests/test_runtime_attack_recovery.py 中固定攻击输入、拒绝或恢复输出、attack_id 幂等键、超时/取消/失败分类、不可重试边界与安全恢复，并以独立验收身份证明错误晋升始终为零"
+        "在 tests/test_runtime_adversarial_drills.py 和 tests/test_runtime_attack_recovery.py 中固定攻击输入、拒绝或恢复输出、attack_id 幂等键、超时/取消/失败分类、不可重试边界与安全恢复，并以独立验收身份证明错误晋升始终为零",
+        "tests/test_runtime_adversarial_drills.py 和 tests/test_runtime_attack_recovery.py 实现后必须在 protected_tests 登记各自 SHA-256 及攻击拒绝/安全恢复覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "执行崩溃、篡改、虚假反例、重复导入和权限攻击演练并验证安全恢复。",
       "kind": "validation",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_v03_falsification.py",
+        "assertion_authority": "MathArc 反例与攻击演练测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-DOG3"
@@ -2006,13 +2854,31 @@
           "path": "acceptance/runtime-pilot/production-attack-drills.md",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "DOG4",
       "release": "RTR7",
       "kind": "release-decision",
-      "owner": "试点发布负责人",
+      "owner": {
+        "role_id": "owner-dog4",
+        "principal_ref": "principal:owner-dog4"
+      },
       "decision_refs": [
         "DP1"
       ],
@@ -2020,8 +2886,7 @@
         "pilot-release-evidence"
       ],
       "lanes": [
-        "human",
-        "release"
+        "human"
       ],
       "depends_on": [
         "DOG3"
@@ -2044,12 +2909,30 @@
           "path": "acceptance/runtime-pilot/release-evidence.json",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "OPS1",
       "release": "RTR6",
-      "owner": "试点部署负责人",
+      "owner": {
+        "role_id": "owner-ops1",
+        "principal_ref": "principal:owner-ops1"
+      },
       "decision_refs": [
         "DP1",
         "DP3"
@@ -2067,7 +2950,8 @@
       "acceptance_seeds": [
         "在 tests/test_runtime_ops_deployment.py 中固定 deploy/matharc-research.service、deploy/matharc-research.env.example 的持久目录、密钥来源和进程守护配置",
         "在 tests/test_runtime_ops_deployment.py 中拒绝临时路径、明文密钥和无守护部署",
-        "在 deploy/matharc-research.service 和 deploy/matharc-research.env.example 中固定 Linux+systemd 输入、健康检查/运行身份输出、release_id 幂等键、启动超时/取消/失败分类、回滚与恢复边界；在 tests/test_runtime_ops_deployment.py 中保护持久目录、外部 secret source 和独立验收身份"
+        "在 deploy/matharc-research.service 和 deploy/matharc-research.env.example 中固定 Linux+systemd 输入、健康检查/运行身份输出、release_id 幂等键、启动超时/取消/失败分类、回滚与恢复边界；在 tests/test_runtime_ops_deployment.py 中保护持久目录、外部 secret source 和独立验收身份",
+        "tests/test_runtime_ops_deployment.py 实现后必须在 protected_tests 登记 SHA-256 及持久目录/外部密钥/守护进程覆盖；摘要缺失或漂移时合同保持 DRAFT 并阻断 READY"
       ],
       "goal": "固定试点部署配置、持久目录、密钥来源和进程守护方式。",
       "execution": {
@@ -2090,12 +2974,6 @@
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-OPS1"
       },
-      "keep_refs": [
-        {
-          "artifact": "SRC-MATHARC-ACCESS-SERVER-PY",
-          "locator": "file:content"
-        }
-      ],
       "write_targets": [
         {
           "path": "deploy/matharc-research.service",
@@ -2110,12 +2988,30 @@
           "mode": "create"
         }
       ],
-      "kind": "implementation"
+      "kind": "implementation",
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "OPS2",
       "release": "RTR6",
-      "owner": "试点运维观测负责人",
+      "owner": {
+        "role_id": "owner-ops2",
+        "principal_ref": "principal:owner-ops2"
+      },
       "decision_refs": [
         "DP1",
         "DP3"
@@ -2136,6 +3032,12 @@
         "在 tests/test_runtime_ops_backup.py 中验证备份、恢复演练和恢复后身份连续性"
       ],
       "goal": "建立健康检查、日志、配额、备份和恢复观测闭环。",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_v02_operations_ledger.py",
+        "assertion_authority": "MathArc 运维观测与账本测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-OPS2"
@@ -2149,12 +3051,30 @@
           "path": "tests/test_runtime_ops_backup.py",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     },
     {
       "id": "OPS3",
       "release": "RTR6",
-      "owner": "试点发布运维负责人",
+      "owner": {
+        "role_id": "owner-ops3",
+        "principal_ref": "principal:owner-ops3"
+      },
       "decision_refs": [
         "DP1",
         "DP3"
@@ -2177,6 +3097,12 @@
         "在 acceptance/runtime-pilot/ops-release-checklist.md 中记录试点环境的部署、回滚和清理生产收尾"
       ],
       "goal": "独立验收部署、重启、回滚和试点用户数据清理。",
+      "test_oracle": {
+        "mode": "frozen",
+        "writable": false,
+        "spec": "tests/test_v02_release_decision.py",
+        "assertion_authority": "MathArc 运维发布测试基线"
+      },
       "source": {
         "artifact": "SRC-MATHARC-RUNTIME-CONTRACT-HTML",
         "locator": "html:requirement-id=SRC-OPS3"
@@ -2198,8 +3124,481 @@
           "path": "acceptance/runtime-pilot/ops-release-checklist.md",
           "mode": "create"
         }
-      ]
+      ],
+      "acceptance": {
+        "mode": "dual",
+        "authorities": [
+          {
+            "role_id": "acceptance-a",
+            "principal_ref": "principal:acceptance-a"
+          },
+          {
+            "role_id": "acceptance-b",
+            "principal_ref": "principal:acceptance-b"
+          }
+        ],
+        "quorum": 2,
+        "minimum_trust": "repository-bound"
+      }
     }
   ],
-  "target_evidence_level": "persistent-runtime"
+  "target_evidence_level": "persistent-runtime",
+  "strict_acceptance_profile_version": 2,
+  "authority_binding_version": 1,
+  "structured_result_version": 1,
+  "principal_registry": {
+    "schema_version": 1,
+    "principals": [
+      {
+        "principal_ref": "principal:owner-fnd1",
+        "provider": "repository",
+        "subject": "owner:FND1",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-fnd1"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-fnd2",
+        "provider": "repository",
+        "subject": "owner:FND2",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-fnd2"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-run1",
+        "provider": "repository",
+        "subject": "owner:RUN1",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-run1"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-run2",
+        "provider": "repository",
+        "subject": "owner:RUN2",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-run2"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-run3",
+        "provider": "repository",
+        "subject": "owner:RUN3",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-run3"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-run4",
+        "provider": "repository",
+        "subject": "owner:RUN4",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-run4"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-run5",
+        "provider": "repository",
+        "subject": "owner:RUN5",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-run5"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-par1",
+        "provider": "repository",
+        "subject": "owner:PAR1",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-par1"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-par2",
+        "provider": "repository",
+        "subject": "owner:PAR2",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-par2"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-par3",
+        "provider": "repository",
+        "subject": "owner:PAR3",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-par3"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-par4",
+        "provider": "repository",
+        "subject": "owner:PAR4",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-par4"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-par5",
+        "provider": "repository",
+        "subject": "owner:PAR5",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-par5"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-dur1",
+        "provider": "repository",
+        "subject": "owner:DUR1",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-dur1"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-dur2",
+        "provider": "repository",
+        "subject": "owner:DUR2",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-dur2"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-dur3",
+        "provider": "repository",
+        "subject": "owner:DUR3",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-dur3"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-dur4",
+        "provider": "repository",
+        "subject": "owner:DUR4",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-dur4"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-dur5",
+        "provider": "repository",
+        "subject": "owner:DUR5",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-dur5"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-syn1",
+        "provider": "repository",
+        "subject": "owner:SYN1",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-syn1"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-syn2",
+        "provider": "repository",
+        "subject": "owner:SYN2",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-syn2"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-syn3",
+        "provider": "repository",
+        "subject": "owner:SYN3",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-syn3"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-syn4",
+        "provider": "repository",
+        "subject": "owner:SYN4",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-syn4"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-syn5",
+        "provider": "repository",
+        "subject": "owner:SYN5",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-syn5"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ver1",
+        "provider": "repository",
+        "subject": "owner:VER1",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ver1"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ver2",
+        "provider": "repository",
+        "subject": "owner:VER2",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ver2"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ver3",
+        "provider": "repository",
+        "subject": "owner:VER3",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ver3"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ver4",
+        "provider": "repository",
+        "subject": "owner:VER4",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ver4"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ver5",
+        "provider": "repository",
+        "subject": "owner:VER5",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ver5"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ver6",
+        "provider": "repository",
+        "subject": "owner:VER6",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ver6"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ux1",
+        "provider": "repository",
+        "subject": "owner:UX1",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ux1"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ux2",
+        "provider": "repository",
+        "subject": "owner:UX2",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ux2"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ux3",
+        "provider": "repository",
+        "subject": "owner:UX3",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ux3"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ux4",
+        "provider": "repository",
+        "subject": "owner:UX4",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ux4"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ux5",
+        "provider": "repository",
+        "subject": "owner:UX5",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ux5"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ux6",
+        "provider": "repository",
+        "subject": "owner:UX6",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ux6"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-dog1",
+        "provider": "repository",
+        "subject": "owner:DOG1",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-dog1"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-dog2",
+        "provider": "repository",
+        "subject": "owner:DOG2",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-dog2"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-dog3",
+        "provider": "repository",
+        "subject": "owner:DOG3",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-dog3"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-dog4",
+        "provider": "repository",
+        "subject": "owner:DOG4",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-dog4"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ops1",
+        "provider": "repository",
+        "subject": "owner:OPS1",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ops1"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ops2",
+        "provider": "repository",
+        "subject": "owner:OPS2",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ops2"
+        ]
+      },
+      {
+        "principal_ref": "principal:owner-ops3",
+        "provider": "repository",
+        "subject": "owner:OPS3",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "owner-ops3"
+        ]
+      },
+      {
+        "principal_ref": "principal:acceptance-a",
+        "provider": "repository",
+        "subject": "acceptance-a",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "acceptance-a"
+        ]
+      },
+      {
+        "principal_ref": "principal:acceptance-b",
+        "provider": "repository",
+        "subject": "acceptance-b",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "acceptance-b"
+        ]
+      },
+      {
+        "principal_ref": "principal:release-a",
+        "provider": "repository",
+        "subject": "release-a",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "release-acceptance-a"
+        ]
+      },
+      {
+        "principal_ref": "principal:release-b",
+        "provider": "repository",
+        "subject": "release-b",
+        "status": "active",
+        "trust": "repository-bound",
+        "roles": [
+          "release-acceptance-b"
+        ]
+      }
+    ]
+  }
 }
