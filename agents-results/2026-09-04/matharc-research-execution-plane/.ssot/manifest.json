@@ -56,7 +56,7 @@
   "view_model_version": 2,
   "validation_report": {
     "path": "validation-report.json",
-    "sha256": "dace9a040c72f1cbf5b2168952331656c2f6cfabee6116da70baf0c7b6444122",
+    "sha256": "a9a15daa440c692e879822f7d921e1a37e2720fecab3d0df3f2b60c58b2eb685",
     "manifest_identity_sha256": "12ab8d3bd07472988a5933394aa8e692de21d9787c647f93374cf6e0efd4320d",
     "bundle_content_sha256": "df5311d47a0f6337d5d13c0a43207d69b5bab256fae905810a6d4693d05fb50b"
   }
