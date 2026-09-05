@@ -1,0 +1,45 @@
+{
+  "schema_version": "1.0",
+  "artifact_kind": "matharc-production-readback",
+  "readback_at": "2026-09-05T09:05:20Z",
+  "host": "43.156.50.78",
+  "domain": "research.matharc.space",
+  "source_release": "c3be6e9",
+  "service": {
+    "unit": "matharc-research.service",
+    "enabled": true,
+    "active": true,
+    "user": "matharc",
+    "group": "matharc",
+    "bind": "127.0.0.1:8173",
+    "readyz": "ready",
+    "release_id": "c3be6e9",
+    "runtime_run_id": "pilot-research-20260905",
+    "unit_sha256": "62b2c1d4def3a520c56368bc2936620eba6f0b66e03c46b03fe7dbba23373584"
+  },
+  "workspace": {
+    "run_id": "MATHARC-V02-DEMO-ODD-SUM",
+    "state_digest_sha256": "8aba2912a4dcd23f88310a3c60d0e9ecb8f35ef2641a89cabebaad8afb089eda",
+    "event_head_hash": "9d2ff670ee0cc60a25ae25402f40975154aa9ea11b657a019949f53134cccdd7",
+    "audit_errors": 0,
+    "audit_warnings": 2
+  },
+  "proxy_tls": {
+    "caddy_config_valid": true,
+    "caddy_config_sha256": "4e0c9cd19a036675ac17ec3441c44a369b9b61a67d53ab8067602cb9a6b5caa8",
+    "upstream": "127.0.0.1:8173",
+    "certificate_subject": "CN=research.matharc.space",
+    "certificate_not_after": "2026-12-02T10:03:56Z",
+    "certificate_sha256_fingerprint": "64:4C:CE:75:33:69:66:0A:78:5E:E0:99:E6:6D:74:2B:76:9C:5A:0A:98:CD:EB:B8:97:D2:D0:76:07:E5:33:5B"
+  },
+  "public_readback": {
+    "root_http11": {"runs": 3, "all_complete": true, "status": 200, "bytes": 42394, "body_sha256": "222ed6d050136b5f2bfb614e1a009f3e10c4be2e54034f8ca4171c9ef2fa7c62"},
+    "root_http2": {"runs": 3, "all_complete": true, "status": 200, "bytes": 42394, "body_sha256": "222ed6d050136b5f2bfb614e1a009f3e10c4be2e54034f8ca4171c9ef2fa7c62"},
+    "api_health_status": 200,
+    "unauthenticated_statuses": {"/api/workspace": 401, "/api/console": 401, "/api/runtime/snapshot": 401}
+  },
+  "authenticated_acceptance": "BLOCKED_NO_INVITATION",
+  "human_acceptance": "PENDING",
+  "ssot_release_complete": false,
+  "ssot_integrity_result": "fail"
+}
