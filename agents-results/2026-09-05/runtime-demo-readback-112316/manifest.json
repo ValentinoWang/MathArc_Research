@@ -1,0 +1,27 @@
+{
+  "schema_version": "1.0",
+  "artifact_kind": "matharc-runtime-demo-readback",
+  "project_commit": "9a1cd523cd1add39d6ed06369ce7f78c03562bbc",
+  "server": {
+    "bind": "127.0.0.1:4174",
+    "health": "/api/health",
+    "run": "/api/demo/run",
+    "readback": "/api/demo/runs/<run_id>"
+  },
+  "assertions": "assertions.json",
+  "artifacts": {
+    "health.json": "a11e1a528b16a37946ca903a5a200190e1c0090f6260ecfd326de48bfb967cd1",
+    "run-response.json": "a2dce9956870b8e4ec5f13c3c868dfbd0846cff9bb58f1b141bdcab48f4dc13d",
+    "readback.json": "35db72023d4380400dd28f08079f82bb65637b0ca7cd6c2314d94a7b15a91a77",
+    "blocked-response.json": "7c441c74580d104d54a8b19c53b99d3fb5ffa9452c716024577a16c2279c6e43",
+    "assertions.json": "02bd29e491e58cbe003a9fe4b61442038455194211f3b7ec3784edff88567501",
+    "browser-gate.log": "069ab8307452e536ad9741ef199b2b75d9014e961b5b945fcbb90d625d6066d3",
+    "test-full.log": "25641f1b67ba77c7e4582ece507e8470cd6f0546bbbd854980d97df69fec55ae"
+  },
+  "browser_gate": {
+    "status": "BLOCKED_ENVIRONMENT",
+    "reason": "Playwright Chromium executable is not installed in this environment",
+    "log": "browser-gate.log"
+  }
+}
+

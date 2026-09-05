@@ -1,0 +1,30 @@
+{
+  "evidence": null,
+  "output_paths": {
+    "json": "/workspace/scratch/3d550e3c4808/repo/agents-results/2026-09-05/runtime-demo-readback-112316/demo-552f1b7781bd5430/agent-demo.json",
+    "markdown": "/workspace/scratch/3d550e3c4808/repo/agents-results/2026-09-05/runtime-demo-readback-112316/demo-552f1b7781bd5430/agent-demo.md"
+  },
+  "provenance": {
+    "credentials": false,
+    "deterministic": true,
+    "generation_id": "generation-1",
+    "network": false,
+    "runtime_run_id": "demo-552f1b7781bd5430",
+    "trace_id": "trace-552f1b7781bd5430",
+    "workspace_id": "matharc-demo-workspace"
+  },
+  "question": "Solve an unrelated problem.",
+  "question_digest": "552f1b7781bd54303bbb264aa03b845d1a8806f7eab347b6bd28a86706312813",
+  "run_id": "demo-552f1b7781bd5430",
+  "schema": "matharc.runtime.agent-demo.v1",
+  "stages": {
+    "decomposition": {
+      "digest": "47322172c0001424a3c19994cdddce155e8bcdfcc0ef191bc93e9b3e62e69cfb",
+      "fixture": "odd-sum-induction-v1",
+      "reason": "No deterministic decomposition fixture matches this question.",
+      "status": "BLOCKED"
+    }
+  },
+  "status": "BLOCKED"
+}
+

@@ -1,0 +1,173 @@
+{
+  "evidence": {
+    "artifact_uri": "demo://agent-demo/induction-certificate",
+    "assumptions_checked": [],
+    "claim_ids": [
+      "C-STEP"
+    ],
+    "created_at": "2000-01-01T00:00:00+00:00",
+    "digest_sha256": "fe59158e9ac337767f207fd93cd5272f30596caf52358a91b451e073a25e57b7",
+    "evidence_id": "ev-25f4ae4c6b7071ef9ff4f8f0f2cf2531e1d1e26db20bee8c7e68f8e0b1a0a2fc",
+    "independence_group": "deterministic-replay-verifier-v1",
+    "kind": "EXACT_COMPUTATION",
+    "limitations": [
+      "candidate_id=cand-7d045a9df369c7895cf5932547c59fdc2ba0ac615c70ded816ba861b7bf4026f",
+      "candidate_payload_digest=622790d88da58f9b22584337e25e10c88126073409835ba5c75b47b3b71e7b0f",
+      "candidate_provenance_digest=79e5e8b47063002d0be321d72d1daaa4dfe9e13b6a8bb27bede02c346f89ed87",
+      "receipt_digest=25f4ae4c6b7071ef9ff4f8f0f2cf2531e1d1e26db20bee8c7e68f8e0b1a0a2fc"
+    ],
+    "producer": "deterministic-replay-verifier-v1",
+    "replay_command": "replay:3587a63db25be30f8639b70101c7b0ca555a92fef1459d131c3cc7641b0bc5c4",
+    "statement_correspondence": "Candidate payload corresponds to the bound claim scope.",
+    "status": "ACCEPTED",
+    "summary": "Independently replayed runtime candidate",
+    "verifier": "deterministic-replay-verifier-v1"
+  },
+  "output_paths": {
+    "json": "/workspace/scratch/3d550e3c4808/repo/agents-results/2026-09-05/runtime-demo-readback-112316/demo-14a6ac300592b62e/agent-demo.json",
+    "markdown": "/workspace/scratch/3d550e3c4808/repo/agents-results/2026-09-05/runtime-demo-readback-112316/demo-14a6ac300592b62e/agent-demo.md"
+  },
+  "provenance": {
+    "credentials": false,
+    "deterministic": true,
+    "generation_id": "generation-1",
+    "network": false,
+    "runtime_run_id": "demo-14a6ac300592b62e",
+    "trace_id": "trace-14a6ac300592b62e",
+    "workspace_id": "matharc-demo-workspace"
+  },
+  "question": "Prove that the sum of the first n positive odd integers equals n squared.",
+  "question_digest": "14a6ac300592b62e31b4679449638223fd6860f1efe2706659d623626a105859",
+  "run_id": "demo-14a6ac300592b62e",
+  "schema": "matharc.runtime.agent-demo.v1",
+  "stages": {
+    "candidate": {
+      "artifact_digest": "a8968662f72a8115fa8f35b12cffe42c380800f6b1b46ad5294122b54a2f7b79",
+      "candidate_id": "cand-7d045a9df369c7895cf5932547c59fdc2ba0ac615c70ded816ba861b7bf4026f",
+      "claim_ids": [
+        "C-STEP"
+      ],
+      "envelope": {
+        "artifact_digest": "a8968662f72a8115fa8f35b12cffe42c380800f6b1b46ad5294122b54a2f7b79",
+        "budget_digest": "83d4697e374c3c4e738c05e020c222f0c644e29524f26bc18577a261d61df51f",
+        "candidate_id": "cand-7d045a9df369c7895cf5932547c59fdc2ba0ac615c70ded816ba861b7bf4026f",
+        "evaluator_digest": "31c3dc5029aedd22ce53b2b49447f2ccc33c5c5c736df8525920fec0b36133c6",
+        "execution_id": "execution-tool-1",
+        "generation_id": "generation-1",
+        "payload_digest": "622790d88da58f9b22584337e25e10c88126073409835ba5c75b47b3b71e7b0f",
+        "runtime_run_id": "demo-14a6ac300592b62e",
+        "source_digest": "6fed5eb31da318ea4d7fdef39395c5533f5711240e7bba36a4682dfafa5e3d70",
+        "task_digest": "14a6ac300592b62e31b4679449638223fd6860f1efe2706659d623626a105859",
+        "tool_registry_digest": "b3e7c52563670817a6f72f6d3b92f3aac90e23c19b57bd06723af1604d68f177",
+        "trace_id": "trace-14a6ac300592b62e",
+        "worker_id": "deterministic-planner",
+        "workspace_id": "matharc-demo-workspace"
+      },
+      "identity_digest": "dffa602c49cb3d645a18dcfc63b1b6548a86a1835edbca85db3f14fe87d92421",
+      "payload_digest": "622790d88da58f9b22584337e25e10c88126073409835ba5c75b47b3b71e7b0f",
+      "provenance_digest": "79e5e8b47063002d0be321d72d1daaa4dfe9e13b6a8bb27bede02c346f89ed87"
+    },
+    "claim_binding": {
+      "claim_id": "C-STEP",
+      "objects": [
+        "n"
+      ],
+      "proposition": "If the identity holds at n, then it holds at n + 1.",
+      "quantifier": "for every natural number n",
+      "scope": "every natural number n"
+    },
+    "decomposition": {
+      "claims": [
+        {
+          "claim_id": "C-BASE",
+          "dependencies": [],
+          "scope": "single base case",
+          "statement": "The identity holds at n = 0."
+        },
+        {
+          "claim_id": "C-STEP",
+          "dependencies": [
+            "C-BASE"
+          ],
+          "scope": "every natural number n",
+          "statement": "If the identity holds at n, then it holds at n + 1."
+        },
+        {
+          "claim_id": "C-TARGET",
+          "dependencies": [
+            "C-BASE",
+            "C-STEP"
+          ],
+          "scope": "all natural numbers",
+          "statement": "For every n >= 0, 1 + 3 + ... + (2n - 1) = n^2."
+        }
+      ],
+      "digest": "6fed5eb31da318ea4d7fdef39395c5533f5711240e7bba36a4682dfafa5e3d70",
+      "fixture": "odd-sum-induction-v1",
+      "required_tools": [
+        "induction_certificate"
+      ],
+      "route": {
+        "mechanism": [
+          "mathematical induction",
+          "symbolic polynomial normalization"
+        ],
+        "route_id": "R-INDUCTION"
+      },
+      "status": "READY",
+      "theorem": "For every n >= 0, 1 + 3 + ... + (2n - 1) = n^2."
+    },
+    "proposal": {
+      "acceptance_authority": false,
+      "claim_boundary": "proposal and tool output never promote a theorem",
+      "digest": "d0eaff0976a59faea36e088a15d998b326d4d953f82c7c3748d99e461685a69b",
+      "focus_claim_id": "C-STEP",
+      "model": "deterministic-planner-v1",
+      "tool_request": {
+        "arguments": {
+          "certificate": {
+            "base": {
+              "at": 0,
+              "lhs": "0",
+              "rhs": "0*0"
+            },
+            "step": {
+              "lhs": "(n*n) + (2*(n+1) - 1)",
+              "rhs": "(n+1)*(n+1)"
+            },
+            "variable": "n"
+          }
+        },
+        "template_id": "induction_certificate"
+      }
+    },
+    "result": {
+      "answer": "The odd-sum induction certificate passed independent replay.",
+      "boundary": "A verified step certificate is evidence, not automatic theorem promotion.",
+      "promotion_allowed": false,
+      "verified_claim_id": "C-STEP"
+    },
+    "tool": {
+      "environment_digest_sha256": "1e9d95ae88f5fed0b94ca975626b3ded4aa36cd5e466547b7410a4742c1e8b66",
+      "expected_discriminator": "base values agree exactly and the step difference is exactly zero",
+      "independence_group": "exact:induction_certificate:matharc.polynomial",
+      "input_digest_sha256": "b0301c6c2e8778162fcbc011fb8da5a0aefae14589d4de18d560d2018b96ea42",
+      "output_digest_sha256": "a8968662f72a8115fa8f35b12cffe42c380800f6b1b46ad5294122b54a2f7b79",
+      "replay_command": "python -c 'from matharc.v02.exact_tools import _induction_certificate as f; print(f(claim_id='\"'\"'C-STEP'\"'\"', arguments={'\"'\"'certificate'\"'\"': {'\"'\"'variable'\"'\"': '\"'\"'n'\"'\"', '\"'\"'base'\"'\"': {'\"'\"'at'\"'\"': 0, '\"'\"'lhs'\"'\"': '\"'\"'0'\"'\"', '\"'\"'rhs'\"'\"': '\"'\"'0*0'\"'\"'}, '\"'\"'step'\"'\"': {'\"'\"'lhs'\"'\"': '\"'\"'(n*n) + (2*(n+1) - 1)'\"'\"', '\"'\"'rhs'\"'\"': '\"'\"'(n+1)*(n+1)'\"'\"'}}}))'",
+      "status": "PASS",
+      "tool": "exact:induction_certificate"
+    },
+    "verification": {
+      "implementation_id": "exact-tool:induction_certificate",
+      "independent": true,
+      "receipt_binding_digest": "0e04e95769ee8d1125c09ede4148072c352c93909101493981409a7a4f5e3939",
+      "receipt_digest": "25f4ae4c6b7071ef9ff4f8f0f2cf2531e1d1e26db20bee8c7e68f8e0b1a0a2fc",
+      "replay_digest": "3587a63db25be30f8639b70101c7b0ca555a92fef1459d131c3cc7641b0bc5c4",
+      "result_digest": "fe59158e9ac337767f207fd93cd5272f30596caf52358a91b451e073a25e57b7",
+      "status": "PASS",
+      "verifier_id": "deterministic-replay-verifier-v1"
+    }
+  },
+  "status": "VERIFIED_CERTIFICATE"
+}
+

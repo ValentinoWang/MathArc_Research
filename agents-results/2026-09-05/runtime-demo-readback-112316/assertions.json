@@ -1,0 +1,9 @@
+{
+  "successful_status": "VERIFIED_CERTIFICATE",
+  "readback_status": "VERIFIED_CERTIFICATE",
+  "blocked_status": "BLOCKED",
+  "promotion_allowed": false,
+  "readback_same_run": true,
+  "host_paths_redacted": true
+}
+

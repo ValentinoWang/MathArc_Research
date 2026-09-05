@@ -26,6 +26,10 @@ class DemoHandler(BaseHTTPRequestHandler):
         if self.path == "/api/health":
             self._send_json(HTTPStatus.OK, {"ok": True, "service": "matharc-agent-demo", "deterministic": True})
             return
+        if self.path.startswith("/api/demo/runs/"):
+            run_id = self.path.removeprefix("/api/demo/runs/").strip("/")
+            self._send_run_readback(run_id)
+            return
         self._send_json(HTTPStatus.NOT_FOUND, {"error": "not found"})
 
     def do_POST(self) -> None:
@@ -37,11 +41,39 @@ class DemoHandler(BaseHTTPRequestHandler):
             question = payload.get("question")
             if not isinstance(question, str) or not question.strip():
                 raise ValueError("question is required")
+            evidence_dir = getattr(self.server, "evidence_dir", None)
+            # Derive the deterministic run id first, then persist under that id so
+            # a later readback cannot accidentally return a different run.
             result = run_agent_demo(question)
+            if evidence_dir is not None:
+                result = run_agent_demo(question, output_dir=Path(evidence_dir) / result.run_id)
         except (ValueError, TypeError) as exc:
             self._send_json(HTTPStatus.BAD_REQUEST, {"error": str(exc)})
             return
-        self._send_json(HTTPStatus.OK, result.to_dict())
+        payload = result.to_dict()
+        # Host paths are an internal persistence detail and must not cross the
+        # HTTP boundary or be copied into browser evidence.
+        if payload.get("output_paths"):
+            payload["output_paths"] = {"json": "agent-demo.json", "markdown": "agent-demo.md"}
+        self._send_json(HTTPStatus.OK, payload)
+
+    def _send_run_readback(self, run_id: str) -> None:
+        evidence_dir = getattr(self.server, "evidence_dir", None)
+        if evidence_dir is None or not run_id or "/" in run_id or "\\" in run_id:
+            self._send_json(HTTPStatus.NOT_FOUND, {"error": "run readback is not configured"})
+            return
+        path = Path(evidence_dir) / run_id / "agent-demo.json"
+        try:
+            payload = json.loads(path.read_text(encoding="utf-8"))
+        except (FileNotFoundError, OSError, json.JSONDecodeError):
+            self._send_json(HTTPStatus.NOT_FOUND, {"error": "run not found"})
+            return
+        if payload.get("run_id") != run_id:
+            self._send_json(HTTPStatus.CONFLICT, {"error": "run identity mismatch"})
+            return
+        if payload.get("output_paths"):
+            payload["output_paths"] = {"json": "agent-demo.json", "markdown": "agent-demo.md"}
+        self._send_json(HTTPStatus.OK, payload)
 
     def _read_json(self) -> dict[str, Any]:
         raw_length = self.headers.get("Content-Length")
@@ -74,10 +106,13 @@ class DemoHandler(BaseHTTPRequestHandler):
         self.wfile.write(body)
 
 
-def serve(host: str = "127.0.0.1", port: int = 4173) -> None:
+def serve(host: str = "127.0.0.1", port: int = 4173, evidence_dir: str | Path | None = None) -> None:
     if not PAGE.is_file():
         raise FileNotFoundError(PAGE)
     server = ThreadingHTTPServer((host, port), DemoHandler)
+    server.evidence_dir = Path(evidence_dir).resolve() if evidence_dir is not None else None
+    if server.evidence_dir is not None:
+        server.evidence_dir.mkdir(parents=True, exist_ok=True)
     print(f"MathArc Agent demo: http://{host}:{port}/problem-intel-console.html", flush=True)
     try:
         server.serve_forever()
@@ -91,8 +126,9 @@ def main(argv: list[str] | None = None) -> None:
     parser = argparse.ArgumentParser(description="Serve the local MathArc Agent demo")
     parser.add_argument("--host", default="127.0.0.1")
     parser.add_argument("--port", type=int, default=4173)
+    parser.add_argument("--evidence-dir", default=None, help="persist demo runs for readback")
     args = parser.parse_args(argv)
-    serve(args.host, args.port)
+    serve(args.host, args.port, args.evidence_dir)
 
 
 if __name__ == "__main__":
@@ -100,3 +136,4 @@ if __name__ == "__main__":
 
 
 __all__ = ["DemoHandler", "main", "serve"]
+

@@ -1,0 +1,6 @@
+MathArc Agent demo: http://127.0.0.1:4174/problem-intel-console.html
+127.0.0.1 - - [05/Sep/2026 11:23:16] "GET /api/health HTTP/1.1" 200 -
+127.0.0.1 - - [05/Sep/2026 11:23:16] "POST /api/demo/run HTTP/1.1" 200 -
+127.0.0.1 - - [05/Sep/2026 11:23:16] "GET /api/demo/runs/demo-14a6ac300592b62e HTTP/1.1" 200 -
+127.0.0.1 - - [05/Sep/2026 11:23:16] "POST /api/demo/run HTTP/1.1" 200 -
+
