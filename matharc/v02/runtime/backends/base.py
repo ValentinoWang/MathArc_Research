@@ -8,7 +8,8 @@ from dataclasses import dataclass, field
 from typing import Any, Mapping, Protocol
 
 from ...schema import digest_json
-from ..contracts import ExecutionStatus, WorkerExecutionResult
+from ..contracts import ContractError, ExecutionStatus, WorkerExecutionResult
+from ..identity import IdentityError, RuntimeIdentity
 
 
 @dataclass(frozen=True, slots=True)
@@ -26,11 +27,23 @@ class BackendRequest:
     execution_id: str | None = None
     cancel_event: Any = field(default=None, compare=False, repr=False)
     budget: Mapping[str, Any] = field(default_factory=dict)
+    contract_version: str = "1.0"
 
     def __post_init__(self) -> None:
         for name in ("workspace_id", "trace_id", "runtime_run_id", "generation_id", "worker_id", "task_id"):
             if not str(getattr(self, name)).strip():
                 raise ValueError(f"{name} is required")
+        if self.execution_id is None:
+            object.__setattr__(self, "execution_id", f"exec-{uuid.uuid4().hex[:16]}")
+        try:
+            RuntimeIdentity(self.workspace_id, self.trace_id, self.runtime_run_id,
+                            self.generation_id, self.worker_id, self.execution_id)
+        except IdentityError as exc:
+            raise ContractError(str(exc)) from exc
+        if not isinstance(self.contract_version, str) or not self.contract_version.strip():
+            raise ValueError("contract_version is required")
+        if not self.contract_version.startswith("1."):
+            raise ValueError(f"unsupported contract version: {self.contract_version}")
         if self.timeout_seconds <= 0 or self.max_retries < 0:
             raise ValueError("timeout_seconds must be positive and max_retries non-negative")
 
@@ -50,7 +63,8 @@ class BackendRequest:
         return digest_json({"workspace_id": self.workspace_id, "trace_id": self.trace_id,
             "runtime_run_id": self.runtime_run_id, "generation_id": self.generation_id,
             "worker_id": self.worker_id, "task_id": self.task_id, "payload": self.payload,
-            "seed": self.seed, "budget": dict(self.budget)})
+            "seed": self.seed, "budget": dict(self.budget), "execution_id": self.execution_id,
+            "contract_version": self.contract_version})
 
     def to_dict(self) -> dict[str, Any]:
         return {"workspace_id": self.workspace_id, "trace_id": self.trace_id,
@@ -58,7 +72,7 @@ class BackendRequest:
                 "worker_id": self.worker_id, "task_id": self.task_id, "payload": self.payload,
                 "seed": self.seed, "timeout_seconds": self.timeout_seconds,
                 "max_retries": self.max_retries, "execution_id": self.execution_id,
-                "budget": dict(self.budget)}
+                "budget": dict(self.budget), "contract_version": self.contract_version}
 
 
 class Backend(Protocol):
@@ -84,7 +98,8 @@ def result_for(request: BackendRequest, status: ExecutionStatus, *, result_diges
         runtime_run_id=request.runtime_run_id, generation_id=request.generation_id,
         worker_id=request.worker_id, execution_id=request.execution_id or f"exec-{uuid.uuid4().hex[:16]}",
         status=status, result_digest=result_digest, candidate_ids=tuple(candidate_ids),
-        failure_class=failure_class, error=error, elapsed_seconds=elapsed_seconds)
+        failure_class=failure_class, error=error, elapsed_seconds=elapsed_seconds,
+        contract_version=request.contract_version)
 
 
 class DeterministicTestBackend:

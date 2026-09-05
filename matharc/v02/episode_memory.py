@@ -204,8 +204,9 @@ class EpisodeMemory:
         run_id = str(provenance.get("runtime_run_id", ""))
         generation_id = str(provenance.get("generation_id", ""))
         candidate_id = str(getattr(candidate, "candidate_id", provenance.get("candidate_id", "")))
-        if not (run_id and generation_id and candidate_id):
-            raise ValueError("runtime failure requires run, generation and candidate provenance")
+        candidate_origin = str(provenance.get("candidate_origin", provenance.get("source", "")))
+        if not all((run_id.strip(), generation_id.strip(), candidate_id.strip(), candidate_origin.strip())):
+            raise ValueError("runtime failure requires run, generation, candidate and origin provenance")
         if not isinstance(failure_class, FailureClass):
             failure_class = FailureClass(str(failure_class))
         lesson = FailureLesson(
@@ -215,6 +216,7 @@ class EpisodeMemory:
             mechanism_signature=("runtime-execution",), trigger=trigger,
             diagnosis=diagnosis, minimal_witness=str(getattr(candidate, "payload", ""))[:500],
             repair=repair, reusable_lesson=reusable_lesson, exact=False,
+            generation_id=generation_id, candidate_id=candidate_id, candidate_origin=candidate_origin,
         )
         if failure_memory is not None:
             failure_memory.add(lesson)

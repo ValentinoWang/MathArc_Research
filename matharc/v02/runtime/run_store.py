@@ -19,6 +19,13 @@ from .candidate import envelope_dict, source_identity
 GENESIS_HASH = "0" * 64
 
 
+def _generation_number(value: str) -> int | None:
+    text = str(value)
+    if text[:1].lower() == "g" and text[1:].isdigit():
+        return int(text[1:])
+    return None
+
+
 class RuntimeStoreError(ValueError):
     pass
 
@@ -130,12 +137,26 @@ class RuntimeStore:
         if self.snapshot_path.exists():
             try: snap = json.loads(self.snapshot_path.read_text(encoding="utf-8"))
             except (OSError, json.JSONDecodeError) as exc: raise RuntimeStoreError("runtime snapshot is unreadable") from exc
-            if snap.get("head_hash") != self.head_hash or snap.get("event_count") != len(self._events):
-                raise RuntimeStoreError("runtime snapshot does not match event log")
-            if snap.get("state_digest_sha256") != digest_json(snap.get("state", {})):
+            snap_state = snap.get("state", {})
+            if snap.get("state_digest_sha256") != digest_json(snap_state):
                 raise RuntimeStoreError("runtime snapshot digest mismatch")
-            if snap.get("state") != self._state:
-                raise RuntimeStoreError("runtime snapshot state does not match replay")
+            snap_count = snap.get("event_count")
+            if not isinstance(snap_count, int) or snap_count < 0:
+                raise RuntimeStoreError("runtime snapshot event_count is invalid")
+            if snap_count == len(self._events) and snap.get("head_hash") == self.head_hash:
+                if snap_state != self._state:
+                    raise RuntimeStoreError("runtime snapshot state does not match replay")
+            elif 0 <= snap_count < len(self._events):
+                # A crash can leave a durable log ahead of its snapshot.  The
+                # prefix hash and digest still authenticate that this is a
+                # stale snapshot, so replay the complete valid log and repair
+                # the projection in place.
+                prefix_head = GENESIS_HASH if snap_count == 0 else self._events[snap_count - 1].event_hash
+                if snap.get("head_hash") != prefix_head:
+                    raise RuntimeStoreError("runtime snapshot does not match event log")
+                self.write_snapshot()
+            else:
+                raise RuntimeStoreError("runtime snapshot does not match event log")
 
     def _file_lock(self):
         class _Lock:
@@ -263,6 +284,25 @@ class RuntimeStore:
         key = data.get("execution_id")
         if not key: raise RuntimeStoreError("execution_id is required")
         self._require_identity(data)
+        # Full execution envelopes must carry a worker identity.  Keep the
+        # historical minimal ledger shape readable for old imports.
+        if ("result_digest" in data or "worker_id" in data) and not data.get("worker_id"):
+            raise RuntimeStoreError("worker_id is required for execution result")
+        if "status" in data and not isinstance(data["status"], str):
+            status = getattr(data["status"], "value", None)
+            if status is None:
+                raise RuntimeStoreError("execution status must be a string")
+            data["status"] = status
+        if data.get("status") in {"FAILED", "TIMED_OUT", "CANCELLED", "RETRYABLE_FAILURE"} and not (
+                data.get("failure_class") or data.get("error")):
+            raise RuntimeStoreError("failed execution requires failure_class or error")
+        if data.get("worker_id"):
+            try:
+                from .contracts import WorkerExecutionResult
+                WorkerExecutionResult.from_dict({key: value for key, value in data.items()
+                                                 if key != "source_identity"})
+            except Exception as exc:
+                raise RuntimeStoreError("invalid execution result identity or summary") from exc
         data["source_identity"] = source_identity(data)
         self._validate_run_identity(data)
         return self._idempotent("executions", key, data, "EXECUTION_IMPORTED")
@@ -286,14 +326,72 @@ class RuntimeStore:
 
     def record_generation_commit(self, commit: Any) -> dict[str, Any]:
         data = dict(commit.to_dict() if hasattr(commit, "to_dict") else commit)
-        if not data.get("generation_id"): raise RuntimeStoreError("generation_id is required")
+        if not data.get("runtime_run_id") or not data.get("generation_id"):
+            raise RuntimeStoreError("runtime_run_id and generation_id are required")
+        self._validate_run_identity(data)
+        # A typed GenerationCommit validates every result identity and its
+        # digest.  Mapping payloads with a results array receive equivalent
+        # validation while preserving the small legacy commit envelope.
+        if "results" in data:
+            try:
+                from .generation import GenerationCommit
+                extensions = {key: data[key] for key in ("parent_generation_id", "parent_commit_digest", "complete") if key in data}
+                typed_payload = {key: value for key, value in data.items() if key not in extensions}
+                supplied_commit_digest = typed_payload.get("commit_digest")
+                if extensions:
+                    # Parent linkage is an extension owned by the store; let
+                    # the store bind it into the final digest below.
+                    typed_payload.pop("commit_digest", None)
+                typed = GenerationCommit.from_dict(typed_payload)
+                data = typed.to_dict()
+                data.update(extensions)
+                if supplied_commit_digest:
+                    data["commit_digest"] = supplied_commit_digest
+            except Exception as exc:
+                raise RuntimeStoreError("invalid generation commit identity or digest") from exc
+        # Typed generation commits carry a frozen input snapshot and must
+        # include its digest.  Keep the compact legacy ledger envelope
+        # readable for existing local records that predate that contract.
+        if "results" in data and not data.get("snapshot_digest"):
+            raise RuntimeStoreError("snapshot_digest is required")
+        data.setdefault("complete", bool(data.get("closed", True)))
+        data.setdefault("closed", data["complete"])
+        generation = str(data["generation_id"])
+        existing_generations = [item for item in self._state["commits"]
+                                if item.get("runtime_run_id") == data["runtime_run_id"]]
+        existing = next((item for item in existing_generations if item.get("generation_id") == generation), None)
+        if existing is not None:
+            if existing != data: raise RuntimeStoreError("generation commit conflict")
+            return existing
+        number = _generation_number(generation)
+        if number is not None and existing_generations:
+            previous_numbers = [_generation_number(str(item.get("generation_id", "")))
+                                for item in existing_generations]
+            previous_numbers = [value for value in previous_numbers if value is not None]
+            if previous_numbers and number != max(previous_numbers) + 1:
+                raise RuntimeStoreError("generation ids must be monotonic and contiguous")
+            previous = max(existing_generations, key=lambda item: _generation_number(str(item.get("generation_id", "-1"))) or -1)
+            parent_generation = data.get("parent_generation_id")
+            parent_digest = data.get("parent_commit_digest")
+            if parent_generation is not None and parent_generation != previous.get("generation_id"):
+                raise RuntimeStoreError("parent_generation_id does not match previous generation")
+            if parent_digest is not None and parent_digest != previous.get("commit_digest"):
+                raise RuntimeStoreError("parent_commit_digest does not match previous commit")
         existing = next((item for item in self._state["commits"] if item.get("generation_id") == data["generation_id"]), None)
         if existing is not None:
             if existing != data: raise RuntimeStoreError("generation commit conflict")
             return existing
-        data.setdefault("complete", bool(data.get("closed", True)))
-        data.setdefault("closed", data["complete"])
-        data.setdefault("commit_digest", digest_json(data))
+        supplied_digest = data.get("commit_digest")
+        if "results" in data:
+            # ``complete`` is a store projection flag, not part of the typed
+            # GenerationCommit digest contract.
+            expected_digest = digest_json({key: value for key, value in data.items()
+                                           if key not in {"commit_digest", "complete"}})
+            if supplied_digest and supplied_digest != expected_digest:
+                raise RuntimeStoreError("generation commit digest mismatch")
+            data["commit_digest"] = expected_digest
+        else:
+            data.setdefault("commit_digest", digest_json(data))
         self.append_event("GENERATION_COMMITTED", data); return data
 
     def record_late_result(self, result: Any) -> dict[str, Any]:

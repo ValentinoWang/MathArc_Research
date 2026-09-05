@@ -1,6 +1,9 @@
 from __future__ import annotations
 
 import json
+import subprocess
+import sys
+import tempfile
 import unittest
 from pathlib import Path
 
@@ -31,6 +34,18 @@ class RuntimeOpsReleaseTests(unittest.TestCase):
         plan = json.loads((ROOT / "benchmarks/runtime-pilot-plan.json").read_text(encoding="utf-8"))
         self.assertTrue(all("unittest" in command for command in plan["machine_commands"]))
         self.assertTrue(plan["operations"]["release_identity_required"])
+
+    def test_restore_and_rollback_are_executable_cli_operations(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / "store"
+            from matharc.v02.runtime.run_store import RuntimeStore
+            from matharc.v02.runtime.ops import backup_runtime_store
+            RuntimeStore(source).create_run({"runtime_run_id": "rr", "release_id": "rel", "workspace_id": "w", "trace_id": "t", "generation_id": "g"})
+            backup = backup_runtime_store(source, root / "backup")
+            for command, destination in (("restore", root / "restored"), ("rollback", root / "rolled-back")):
+                completed = subprocess.run([sys.executable, "-m", "matharc.v02.runtime.ops", command, "--backup", str(backup), "--destination", str(destination), "--runtime-run-id", "rr", "--release-id", "rel"], cwd=ROOT, capture_output=True, text=True)
+                self.assertEqual(completed.returncode, 0, completed.stderr)
+                self.assertTrue(destination.is_dir())
 
 
 if __name__ == "__main__":

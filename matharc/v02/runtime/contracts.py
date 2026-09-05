@@ -140,6 +140,13 @@ class ResearchRunSpec:
             raise TypeError("status must be a RunStatus")
         if any(not isinstance(worker, ResearchWorkerSpec) for worker in self.workers):
             raise TypeError("workers must contain ResearchWorkerSpec")
+        for worker in self.workers:
+            if worker.workspace_id is not None and worker.workspace_id != self.workspace_id:
+                raise ContractError(f"worker {worker.worker_id} belongs to another workspace")
+            if worker.runtime_run_id is not None and worker.runtime_run_id != self.runtime_run_id:
+                raise ContractError(f"worker {worker.worker_id} belongs to another runtime run")
+            if worker.contract_version != self.contract_version:
+                raise ContractError(f"worker {worker.worker_id} contract_version does not match run")
         object.__setattr__(self, "budget", _freeze(self.budget or {}))
         object.__setattr__(self, "workers", tuple(self.workers))
         if not self.contract_version.startswith("1."):
@@ -163,10 +170,10 @@ class ResearchRunSpec:
             raise TypeError("status must be a RunStatus")
         allowed = {
             RunStatus.CREATED: {RunStatus.RUNNING, RunStatus.CANCELLED},
-            RunStatus.RUNNING: {RunStatus.PAUSED, RunStatus.DRAINING, RunStatus.COMPLETED, RunStatus.FAILED, RunStatus.CANCELLED},
-            RunStatus.PAUSED: {RunStatus.RUNNING, RunStatus.CANCELLED},
-            RunStatus.DRAINING: {RunStatus.COMPLETED, RunStatus.FAILED, RunStatus.CANCELLED},
-            RunStatus.COMPLETED: set(), RunStatus.FAILED: set(), RunStatus.CANCELLED: set(),
+            RunStatus.RUNNING: {RunStatus.PAUSED, RunStatus.DRAINING, RunStatus.COMPLETED, RunStatus.FAILED, RunStatus.CANCELLED, RunStatus.STOPPED},
+            RunStatus.PAUSED: {RunStatus.RUNNING, RunStatus.CANCELLED, RunStatus.STOPPED},
+            RunStatus.DRAINING: {RunStatus.COMPLETED, RunStatus.FAILED, RunStatus.CANCELLED, RunStatus.STOPPED},
+            RunStatus.COMPLETED: set(), RunStatus.FAILED: set(), RunStatus.CANCELLED: set(), RunStatus.STOPPED: set(),
         }
         if status not in allowed[self.status]:
             raise ContractError(f"invalid run state transition: {self.status.value} -> {status.value}")
@@ -195,10 +202,15 @@ class WorkerExecutionResult:
     failure_class: str | None = None
     error: str | None = None
     elapsed_seconds: float | None = None
+    contract_version: str = "1.0"
 
     def __post_init__(self) -> None:
         if not isinstance(self.status, ExecutionStatus):
             raise TypeError("status must be an ExecutionStatus")
+        if not isinstance(self.contract_version, str) or not self.contract_version.strip():
+            raise ContractError("contract_version is required")
+        if not self.contract_version.startswith("1."):
+            raise ContractError(f"unsupported contract version: {self.contract_version}")
         try:
             RuntimeIdentity(self.workspace_id, self.trace_id, self.runtime_run_id,
                             self.generation_id, self.worker_id, self.execution_id)
@@ -219,7 +231,8 @@ class WorkerExecutionResult:
                 "worker_id": self.worker_id, "execution_id": self.execution_id,
                 "status": self.status.value, "result_digest": self.result_digest,
                 "candidate_ids": list(self.candidate_ids), "failure_class": self.failure_class,
-                "error": self.error, "elapsed_seconds": self.elapsed_seconds}
+                "error": self.error, "elapsed_seconds": self.elapsed_seconds,
+                "contract_version": self.contract_version}
 
     @classmethod
     def from_dict(cls, payload: Mapping[str, Any]) -> "WorkerExecutionResult":

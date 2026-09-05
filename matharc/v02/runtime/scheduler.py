@@ -12,7 +12,7 @@ from pathlib import Path
 from types import MappingProxyType
 from typing import Any, Callable, Iterable, Mapping, Protocol
 
-from .budget import ResourceLedger, ResourceReceipt, SemanticDeduplicator, semantic_experiment_key
+from .budget import ResourceLedger, ResourceReceipt, SemanticDeduplicator, semantic_experiment_key, _normalise_budget
 from .generation import GenerationInputSnapshot
 
 
@@ -69,7 +69,12 @@ def _invoke(worker: Callable[..., Any], task: Any, snapshot: GenerationInputSnap
 
 
 class BoundedScheduler:
-    def __init__(self, *, max_concurrency: int = 1, workspace_root: str | Path | None = None, ledger: ResourceLedger | None = None, deduplicator: SemanticDeduplicator | None = None, max_retries: int = 0, timeout_seconds: float | None = None, process_mode: bool = False, use_processes: bool | None = None) -> None:
+    def __init__(self, *, max_concurrency: int = 1, workspace_root: str | Path | None = None,
+                 ledger: ResourceLedger | None = None, deduplicator: SemanticDeduplicator | None = None,
+                 runtime_store: Any | None = None, budget: Mapping[str, Any] | None = None,
+                 declared_budget: Mapping[str, Any] | None = None, max_retries: int = 0,
+                 timeout_seconds: float | None = None, process_mode: bool = False,
+                 use_processes: bool | None = None) -> None:
         if isinstance(max_concurrency, bool) or not isinstance(max_concurrency, int) or max_concurrency < 1:
             raise ValueError("max_concurrency must be a positive integer")
         if max_retries < 0 or (timeout_seconds is not None and timeout_seconds <= 0):
@@ -77,8 +82,17 @@ class BoundedScheduler:
         self.max_concurrency = max_concurrency
         self.workspace_root = Path(workspace_root) if workspace_root is not None else Path(tempfile.mkdtemp(prefix="matharc-runtime-"))
         self.workspace_root.mkdir(parents=True, exist_ok=True)
-        self.ledger = ledger or ResourceLedger()
-        self.deduplicator = deduplicator or SemanticDeduplicator()
+        self.runtime_store = runtime_store
+        if ledger is not None and budget is not None:
+            raise ValueError("provide ledger or budget, not both")
+        if ledger is None:
+            limits = _ledger_limits(budget or {})
+            ledger = ResourceLedger(runtime_store=runtime_store, **limits)
+        elif runtime_store is not None and getattr(ledger, "runtime_store", None) is None:
+            ledger.runtime_store = runtime_store
+        self.ledger = ledger
+        self.deduplicator = deduplicator or SemanticDeduplicator(runtime_store=runtime_store)
+        self.declared_budget = dict(declared_budget or {})
         self.max_retries = max_retries
         self.timeout_seconds = timeout_seconds
         self.process_mode = bool(process_mode if use_processes is None else use_processes)
@@ -86,8 +100,11 @@ class BoundedScheduler:
         self._lock = threading.Lock()
 
     def schedule(self, tasks: Iterable[Any], snapshot: GenerationInputSnapshot, worker: Callable[..., Any], *, run_id: str | None = None) -> tuple[ScheduledExecution, ...]:
-        run_id = run_id or snapshot.runtime_run_id or f"run-{uuid.uuid4().hex[:12]}"
-        snapshot_digest = getattr(snapshot, "input_digest_sha256", None) or getattr(snapshot, "snapshot_digest", "")
+        snapshot_run_id = getattr(snapshot, "runtime_run_id", "")
+        # The snapshot is authoritative.  Keep accepting the historical
+        # override argument, but never let it create a second runtime identity.
+        run_id = snapshot_run_id or run_id or f"run-{uuid.uuid4().hex[:12]}"
+        snapshot_digest = getattr(snapshot, "snapshot_digest", "")
         task_list = list(tasks)
         submissions: list[tuple[Any, str, str, Path, int]] = []
         skipped: list[ScheduledExecution] = []
@@ -99,7 +116,21 @@ class BoundedScheduler:
                     skipped.append(ScheduledExecution(member_id, f"execution-{uuid.uuid4().hex[:12]}", idem, "", "duplicate", 0))
                     continue
                 self._started.add(idem)
-            if not self.deduplicator.claim(task, execution_id=idem, snapshot_digest=snapshot_digest):
+            declared = _task_budget(task, self.declared_budget)
+            try:
+                task_budget = _normalise_budget(declared)
+                global_budget = _normalise_budget(self.declared_budget)
+                if any(name in global_budget and value > global_budget[name] for name, value in task_budget.items()):
+                    raise ValueError("task declaration exceeds scheduler declared budget")
+                admitted = self.ledger.admit(declared, execution_id=idem)
+            except ValueError as exc:
+                skipped.append(ScheduledExecution(member_id, f"execution-{uuid.uuid4().hex[:12]}", idem, "", "budget_rejected", 0, error=str(exc)))
+                continue
+            if not admitted:
+                skipped.append(ScheduledExecution(member_id, f"execution-{uuid.uuid4().hex[:12]}", idem, "", "budget_exceeded", 0, error="declared budget exceeds remaining runtime budget"))
+                continue
+            if not self.deduplicator.claim(task, execution_id=idem, snapshot_digest=snapshot_digest, runtime_store=self.runtime_store):
+                self.ledger.release(idem)
                 skipped.append(ScheduledExecution(member_id, f"execution-{uuid.uuid4().hex[:12]}", idem, "", "deduplicated", 0))
                 continue
             execution_id = f"exec-{uuid.uuid4().hex}"
@@ -133,17 +164,34 @@ class BoundedScheduler:
                     attempts += 1
                     current = pool.submit(_invoke, worker, task, snapshot, workspace, execution_id)
                 wall = max(0.0, time.monotonic() - started)
-                measured = result if isinstance(result, Mapping) else {}
+                validation_error = _validate_worker_result(result, snapshot, execution_id)
+                if validation_error:
+                    status, error = "failed", validation_error
+                # Worker resource fields are advisory.  Validate them for
+                # malformed/conflicting receipts, but charge only scheduler
+                # wall time and the already admitted declaration.
+                try:
+                    advisory = _advisory_receipt(result, execution_id)
+                    if advisory is not None:
+                        _validate_advisory_consistency(result, advisory)
+                except ValueError as exc:
+                    if validation_error is None:
+                        status, error = "failed", str(exc)
                 receipt = ResourceReceipt(
                     execution_id,
-                    wall_seconds=float(measured.get("wall_seconds", measured.get("duration_seconds", wall)) or wall),
-                    input_tokens=int(measured.get("input_tokens", 0) or 0),
-                    output_tokens=int(measured.get("output_tokens", 0) or 0),
-                    cost_usd=float(measured.get("cost_usd", 0.0) or 0.0),
+                    wall_seconds=wall,
+                    input_tokens=0,
+                    output_tokens=0,
+                    cost_usd=0.0,
                     status=status,
                     semantic_key=semantic_experiment_key(task, snapshot_digest=snapshot_digest),
                 )
-                self.ledger.record_receipt(receipt)
+                try:
+                    self.ledger.validate_receipt(receipt)
+                except ValueError as exc:
+                    self.ledger.release(idem)
+                    status = "budget_exceeded" if "budget" in str(exc) or "declaration" in str(exc) else "failed"
+                    error = str(exc)
                 results.append(ScheduledExecution(member, execution_id, f"{run_id}:{snapshot.generation_id}:{member}", str(workspace), status, attempts, result, error, {"recovered": status in {"timeout", "failed"}, "execution_id": execution_id}, receipt))
         return tuple(skipped + results)
 
@@ -156,3 +204,92 @@ Scheduler = BoundedScheduler
 BoundedParallelScheduler = BoundedScheduler
 
 __all__ = ["GenerationInputSnapshot", "ScheduledExecution", "BoundedScheduler", "BoundedParallelScheduler", "Scheduler", "WorkerCallable"]
+
+
+def _ledger_limits(value: Mapping[str, Any]) -> dict[str, Any]:
+    """Convert public budget aliases into ResourceLedger constructor fields."""
+    if not isinstance(value, Mapping):
+        raise ValueError("budget must be a mapping")
+    aliases = {
+        "wall_seconds_limit": ("wall_seconds", "max_seconds", "timeout_seconds"),
+        "input_token_limit": ("input_tokens", "max_input_tokens"),
+        "output_token_limit": ("output_tokens", "max_output_tokens"),
+        "cost_usd_limit": ("cost_usd", "max_cost", "max_cost_usd"),
+    }
+    result = {}
+    for field, keys in aliases.items():
+        values = [value[key] for key in keys if key in value and value[key] is not None]
+        if values:
+            if any(item != values[0] for item in values[1:]):
+                raise ValueError(f"conflicting budget declarations for {field}")
+            result[field] = values[0]
+    return result
+
+
+def _task_budget(task: Any, fallback: Mapping[str, Any]) -> dict[str, Any]:
+    if isinstance(task, Mapping):
+        value = task.get("budget", fallback)
+    else:
+        value = getattr(task, "budget", fallback)
+    if value is None:
+        return {}
+    if not isinstance(value, Mapping):
+        raise ValueError("task budget must be a mapping")
+    return dict(value)
+
+
+def _advisory_receipt(result: Any, execution_id: str) -> ResourceReceipt | None:
+    if isinstance(result, Mapping):
+        payload = result
+    elif hasattr(result, "to_dict") and callable(result.to_dict):
+        try:
+            payload = result.to_dict()
+        except Exception:
+            return None
+    else:
+        return None
+    nested = payload.get("resource_receipt", payload.get("receipt"))
+    fields = {key: payload[key] for key in ("wall_seconds", "duration_seconds", "input_tokens", "output_tokens", "cost_usd") if key in payload}
+    if nested is not None:
+        if not isinstance(nested, Mapping):
+            raise ValueError("resource receipt must be a mapping")
+        if fields:
+            for key, value in fields.items():
+                if key in nested and nested[key] != value:
+                    raise ValueError(f"conflicting resource receipt field: {key}")
+        fields = dict(nested)
+    if not fields:
+        return None
+    return ResourceReceipt.from_mapping(fields, execution_id=execution_id)
+
+
+def _validate_advisory_consistency(result: Any, advisory: ResourceReceipt) -> None:
+    payload = result if isinstance(result, Mapping) else (result.to_dict() if hasattr(result, "to_dict") else {})
+    receipt_id = payload.get("receipt_execution_id")
+    if receipt_id is not None and receipt_id != advisory.execution_id:
+        raise ValueError("resource receipt execution_id conflicts with scheduler execution")
+
+
+def _validate_worker_result(result: Any, snapshot: GenerationInputSnapshot, execution_id: str) -> str | None:
+    if isinstance(result, Mapping):
+        payload = result
+    elif hasattr(result, "to_dict") and callable(result.to_dict):
+        try:
+            payload = result.to_dict()
+        except Exception:
+            return "worker result could not be serialized"
+    else:
+        return None
+    expected = {
+        "workspace_id": snapshot.workspace_id,
+        "trace_id": snapshot.trace_id,
+        "runtime_run_id": snapshot.runtime_run_id,
+        "generation_id": snapshot.generation_id,
+        "execution_id": execution_id,
+    }
+    for field, value in expected.items():
+        if field in payload and payload[field] != value:
+            return f"worker result {field} does not match snapshot identity"
+    if "run_id" in payload and payload["run_id"] != snapshot.runtime_run_id:
+        return "worker result run_id does not match snapshot identity"
+    return None

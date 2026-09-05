@@ -68,14 +68,42 @@ def _as_dict(value: Any) -> dict[str, Any]:
     return dict(value.to_dict() if hasattr(value, "to_dict") else value)
 
 
+def _generation_number(value: str) -> int | None:
+    text = str(value)
+    return int(text[1:]) if text[:1].lower() == "g" and text[1:].isdigit() else None
+
+
+def _commit_digest(commit: Mapping[str, Any]) -> str:
+    supplied = str(commit.get("commit_digest", ""))
+    # Typed commits use a SHA-256 digest over the payload without the digest
+    # field.  Legacy compact envelopes may carry an opaque marker (for
+    # example, ``commit``), which remains valid for backwards compatibility.
+    if supplied and len(supplied) == 64 and "results" in commit:
+        expected = digest_json({key: value for key, value in commit.items()
+                                if key not in {"commit_digest", "complete"}})
+        if supplied != expected:
+            raise RecoveryError("generation commit digest mismatch")
+        return supplied
+    return supplied or digest_json(dict(commit))
+
+
 def build_recovery_plan(commits: Iterable[Any] | Any, *, runtime_run_id: str | None = None,
                         expected: Mapping[str, Any] | None = None, expected_snapshot: Any | None = None,
                         current_inputs: Any | None = None, max_retries: int = 1) -> RecoveryPlan:
     """Build a deterministic plan. ``expected`` pins task/source/evaluator/tool/contract digests."""
     if hasattr(commits, "state"):
         commits = commits.state.get("commits", [])
-    complete = [_as_dict(item) for item in commits if _as_dict(item).get("complete", True)]
+    all_commits = [_as_dict(item) for item in commits]
+    complete = [item for item in all_commits if item.get("complete", item.get("closed", True))]
     if not complete: raise RecoveryError("no complete GenerationCommit available for recovery")
+    # Generation order, rather than append order, is the recovery boundary.
+    complete.sort(key=lambda item: (_generation_number(str(item.get("generation_id", "")))
+                                   if _generation_number(str(item.get("generation_id", ""))) is not None else -1))
+    run_ids = {item.get("runtime_run_id") for item in complete if item.get("runtime_run_id")}
+    if runtime_run_id is not None:
+        run_ids.add(runtime_run_id)
+    if len(run_ids) > 1:
+        raise RecoveryError("recovery commits contain multiple runtime_run_id values")
     commit = complete[-1]
     commit_run_id = commit.get("runtime_run_id")
     if runtime_run_id is not None and commit_run_id and runtime_run_id != commit_run_id:
@@ -92,13 +120,39 @@ def build_recovery_plan(commits: Iterable[Any] | Any, *, runtime_run_id: str | N
             raise RecoveryError(f"recovery identity mismatch for {key}")
     generation = str(commit.get("generation_id", ""))
     if not generation: raise RecoveryError("generation_id is required")
-    number = int(generation[1:]) if generation[1:].isdigit() and generation[:1].lower() == "g" else None
+    # Validate the chain before deriving the next generation.  Parent fields
+    # are optional for legacy records, but when present they must bind exactly
+    # to the preceding committed generation.
+    numeric = [(item, _generation_number(str(item.get("generation_id", "")))) for item in complete]
+    numeric = [(item, number) for item, number in numeric if number is not None]
+    if numeric:
+        for (prior, prior_number), (current, current_number) in zip(numeric, numeric[1:]):
+            if current_number != prior_number + 1:
+                raise RecoveryError("generation ids must be monotonic and contiguous")
+            if "parent_generation_id" in current and current["parent_generation_id"] != prior.get("generation_id"):
+                raise RecoveryError("parent_generation_id does not match previous commit")
+            if "parent_commit_digest" in current:
+                if current["parent_commit_digest"] != _commit_digest(prior):
+                    raise RecoveryError("parent_commit_digest does not match previous commit")
+    _commit_digest(commit)
+    number = _generation_number(generation)
     next_generation = f"g{number + 1}" if number is not None else f"{generation}.next"
-    failures = commit.get("failures", commit.get("failure_classifications", [])) or []
+    failures = list(commit.get("failures", commit.get("failure_classifications", [])) or [])
+    if not failures:
+        # GenerationCommit stores authoritative execution outcomes in
+        # ``results``.  Reconstruct failure classifications from that source
+        # instead of trusting a redundant summary field.
+        for result in commit.get("results", ()) or ():
+            item = _as_dict(result)
+            status = str(item.get("status", "")).upper()
+            if status not in {"SUCCEEDED", "SUCCESS"}:
+                failures.append(item)
     retryable, rejected = [], []
     for failure in failures:
         item = _as_dict(failure) if not isinstance(failure, str) else {"failure_class": failure}
-        target = retryable if item.get("retryable", item.get("failure_class") in {"TIMEOUT", "TIMED_OUT", "RETRYABLE_FAILURE"}) else rejected
+        failure_class = str(item.get("failure_class", "")).upper()
+        target = retryable if item.get("retryable", failure_class in {"TIMEOUT", "TIMED_OUT", "RETRYABLE_FAILURE"}
+                              or str(item.get("status", "")).upper() in {"TIMED_OUT", "RETRYABLE_FAILURE"}) else rejected
         target.append(str(item.get("execution_id", item.get("failure_class", "failure"))))
     actions = tuple(["resume_from_commit", "start_generation"] + (["retry_failures"] if retryable and max_retries > 0 else []))
     return RecoveryPlan(run_id, generation, next_generation, str(commit.get("commit_digest", digest_json(commit))), actions,

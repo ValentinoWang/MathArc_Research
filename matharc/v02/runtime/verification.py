@@ -13,6 +13,10 @@ class VerificationError(ValueError):
     pass
 
 
+class ReplayProtocolError(VerificationError):
+    """The verifier returned a value outside the replay protocol."""
+
+
 ScopeBindingError = VerificationError
 
 
@@ -61,6 +65,8 @@ class ReplayPlan:
     def for_candidate(cls, candidate: ExplorationCandidate, *, verifier_id: str,
                       implementation_id: str, environment: Mapping[str, Any] | None = None,
                       max_retries: int = 0) -> "ReplayPlan":
+        if not str(verifier_id).strip() or not str(implementation_id).strip():
+            raise VerificationError("verifier_id and implementation_id are required")
         if verifier_id.strip() == implementation_id.strip():
             raise VerificationError("same implementation cannot count as independent verification")
         if max_retries < 0:
@@ -72,7 +78,9 @@ class ReplayPlan:
             raise VerificationError("independent replay must not use a networked environment")
         if env.get("candidate_id", candidate.candidate_id) != candidate.candidate_id:
             raise VerificationError("replay environment candidate mismatch")
-        digest = digest_json({"candidate": candidate.envelope.to_dict(), "environment": env,
+        digest = digest_json({"candidate": candidate.envelope.to_dict(),
+                              "candidate_provenance_digest": candidate.provenance_digest,
+                              "environment": env,
                               "verifier_id": verifier_id, "implementation_id": implementation_id})
         return cls(candidate.candidate_id, digest, env, verifier_id, implementation_id, True, max_retries)
 
@@ -105,7 +113,9 @@ class VerifierReceipt:
     def __post_init__(self) -> None:
         if not isinstance(self.status, VerificationStatus):
             try:
-                object.__setattr__(self, "status", VerificationStatus(str(self.status)))
+                aliases = {"TIMEOUT": VerificationStatus.TIMED_OUT.value,
+                           "CANCELED": VerificationStatus.CANCELLED.value}
+                object.__setattr__(self, "status", VerificationStatus(aliases.get(str(self.status), str(self.status))))
             except ValueError as exc:
                 raise VerificationError(f"unknown verification status: {self.status}") from exc
         if self.attempts < 1:
@@ -118,6 +128,11 @@ class VerifierReceipt:
     @property
     def idempotency_key(self) -> str:
         return f"{self.candidate_id}+{self.receipt_digest}"
+
+    @property
+    def retryable(self) -> bool:
+        """Whether another replay attempt is semantically permitted."""
+        return self.failure_class in {"TIMEOUT", "REPLAY_EXECUTION_ERROR"}
 
     def to_dict(self, *, include_digest: bool = True) -> dict[str, Any]:
         value = {"candidate_id": self.candidate_id, "replay_digest": self.replay_digest,
@@ -174,31 +189,31 @@ def independent_replay(candidate: ExplorationCandidate, *, verifier_id: str,
                                     environment=environment, max_retries=max_retries)
     attempts = 0
     error_message = ""
+    def normalize_result(result: Any) -> tuple[bool, str]:
+        if isinstance(result, bool):
+            return result, digest_json(result)
+        if not isinstance(result, Mapping):
+            raise ReplayProtocolError("replay returned an unsupported result type")
+        present = [key for key in ("passed", "ok") if key in result]
+        if not present or any(not isinstance(result[key], bool) for key in present):
+            raise ReplayProtocolError("replay must return a boolean or a mapping with boolean passed/ok")
+        if len(present) == 2 and result["passed"] != result["ok"]:
+            raise ReplayProtocolError("replay passed and ok fields disagree")
+        return bool(result[present[0]]), digest_json(result)
+
     while True:
         attempts += 1
         try:
             result = replay(candidate.payload)
-            if isinstance(result, bool):
-                passed = result
-            elif isinstance(result, Mapping):
-                keys = [key for key in ("passed", "ok") if key in result]
-                if not keys or not isinstance(result[keys[0]], bool):
-                    raise VerificationError(
-                        "replay must return a boolean or a mapping with boolean passed/ok"
-                    )
-                passed = result[keys[0]]
-            else:
-                raise VerificationError(
-                    "replay returned an unsupported result type; verification failed closed"
-                )
+            passed, result_digest = normalize_result(result)
             status = VerificationStatus.PASS if passed else VerificationStatus.FAIL
             receipt = VerifierReceipt(candidate.candidate_id, plan.replay_digest, status, verifier_id, True,
-                                      digest_json(result), None if passed else "VERIFICATION_FAILED", "", attempts,
+                                      result_digest, None if passed else "VERIFICATION_FAILED", "", attempts,
                                       candidate_identity_digest=candidate.envelope.identity_digest,
                                       receipt_binding_digest=_receipt_binding_digest(
                                           candidate_identity_digest=candidate.envelope.identity_digest,
                                           replay_digest=plan.replay_digest,
-                                          result_digest=digest_json(result), verifier_id=verifier_id,
+                                          result_digest=result_digest, verifier_id=verifier_id,
                                           status=status, independent=True))
             return plan, receipt
         except TimeoutError as exc:
@@ -207,10 +222,17 @@ def independent_replay(candidate: ExplorationCandidate, *, verifier_id: str,
         except (KeyboardInterrupt, InterruptedError) as exc:
             status, failure = VerificationStatus.CANCELLED, "CANCELLED"
             error_message = str(exc)
-        except Exception as exc:  # verifier failure is recorded, not promoted
-            status, failure = VerificationStatus.RETRYABLE_FAILURE, type(exc).__name__
+        except ReplayProtocolError as exc:
+            status, failure = VerificationStatus.RETRYABLE_FAILURE, "REPLAY_PROTOCOL_ERROR"
             error_message = str(exc)
-        if attempts > max_retries:
+        except VerificationError as exc:
+            status, failure = VerificationStatus.RETRYABLE_FAILURE, "REPLAY_PROTOCOL_ERROR"
+            error_message = str(exc)
+        except Exception as exc:  # verifier failure is recorded, not promoted
+            status, failure = VerificationStatus.RETRYABLE_FAILURE, "REPLAY_EXECUTION_ERROR"
+            error_message = str(exc)
+        retryable = failure in {"TIMEOUT", "REPLAY_EXECUTION_ERROR"}
+        if not retryable or attempts > max_retries:
             return plan, VerifierReceipt(candidate.candidate_id, plan.replay_digest, status, verifier_id, True,
                                          "", failure, error_message, attempts,
                                          candidate_identity_digest=candidate.envelope.identity_digest,
@@ -252,7 +274,10 @@ def convert_receipt_to_evidence(candidate: ExplorationCandidate, receipt: Verifi
         independence_group=independence_group or receipt.verifier_id,
         replay_command=f"replay:{receipt.replay_digest}",
         statement_correspondence="Candidate payload corresponds to the bound claim scope.",
-        limitations=(f"candidate_id={candidate.candidate_id}", f"receipt_digest={receipt.receipt_digest}"),
+        limitations=(f"candidate_id={candidate.candidate_id}",
+                     f"candidate_payload_digest={candidate.envelope.payload_digest}",
+                     f"candidate_provenance_digest={candidate.provenance_digest}",
+                     f"receipt_digest={receipt.receipt_digest}"),
     )
 
 
@@ -278,25 +303,44 @@ class EvidenceInvalidator:
     def __init__(self) -> None:
         self._identity: dict[str, str] = {}
         self._payload_digest: dict[str, str] = {}
+        self._consumed_content: dict[str, str] = {}
+        self._provenance: dict[str, str] = {}
+        self._evidence_digest: dict[str, str] = {}
 
     def register(self, evidence: EvidenceRecord, candidate: ExplorationCandidate) -> None:
         if not _is_sha256(candidate.envelope.payload_digest):
             raise VerificationError("candidate envelope has no valid payload digest")
+        if digest_json(candidate.payload) != candidate.envelope.payload_digest:
+            raise VerificationError("candidate consumed content does not match payload digest")
         self._identity[evidence.evidence_id] = candidate.envelope.identity_digest
         self._payload_digest[evidence.evidence_id] = candidate.envelope.payload_digest
+        self._consumed_content[evidence.evidence_id] = digest_json(candidate.payload)
+        self._provenance[evidence.evidence_id] = candidate.provenance_digest
+        self._evidence_digest[evidence.evidence_id] = digest_json(evidence.to_dict())
 
     def check(self, evidence: EvidenceRecord, candidate: ExplorationCandidate) -> bool:
         expected = self._identity.get(evidence.evidence_id)
         if expected is None:
             raise VerificationError("evidence has no registered candidate identity")
         expected_payload = self._payload_digest.get(evidence.evidence_id)
-        payload_changed = expected_payload != digest_json(candidate.payload)
-        if expected != candidate.envelope.identity_digest or payload_changed:
-            invalidate_evidence(evidence, reason="candidate identity changed", changed_fields=candidate.envelope.to_dict())
+        expected_content = self._consumed_content.get(evidence.evidence_id)
+        expected_provenance = self._provenance.get(evidence.evidence_id)
+        evidence_changed = self._evidence_digest.get(evidence.evidence_id) != digest_json(evidence.to_dict())
+        payload_changed = expected_payload != candidate.envelope.payload_digest
+        content_changed = expected_content != digest_json(candidate.payload)
+        provenance_changed = expected_provenance != candidate.provenance_digest
+        if evidence_changed:
+            invalidate_evidence(evidence, reason="consumed evidence mutated")
+            return False
+        if expected != candidate.envelope.identity_digest or payload_changed or content_changed or provenance_changed:
+            changed = {"candidate_identity_digest": candidate.envelope.identity_digest,
+                       "candidate_payload_digest": candidate.envelope.payload_digest,
+                       "candidate_provenance_digest": candidate.provenance_digest}
+            invalidate_evidence(evidence, reason="candidate consumed content changed", changed_fields=changed)
             return False
         return True
 
 
-__all__ = ["VerificationError", "VerificationStatus", "ReplayPlan", "VerifierReceipt",
+__all__ = ["VerificationError", "ReplayProtocolError", "VerificationStatus", "ReplayPlan", "VerifierReceipt",
            "ScopeBindingError", "ClaimBinding", "bind_candidate_scope", "independent_replay", "verify_candidate",
            "convert_receipt_to_evidence", "evidence_from_receipt", "invalidate_evidence", "invalidate_evidence_for_change", "EvidenceInvalidator"]

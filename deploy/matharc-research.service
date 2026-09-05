@@ -15,6 +15,8 @@ Restart=on-failure
 RestartSec=5s
 TimeoutStartSec=30s
 TimeoutStopSec=30s
+# SIGTERM is the first cancellation boundary; the runtime classifies failures
+# and keeps release identity stable across restart and operator rollback.
 KillSignal=SIGTERM
 SuccessExitStatus=0 143
 UMask=0077

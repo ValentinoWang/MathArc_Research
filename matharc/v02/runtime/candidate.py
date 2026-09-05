@@ -41,9 +41,26 @@ class CandidateRecord:
     envelope: Mapping[str, Any]
     imported_at: str | None = None
 
+    def __post_init__(self) -> None:
+        if not str(self.candidate_id).strip():
+            raise CandidateImportError("candidate_id is required")
+        envelope = envelope_dict(self.envelope)
+        if envelope["candidate_id"] != self.candidate_id:
+            raise CandidateImportError("candidate record and envelope candidate_id mismatch")
+        identity = source_identity(self.source_identity)
+        for key in ("workspace_id", "trace_id", "runtime_run_id", "generation_id"):
+            if identity.get(key) != envelope.get(key):
+                raise CandidateImportError(f"candidate source {key} does not match envelope")
+
     @property
     def source_digest(self) -> str:
         return digest_json(dict(self.source_identity))
+
+    @property
+    def provenance_digest(self) -> str:
+        """Digest the complete source identity and envelope consumed by a record."""
+        return digest_json({"source_identity": dict(self.source_identity),
+                            "envelope": dict(self.envelope)})
 
     def to_dict(self) -> dict[str, Any]:
         value = {
@@ -65,6 +82,10 @@ def envelope_dict(value: Any) -> dict[str, Any]:
         raise CandidateImportError("candidate envelope must be a mapping or expose to_dict()")
     if not result.get("candidate_id"):
         raise CandidateImportError("candidate_id is required")
+    required = ("workspace_id", "trace_id", "runtime_run_id", "generation_id")
+    missing = [key for key in required if not str(result.get(key, "")).strip()]
+    if missing:
+        raise CandidateImportError(f"candidate envelope misses provenance fields: {missing}")
     return result
 
 
@@ -81,7 +102,12 @@ def source_identity(value: Any) -> dict[str, Any]:
         "worker_id", "execution_id", "task_digest", "source_digest",
         "evaluator_digest", "tool_registry_digest", "budget_digest", "artifact_digest",
     )
-    return {key: payload[key] for key in fields if key in payload}
+    result = {key: payload[key] for key in fields if key in payload}
+    required = ("workspace_id", "trace_id", "runtime_run_id", "generation_id")
+    missing = [key for key in required if not str(result.get(key, "")).strip()]
+    if missing:
+        raise CandidateImportError(f"candidate source misses provenance fields: {missing}")
+    return result
 
 
 __all__ = ["CandidateEnvelope", "CandidateImportError", "CandidateRecord", "envelope_dict", "source_identity"]

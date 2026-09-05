@@ -25,7 +25,8 @@ from .workspace import ResearchWorkspace
 from .workspace_visualization import workspace_dashboard_payload
 from .runtime.contracts import ResearchRunSpec
 from .runtime.run_store import RuntimeStore, RuntimeStoreError
-from .runtime.service import ConsoleRuntimeService, PermissionDeniedError
+from .runtime.service import ActionConflictError, ConsoleRuntimeService, PermissionDeniedError
+from .runtime.view_model import redact_payload
 from .runtime.state_machine import RunState, RunStateMachine
 
 
@@ -103,6 +104,7 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
             repository.root,
             access_api=access_api,
             runtime_store=runtime_store,
+            local_projection_config=local_projection_config,
         ) if runtime_store is not None else None
         super().__init__(server_address, WorkspaceRequestHandler)
 
@@ -155,7 +157,11 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
                 return
             if parsed.path == "/api/runtime/snapshot":
                 self._runtime_required()
-                snapshot = self.server.runtime_service.snapshot(self.headers.get("Cookie", ""))
+                query = parse_qs(parsed.query)
+                snapshot = self.server.runtime_service.snapshot(
+                    self.headers.get("Cookie", ""),
+                    runtime_run_id=query.get("run_id", [None])[0],
+                )
                 self._json(HTTPStatus.OK, snapshot.to_dict())
                 return
             if parsed.path == "/api/runtime/events":
@@ -164,13 +170,18 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
                 after = int(query.get("after", ["-1"])[0])
                 store = self.server.runtime_store
                 assert store is not None
-                tail = len(store.events) - 1
+                run_id = self._runtime_run_id(query.get("run_id", [None])[0])
+                target_events = [
+                    event for event in store.events
+                    if event.payload.get("runtime_run_id") == run_id
+                ]
+                tail = max(0, max((event.sequence for event in target_events), default=-1))
                 if after < -1 or after > tail:
-                    self._json(HTTPStatus.CONFLICT, {"error": "reload_required", "reason": "cursor_out_of_range", "run_id": self._runtime_run_id()})
+                    self._json(HTTPStatus.CONFLICT, {"error": "reload_required", "reason": "cursor_out_of_range", "run_id": run_id, "cursor": tail})
                     return
                 self._json(HTTPStatus.OK, {
-                    "run_id": self._runtime_run_id(), "after": after,
-                    "events": [event.to_dict() for event in store.events if event.sequence > after],
+                    "run_id": run_id, "after": after, "cursor": tail,
+                    "events": [redact_payload(event.to_dict()) for event in target_events if event.sequence > after],
                     "head_hash": store.head_hash,
                 })
                 return
@@ -366,12 +377,18 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
                 self._json(HTTPStatus.FORBIDDEN, {"error": "permission_denied", "message": str(exc)})
                 raise _HandledRequest
 
-    def _runtime_run_id(self) -> str | None:
+    def _runtime_run_id(self, requested: str | None = None) -> str | None:
         store = self.server.runtime_store
         if store is None:
             return None
         runs = store.state.get("runs", {})
-        return next(iter(runs), None)
+        if requested is not None:
+            if requested not in runs:
+                raise ValueError("runtime_run_id is not present in runtime store")
+            return requested
+        if len(runs) == 1:
+            return next(iter(runs), None)
+        return sorted(runs)[0] if runs else None
 
     def _read_json_body(self) -> dict[str, Any]:
         content_length = self.headers.get("Content-Length")
@@ -425,10 +442,6 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
             service = self.server.runtime_service
             assert store is not None and service is not None
             prior = next((event.payload for event in store.events if event.event_type == "RUN_ACTION" and event.payload.get("runtime_run_id") == runtime_run_id and event.payload.get("action_id") == action_id), None)
-            if prior is not None:
-                receipt_keys = {"action_id", "action", "actor", "target_runtime_run_id", "status", "previous_state", "resulting_state", "reason", "contract_version"}
-                self._json(HTTPStatus.OK, {"receipt": {key: prior[key] for key in receipt_keys if key in prior}, "replayed": True})
-                return
             run = store.state.get("runs", {}).get(runtime_run_id)
             if run is None:
                 self._json(HTTPStatus.NOT_FOUND, {"error": "runtime_run_not_found"})
@@ -436,11 +449,13 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
             actor = str(payload.get("actor") or (session.email if session is not None else "console"))
             receipt = service.runtime_action(runtime_run_id, action, action_id=action_id, actor=actor, cookie_header=self.headers.get("Cookie", ""), payload=payload.get("payload") or {})
             data = receipt.to_dict() if hasattr(receipt, "to_dict") else dict(receipt.payload or {})
-            self._json(HTTPStatus.OK, {"receipt": data, "replayed": False})
+            self._json(HTTPStatus.OK, {"receipt": data, "replayed": prior is not None})
         except _HandledRequest:
             return
         except PermissionDeniedError as exc:
             self._json(HTTPStatus.FORBIDDEN, {"error": "permission_denied", "message": str(exc)})
+        except ActionConflictError as exc:
+            self._json(HTTPStatus.CONFLICT, {"error": "action_conflict", "message": str(exc)})
         except (ValueError, TypeError, RuntimeStoreError) as exc:
             self._json(HTTPStatus.BAD_REQUEST, {"error": "invalid_runtime_action", "message": str(exc)})
 

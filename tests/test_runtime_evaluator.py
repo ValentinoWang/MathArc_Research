@@ -21,6 +21,20 @@ class RuntimeEvaluatorTests(unittest.TestCase):
         self.assertEqual(smoke.status, EvaluationStatus.FAIL)
         self.assertEqual(calls, [])
 
+    def test_request_cannot_widen_contract_budget(self):
+        contract = EvaluationContract("eval", lambda request: True,
+                                      budget=EvaluationBudget(max_seconds=1, max_steps=2, max_cost=0.5))
+        with self.assertRaises(ValueError):
+            contract.evaluate(EvaluationRequest("task", "eval", budget=EvaluationBudget(max_seconds=2, max_steps=2, max_cost=0.5)))
+        with self.assertRaises(ValueError):
+            contract.evaluate(EvaluationRequest("task", "eval", budget=EvaluationBudget(max_seconds=1, max_steps=2)))
+
+    def test_max_cost_is_enforced_when_reported_by_evaluator(self):
+        contract = EvaluationContract("eval", lambda request: {"steps": 1, "cost": 1.5},
+                                      budget=EvaluationBudget(max_cost=1.0))
+        request = EvaluationRequest("task", "eval", budget=EvaluationBudget(max_cost=1.0))
+        self.assertEqual(contract.evaluate(request).status, EvaluationStatus.TIMEOUT)
+
 
 if __name__ == "__main__":
     unittest.main()

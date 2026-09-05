@@ -7,6 +7,7 @@ must never start a full research run.
 from __future__ import annotations
 
 import inspect
+import math
 import time
 from dataclasses import dataclass, field
 from enum import Enum
@@ -34,8 +35,15 @@ class EvaluationBudget:
     def __post_init__(self) -> None:
         if self.max_seconds <= 0 or self.max_steps <= 0:
             raise ValueError("evaluation budget limits must be positive")
-        if self.max_cost is not None and self.max_cost < 0:
-            raise ValueError("max_cost must be non-negative")
+        if self.max_cost is not None:
+            try:
+                valid_cost = (not isinstance(self.max_cost, bool)
+                              and math.isfinite(float(self.max_cost))
+                              and float(self.max_cost) >= 0)
+            except (TypeError, ValueError):
+                valid_cost = False
+            if not valid_cost:
+                raise ValueError("max_cost must be a finite non-negative number")
 
     def to_dict(self) -> dict[str, Any]:
         return {"max_seconds": self.max_seconds, "max_steps": self.max_steps,
@@ -144,13 +152,27 @@ class EvaluationContract:
     """Execute an evaluator under its declared budget and seed."""
 
     def __init__(self, evaluator_id: str, fn: EvaluatorFn, *, budget: EvaluationBudget | None = None) -> None:
+        if not isinstance(evaluator_id, str) or not evaluator_id.strip():
+            raise ValueError("evaluator_id is required")
         self.evaluator_id = evaluator_id
         self.fn = fn
         self.budget = budget or EvaluationBudget()
 
+    def _validate_budget(self, request: EvaluationRequest) -> None:
+        """A caller may narrow a contract budget, never widen it."""
+        limits = (("max_seconds", request.budget.max_seconds, self.budget.max_seconds),
+                  ("max_steps", request.budget.max_steps, self.budget.max_steps))
+        for name, requested, declared in limits:
+            if requested > declared:
+                raise ValueError(f"request {name} exceeds declared contract budget")
+        if self.budget.max_cost is not None:
+            if request.budget.max_cost is None or request.budget.max_cost > self.budget.max_cost:
+                raise ValueError("request max_cost exceeds declared contract budget")
+
     def _run(self, request: EvaluationRequest) -> EvaluationResult:
         if request.evaluator_id != self.evaluator_id:
             raise ValueError("request evaluator_id does not match contract")
+        self._validate_budget(request)
         started = time.monotonic()
         try:
             value = self.fn(request)
@@ -164,8 +186,20 @@ class EvaluationContract:
             elif isinstance(value, Mapping):
                 steps = int(value.get("steps", 1))
                 score = value.get("score")
+            cost = None
+            if isinstance(value, Mapping):
+                raw_cost = value.get("cost", value.get("cost_usd",
+                                  value.get("total_cost_usd", value.get("spent_cost"))))
+                if raw_cost is not None:
+                    if isinstance(raw_cost, bool) or not isinstance(raw_cost, (int, float)) or not math.isfinite(float(raw_cost)) or raw_cost < 0:
+                        return EvaluationResult(EvaluationStatus.FAIL, request.evaluator_id,
+                            request.task_id, request.seed, request.budget.digest, score=score,
+                            output=output, steps=steps, elapsed_seconds=time.monotonic() - started,
+                            error="invalid evaluation cost", smoke=request.smoke)
+                    cost = float(raw_cost)
             elapsed = time.monotonic() - started
-            if elapsed > request.budget.max_seconds or steps > request.budget.max_steps:
+            if (elapsed > request.budget.max_seconds or steps > request.budget.max_steps
+                    or (request.budget.max_cost is not None and cost is not None and cost > request.budget.max_cost)):
                 return EvaluationResult(EvaluationStatus.TIMEOUT, request.evaluator_id,
                     request.task_id, request.seed, request.budget.digest, score=score,
                     output=output, steps=steps, elapsed_seconds=elapsed,

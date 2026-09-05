@@ -73,6 +73,17 @@ class VerificationNegativePathTests(unittest.TestCase):
         with self.assertRaises(VerificationError):
             convert_receipt_to_evidence(candidate, receipt)
 
+    def test_protocol_error_and_cancel_are_not_retried(self):
+        candidate = _candidate()
+        _, protocol = independent_replay(candidate, verifier_id="v", implementation_id="impl",
+                                         replay=lambda _: None, max_retries=3)
+        self.assertEqual(protocol.failure_class, "REPLAY_PROTOCOL_ERROR")
+        self.assertEqual(protocol.attempts, 1)
+        _, cancelled = independent_replay(candidate, verifier_id="v", implementation_id="impl",
+                                          replay=lambda _: (_ for _ in ()).throw(KeyboardInterrupt("stop")), max_retries=3)
+        self.assertEqual(cancelled.failure_class, "CANCELLED")
+        self.assertEqual(cancelled.attempts, 1)
+
     def test_receipt_must_bind_candidate_digest_and_replay_result_digests(self):
         candidate = _candidate()
         forged = VerifierReceipt(candidate.candidate_id, "forged", VerificationStatus.PASS,

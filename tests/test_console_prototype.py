@@ -25,6 +25,15 @@ class ConsolePrototypeTests(unittest.TestCase):
         self.assertIn("<title>MathArc 数学研究工作台</title>", page)
         self.assertNotIn("<title>问题情报平面控制台</title>", page)
 
+    def test_roadshow_demo_entry_is_deterministic_and_direct(self) -> None:
+        page = (
+            Path(__file__).resolve().parents[1]
+            / "docs/prototypes/problem-intel-console.html"
+        ).read_text(encoding="utf-8")
+        self.assertIn('new URLSearchParams(window.location.search).get("demo") === "1"', page)
+        self.assertIn('S.view = "workbench"', page)
+        self.assertIn('form.dispatchEvent(new Event("submit"', page)
+
     def test_browser_gate_runs_campaign_through_cli_and_asserts_sse_dom_refresh(self) -> None:
         gate = (Path(__file__).resolve().parents[1] / "scripts/console_browser_gate.mjs").read_text(encoding="utf-8")
         self.assertIn('"-m", "matharc.v02.cli", "run"', gate)
@@ -51,6 +60,54 @@ class ConsolePrototypeTests(unittest.TestCase):
         bridge = page.split("const ConsoleBridge", 1)[1]
         self.assertNotIn("localStorage", bridge)
         self.assertNotIn("sessionStorage", bridge)
+
+    def test_authenticated_runtime_path_uses_one_snapshot_cursor(self) -> None:
+        page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
+        access = page[page.index("const AccessConsole = (() => {"):page.index('document.addEventListener("click"', page.index("const AccessConsole = (() => {"))]
+        bridge = page[page.index("const ConsoleBridge = (() => {"):page.index("window.MathArcConsole = ConsoleBridge;")]
+        self.assertIn('const loaded = await ConsoleBridge.loadExport();', access)
+        self.assertNotIn('ConsoleBridge.loadExport("/api/console")', access)
+        self.assertIn('const envelope = raw && raw.payload && raw.run_id && Number.isInteger(raw.sequence)', bridge)
+        self.assertIn('const envelopeSequence = Number(envelope.sequence)', bridge)
+        self.assertIn('url.searchParams.set("after", String(cursor))', bridge)
+        self.assertEqual(bridge.count('let cursor = -1;'), 1)
+
+    def test_runtime_info_projects_identity_budget_and_candidate_status_without_object_echo(self) -> None:
+        node = shutil.which("node")
+        if node is None:
+            self.skipTest("node is required for the runtime projection regression")
+        page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
+        start = page.index("function runtimeInfo(payload){")
+        end = page.index("const VMETA", start)
+        script = textwrap.dedent(
+            r"""
+            const fs = require("fs");
+            const vm = require("vm");
+            const page = fs.readFileSync(process.argv[1], "utf8");
+            const start = page.indexOf("function runtimeInfo(payload){");
+            const end = page.indexOf("const VMETA", start);
+            const context = {};
+            vm.runInNewContext(page.slice(start, end) + ";this.runtimeInfo = runtimeInfo;", context);
+            const info = context.runtimeInfo({
+              runtime: {
+                state: {
+                  runs: {"runtime-run-7": {runtime_run_id: "runtime-run-7", generation_id: "generation-2", budget: {used: 2, max: 10, remaining: 8}, status: "RUNNING"}},
+                  candidates: {
+                    c1: {runtime_run_id: "runtime-run-7", status: "CANDIDATE_UNVERIFIED"},
+                    c2: {runtime_run_id: "runtime-run-7", status: "VERIFIED"},
+                  },
+                  commits: [],
+                },
+              },
+            });
+            if (info.runId !== "runtime-run-7" || info.generationId !== "generation-2") throw new Error("runtime identity was not projected");
+            if (info.budgetText !== "2 / 10 · 剩余 8") throw new Error(`budget projection drifted: ${info.budgetText}`);
+            if (info.candidateCount !== 2 || !info.statusText.includes("候选未验证 1") || !info.statusText.includes("已验证 1")) throw new Error("candidate status projection drifted");
+            if (info.runId.includes("[object Object]") || info.generationId.includes("[object Object]") || info.budgetText.includes("[object Object]") || info.statusText.includes("[object Object]")) throw new Error("runtime projection leaked object text");
+            """
+        )
+        completed = subprocess.run([node, "-e", script, str(Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html")], text=True, capture_output=True, check=False)
+        self.assertEqual(completed.returncode, 0, completed.stderr)
 
     def test_live_views_replace_only_declared_console_contract_surfaces(self) -> None:
         page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
@@ -483,6 +540,7 @@ class ConsolePrototypeTests(unittest.TestCase):
               role_policy: {},
               campaign: {},
             });
+            const snapshot = (runId, count) => ({ run_id: `transport-${runId}`, sequence: count - 1, payload: payload(runId, count) });
             const flush = () => new Promise(resolve => setImmediate(resolve));
             const runNextTimer = () => {
               const timer = timers.find(item => !item.cancelled);
@@ -495,9 +553,9 @@ class ConsolePrototypeTests(unittest.TestCase):
               const staleLoad = bridge.loadExport("/api/console");
               const latestLoad = bridge.loadExport("/api/console");
               if (requests.length !== 2) throw new Error("expected two concurrent loads");
-              requests[1].resolve(response(payload("current", 8)));
+              requests[1].resolve(response(snapshot("current", 8)));
               if (!(await latestLoad)) throw new Error("latest load was rejected");
-              requests[0].resolve(response(payload("stale", 100)));
+              requests[0].resolve(response(snapshot("stale", 100)));
               if (await staleLoad) throw new Error("stale load was accepted");
               if (context.S.consolePayload.provenance.run_id !== "current") throw new Error("stale load mutated memory");
               if (topbar.inserted[0].textContent !== "已接入工作区 current · current-stat" || topbar.inserted[0].dataset.source !== "export") throw new Error("stale load mutated the provenance view");
@@ -507,16 +565,16 @@ class ConsolePrototypeTests(unittest.TestCase):
               if (!EventSourceStub.instances[0].url.endsWith("/events?after=7")) throw new Error("initial cursor was not preserved");
 
               const rebuiltLoad = bridge.loadExport("/api/console");
-              requests[2].resolve(response(payload("rebuilt", 1)));
+              requests[2].resolve(response(snapshot("rebuilt", 1)));
               if (!(await rebuiltLoad)) throw new Error("rebuilt workspace load failed");
               if (!EventSourceStub.instances[0].closed) throw new Error("old generation stream stayed open");
               if (!EventSourceStub.instances[1].url.endsWith("/events?after=0")) throw new Error("generation reset kept the old cursor");
 
               const advanceLoad = bridge.loadExport("/api/console");
-              requests[3].resolve(response(payload("rebuilt", 6)));
+              requests[3].resolve(response(snapshot("rebuilt", 6)));
               if (!(await advanceLoad)) throw new Error("same-generation update failed");
               const restartLoad = bridge.loadExport("/api/console");
-              requests[4].resolve(response(payload("rebuilt", 1)));
+              requests[4].resolve(response(snapshot("rebuilt", 1)));
               if (!(await restartLoad)) throw new Error("same-generation restart load failed");
               if (!EventSourceStub.instances[1].closed) throw new Error("sequence restart kept the old stream");
               if (!EventSourceStub.instances[2].url.endsWith("/events?after=0")) throw new Error("sequence restart kept the old cursor");

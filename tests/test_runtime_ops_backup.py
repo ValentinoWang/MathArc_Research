@@ -4,6 +4,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+from matharc.v02.runtime.ops import backup_runtime_store, restore_runtime_store, RuntimeBootstrapError
+from matharc.v02.runtime.run_store import RuntimeStore
 from matharc.v02.schema import TheoremContract
 from matharc.v02.trace import (
     ResearchTrace,
@@ -30,6 +32,18 @@ class RuntimeOpsBackupTests(unittest.TestCase):
             path.write_text(text, encoding="utf-8")
             with self.assertRaises(TraceValidationError):
                 restore_trace_backup(path)
+
+    def test_runtime_store_backup_restore_checks_identity_and_digest(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory); source = root / "store"
+            store = RuntimeStore(source)
+            store.create_run({"runtime_run_id": "rr", "release_id": "rel", "workspace_id": "w", "trace_id": "t", "generation_id": "g"})
+            backup = backup_runtime_store(source, root / "backup")
+            manifest = __import__("json").loads((backup / "backup-manifest.json").read_text())
+            restored = restore_runtime_store(backup, root / "restored", runtime_run_id="rr", release_id="rel", expected_digest=manifest["manifest_digest_sha256"])
+            self.assertEqual(RuntimeStore(restored).state, store.state)
+            with self.assertRaises(RuntimeBootstrapError):
+                restore_runtime_store(backup, root / "wrong", runtime_run_id="other")
 
 
 if __name__ == "__main__":

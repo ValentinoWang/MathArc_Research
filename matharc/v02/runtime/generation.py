@@ -27,6 +27,7 @@ class GenerationInputSnapshot:
     tool_registry_digest: str
     worker_ids: tuple[str, ...] = ()
     source_payload_digest: str = ""
+    contract_version: str = "1.0"
 
     def __post_init__(self) -> None:
         try:
@@ -36,6 +37,10 @@ class GenerationInputSnapshot:
         for name in ("trace_digest", "contract_digest", "agenda_digest", "worker_spec_digest", "tool_registry_digest"):
             if not isinstance(getattr(self, name), str) or not getattr(self, name).strip():
                 raise GenerationError(f"{name} must be non-empty")
+        if not isinstance(self.contract_version, str) or not self.contract_version.strip():
+            raise GenerationError("contract_version must be non-empty")
+        if not self.contract_version.startswith("1."):
+            raise GenerationError(f"unsupported contract version: {self.contract_version}")
         if len(set(self.worker_ids)) != len(self.worker_ids):
             raise GenerationError("worker_ids must be unique")
 
@@ -51,7 +56,8 @@ class GenerationInputSnapshot:
     def from_inputs(cls, *, workspace_id: str, trace_id: str, runtime_run_id: str,
                     generation_id: str, trace: Any, contract: Any, agenda: Any,
                     worker_specs: Sequence[ResearchWorkerSpec] | Any,
-                    tool_registry: Any, source_payload: Any = None) -> "GenerationInputSnapshot":
+                    tool_registry: Any, source_payload: Any = None,
+                    contract_version: str = "1.0") -> "GenerationInputSnapshot":
         workers = tuple(worker_specs)
         if any(not isinstance(worker, ResearchWorkerSpec) for worker in workers):
             raise GenerationError("worker_specs must contain ResearchWorkerSpec")
@@ -60,7 +66,7 @@ class GenerationInputSnapshot:
                    digest_json(trace), digest_json(contract), digest_json(agenda),
                    digest_json([worker.to_dict() if hasattr(worker, "to_dict") else worker for worker in workers]),
                    digest_json(tool_registry), worker_ids,
-                   digest_json(source_payload) if source_payload is not None else "")
+                   digest_json(source_payload) if source_payload is not None else "", contract_version)
 
     def to_dict(self) -> dict[str, Any]:
         return {field.name: (list(getattr(self, field.name)) if field.name == "worker_ids" else getattr(self, field.name))

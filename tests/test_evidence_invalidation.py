@@ -17,4 +17,11 @@ class EvidenceInvalidationTests(unittest.TestCase):
         c.payload["x"] = 2
         self.assertFalse(ledger.check(e, c)); self.assertEqual(e.status.value, "STALE")
 
+    def test_evidence_mutation_marks_evidence_stale(self):
+        c = synthesize_candidate({"workspace_id":"w","trace_id":"t","runtime_run_id":"r","generation_id":"g","payload":{}})
+        _, receipt = independent_replay(c, verifier_id="v", implementation_id="impl", replay=lambda _: True)
+        e = convert_receipt_to_evidence(c, receipt); ledger = EvidenceInvalidator(); ledger.register(e, c)
+        e.summary = "tampered"
+        self.assertFalse(ledger.check(e, c)); self.assertEqual(e.status.value, "STALE")
+
 if __name__ == "__main__": unittest.main()

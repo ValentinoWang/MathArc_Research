@@ -59,6 +59,20 @@ class RuntimeOpsBootstrapTests(unittest.TestCase):
             with patch.dict(os.environ, env, clear=False), self.assertRaises(RuntimeBootstrapError):
                 bootstrap_from_env()
 
+    def test_readyz_rejects_manifest_identity_and_digest_drift(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            credential = root / "credentials" / "api-token"
+            credential.parent.mkdir(); credential.write_text("opaque-token\n", encoding="utf-8")
+            env = self._environment(root, credential)
+            run = Path(env["MATHARC_RUN_PATH"]); run.parent.mkdir(parents=True)
+            run.write_text(json.dumps({"runtime_run_id": "wrong", "release_id": "release-1"}), encoding="utf-8")
+            with patch.dict(os.environ, env, clear=False):
+                runtime = bootstrap_from_env()
+            readiness = runtime.readyz()
+            self.assertFalse(readiness["ok"])
+            self.assertTrue(any("run manifest runtime_run_id mismatch" in reason for reason in readiness["reasons"]))
+
     def test_serve_uses_v02_workspace_server_and_persistent_store(self) -> None:
         with tempfile.TemporaryDirectory() as directory:
             root = Path(directory)

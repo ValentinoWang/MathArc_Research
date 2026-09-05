@@ -50,7 +50,43 @@ def normalize(path: str | Path, root: str | Path | None = None) -> str:
         return value.as_posix()
 
 
+def _path_is_safe(path: str | Path, root: str | Path | None = None) -> bool:
+    """Return whether *path* has a real, in-bound filesystem identity.
+
+    A lexical allowlist is not sufficient for a guard: a missing path can be
+    fabricated under an allowed prefix, and a hardlink can give an out-of-band
+    file an allowed name.  Symlinks are resolved and must remain under the
+    repository root; regular files with multiple links are rejected.
+    """
+    root_path = Path(root or Path.cwd()).resolve()
+    candidate = Path(path)
+    if not candidate.is_absolute():
+        candidate = root_path / candidate
+    try:
+        # Inspect each lexical component before resolving the final target so
+        # ``allowed/link/../allowed/file`` cannot escape through an external
+        # symlink and then re-enter the repository.
+        lexical = candidate.absolute()
+        relative = lexical.relative_to(root_path)
+        component = root_path
+        for part in relative.parts:
+            component /= part
+            if component.is_symlink():
+                component.resolve(strict=False).relative_to(root_path)
+        resolved = lexical.resolve(strict=False)
+        resolved.relative_to(root_path)
+        if not resolved.exists():
+            return False
+        if resolved.is_file() and resolved.stat().st_nlink > 1:
+            return False
+        return True
+    except (OSError, ValueError):
+        return False
+
+
 def is_runtime_owned(path: str | Path, *, root: str | Path | None = None) -> bool:
+    if not _path_is_safe(path, root):
+        return False
     rel = normalize(path, root)
     if rel.startswith(FORBIDDEN_PREFIXES):
         return False
@@ -65,8 +101,13 @@ def is_runtime_owned(path: str | Path, *, root: str | Path | None = None) -> boo
 def check_runtime_ownership(
     paths: Iterable[str | Path], *, root: str | Path | None = None
 ) -> dict[str, object]:
-    checked = [normalize(path, root) for path in paths]
-    violations = [path for path in checked if not is_runtime_owned(path)]
+    raw_paths = list(paths)
+    checked = [normalize(path, root) for path in raw_paths]
+    violations = [
+        normalized
+        for raw, normalized in zip(raw_paths, checked)
+        if not is_runtime_owned(raw, root=root)
+    ]
     return {
         "valid": not violations,
         "checked": checked,

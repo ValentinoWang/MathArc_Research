@@ -9,6 +9,7 @@ from matharc.v02.access_server import AccessAPI
 from matharc.v02.runtime import RuntimeCoordinator, RuntimeStore
 from matharc.v02.runtime.backends.base import DeterministicTestBackend
 from matharc.v02.runtime.contracts import ResearchRunSpec, ResearchWorkerSpec
+from matharc.v02.runtime.contracts import ContractError
 from matharc.v02.runtime.service import ConsoleRuntimeService, PermissionDeniedError
 
 
@@ -62,6 +63,16 @@ class RuntimeIntegrationTests(unittest.TestCase):
             stopped = service.runtime_action("run-1", "stop", action_id="stop")
             self.assertEqual(stopped.resulting_state.value, "STOPPED")
             self.assertEqual(store.state["runs"]["run-1"]["status"], "STOPPED")
+
+    def test_run_binds_generation_snapshot_and_rejects_foreign_worker_parent(self) -> None:
+        with self.assertRaises(ContractError):
+            foreign = ResearchRunSpec("workspace", "trace", "run-foreign", "task",
+                workers=(ResearchWorkerSpec("worker", workspace_id="workspace", runtime_run_id="other"),))
+            RuntimeCoordinator(backends={"deterministic-test": DeterministicTestBackend()}).run(foreign)
+        spec = ResearchRunSpec("workspace", "trace", "run-snapshot", "task",
+            workers=(ResearchWorkerSpec("worker", backend="deterministic-test"),))
+        run = RuntimeCoordinator(backends={"deterministic-test": DeterministicTestBackend()}).run(spec, evaluation_input={"x": 1})
+        self.assertTrue(run.candidates[0].worker_id)
 
     def test_actor_and_wired_action_boundaries_fail_closed(self) -> None:
         service = ConsoleRuntimeService("artifacts/v02-workspace")

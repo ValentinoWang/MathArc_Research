@@ -1108,7 +1108,13 @@ async function testMobileViewports(browser, server, accessCookies) {
       assert((await initialSnapshotResponse).status() === 200, `${viewport.name} did not authenticate its initial runtime snapshot`);
       assert(await page.evaluate(() => window.MathArcConsole.loadExport("/api/console")), `${viewport.name} could not load its authenticated console export`);
       await page.locator("#console-provenance").waitFor({ state: "attached" });
-      const fellBackToDemo = await page.evaluate(() => window.MathArcConsole.loadExport("/missing-console.json"));
+      // Start the mobile matrix from an explicit demo baseline.  A failed
+      // refresh intentionally preserves the last live snapshot at runtime;
+      // this matrix is testing demo rendering, so clear that snapshot first.
+      const fellBackToDemo = await page.evaluate(() => {
+        window.MathArcConsole.clear();
+        return window.MathArcConsole.loadExport("/missing-console.json");
+      });
       assert(!fellBackToDemo, `${viewport.name} did not enter its declared demo-data baseline`);
       for (const campaignId of CAMPAIGNS) {
         for (const testCase of VIEW_CASES) {
@@ -1129,6 +1135,11 @@ async function testMobileViewports(browser, server, accessCookies) {
 }
 
 async function testStartFlow(page) {
+  // Start-flow assertions exercise the local demo portfolio. Clear the
+  // authenticated live projection first so an absent candidate-problems
+  // projection cannot replace the nine-gate demo with a fail-closed empty
+  // surface.
+  await page.evaluate(() => window.MathArcConsole.clear());
   await renderCase(page, "c7", { name: "portfolio", view: "portfolio" });
   await dispatch(page, "pick", { id: "full" });
   await dispatch(page, "go", { v: "portfolio" });
@@ -1152,6 +1163,28 @@ async function tamperSnapshot(page, mode) {
 }
 
 async function testTampers(page) {
+  // Tamper assertions exercise the sealed demo ledger.  Clear any live
+  // projection left by earlier runtime checks so the live proofchain renderer
+  // cannot replace the deterministic fixture on this shared page.
+  await page.evaluate(() => {
+    if (window.MathArcConsole && typeof window.MathArcConsole.clear === "function") window.MathArcConsole.clear();
+    S.consolePayload = null;
+    S.consolePayloadState = {status:"unloaded", projections:{}, reason:"tamper-fixture"};
+    S.workbenchResult = null;
+    S.compiled = false;
+    S.guest = true;
+  });
+  await page.evaluate(() => {
+    S.cid = "c7";
+    S.tamper = null;
+    S.chainActor = "*";
+    S.chainSubj = "*";
+    S.chainRound = "*";
+    S.chainOpen = 0;
+    S.plane = "v";
+    S.view = "proofchain";
+    render();
+  });
   const original = await tamperSnapshot(page, "off");
   assert(original.body.includes("两道防线都通过"), "original event ledger did not verify");
   const edit = await tamperSnapshot(page, "edit");

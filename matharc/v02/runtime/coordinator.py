@@ -7,8 +7,9 @@ from dataclasses import dataclass
 from typing import Any, Mapping, Sequence
 
 from ..schema import digest_json
-from .contracts import CandidateEnvelope, ExecutionStatus, ResearchRunSpec, ResearchWorkerSpec, WorkerExecutionResult
-from .generation import GenerationCommit
+from .contracts import CandidateEnvelope, ContractError, ExecutionStatus, ResearchRunSpec, ResearchWorkerSpec, WorkerExecutionResult
+from .generation import GenerationCommit, GenerationInputSnapshot
+from .identity import IdentityError, RuntimeIdentity
 from .evaluator import EvaluationContract, EvaluationRequest, EvaluationResult, EvaluationStatus
 from .backends.base import Backend, BackendRequest, DeterministicTestBackend, as_request
 from .backends.codex import CodexBackend
@@ -120,6 +121,7 @@ class RuntimeCoordinator:
         while True:
             attempts += 1
             result = self.backends[backend_name].execute(req)
+            self._validate_result_identity(req, result)
             if (result.elapsed_seconds is not None and result.elapsed_seconds > req.timeout_seconds
                     and result.status is ExecutionStatus.SUCCEEDED):
                 result = WorkerExecutionResult(
@@ -128,7 +130,7 @@ class RuntimeCoordinator:
                     worker_id=result.worker_id, execution_id=result.execution_id,
                     status=ExecutionStatus.TIMED_OUT, result_digest=result.result_digest,
                     candidate_ids=(), failure_class="TIMEOUT", error="backend exceeded timeout",
-                    elapsed_seconds=result.elapsed_seconds)
+                    elapsed_seconds=result.elapsed_seconds, contract_version=result.contract_version)
             if result.status is not ExecutionStatus.RETRYABLE_FAILURE or attempts > req.max_retries:
                 break
         with self._lock:
@@ -142,10 +144,31 @@ class RuntimeCoordinator:
                 recorder(result)
         return result
 
+    @staticmethod
+    def _validate_result_identity(request: BackendRequest, result: WorkerExecutionResult) -> None:
+        """Require a backend result to be an exact child of its request."""
+        if not isinstance(result, WorkerExecutionResult):
+            raise ContractError("backend must return WorkerExecutionResult")
+        expected = RuntimeIdentity(request.workspace_id, request.trace_id, request.runtime_run_id,
+                                   request.generation_id, request.worker_id, request.execution_id)
+        actual = RuntimeIdentity(result.workspace_id, result.trace_id, result.runtime_run_id,
+                                 result.generation_id, result.worker_id, result.execution_id)
+        try:
+            expected.require_ancestor_of(actual)
+            actual.require_ancestor_of(expected)
+        except IdentityError as exc:
+            raise ContractError(f"backend result identity mismatch: {exc}") from exc
+        if result.contract_version != request.contract_version:
+            raise ContractError("backend result contract_version does not match request")
+
     def assemble_candidate(self, spec: ResearchRunSpec, request: BackendRequest,
                            result: WorkerExecutionResult) -> tuple[CandidateEnvelope, ...]:
         if result.status is not ExecutionStatus.SUCCEEDED:
             return ()
+        if (request.workspace_id, request.trace_id, request.runtime_run_id) != (
+                spec.workspace_id, spec.trace_id, spec.runtime_run_id):
+            raise ContractError("backend request identity does not match run spec")
+        self._validate_result_identity(request, result)
         candidate_ids = result.candidate_ids or (f"candidate-{result.result_digest[:16]}",)
         task_digest = digest_json({"task_id": spec.task_id})
         budget_digest = digest_json(dict(spec.budget or request.budget))
@@ -155,10 +178,12 @@ class RuntimeCoordinator:
             generation_id=result.generation_id, task_digest=task_digest,
             source_digest=spec.source_digest, evaluator_digest=spec.evaluator_digest,
             tool_registry_digest=spec.tool_registry_digest, budget_digest=budget_digest,
-            artifact_digest=result.result_digest, payload_digest=payload_digest) for cid in candidate_ids)
+            artifact_digest=result.result_digest, payload_digest=payload_digest,
+            worker_id=result.worker_id, execution_id=result.execution_id) for cid in candidate_ids)
 
     def run(self, spec: ResearchRunSpec, *, evaluator: EvaluationContract | None = None,
-            evaluation_input: Any = None, smoke: EvaluationRequest | None = None) -> CoordinatorRun:
+            evaluation_input: Any = None, smoke: EvaluationRequest | None = None,
+            generation_snapshot: GenerationInputSnapshot | None = None) -> CoordinatorRun:
         if self.runtime_store is not None:
             creator = getattr(self.runtime_store, "create_run", None)
             if callable(creator):
@@ -167,6 +192,32 @@ class RuntimeCoordinator:
         if contract is None:
             contract = EvaluationContract(spec.task_id, lambda req: True,
                                           budget=_budget_from_spec(spec))
+        workers = spec.workers or (ResearchWorkerSpec(worker_id="worker-1", backend="deterministic-test"),)
+        for worker in workers:
+            if worker.workspace_id is not None and worker.workspace_id != spec.workspace_id:
+                raise ContractError(f"worker {worker.worker_id} belongs to another workspace")
+            if worker.runtime_run_id is not None and worker.runtime_run_id != spec.runtime_run_id:
+                raise ContractError(f"worker {worker.worker_id} belongs to another runtime run")
+            if worker.contract_version != spec.contract_version:
+                raise ContractError(f"worker {worker.worker_id} contract_version does not match run")
+        snapshot = generation_snapshot or GenerationInputSnapshot.from_inputs(
+            workspace_id=spec.workspace_id, trace_id=spec.trace_id,
+            runtime_run_id=spec.runtime_run_id, generation_id="generation-1",
+            trace={"trace_id": spec.trace_id},
+            contract={"task_id": spec.task_id, "evaluator_id": contract.evaluator_id,
+                      "budget": contract.budget.to_dict(), "contract_version": spec.contract_version},
+            agenda=evaluation_input, worker_specs=workers,
+            tool_registry=tuple(sorted(self.backends)), source_payload=evaluation_input,
+            contract_version=spec.contract_version)
+        if (snapshot.workspace_id, snapshot.trace_id, snapshot.runtime_run_id) != (
+                spec.workspace_id, spec.trace_id, spec.runtime_run_id):
+            raise ContractError("generation snapshot does not match run identity")
+        if snapshot.generation_id != "generation-1":
+            raise ContractError("generation snapshot does not match coordinator generation")
+        if snapshot.contract_version != spec.contract_version:
+            raise ContractError("generation snapshot contract_version does not match run")
+        if tuple(sorted(snapshot.worker_ids)) != tuple(sorted(worker.worker_id for worker in workers)):
+            raise ContractError("generation snapshot workers do not match run")
         smoke_request = smoke or EvaluationRequest(spec.task_id, contract.evaluator_id,
             input=evaluation_input, seed=int(spec.seed or 0), budget=contract.budget, smoke=True)
         if hasattr(contract, "smoke_test"):
@@ -177,12 +228,12 @@ class RuntimeCoordinator:
             return CoordinatorRun(smoke_result=smoke_result, started_full_run=False)
         results: list[WorkerExecutionResult] = []
         candidates: list[CandidateEnvelope] = []
-        workers = spec.workers or (ResearchWorkerSpec(worker_id="worker-1", backend="deterministic-test"),)
         for worker in workers:
             req = BackendRequest(spec.workspace_id, spec.trace_id, spec.runtime_run_id,
                 f"generation-1", worker.worker_id, spec.task_id, evaluation_input,
                 int(spec.seed or 0), worker.timeout_seconds, worker.max_retries,
-                execution_id=f"exec-{spec.runtime_run_id}-{worker.worker_id}", budget=dict(spec.budget or {}))
+                execution_id=f"exec-{spec.runtime_run_id}-{worker.worker_id}", budget=dict(spec.budget or {}),
+                contract_version=spec.contract_version)
             result = self.execute_backend(req, backend=worker.backend)
             results.append(result)
             worker_candidates = self.assemble_candidate(spec, req, result)
@@ -203,7 +254,7 @@ class RuntimeCoordinator:
                     trace_id=spec.trace_id,
                     runtime_run_id=spec.runtime_run_id,
                     generation_id="generation-1",
-                    snapshot_digest=digest_json({"task_id": spec.task_id, "input": evaluation_input}),
+                    snapshot_digest=snapshot.snapshot_digest,
                     results=tuple(results),
                     accepted_result_ids=accepted,
                     failed_result_ids=failed,

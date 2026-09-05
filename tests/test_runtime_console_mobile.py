@@ -42,6 +42,14 @@ class RuntimeConsoleMobileBoundaryTests(unittest.TestCase):
         self.assertIn('id="view-data-boundary" role="status" aria-live="polite"', self.page)
         self.assertIn('setAttribute("aria-live", "polite")', self.page)
 
+    def test_runtime_meta_has_bounded_mobile_layout_and_structured_state(self) -> None:
+        self.assertIn('#runtime-meta{max-width:min(38vw,430px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}', self.page)
+        self.assertIn('#runtime-meta{order:5;flex:1 1 100%;max-width:none;overflow-wrap:anywhere;white-space:normal;}', self.page)
+        self.assertIn('runtimeMeta.dataset.runtimeRunId = info.runId', self.page)
+        self.assertIn('runtimeMeta.dataset.generation = info.generationId', self.page)
+        self.assertNotIn('${run.budget || "未登记"}', self.page)
+        self.assertNotIn('${state.candidates && Object.keys(state.candidates).length}', self.page)
+
 
 if __name__ == "__main__":
     unittest.main()

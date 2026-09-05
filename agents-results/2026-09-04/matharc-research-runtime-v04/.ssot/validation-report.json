@@ -1,6 +1,6 @@
 {
   "schema_version": 3,
-  "generated_at": "2026-09-04T21:05:27.507266+00:00",
+  "generated_at": "2026-09-05T02:21:02.174738+00:00",
   "generator": {
     "repository": "ValentinoWang/Harness_Engineering",
     "commit": "221b256d5570b51fef97ec89052f632677b3406a",
@@ -9,20 +9,29 @@
       "Core/skills/report-to-ssot-development-paths/SKILL.md",
       "Core/skills/report-to-ssot-development-paths/assets/schemas/ssot-input.schema.json",
       "Core/skills/report-to-ssot-development-paths/reading-map.json",
+      "Core/skills/report-to-ssot-development-paths/references/decision-wavefront-contract.md",
+      "Core/skills/report-to-ssot-development-paths/references/ssot-output-template.md",
       "Core/skills/report-to-ssot-development-paths/rules-index.json",
       "Core/skills/report-to-ssot-development-paths/scripts/analyze_ssot_parallelism.py",
+      "Core/skills/report-to-ssot-development-paths/scripts/check_execution_ledger.py",
       "Core/skills/report-to-ssot-development-paths/scripts/check_push_gate.py",
       "Core/skills/report-to-ssot-development-paths/scripts/check_reading_map.py",
+      "Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_conservation.py",
       "Core/skills/report-to-ssot-development-paths/scripts/check_ssot_acceptance_contracts.py",
       "Core/skills/report-to-ssot-development-paths/scripts/check_ssot_program.py",
       "Core/skills/report-to-ssot-development-paths/scripts/check_ssot_structure.py",
       "Core/skills/report-to-ssot-development-paths/scripts/compile_ssot.py",
       "Core/skills/report-to-ssot-development-paths/scripts/render_ssot_views.py",
       "Core/skills/report-to-ssot-development-paths/scripts/scaffold_acceptance_contracts.py",
+      "Core/skills/report-to-ssot-development-paths/scripts/ssot_completion_evidence.py",
       "Core/skills/report-to-ssot-development-paths/scripts/ssot_policy.py",
       "Core/skills/report-to-ssot-development-paths/scripts/ssot_provenance.py",
       "Core/skills/report-to-ssot-development-paths/scripts/ssot_readiness.py",
       "Core/skills/report-to-ssot-development-paths/scripts/ssot_validation_report.py",
+      "Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_bundle.py",
+      "Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
+      "Core/skills/report-to-ssot-development-paths/tests/fixtures/complexity/bank-migration-l3.json",
+      "Core/skills/report-to-ssot-development-paths/tests/fixtures/complexity/login-organization-l2.json",
       "Core/skills/report-to-ssot-development-paths/tests/test_acceptance_authority_binding.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_acceptance_policy.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_acceptance_principal_registry.py",
@@ -40,13 +49,19 @@
       "Core/skills/report-to-ssot-development-paths/tests/test_router_v3_capability_contract.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_rules_index.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_scaffold_contracts.py",
+      "Core/skills/report-to-ssot-development-paths/tests/test_schema_v2_regressions.py",
+      "Core/skills/report-to-ssot-development-paths/tests/test_ssot_completion_evidence.py",
+      "Core/skills/report-to-ssot-development-paths/tests/test_ssot_complexity.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_ssot_input_completion_schema.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_ssot_provenance_scope.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_ssot_readiness.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_ssot_state_model.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_strict_acceptance_profile.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_v2_write_targets_and_locators.py",
+      "Core/skills/report-to-ssot-development-paths/tests/test_validate_ssot_bundle.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_validation_binding_scope.py",
+      "Core/skills/report-to-ssot-development-paths/tests/test_validation_report_v3.py",
+      "Core/skills/report-to-ssot-development-paths/tests/test_view_model_legacy_compatibility.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_view_projection_guard.py",
       "Core/skills/report-to-ssot-development-paths/tests/test_work_package_granularity.py",
       "Core/skills/ssot-acceptance-binding/SKILL.md",
@@ -124,25 +139,31 @@
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/implementation-progress.md",
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/openproblem.md",
       "agents-results/2026-09-04/acceptance-authority-binding-hardening/ssot-development-paths.md",
-      "agents-results/2026-09-04/acceptance-authority-binding-hardening/ssot-input.json"
+      "agents-results/2026-09-04/acceptance-authority-binding-hardening/ssot-input.json",
+      "tools/console/generated/console-data/index.json",
+      "tools/console/generated/console-data/matharc.json",
+      "tools/console/generated/console-data/matharc/acceptance.json",
+      "tools/console/generated/manifest.json",
+      "tools/console/generated/projects.json",
+      "tools/console/generated/version.json"
     ],
-    "dirty_diff_sha256": "39a63ef30fac9fa73cfcf0133726b59a0382d27e40984976216a6d8780058cf8",
+    "dirty_diff_sha256": "95c588e3670fa78dd7513fc1d989a20e288fbc42664e6df95ef39a53d347d2b5",
     "skill_path": "Core/skills/report-to-ssot-development-paths",
     "skill_realpath": "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths",
     "skill_sha256": "82337949a41fbdea7c950754fa9c8bb773326ca1960fd4dd5d860405491d0587",
-    "checker_bundle_sha256": "d3b2c06c17d44d77978d20ad0f57d1e18c12892314e192248e4ccebabd9bb212"
+    "checker_bundle_sha256": "a150d2516788f6b0d270f045e834bc07f74d4642b8fe4573f25734b9614f4098"
   },
   "runtime": {
     "project_root": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research",
-    "tree_commit": "4f37dd14b949a5488313dfb7bfd35e3c315e7276",
-    "project_commit": "4f37dd14b949a5488313dfb7bfd35e3c315e7276",
-    "project_dirty": false,
-    "project_dirty_diff_sha256": "01ba4719c80b6fe911b091a7c05124b64eeece964e09c058ef8f9805daca546b",
+    "tree_commit": "5d61a66077ac4f3859951b7bb2008cc0e64a68b3",
+    "project_commit": "5d61a66077ac4f3859951b7bb2008cc0e64a68b3",
+    "project_dirty": true,
+    "project_dirty_diff_sha256": "bad5a36bc683761ebb226ce11f0459ca7d578640c2bccb15b33933c4f87a0859",
     "harness_lock_sha256": "3c328c8c1556187e6cbee029012bde5572d47058ebd50278fb1ad71a00c36326"
   },
   "bundle": {
     "path": "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04",
-    "content_sha256": "7db8bad8d2fa2d15c777224b1a21fe9bcc945f43889a2e050d8f29fbc49e9b95",
+    "content_sha256": "f441bfbcbedfed71c9664a283cc03ab2914a596a61c0c87958f943b6b1bf8213",
     "manifest_identity_sha256": "abb964a1da791bd2c0aa56982d430001fa416bbb8e3201d05814e04c9469fe53"
   },
   "checks": [
@@ -169,7 +190,7 @@
       ],
       "exit_code": 0,
       "result": "passed",
-      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 48\nruntime_skill_check: enabled\nWARN Harness source dirty files: 119\ndoctor: ok\n",
+      "output": "project: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research\nmode: symlink-local\nsource: /Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering\nlinks: 48\nruntime_skill_check: enabled\nWARN Harness source dirty files: 140\ndoctor: ok\n",
       "class": "self-consistency"
     },
     {
@@ -179,9 +200,9 @@
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/validate_ssot_complexity.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/planning-compiler.json"
       ],
-      "exit_code": 0,
-      "result": "passed",
-      "output": "SSOT complexity check passed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/planning-compiler.json (depth=L2, releases=8, nodes=53, workers=6, contracts=41, criteria=119)\n",
+      "exit_code": 1,
+      "result": "failed",
+      "output": "SSOT complexity check failed: /Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/planning-compiler.json\n- strict_acceptance_profile_version must be 2 for L2 planning records; got None\n- authority_binding_version must be 1 for L2 planning records; got None\n- structured_result_version must be 1 for L2 planning records; got None\n- node_state_model must be 2 for L2 planning records; got None\n",
       "class": "self-consistency"
     },
     {
@@ -191,9 +212,9 @@
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_coverage.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
       ],
-      "exit_code": 0,
-      "result": "passed",
-      "output": "source requirement registry passed: mode=strict covered=41/41\n",
+      "exit_code": 1,
+      "result": "failed",
+      "output": "ERROR: external dependency EXT-MATHARC-TRACE-PY.authority_sha256 does not match content\nERROR: external dependency EXT-MATHARC-WORKSPACE-SERVER-IMPL-PY.authority_sha256 does not match content\nERROR: artifact SRC-MATHARC-TRACE-PY.sha256 does not match project source content\nERROR: artifact SRC-MATHARC-WORKSPACE-SERVER-IMPL-PY.sha256 does not match project source content\n",
       "class": "world-verification"
     },
     {
@@ -278,9 +299,9 @@
         "/Users/vsiyo/Desktop/Opensource_Tool/Harness_Engineering/Core/skills/report-to-ssot-development-paths/scripts/check_source_requirement_conservation.py",
         "/Users/vsiyo/Desktop/创业项目/AI4Math/Project/MathArc_Research/agents-results/2026-09-04/matharc-research-runtime-v04/.ssot/manifest.json"
       ],
-      "exit_code": 0,
-      "result": "passed",
-      "output": "source requirement conservation skipped: handled by strict source registry\n",
+      "exit_code": 1,
+      "result": "failed",
+      "output": "source requirement conservation failed:\n- external dependency EXT-MATHARC-TRACE-PY.authority_sha256 does not match content\n- external dependency EXT-MATHARC-WORKSPACE-SERVER-IMPL-PY.authority_sha256 does not match content\n- artifact SRC-MATHARC-TRACE-PY.sha256 does not match project source content\n- artifact SRC-MATHARC-WORKSPACE-SERVER-IMPL-PY.sha256 does not match project source content\n",
       "class": "world-verification"
     },
     {
@@ -340,9 +361,9 @@
         "/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集",
         "--require-snapshot-root"
       ],
-      "exit_code": 2,
-      "result": "failed",
-      "output": "SSOT snapshot error: archive audit failed:\n- /Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集/2026-09-04/Harness_Engineering/acceptance-authority-binding-hardening: snapshot manifest managed_files do not match current source hashes\n",
+      "exit_code": 0,
+      "result": "passed",
+      "output": "{\n  \"status\": \"verified\",\n  \"archive_root\": \"/Users/vsiyo/Library/Mobile Documents/iCloud~md~obsidian/Documents/日记/开发/每日开发/SSOT合集\",\n  \"bundle_count\": 46,\n  \"problem_document_count\": 25\n}\n",
       "class": "policy"
     }
   ],
@@ -1011,14 +1032,13 @@
     "static_waves_are_authority": false
   },
   "archive_policy": "required",
-  "integrity_result": "pass",
-  "policy_result": "incomplete",
+  "integrity_result": "fail",
+  "policy_result": "complete",
   "required_skipped_checks": [],
   "optional_skipped_checks": [],
-  "bundle_valid": true,
-  "policy_complete": false,
+  "bundle_valid": false,
+  "policy_complete": true,
   "push_gate_eligible": false,
-  "release_ready": false,
   "release_complete": false,
   "release_statuses": {
     "RTR1": {
@@ -1061,8 +1081,5 @@
       "execution_state": "PLANNED",
       "complete": false
     }
-  },
-  "deprecated_fields": [
-    "release_ready"
-  ]
+  }
 }

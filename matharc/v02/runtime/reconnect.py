@@ -5,6 +5,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from typing import Any, Iterable, Mapping
 
+from .view_model import redact_payload
+
 
 @dataclass(frozen=True, slots=True)
 class ReconnectResult:
@@ -30,22 +32,31 @@ class ReconnectManager:
     def reconnect(self, *, run_id: str, after: int, events: Iterable[Mapping[str, Any]]) -> ReconnectResult:
         if run_id != self.run_id:
             return ReconnectResult(self.run_id, self.sequence, (), True, "run_id_changed")
-        if int(after) < -1 or int(after) > self.sequence:
+        try:
+            cursor = int(after)
+        except (TypeError, ValueError):
+            return ReconnectResult(self.run_id, self.sequence, (), True, "invalid_cursor")
+        if cursor < -1 or cursor > self.sequence:
             return ReconnectResult(self.run_id, self.sequence, (), True, "cursor_out_of_range")
         selected: list[dict[str, Any]] = []
-        expected = int(after) + 1
+        expected = cursor + 1
         for raw in events:
             if not isinstance(raw, Mapping):
                 return ReconnectResult(self.run_id, self.sequence, (), True, "invalid_event")
             event_run = raw.get("run_id", self.run_id)
             seq = raw.get("sequence")
-            if event_run != self.run_id or not isinstance(seq, int):
+            if event_run != self.run_id or isinstance(seq, bool) or not isinstance(seq, int):
                 return ReconnectResult(self.run_id, self.sequence, (), True, "event_identity_mismatch")
-            if seq <= int(after):
+            if seq <= cursor:
                 continue
             if seq != expected:
                 return ReconnectResult(self.run_id, self.sequence, (), True, "sequence_gap")
-            selected.append(dict(raw)); expected += 1
+            selected.append(redact_payload(dict(raw))); expected += 1
+        # A stream that ends before the manager's known head is truncated,
+        # including an empty stream for a stale cursor. Force a server
+        # snapshot instead of returning a misleading partial continuation.
+        if expected <= self.sequence:
+            return ReconnectResult(self.run_id, self.sequence, (), True, "truncated_stream")
         if selected:
             self.sequence = selected[-1]["sequence"]
         return ReconnectResult(self.run_id, self.sequence, tuple(selected))

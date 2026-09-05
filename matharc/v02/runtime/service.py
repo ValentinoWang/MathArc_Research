@@ -30,7 +30,7 @@ ACTION_CLASSES.update({a: "local-ui-state" for a in _ALL_ACTIONS if a not in ACT
 for action in ("cfg", "compile", "export", "ntadd", "plan", "promote", "sign", "signin", "startwatch", "stopwatch", "topup"):
     ACTION_CLASSES[action] = "simulated-write"
 SIMULATED_WRITES = frozenset(a for a, kind in ACTION_CLASSES.items() if kind == "simulated-write")
-RUNTIME_ACTIONS = frozenset({"start", "pause", "resume", "stop", "revalidate"})
+RUNTIME_ACTIONS = frozenset({"start", "pause", "resume", "stop", "drain", "cancel", "revalidate"})
 FORBIDDEN_INPUT_FIELDS = frozenset({"command", "cwd", "environment", "env", "executable", "arguments", "args", "argv"})
 
 
@@ -44,6 +44,10 @@ class UnknownActionError(ConsoleRuntimeError, ValueError):
 
 class PermissionDeniedError(ConsoleRuntimeError, PermissionError):
     pass
+
+
+class ActionConflictError(ConsoleRuntimeError, ValueError):
+    """An idempotency identity was reused with different request content."""
 
 
 @dataclass(frozen=True, slots=True)
@@ -73,11 +77,12 @@ class ConsoleRuntimeService:
         self._reconnect: ReconnectManager | None = None
         self._runs: dict[str, RunStateMachine] = {}
         self._runtime_receipts: dict[tuple[str, str], Any] = {}
+        self._runtime_action_fingerprints: dict[tuple[str, str], str] = {}
 
-    def snapshot(self, cookie_header: str = "") -> ConsoleSnapshot:
+    def snapshot(self, cookie_header: str = "", *, runtime_run_id: str | None = None) -> ConsoleSnapshot:
         self._authorize(cookie_header)
         with self._lock:
-            snap = project_console_snapshot(self.workspace_root, local_projection_config=self.local_projection_config, runtime_store=self.runtime_store)
+            snap = project_console_snapshot(self.workspace_root, local_projection_config=self.local_projection_config, runtime_store=self.runtime_store, runtime_run_id=runtime_run_id)
             self._snapshot = snap
             self._reconnect = ReconnectManager(snap.run_id, snap.sequence)
             return snap
@@ -155,12 +160,19 @@ class ConsoleRuntimeService:
         if not action_id or not isinstance(action_id, str):
             raise ValueError("action_id is required")
         key = (runtime_run_id, action_id)
+        fingerprint = self._action_fingerprint(action, actor, data)
         with self._lock:
             stored = self._stored_receipt(runtime_run_id, action_id)
             if stored is not None:
+                prior_fingerprint = self._stored_action_fingerprint(runtime_run_id, action_id)
+                if prior_fingerprint != fingerprint:
+                    raise ActionConflictError("action_id conflicts with a different action, actor, or payload")
+                self._runtime_action_fingerprints[key] = prior_fingerprint
                 self._runtime_receipts[key] = stored
                 return stored
             if key in self._runtime_receipts:
+                if self._runtime_action_fingerprints.get(key) != fingerprint:
+                    raise ActionConflictError("action_id conflicts with a different action, actor, or payload")
                 return self._runtime_receipts[key]
             machine = self._runs.get(runtime_run_id)
             if machine is None:
@@ -176,10 +188,19 @@ class ConsoleRuntimeService:
                 machine = self._runs.setdefault(runtime_run_id, RunStateMachine(initial))
             previous = machine.status.value
             try:
+                task_ids: list[str] | None = None
+                if "task_ids" in data:
+                    raw_task_ids = data["task_ids"]
+                    if not isinstance(raw_task_ids, list) or any(not isinstance(item, str) or not item for item in raw_task_ids):
+                        raise ValueError("task_ids must be a list of non-empty strings")
+                    task_ids = list(raw_task_ids)
+                    unknown = sorted(set(task_ids) - set(machine.active_tasks))
+                    if unknown:
+                        raise ValueError(f"unknown task: {unknown[0]}")
                 if action == "revalidate":
                     resulting = machine.status.value
                 else:
-                    resulting = machine.transition(action).resulting_state.value
+                    resulting = machine.transition(action, task_ids=task_ids).resulting_state.value
                 status = ActionStatus.COMPLETED if ActionStatus is not None else "COMPLETED"
                 prev_enum = RunStatus(previous) if RunStatus is not None else previous
                 known_states = {item.value for item in RunStatus} if RunStatus is not None else set()
@@ -195,7 +216,15 @@ class ConsoleRuntimeService:
                 recorder = getattr(self.runtime_store, "append_event", None) or getattr(self.runtime_store, "append", None)
                 if callable(recorder):
                     receipt_data = receipt.to_dict()
-                    recorder("RUN_ACTION", {**receipt_data, "runtime_run_id": runtime_run_id})
+                    recorder("RUN_ACTION", {
+                        **receipt_data,
+                        "runtime_run_id": runtime_run_id,
+                        "action_fingerprint": fingerprint,
+                        "action_payload_digest": hashlib.sha256(
+                            json.dumps(data, ensure_ascii=False, sort_keys=True, separators=(",", ":")).encode("utf-8")
+                        ).hexdigest(),
+                    })
+            self._runtime_action_fingerprints[key] = fingerprint
             return receipt
 
     post_action = runtime_action
@@ -206,7 +235,7 @@ class ConsoleRuntimeService:
         self._authorize(cookie_header)
         with self._lock:
             if self._reconnect is None or self._reconnect.run_id != run_id:
-                snap = self.snapshot(cookie_header)
+                snap = self.snapshot(cookie_header, runtime_run_id=run_id)
                 if snap.run_id != run_id:
                     return ReconnectResult(snap.run_id, snap.sequence, (), True, "run_id_changed")
             assert self._reconnect is not None
@@ -219,8 +248,8 @@ class ConsoleRuntimeService:
             session = self.access_api.authenticate(cookie_header)
         except Exception as exc:
             raise PermissionDeniedError("valid invitation session required") from exc
-        if require_runtime and session.topic_scopes and "*" not in session.topic_scopes:
-            allowed = {str(item).casefold() for item in session.topic_scopes}
+        if require_runtime and "*" not in (session.topic_scopes or ()):
+            allowed = {str(item).casefold() for item in (session.topic_scopes or ())}
             if not ({"runtime", "runtime_actions", "operations"} & allowed):
                 raise PermissionDeniedError("session has no runtime operation permission")
         if view is not None and session.topic_scopes and "*" not in session.topic_scopes and view not in session.topic_scopes:
@@ -248,5 +277,28 @@ class ConsoleRuntimeService:
                     return None
         return None
 
+    @staticmethod
+    def _action_fingerprint(action: str, actor: str, payload: Mapping[str, Any]) -> str:
+        body = json.dumps(
+            {"action": action, "actor": actor, "payload": payload},
+            ensure_ascii=False,
+            sort_keys=True,
+            separators=(",", ":"),
+        )
+        return hashlib.sha256(body.encode("utf-8")).hexdigest()
 
-__all__ = ["ACTION_CLASSES", "SIMULATED_WRITES", "ActionResult", "ConsoleRuntimeService", "ConsoleRuntimeError", "UnknownActionError", "PermissionDeniedError"]
+    def _stored_action_fingerprint(self, runtime_run_id: str, action_id: str) -> str:
+        if self.runtime_store is not None:
+            for event in reversed(tuple(getattr(self.runtime_store, "events", ()) )):
+                payload = getattr(event, "payload", {})
+                if isinstance(payload, Mapping) and payload.get("runtime_run_id") == runtime_run_id and payload.get("action_id") == action_id:
+                    stored = payload.get("action_fingerprint")
+                    if isinstance(stored, str) and stored:
+                        return stored
+                    # Older records did not persist request identity. Treat
+                    # them as an empty-payload replay only.
+                    return self._action_fingerprint(str(payload.get("action", "")), str(payload.get("actor", "")), {})
+        return self._runtime_action_fingerprints.get((runtime_run_id, action_id), "")
+
+
+__all__ = ["ACTION_CLASSES", "SIMULATED_WRITES", "ActionResult", "ConsoleRuntimeService", "ConsoleRuntimeError", "UnknownActionError", "PermissionDeniedError", "ActionConflictError"]

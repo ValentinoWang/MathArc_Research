@@ -32,6 +32,13 @@ class GenerationReducer:
         if self._closed_commit is not None:
             self._late_results.append(result)
             return "LATE_QUEUED"
+        key = result.idempotency_key
+        prior = self._pending_results.get(key)
+        if prior is not None:
+            if prior.to_dict() != result.to_dict():
+                raise GenerationError(f"conflicting result for idempotency key: {key}")
+            return "DUPLICATE"
+        self._pending_results[key] = result
         return "ACCEPTED"
 
     def reduce(self, results: Sequence[WorkerExecutionResult], *, elapsed_seconds: float | None = None) -> GenerationCommit:
@@ -89,7 +96,7 @@ class GenerationReducer:
                                           commit.failed_result_ids, commit.status, False)
         return commit
 
-    def commit(self, results: Sequence[WorkerExecutionResult], *, elapsed_seconds: float | None = None) -> GenerationCommit:
+    def commit(self, results: Sequence[WorkerExecutionResult] = (), *, elapsed_seconds: float | None = None) -> GenerationCommit:
         return self.reduce(results, elapsed_seconds=elapsed_seconds)
 
     def _validate_result(self, result: WorkerExecutionResult) -> None:

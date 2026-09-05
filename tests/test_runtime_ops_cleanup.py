@@ -3,6 +3,8 @@ from __future__ import annotations
 import tempfile
 import unittest
 from pathlib import Path
+import subprocess
+import sys
 
 from matharc.v02.runtime.run_store import RuntimeStore
 
@@ -33,6 +35,17 @@ class RuntimeOpsCleanupTests(unittest.TestCase):
         lowered = text.lower()
         for token in ("release id", "commit", "rollback", "not ready"):
             self.assertIn(token, lowered)
+
+    def test_cleanup_cli_backs_up_then_removes_explicit_candidate(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory) / "runtime"; root.mkdir()
+            RuntimeStore(root).append_event("NOTE", {"value": "durable"})
+            cache = root / "cache.tmp"; cache.write_text("cache", encoding="utf-8")
+            backup = Path(directory) / "backup"
+            completed = subprocess.run([sys.executable, "-m", "matharc.v02.runtime.ops", "cleanup", "--root", str(root), "--backup", str(backup), "--candidate", "cache.tmp"], cwd=ROOT, capture_output=True, text=True)
+            self.assertEqual(completed.returncode, 0, completed.stderr)
+            self.assertFalse(cache.exists())
+            self.assertTrue((backup / "backup-manifest.json").is_file())
 
 
 if __name__ == "__main__":

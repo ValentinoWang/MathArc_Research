@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import json
 import os
+import re
 import tempfile
 from dataclasses import dataclass, field
 from pathlib import Path
@@ -32,6 +33,9 @@ class TraceValidationError(ValueError):
 
 class PromotionError(TraceValidationError):
     """Raised when a claim is promoted beyond its evidence boundary."""
+
+
+_SHA256_RE = re.compile(r"^[0-9a-fA-F]{64}$")
 
 
 @dataclass(frozen=True, slots=True)
@@ -280,6 +284,8 @@ class ResearchTrace:
         self._touch()
 
     def add_evidence(self, record: EvidenceRecord) -> None:
+        if not isinstance(record, EvidenceRecord):
+            raise TraceValidationError("evidence must be an EvidenceRecord")
         if record.evidence_id in self.evidence:
             raise TraceValidationError(f"duplicate evidence id: {record.evidence_id}")
         missing = [item for item in record.claim_ids if item not in self.claims]
@@ -288,14 +294,9 @@ class ResearchTrace:
                 f"evidence {record.evidence_id} references unknown claims: {missing}"
             )
         if record.status is EvidenceStatus.ACCEPTED:
-            if len(record.digest_sha256) != 64:
-                raise TraceValidationError(
-                    f"accepted evidence {record.evidence_id} needs a SHA-256 digest"
-                )
-            if not record.statement_correspondence.strip():
-                raise TraceValidationError(
-                    f"accepted evidence {record.evidence_id} needs statement correspondence"
-                )
+            issues = self._accepted_evidence_issues(record)
+            if issues:
+                raise TraceValidationError("; ".join(issues))
         self.evidence[record.evidence_id] = record
         for claim_id in record.claim_ids:
             claim = self.claims[claim_id]
@@ -304,6 +305,42 @@ class ResearchTrace:
             )
             claim.updated_at = utc_now()
         self._touch()
+
+    def _accepted_evidence_issues(self, record: EvidenceRecord, *, claim_id: str | None = None) -> list[str]:
+        """Return integrity failures that would make accepted evidence unsafe.
+
+        Evidence is a provenance-bearing input to the mathematical promotion
+        gate.  A digest-shaped string, an unbound claim reference, or an
+        unnamed producer/verifier must therefore fail closed before it can
+        contribute to proof closure.
+        """
+
+        issues: list[str] = []
+        if record.status is not EvidenceStatus.ACCEPTED:
+            return issues
+        if not _SHA256_RE.fullmatch(record.digest_sha256):
+            issues.append(
+                f"accepted evidence {record.evidence_id} needs a valid SHA-256 digest"
+            )
+        if not record.claim_ids:
+            issues.append(f"accepted evidence {record.evidence_id} needs claim references")
+        if claim_id is not None and claim_id not in record.claim_ids:
+            issues.append(
+                f"evidence {record.evidence_id} is not bound to claim {claim_id}"
+            )
+        if not record.producer.strip():
+            issues.append(f"accepted evidence {record.evidence_id} needs a source producer")
+        if not record.verifier.strip():
+            issues.append(f"accepted evidence {record.evidence_id} needs an evaluator verifier")
+        if not record.independence_group.strip():
+            issues.append(
+                f"accepted evidence {record.evidence_id} needs an independence group"
+            )
+        if not record.statement_correspondence.strip():
+            issues.append(
+                f"accepted evidence {record.evidence_id} needs statement correspondence"
+            )
+        return issues
 
     def add_tool_call(self, record: ToolCallRecord) -> None:
         if record.call_id in self.tool_calls:
@@ -462,6 +499,10 @@ class ResearchTrace:
                     errors.append(
                         f"claim {claim.claim_id} has missing evidence {evidence_id}"
                     )
+                elif claim.claim_id not in self.evidence[evidence_id].claim_ids:
+                    errors.append(
+                        f"claim {claim.claim_id} is not bound by evidence {evidence_id}"
+                    )
             for route_id in claim.route_ids:
                 if route_id not in self.routes:
                     errors.append(f"claim {claim.claim_id} has missing route {route_id}")
@@ -478,6 +519,16 @@ class ResearchTrace:
             errors.extend(self._derived_route_issues(route))
 
         for evidence in self.evidence.values():
+            if not isinstance(evidence, EvidenceRecord):
+                errors.append(f"invalid evidence record: {evidence!r}")
+                continue
+            for claim_id in evidence.claim_ids:
+                if claim_id not in self.claims:
+                    errors.append(
+                        f"evidence {evidence.evidence_id} has missing claim {claim_id}"
+                    )
+            if evidence.status is EvidenceStatus.ACCEPTED:
+                errors.extend(self._accepted_evidence_issues(evidence))
             if evidence.status is EvidenceStatus.ACCEPTED and not evidence.replayable:
                 warnings.append(
                     f"accepted evidence {evidence.evidence_id} is not cold-replayable"
@@ -652,12 +703,28 @@ class ResearchTrace:
                 f"claim {claim.claim_id} has unproved dependencies {missing_dependencies}"
             )
 
-        accepted = [
-            self.evidence[evidence_id]
-            for evidence_id in claim.evidence_ids
-            if evidence_id in self.evidence
-            and self.evidence[evidence_id].status is EvidenceStatus.ACCEPTED
-        ]
+        accepted: list[EvidenceRecord] = []
+        for evidence_id in claim.evidence_ids:
+            evidence = self.evidence.get(evidence_id)
+            if evidence is None:
+                issues.append(
+                    f"claim {claim.claim_id} references missing evidence {evidence_id}"
+                )
+                continue
+            if not isinstance(evidence, EvidenceRecord):
+                issues.append(
+                    f"claim {claim.claim_id} references an invalid evidence record {evidence_id}"
+                )
+                continue
+            if evidence.status is not EvidenceStatus.ACCEPTED:
+                continue
+            evidence_issues = self._accepted_evidence_issues(
+                evidence, claim_id=claim.claim_id
+            )
+            if evidence_issues:
+                issues.extend(evidence_issues)
+                continue
+            accepted.append(evidence)
 
         # v0.3 R0: HUMAN_AUDIT evidence derived from an expert ReviewRecord
         # must stop counting toward promotion the moment that review is no

@@ -55,6 +55,7 @@ class RunStateMachine:
     def start_task(self, task_id: str) -> None:
         if not self.can_accept_tasks: raise LifecycleError(f"run does not accept tasks in {self.state.value}")
         if not task_id: raise LifecycleError("task_id is required")
+        if task_id in self._active: raise LifecycleError(f"task is already active: {task_id}")
         self._active.add(task_id)
 
     accept_task = start_task
@@ -88,7 +89,11 @@ class RunStateMachine:
         elif action == "cancel":
             if self.state in {RunState.COMPLETED, RunState.FAILED, RunState.CANCELLED, RunState.STOPPED}:
                 raise LifecycleError(f"cannot cancel from {self.state.value}")
-            terminated = tuple(sorted(task_ids or self._active))
+            requested = tuple(task_ids) if task_ids is not None else tuple(self._active)
+            unknown = sorted(set(requested) - self._active)
+            if unknown:
+                raise LifecycleError(f"cannot cancel unknown active task(s): {unknown}")
+            terminated = tuple(sorted(set(requested)))
             self._active.difference_update(terminated)
             for task_id in terminated: self._termination_results[task_id] = "cancelled"
             self.state = RunState.CANCELLED

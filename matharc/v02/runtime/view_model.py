@@ -34,7 +34,9 @@ def redact_payload(value: Any, *, sensitive_keys: set[str] | frozenset[str] = SE
     catches nested records and list entries without relying on a fixed schema.
     """
     def norm(key: object) -> str:
-        return "".join(ch for ch in str(key).casefold() if ch.isalnum() or ch == "_")
+        # Treat punctuation (including underscore) as presentation only so
+        # api-key, api.key and api_key cannot bypass the disclosure boundary.
+        return "".join(ch for ch in str(key).casefold() if ch.isalnum())
 
     keyset = {norm(key) for key in sensitive_keys}
     def walk(item: Any, key: str | None = None) -> Any:
@@ -68,6 +70,7 @@ class ConsoleSnapshot:
     payload: dict[str, Any]
     payload_digest_sha256: str
     state: str = "ready"
+    runtime_run_id: str | None = None
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -75,6 +78,7 @@ class ConsoleSnapshot:
             "sequence": self.sequence,
             "payload_digest_sha256": self.payload_digest_sha256,
             "state": self.state,
+            "runtime_run_id": self.runtime_run_id,
             "payload": copy.deepcopy(self.payload),
         }
 
@@ -90,9 +94,22 @@ class ConsoleSnapshot:
         records = events.get("events") if isinstance(events, Mapping) else None
         if not isinstance(records, list):
             raise ValueError("console payload has no event sequence")
-        sequence = max((int(item.get("sequence", -1)) for item in records if isinstance(item, Mapping)), default=-1)
+        runtime = payload.get("runtime")
+        runtime_run_id = runtime.get("run_id") if isinstance(runtime, Mapping) else None
+        runtime_cursor = runtime.get("cursor") if isinstance(runtime, Mapping) else None
+        sequence = (
+            int(runtime_cursor)
+            if isinstance(runtime_cursor, int)
+            else max((int(item.get("sequence", -1)) for item in records if isinstance(item, Mapping)), default=-1)
+        )
         redacted = redact_payload(dict(payload))
-        return cls(provenance["run_id"], sequence, redacted, _digest(redacted))
+        return cls(
+            str(runtime_run_id or provenance["run_id"]),
+            sequence,
+            redacted,
+            _digest(redacted),
+            runtime_run_id=str(runtime_run_id) if runtime_run_id else None,
+        )
 
 
 def project_console_snapshot(
@@ -100,6 +117,7 @@ def project_console_snapshot(
     *,
     local_projection_config: ConsoleLocalProjectionConfig | None = None,
     runtime_store: Any | None = None,
+    runtime_run_id: str | None = None,
 ) -> ConsoleSnapshot:
     """Build and validate a current snapshot from the governed workspace."""
     payload = build_console_export(workspace_root, local_projection_config=local_projection_config)
@@ -107,8 +125,57 @@ def project_console_snapshot(
         state = runtime_store.state if hasattr(runtime_store, "state") else runtime_store
         if not isinstance(state, Mapping):
             raise ValueError("runtime store state must be an object")
+        runs = state.get("runs", {})
+        if not isinstance(runs, Mapping):
+            raise ValueError("runtime store runs must be an object")
+        if runtime_run_id is None:
+            if len(runs) == 1:
+                runtime_run_id = str(next(iter(runs)))
+            elif len(runs) > 1:
+                # Keep the legacy endpoint deterministic while never exposing
+                # sibling run records in one snapshot.
+                runtime_run_id = str(sorted(runs)[0])
+        if runtime_run_id is not None and runtime_run_id not in runs:
+            raise ValueError("runtime_run_id is not present in runtime store")
+
+        def keep(value: Any) -> Any:
+            if isinstance(value, Mapping):
+                if "runtime_run_id" in value and value.get("runtime_run_id") != runtime_run_id:
+                    return None
+                result = {}
+                for key, child in value.items():
+                    kept = keep(child)
+                    if kept is not None:
+                        result[key] = kept
+                return result
+            if isinstance(value, list):
+                return [kept for item in value if (kept := keep(item)) is not None]
+            return value
+
+        projected_state = keep(dict(state))
+        # Cursor zero is the stable empty-stream baseline used by the console
+        # contract; subsequent runtime events use their durable sequence.
+        target_events = [
+            event for event in getattr(runtime_store, "events", ())
+            if runtime_run_id is None or getattr(event, "payload", {}).get("runtime_run_id") == runtime_run_id
+        ]
+        event_cursor = max(0, len(target_events) - 1)
         payload = dict(payload)
-        payload["runtime"] = {"state": dict(state), "head_hash": getattr(runtime_store, "head_hash", None)}
+        payload["runtime"] = {
+            "run_id": runtime_run_id,
+            "cursor": event_cursor,
+            "state": projected_state,
+            "head_hash": getattr(runtime_store, "head_hash", None),
+        }
+        snapshot = ConsoleSnapshot.from_payload(payload)
+        return ConsoleSnapshot(
+            str(runtime_run_id or snapshot.run_id),
+            event_cursor,
+            snapshot.payload,
+            snapshot.payload_digest_sha256,
+            snapshot.state,
+            str(runtime_run_id) if runtime_run_id else None,
+        )
     return ConsoleSnapshot.from_payload(payload)
 
 

@@ -34,6 +34,47 @@ class RuntimeDependencyAllowlistTests(unittest.TestCase):
     def test_ast_parser_does_not_execute_source(self) -> None:
         self.assertEqual(imported_roots("raise RuntimeError('must not execute')"), set())
 
+    def test_missing_dependency_input_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            path = Path(directory) / "missing.py"
+            result = check_dependencies([path])
+            self.assertFalse(result["valid"], result)
+            self.assertEqual(result["unknown"][str(path)], ["<missing path>"])
+
+    def test_symlink_dependency_input_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            target = root / "target.py"
+            link = root / "runtime.py"
+            target.write_text("import json\n", encoding="utf-8")
+            link.symlink_to(target)
+            result = check_dependencies([link])
+            self.assertFalse(result["valid"], result)
+            self.assertEqual(result["unknown"][str(link)], ["<symlink path>"])
+
+    def test_hardlink_dependency_input_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = root / "source.py"
+            link = root / "runtime.py"
+            source.write_text("import json\n", encoding="utf-8")
+            link.hardlink_to(source)
+            result = check_dependencies([link])
+            self.assertFalse(result["valid"], result)
+            self.assertEqual(result["unknown"][str(link)], ["<hardlink path>"])
+
+    def test_local_transitive_dependency_is_checked(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            package = root / "matharc"
+            package.mkdir()
+            (package / "__init__.py").write_text("\n", encoding="utf-8")
+            (package / "entry.py").write_text("import matharc.transitive\n", encoding="utf-8")
+            (package / "transitive.py").write_text("import requests\n", encoding="utf-8")
+            result = check_dependencies([package / "entry.py"])
+            self.assertFalse(result["valid"], result)
+            self.assertEqual(result["unknown"][str(package / "transitive.py")], ["requests"])
+
 
 if __name__ == "__main__":
     unittest.main()

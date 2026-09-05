@@ -21,6 +21,11 @@ class RuntimeOpsDeploymentTests(unittest.TestCase):
             self.assertIn(token, self.env)
         self.assertNotIn("API_KEY=", self.env)
 
+    def test_env_pins_workspace_manifest_and_failure_boundaries(self) -> None:
+        for token in ("MATHARC_WORKSPACE_MANIFEST=/var/lib/matharc-research/workspace/workspace.json", "MATHARC_STARTUP_TIMEOUT_SECONDS=", "MATHARC_CANCEL_POLICY=", "MATHARC_FAILURE_POLICY=", "MATHARC_ROLLBACK_RELEASE_ID="):
+            self.assertIn(token, self.env)
+        self.assertIn("ExecStartPost=/usr/bin/python3 -m matharc.v02.runtime.ops readyz", self.service)
+
 
 if __name__ == "__main__":
     unittest.main()

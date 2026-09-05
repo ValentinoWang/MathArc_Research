@@ -45,6 +45,23 @@ class FailureLesson:
     exact: bool
     reused_count: int = 0
     created_at: str = field(default_factory=utc_now)
+    # Runtime-distilled failures retain the generation and candidate origin.
+    # Defaults keep the frozen trace-derived corpus backward compatible.
+    generation_id: str = ""
+    candidate_id: str = ""
+    candidate_origin: str = ""
+
+    @property
+    def run_id(self) -> str:
+        return self.source_run_id
+
+    @property
+    def source_generation_id(self) -> str:
+        return self.generation_id
+
+    @property
+    def source_candidate_id(self) -> str:
+        return self.candidate_id or self.failure_id
 
     @property
     def fingerprint(self) -> frozenset[str]:
@@ -73,6 +90,9 @@ class FailureLesson:
             "exact": self.exact,
             "reused_count": self.reused_count,
             "created_at": self.created_at,
+            "generation_id": self.generation_id,
+            "candidate_id": self.candidate_id,
+            "candidate_origin": self.candidate_origin,
         }
 
     @classmethod
@@ -92,6 +112,9 @@ class FailureLesson:
             exact=bool(payload.get("exact", False)),
             reused_count=int(payload.get("reused_count", 0)),
             created_at=str(payload.get("created_at") or utc_now()),
+            generation_id=str(payload.get("generation_id", "")),
+            candidate_id=str(payload.get("candidate_id", "")),
+            candidate_origin=str(payload.get("candidate_origin", "")),
         )
 
 
@@ -106,6 +129,9 @@ class FailureMatch:
     reusable_lesson: str
     exact: bool
     source_run_id: str
+    generation_id: str = ""
+    candidate_id: str = ""
+    candidate_origin: str = ""
 
     def to_dict(self) -> dict[str, Any]:
         return {
@@ -118,6 +144,9 @@ class FailureMatch:
             "reusable_lesson": self.reusable_lesson,
             "exact": self.exact,
             "source_run_id": self.source_run_id,
+            "generation_id": self.generation_id,
+            "candidate_id": self.candidate_id,
+            "candidate_origin": self.candidate_origin,
         }
 
 
@@ -201,6 +230,9 @@ class FailureMemory:
                     reusable_lesson=lesson.reusable_lesson,
                     exact=lesson.exact,
                     source_run_id=lesson.source_run_id,
+                    generation_id=lesson.generation_id,
+                    candidate_id=lesson.candidate_id,
+                    candidate_origin=lesson.candidate_origin,
                 )
             )
         matches.sort(key=lambda item: (-item.score, item.lesson_id))

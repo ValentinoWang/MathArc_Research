@@ -41,6 +41,23 @@ class RuntimeOwnershipTests(unittest.TestCase):
             (root / "matharc/v02/runtime").symlink_to(root / "outside", target_is_directory=True)
             self.assertFalse(is_runtime_owned("matharc/v02/runtime/escape.py", root=root))
 
+    def test_missing_path_under_allowed_prefix_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            (root / "matharc/v02/runtime").mkdir(parents=True)
+            self.assertFalse(is_runtime_owned("matharc/v02/runtime/missing.py", root=root))
+
+    def test_hardlinked_runtime_file_fails_closed(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            runtime = root / "matharc/v02/runtime"
+            runtime.mkdir(parents=True)
+            source = root / "outside.py"
+            linked = runtime / "linked.py"
+            source.write_text("# hardlink fixture\n", encoding="utf-8")
+            linked.hardlink_to(source)
+            self.assertFalse(is_runtime_owned(linked, root=root))
+
 
 if __name__ == "__main__":
     unittest.main()

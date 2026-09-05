@@ -78,6 +78,19 @@ class RuntimeParallelGenerationTests(unittest.TestCase):
         with self.assertRaises(GenerationError):
             reducer.commit([first, conflicting])
 
+    def test_worker_identity_and_non_finite_receipt_are_fail_closed(self):
+        snapshot = _snapshot()
+
+        def worker(task):
+            return {
+                "runtime_run_id": "another-run",
+                "resource_receipt": {"cost_usd": float("inf")},
+            }
+
+        result = BoundedScheduler().schedule([{"member_id": "worker-a"}], snapshot, worker)
+        self.assertEqual(result[0].status, "failed")
+        self.assertTrue(result[0].error)
+
 
 if __name__ == "__main__":
     unittest.main()

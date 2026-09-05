@@ -76,6 +76,7 @@ button{font:inherit;color:inherit;cursor:pointer;}
 /* topbar */
 .topbar{display:flex;align-items:center;gap:12px;height:var(--topbar-h);padding:0 16px;
   background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:30;}
+.topbar > *{min-width:0;}
 .brand{display:flex;align-items:baseline;gap:8px;flex:none;}
 .brand .mark{font-family:var(--serif);font-weight:600;font-size:16.5px;color:var(--accent);letter-spacing:.02em;}
 .brand .sub{font-size:11px;color:var(--muted);letter-spacing:.12em;}
@@ -92,6 +93,7 @@ button{font:inherit;color:inherit;cursor:pointer;}
 .btn:disabled:hover{color:var(--muted);border-color:var(--line);}
 .miniprog{flex:none;font-family:var(--mono);font-size:12px;color:var(--accent);font-weight:600;
   font-variant-numeric:tabular-nums;}
+#runtime-meta{max-width:min(38vw,430px);overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
 
 /* shell */
 .shell{display:grid;grid-template-columns:232px minmax(0,1fr) 300px;gap:16px;
@@ -111,6 +113,7 @@ button{font:inherit;color:inherit;cursor:pointer;}
   .topbar{height:auto;min-height:var(--topbar-h);padding:7px 10px;gap:7px;flex-wrap:wrap;align-items:center;}
   .brand .sub{display:none;}
   #console-provenance{order:2;min-width:0;max-width:45vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+  #runtime-meta{order:5;flex:1 1 100%;max-width:none;overflow-wrap:anywhere;white-space:normal;}
   #budget{display:none;}
   .who{order:2;margin-left:auto;padding-left:0;border-left:0;gap:5px;}
   .planes{order:3;flex:1 1 100%;width:100%;overflow-x:auto;}
@@ -1131,6 +1134,10 @@ const S = {
 try{ const t=localStorage.getItem("ma-theme"); if(t) document.documentElement.setAttribute("data-theme",t);
      const v=localStorage.getItem("ma-view"); if(v) S.view=v;
      const f=localStorage.getItem("ma-fold2"); if(f) S.collapsed=JSON.parse(f)||{}; }catch(e){}
+/* Stable roadshow entry: ?demo=1 bypasses browser-local navigation residue,
+   opens the workbench, and starts the credential-free deterministic runner. */
+const ROADSHOW_DEMO = new URLSearchParams(window.location.search).get("demo") === "1";
+if(ROADSHOW_DEMO){ S.guest = true; S.view = "workbench"; S.plane = "p"; }
 
 /* 目录树。每个节点要么是一个视图叶子 {v}，要么是一个可折叠的层级 {g,ctx,kids}。
    层级必须表达真实的包含关系，不能把不同层级的东西平铺在同一组里：
@@ -1210,6 +1217,46 @@ function treeViews(nodes, out){ out = out || [];
   nodes.forEach(n => n.v ? out.push(n.v) : treeViews(n.kids, out)); return out; }
 function treeDepth(nodes){ return Math.max(...nodes.map(n => n.v ? 1 : 1 + treeDepth(n.kids))); }
 PLANES.forEach(p => { p.views = treeViews(p.tree); p.depth = treeDepth(p.tree); });
+/* Runtime identity is deliberately kept separate from the legacy trace run_id.
+   The transport wrapper supplies the cursor; this projection only formats the
+   authenticated runtime state for the workbench header. */
+function runtimeInfo(payload){
+  const runtime = payload && payload.runtime;
+  const state = runtime && runtime.state;
+  const isRecord = value => value !== null && typeof value === "object" && !Array.isArray(value);
+  const runs = isRecord(state && state.runs) ? Object.entries(state.runs) : [];
+  const requestedRunId = runtime && (runtime.runtime_run_id || runtime.run_id);
+  let selected = runs.find(([key, value]) => key === requestedRunId || (isRecord(value) && value.runtime_run_id === requestedRunId));
+  if(!selected && runs.length) selected = runs[runs.length - 1];
+  const run = selected && isRecord(selected[1]) ? selected[1] : {};
+  const runId = String(run.runtime_run_id || (selected && selected[0]) || requestedRunId || "").trim();
+  const commits = Array.isArray(state && state.commits) ? state.commits : [];
+  const runCommits = commits.filter(item => isRecord(item) && (!runId || item.runtime_run_id === runId));
+  const latestCommit = runCommits[runCommits.length - 1] || {};
+  const generationId = String(run.generation_id || latestCommit.generation_id || runtime && runtime.generation_id || "").trim();
+  const budget = run.budget || run.budget_snapshot || (isRecord(state && state.budget) ? state.budget : null);
+  const budgetText = (() => {
+    if(typeof budget === "string" || typeof budget === "number") return String(budget);
+    if(!isRecord(budget)) return "未登记";
+    const used = budget.used ?? budget.consumed ?? budget.spent;
+    const limit = budget.limit ?? budget.max ?? budget.total;
+    const remaining = budget.remaining ?? budget.remaining_units ?? budget.remaining_seconds;
+    if(remaining !== undefined && (limit !== undefined || used !== undefined)) return `${used !== undefined ? String(used) + " / " : ""}${limit !== undefined ? String(limit) : ""} · 剩余 ${String(remaining)}`;
+    if(remaining !== undefined) return `剩余 ${String(remaining)}`;
+    if(used !== undefined || limit !== undefined) return `${used !== undefined ? String(used) : "—"} / ${limit !== undefined ? String(limit) : "—"}`;
+    return "已登记";
+  })();
+  const candidates = isRecord(state && state.candidates) ? Object.values(state.candidates).filter(isRecord) : [];
+  const scoped = candidates.filter(candidate => !runId || !candidate.runtime_run_id || candidate.runtime_run_id === runId);
+  const statuses = {};
+  scoped.forEach(candidate => {
+    const status = String(candidate.status || candidate.candidate_status || "UNSPECIFIED");
+    statuses[status] = (statuses[status] || 0) + 1;
+  });
+  const statusLabels = {UNSPECIFIED:"未标记", CANDIDATE_UNVERIFIED:"候选未验证", VERIFIED:"已验证", REJECTED:"已拒绝", BLOCKED:"已阻塞", PROMOTED:"已晋升"};
+  const statusText = Object.entries(statuses).map(([status, count]) => `${statusLabels[status] || "未识别状态"} ${count}`).join(" · ") || "暂无";
+  return {runId, generationId, budgetText, candidateCount:scoped.length, statusText, runStatus:String(run.status || latestCommit.status || "未登记")};
+}
 const VMETA = {
   field:    {n:"方向信息流",   b:()=>LEADS.filter(l=>l.st==="open").length},
   workbench:{n:"演示工作台",     b:()=>"5 步"},
@@ -1800,7 +1847,8 @@ V.workbench = () => {
     : live
     ? ((payload.source_topic && payload.source_topic.topic_name) || claimList[0] && claimList[0].statement || "工作区中的待研究命题")
     : "有限并集封闭族：外部元素 = 7 时是否存在独立闭合？";
-  const sourceId = demo ? demo.run_id : live ? ((payload.provenance && payload.provenance.run_id) || "当前运行") : "DEMO-INPUT-01";
+  const runtime = live ? runtimeInfo(payload) : null;
+  const sourceId = demo ? demo.run_id : live ? (runtime.runId || "当前运行") : "DEMO-INPUT-01";
   const hasDemo = Boolean(demo);
   const demoClaims = demoStages.decomposition && Array.isArray(demoStages.decomposition.claims) ? demoStages.decomposition.claims : [];
   const demoTool = demoStages.tool || {};
@@ -4342,13 +4390,15 @@ function render(){
   }
   const runtimeMeta = $("#runtime-meta");
   if(runtimeMeta){
-    const runtime = S.consolePayload && S.consolePayload.runtime;
-    const state = runtime && runtime.state;
-    const runs = state && state.runs && Object.values(state.runs);
-    const run = runs && runs[0];
-    runtimeMeta.textContent = run
-      ? `研究成员 ${run.actor || "未登记"} · 代际 ${run.generation_id || "未登记"} · 预算 ${run.budget || "未登记"} · 候选 ${(state.candidates && Object.keys(state.candidates).length) || 0} · 验证状态 ${run.status || "未知"}`
-      : "研究成员 · 代际 · 预算 · 候选 · 验证状态（未接入）";
+    const info = runtimeInfo(S.consolePayload);
+    const connected = Boolean(info.runId || info.generationId || S.consolePayloadState.status === "loaded");
+    runtimeMeta.textContent = connected
+      ? `运行 ${info.runId || "未登记"} · 代际 ${info.generationId || "未登记"} · 预算 ${info.budgetText} · 候选 ${info.candidateCount}（${info.statusText}） · 状态 ${info.runStatus}`
+      : "运行 · 代际 · 预算 · 候选 · 状态（未接入）";
+    runtimeMeta.dataset.runtimeRunId = info.runId;
+    runtimeMeta.dataset.generation = info.generationId;
+    runtimeMeta.dataset.candidateCount = String(info.candidateCount);
+    runtimeMeta.dataset.budget = info.budgetText;
   }
   $("#budget").textContent = S.guest ? "访客只读模式" : "预算 41% · 剩余 1 060 秒";
   $("#avatar").textContent = S.guest ? "客" : (S.role==="admin" ? "管" : "研");
@@ -4442,7 +4492,7 @@ const AccessConsole = (() => {
       S.plane = "p";
       S.view = "portfolio";
       window.scrollTo({top:0});
-      const loaded = await ConsoleBridge.loadExport("/api/runtime/snapshot");
+      const loaded = await ConsoleBridge.loadExport();
       if(loaded) ConsoleBridge.connectEvents("/events");
       else render();
       toast("邀请码已确认，已进入研究预览。");
@@ -4509,7 +4559,7 @@ const AccessConsole = (() => {
         S.access.email = payload.session.email;
         S.guest = false;
         if(S.view === "login") S.view = "portfolio";
-        const loaded = await ConsoleBridge.loadExport("/api/runtime/snapshot");
+        const loaded = await ConsoleBridge.loadExport();
         if(loaded) ConsoleBridge.connectEvents("/events");
         else render();
         return true;
@@ -5339,7 +5389,7 @@ V.disclosure = () => {
   if (!payload) return S.consolePayload ? projectionUnavailable("分级披露", "披露投影缺失、过期或未通过结构校验。") : DEMO_VIEWS.disclosure();
   const projection = payload.disclosure, records = projection.records || {}, levels = projection.levels || [];
   const states = records.state || [], evidence = records.evidence || [], reviews = records.reviews || [], promotions = records.promotions || [];
-  const levelRows = levels.map(level => `<button class="tier" data-act="tier" data-i="${Math.max(0, Number(level.level) - 1)}" style="${S.tier === Number(level.level) - 1 ? "background:var(--surface-2)" : ""}"><div class="col" style="gap:5px"><b style="font-size:13px">第 ${liveEsc(level.level)} 级 · ${liveEsc(level.key)}</b><span class="mono" style="font-size:10px;color:var(--muted)">${level.state === "available" ? "可描述" : "不可用"}</span></div><div><div class="note">${(level.allowed || []).map(liveEsc).join(" ")}</div>${S.tier === Number(level.level) - 1 ? `<div class="note" style="margin-top:7px;color:var(--gap)">${(level.forbidden || []).map(liveEsc).join(" ")}</div>` : ""}</div><span class="pill ${level.state === "available" ? "ok" : "gap"}"><span class="dot"></span>${level.state === "available" ? "可用" : "不可用"}</span></button>`).join("");
+  const levelRows = levels.map(level => `<button class="tier" data-act="tier" data-i="${Math.max(0, Number(level.level) - 1)}" style="${S.tier === Number(level.level) - 1 ? "background:var(--surface-2)" : ""}"><div class="col" style="gap:5px"><b style="font-size:13px">第 ${liveEsc(level.level)} 级 · <span class="mono">${liveEsc(level.key)}</span></b><span class="mono" style="font-size:10px;color:var(--muted)">${level.state === "available" ? "可描述" : "不可用"}</span></div><div><div class="note">${(level.allowed || []).map(liveEsc).join(" ")}</div>${S.tier === Number(level.level) - 1 ? `<div class="note" style="margin-top:7px;color:var(--gap)">${(level.forbidden || []).map(liveEsc).join(" ")}</div>` : ""}</div><span class="pill ${level.state === "available" ? "ok" : "gap"}"><span class="dot"></span>${level.state === "available" ? "可用" : "不可用"}</span></button>`).join("");
   const stateRows = states.map(item => `<tr><td class="mono">${liveEsc(item.claim_id)}@${liveEsc(item.revision)}</td><td>${liveEnumPill("claim_status", item.status)}</td><td>${liveEsc(item.statement)}</td><td>${(item.route_ids || []).map(liveEsc).join("；") || "—"}</td></tr>`).join("") || `<tr><td colspan="4" class="mut">没有命题状态记录。</td></tr>`;
   return { task:`分级披露 · <b>真实投影</b> · ${states.length} 条命题状态`, rail:liveCard("披露边界", "只读措辞矩阵", `<p class="note">${liveEsc(projection.decision_boundary)}</p><div class="divider"></div><p class="note">此页只描述导出中的持久化记录，不把晋升事件推断为证明、新颖性、开放状态或公开授权。</p>`), main:liveCard("四级发布梯度", "由记录决定", `<div class="body tight" style="gap:0">${levelRows || `<p class="note">没有披露等级记录。</p>`}</div>`) + liveCard("当前命题状态", `${states.length} 条`, `<div class="tw"><table><thead><tr><th>命题版本</th><th>状态</th><th>陈述</th><th>路线</th></tr></thead><tbody>${stateRows}</tbody></table></div>`), side:liveCard("记录计数", "不等于结论", `<dl class="kv"><dt>证据</dt><dd>${evidence.length}</dd><dt>评审</dt><dd>${reviews.length}</dd><dt>晋升事件</dt><dd>${promotions.length}</dd></dl>`) };
 };
@@ -5474,6 +5524,8 @@ const ConsoleBridge = (() => {
   let eventStream = null;
   let eventEndpoint = null;
   let eventGeneration = null;
+  let transportRunId = null;
+  let transportSequence = null;
   let latestLoad = 0;
   let refreshScheduled = false;
   let reconnectTimer = null;
@@ -5510,9 +5562,13 @@ const ConsoleBridge = (() => {
     window.clearTimeout(reconnectTimer);
     reconnectTimer = null;
   };
+  const runtimePayloadInfo = payload => typeof runtimeInfo === "function"
+    ? runtimeInfo(payload) : {runId:"", generationId:""};
   /* run_id is the server-owned workspace identity; state and head digests change as events append. */
-  const workspaceGeneration = payload => {
-    const runId = payload && payload.provenance && payload.provenance.run_id;
+  const workspaceGeneration = (payload, envelopeRunId) => {
+    const info = runtimePayloadInfo(payload);
+    if(info.runId) return `${info.runId}::${info.generationId || "unknown"}`;
+    const runId = envelopeRunId || payload && payload.provenance && payload.provenance.run_id;
     return typeof runId === "string" && runId.length ? runId : null;
   };
   const eventTail = payload => {
@@ -5528,7 +5584,7 @@ const ConsoleBridge = (() => {
       connectEvents(endpoint);
     }, 1000);
   };
-  const applyExport = (payload, loadId) => {
+  const applyExport = (payload, loadId, envelope={}) => {
     if (loadId !== latestLoad) return false;
     const validation = typeof validateConsolePayload === "function"
       ? validateConsolePayload(payload)
@@ -5537,15 +5593,25 @@ const ConsoleBridge = (() => {
       && typeof payload.provenance.run_id === "string" && payload.workspace && payload.workspace.events
       && Array.isArray(payload.workspace.events.events) && !payload.workspace.trace && !payload.workspace.workspace;
     if (!validation.ok && !legacyMinimal) return false;
-    const generation = workspaceGeneration(payload);
+    const generation = workspaceGeneration(payload, envelope.runId);
     if (generation === null) return false;
-    const tail = eventTail(payload);
+    const envelopeSequence = Number(envelope.sequence);
+    // The runtime snapshot envelope has its own runtime-store cursor.  SSE
+    // /events uses the workspace event-ledger cursor, so prefer the payload's
+    // event tail whenever it exists and only use the envelope as a fallback
+    // for a payload without an event ledger.
+    const payloadTail = eventTail(payload);
+    const tail = payloadTail >= 0
+      ? payloadTail
+      : (Number.isInteger(envelopeSequence) && envelopeSequence >= -1 ? envelopeSequence : -1);
     const generationChanged = generation !== eventGeneration;
     const sequenceRestarted = tail < cursor;
     S.consolePayload = payload;
     S.consolePayloadState = {status:"loaded", projections:validation.projections, reason:""};
     eventGeneration = generation;
     cursor = generationChanged || sequenceRestarted ? tail : Math.max(cursor, tail);
+    transportRunId = envelope.runId || runtimePayloadInfo(payload).runId || payload.provenance.run_id;
+    transportSequence = tail;
     const p = payload.provenance;
     label(`已接入工作区 ${p.run_id || "未知"} · ${String(p.state_digest_sha256 || "").slice(0,12)}`, "export");
     if ((generationChanged || sequenceRestarted) && eventEndpoint) connectEvents(eventEndpoint);
@@ -5562,13 +5628,16 @@ const ConsoleBridge = (() => {
         const response = await fetch(endpoint, { cache:"no-store", credentials:"same-origin" });
         if (!response.ok) continue;
         jsonResponseSeen = true;
-        let payload = await response.json();
+        let raw = await response.json();
+        const envelope = raw && raw.payload && raw.run_id && Number.isInteger(raw.sequence)
+          ? {runId:String(raw.run_id), sequence:raw.sequence, digest:raw.payload_digest_sha256 || ""} : {};
+        let payload = raw;
         /* Runtime snapshots wrap the existing console export with cursor and
            digest metadata. Keep the view contract pointed at the payload so
            legacy console.json and /api/console remain compatible fallbacks. */
-        if (payload && payload.payload && payload.run_id && Number.isInteger(payload.sequence)) payload = payload.payload;
+        if (envelope.runId) payload = raw.payload;
         if (loadId !== latestLoad) return false;
-        if (applyExport(payload, loadId)) {
+        if (applyExport(payload, loadId, envelope)) {
           if (loadId === latestLoad) renderPreservingFocus();
           return true;
         }
@@ -5576,11 +5645,12 @@ const ConsoleBridge = (() => {
       throw new Error("incompatible console export");
     } catch (error) {
       if (loadId === latestLoad) {
-        S.consolePayload = null;
+        const hadPayload = Boolean(S.consolePayload);
+        if (!hadPayload) S.consolePayload = null;
         S.consolePayloadState = jsonResponseSeen
-          ? {status:"unavailable", projections:{}, reason:error instanceof Error ? error.message : String(error)}
+          ? {status:"unavailable", projections:hadPayload ? (S.consolePayloadState.projections || {}) : {}, reason:error instanceof Error ? error.message : String(error)}
           : {status:"unloaded", projections:{}, reason:"console_export_not_found"};
-        label(jsonResponseSeen ? "实时载荷不可用" : "未接入工作区（console.json 不可用）", jsonResponseSeen ? "unavailable" : "fallback");
+        label(jsonResponseSeen ? (hadPayload ? "实时载荷暂不可用，保留上一份快照" : "实时载荷不可用") : "未接入工作区（console.json 不可用）", jsonResponseSeen ? "unavailable" : "fallback");
         renderPreservingFocus();
       }
       return false;
@@ -5600,12 +5670,20 @@ const ConsoleBridge = (() => {
     const stream = new EventSource(url.toString());
     eventStream = stream;
     const connectionGeneration = eventGeneration;
+    label(`正在连接实时事件 · 游标 ${cursor}`, "connecting");
+    renderPreservingFocus();
+    stream.onopen = () => {
+      if (eventStream !== stream) return;
+      label(`实时观察 · 游标 ${cursor}`, "live");
+      renderPreservingFocus();
+    };
     stream.addEventListener("research_event", event => {
       if (eventStream !== stream || (connectionGeneration !== null && eventGeneration !== connectionGeneration)) return;
       const nextCursor = Number(event.lastEventId);
       if (!Number.isInteger(nextCursor) || nextCursor < 0) return;
       cursor = Math.max(cursor, nextCursor);
       label(`实时观察 · 事件 ${cursor}`, "live");
+      transportSequence = cursor;
       if (!refreshScheduled) {
         refreshScheduled = true;
         window.setTimeout(() => { refreshScheduled = false; loadExport("/api/runtime/snapshot"); }, 100);
@@ -5615,6 +5693,8 @@ const ConsoleBridge = (() => {
       if (eventStream !== stream) return;
       eventStream = null;
       stream.close();
+      label(`实时连接断开 · 将从游标 ${cursor} 重连`, "reconnecting");
+      renderPreservingFocus();
       scheduleReconnect(endpoint);
     };
     return true;
@@ -5624,6 +5704,8 @@ const ConsoleBridge = (() => {
     if(eventStream){ eventStream.close(); eventStream = null; }
     eventEndpoint = null;
     eventGeneration = null;
+    transportRunId = null;
+    transportSequence = null;
     cursor = -1;
     refreshScheduled = false;
     latestLoad += 1;
@@ -5739,6 +5821,10 @@ window.MathArcConsole = ConsoleBridge;
 ConsoleBridge.loadExport().then(loaded => { if (loaded && location.protocol !== "file:") ConsoleBridge.connectEvents("/events"); });
 render();
 if(location.protocol !== "file:") AccessConsole.restoreSession();
+if(ROADSHOW_DEMO){
+  const form = document.getElementById("wb-form");
+  if(form) form.dispatchEvent(new Event("submit", {bubbles:true, cancelable:true}));
+}
 </script>
 </body>
 </html>
