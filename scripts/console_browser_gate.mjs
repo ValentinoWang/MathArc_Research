@@ -1087,6 +1087,18 @@ async function testWorkbenchStates(page) {
   assert((await page.locator("body").innerText()).includes("输入 → 拆解 → 调用 → 验证 → 证据"), "workbench did not recover to ready state");
 }
 
+async function testWorkbenchOwnership(page) {
+  await renderCase(page, "c7", { name: "workbench-ownership", view: "workbench" });
+  const plane = await page.locator("#planes button.on").innerText();
+  assert(plane.includes("攻克过程"), "workbench did not highlight the attack plane");
+  const navText = await page.locator("#nav").innerText();
+  assert(navText.includes("演示工作台"), "attack-plane navigation omitted the workbench");
+  await dispatch(page, "plane", { v: "p" });
+  assert(!(await page.locator("#nav").innerText()).includes("演示工作台"), "topic-intelligence navigation still owns the workbench");
+  await dispatch(page, "plane", { v: "d" });
+  assert((await page.locator("#planes button.on").innerText()).includes("攻克过程"), "attack-plane navigation did not recover");
+}
+
 async function testMobileViewports(browser, server, accessCookies) {
   for (const viewport of MOBILE_VIEWPORTS) {
     const context = await newGateContext(browser, {
@@ -1467,6 +1479,7 @@ async function main() {
     }
     await testAccordions(page);
     await testStartFlow(page);
+    await testWorkbenchOwnership(page);
     await testTampers(page);
     await testDataBoundaryAndProvenance(page, server, exportPayload);
     await testM3LocalProjections(page, exportPayload);

@@ -1135,9 +1135,10 @@ try{ const t=localStorage.getItem("ma-theme"); if(t) document.documentElement.se
      const v=localStorage.getItem("ma-view"); if(v) S.view=v;
      const f=localStorage.getItem("ma-fold2"); if(f) S.collapsed=JSON.parse(f)||{}; }catch(e){}
 /* Stable roadshow entry: ?demo=1 bypasses browser-local navigation residue,
-   opens the workbench, and starts the credential-free deterministic runner. */
+   opens the workbench under the attack plane, and starts the credential-free
+   deterministic runner. */
 const ROADSHOW_DEMO = new URLSearchParams(window.location.search).get("demo") === "1";
-if(ROADSHOW_DEMO){ S.guest = true; S.view = "workbench"; S.plane = "p"; }
+if(ROADSHOW_DEMO){ S.guest = true; S.view = "workbench"; S.plane = "d"; }
 
 /* 目录树。每个节点要么是一个视图叶子 {v}，要么是一个可折叠的层级 {g,ctx,kids}。
    层级必须表达真实的包含关系，不能把不同层级的东西平铺在同一组里：
@@ -1173,7 +1174,7 @@ const PLANES = [
     tree:[
       /* 方向是这一层唯一的先验输入，由席位绑定；信息流与候选主题都在它下面。 */
       { g:"方向", ctx:()=>FIELD.n, kids:[
-        {v:"workbench"}, {v:"field"}, {v:"topics"},
+        {v:"field"}, {v:"topics"},
       { g:"主题", ctx:()=>T().n, kids:[
         { g:"信息层", kids:[ {v:"radar"}, {v:"source"} ] },
         { g:"问题层", kids:[
@@ -1187,7 +1188,8 @@ const PLANES = [
   { id:"d", k:"2", n:"攻克过程", full:"第二步 · 试着把它做出来",
     q:"从哪些猜想和路线推进？每一轮做了什么、为什么停下？",
     tree:[
-      { g:"攻克层", kids:[ {v:"campaigns"} ] },
+      /* 工作台从输入问题开始组织一次攻克，因此属于攻克层，不是选题层。 */
+      { g:"攻克层", kids:[ {v:"workbench"}, {v:"campaigns"} ] },
       { g:"主题", ctx:()=>topicName(C().topic), kids:[
         { g:"问题", ctx:()=>probName(C().pid), kids:[
           { g:"攻克目标", ctx:()=>C().target, kids:[
@@ -4626,7 +4628,7 @@ const AccessConsole = (() => {
     ConsoleBridge.clear();
     S.access.session = null;
     S.guest = true;
-    S.plane = "p";
+    S.plane = "d";
     S.view = "workbench";
     window.scrollTo({top:0});
     render();

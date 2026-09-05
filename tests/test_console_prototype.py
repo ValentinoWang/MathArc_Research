@@ -32,7 +32,19 @@ class ConsolePrototypeTests(unittest.TestCase):
         ).read_text(encoding="utf-8")
         self.assertIn('new URLSearchParams(window.location.search).get("demo") === "1"', page)
         self.assertIn('S.view = "workbench"', page)
+        self.assertIn('if(ROADSHOW_DEMO){ S.guest = true; S.view = "workbench"; S.plane = "d"; }', page)
         self.assertIn('form.dispatchEvent(new Event("submit"', page)
+
+    def test_workbench_belongs_to_attack_plane_not_topic_intelligence(self) -> None:
+        page = (
+            Path(__file__).resolve().parents[1]
+            / "docs/prototypes/problem-intel-console.html"
+        ).read_text(encoding="utf-8")
+        topic_plane = page[page.index('{ id:"p"'):page.index('{ id:"d"')]
+        attack_plane = page[page.index('{ id:"d"'):page.index('{ id:"v"')]
+        self.assertNotIn('{v:"workbench"}', topic_plane)
+        self.assertIn('{ g:"攻克层", kids:[ {v:"workbench"}, {v:"campaigns"} ] }', attack_plane)
+        self.assertIn('S.plane = "d";\n    S.view = "workbench";', page)
 
     def test_browser_gate_runs_campaign_through_cli_and_asserts_sse_dom_refresh(self) -> None:
         gate = (Path(__file__).resolve().parents[1] / "scripts/console_browser_gate.mjs").read_text(encoding="utf-8")

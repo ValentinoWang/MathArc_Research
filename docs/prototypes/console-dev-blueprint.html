@@ -181,15 +181,15 @@ html{scroll-behavior:smooth;}
     <tbody>
       <tr><td>① 选题情报</td><td class="mut">往哪个方向监测？哪道题今天仍开放、值得投入？</td>
         <td>方向信息流 · 候选主题 · 每日新论文 · 资料核验 · 候选问题 · 问题详情 · 开放状态核查 · 已知结果与缺口 · 难度评估</td></tr>
-      <tr><td>② 攻克过程</td><td class="mut">每一轮做了什么、为什么停下？</td>
-        <td>攻克进程列表 · 攻克进程（轮次） · 攻克路线 · 猜想队列 · 实验记录</td></tr>
+      <tr><td>② 攻克过程</td><td class="mut">如何把已选问题拆成目标、执行路线并留下可审记录？</td>
+        <td>演示工作台（输入→拆解→调用→验证→证据） · 攻克进程列表 · 攻克进程（轮次） · 攻克路线 · 猜想队列 · 实验记录</td></tr>
       <tr><td>③ 验证发布</td><td class="mut">结论真的成立吗？是新的吗？能对外说到哪一级？</td>
         <td>证明结构 · 证明过程链 · 工具调用台账 · 决策记录 · 是否算新结果 · 能对外说什么</td></tr>
       <tr><td>账户</td><td class="mut">积分、充值、限额</td><td>总览 · 积分明细 · 充值与套餐 · 预算与限额</td></tr>
       <tr><td>管理端</td><td class="mut">谁的判定算数；钱怎么花</td><td>角色与权限 · 评审名册 · 评审队列 · 成本与模型用量 · 上游接入 · 用户与席位</td></tr>
     </tbody>
   </table></div>
-  <p style="margin-top:14px">三平面之间的主线：已知结果图上的<strong>残余缺口</strong>被编译成待证根命题（①→②），攻克进程逐轮留下封存事件与工具调用（②→③），证据决定结论能被说成什么（③）。攻克进程是一等对象：平面②③的全部内容跟随「当前选中的进程」，无逐轮记录或无产出结果的进程显示诚实空态，不借用其他进程的数据。</p>
+  <p style="margin-top:14px">三平面之间的主线：第一步先从方向、主题和候选问题中判断<strong>做什么</strong>；选定问题后，演示工作台和攻克进程负责把它变成一次可追踪的<strong>怎么做</strong>（①→②）；攻克进程逐轮留下封存事件与工具调用，证据再决定结论能被说成什么（②→③）。攻克进程是一等对象：平面②③的全部内容跟随「当前选中的进程」，无逐轮记录或无产出结果的进程显示诚实空态，不借用其他进程的数据。</p>
 </section>
 
 <section id="s3">
@@ -333,6 +333,7 @@ html{scroll-behavior:smooth;}
   <div class="tw"><table>
     <thead><tr><th>视图</th><th>数据来源</th><th>接线动作</th><th>状态</th></tr></thead>
     <tbody>
+      <tr><td>演示工作台</td><td><code>demo_runner.py</code> / <code>demo_server.py</code></td><td>从问题输入开始，展示拆解、工具/模型调用、独立验证与证据边界；不负责选择候选问题，也不授予数学晋升权</td><td><span class="chip c-done">已落地（确定性演示）</span></td></tr>
       <tr><td>攻克进程（轮次）</td><td><code>CampaignRunner</code> 的 rounds/stop_reason/budget</td><td><code>GET /api/campaign</code> 已落地；报告必须以运行 ID、状态摘要、事件链头和报告摘要绑定到当前工作区</td><td><span class="chip c-done">已落地</span></td></tr>
       <tr><td>攻克路线</td><td><code>ResearchRoute</code> + <code>KillTestSpec</code> + 阻断器</td><td><code>console_routes_projection</code> 只读映射真实路线、证伪测试和评估结果；不虚构并行/串行拓扑</td><td><span class="chip c-done">已落地</span></td></tr>
       <tr><td>攻克进程列表</td><td>本地工作区索引以显式配置根目录只读扫描；扫描结果不暴露绝对路径</td><td>索引记录与当前工作区投影已接线；跨机器/账户的集中目录服务仍未配置</td><td><span class="chip c-done">已落地（本地隔离）</span></td></tr>
