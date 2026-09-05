@@ -14,10 +14,11 @@ import secrets
 import tempfile
 import time
 import uuid
-from collections.abc import Callable, Iterable, Mapping
+from collections.abc import Callable, Iterable, Iterator, Mapping
+from contextlib import contextmanager
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any
+from typing import Any, Protocol, cast
 
 from .local_store import LocalStoreError, exclusive_lock, external_root, state_digest
 from .schema import canonical_json
@@ -689,3 +690,332 @@ class InvitationAccessStore:
             topic_scopes=tuple(item["topic_scopes"]),
             expires_at=item["expires_at"],
         )
+
+
+class _DatabaseConnection(Protocol):
+    def cursor(self) -> Any: ...
+    def commit(self) -> Any: ...
+    def rollback(self) -> Any: ...
+    def close(self) -> Any: ...
+
+
+DatabaseConnectionFactory = Callable[[], _DatabaseConnection]
+
+
+class PostgresInvitationAccessStore:
+    """PostgreSQL implementation of the public invitation access contract.
+
+    The administrator service is the authority for invitation issuance.  This
+    adapter intentionally only consumes the shared ``invitations`` table and
+    records public sessions in ``access_sessions``.  Schema creation remains an
+    explicit migration/deployment operation.
+    """
+
+    def __init__(
+        self,
+        connection_factory: DatabaseConnectionFactory,
+        *,
+        clock: Callable[[], int | float] = time.time,
+        session_ttl_seconds: int = 12 * 60 * 60,
+    ) -> None:
+        if not callable(connection_factory):
+            raise AccessValidationError("connection_factory must be callable")
+        self.connection_factory = connection_factory
+        self._clock = clock
+        self._session_ttl_seconds = InvitationAccessStore._request_ttl(
+            session_ttl_seconds,
+            label="session_ttl_seconds",
+            maximum=_MAX_SESSION_TTL_SECONDS,
+        )
+
+    def submit_application(
+        self,
+        *,
+        email: str,
+        institution: str,
+        research_role: str,
+        research_direction: str,
+        purpose: str,
+    ) -> ApplicationView:
+        normalized_email = _normalize_email(email)
+        normalized_institution = _request_text(institution, "institution", maximum=300)
+        normalized_role = _request_text(research_role, "research_role", maximum=200)
+        normalized_direction = _request_text(research_direction, "research_direction", maximum=500)
+        normalized_purpose = _request_text(purpose, "purpose", maximum=2_000)
+        now = self._now()
+        application = {
+            "application_id": uuid.uuid4().hex,
+            "status": "PENDING",
+            "email": normalized_email,
+            "institution": normalized_institution,
+            "research_role": normalized_role,
+            "research_direction": normalized_direction,
+            "purpose": normalized_purpose,
+            "submitted_at": now,
+        }
+        try:
+            with self._transaction() as cursor:
+                cursor.execute(
+                    "INSERT INTO applications "
+                    "(application_id,status,email,institution,research_role,research_direction,purpose,submitted_at) "
+                    "VALUES (%s,%s,%s,%s,%s,%s,%s,%s)",
+                    tuple(application.values()),
+                )
+        except AccessError:
+            raise
+        except Exception as exc:
+            raise AccessStateError("PostgreSQL access state is unavailable") from exc
+        return ApplicationView(
+            str(application["application_id"]),
+            str(application["status"]),
+            str(application["email"]),
+            cast(int, application["submitted_at"]),
+        )
+
+    def issue_invitation(
+        self,
+        *,
+        email: str,
+        topic_scopes: Iterable[str],
+        ttl_seconds: int | None = None,
+    ) -> IssuedInvitation:
+        normalized_email = _normalize_email(email)
+        normalized_topics = _request_topics(topic_scopes)
+        ttl = InvitationAccessStore._request_ttl(
+            _DEFAULT_INVITATION_TTL_SECONDS if ttl_seconds is None else ttl_seconds,
+            label="ttl_seconds",
+            maximum=_MAX_INVITATION_TTL_SECONDS,
+        )
+        now = self._now()
+        code = secrets.token_urlsafe(32)
+        invitation = {
+            "invitation_id": uuid.uuid4().hex,
+            "email": normalized_email,
+            "topic_scopes": list(normalized_topics),
+            "code_hash_sha256": _hash_secret(code),
+            "issued_at": now,
+            "expires_at": now + ttl,
+            "redeemed_at": None,
+            "revoked_at": None,
+        }
+        try:
+            with self._transaction() as cursor:
+                cursor.execute(
+                    "INSERT INTO invitations "
+                    "(invitation_id,email,topic_scopes,code_hash_sha256,issued_at,expires_at,redeemed_at,revoked_at) "
+                    "VALUES (%s,%s,%s::jsonb,%s,%s,%s,%s,%s)",
+                    (
+                        invitation["invitation_id"],
+                        invitation["email"],
+                        json.dumps(invitation["topic_scopes"]),
+                        invitation["code_hash_sha256"],
+                        invitation["issued_at"],
+                        invitation["expires_at"],
+                        None,
+                        None,
+                    ),
+                )
+        except Exception as exc:
+            raise AccessStateError("PostgreSQL access state is unavailable") from exc
+        return IssuedInvitation(code, InvitationAccessStore._invitation_view(invitation))
+
+    def revoke_invitation(self, invitation_id: str) -> InvitationView:
+        identifier = _request_text(invitation_id, "invitation_id", maximum=128)
+        now = self._now()
+        try:
+            with self._transaction() as cursor:
+                cursor.execute(
+                    "SELECT invitation_id,email,topic_scopes,issued_at,expires_at,redeemed_at,revoked_at "
+                    "FROM invitations WHERE invitation_id=%s FOR UPDATE",
+                    (identifier,),
+                )
+                row = cursor.fetchone()
+                if row is None:
+                    raise AccessValidationError("unknown invitation_id")
+                item = _access_row(row, ("invitation_id", "email", "topic_scopes", "issued_at", "expires_at", "redeemed_at", "revoked_at"))
+                if item["redeemed_at"] is not None:
+                    raise AccessConflictError("a redeemed invitation cannot be revoked")
+                if item["revoked_at"] is not None:
+                    raise AccessConflictError("invitation is already revoked")
+                cursor.execute("UPDATE invitations SET revoked_at=%s WHERE invitation_id=%s", (now, identifier))
+                item["revoked_at"] = now
+                item["topic_scopes"] = _json_topics(item["topic_scopes"])
+                return InvitationView(
+                    str(item["invitation_id"]), str(item["email"]), tuple(item["topic_scopes"]),
+                    int(item["issued_at"]), int(item["expires_at"]), item["redeemed_at"], item["revoked_at"],
+                )
+        except (AccessValidationError, AccessConflictError, AccessStateError):
+            raise
+        except Exception as exc:
+            raise AccessStateError("PostgreSQL access state is unavailable") from exc
+
+    def redeem(self, *, email: str, code: str) -> tuple[str, SessionView]:
+        normalized_email = _normalize_email(email)
+        normalized_code = _request_text(code, "code", maximum=1_024)
+        code_hash = _hash_secret(normalized_code)
+        now = self._now()
+        try:
+            with self._transaction() as cursor:
+                cursor.execute(
+                    "SELECT invitation_id,email,topic_scopes,issued_at,expires_at,redeemed_at,revoked_at,code_hash_sha256 "
+                    "FROM invitations WHERE code_hash_sha256=%s FOR UPDATE",
+                    (code_hash,),
+                )
+                row = cursor.fetchone()
+                if row is None:
+                    raise InvalidCredentialsError("invalid or inactive invitation credentials")
+                item = _access_row(row, ("invitation_id", "email", "topic_scopes", "issued_at", "expires_at", "redeemed_at", "revoked_at", "code_hash_sha256"))
+                valid = (
+                    hmac.compare_digest(str(item["code_hash_sha256"]), code_hash)
+                    and hmac.compare_digest(str(item["email"]), normalized_email)
+                    and item["redeemed_at"] is None
+                    and item["revoked_at"] is None
+                    and now < int(item["expires_at"])
+                )
+                if not valid:
+                    raise InvalidCredentialsError("invalid or inactive invitation credentials")
+                topics = _json_topics(item["topic_scopes"])
+                session_token = secrets.token_urlsafe(32)
+                session = {
+                    "session_id": uuid.uuid4().hex,
+                    "invitation_id": str(item["invitation_id"]),
+                    "email": str(item["email"]),
+                    "topic_scopes": topics,
+                    "token_hash_sha256": _hash_secret(session_token),
+                    "created_at": now,
+                    "expires_at": now + self._session_ttl_seconds,
+                    "logged_out_at": None,
+                }
+                cursor.execute("UPDATE invitations SET redeemed_at=%s WHERE invitation_id=%s", (now, session["invitation_id"]))
+                cursor.execute(
+                    "INSERT INTO access_sessions "
+                    "(access_session_id,invitation_id,email,topic_scopes,token_hash_sha256,created_at,expires_at,logged_out_at) "
+                    "VALUES (%s,%s,%s,%s::jsonb,%s,%s,%s,%s)",
+                    (
+                        session["session_id"], session["invitation_id"], session["email"], json.dumps(topics),
+                        session["token_hash_sha256"], session["created_at"], session["expires_at"], None,
+                    ),
+                )
+                return session_token, SessionView(
+                    str(session["email"]), tuple(topics), cast(int, session["expires_at"])
+                )
+        except (InvalidCredentialsError, AccessValidationError, AccessStateError):
+            raise
+        except Exception as exc:
+            raise AccessStateError("PostgreSQL access state is unavailable") from exc
+
+    def authenticate(self, session_token: str) -> SessionView:
+        normalized_token = _request_text(session_token, "session_token", maximum=1_024)
+        token_hash = _hash_secret(normalized_token)
+        now = self._now()
+        try:
+            with self._transaction() as cursor:
+                cursor.execute(
+                    "SELECT email,topic_scopes,expires_at,logged_out_at,token_hash_sha256 "
+                    "FROM access_sessions WHERE token_hash_sha256=%s",
+                    (token_hash,),
+                )
+                row = cursor.fetchone()
+                if row is None:
+                    raise InvalidCredentialsError("invalid or inactive session")
+                item = _access_row(row, ("email", "topic_scopes", "expires_at", "logged_out_at", "token_hash_sha256"))
+                if (
+                    not hmac.compare_digest(str(item["token_hash_sha256"]), token_hash)
+                    or item["logged_out_at"] is not None
+                    or now >= int(item["expires_at"])
+                ):
+                    raise InvalidCredentialsError("invalid or inactive session")
+                return SessionView(str(item["email"]), tuple(_json_topics(item["topic_scopes"])), int(item["expires_at"]))
+        except (InvalidCredentialsError, AccessValidationError, AccessStateError):
+            raise
+        except Exception as exc:
+            raise AccessStateError("PostgreSQL access state is unavailable") from exc
+
+    def logout(self, session_token: str) -> None:
+        normalized_token = _request_text(session_token, "session_token", maximum=1_024)
+        token_hash = _hash_secret(normalized_token)
+        now = self._now()
+        try:
+            with self._transaction() as cursor:
+                cursor.execute(
+                    "UPDATE access_sessions SET logged_out_at=%s "
+                    "WHERE token_hash_sha256=%s AND logged_out_at IS NULL AND expires_at>%s",
+                    (now, token_hash, now),
+                )
+                if getattr(cursor, "rowcount", 1) == 0:
+                    raise InvalidCredentialsError("invalid or inactive session")
+        except (InvalidCredentialsError, AccessValidationError, AccessStateError):
+            raise
+        except Exception as exc:
+            raise AccessStateError("PostgreSQL access state is unavailable") from exc
+
+    @contextmanager
+    def _transaction(self) -> Iterator[Any]:
+        connection = self.connection_factory()
+        if connection is None:
+            raise AccessStateError("connection_factory returned None")
+        cursor = connection.cursor()
+        try:
+            yield cursor
+            connection.commit()
+        except Exception:
+            try:
+                connection.rollback()
+            finally:
+                if hasattr(cursor, "close"):
+                    cursor.close()
+            raise
+        else:
+            if hasattr(cursor, "close"):
+                cursor.close()
+        finally:
+            if hasattr(connection, "close"):
+                connection.close()
+
+    def _now(self) -> int:
+        try:
+            value = self._clock()
+        except Exception as exc:
+            raise AccessStateError("clock failed") from exc
+        if isinstance(value, bool) or not isinstance(value, (int, float)) or value < 0:
+            raise AccessStateError("clock must return a non-negative timestamp")
+        return int(value)
+
+
+def _access_row(row: Any, names: tuple[str, ...]) -> dict[str, Any]:
+    if isinstance(row, Mapping):
+        return {name: row[name] for name in names}
+    try:
+        return dict(zip(names, row, strict=True))
+    except (TypeError, ValueError) as exc:
+        raise AccessStateError("PostgreSQL returned an invalid access row") from exc
+
+
+def _json_topics(value: Any) -> list[str]:
+    if isinstance(value, str):
+        try:
+            value = json.loads(value)
+        except json.JSONDecodeError as exc:
+            raise AccessStateError("stored topic scopes are invalid") from exc
+    if not isinstance(value, (list, tuple)) or any(not isinstance(item, str) for item in value):
+        raise AccessStateError("stored topic scopes are invalid")
+    try:
+        return list(_request_topics(value))
+    except AccessValidationError as exc:
+        raise AccessStateError("stored topic scopes are invalid") from exc
+
+
+def psycopg_access_connection_factory(dsn: str) -> DatabaseConnectionFactory:
+    """Return a lazy psycopg connection factory for public access storage."""
+
+    if not isinstance(dsn, str) or not dsn.strip():
+        raise AccessValidationError("dsn is required")
+
+    def connect() -> _DatabaseConnection:
+        try:
+            import psycopg
+        except ImportError as exc:
+            raise AccessStateError("psycopg is required for PostgreSQL access") from exc
+        return cast(_DatabaseConnection, psycopg.connect(dsn))
+
+    return connect

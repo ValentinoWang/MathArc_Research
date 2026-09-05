@@ -96,7 +96,7 @@ class RuntimeBootstrap:
             reasons.append(f"runtime store unavailable: {exc}")
         if not self.credential_path.is_file():
             reasons.append("credential is missing")
-        return {
+        payload: dict[str, object] = {
             "ok": not reasons,
             "status": "ready" if not reasons else "not_ready",
             "runtime_run_id": self.runtime_run_id,
@@ -515,13 +515,37 @@ def _serve(args: argparse.Namespace) -> int:
 
     dashboard_path = _optional_path_env("MATHARC_DASHBOARD_PATH")
     access_store_path = _optional_path_env("MATHARC_ACCESS_STORE_PATH")
+    access_api = None
+    admin_api = None
+    admin_dashboard_path = _optional_path_env("MATHARC_ADMIN_DASHBOARD_PATH")
+    if _bool_env("MATHARC_ADMIN_ENABLED"):
+        from ..access import PostgresInvitationAccessStore
+        from ..access_server import AccessAPI
+        from ..admin_server import AdminAPI
+        from ..admin_service import AdminService, psycopg_connection_factory
+        dsn = os.environ.get("MATHARC_ADMIN_DATABASE_URL", "").strip()
+        if not dsn:
+            raise RuntimeBootstrapError("MATHARC_ADMIN_DATABASE_URL is required when MATHARC_ADMIN_ENABLED=true")
+        if not _bool_env("MATHARC_ADMIN_TRUST_PROXY"):
+            raise RuntimeBootstrapError("MATHARC_ADMIN_TRUST_PROXY must be true when admin API is enabled")
+        # Schema creation is an explicit migration step; serving must never
+        # create a partial schema that can mask an incomplete deployment.
+        admin_service = AdminService(psycopg_connection_factory(dsn))
+        admin_api = AdminAPI(admin_service, trusted_proxy=_bool_env("MATHARC_ADMIN_TRUST_PROXY"))
+        access_api = AccessAPI(
+            PostgresInvitationAccessStore(psycopg_connection_factory(dsn)),
+            cookie_secure=_bool_env("MATHARC_ACCESS_COOKIE_SECURE"),
+        )
     server = make_server(
         runtime.workspace,
         host=args.host,
         port=args.port,
         dashboard_path=dashboard_path,
         access_store_root=access_store_path,
+        access_api=access_api,
         access_cookie_secure=_bool_env("MATHARC_ACCESS_COOKIE_SECURE"),
+        admin_api=admin_api,
+        admin_dashboard_path=admin_dashboard_path,
         runtime_store_path=runtime.store_path,
     )
     try:

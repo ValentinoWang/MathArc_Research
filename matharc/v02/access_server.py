@@ -15,6 +15,7 @@ from .access import (
     AccessValidationError,
     InvalidCredentialsError,
     InvitationAccessStore,
+    PostgresInvitationAccessStore,
     SessionView,
 )
 
@@ -46,7 +47,7 @@ class AccessAPI:
 
     def __init__(
         self,
-        store: InvitationAccessStore,
+        store: InvitationAccessStore | PostgresInvitationAccessStore,
         *,
         cookie_secure: bool = False,
     ) -> None:

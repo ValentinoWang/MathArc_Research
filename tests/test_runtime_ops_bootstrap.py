@@ -5,8 +5,8 @@ import os
 import tempfile
 import unittest
 from pathlib import Path
-from unittest.mock import patch
 from types import SimpleNamespace
+from unittest.mock import patch
 
 from matharc.v02.runtime.ops import (
     RuntimeBootstrapError,
@@ -111,6 +111,39 @@ class RuntimeOpsBootstrapTests(unittest.TestCase):
             self.assertEqual(root / "store", captured["runtime_store_path"])
             self.assertEqual(root / "access", captured["access_store_root"])
             self.assertTrue(captured["access_cookie_secure"])
+            self.assertIsNone(captured["admin_api"])
+            self.assertIsNone(captured["admin_dashboard_path"])
+
+    def test_admin_serve_requires_database_and_trusted_proxy(self) -> None:
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            credential = root / "credentials" / "api-token"
+            credential.parent.mkdir()
+            credential.write_text("opaque-token\n", encoding="utf-8")
+            env = self._environment(root, credential) | {
+                "MATHARC_ADMIN_ENABLED": "true",
+                "MATHARC_ADMIN_DATABASE_URL": "",
+                "MATHARC_ADMIN_TRUST_PROXY": "false",
+            }
+            runtime = SimpleNamespace(
+                workspace=root / "workspace", store_path=root / "store", readyz=lambda: {"ok": True}
+            )
+            with patch.dict(os.environ, env, clear=False), patch(
+                "matharc.v02.runtime.ops.bootstrap_from_env", return_value=runtime
+            ):
+                from matharc.v02.runtime.ops import _serve
+
+                with self.assertRaisesRegex(RuntimeBootstrapError, "DATABASE_URL"):
+                    _serve(SimpleNamespace(host="127.0.0.1", port=0, run="", workspace=""))
+
+            env["MATHARC_ADMIN_DATABASE_URL"] = "postgresql://example"
+            with patch.dict(os.environ, env, clear=False), patch(
+                "matharc.v02.runtime.ops.bootstrap_from_env", return_value=runtime
+            ):
+                from matharc.v02.runtime.ops import _serve
+
+                with self.assertRaisesRegex(RuntimeBootstrapError, "TRUST_PROXY"):
+                    _serve(SimpleNamespace(host="127.0.0.1", port=0, run="", workspace=""))
 
     def test_cleanup_backs_up_before_allowlisted_removal(self) -> None:
         with tempfile.TemporaryDirectory() as directory:

@@ -19,11 +19,12 @@ from .._workspace_server_impl import (
 from .._workspace_server_impl import WorkspaceSnapshot
 from ..access import InvitationAccessStore
 from ..access_server import AccessAPI
+from ..admin_server import AdminAPI
 from ..console_export import ConsoleLocalProjectionConfig
 from ..review_server import ReviewAPI, ReviewServerConfig
+from ..runtime.run_store import RuntimeStore
 from ..topic_observation import TopicObservationRunner
 from ..workspace import ResearchWorkspace
-from ..runtime.run_store import RuntimeStore
 
 
 class WorkspaceRepository(_WorkspaceRepositoryImpl):
@@ -50,6 +51,8 @@ class WorkspaceHTTPServer(_WorkspaceHTTPServerImpl):
         topic_store: TopicObservationRunner | None = None,
         local_projection_config: ConsoleLocalProjectionConfig | None = None,
         access_api: AccessAPI | None = None,
+        admin_api: AdminAPI | None = None,
+        admin_dashboard_path: str | Path | None = None,
         runtime_store: RuntimeStore | None = None,
     ) -> None:
         self.repository = repository
@@ -60,6 +63,8 @@ class WorkspaceHTTPServer(_WorkspaceHTTPServerImpl):
         self.topic_store = topic_store
         self.local_projection_config = local_projection_config
         self.access_api = access_api
+        self.admin_api = admin_api
+        self.admin_dashboard_path = Path(admin_dashboard_path).resolve() if admin_dashboard_path else None
         self.runtime_store = runtime_store
         from ..runtime.service import ConsoleRuntimeService
         self.runtime_service = ConsoleRuntimeService(
@@ -90,7 +95,10 @@ def make_server(
     topic_initial_cursor: str | None = None,
     local_projection_config: ConsoleLocalProjectionConfig | None = None,
     access_store_root: str | Path | None = None,
+    access_api: AccessAPI | None = None,
     access_cookie_secure: bool = False,
+    admin_api: AdminAPI | None = None,
+    admin_dashboard_path: str | Path | None = None,
     runtime_store_path: str | Path | None = None,
 ) -> WorkspaceHTTPServer:
     from ..console_topic import TopicStoreConfig
@@ -130,11 +138,8 @@ def make_server(
         if resolved_review_trace_path is not None and review_write_token is not None
         else None
     )
-    access_api = (
-        AccessAPI(InvitationAccessStore(access_store_root), cookie_secure=access_cookie_secure)
-        if access_store_root is not None
-        else None
-    )
+    if access_api is None and access_store_root is not None:
+        access_api = AccessAPI(InvitationAccessStore(access_store_root), cookie_secure=access_cookie_secure)
     runtime_store = RuntimeStore(runtime_store_path or (root / ".runtime-store"))
     return WorkspaceHTTPServer(
         (host, port),
@@ -146,6 +151,8 @@ def make_server(
         topic_store=topic_store,
         local_projection_config=local_projection_config,
         access_api=access_api,
+        admin_api=admin_api,
+        admin_dashboard_path=admin_dashboard_path,
         runtime_store=runtime_store,
     )
 

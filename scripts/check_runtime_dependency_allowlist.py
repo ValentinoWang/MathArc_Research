@@ -12,11 +12,11 @@ from pathlib import Path
 STDLIB_ALLOWLIST = frozenset({
     "__future__", "argparse", "ast", "asyncio", "collections", "contextlib", "copy", "dataclasses",
     "datetime", "enum", "fcntl", "functools", "hashlib", "hmac", "http", "itertools",
-    "json", "logging", "math", "os", "pathlib", "re", "shutil", "sqlite3", "sys", "types",
+    "json", "logging", "math", "os", "pathlib", "re", "secrets", "shutil", "sqlite3", "sys", "types",
     "tempfile", "time", "traceback", "typing", "uuid", "zipfile", "concurrent", "inspect", "threading",
 })
 LOCAL_ALLOWLIST = frozenset({"matharc"})
-ALLOWED_RUNTIME_DEPENDENCIES = frozenset((*STDLIB_ALLOWLIST, *LOCAL_ALLOWLIST))
+ALLOWED_RUNTIME_DEPENDENCIES = frozenset((*STDLIB_ALLOWLIST, *LOCAL_ALLOWLIST, "psycopg"))
 ALLOWLIST = ALLOWED_RUNTIME_DEPENDENCIES
 
 
@@ -130,12 +130,12 @@ def _local_import_targets(
             # A relative import is resolved from the importing file, so it
             # cannot be reduced to a top-level root without losing its target.
             if node.module:
-                target = ".".join(("" for _ in range(node.level))) + node.module
+                target = ".".join("" for _ in range(node.level)) + node.module
                 candidates = _relative_candidates(source, node.level, node.module)
                 yield target, _first_existing(candidates)
             else:
                 for alias in node.names:
-                    target = ".".join(("" for _ in range(node.level))) + alias.name
+                    target = ".".join("" for _ in range(node.level)) + alias.name
                     candidates = _relative_candidates(source, node.level, alias.name)
                     yield target, _first_existing(candidates)
 
@@ -167,7 +167,7 @@ def check_dependencies(
     # Keep the reviewed set explicit.  ``sys.stdlib_module_names`` is useful
     # for discovery, but unioning it here would silently authorize modules
     # such as subprocess, socket, pickle, and importlib.
-    permitted = set(STDLIB_ALLOWLIST) | set(LOCAL_ALLOWLIST) | set(allowed)
+    permitted = set(ALLOWED_RUNTIME_DEPENDENCIES) | set(allowed)
     files: dict[str, list[str]] = {}
     unknown: dict[str, list[str]] = {}
     queue: list[Path] = []

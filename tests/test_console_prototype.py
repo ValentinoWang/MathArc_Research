@@ -61,6 +61,14 @@ class ConsolePrototypeTests(unittest.TestCase):
         self.assertIn('page.keyboard.press("Space")', gate)
         self.assertIn("tabindex disclosure control", gate)
 
+    def test_browser_gate_records_missing_chromium_as_environment_blocker(self) -> None:
+        gate = (Path(__file__).resolve().parents[1] / "scripts/console_browser_gate.mjs").read_text(encoding="utf-8")
+        self.assertIn('const BROWSER_ENVIRONMENT_BLOCKED = "BLOCKED_ENVIRONMENT";', gate)
+        self.assertIn('artifact_kind: "matharc-browser-gate-status"', gate)
+        self.assertIn('browser-gate-status.json', gate)
+        self.assertIn("isMissingChromiumError", gate)
+        self.assertIn("BROWSER_ENVIRONMENT_REASON", gate)
+
     def test_bridge_has_explicit_provenance_and_memory_only_review_token(self) -> None:
         page = (Path(__file__).resolve().parents[1] / "docs/prototypes/problem-intel-console.html").read_text(encoding="utf-8")
         self.assertIn('const endpoints = url ? [url] : ["console.json", "/api/console"]', page)

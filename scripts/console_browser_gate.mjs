@@ -101,6 +101,31 @@ function fail(message) {
   throw new Error(`console browser gate: ${message}`);
 }
 
+const BROWSER_ENVIRONMENT_BLOCKED = "BLOCKED_ENVIRONMENT";
+const BROWSER_ENVIRONMENT_REASON = "Playwright Chromium executable is not installed in this environment";
+
+function isMissingChromiumError(error) {
+  const message = String(error?.stack || error?.message || error);
+  return (
+    /browserType\.launch:\s*Executable doesn't exist at .*chromium/i.test(message)
+    || (/Looks like Playwright was just installed or updated/i.test(message)
+      && /download new browsers/i.test(message))
+  );
+}
+
+function recordBrowserEnvironmentBlock(error) {
+  const record = {
+    schema_version: "1.0",
+    artifact_kind: "matharc-browser-gate-status",
+    status: BROWSER_ENVIRONMENT_BLOCKED,
+    reason: BROWSER_ENVIRONMENT_REASON,
+    error: String(error?.message || error),
+  };
+  mkdirSync(EVIDENCE_DIR, { recursive: true });
+  writeFileSync(join(EVIDENCE_DIR, "browser-gate-status.json"), `${JSON.stringify(record, null, 2)}\n`, "utf8");
+  console.error(JSON.stringify(record));
+}
+
 function assert(condition, message) {
   if (!condition) fail(message);
 }
@@ -1415,7 +1440,21 @@ async function main() {
 
   const playwright = loadPlaywright();
   const server = await startServer();
-  const browser = await playwright.chromium.launch({ headless: true });
+  let browser;
+  try {
+    browser = await playwright.chromium.launch({ headless: true });
+  } catch (error) {
+    // The fixture server must not outlive a launch failure, including an
+    // environment blocker that is recorded for a later retry.
+    try {
+      await server.close();
+    } catch (closeError) {
+      console.error(`browser gate fixture cleanup failed: ${closeError.message || closeError}`);
+    }
+    if (!isMissingChromiumError(error)) throw error;
+    recordBrowserEnvironmentBlock(error);
+    throw new Error(`${BROWSER_ENVIRONMENT_BLOCKED}: ${BROWSER_ENVIRONMENT_REASON}`, { cause: error });
+  }
   let accessCaptureCount = 0;
   const context = await newGateContext(browser, { viewport: { width: WIDTHS[0], height: 1080 } });
   const page = await context.newPage();

@@ -16,6 +16,7 @@ dependencies = []
 formal = ["sympy>=1.12", "z3-solver>=4.12"]
 research = ["numpy>=1.26"]
 api = ["fastapi>=0.115", "uvicorn>=0.30"]
+admin = ["psycopg[binary]>=3.2"]
 dev = ["pytest>=8", "ruff>=0.6", "mypy>=1.11", "pre-commit>=3.8"]
 
 [project.scripts]

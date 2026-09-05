@@ -9,6 +9,9 @@ User=matharc
 Group=matharc
 WorkingDirectory=/opt/matharc-research/current
 EnvironmentFile=/etc/matharc-research/matharc-research.env
+# Optional administrator settings. The file is absent when the admin surface
+# is disabled; credentials remain managed by the service manager.
+EnvironmentFile=-/etc/matharc-research/admin.env
 LoadCredential=api-token:/etc/matharc-research/api-token
 ExecStart=/usr/bin/python3 -m matharc.v02.runtime.ops serve --run ${MATHARC_RUN_PATH} --host ${MATHARC_BIND_HOST} --port ${MATHARC_PORT} --workspace ${MATHARC_WORKSPACE}
 Restart=on-failure

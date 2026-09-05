@@ -17,17 +17,17 @@ from .access import (
     InvitationAccessStore,
 )
 from .access_server import AccessAPI, AccessHTTPResponse
+from .admin_server import AdminAPI, AdminHTTPResponse
 from .console_export import ConsoleLocalProjectionConfig, build_console_export, campaign_snapshot
 from .console_topic import TopicStoreConfig
 from .review_server import ReviewAPI, ReviewHTTPResponse, ReviewServerConfig
-from .topic_observation import TopicObservationRunner
-from .workspace import ResearchWorkspace
-from .workspace_visualization import workspace_dashboard_payload
 from .runtime.contracts import ResearchRunSpec
 from .runtime.run_store import RuntimeStore, RuntimeStoreError
 from .runtime.service import ActionConflictError, ConsoleRuntimeService, PermissionDeniedError
 from .runtime.view_model import redact_payload
-from .runtime.state_machine import RunState, RunStateMachine
+from .topic_observation import TopicObservationRunner
+from .workspace import ResearchWorkspace
+from .workspace_visualization import workspace_dashboard_payload
 
 
 class _HandledRequest(Exception):
@@ -87,6 +87,8 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         topic_store: TopicObservationRunner | None = None,
         local_projection_config: ConsoleLocalProjectionConfig | None = None,
         access_api: AccessAPI | None = None,
+        admin_api: AdminAPI | None = None,
+        admin_dashboard_path: str | Path | None = None,
         runtime_store: RuntimeStore | None = None,
     ) -> None:
         self.repository = repository
@@ -99,6 +101,8 @@ class WorkspaceHTTPServer(ThreadingHTTPServer):
         self.topic_store = topic_store
         self.local_projection_config = local_projection_config
         self.access_api = access_api
+        self.admin_api = admin_api
+        self.admin_dashboard_path = Path(admin_dashboard_path).resolve() if admin_dashboard_path else None
         self.runtime_store = runtime_store
         self.runtime_service = ConsoleRuntimeService(
             repository.root,
@@ -115,6 +119,8 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
     def do_GET(self) -> None:
         parsed = urlparse(self.path)
         try:
+            if self._dispatch_admin_get(parsed.path, parse_qs(parsed.query)):
+                return
             if self._dispatch_access_get(parsed.path):
                 return
             if self._access_required(parsed.path) and not self._require_access_session():
@@ -238,6 +244,8 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
 
     def do_POST(self) -> None:
         parsed = urlparse(self.path)
+        if self._dispatch_admin_post(parsed.path):
+            return
         if self._dispatch_access_post(parsed.path):
             return
         if self._access_required(parsed.path) and not self._require_access_session():
@@ -324,6 +332,49 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
         self._access_response(api.get(path, self.headers.get("Cookie", "")))
         return True
 
+    def _dispatch_admin_get(self, path: str, query: dict[str, list[str]] | None = None) -> bool:
+        api = self.server.admin_api
+        if api is None or not api.handles(path):
+            return False
+        if path in {"/admin", "/admin/"}:
+            response = api.get(path, self.headers, query)
+            if response.status != HTTPStatus.OK:
+                self._admin_response(response)
+                return True
+            dashboard = self.server.admin_dashboard_path
+            if dashboard is None or not dashboard.is_file():
+                self._json(HTTPStatus.NOT_FOUND, {"error": "admin_dashboard_not_found"})
+                return True
+            content = dashboard.read_bytes()
+            self.send_response(HTTPStatus.OK)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(content)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(content)
+            return True
+        self._admin_response(api.get(path, self.headers, query))
+        return True
+
+    def _dispatch_admin_post(self, path: str) -> bool:
+        api = self.server.admin_api
+        if api is None or not api.handles(path):
+            return False
+        content_length = self.headers.get("Content-Length")
+        try:
+            length = int(content_length or "0")
+        except ValueError:
+            length = 0
+        body = self.rfile.read(length) if 0 < length <= 32 * 1024 else b""
+        self._admin_response(api.post(path, headers=self.headers, body=body))
+        return True
+
+    def _admin_response(self, response: AdminHTTPResponse) -> None:
+        if response.payload is None:
+            self._empty(response.status, headers=response.headers)
+        else:
+            self._json(response.status, response.payload, headers=response.headers)
+
     def _dispatch_access_post(self, path: str) -> bool:
         api = self.server.access_api
         if api is None or not api.handles(path):
@@ -388,7 +439,7 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
             return requested
         if len(runs) == 1:
             return next(iter(runs), None)
-        return sorted(runs)[0] if runs else None
+        return min(runs) if runs else None
 
     def _read_json_body(self) -> dict[str, Any]:
         content_length = self.headers.get("Content-Length")
@@ -402,7 +453,7 @@ class WorkspaceRequestHandler(BaseHTTPRequestHandler):
             raise ValueError("Content-Type must be application/json")
         value = json.loads(self.rfile.read(length).decode("utf-8"))
         if not isinstance(value, dict):
-            raise ValueError("request body must be a JSON object")
+            raise TypeError("request body must be a JSON object")
         return value
 
     def _runtime_create_run(self) -> None:
@@ -574,7 +625,10 @@ def make_server(
     topic_initial_cursor: str | None = None,
     local_projection_config: ConsoleLocalProjectionConfig | None = None,
     access_store_root: str | Path | None = None,
+    access_api: AccessAPI | None = None,
     access_cookie_secure: bool = False,
+    admin_api: AdminAPI | None = None,
+    admin_dashboard_path: str | Path | None = None,
     runtime_store_path: str | Path | None = None,
 ) -> WorkspaceHTTPServer:
     root = Path(workspace_root).resolve()
@@ -612,11 +666,8 @@ def make_server(
         if resolved_review_trace_path is not None and review_write_token is not None
         else None
     )
-    access_api = (
-        AccessAPI(InvitationAccessStore(access_store_root), cookie_secure=access_cookie_secure)
-        if access_store_root is not None
-        else None
-    )
+    if access_api is None and access_store_root is not None:
+        access_api = AccessAPI(InvitationAccessStore(access_store_root), cookie_secure=access_cookie_secure)
     runtime_store = RuntimeStore(runtime_store_path or (root / ".runtime-store"))
     return WorkspaceHTTPServer(
         (host, port),
@@ -628,5 +679,7 @@ def make_server(
         topic_store=topic_store,
         local_projection_config=local_projection_config,
         access_api=access_api,
+        admin_api=admin_api,
+        admin_dashboard_path=admin_dashboard_path,
         runtime_store=runtime_store,
     )
