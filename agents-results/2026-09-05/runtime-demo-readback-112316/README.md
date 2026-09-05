@@ -1,6 +1,6 @@
 # Runtime demo readback evidence
 
-This evidence was produced from commit `9a1cd523cd1add39d6ed06369ce7f78c03562bbc`.
+This evidence was produced from commit `5a373a007893633f6b581e33b2c2bbdb2d63414c`.
 It covers the local, credential-free demo server only. The server persisted a successful
 run and a blocked run under deterministic run IDs, then served the successful run back
 through `GET /api/demo/runs/<run_id>` after the POST completed.

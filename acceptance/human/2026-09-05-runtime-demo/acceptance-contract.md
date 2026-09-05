@@ -2,7 +2,7 @@
 
 - Task ID: `2026-09-05-runtime-demo`
 - Scope: local demo workbench and persisted run readback
-- Source commit: `9a1cd523cd1add39d6ed06369ce7f78c03562bbc`
+- Source commit: `5a373a007893633f6b581e33b2c2bbdb2d63414c`
 - Access URL: `http://127.0.0.1:4174/problem-intel-console.html?demo=1`
 - Machine evidence: `agents-results/2026-09-05/runtime-demo-readback-112316/`
 - Human status: `PENDING`
