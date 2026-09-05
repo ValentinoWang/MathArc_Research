@@ -78,7 +78,7 @@
 | `GET` | `/api/admin/invitations` | 脱敏邀请码列表 |
 | `POST` | `/api/admin/invitations` | 调用 `InvitationAccessStore.issue_invitation(...)` |
 | `POST` | `/api/admin/invitations/{id}/revoke` | 调用 `revoke_invitation(...)` |
-| `GET` | `/api/admin/sessions` | 会话元数据 |
+| `GET` | `/api/admin/access-sessions` | 会话元数据 |
 | `GET` | `/api/admin/audit` | 审计查询 |
 
 签发响应只返回一次性 `code` 和 `invitation.to_dict()`；服务端日志、审计日志和异常消息均不得写入明文。所有写接口要求幂等键、CSRF 防护、重新验证 MFA，并记录成功与失败事件。

@@ -88,7 +88,7 @@ class AdminAPI:
                 ]
                 total = self.service.count_invitations(identity, status=status, search=search)
                 return AdminHTTPResponse(HTTPStatus.OK, {"items": items, "page": page, "page_size": limit, "total": total})
-            if path in {"/api/admin/sessions", "/api/admin/access-sessions"}:
+            if path == "/api/admin/access-sessions":
                 params = query or {}
                 status = _query_one(params, "status")
                 items = self.service.list_access_sessions(identity, status=status)
@@ -129,9 +129,9 @@ class AdminAPI:
                     idempotency_key=self._idempotency_key(headers),
                 )
                 return AdminHTTPResponse(HTTPStatus.OK, {"invitation": revoke_result.to_dict()})
-            if path.startswith(("/api/admin/sessions/", "/api/admin/access-sessions/")) and path.endswith("/revoke"):
+            if path.startswith("/api/admin/access-sessions/") and path.endswith("/revoke"):
                 require_role(identity, {"security_admin"})
-                prefix = "/api/admin/access-sessions/" if path.startswith("/api/admin/access-sessions/") else "/api/admin/sessions/"
+                prefix = "/api/admin/access-sessions/"
                 session_id = path[len(prefix):-len("/revoke")].rstrip("/")
                 self.service.revoke_session(identity, session_id, idempotency_key=self._idempotency_key(headers))
                 return AdminHTTPResponse(HTTPStatus.NO_CONTENT, None)

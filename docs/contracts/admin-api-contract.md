@@ -28,7 +28,7 @@
 
 列表接口 `GET /api/admin/applications` 和 `GET /api/admin/invitations` 接受 `status`、`q`、`page`（默认 `1`）和 `page_size`（默认 `25`，范围 `1..1000`）查询参数。响应统一为 `{items, page, page_size, total}`；`total` 是应用筛选条件后的总记录数，不是当前页长度。邀请码状态筛选值为 `active`、`redeemed`、`revoked` 和 `expired`，搜索 `q` 匹配邮箱或邀请码 ID。
 
-`GET /api/admin/access-sessions` 接受 `status=ACTIVE|LOGGED_OUT|EXPIRED`，返回访问会话元数据和推导状态；`/api/admin/sessions` 是兼容别名。
+`GET /api/admin/access-sessions` 接受 `status=ACTIVE|LOGGED_OUT|EXPIRED`，返回访问会话元数据和推导状态。
 
 ## 写入、幂等与错误
 

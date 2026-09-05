@@ -24,7 +24,7 @@ ADMIN_ROUTES = {
     ("GET", "/api/admin/invitations"): {200, 401, 403},
     ("POST", "/api/admin/invitations"): {201, 400, 401, 403, 409},
     ("POST", "/api/admin/invitations/inv-1/revoke"): {200, 400, 401, 403, 409, 404},
-    ("GET", "/api/admin/sessions"): {200, 401, 403},
+    ("GET", "/api/admin/access-sessions"): {200, 401, 403},
     ("GET", "/api/admin/audit"): {200, 401, 403},
 }
 
@@ -121,7 +121,7 @@ class FakeAdminConnection:
             return FakeResponse(200, {"items": [], "page": 1, "page_size": 50, "total": 0}, {})
         if path == "/api/admin/applications/app-1":
             return FakeResponse(200, {"application": {"application_id": "app-1", "email": "r@example.edu", "status": "PENDING"}}, {})
-        if path == "/api/admin/sessions":
+        if path == "/api/admin/access-sessions":
             return FakeResponse(200, {"items": [{"session_id": "s-1", "email": "r@example.edu", "status": "active"}]}, {})
         if path == "/api/admin/audit":
             return FakeResponse(200, {"items": [{"event_id": "evt-1", "actor": "adm-1", "action": "login", "result": "success"}]}, {})
@@ -176,7 +176,7 @@ class AdminAuthContractTests(unittest.TestCase):
         self.assertEqual(200, self.call("GET", "/api/admin/applications", token="reviewer-token").status)
         self.assertEqual(403, self.call("POST", "/api/admin/invitations", token="reviewer-token", headers={"Idempotency-Key": "k1"}, body={}).status)
         self.assertEqual(201, self.call("POST", "/api/admin/invitations", headers={"Idempotency-Key": "k1"}, body={"email": "r@example.edu", "topic_scopes": ["combinatorics"], "expires_in_seconds": 3600, "mfa_code": "123456"}).status)
-        self.assertEqual(200, self.call("GET", "/api/admin/sessions", token="security-token").status)
+        self.assertEqual(200, self.call("GET", "/api/admin/access-sessions", token="security-token").status)
 
     def test_sensitive_fields_are_absent_from_read_models(self) -> None:
         for path in ("/api/admin/invitations", "/api/admin/audit"):

@@ -61,7 +61,7 @@ POST /api/admin/auth/logout
 
 签发请求为 `email`、`topic_scopes`、`ttl_seconds`，并要求 `Idempotency-Key`。成功事务提交后才返回一次性 `code`；幂等重放返回相同邀请元数据但不恢复明文。撤销请求必须是 `{ "reason": "..." }`，原因进入审计事件。
 
-`/api/admin/sessions` 作为旧版兼容别名继续可读；新客户端使用 `/api/admin/access-sessions`。会话状态支持 `ACTIVE`、`LOGGED_OUT`、`EXPIRED`，响应只包含元数据和推导状态。
+会话状态支持 `ACTIVE`、`LOGGED_OUT`、`EXPIRED`，响应只包含元数据和推导状态。
 
 统一状态：未认证 `401`，角色不足 `403`，参数错误 `400`，目标不存在 `404`，状态或幂等冲突 `409`，数据库/审计不可用 `500` 或 `admin_state_invalid`。`POST /api/admin/auth/login` 为代理登录兼容占位，固定返回 `401 proxy_auth_required`。
 
